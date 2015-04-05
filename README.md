@@ -6,16 +6,23 @@ SLM is not being coded by professionals. Codes used in SLM could or can be bette
 
 Prerequisites
 ===================
- - [Net Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
+ - [Net Framework 4.5](https://www.microsoft.com/en-us/download/details.aspx?id=30653)
 
 Release
 ===================
--not available-
+ - N/A
 
 To-Do List
 ===================
- - a lot.
+ - Move Library
+ - Delete Library (and ask to move current installed games in that library)
+ - Backup Game
+ - Backup Library
+ - Restore Game backup
+ - Restore Library backup
+ - Further optimizations and bug fixes
+ - and more
 
 Changelog
 ===================
--not available-
+ - N/A
