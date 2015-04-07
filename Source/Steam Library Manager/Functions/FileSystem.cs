@@ -28,7 +28,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 else
                 {
-                    File.CreateText(Testfile).Close();
+                    File.CreateText(Testfile);
                     if (File.Exists(Testfile))
                     {
                         File.Delete(Testfile);
