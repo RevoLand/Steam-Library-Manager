@@ -28,9 +28,10 @@ namespace Steam_Library_Manager.Functions
                 }
                 else
                 {
-                    File.CreateText(Testfile);
+                    File.CreateText(Testfile).Close();
                     if (File.Exists(Testfile))
                     {
+                        File.Delete(Testfile);
                         return true;
                     }
                     else
@@ -44,7 +45,7 @@ namespace Steam_Library_Manager.Functions
         {
             using (var md5 = System.Security.Cryptography.MD5.Create())
             {
-                using (var stream = File.OpenRead(filePath))
+                using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     return md5.ComputeHash(stream);
                 }

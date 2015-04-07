@@ -37,7 +37,7 @@ namespace Steam_Library_Manager.Functions
                         Game.appID = Convert.ToInt32(Key["appID"].Value);
                         Game.appName = Key["name"].Value;
                         Game.StateFlag = Convert.ToInt16(Key["StateFlags"].Value);
-                        Game.installationPath = Path.GetDirectoryName(game) + @"\common\" + Key["installdir"].Value + @"\";
+                        Game.installationPath = Key["installdir"].Value;
                         Game.libraryPath = LibraryPath;
                         Game.sizeOnDisk = Key["SizeOnDisk"].Value; // Not 100% accurate but fast for now
                         Definitions.List.Games.Add(Game);

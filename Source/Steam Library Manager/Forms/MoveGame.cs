@@ -53,8 +53,11 @@ namespace Steam_Library_Manager.Forms
                 {
                     // If something is wrong and current game directory doesn't exists
                     if (!Directory.Exists(currentGamePath))
+                    {
                         // Show error to user
-                        System.Windows.Forms.MessageBox.Show("Can not find selected game files... Is there something went wrong with coding?\nDirectory: " + TargetGamePath);
+                        System.Windows.Forms.MessageBox.Show("Can not find selected game files... Is there something went wrong with coding?\nDirectory: " + currentGamePath);
+                        return;
+                    }
 
                     // If the directory we will move game is not exists
                     if (!Directory.Exists(TargetGamePath))
@@ -73,7 +76,7 @@ namespace Steam_Library_Manager.Forms
 
                     foreach (string currentFile in Directory.EnumerateFiles(currentGamePath, "*", SearchOption.AllDirectories))
                     {
-                        using (FileStream currentFileStream = File.OpenRead(currentFile))
+                        using (FileStream currentFileStream = File.Open(currentFile, FileMode.Open, FileAccess.Read))
                         {
                             newFileName = TargetGamePath + currentFile.Replace(currentGamePath, "");
                             Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
@@ -95,13 +98,13 @@ namespace Steam_Library_Manager.Forms
                                 break;
                             }
 
-                            Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + newFileName);
                         }
 
+                        Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + newFileName);
                         progressBar_CopyStatus.PerformStep();
                     }
 
-                    File.Copy(currentPath + acfName, TargetPath + acfName);
+                    File.Copy(currentPath + acfName, TargetPath + acfName, true);
                     Log(".ACF file has been created at the target directory");
 
                     if (RemoveOld)
@@ -120,7 +123,10 @@ namespace Steam_Library_Manager.Forms
                 else
                     System.Windows.Forms.MessageBox.Show("We don't have enough perms at the target library path, try to run as Administrator maybe?");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void Log(string Text)
@@ -139,7 +145,7 @@ namespace Steam_Library_Manager.Forms
             {
                 button_Copy.Enabled = false;
 
-                this.CopyGame(Game.libraryPath, this.comboBox_TargetLibrary.SelectedItem.ToString(), Game.appName, Game.appID, this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
+                this.CopyGame(Game.libraryPath, this.comboBox_TargetLibrary.SelectedItem.ToString(), Game.installationPath, Game.appID, this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
             }
             catch { }
         }
