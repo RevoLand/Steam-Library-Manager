@@ -51,22 +51,15 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 long directorySize = 0;
-                
-                DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
-                FileInfo[] fileList = dirInfo.EnumerateFiles("*.*", SearchOption.AllDirectories).AsParallel().ToArray();
 
-                foreach (var currentFile in fileList)
+                foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
                 {
-                    directorySize += currentFile.Length;
+                    directorySize += currentFile.Size;
                 }
 
                 return directorySize;
             }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
-                return 0;
-            }
+            catch { return 0; }
         }
 
         public static byte[] GetFileMD5(string filePath)
@@ -94,11 +87,11 @@ namespace Steam_Library_Manager.Functions
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        public static long GetFreeSpace(string TargetDisk)
+        public static long GetFreeSpace(string TargetFolder)
         {
             try
             {
-                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetDisk));
+                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
 
                 return Disk.AvailableFreeSpace;
             }

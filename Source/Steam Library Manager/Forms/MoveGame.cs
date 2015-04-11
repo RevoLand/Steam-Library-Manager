@@ -19,7 +19,6 @@ namespace Steam_Library_Manager.Forms
         private void MoveGame_Load(object sender, System.EventArgs e)
         {
             pictureBox_GameImage.LoadAsync("http://cdn.akamai.steamstatic.com/steam/apps/"+ Game.appID +"/header.jpg");
-            pictureBox_GameImage.Tag = Game.appName;
             linkLabel_currentLibrary.Text = Game.libraryPath;
 
             foreach (Definitions.List.InstallDirsList Library in Definitions.List.InstallDirs)
@@ -39,27 +38,17 @@ namespace Steam_Library_Manager.Forms
                 button_Copy.Enabled = false;
                 comboBox_TargetLibrary.Enabled = false;
 
-                CopyGame(Game.exactInstallPath, this.comboBox_TargetLibrary.SelectedItem.ToString(), Game.installationPath, Game.appID, this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
+                CopyGame(this.comboBox_TargetLibrary.SelectedItem.ToString(), this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
             }
             catch { }
         }
 
-        async void CopyGame(string currentGamePath, string TargetPath, string GameName, int appID, bool Validate, bool RemoveOld)
+        async void CopyGame(string TargetLibraryPath, bool Validate, bool RemoveOld)
         {
-            string TargetGamePath = "";
-            switch (Game.StateFlag)
-            {
-                case 4:
-                    TargetGamePath = TargetPath + @"common\" + GameName;
-                    break;
-                case 1026:
-                    TargetGamePath = TargetPath + @"downloading\" + appID;
-                    break;
-                default:
-                    Log("This Installation State is not supported yet. State: " + Game.StateFlag);
-                    return;
-            }
-
+            string downloadPath = Game.libraryPath + @"downloading\";
+            string TargetGamePath = TargetLibraryPath + @"common\" + Game.installationPath;
+            string TargetDownloadPath = TargetLibraryPath + @"downloading\" + Game.appID;
+            string acfName = "appmanifest_" + Game.appID + ".acf";
             try
             {
                 TimeElapsed.Start();
@@ -69,10 +58,10 @@ namespace Steam_Library_Manager.Forms
                 if (Functions.FileSystem.TestFile(TargetGamePath))
                 {
                     // If something is wrong and current game directory doesn't exists
-                    if (!Directory.Exists(currentGamePath))
+                    if (!Directory.Exists(Game.exactInstallPath) && !Directory.Exists(Game.downloadPath))
                     {
                         // Show error to user
-                        System.Windows.Forms.MessageBox.Show("Can not find selected game files... Is there something went wrong with coding?\nDirectory: " + currentGamePath);
+                        System.Windows.Forms.MessageBox.Show("Can not find selected game files... Is there something went wrong with coding?\nDirectory: " + Game.exactInstallPath);
                         return;
                     }
 
@@ -83,67 +72,129 @@ namespace Steam_Library_Manager.Forms
                         Log("Free space is not enough! Needed Free Space: " + Game.sizeOnDisk + " Available: " + freeSpace);
                         return;
                     }
-
-                    // If the directory we will move game is not exists
-                    if (!Directory.Exists(TargetGamePath))
-                        // Create the directory
-                        Directory.CreateDirectory(TargetGamePath);
-
-                    string acfName = "appmanifest_" + appID + ".acf";
+                    // Create the directory
+                    Directory.CreateDirectory(TargetGamePath);
 
                     byte[] currentFileMD5, newFileMD5;
                     string newFileName;
-                    int FilesToMove = Directory.GetFiles(currentGamePath, "*", SearchOption.AllDirectories).Length;
+                    int FilesToMove = 0, movedFiles = 0;
+
+                    if (Game.exactInstallPath != null)
+                        FilesToMove += Framework.FastDirectoryEnumerator.GetFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories).Length;
+
+                    if (Game.downloadPath != null)
+                        FilesToMove += Framework.FastDirectoryEnumerator.GetFiles(Game.downloadPath, "*", SearchOption.AllDirectories).Length;
 
                     progressBar_CopyStatus.Maximum = FilesToMove;
 
-                    int movedFiles = 0;
-
-                    foreach (string currentFile in Directory.EnumerateFiles(currentGamePath, "*", SearchOption.AllDirectories))
+                    // common
+                    if (Game.exactInstallPath != null)
                     {
-                        using (FileStream currentFileStream = File.Open(currentFile, FileMode.Open, FileAccess.Read))
+                        foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories))
                         {
-                            newFileName = TargetGamePath + currentFile.Replace(currentGamePath, "");
-                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-                            using (FileStream newFileStream = File.Create(newFileName))
+                            using (FileStream currentFileStream = File.Open(currentFile.Path, FileMode.Open, FileAccess.Read))
                             {
-                                await currentFileStream.CopyToAsync(newFileStream);
+                                newFileName = TargetGamePath + currentFile.Path.Replace(Game.exactInstallPath, "");
+                                Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+                                using (FileStream newFileStream = File.Create(newFileName))
+                                {
+                                    await currentFileStream.CopyToAsync(newFileStream);
 
-                                movedFiles += 1;
-                            }
-                        }
-
-                        if (Validate)
-                        {
-                            currentFileMD5 = Functions.FileSystem.GetFileMD5(currentFile);
-                            newFileMD5 = Functions.FileSystem.GetFileMD5(newFileName);
-                            if (BitConverter.ToString(currentFileMD5) != BitConverter.ToString(newFileMD5))
-                            {
-                                Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] File couldn't verified: " + newFileName);
-                                break;
+                                    movedFiles += 1;
+                                }
                             }
 
-                        }
+                            if (Validate)
+                            {
+                                currentFileMD5 = Functions.FileSystem.GetFileMD5(currentFile.Path);
+                                newFileMD5 = Functions.FileSystem.GetFileMD5(newFileName);
+                                if (BitConverter.ToString(currentFileMD5) != BitConverter.ToString(newFileMD5))
+                                {
+                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] File couldn't verified: " + currentFile.Path.Replace(Game.exactInstallPath, ""));
+                                    break;
+                                }
 
-                        Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + newFileName);
-                        progressBar_CopyStatus.PerformStep();
+                            }
+
+                            Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + currentFile.Path.Replace(Game.exactInstallPath, ""));
+                            progressBar_CopyStatus.PerformStep();
+                        }
                     }
 
-                    File.Copy(Game.libraryPath + acfName, TargetPath + acfName, true);
+                    // downloading
+                    if (Game.downloadPath != null)
+                    {
+                        foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
+                        {
+                            using (FileStream currentFileStream = File.Open(currentFile.Path, FileMode.Open, FileAccess.Read))
+                            {
+                                newFileName = TargetDownloadPath + currentFile.Path.Replace(Game.downloadPath, "");
+                                Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+                                using (FileStream newFileStream = File.Create(newFileName))
+                                {
+                                    await currentFileStream.CopyToAsync(newFileStream);
 
+                                    movedFiles += 1;
+                                }
+                            }
+
+                            if (Validate)
+                            {
+                                currentFileMD5 = Functions.FileSystem.GetFileMD5(currentFile.Path);
+                                newFileMD5 = Functions.FileSystem.GetFileMD5(newFileName);
+                                if (BitConverter.ToString(currentFileMD5) != BitConverter.ToString(newFileMD5))
+                                {
+                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] File couldn't verified: " + currentFile.Path.Replace(Game.downloadPath, ""));
+                                    break;
+                                }
+
+                            }
+
+                            Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + currentFile.Path.Replace(Game.downloadPath, ""));
+                            progressBar_CopyStatus.PerformStep();
+                        }
+                    }
+
+                    // .Patch files
+                    Directory.CreateDirectory(TargetLibraryPath + @"downloading\");
+                    foreach (Framework.FileData fileName in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
+                    {
+                        newFileName = TargetLibraryPath + @"downloading\" + fileName.Name.Replace(downloadPath, "");
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+
+                        File.Copy(fileName.Path, newFileName, true);
+
+                        if (RemoveOld)
+                            File.Delete(fileName.Path);
+                    }
+
+                    // .ACF File
+                    File.Copy(Game.libraryPath + acfName, TargetLibraryPath + acfName, true);
                     Log(".ACF file has been created at the target directory");
 
+                    // Remove old files?
                     if (RemoveOld)
                     {
-                        Directory.Delete(currentGamePath, true);
+                        if (Game.exactInstallPath != null)
+                            // common
+                            Directory.Delete(Game.exactInstallPath, true);
+
+                        if (Game.downloadPath != null)
+                            // downloading
+                            Directory.Delete(Game.downloadPath, true);
+
+                        // .ACF
                         File.Delete(Game.libraryPath + acfName);
 
                         Log("Old files has been deleted.");
                     }
 
+                    // Timer and Stopwatch
                     timer_TimeElapsed.Stop();
-                    TimeElapsed.Start();
+                    TimeElapsed.Stop();
 
+                    // More Visual
                     button_Copy.Text = "Done!";
                     Log("Completed! All files successfully copied!");
                 }
@@ -155,6 +206,8 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
+                timer_TimeElapsed.Stop();
+                TimeElapsed.Stop();
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -184,16 +237,23 @@ namespace Steam_Library_Manager.Forms
 
         private void comboBox_TargetLibrary_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (Game.StateFlag)
+            try
             {
-                case 4: // Installed
-                case 1026:
-                    label_NeededSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true));
-                    label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(comboBox_TargetLibrary.SelectedItem.ToString()));
-                    break;
-                case 1024: // Pre-Load
+                long NeededSpace = 0;
 
-                    break;
+                if (Game.exactInstallPath != null)
+                    NeededSpace += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+
+                if (Game.downloadPath != null)
+                    NeededSpace += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
+
+                label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(comboBox_TargetLibrary.SelectedItem.ToString()));
+                label_NeededSpace.Text = Functions.FileSystem.FormatBytes(NeededSpace);
+
+            }
+            catch
+            {
+                Log("Couldn't get game info, is it Pre-Load?");
             }
         }
 

@@ -19,8 +19,8 @@ namespace Steam_Library_Manager.Definitions
             public int appID { get; set; }
             public string appName { get; set; }
 
-            public int StateFlag; // 4 = Installed, 1024 = Pre-Load, 1026 = Downloading
-            public string installationPath, libraryPath, exactInstallPath;
+            public int StateFlag;
+            public string installationPath, libraryPath, exactInstallPath, downloadPath;
             public long sizeOnDisk;
         }
 
