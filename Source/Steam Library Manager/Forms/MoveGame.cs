@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Forms
@@ -12,10 +14,13 @@ namespace Steam_Library_Manager.Forms
         }
 
         Definitions.List.GamesList Game = Definitions.Accessors.Main.listBox_InstalledGames.SelectedItem as Definitions.List.GamesList;
+        Stopwatch TimeElapsed = new Stopwatch();
 
         private void MoveGame_Load(object sender, System.EventArgs e)
         {
-            linkLabel_GameName.Text = Game.appName;
+            pictureBox_GameImage.LoadAsync("http://cdn.akamai.steamstatic.com/steam/apps/"+ Game.appID +"/header.jpg");
+            pictureBox_GameImage.Tag = Game.appName;
+            linkLabel_currentLibrary.Text = Game.libraryPath;
 
             foreach (Definitions.List.InstallDirsList Library in Definitions.List.InstallDirs)
             {
@@ -24,30 +29,42 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private void linkLabel_GameName_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void button_Copy_Click(object sender, EventArgs e)
         {
             try
             {
-                System.Diagnostics.Process.Start("http://store.steampowered.com/app/" + Game.appID.ToString() + "/");
+                if (comboBox_TargetLibrary.SelectedItem == null)
+                    return;
+
+                button_Copy.Enabled = false;
+                comboBox_TargetLibrary.Enabled = false;
+
+                CopyGame(Game.exactInstallPath, this.comboBox_TargetLibrary.SelectedItem.ToString(), Game.installationPath, Game.appID, this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
             }
             catch { }
         }
 
-        public async void CopyGame(string currentPath, string TargetPath, string GameName, int appID, bool Validate, bool RemoveOld)
+        async void CopyGame(string currentGamePath, string TargetPath, string GameName, int appID, bool Validate, bool RemoveOld)
         {
-            /*
-             * currentPath = Current installation path of game, C:\Steam\SteamApps\ as example
-             * TargetPath = Where the game will be moved to, D:\Steam\SteamApps\ as example
-             * GameName = Game installation folder name as provided in ACF file, "Dying Light" as example (C:\Steam\SteamApps\common\+ GameName +)
-             * Owerwrite = Owerwrite existing files or not
-             * Validate = Validate game files after move
-             * RemoveOld = Remove files from currentPath after process has been done (and validated if set)
-             */
-            string currentGamePath = currentPath + @"common\" + GameName + @"\";
-            string TargetGamePath = TargetPath + @"common\" + GameName + @"\";
+            string TargetGamePath = "";
+            switch (Game.StateFlag)
+            {
+                case 4:
+                    TargetGamePath = TargetPath + @"common\" + GameName;
+                    break;
+                case 1026:
+                    TargetGamePath = TargetPath + @"downloading\" + appID;
+                    break;
+                default:
+                    Log("This Installation State is not supported yet. State: " + Game.StateFlag);
+                    return;
+            }
 
             try
             {
+                TimeElapsed.Start();
+                timer_TimeElapsed.Start();
+
                 // If we have create & remove permissions at the target game path
                 if (Functions.FileSystem.TestFile(TargetGamePath))
                 {
@@ -56,6 +73,14 @@ namespace Steam_Library_Manager.Forms
                     {
                         // Show error to user
                         System.Windows.Forms.MessageBox.Show("Can not find selected game files... Is there something went wrong with coding?\nDirectory: " + currentGamePath);
+                        return;
+                    }
+
+                    long freeSpace = Functions.FileSystem.GetFreeSpace(TargetGamePath);
+
+                    if (freeSpace < Game.sizeOnDisk)
+                    {
+                        Log("Free space is not enough! Needed Free Space: " + Game.sizeOnDisk + " Available: " + freeSpace);
                         return;
                     }
 
@@ -104,24 +129,29 @@ namespace Steam_Library_Manager.Forms
                         progressBar_CopyStatus.PerformStep();
                     }
 
-                    File.Copy(currentPath + acfName, TargetPath + acfName, true);
+                    File.Copy(Game.libraryPath + acfName, TargetPath + acfName, true);
+
                     Log(".ACF file has been created at the target directory");
 
                     if (RemoveOld)
                     {
                         Directory.Delete(currentGamePath, true);
-                        File.Delete(currentPath + acfName);
+                        File.Delete(Game.libraryPath + acfName);
 
                         Log("Old files has been deleted.");
                     }
 
-                    Log("Completed! All files successfully copied!");
-                    button_Copy.Text = "Done!";
+                    timer_TimeElapsed.Stop();
+                    TimeElapsed.Start();
 
-                    Functions.SteamLibrary.UpdateGameLibraries();
+                    button_Copy.Text = "Done!";
+                    Log("Completed! All files successfully copied!");
                 }
                 else
+                {
+                    Log("Failed");
                     System.Windows.Forms.MessageBox.Show("We don't have enough perms at the target library path, try to run as Administrator maybe?");
+                }
             }
             catch (Exception ex)
             {
@@ -138,14 +168,48 @@ namespace Steam_Library_Manager.Forms
             catch { }
         }
 
-
-        private void button_Copy_Click(object sender, EventArgs e)
+        private void linkLabel_currentLibrary_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
-                button_Copy.Enabled = false;
+                System.Diagnostics.Process.Start(Game.libraryPath);
+            }
+            catch { }
+        }
 
-                this.CopyGame(Game.libraryPath, this.comboBox_TargetLibrary.SelectedItem.ToString(), Game.installationPath, Game.appID, this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
+        private void timer_TimeElapsed_Tick(object sender, EventArgs e)
+        {
+            label_TimeElapsed.Text = String.Format("Time Elapsed: {0}", TimeElapsed.Elapsed);
+        }
+
+        private void comboBox_TargetLibrary_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (Game.StateFlag)
+            {
+                case 4: // Installed
+                case 1026:
+                    label_NeededSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true));
+                    label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(comboBox_TargetLibrary.SelectedItem.ToString()));
+                    break;
+                case 1024: // Pre-Load
+
+                    break;
+            }
+        }
+
+        private void pictureBox_GameImage_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                switch (e.Button)
+                {
+                    default:
+                        System.Diagnostics.Process.Start("http://store.steampowered.com/app/" + Game.appID.ToString() + "/");
+                        break;
+                    case MouseButtons.Right:
+                        System.Diagnostics.Process.Start(Game.exactInstallPath);
+                        break;
+                }
             }
             catch { }
         }

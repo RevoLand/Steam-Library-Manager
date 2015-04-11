@@ -55,9 +55,10 @@ namespace Steam_Library_Manager
         {
             try
             {
-                if (listBox_GameLibraries.SelectedIndex == -1)
+                if (listBox_GameLibraries.SelectedIndex == -1 || Definitions.SLM.LatestSelectedLibrary == listBox_GameLibraries.SelectedItem.ToString())
                     return;
 
+                Definitions.SLM.LatestSelectedLibrary = listBox_GameLibraries.SelectedItem.ToString();
                 Functions.Games.UpdateGamesList(listBox_GameLibraries.SelectedItem.ToString());
             }
             catch { }

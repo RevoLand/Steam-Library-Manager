@@ -37,9 +37,27 @@ namespace Steam_Library_Manager.Functions
                         Game.appID = Convert.ToInt32(Key["appID"].Value);
                         Game.appName = Key["name"].Value;
                         Game.StateFlag = Convert.ToInt16(Key["StateFlags"].Value);
-                        Game.installationPath = Key["installdir"].Value;
+                        switch (Game.StateFlag)
+                        {
+                            case 4: // Installed
+                                Game.installationPath = Key["installdir"].Value;
+                                Game.exactInstallPath = LibraryPath + @"common\" + Game.installationPath;
+                                Game.sizeOnDisk = Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+                                break;
+                            case 1024: // Pre-Load
+
+                                break;
+                            case 1026: // Downloading
+                                Game.installationPath = @"downloading\" + Game.appID;
+                                Game.exactInstallPath = LibraryPath + Game.installationPath;
+                                break;
+                            case 2: // Preparing for install
+                            default:
+                                Game.sizeOnDisk = 0;
+                                break;
+                        }
                         Game.libraryPath = LibraryPath;
-                        Game.sizeOnDisk = Key["SizeOnDisk"].Value; // Not 100% accurate but fast for now
+                        
                         Definitions.List.Games.Add(Game);
                     }
                     else { }

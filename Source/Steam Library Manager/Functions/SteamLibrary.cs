@@ -71,9 +71,8 @@ namespace Steam_Library_Manager.Functions
                     Definitions.Accessors.Main.listBox_GameLibraries.Items.Clear();
 
                 foreach (Definitions.List.InstallDirsList InstallDir in Definitions.List.InstallDirs)
-                {
                     Definitions.Accessors.Main.listBox_GameLibraries.Items.Add(InstallDir.Directory);
-                }
+
             }
             catch { }
         }
