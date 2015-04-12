@@ -47,6 +47,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.fileDialog_SelectSteamPath = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowser_SelectNewLibraryPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.textBox_Search = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tab_MoveLibrary.SuspendLayout();
             this.groupBox_GameLibraries.SuspendLayout();
@@ -141,6 +142,7 @@
             // 
             // groupBox_InstalledGames
             // 
+            this.groupBox_InstalledGames.Controls.Add(this.textBox_Search);
             this.groupBox_InstalledGames.Controls.Add(this.button_InstalledGames_MoveGame);
             this.groupBox_InstalledGames.Controls.Add(this.listBox_InstalledGames);
             this.groupBox_InstalledGames.Location = new System.Drawing.Point(385, 6);
@@ -165,7 +167,7 @@
             this.listBox_InstalledGames.FormattingEnabled = true;
             this.listBox_InstalledGames.Location = new System.Drawing.Point(6, 19);
             this.listBox_InstalledGames.Name = "listBox_InstalledGames";
-            this.listBox_InstalledGames.Size = new System.Drawing.Size(213, 355);
+            this.listBox_InstalledGames.Size = new System.Drawing.Size(213, 329);
             this.listBox_InstalledGames.TabIndex = 0;
             // 
             // tab_Categories
@@ -242,6 +244,15 @@
             // 
             this.folderBrowser_SelectNewLibraryPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // textBox_Search
+            // 
+            this.textBox_Search.Location = new System.Drawing.Point(6, 354);
+            this.textBox_Search.Name = "textBox_Search";
+            this.textBox_Search.Size = new System.Drawing.Size(213, 20);
+            this.textBox_Search.TabIndex = 2;
+            this.textBox_Search.Text = "Search...";
+            this.textBox_Search.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox_Search_KeyUp);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -255,6 +266,7 @@
             this.tab_MoveLibrary.ResumeLayout(false);
             this.groupBox_GameLibraries.ResumeLayout(false);
             this.groupBox_InstalledGames.ResumeLayout(false);
+            this.groupBox_InstalledGames.PerformLayout();
             this.tab_Settings.ResumeLayout(false);
             this.groupBox_Steam.ResumeLayout(false);
             this.groupBox_Steam.PerformLayout();
@@ -283,6 +295,7 @@
         private System.Windows.Forms.Button button_gameLibraries_Refresh;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser_SelectNewLibraryPath;
         public System.Windows.Forms.Button button_InstalledGames_MoveGame;
+        private System.Windows.Forms.TextBox textBox_Search;
     }
 }
 

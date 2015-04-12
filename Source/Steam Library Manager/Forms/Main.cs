@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager
@@ -101,6 +103,28 @@ namespace Steam_Library_Manager
             Forms.MoveGame MoveGameForm = new Forms.MoveGame();
 
             MoveGameForm.Show();
+        }
+
+        private void textBox_Search_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (textBox_Search.Text == "" || textBox_Search.Text == "Search...")
+                {
+                    if (listBox_InstalledGames.Items.Count != 0)
+                        Functions.Games.UpdateMainForm();
+
+                    return;
+                }
+
+                listBox_InstalledGames.DataSource = Definitions.List.Games.Where(x => Regex.IsMatch(x.appName, textBox_Search.Text, RegexOptions.IgnoreCase)).ToArray();
+
+            }
+            catch
+            {
+                if (listBox_InstalledGames.Items.Count != 0)
+                    Functions.Games.UpdateMainForm();
+            }
         }
 
 
