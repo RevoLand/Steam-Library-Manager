@@ -10,15 +10,15 @@ Prerequisites
 
 Release
 ===================
- - N/A
+ - [Latest Release](https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Binaries/Steam%20Library%20Manager.exe)
 
 To-Do List
 ===================
  - Move Library
  - Delete Library (and ask to move current installed games in that library)
- - Backup Game
+ - Backup Game & Compress if asked
  - Backup Library
- - Restore Game backup
+ - Restore Game backup & Uncompress if needed
  - Restore Library backup
  - Further optimizations and bug fixes
  - and more
