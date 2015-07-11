@@ -4,23 +4,22 @@ namespace Steam_Library_Manager.Definitions
 {
     class List
     {
-        public static List<InstallDirsList> InstallDirs = new List<InstallDirsList>();
-        public static List<GamesList> Games = new List<GamesList>();
+        public static List<LibraryList> Library = new List<LibraryList>();
+        public static List<GamesList> Game = new List<GamesList>();
 
-        public class InstallDirsList
+        public class LibraryList
         {
-            public bool Main;
-            public int NumGames;
+            public bool Main, Backup;
+            public int GameCount;
             public string Directory;
         }
 
         public class GamesList
         {
-            public int appID { get; set; }
-            public string appName { get; set; }
 
-            public int StateFlag;
-            public string installationPath, libraryPath, exactInstallPath, downloadPath;
+            public int appID, StateFlag;
+            public LibraryList Library;
+            public string appName, installationPath, exactInstallPath, downloadPath;
             public long sizeOnDisk;
         }
 

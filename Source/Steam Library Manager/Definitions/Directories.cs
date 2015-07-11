@@ -9,10 +9,5 @@ namespace Steam_Library_Manager.Definitions
             public static string CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             public static string SettingsFile = CurrentDirectory + "Settings.ini";
         }
-
-        public class Steam
-        {
-            public static string Path;
-        }
     }
 }

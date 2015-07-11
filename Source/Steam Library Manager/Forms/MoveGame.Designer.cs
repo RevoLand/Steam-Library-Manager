@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.comboBox_TargetLibrary = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.checkbox_Validate = new System.Windows.Forms.CheckBox();
             this.checkbox_RemoveOldFiles = new System.Windows.Forms.CheckBox();
@@ -45,25 +44,15 @@
             this.label_TimeElapsed = new System.Windows.Forms.Label();
             this.timer_TimeElapsed = new System.Windows.Forms.Timer(this.components);
             this.pictureBox_GameImage = new System.Windows.Forms.PictureBox();
+            this.linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).BeginInit();
             this.SuspendLayout();
             // 
-            // comboBox_TargetLibrary
-            // 
-            this.comboBox_TargetLibrary.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_TargetLibrary.FormattingEnabled = true;
-            this.comboBox_TargetLibrary.Location = new System.Drawing.Point(12, 175);
-            this.comboBox_TargetLibrary.Name = "comboBox_TargetLibrary";
-            this.comboBox_TargetLibrary.Size = new System.Drawing.Size(260, 21);
-            this.comboBox_TargetLibrary.TabIndex = 2;
-            this.comboBox_TargetLibrary.SelectedIndexChanged += new System.EventHandler(this.comboBox_TargetLibrary_SelectedIndexChanged);
-            // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(8, 151);
+            this.label1.Location = new System.Drawing.Point(12, 223);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(260, 21);
+            this.label1.Size = new System.Drawing.Size(275, 21);
             this.label1.TabIndex = 3;
             this.label1.Text = "Target Library:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -71,91 +60,82 @@
             // checkbox_Validate
             // 
             this.checkbox_Validate.AutoSize = true;
-            this.checkbox_Validate.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
-            this.checkbox_Validate.Location = new System.Drawing.Point(188, 202);
+            this.checkbox_Validate.Location = new System.Drawing.Point(222, 282);
             this.checkbox_Validate.Name = "checkbox_Validate";
-            this.checkbox_Validate.Size = new System.Drawing.Size(84, 25);
+            this.checkbox_Validate.Size = new System.Drawing.Size(65, 15);
             this.checkbox_Validate.TabIndex = 4;
             this.checkbox_Validate.Text = "Validate";
-            this.checkbox_Validate.UseVisualStyleBackColor = true;
             // 
             // checkbox_RemoveOldFiles
             // 
             this.checkbox_RemoveOldFiles.AutoSize = true;
-            this.checkbox_RemoveOldFiles.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
-            this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 202);
+            this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 282);
             this.checkbox_RemoveOldFiles.Name = "checkbox_RemoveOldFiles";
-            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(147, 25);
+            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(114, 15);
             this.checkbox_RemoveOldFiles.TabIndex = 5;
             this.checkbox_RemoveOldFiles.Text = "Remove Old Files";
-            this.checkbox_RemoveOldFiles.UseVisualStyleBackColor = true;
             // 
             // button_Copy
             // 
-            this.button_Copy.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
-            this.button_Copy.Location = new System.Drawing.Point(12, 271);
+            this.button_Copy.Location = new System.Drawing.Point(12, 341);
             this.button_Copy.Name = "button_Copy";
-            this.button_Copy.Size = new System.Drawing.Size(260, 40);
+            this.button_Copy.Size = new System.Drawing.Size(275, 40);
             this.button_Copy.TabIndex = 6;
             this.button_Copy.Text = "Copy";
-            this.button_Copy.UseVisualStyleBackColor = true;
             this.button_Copy.Click += new System.EventHandler(this.button_Copy_Click);
             // 
             // progressBar_CopyStatus
             // 
-            this.progressBar_CopyStatus.Location = new System.Drawing.Point(12, 414);
+            this.progressBar_CopyStatus.Location = new System.Drawing.Point(12, 517);
             this.progressBar_CopyStatus.Name = "progressBar_CopyStatus";
-            this.progressBar_CopyStatus.Size = new System.Drawing.Size(260, 23);
+            this.progressBar_CopyStatus.Size = new System.Drawing.Size(275, 23);
             this.progressBar_CopyStatus.Step = 1;
             this.progressBar_CopyStatus.TabIndex = 7;
             // 
             // textBox_CopyLogs
             // 
-            this.textBox_CopyLogs.Location = new System.Drawing.Point(12, 317);
+            this.textBox_CopyLogs.Lines = new string[0];
+            this.textBox_CopyLogs.Location = new System.Drawing.Point(12, 387);
+            this.textBox_CopyLogs.MaxLength = 32767;
             this.textBox_CopyLogs.Multiline = true;
             this.textBox_CopyLogs.Name = "textBox_CopyLogs";
-            this.textBox_CopyLogs.Size = new System.Drawing.Size(260, 91);
+            this.textBox_CopyLogs.PasswordChar = '\0';
+            this.textBox_CopyLogs.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBox_CopyLogs.SelectedText = "";
+            this.textBox_CopyLogs.Size = new System.Drawing.Size(275, 124);
             this.textBox_CopyLogs.TabIndex = 8;
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semilight", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(8, 99);
+            this.label2.Location = new System.Drawing.Point(12, 165);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(260, 21);
+            this.label2.Size = new System.Drawing.Size(275, 21);
             this.label2.TabIndex = 9;
             this.label2.Text = "Current Library:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLabel_currentLibrary
             // 
-            this.linkLabel_currentLibrary.Font = new System.Drawing.Font("Segoe UI Semilight", 12F);
-            this.linkLabel_currentLibrary.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.linkLabel_currentLibrary.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel_currentLibrary.Location = new System.Drawing.Point(8, 120);
+            this.linkLabel_currentLibrary.Location = new System.Drawing.Point(12, 189);
             this.linkLabel_currentLibrary.Name = "linkLabel_currentLibrary";
-            this.linkLabel_currentLibrary.Size = new System.Drawing.Size(260, 31);
+            this.linkLabel_currentLibrary.Size = new System.Drawing.Size(275, 31);
             this.linkLabel_currentLibrary.TabIndex = 10;
-            this.linkLabel_currentLibrary.TabStop = true;
             this.linkLabel_currentLibrary.Text = "N/A";
-            this.linkLabel_currentLibrary.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel_currentLibrary.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_currentLibrary_LinkClicked);
+            this.linkLabel_currentLibrary.Click += new System.EventHandler(this.linkLabel_currentLibrary_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.label3.Location = new System.Drawing.Point(8, 230);
+            this.label3.Location = new System.Drawing.Point(12, 300);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 19);
+            this.label3.Size = new System.Drawing.Size(104, 19);
             this.label3.TabIndex = 11;
             this.label3.Text = "Available Space:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.label4.Location = new System.Drawing.Point(8, 249);
+            this.label4.Location = new System.Drawing.Point(12, 319);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(98, 19);
             this.label4.TabIndex = 12;
@@ -163,8 +143,7 @@
             // 
             // label_AvailableSpace
             // 
-            this.label_AvailableSpace.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.label_AvailableSpace.Location = new System.Drawing.Point(192, 230);
+            this.label_AvailableSpace.Location = new System.Drawing.Point(207, 302);
             this.label_AvailableSpace.Name = "label_AvailableSpace";
             this.label_AvailableSpace.Size = new System.Drawing.Size(80, 17);
             this.label_AvailableSpace.TabIndex = 13;
@@ -173,8 +152,7 @@
             // 
             // label_NeededSpace
             // 
-            this.label_NeededSpace.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.label_NeededSpace.Location = new System.Drawing.Point(192, 251);
+            this.label_NeededSpace.Location = new System.Drawing.Point(207, 321);
             this.label_NeededSpace.Name = "label_NeededSpace";
             this.label_NeededSpace.Size = new System.Drawing.Size(80, 17);
             this.label_NeededSpace.TabIndex = 14;
@@ -183,34 +161,44 @@
             // 
             // label_TimeElapsed
             // 
-            this.label_TimeElapsed.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.label_TimeElapsed.Location = new System.Drawing.Point(8, 440);
+            this.label_TimeElapsed.Location = new System.Drawing.Point(12, 543);
             this.label_TimeElapsed.Name = "label_TimeElapsed";
-            this.label_TimeElapsed.Size = new System.Drawing.Size(264, 19);
+            this.label_TimeElapsed.Size = new System.Drawing.Size(275, 19);
             this.label_TimeElapsed.TabIndex = 15;
             this.label_TimeElapsed.Text = "Time Elapsed: 0";
             this.label_TimeElapsed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timer_TimeElapsed
             // 
+            this.timer_TimeElapsed.Interval = 300;
             this.timer_TimeElapsed.Tick += new System.EventHandler(this.timer_TimeElapsed_Tick);
             // 
             // pictureBox_GameImage
             // 
             this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
-            this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 4);
+            this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 33);
             this.pictureBox_GameImage.Name = "pictureBox_GameImage";
-            this.pictureBox_GameImage.Size = new System.Drawing.Size(260, 97);
+            this.pictureBox_GameImage.Size = new System.Drawing.Size(275, 129);
             this.pictureBox_GameImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox_GameImage.TabIndex = 16;
             this.pictureBox_GameImage.TabStop = false;
             this.pictureBox_GameImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_GameImage_MouseClick);
             // 
+            // linkLabel_TargetLibrary
+            // 
+            this.linkLabel_TargetLibrary.Location = new System.Drawing.Point(12, 247);
+            this.linkLabel_TargetLibrary.Name = "linkLabel_TargetLibrary";
+            this.linkLabel_TargetLibrary.Size = new System.Drawing.Size(275, 31);
+            this.linkLabel_TargetLibrary.TabIndex = 17;
+            this.linkLabel_TargetLibrary.Text = "N/A";
+            this.linkLabel_TargetLibrary.Click += new System.EventHandler(this.linkLabel_TargetLibrary_Click);
+            // 
             // MoveGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 461);
+            this.ClientSize = new System.Drawing.Size(300, 570);
+            this.Controls.Add(this.linkLabel_TargetLibrary);
             this.Controls.Add(this.pictureBox_GameImage);
             this.Controls.Add(this.label_TimeElapsed);
             this.Controls.Add(this.label_NeededSpace);
@@ -225,12 +213,10 @@
             this.Controls.Add(this.checkbox_RemoveOldFiles);
             this.Controls.Add(this.checkbox_Validate);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox_TargetLibrary);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "MoveGame";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Text = "MoveGame";
             this.Load += new System.EventHandler(this.MoveGame_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).EndInit();
@@ -241,11 +227,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox_TargetLibrary;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkbox_Validate;
         private System.Windows.Forms.CheckBox checkbox_RemoveOldFiles;
-        private System.Windows.Forms.Button button_Copy;
         private System.Windows.Forms.ProgressBar progressBar_CopyStatus;
         private System.Windows.Forms.TextBox textBox_CopyLogs;
         private System.Windows.Forms.Label label2;
@@ -257,5 +241,7 @@
         private System.Windows.Forms.Label label_TimeElapsed;
         private System.Windows.Forms.Timer timer_TimeElapsed;
         private System.Windows.Forms.PictureBox pictureBox_GameImage;
+        private System.Windows.Forms.Button button_Copy;
+        private System.Windows.Forms.LinkLabel linkLabel_TargetLibrary;
     }
 }

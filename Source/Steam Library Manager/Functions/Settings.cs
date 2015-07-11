@@ -1,54 +1,27 @@
-﻿using System.IO;
-
+﻿
 namespace Steam_Library_Manager.Functions
 {
     class Settings
     {
-        public static void Create()
-        {
-            try
-            {
-                using (StreamWriter Settings = File.CreateText(Definitions.Directories.SLM.SettingsFile))
-                {
-                    Settings.WriteLine("[Steam]");
-                    Settings.WriteLine("InstallationPath=");
-                }
-            }
-            catch { }
-        }
-
-        public static void Read()
-        {
-            try
-            {
-                if (!File.Exists(Definitions.Directories.SLM.SettingsFile))
-                    Create();
-
-                Definitions.Directories.Steam.Path = Framework.INIFile.ReadValue("Steam", "InstallationPath", Definitions.Directories.SLM.SettingsFile);
-
-                if (File.Exists(Definitions.Directories.Steam.Path + "Steam.exe"))
-                    UpdateMainForm();
-            }
-            catch { }
-        }
-
-        public static void UpdateSetting(string Section, string Key, string Value)
-        {
-            try
-            {
-                Framework.INIFile.WriteValue(Section, Key, Value, Definitions.Directories.SLM.SettingsFile);
-            }
-            catch { }
-        }
 
         public static void UpdateMainForm()
         {
             try
             {
-                Definitions.Accessors.Main.linkLabel_SteamPath.Text = Definitions.Directories.Steam.Path;
-                
+                Definitions.Accessors.Main.linkLabel_SteamPath.Text = Properties.Settings.Default.Steam_InstallationPath;
+                Definitions.Accessors.Main.SLM_sizeCalculationMethod.SelectedIndex = (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF") ? 1 : 0;
+
                 // Find game directories and update them on form
                 Functions.SteamLibrary.UpdateGameLibraries();
+            }
+            catch { }
+        }
+
+        public static void Save()
+        {
+            try
+            {
+                Properties.Settings.Default.Save();
             }
             catch { }
         }

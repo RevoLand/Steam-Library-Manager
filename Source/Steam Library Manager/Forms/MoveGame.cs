@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Forms
@@ -13,41 +12,44 @@ namespace Steam_Library_Manager.Forms
             InitializeComponent();
         }
 
-        Definitions.List.GamesList Game = Definitions.Accessors.Main.listBox_InstalledGames.SelectedItem as Definitions.List.GamesList;
+        Definitions.List.GamesList Game = Definitions.SLM.LatestSelectedGame;
+        Definitions.List.LibraryList Library = Definitions.SLM.LatestDropLibrary;
+
         Stopwatch TimeElapsed = new Stopwatch();
 
         private void MoveGame_Load(object sender, System.EventArgs e)
         {
             pictureBox_GameImage.LoadAsync("http://cdn.akamai.steamstatic.com/steam/apps/"+ Game.appID +"/header.jpg");
-            linkLabel_currentLibrary.Text = Game.libraryPath;
+            linkLabel_currentLibrary.Text = Game.Library.Directory;
+            linkLabel_TargetLibrary.Text = Library.Directory;
 
-            foreach (Definitions.List.InstallDirsList Library in Definitions.List.InstallDirs)
-            {
-                if (Library.Directory != Game.libraryPath)
-                    comboBox_TargetLibrary.Items.Add(Library.Directory);
-            }
+            long NeededSpace = 0;
+
+            if (Game.exactInstallPath != null)
+                NeededSpace += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+
+            if (Game.downloadPath != null)
+                NeededSpace += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
+
+            label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.Directory));
+            label_NeededSpace.Text = Functions.FileSystem.FormatBytes(NeededSpace);
         }
 
         private void button_Copy_Click(object sender, EventArgs e)
         {
             try
             {
-                if (comboBox_TargetLibrary.SelectedItem == null)
-                    return;
-
                 button_Copy.Enabled = false;
-                comboBox_TargetLibrary.Enabled = false;
-
-                CopyGame(this.comboBox_TargetLibrary.SelectedItem.ToString(), this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
+                CopyGame(this.checkbox_Validate.Checked, this.checkbox_RemoveOldFiles.Checked);
             }
             catch { }
         }
 
-        async void CopyGame(string TargetLibraryPath, bool Validate, bool RemoveOld)
+        async void CopyGame(bool Validate, bool RemoveOld)
         {
-            string downloadPath = Game.libraryPath + @"downloading\";
-            string TargetGamePath = TargetLibraryPath + @"common\" + Game.installationPath;
-            string TargetDownloadPath = TargetLibraryPath + @"downloading\" + Game.appID;
+            string downloadPath = Game.Library.Directory + @"downloading\";
+            string TargetGamePath = Library.Directory + @"common\" + Game.installationPath;
+            string TargetDownloadPath = Library.Directory + @"downloading\" + Game.appID;
             string acfName = "appmanifest_" + Game.appID + ".acf";
             try
             {
@@ -156,10 +158,10 @@ namespace Steam_Library_Manager.Forms
                     }
 
                     // .Patch files
-                    Directory.CreateDirectory(TargetLibraryPath + @"downloading\");
+                    Directory.CreateDirectory(Library.Directory + @"downloading\");
                     foreach (Framework.FileData fileName in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
                     {
-                        newFileName = TargetLibraryPath + @"downloading\" + fileName.Name.Replace(downloadPath, "");
+                        newFileName = Library.Directory + @"downloading\" + fileName.Name.Replace(downloadPath, "");
 
                         Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
 
@@ -170,12 +172,13 @@ namespace Steam_Library_Manager.Forms
                     }
 
                     // .ACF File
-                    File.Copy(Game.libraryPath + acfName, TargetLibraryPath + acfName, true);
+                    File.Copy(Game.Library.Directory + acfName, Library.Directory + acfName, true);
                     Log(".ACF file has been created at the target directory");
 
                     // Remove old files?
                     if (RemoveOld)
                     {
+
                         if (Game.exactInstallPath != null)
                             // common
                             Directory.Delete(Game.exactInstallPath, true);
@@ -185,7 +188,7 @@ namespace Steam_Library_Manager.Forms
                             Directory.Delete(Game.downloadPath, true);
 
                         // .ACF
-                        File.Delete(Game.libraryPath + acfName);
+                        File.Delete(Game.Library.Directory + acfName);
 
                         Log("Old files has been deleted.");
                     }
@@ -197,6 +200,8 @@ namespace Steam_Library_Manager.Forms
                     // More Visual
                     button_Copy.Text = "Done!";
                     Log("Completed! All files successfully copied!");
+                    Functions.SteamLibrary.UpdateGameLibraries();
+                    Functions.Games.UpdateGamesList(Definitions.SLM.LatestSelectedGame.Library);
                 }
                 else
                 {
@@ -221,40 +226,13 @@ namespace Steam_Library_Manager.Forms
             catch { }
         }
 
-        private void linkLabel_currentLibrary_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(Game.libraryPath);
-            }
-            catch { }
-        }
-
         private void timer_TimeElapsed_Tick(object sender, EventArgs e)
         {
-            label_TimeElapsed.Text = String.Format("Time Elapsed: {0}", TimeElapsed.Elapsed);
-        }
-
-        private void comboBox_TargetLibrary_SelectedIndexChanged(object sender, EventArgs e)
-        {
             try
             {
-                long NeededSpace = 0;
-
-                if (Game.exactInstallPath != null)
-                    NeededSpace += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
-
-                if (Game.downloadPath != null)
-                    NeededSpace += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
-
-                label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(comboBox_TargetLibrary.SelectedItem.ToString()));
-                label_NeededSpace.Text = Functions.FileSystem.FormatBytes(NeededSpace);
-
+                label_TimeElapsed.Text = String.Format("Time Elapsed: {0}", TimeElapsed.Elapsed);
             }
-            catch
-            {
-                Log("Couldn't get game info, is it Pre-Load?");
-            }
+            catch { }
         }
 
         private void pictureBox_GameImage_MouseClick(object sender, MouseEventArgs e)
@@ -270,6 +248,24 @@ namespace Steam_Library_Manager.Forms
                         System.Diagnostics.Process.Start(Game.exactInstallPath);
                         break;
                 }
+            }
+            catch { }
+        }
+
+        private void linkLabel_TargetLibrary_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Library.Directory);
+            }
+            catch { }
+        }
+
+        private void linkLabel_currentLibrary_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Game.Library.Directory);
             }
             catch { }
         }

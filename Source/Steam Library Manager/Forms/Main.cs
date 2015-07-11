@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager
@@ -15,16 +16,20 @@ namespace Steam_Library_Manager
             // Set our accessor
             Definitions.Accessors.Main = this;
 
-            // Read Settings
-            Functions.Settings.Read();
+            // Update main form from settings
+            Functions.Settings.UpdateMainForm();
+
+            // Select game & library list as active tab
+            tabControl1.SelectedTab = tab_InstalledGames;
+
         }
 
-        private void linkLabel_SteamPath_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabel_SteamPath_LinkClicked(object sender, MouseEventArgs e)
         {
             try
             {
-                if (Directory.Exists(Definitions.Directories.Steam.Path))
-                    Process.Start("explorer.exe", Definitions.Directories.Steam.Path);
+                if (Directory.Exists(Properties.Settings.Default.Steam_InstallationPath))
+                    Process.Start(Properties.Settings.Default.Steam_InstallationPath);
                 else
                     return;
             }
@@ -44,37 +49,14 @@ namespace Steam_Library_Manager
         {
             try
             {
-                Definitions.Directories.Steam.Path = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName) + @"\";
+                Properties.Settings.Default.Steam_InstallationPath = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName) + @"\";
 
-                linkLabel_SteamPath.Text = Definitions.Directories.Steam.Path;
-
-                Functions.Settings.UpdateSetting("Steam", "InstallationPath", linkLabel_SteamPath.Text);
+                Functions.Settings.UpdateMainForm();
             }
             catch { }
         }
 
-        private void listBox_GameLibraries_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            try
-            {
-                if (listBox_GameLibraries.SelectedIndex == -1 || Definitions.SLM.LatestSelectedLibrary == listBox_GameLibraries.SelectedItem.ToString())
-                    return;
-
-                Definitions.SLM.LatestSelectedLibrary = listBox_GameLibraries.SelectedItem.ToString();
-                Functions.Games.UpdateGamesList(listBox_GameLibraries.SelectedItem.ToString());
-            }
-            catch { }
-        }
-
-        private void button_gameLibraries_Refresh_Click(object sender, System.EventArgs e)
-        {
-            try
-            {
-                Functions.SteamLibrary.UpdateGameLibraries();
-            }
-            catch { }
-        }
-
+        /*
         private void button_gameLibraries_AddNew_Click(object sender, System.EventArgs e)
         {
             DialogResult Result = folderBrowser_SelectNewLibraryPath.ShowDialog();
@@ -95,16 +77,6 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void button_InstalledGames_MoveGame_Click(object sender, System.EventArgs e)
-        {
-            if (listBox_InstalledGames.SelectedIndex == -1)
-                return;
-
-            Forms.MoveGame MoveGameForm = new Forms.MoveGame();
-
-            MoveGameForm.Show();
-        }
-
         private void textBox_Search_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -117,8 +89,7 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                listBox_InstalledGames.DataSource = Definitions.List.Games.Where(x => Regex.IsMatch(x.appName, textBox_Search.Text, RegexOptions.IgnoreCase)).ToArray();
-
+                listBox_InstalledGames.DataSource = Definitions.List.Game.Where(x => Regex.IsMatch(x.appName, textBox_Search.Text, RegexOptions.IgnoreCase)).ToArray();
             }
             catch
             {
@@ -126,7 +97,28 @@ namespace Steam_Library_Manager
                     Functions.Games.UpdateMainForm();
             }
         }
+        */
 
+        private void SLM_sizeCalculationMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string newMethod = (SLM_sizeCalculationMethod.SelectedItem.ToString().StartsWith("ACF")) ? "ACF" : "Enum";
+                Properties.Settings.Default.SLM_GameSizeCalcMethod = newMethod;
+            }
+            catch { }
+        }
+
+        private void SLM_button_GameSizeCalcHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("ACF, uses the game size specified in gameid.ACF file, much faster than enumeration of game files but may not be accurate 100%\n\nEnum, enumerates all files in the game installation directory and check for file sizes so in a large game library it may take real long but 100% accurate\n\nTip: ACF is preferred, as because while copying or moving a game if any file fails while copying will cause the process to die and it will not delete any files from source dir, also you wouldn't try moving a game to full disk, would you? Well don't worry, you can try :P", "Game Size Calculation Method");
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Save user settings
+            Functions.Settings.Save();
+        }
 
     }
 }
