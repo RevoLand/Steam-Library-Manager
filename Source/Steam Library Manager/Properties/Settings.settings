@@ -2,13 +2,13 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Steam_Library_Manager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Steam_InstallationPath" Provider="Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="Steam_InstallationPath" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SLM_GameSizeCalcMethod" Provider="Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="SLM_GameSizeCalcMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">ACF</Value>
     </Setting>
-    <Setting Name="SLM_BackupDirectories" Provider="Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="SLM_BackupDirectories" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

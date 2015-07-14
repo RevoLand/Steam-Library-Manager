@@ -103,8 +103,7 @@ namespace Steam_Library_Manager
         {
             try
             {
-                string newMethod = (SLM_sizeCalculationMethod.SelectedItem.ToString().StartsWith("ACF")) ? "ACF" : "Enum";
-                Properties.Settings.Default.SLM_GameSizeCalcMethod = newMethod;
+                Properties.Settings.Default.SLM_GameSizeCalcMethod = (SLM_sizeCalculationMethod.SelectedItem.ToString().StartsWith("ACF")) ? "ACF" : "Enum";
             }
             catch { }
         }
