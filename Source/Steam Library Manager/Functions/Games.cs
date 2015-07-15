@@ -1,16 +1,23 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Functions
 {
     class Games
     {
-        public static int GetGamesCountFromDirectory(string LibraryPath)
+        public static int GetGamesCountFromDirectory(Definitions.List.LibraryList Library)
         {
             try
             {
-                return Directory.GetFiles(LibraryPath, "*.acf", SearchOption.TopDirectoryOnly).Length;
+                int gameCount = 0;
+                if (Library.Backup)
+                    gameCount += Directory.GetFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly).Length;
+
+                gameCount += Directory.GetFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly).Length;
+
+                return gameCount;
             }
             catch { return 0; }
         }
@@ -66,6 +73,61 @@ namespace Steam_Library_Manager.Functions
                         Game.sizeOnDisk = 0;
 
                     Definitions.List.Game.Add(Game);
+                }
+
+                if (Library.Backup)
+                {
+                    foreach (Framework.FileData gameArchive in Framework.FastDirectoryEnumerator.EnumerateFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly))
+                    {
+                        using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive.Path))
+                        {
+                            foreach (ZipArchiveEntry file in compressedArchive.Entries)
+                            {
+                                if (file.Name.Contains(".acf"))
+                                {
+                                    Framework.KeyValue Key = new Framework.KeyValue();
+                                    Key.ReadAsText(file.Open());
+
+                                    if (Key.Children.Count == 0)
+                                        continue;
+
+                                    Definitions.List.GamesList Game = new Definitions.List.GamesList();
+                                    Game.appID = Convert.ToInt32(Key["appID"].Value);
+                                    Game.appName = Key["name"].Value;
+                                    Game.Compressed = true;
+                                    Game.StateFlag = Convert.ToInt16(Key["StateFlags"].Value);
+                                    Game.installationPath = Key["installdir"].Value;
+                                    Game.Library = Library;
+                                    Game.exactInstallPath = Library.Directory + @"common\" + Game.installationPath;
+                                    Game.downloadPath = Library.Directory + @"downloading\" + Game.appID;
+
+                                    if (Key["SizeOnDisk"].Value != "0")
+                                    {
+                                        if (Game.exactInstallPath != null)
+                                        {
+                                            if (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF")
+                                                Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+                                            else
+                                                Game.sizeOnDisk += Convert.ToInt64(Key["SizeOnDisk"].Value);
+                                        }
+
+                                        if (Game.downloadPath != null)
+                                        {
+                                            if (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF")
+                                                Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
+                                        }
+                                    }
+                                    else
+                                        Game.sizeOnDisk = 0;
+
+                                    Definitions.List.Game.Add(Game);
+
+                                }
+                            }
+                            //foreach
+
+                        }
+                    }
                 }
 
                 // Update main form as visual

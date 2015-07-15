@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.checkbox_Validate = new System.Windows.Forms.CheckBox();
             this.checkbox_RemoveOldFiles = new System.Windows.Forms.CheckBox();
@@ -41,10 +40,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label_AvailableSpace = new System.Windows.Forms.Label();
             this.label_NeededSpace = new System.Windows.Forms.Label();
-            this.label_TimeElapsed = new System.Windows.Forms.Label();
-            this.timer_TimeElapsed = new System.Windows.Forms.Timer(this.components);
             this.pictureBox_GameImage = new System.Windows.Forms.PictureBox();
             this.linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
+            this.checkbox_Compress = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,7 +60,7 @@
             this.checkbox_Validate.AutoSize = true;
             this.checkbox_Validate.Location = new System.Drawing.Point(222, 282);
             this.checkbox_Validate.Name = "checkbox_Validate";
-            this.checkbox_Validate.Size = new System.Drawing.Size(65, 15);
+            this.checkbox_Validate.Size = new System.Drawing.Size(63, 17);
             this.checkbox_Validate.TabIndex = 4;
             this.checkbox_Validate.Text = "Validate";
             // 
@@ -71,7 +69,7 @@
             this.checkbox_RemoveOldFiles.AutoSize = true;
             this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 282);
             this.checkbox_RemoveOldFiles.Name = "checkbox_RemoveOldFiles";
-            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(114, 15);
+            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(105, 17);
             this.checkbox_RemoveOldFiles.TabIndex = 5;
             this.checkbox_RemoveOldFiles.Text = "Remove Old Files";
             // 
@@ -94,14 +92,9 @@
             // 
             // textBox_CopyLogs
             // 
-            this.textBox_CopyLogs.Lines = new string[0];
             this.textBox_CopyLogs.Location = new System.Drawing.Point(12, 387);
-            this.textBox_CopyLogs.MaxLength = 32767;
             this.textBox_CopyLogs.Multiline = true;
             this.textBox_CopyLogs.Name = "textBox_CopyLogs";
-            this.textBox_CopyLogs.PasswordChar = '\0';
-            this.textBox_CopyLogs.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.textBox_CopyLogs.SelectedText = "";
             this.textBox_CopyLogs.Size = new System.Drawing.Size(275, 124);
             this.textBox_CopyLogs.TabIndex = 8;
             // 
@@ -120,6 +113,7 @@
             this.linkLabel_currentLibrary.Name = "linkLabel_currentLibrary";
             this.linkLabel_currentLibrary.Size = new System.Drawing.Size(275, 31);
             this.linkLabel_currentLibrary.TabIndex = 10;
+            this.linkLabel_currentLibrary.TabStop = true;
             this.linkLabel_currentLibrary.Text = "N/A";
             this.linkLabel_currentLibrary.Click += new System.EventHandler(this.linkLabel_currentLibrary_Click);
             // 
@@ -128,7 +122,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 300);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 19);
+            this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 11;
             this.label3.Text = "Available Space:";
             // 
@@ -137,7 +131,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 319);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 19);
+            this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 12;
             this.label4.Text = "Needed Space:";
             // 
@@ -159,20 +153,6 @@
             this.label_NeededSpace.Text = "N/A";
             this.label_NeededSpace.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label_TimeElapsed
-            // 
-            this.label_TimeElapsed.Location = new System.Drawing.Point(12, 543);
-            this.label_TimeElapsed.Name = "label_TimeElapsed";
-            this.label_TimeElapsed.Size = new System.Drawing.Size(275, 19);
-            this.label_TimeElapsed.TabIndex = 15;
-            this.label_TimeElapsed.Text = "Time Elapsed: 0";
-            this.label_TimeElapsed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // timer_TimeElapsed
-            // 
-            this.timer_TimeElapsed.Interval = 300;
-            this.timer_TimeElapsed.Tick += new System.EventHandler(this.timer_TimeElapsed_Tick);
-            // 
             // pictureBox_GameImage
             // 
             this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
@@ -190,17 +170,28 @@
             this.linkLabel_TargetLibrary.Name = "linkLabel_TargetLibrary";
             this.linkLabel_TargetLibrary.Size = new System.Drawing.Size(275, 31);
             this.linkLabel_TargetLibrary.TabIndex = 17;
+            this.linkLabel_TargetLibrary.TabStop = true;
             this.linkLabel_TargetLibrary.Text = "N/A";
             this.linkLabel_TargetLibrary.Click += new System.EventHandler(this.linkLabel_TargetLibrary_Click);
+            // 
+            // checkbox_Compress
+            // 
+            this.checkbox_Compress.AutoSize = true;
+            this.checkbox_Compress.Location = new System.Drawing.Point(123, 282);
+            this.checkbox_Compress.Name = "checkbox_Compress";
+            this.checkbox_Compress.Size = new System.Drawing.Size(72, 17);
+            this.checkbox_Compress.TabIndex = 18;
+            this.checkbox_Compress.Text = "Compress";
+            this.checkbox_Compress.Visible = false;
             // 
             // MoveGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 570);
+            this.ClientSize = new System.Drawing.Size(300, 546);
+            this.Controls.Add(this.checkbox_Compress);
             this.Controls.Add(this.linkLabel_TargetLibrary);
             this.Controls.Add(this.pictureBox_GameImage);
-            this.Controls.Add(this.label_TimeElapsed);
             this.Controls.Add(this.label_NeededSpace);
             this.Controls.Add(this.label_AvailableSpace);
             this.Controls.Add(this.label4);
@@ -238,10 +229,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label_AvailableSpace;
         private System.Windows.Forms.Label label_NeededSpace;
-        private System.Windows.Forms.Label label_TimeElapsed;
-        private System.Windows.Forms.Timer timer_TimeElapsed;
         private System.Windows.Forms.PictureBox pictureBox_GameImage;
         private System.Windows.Forms.Button button_Copy;
         private System.Windows.Forms.LinkLabel linkLabel_TargetLibrary;
+        private System.Windows.Forms.CheckBox checkbox_Compress;
     }
 }

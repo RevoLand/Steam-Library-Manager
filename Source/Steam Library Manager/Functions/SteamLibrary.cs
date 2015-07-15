@@ -31,7 +31,7 @@ namespace Steam_Library_Manager.Functions
                 Library.Directory = Properties.Settings.Default.Steam_InstallationPath + @"SteamApps\";
 
                 // Count how many games we have installed in our library
-                Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library.Directory);
+                Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library);
 
                 // And add collected informations to our global list
                 Definitions.List.Library.Add(Library);
@@ -50,10 +50,10 @@ namespace Steam_Library_Manager.Functions
                             break;
 
                         Library = new Definitions.List.LibraryList();
-                        Library.Directory = Key[i.ToString()].Value + @"\SteamApps\";
-                        Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library.Directory);
                         Library.Main = false;
                         Library.Backup = false;
+                        Library.Directory = Key[i.ToString()].Value + @"\SteamApps\";
+                        Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library);
                         Definitions.List.Library.Add(Library);
                     }
                 }
@@ -67,10 +67,10 @@ namespace Steam_Library_Manager.Functions
                     foreach (Object obj in Properties.Settings.Default.SLM_BackupDirectories)
                     {
                         Library = new Definitions.List.LibraryList();
-                        Library.Directory = obj.ToString();
-                        Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library.Directory);
                         Library.Main = false;
                         Library.Backup = true;
+                        Library.Directory = obj.ToString();
+                        Library.GameCount = Functions.Games.GetGamesCountFromDirectory(Library);
                         Definitions.List.Library.Add(Library);
                     }
                 }
@@ -214,13 +214,11 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!BackupDir)
-                    File.Copy(Properties.Settings.Default.Steam_InstallationPath + "Steam.dll", newLibraryPath + @"\Steam.dll", true);
-
-                Directory.CreateDirectory(newLibraryPath + @"\SteamApps");
-                Directory.CreateDirectory(newLibraryPath + @"\SteamApps\common");
-
-                if (!BackupDir)
                 {
+                    File.Copy(Properties.Settings.Default.Steam_InstallationPath + "Steam.dll", newLibraryPath + @"\Steam.dll", true);
+                    Directory.CreateDirectory(newLibraryPath + @"\SteamApps");
+                    Directory.CreateDirectory(newLibraryPath + @"\SteamApps\common");
+
                     if (File.Exists(newLibraryPath + @"\Steam.dll")) // in case of permissions denied
                     {
                         string libraryFolders = Properties.Settings.Default.Steam_InstallationPath + @"SteamApps\libraryfolders.vdf";

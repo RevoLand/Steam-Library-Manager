@@ -21,6 +21,7 @@ namespace Steam_Library_Manager.Definitions
             public LibraryList Library;
             public string appName, installationPath, exactInstallPath, downloadPath;
             public long sizeOnDisk;
+            public bool Compressed;
         }
 
     }
