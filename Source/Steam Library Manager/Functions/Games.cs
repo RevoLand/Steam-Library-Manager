@@ -169,7 +169,7 @@ namespace Steam_Library_Manager.Functions
                     rightClickMenu.MenuItems.Add("-");
                     rightClickMenu.MenuItems.Add("Play", mouseClick).Name = "rungameid";
                     rightClickMenu.MenuItems.Add("-");
-                    rightClickMenu.MenuItems.Add("Backup (SLM)", mouseClick).Name = "backup-slm";
+                    rightClickMenu.MenuItems.Add("Backup (SLM)", mouseClick).Name = "Backup-SLM";
                     rightClickMenu.MenuItems.Add("Backup (Steam)", mouseClick).Name = "backup";
                     rightClickMenu.MenuItems.Add("Defrag", mouseClick).Name = "defrag";
                     rightClickMenu.MenuItems.Add("Validate Files", mouseClick).Name = "validate";
@@ -212,6 +212,10 @@ namespace Steam_Library_Manager.Functions
                 {
                     default:
                         System.Diagnostics.Process.Start("steam://" + (sender as MenuItem).Name + "/" + Game.appID);
+                        break;
+
+                    case "Backup-SLM":
+                        MessageBox.Show("Please create a backup library first then drag & drop game on to backup library.");
                         break;
 
                     case "Store":

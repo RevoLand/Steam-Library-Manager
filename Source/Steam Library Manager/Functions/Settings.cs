@@ -10,6 +10,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Definitions.Accessors.Main.linkLabel_SteamPath.Text = Properties.Settings.Default.Steam_InstallationPath;
                 Definitions.Accessors.Main.SLM_sizeCalculationMethod.SelectedIndex = (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF") ? 1 : 0;
+                Definitions.Accessors.Main.SLM_archiveSizeCalcMethod.SelectedIndex = (!Properties.Settings.Default.SLM_ArchiveSizeCalcMethod.StartsWith("Uncompressed")) ? 1 : 0;
 
                 // Find game directories and update them on form
                 Functions.SteamLibrary.UpdateGameLibraries();

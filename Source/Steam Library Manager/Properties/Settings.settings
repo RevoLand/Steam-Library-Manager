@@ -11,5 +11,8 @@
     <Setting Name="SLM_BackupDirectories" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="SLM_ArchiveSizeCalcMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Uncompressed</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

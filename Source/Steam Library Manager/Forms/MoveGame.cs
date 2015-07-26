@@ -11,6 +11,10 @@ namespace Steam_Library_Manager.Forms
         public MoveGame()
         {
             InitializeComponent();
+
+            // Same as mainform, when we set ErrorImage or Form Icon PortableSettingsProvider gives an error
+            this.Icon = Steam_Library_Manager.Properties.Resources.steam_icon;
+            this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
         }
 
         Definitions.List.GamesList Game = Definitions.SLM.LatestSelectedGame;
@@ -18,16 +22,20 @@ namespace Steam_Library_Manager.Forms
 
         private void MoveGame_Load(object sender, System.EventArgs e)
         {
-            if (Library.Backup)
+            if (Game.Library.Backup && Library.Backup && Game.Compressed)
             {
-                checkbox_Compress.Visible = true;
-                button_Copy.Text = "Backup";
+                checkbox_Validate.Visible = false;
+                checkbox_DeCompress.Visible = true;
             }
-
-            if (Game.Library.Backup)
+            else if (Game.Library.Backup && !Library.Backup)
             {
                 checkbox_Validate.Visible = false;
                 button_Copy.Text = "Restore";
+            }
+            else if (Game.Library.Backup && Library.Backup)
+            {
+                checkbox_Compress.Visible = true;
+                button_Copy.Text = "Backup";
             }
 
             pictureBox_GameImage.LoadAsync("http://cdn.akamai.steamstatic.com/steam/apps/"+ Game.appID +"/header.jpg");
@@ -42,6 +50,27 @@ namespace Steam_Library_Manager.Forms
             if (Game.downloadPath != null)
                 NeededSpace += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
 
+            if (Game.Compressed)
+            {
+                if (Properties.Settings.Default.SLM_ArchiveSizeCalcMethod.StartsWith("Uncompressed"))
+                {
+                    // Gets uncompressed file size
+                    using (ZipArchive zip = ZipFile.OpenRead(Game.Library.Directory + Game.appID + ".zip"))
+                    {
+                        foreach (ZipArchiveEntry entry in zip.Entries)
+                        {
+                            NeededSpace += entry.Length;
+                        }
+                    }
+                }
+                else
+                {
+                    // Archive size
+                    FileInfo zip = new FileInfo(Game.Library.Directory + Game.appID + ".zip");
+                    NeededSpace += zip.Length;
+                }
+            }
+
             label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.Directory));
             label_NeededSpace.Text = Functions.FileSystem.FormatBytes(NeededSpace);
         }
@@ -52,12 +81,12 @@ namespace Steam_Library_Manager.Forms
             {
                 button_Copy.Enabled = false;
 
-                CopyGame(checkbox_Validate.Checked, checkbox_RemoveOldFiles.Checked, checkbox_Compress.Checked, Game.Compressed);
+                CopyGame(checkbox_Validate.Checked, checkbox_RemoveOldFiles.Checked, checkbox_Compress.Checked, checkbox_DeCompress.Checked, Game.Compressed);
             }
             catch { }
         }
 
-        async void CopyGame(bool Validate, bool RemoveOld, bool Compress, bool isCompressed)
+        async void CopyGame(bool Validate, bool RemoveOld, bool Compress,  bool deCompress, bool isCompressed)
         {
             byte[] currentFileMD5, newFileMD5;
             string newFileName;
@@ -77,10 +106,17 @@ namespace Steam_Library_Manager.Forms
             {
                 try
                 {
-                    if (isCompressed)
+                    if (isCompressed && !Game.Library.Backup || isCompressed && deCompress)
                     {
                         Log("Uncompressing archive... Please wait");
                         await Task.Run(() => ZipFile.ExtractToDirectory(currentZipName, zipPath));
+                    }
+                    else if (isCompressed && !deCompress && Game.Library.Backup)
+                    {
+                        if (File.Exists(zipPath + zipName))
+                            File.Delete(zipPath + zipName);
+
+                        await Task.Run(() => File.Copy(currentZipName, zipPath + zipName));
                     }
                     else
                     {
@@ -244,12 +280,6 @@ namespace Steam_Library_Manager.Forms
 
                         }
                     }
-
-                    // More Visual
-                    button_Copy.Text = "Done!";
-                    Log("Completed! All files successfully copied!");
-                    Functions.SteamLibrary.UpdateGameLibraries();
-                    Functions.Games.UpdateGamesList(Definitions.SLM.LatestSelectedGame.Library);
                 }
                 catch (Exception ex)
                 {
@@ -289,8 +319,17 @@ namespace Steam_Library_Manager.Forms
                     //MessageBox.Show(ex.ToString());
                     Log("There was an error happened while removing old files but if you only seeing this error then don't worry, you may have to remove leftovers manually. Check DirectoryRemoval.txt for more details");
                     Functions.Log.LogErrorsToFile("DirectoryRemoval", ex.ToString());
+
+                    Functions.SteamLibrary.UpdateGameLibraries();
+                    Functions.Games.UpdateGamesList(Definitions.SLM.LatestSelectedGame.Library);
                 }
 
+
+                // More Visual
+                button_Copy.Text = "Done!";
+                Log("Completed! All files successfully copied!");
+                Functions.SteamLibrary.UpdateGameLibraries();
+                Functions.Games.UpdateGamesList(Definitions.SLM.LatestSelectedGame.Library);
             }
             else
             {

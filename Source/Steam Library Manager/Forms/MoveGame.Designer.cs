@@ -43,6 +43,7 @@
             this.pictureBox_GameImage = new System.Windows.Forms.PictureBox();
             this.linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
             this.checkbox_Compress = new System.Windows.Forms.CheckBox();
+            this.checkbox_DeCompress = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,7 +156,6 @@
             // 
             // pictureBox_GameImage
             // 
-            this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
             this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 33);
             this.pictureBox_GameImage.Name = "pictureBox_GameImage";
             this.pictureBox_GameImage.Size = new System.Drawing.Size(275, 129);
@@ -184,11 +184,22 @@
             this.checkbox_Compress.Text = "Compress";
             this.checkbox_Compress.Visible = false;
             // 
+            // checkbox_DeCompress
+            // 
+            this.checkbox_DeCompress.AutoSize = true;
+            this.checkbox_DeCompress.Location = new System.Drawing.Point(123, 282);
+            this.checkbox_DeCompress.Name = "checkbox_DeCompress";
+            this.checkbox_DeCompress.Size = new System.Drawing.Size(90, 17);
+            this.checkbox_DeCompress.TabIndex = 19;
+            this.checkbox_DeCompress.Text = "De-Compress";
+            this.checkbox_DeCompress.Visible = false;
+            // 
             // MoveGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(300, 546);
+            this.Controls.Add(this.checkbox_DeCompress);
             this.Controls.Add(this.checkbox_Compress);
             this.Controls.Add(this.linkLabel_TargetLibrary);
             this.Controls.Add(this.pictureBox_GameImage);
@@ -205,6 +216,7 @@
             this.Controls.Add(this.checkbox_Validate);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "MoveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -233,5 +245,6 @@
         private System.Windows.Forms.Button button_Copy;
         private System.Windows.Forms.LinkLabel linkLabel_TargetLibrary;
         private System.Windows.Forms.CheckBox checkbox_Compress;
+        private System.Windows.Forms.CheckBox checkbox_DeCompress;
     }
 }

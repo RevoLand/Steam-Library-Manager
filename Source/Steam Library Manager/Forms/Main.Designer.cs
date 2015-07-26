@@ -43,6 +43,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.fileDialog_SelectSteamPath = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowser_SelectNewLibraryPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.button_RefreshList = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SLM_archiveSizeCalcMethod = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -77,16 +80,16 @@
             this.panel_LibraryList.AutoScroll = true;
             this.panel_LibraryList.Location = new System.Drawing.Point(2, 6);
             this.panel_LibraryList.Name = "panel_LibraryList";
-            this.panel_LibraryList.Size = new System.Drawing.Size(965, 154);
+            this.panel_LibraryList.Size = new System.Drawing.Size(965, 164);
             this.panel_LibraryList.TabIndex = 2;
             // 
             // panel_GameList
             // 
             this.panel_GameList.AutoScroll = true;
-            this.panel_GameList.Location = new System.Drawing.Point(2, 161);
+            this.panel_GameList.Location = new System.Drawing.Point(2, 173);
             this.panel_GameList.Margin = new System.Windows.Forms.Padding(10);
             this.panel_GameList.Name = "panel_GameList";
-            this.panel_GameList.Size = new System.Drawing.Size(965, 551);
+            this.panel_GameList.Size = new System.Drawing.Size(965, 539);
             this.panel_GameList.TabIndex = 0;
             // 
             // tab_Settings
@@ -103,21 +106,24 @@
             // 
             // groupBox_SLM
             // 
+            this.groupBox_SLM.Controls.Add(this.SLM_archiveSizeCalcMethod);
+            this.groupBox_SLM.Controls.Add(this.label2);
             this.groupBox_SLM.Controls.Add(this.SLM_button_GameSizeCalcHelp);
             this.groupBox_SLM.Controls.Add(this.SLM_sizeCalculationMethod);
             this.groupBox_SLM.Controls.Add(this.metroLabel1);
             this.groupBox_SLM.Location = new System.Drawing.Point(6, 132);
             this.groupBox_SLM.Name = "groupBox_SLM";
-            this.groupBox_SLM.Size = new System.Drawing.Size(339, 229);
+            this.groupBox_SLM.Size = new System.Drawing.Size(363, 229);
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
             this.groupBox_SLM.Text = "SLM";
             // 
             // SLM_button_GameSizeCalcHelp
             // 
-            this.SLM_button_GameSizeCalcHelp.Location = new System.Drawing.Point(314, 12);
+            this.SLM_button_GameSizeCalcHelp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.SLM_button_GameSizeCalcHelp.Location = new System.Drawing.Point(338, 14);
             this.SLM_button_GameSizeCalcHelp.Name = "SLM_button_GameSizeCalcHelp";
-            this.SLM_button_GameSizeCalcHelp.Size = new System.Drawing.Size(25, 25);
+            this.SLM_button_GameSizeCalcHelp.Size = new System.Drawing.Size(25, 22);
             this.SLM_button_GameSizeCalcHelp.TabIndex = 2;
             this.SLM_button_GameSizeCalcHelp.Text = "?";
             this.SLM_button_GameSizeCalcHelp.Click += new System.EventHandler(this.SLM_button_GameSizeCalcHelp_Click);
@@ -132,14 +138,15 @@
             "Enum - Slow, Accurate"});
             this.SLM_sizeCalculationMethod.Location = new System.Drawing.Point(158, 15);
             this.SLM_sizeCalculationMethod.Name = "SLM_sizeCalculationMethod";
-            this.SLM_sizeCalculationMethod.Size = new System.Drawing.Size(150, 21);
+            this.SLM_sizeCalculationMethod.Size = new System.Drawing.Size(175, 21);
             this.SLM_sizeCalculationMethod.TabIndex = 1;
             this.SLM_sizeCalculationMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_sizeCalculationMethod_SelectedIndexChanged);
             // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(9, 18);
+            this.metroLabel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.metroLabel1.Location = new System.Drawing.Point(6, 19);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(116, 13);
             this.metroLabel1.TabIndex = 0;
@@ -159,6 +166,7 @@
             // 
             // button_SelectSteamPath
             // 
+            this.button_SelectSteamPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.button_SelectSteamPath.Location = new System.Drawing.Point(56, 82);
             this.button_SelectSteamPath.Name = "button_SelectSteamPath";
             this.button_SelectSteamPath.Size = new System.Drawing.Size(112, 32);
@@ -169,6 +177,7 @@
             // linkLabel_SteamPath
             // 
             this.linkLabel_SteamPath.AutoSize = true;
+            this.linkLabel_SteamPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.linkLabel_SteamPath.Location = new System.Drawing.Point(9, 38);
             this.linkLabel_SteamPath.Name = "linkLabel_SteamPath";
             this.linkLabel_SteamPath.Size = new System.Drawing.Size(27, 13);
@@ -180,6 +189,7 @@
             // 
             // label1
             // 
+            this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.label1.Location = new System.Drawing.Point(9, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
@@ -196,12 +206,48 @@
             // 
             this.folderBrowser_SelectNewLibraryPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // button_RefreshList
+            // 
+            this.button_RefreshList.Location = new System.Drawing.Point(897, 4);
+            this.button_RefreshList.Name = "button_RefreshList";
+            this.button_RefreshList.Size = new System.Drawing.Size(75, 23);
+            this.button_RefreshList.TabIndex = 0;
+            this.button_RefreshList.Text = "Refresh List";
+            this.button_RefreshList.UseVisualStyleBackColor = true;
+            this.button_RefreshList.Click += new System.EventHandler(this.button_RefreshList_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(6, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(124, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Archive Size Calculation:";
+            // 
+            // SLM_archiveSizeCalcMethod
+            // 
+            this.SLM_archiveSizeCalcMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SLM_archiveSizeCalcMethod.IntegralHeight = false;
+            this.SLM_archiveSizeCalcMethod.ItemHeight = 13;
+            this.SLM_archiveSizeCalcMethod.Items.AddRange(new object[] {
+            "Uncompressed size (Slow, Accurate)",
+            "Archive size (Fast, gets archive size)"});
+            this.SLM_archiveSizeCalcMethod.Location = new System.Drawing.Point(158, 43);
+            this.SLM_archiveSizeCalcMethod.Name = "SLM_archiveSizeCalcMethod";
+            this.SLM_archiveSizeCalcMethod.Size = new System.Drawing.Size(175, 21);
+            this.SLM_archiveSizeCalcMethod.TabIndex = 4;
+            this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(985, 760);
+            this.Controls.Add(this.button_RefreshList);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -220,6 +266,7 @@
 
         #endregion
 
+
         private System.Windows.Forms.TabPage tab_InstalledGames;
         private System.Windows.Forms.TabPage tab_Settings;
         private System.Windows.Forms.OpenFileDialog fileDialog_SelectSteamPath;
@@ -235,6 +282,9 @@
         private System.Windows.Forms.Button SLM_button_GameSizeCalcHelp;
         public System.Windows.Forms.ComboBox SLM_sizeCalculationMethod;
         public System.Windows.Forms.FolderBrowserDialog folderBrowser_SelectNewLibraryPath;
+        private System.Windows.Forms.Button button_RefreshList;
+        public System.Windows.Forms.ComboBox SLM_archiveSizeCalcMethod;
+        private System.Windows.Forms.Label label2;
     }
 }
 

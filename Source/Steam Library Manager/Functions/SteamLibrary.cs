@@ -88,14 +88,14 @@ namespace Steam_Library_Manager.Functions
                 if (Definitions.Accessors.Main.panel_LibraryList.Controls.Count != 0)
                     Definitions.Accessors.Main.panel_LibraryList.Controls.Clear();
 
-                int height = 128, width = 128;
+                int height = 138, width = 138;
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
                 {
                     // Folder image
                     PictureBox libraryDetailBox = new PictureBox();
                     libraryDetailBox.Image = global::Steam_Library_Manager.Properties.Resources.Folder;
                     libraryDetailBox.Size = new System.Drawing.Size(width, height);
-                    libraryDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    libraryDetailBox.SizeMode = PictureBoxSizeMode.Normal;
                     libraryDetailBox.Margin = new System.Windows.Forms.Padding(10);
                     libraryDetailBox.Tag = Library;
 
@@ -193,6 +193,8 @@ namespace Steam_Library_Manager.Functions
                 else
                     return;
             }
+
+            Functions.Settings.Save();
         }
 
         public static bool LibraryExists(string Path)
