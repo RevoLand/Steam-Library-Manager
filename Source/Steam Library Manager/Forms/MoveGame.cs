@@ -32,7 +32,7 @@ namespace Steam_Library_Manager.Forms
                 checkbox_Validate.Visible = false;
                 button_Copy.Text = "Restore";
             }
-            else if (Game.Library.Backup && Library.Backup)
+            else if (Library.Backup)
             {
                 checkbox_Compress.Visible = true;
                 button_Copy.Text = "Backup";
