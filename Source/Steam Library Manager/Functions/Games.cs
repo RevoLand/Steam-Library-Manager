@@ -50,6 +50,9 @@ namespace Steam_Library_Manager.Functions
                     if (Directory.Exists(Library.Directory + @"downloading\" + Game.appID))
                         Game.downloadPath = Library.Directory + @"downloading\" + Game.appID;
 
+                    if (Directory.Exists(Library.Directory + @"workshop\content\" + Game.appID))
+                        Game.workshopPath = Library.Directory + @"workshop\content\" + Game.appID;
+
                     if (Game.exactInstallPath == null && Game.downloadPath == null)
                         continue; // Do not add pre-loads to list
 
@@ -125,7 +128,6 @@ namespace Steam_Library_Manager.Functions
                                 }
                             }
                             //foreach
-
                         }
                     }
                 }

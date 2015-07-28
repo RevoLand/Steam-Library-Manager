@@ -34,6 +34,8 @@
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
+            this.SLM_archiveSizeCalcMethod = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SLM_button_GameSizeCalcHelp = new System.Windows.Forms.Button();
             this.SLM_sizeCalculationMethod = new System.Windows.Forms.ComboBox();
             this.metroLabel1 = new System.Windows.Forms.Label();
@@ -43,9 +45,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.fileDialog_SelectSteamPath = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowser_SelectNewLibraryPath = new System.Windows.Forms.FolderBrowserDialog();
-            this.button_RefreshList = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SLM_archiveSizeCalcMethod = new System.Windows.Forms.ComboBox();
+            this.button_RefreshLibraries = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -80,8 +80,9 @@
             this.panel_LibraryList.AutoScroll = true;
             this.panel_LibraryList.Location = new System.Drawing.Point(2, 6);
             this.panel_LibraryList.Name = "panel_LibraryList";
-            this.panel_LibraryList.Size = new System.Drawing.Size(965, 164);
+            this.panel_LibraryList.Size = new System.Drawing.Size(969, 164);
             this.panel_LibraryList.TabIndex = 2;
+            this.panel_LibraryList.MouseEnter += new System.EventHandler(this.panel_LibraryList_MouseEnter);
             // 
             // panel_GameList
             // 
@@ -89,8 +90,9 @@
             this.panel_GameList.Location = new System.Drawing.Point(2, 173);
             this.panel_GameList.Margin = new System.Windows.Forms.Padding(10);
             this.panel_GameList.Name = "panel_GameList";
-            this.panel_GameList.Size = new System.Drawing.Size(965, 539);
+            this.panel_GameList.Size = new System.Drawing.Size(969, 539);
             this.panel_GameList.TabIndex = 0;
+            this.panel_GameList.MouseEnter += new System.EventHandler(this.panel_GameList_MouseEnter);
             // 
             // tab_Settings
             // 
@@ -117,6 +119,30 @@
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
             this.groupBox_SLM.Text = "SLM";
+            // 
+            // SLM_archiveSizeCalcMethod
+            // 
+            this.SLM_archiveSizeCalcMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SLM_archiveSizeCalcMethod.IntegralHeight = false;
+            this.SLM_archiveSizeCalcMethod.ItemHeight = 13;
+            this.SLM_archiveSizeCalcMethod.Items.AddRange(new object[] {
+            "Uncompressed size (Slow, Accurate)",
+            "Archive size (Fast, gets archive size)"});
+            this.SLM_archiveSizeCalcMethod.Location = new System.Drawing.Point(158, 43);
+            this.SLM_archiveSizeCalcMethod.Name = "SLM_archiveSizeCalcMethod";
+            this.SLM_archiveSizeCalcMethod.Size = new System.Drawing.Size(175, 21);
+            this.SLM_archiveSizeCalcMethod.TabIndex = 4;
+            this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(6, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(124, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Archive Size Calculation:";
             // 
             // SLM_button_GameSizeCalcHelp
             // 
@@ -206,48 +232,25 @@
             // 
             this.folderBrowser_SelectNewLibraryPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
-            // button_RefreshList
+            // button_RefreshLibraries
             // 
-            this.button_RefreshList.Location = new System.Drawing.Point(897, 4);
-            this.button_RefreshList.Name = "button_RefreshList";
-            this.button_RefreshList.Size = new System.Drawing.Size(75, 23);
-            this.button_RefreshList.TabIndex = 0;
-            this.button_RefreshList.Text = "Refresh List";
-            this.button_RefreshList.UseVisualStyleBackColor = true;
-            this.button_RefreshList.Click += new System.EventHandler(this.button_RefreshList_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(6, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Archive Size Calculation:";
-            // 
-            // SLM_archiveSizeCalcMethod
-            // 
-            this.SLM_archiveSizeCalcMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SLM_archiveSizeCalcMethod.IntegralHeight = false;
-            this.SLM_archiveSizeCalcMethod.ItemHeight = 13;
-            this.SLM_archiveSizeCalcMethod.Items.AddRange(new object[] {
-            "Uncompressed size (Slow, Accurate)",
-            "Archive size (Fast, gets archive size)"});
-            this.SLM_archiveSizeCalcMethod.Location = new System.Drawing.Point(158, 43);
-            this.SLM_archiveSizeCalcMethod.Name = "SLM_archiveSizeCalcMethod";
-            this.SLM_archiveSizeCalcMethod.Size = new System.Drawing.Size(175, 21);
-            this.SLM_archiveSizeCalcMethod.TabIndex = 4;
-            this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
+            this.button_RefreshLibraries.Location = new System.Drawing.Point(873, 4);
+            this.button_RefreshLibraries.Name = "button_RefreshLibraries";
+            this.button_RefreshLibraries.Size = new System.Drawing.Size(106, 23);
+            this.button_RefreshLibraries.TabIndex = 1;
+            this.button_RefreshLibraries.Text = "Refresh Libraries";
+            this.button_RefreshLibraries.UseVisualStyleBackColor = true;
+            this.button_RefreshLibraries.Click += new System.EventHandler(this.button_RefreshLibraries_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(985, 760);
-            this.Controls.Add(this.button_RefreshList);
+            this.Controls.Add(this.button_RefreshLibraries);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -282,9 +285,9 @@
         private System.Windows.Forms.Button SLM_button_GameSizeCalcHelp;
         public System.Windows.Forms.ComboBox SLM_sizeCalculationMethod;
         public System.Windows.Forms.FolderBrowserDialog folderBrowser_SelectNewLibraryPath;
-        private System.Windows.Forms.Button button_RefreshList;
         public System.Windows.Forms.ComboBox SLM_archiveSizeCalcMethod;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button_RefreshLibraries;
     }
 }
 

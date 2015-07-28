@@ -156,6 +156,7 @@
             // 
             // pictureBox_GameImage
             // 
+            this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
             this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 33);
             this.pictureBox_GameImage.Name = "pictureBox_GameImage";
             this.pictureBox_GameImage.Size = new System.Drawing.Size(275, 129);
@@ -217,6 +218,7 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "MoveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);

@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Definitions
 
             public int appID, StateFlag;
             public LibraryList Library;
-            public string appName, installationPath, exactInstallPath, downloadPath;
+            public string appName, installationPath, exactInstallPath, downloadPath, workshopPath;
             public long sizeOnDisk;
             public bool Compressed;
         }

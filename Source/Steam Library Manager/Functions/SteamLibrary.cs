@@ -88,16 +88,16 @@ namespace Steam_Library_Manager.Functions
                 if (Definitions.Accessors.Main.panel_LibraryList.Controls.Count != 0)
                     Definitions.Accessors.Main.panel_LibraryList.Controls.Clear();
 
-                int height = 138, width = 138;
+                int height = 150, width = 180;
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
                 {
                     // Folder image
                     PictureBox libraryDetailBox = new PictureBox();
                     libraryDetailBox.Image = global::Steam_Library_Manager.Properties.Resources.Folder;
                     libraryDetailBox.Size = new System.Drawing.Size(width, height);
-                    libraryDetailBox.SizeMode = PictureBoxSizeMode.Normal;
-                    libraryDetailBox.Margin = new System.Windows.Forms.Padding(10);
+                    libraryDetailBox.SizeMode = PictureBoxSizeMode.CenterImage;
                     libraryDetailBox.Tag = Library;
+                    //libraryDetailBox.BorderStyle = BorderStyle.Fixed3D;
 
                     // Drag & Drop events
                     ((Control)libraryDetailBox).AllowDrop = true;
@@ -108,8 +108,9 @@ namespace Steam_Library_Manager.Functions
                     Label libraryName = new Label();
                     libraryName.Size = new System.Drawing.Size(width, height);
                     libraryName.Text = Library.Directory + " (" + Library.GameCount.ToString()  + ")";
-                    libraryName.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+                    libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
                     libraryName.BackColor = System.Drawing.Color.Transparent;
+                    libraryName.Font = new System.Drawing.Font("Segoe UI Semilight", 8);
                     libraryName.Tag = Library;
                     
                     libraryName.MouseClick += libraryDetailBox_OnSelect;
@@ -117,6 +118,7 @@ namespace Steam_Library_Manager.Functions
                     // Right click menu
                     ContextMenu rightClickMenu = new ContextMenu();
                     rightClickMenu.Tag = Library;
+                    rightClickMenu.MenuItems.Add(Library.Directory).Enabled = false;
                     rightClickMenu.MenuItems.Add("Game Count: " + Library.GameCount.ToString()).Enabled = false;
 
                     // Add to controls
@@ -129,14 +131,14 @@ namespace Steam_Library_Manager.Functions
                 PictureBox newLibraryBox = new PictureBox();
                 newLibraryBox.Image = global::Steam_Library_Manager.Properties.Resources.Folder;
                 newLibraryBox.Size = new System.Drawing.Size(width, height);
-                newLibraryBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                newLibraryBox.Margin = new System.Windows.Forms.Padding(10);
+                newLibraryBox.SizeMode = PictureBoxSizeMode.CenterImage;
 
                 // Label
                 Label newLibraryBoxName = new Label();
                 newLibraryBoxName.Size = new System.Drawing.Size(width, height);
                 newLibraryBoxName.Text = "ADD NEW";
-                newLibraryBoxName.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+                newLibraryBoxName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+                newLibraryBoxName.Font = new System.Drawing.Font("Segoe UI Semilight", 8);
                 newLibraryBoxName.BackColor = System.Drawing.Color.Transparent;
                 newLibraryBoxName.MouseClick += newLibraryBox_MouseClick;
 
@@ -259,9 +261,6 @@ namespace Steam_Library_Manager.Functions
                 Definitions.List.LibraryList Library = (sender as Label).Tag as Definitions.List.LibraryList;
 
                 if (Definitions.SLM.LatestSelectedLibrary == Library) return;
-
-                // So mousewheel will work to scroll
-                Definitions.Accessors.Main.panel_GameList.Focus();
 
                 Definitions.SLM.LatestSelectedLibrary = Library;
                 Functions.Games.UpdateGamesList(Library);
