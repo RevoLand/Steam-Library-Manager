@@ -3,8 +3,8 @@ using System.Collections;
 using System.Configuration;
 using System.Windows.Forms;
 using System.Collections.Specialized;
-using System.Xml;
 using System.IO;
+using System.Xml;
 
 // https://github.com/crdx/PortableSettingsProvider
 namespace Steam_Library_Manager.Framework
@@ -208,8 +208,8 @@ namespace Steam_Library_Manager.Framework
 
       public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
       {
-         // do nothing
-         return new SettingsPropertyValue(property);
+          // do nothing
+          return new SettingsPropertyValue(property);
       }
 
       public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
