@@ -1,96 +1,66 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Steam_Library_Manager.Functions
 {
     class FileSystem
     {
-        public static bool TestFile(string TestDirectory)
-        {
-            /*
-             * This is an ugly way to check if we have the needed permissions but this should work without a problem 
-             */
-            try
-            {
-                string Testfile = TestDirectory + "SLM_TestFile.txt";
-
-                if (!Directory.Exists(TestDirectory))
-                    Directory.CreateDirectory(TestDirectory);
-
-                if (File.Exists(Testfile))
-                {
-                    File.Delete(Testfile);
-                    if (File.Exists(Testfile))
-                        return false;
-                    else
-                        return TestFile(TestDirectory);
-                }
-                else
-                {
-                    File.CreateText(Testfile).Close();
-                    if (File.Exists(Testfile))
-                    {
-                        File.Delete(Testfile);
-                        return true;
-                    }
-                    else
-                        return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
-                return false;
-            }
-        }
-
+        // Get directory size from path, with or without sub directories
         public static long GetDirectorySize(string directoryPath, bool includeSub)
         {
             try
             {
+                // Define a "long" for directory size
                 long directorySize = 0;
 
-                foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
+                // For each file in the given directory
+                foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(directoryPath, "*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
+                    // add current file size to directory size
                     directorySize += currentFile.Size;
                 }
 
+                // and return directory size
                 return directorySize;
             }
+            // on error, return 0
             catch { return 0; }
         }
 
         public static byte[] GetFileMD5(string filePath)
         {
-            using (var md5 = System.Security.Cryptography.MD5.Create())
+            // Create a new md5 function and using it
+            using (var MD5 = System.Security.Cryptography.MD5.Create())
             {
-                using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    return md5.ComputeHash(stream);
-                }
+                // Compute md5 hash of given file and return the hash value
+                return MD5.ComputeHash(File.OpenRead(filePath));
             }
         }
 
-        // http://stackoverflow.com/a/2082893
+        // Source: http://stackoverflow.com/a/2082893
         public static string FormatBytes(long bytes)
         {
+            // definition of file size suffixes
             string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int i;
+            int current;
             double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+
+            for (current = 0; current < Suffix.Length && bytes >= 1024; current++, bytes /= 1024)
             {
                 dblSByte = bytes / 1024.0;
             }
 
-            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            // Format the string
+            return string.Format("{0:0.##} {1}", dblSByte, Suffix[current]);
         }
 
         public static long GetFreeSpace(string TargetFolder)
         {
             try
             {
+                // Define a drive info
                 DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
 
+                // And return available free space from defined drive info
                 return Disk.AvailableFreeSpace;
             }
             catch { return 0; }

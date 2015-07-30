@@ -33,12 +33,14 @@
             this.panel_LibraryList = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
+            this.groupBox_Version = new System.Windows.Forms.GroupBox();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
+            this.checkbox_LogErrorsToFile = new System.Windows.Forms.CheckBox();
             this.SLM_archiveSizeCalcMethod = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SLM_button_GameSizeCalcHelp = new System.Windows.Forms.Button();
             this.SLM_sizeCalculationMethod = new System.Windows.Forms.ComboBox();
-            this.metroLabel1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox_Steam = new System.Windows.Forms.GroupBox();
             this.button_SelectSteamPath = new System.Windows.Forms.Button();
             this.linkLabel_SteamPath = new System.Windows.Forms.LinkLabel();
@@ -46,6 +48,8 @@
             this.fileDialog_SelectSteamPath = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowser_SelectNewLibraryPath = new System.Windows.Forms.FolderBrowserDialog();
             this.button_RefreshLibraries = new System.Windows.Forms.Button();
+            this.button_newBackupLibrary = new System.Windows.Forms.Button();
+            this.button_newSteamLibrary = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -60,7 +64,7 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 1;
-            this.tabControl1.Size = new System.Drawing.Size(975, 745);
+            this.tabControl1.Size = new System.Drawing.Size(853, 745);
             this.tabControl1.TabIndex = 0;
             // 
             // tab_InstalledGames
@@ -70,7 +74,7 @@
             this.tab_InstalledGames.Location = new System.Drawing.Point(4, 22);
             this.tab_InstalledGames.Name = "tab_InstalledGames";
             this.tab_InstalledGames.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_InstalledGames.Size = new System.Drawing.Size(967, 719);
+            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 719);
             this.tab_InstalledGames.TabIndex = 1;
             this.tab_InstalledGames.Text = "Installed Games";
             this.tab_InstalledGames.UseVisualStyleBackColor = true;
@@ -80,9 +84,8 @@
             this.panel_LibraryList.AutoScroll = true;
             this.panel_LibraryList.Location = new System.Drawing.Point(2, 6);
             this.panel_LibraryList.Name = "panel_LibraryList";
-            this.panel_LibraryList.Size = new System.Drawing.Size(969, 164);
+            this.panel_LibraryList.Size = new System.Drawing.Size(839, 164);
             this.panel_LibraryList.TabIndex = 2;
-            this.panel_LibraryList.MouseEnter += new System.EventHandler(this.panel_LibraryList_MouseEnter);
             // 
             // panel_GameList
             // 
@@ -90,12 +93,12 @@
             this.panel_GameList.Location = new System.Drawing.Point(2, 173);
             this.panel_GameList.Margin = new System.Windows.Forms.Padding(10);
             this.panel_GameList.Name = "panel_GameList";
-            this.panel_GameList.Size = new System.Drawing.Size(969, 539);
+            this.panel_GameList.Size = new System.Drawing.Size(839, 539);
             this.panel_GameList.TabIndex = 0;
-            this.panel_GameList.MouseEnter += new System.EventHandler(this.panel_GameList_MouseEnter);
             // 
             // tab_Settings
             // 
+            this.tab_Settings.Controls.Add(this.groupBox_Version);
             this.tab_Settings.Controls.Add(this.groupBox_SLM);
             this.tab_Settings.Controls.Add(this.groupBox_Steam);
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
@@ -106,19 +109,39 @@
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
             // 
+            // groupBox_Version
+            // 
+            this.groupBox_Version.Location = new System.Drawing.Point(645, 6);
+            this.groupBox_Version.Name = "groupBox_Version";
+            this.groupBox_Version.Size = new System.Drawing.Size(316, 149);
+            this.groupBox_Version.TabIndex = 3;
+            this.groupBox_Version.TabStop = false;
+            this.groupBox_Version.Text = "Version Control";
+            // 
             // groupBox_SLM
             // 
+            this.groupBox_SLM.Controls.Add(this.checkbox_LogErrorsToFile);
             this.groupBox_SLM.Controls.Add(this.SLM_archiveSizeCalcMethod);
-            this.groupBox_SLM.Controls.Add(this.label2);
+            this.groupBox_SLM.Controls.Add(this.label3);
             this.groupBox_SLM.Controls.Add(this.SLM_button_GameSizeCalcHelp);
             this.groupBox_SLM.Controls.Add(this.SLM_sizeCalculationMethod);
-            this.groupBox_SLM.Controls.Add(this.metroLabel1);
+            this.groupBox_SLM.Controls.Add(this.label2);
             this.groupBox_SLM.Location = new System.Drawing.Point(6, 132);
             this.groupBox_SLM.Name = "groupBox_SLM";
             this.groupBox_SLM.Size = new System.Drawing.Size(363, 229);
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
             this.groupBox_SLM.Text = "SLM";
+            // 
+            // checkbox_LogErrorsToFile
+            // 
+            this.checkbox_LogErrorsToFile.Location = new System.Drawing.Point(158, 70);
+            this.checkbox_LogErrorsToFile.Name = "checkbox_LogErrorsToFile";
+            this.checkbox_LogErrorsToFile.Size = new System.Drawing.Size(175, 24);
+            this.checkbox_LogErrorsToFile.TabIndex = 4;
+            this.checkbox_LogErrorsToFile.Text = "Log errors to File";
+            this.checkbox_LogErrorsToFile.UseVisualStyleBackColor = true;
+            this.checkbox_LogErrorsToFile.CheckedChanged += new System.EventHandler(this.checkbox_LogErrorsToFile_CheckedChanged);
             // 
             // SLM_archiveSizeCalcMethod
             // 
@@ -134,15 +157,15 @@
             this.SLM_archiveSizeCalcMethod.TabIndex = 4;
             this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
             // 
-            // label2
+            // label3
             // 
-            this.label2.AutoSize = true;
-            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(6, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Archive Size Calculation:";
+            this.label3.AutoSize = true;
+            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label3.Location = new System.Drawing.Point(6, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(124, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Archive Size Calculation:";
             // 
             // SLM_button_GameSizeCalcHelp
             // 
@@ -168,15 +191,15 @@
             this.SLM_sizeCalculationMethod.TabIndex = 1;
             this.SLM_sizeCalculationMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_sizeCalculationMethod_SelectedIndexChanged);
             // 
-            // metroLabel1
+            // label2
             // 
-            this.metroLabel1.AutoSize = true;
-            this.metroLabel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.metroLabel1.Location = new System.Drawing.Point(6, 19);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(116, 13);
-            this.metroLabel1.TabIndex = 0;
-            this.metroLabel1.Text = "Game Size Calculation:";
+            this.label2.AutoSize = true;
+            this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label2.Location = new System.Drawing.Point(6, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Game Size Calculation:";
             // 
             // groupBox_Steam
             // 
@@ -234,23 +257,46 @@
             // 
             // button_RefreshLibraries
             // 
-            this.button_RefreshLibraries.Location = new System.Drawing.Point(873, 4);
+            this.button_RefreshLibraries.Location = new System.Drawing.Point(714, 2);
             this.button_RefreshLibraries.Name = "button_RefreshLibraries";
-            this.button_RefreshLibraries.Size = new System.Drawing.Size(106, 23);
+            this.button_RefreshLibraries.Size = new System.Drawing.Size(125, 25);
             this.button_RefreshLibraries.TabIndex = 1;
-            this.button_RefreshLibraries.Text = "Refresh Libraries";
+            this.button_RefreshLibraries.Text = "Refresh Library List";
             this.button_RefreshLibraries.UseVisualStyleBackColor = true;
             this.button_RefreshLibraries.Click += new System.EventHandler(this.button_RefreshLibraries_Click);
+            // 
+            // button_newBackupLibrary
+            // 
+            this.button_newBackupLibrary.Location = new System.Drawing.Point(583, 2);
+            this.button_newBackupLibrary.Name = "button_newBackupLibrary";
+            this.button_newBackupLibrary.Size = new System.Drawing.Size(125, 25);
+            this.button_newBackupLibrary.TabIndex = 2;
+            this.button_newBackupLibrary.Tag = "true";
+            this.button_newBackupLibrary.Text = "New Backup Library";
+            this.button_newBackupLibrary.UseVisualStyleBackColor = true;
+            this.button_newBackupLibrary.Click += new System.EventHandler(this.newLibrary_Click);
+            // 
+            // button_newSteamLibrary
+            // 
+            this.button_newSteamLibrary.Location = new System.Drawing.Point(452, 2);
+            this.button_newSteamLibrary.Name = "button_newSteamLibrary";
+            this.button_newSteamLibrary.Size = new System.Drawing.Size(125, 25);
+            this.button_newSteamLibrary.TabIndex = 3;
+            this.button_newSteamLibrary.Tag = "false";
+            this.button_newSteamLibrary.Text = "New Steam Library";
+            this.button_newSteamLibrary.UseVisualStyleBackColor = true;
+            this.button_newSteamLibrary.Click += new System.EventHandler(this.newLibrary_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(985, 760);
+            this.ClientSize = new System.Drawing.Size(859, 760);
+            this.Controls.Add(this.button_newSteamLibrary);
+            this.Controls.Add(this.button_newBackupLibrary);
             this.Controls.Add(this.button_RefreshLibraries);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -281,13 +327,17 @@
         private System.Windows.Forms.Button button_SelectSteamPath;
         public System.Windows.Forms.FlowLayoutPanel panel_LibraryList;
         private System.Windows.Forms.GroupBox groupBox_SLM;
-        private System.Windows.Forms.Label metroLabel1;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button SLM_button_GameSizeCalcHelp;
         public System.Windows.Forms.ComboBox SLM_sizeCalculationMethod;
         public System.Windows.Forms.FolderBrowserDialog folderBrowser_SelectNewLibraryPath;
         public System.Windows.Forms.ComboBox SLM_archiveSizeCalcMethod;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button_RefreshLibraries;
+        private System.Windows.Forms.GroupBox groupBox_Version;
+        private System.Windows.Forms.Button button_newBackupLibrary;
+        private System.Windows.Forms.Button button_newSteamLibrary;
+        public System.Windows.Forms.CheckBox checkbox_LogErrorsToFile;
     }
 }
 

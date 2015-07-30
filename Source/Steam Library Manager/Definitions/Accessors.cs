@@ -1,8 +1,8 @@
-﻿
-namespace Steam_Library_Manager.Definitions
+﻿namespace Steam_Library_Manager.Definitions
 {
     class Accessors
     {
-        public static Main Main;
+        // Accessor definition which we are using while accessing to Main form from other functions
+        public static Main MainForm;
     }
 }

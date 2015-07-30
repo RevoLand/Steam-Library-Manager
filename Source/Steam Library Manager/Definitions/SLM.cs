@@ -1,9 +1,10 @@
-﻿
-namespace Steam_Library_Manager.Definitions
+﻿namespace Steam_Library_Manager.Definitions
 {
+    // Definitions about Steam Library Manager (SLM)
     class SLM
     {
-        public static Definitions.List.LibraryList LatestSelectedLibrary, LatestDropLibrary;
-        public static Definitions.List.GamesList LatestSelectedGame;
+        // Definitions we are using to pass library and game details to MoveGame form
+        public static List.LibraryList LatestSelectedLibrary, LatestDropLibrary;
+        public static List.GamesList LatestSelectedGame;
     }
 }

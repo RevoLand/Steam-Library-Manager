@@ -33,7 +33,7 @@
             this.checkbox_RemoveOldFiles = new System.Windows.Forms.CheckBox();
             this.button_Copy = new System.Windows.Forms.Button();
             this.progressBar_CopyStatus = new System.Windows.Forms.ProgressBar();
-            this.textBox_CopyLogs = new System.Windows.Forms.TextBox();
+            this.textBox_Logs = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel_currentLibrary = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
@@ -93,11 +93,11 @@
             // 
             // textBox_CopyLogs
             // 
-            this.textBox_CopyLogs.Location = new System.Drawing.Point(12, 387);
-            this.textBox_CopyLogs.Multiline = true;
-            this.textBox_CopyLogs.Name = "textBox_CopyLogs";
-            this.textBox_CopyLogs.Size = new System.Drawing.Size(275, 124);
-            this.textBox_CopyLogs.TabIndex = 8;
+            this.textBox_Logs.Location = new System.Drawing.Point(12, 387);
+            this.textBox_Logs.Multiline = true;
+            this.textBox_Logs.Name = "textBox_CopyLogs";
+            this.textBox_Logs.Size = new System.Drawing.Size(275, 124);
+            this.textBox_Logs.TabIndex = 8;
             // 
             // label2
             // 
@@ -156,7 +156,6 @@
             // 
             // pictureBox_GameImage
             // 
-            this.pictureBox_GameImage.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
             this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 33);
             this.pictureBox_GameImage.Name = "pictureBox_GameImage";
             this.pictureBox_GameImage.Size = new System.Drawing.Size(275, 129);
@@ -210,7 +209,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.linkLabel_currentLibrary);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox_CopyLogs);
+            this.Controls.Add(this.textBox_Logs);
             this.Controls.Add(this.progressBar_CopyStatus);
             this.Controls.Add(this.button_Copy);
             this.Controls.Add(this.checkbox_RemoveOldFiles);
@@ -218,7 +217,6 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "MoveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -236,7 +234,7 @@
         private System.Windows.Forms.CheckBox checkbox_Validate;
         private System.Windows.Forms.CheckBox checkbox_RemoveOldFiles;
         private System.Windows.Forms.ProgressBar progressBar_CopyStatus;
-        private System.Windows.Forms.TextBox textBox_CopyLogs;
+        private System.Windows.Forms.TextBox textBox_Logs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel_currentLibrary;
         private System.Windows.Forms.Label label3;

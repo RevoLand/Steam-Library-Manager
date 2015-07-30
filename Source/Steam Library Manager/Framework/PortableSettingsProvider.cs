@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 
-// https://github.com/crdx/PortableSettingsProvider
+// Source: https://github.com/crdx/PortableSettingsProvider
 namespace Steam_Library_Manager.Framework
 {
    public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
