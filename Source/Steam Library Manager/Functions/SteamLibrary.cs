@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.Library.Clear();
 
                 // If Steam.exe not exists in the path we set then return
-                if (!File.Exists(Properties.Settings.Default.Steam_InstallationPath + "Steam.exe")) return;
+                if (!File.Exists(Properties.Settings.Default.SteamInstallationPath + "Steam.exe")) return;
 
                 // Our main library doesn't included in LibraryFolders.vdf so we have to include it manually
                 Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
@@ -24,7 +24,7 @@ namespace Steam_Library_Manager.Functions
                 Library.Main = true;
 
                 // Define our library path to SteamApps
-                Library.Directory = Properties.Settings.Default.Steam_InstallationPath + @"SteamApps\";
+                Library.Directory = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\";
 
                 // Count how many games we have installed in our library
                 Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Functions
                 Framework.KeyValue Key = new Framework.KeyValue();
 
                 // Define our LibraryFolders.VDF path for easier use
-                string vdfFilePath = Properties.Settings.Default.Steam_InstallationPath + @"SteamApps\libraryfolders.vdf";
+                string vdfFilePath = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\libraryfolders.vdf";
 
                 // If LibraryFolders.vdf exists
                 if (System.IO.File.Exists(vdfFilePath))
@@ -67,10 +67,10 @@ namespace Steam_Library_Manager.Functions
                 else { /* Could not locate LibraryFolders.vdf */ }
 
                 // If we have a backup library(s)
-                if (Properties.Settings.Default.SLM_BackupDirectories != null)
+                if (Properties.Settings.Default.BackupDirectories != null)
                 {
                     // for each backup library we have do a loop
-                    foreach (object backupDirectory in Properties.Settings.Default.SLM_BackupDirectories)
+                    foreach (object backupDirectory in Properties.Settings.Default.BackupDirectories)
                     {
                         // Define a new library
                         Library = new Definitions.List.LibraryList();
@@ -191,7 +191,7 @@ namespace Steam_Library_Manager.Functions
                 if (!Backup)
                 {
                     // Copy Steam.dll as steam needs it
-                    File.Copy(Properties.Settings.Default.Steam_InstallationPath + "Steam.dll", newLibraryPath + @"\Steam.dll", true);
+                    File.Copy(Properties.Settings.Default.SteamInstallationPath + "Steam.dll", newLibraryPath + @"\Steam.dll", true);
 
                     // create SteamApps directory at requested directory
                     Directory.CreateDirectory(newLibraryPath + @"\SteamApps");
@@ -200,7 +200,7 @@ namespace Steam_Library_Manager.Functions
                     if (File.Exists(newLibraryPath + @"\Steam.dll")) // in case of permissions denied
                     {
                         // Set libraryFolders.vdf path
-                        string vdfPath = Properties.Settings.Default.Steam_InstallationPath + @"SteamApps\libraryfolders.vdf";
+                        string vdfPath = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\libraryfolders.vdf";
 
                         // Call KeyValue in act
                         Framework.KeyValue Key = new Framework.KeyValue();
@@ -227,12 +227,12 @@ namespace Steam_Library_Manager.Functions
                 else
                 {
                     // If backup directories in settings null
-                    if (Properties.Settings.Default.SLM_BackupDirectories == null)
+                    if (Properties.Settings.Default.BackupDirectories == null)
                         // make a new definition
-                        Properties.Settings.Default.SLM_BackupDirectories = new System.Collections.Specialized.StringCollection();
+                        Properties.Settings.Default.BackupDirectories = new System.Collections.Specialized.StringCollection();
 
                     // Add our newest backup library to settings
-                    Properties.Settings.Default.SLM_BackupDirectories.Add(newLibraryPath + @"\");
+                    Properties.Settings.Default.BackupDirectories.Add(newLibraryPath + @"\");
 
                     // Update game libraries
                     UpdateLibraries();

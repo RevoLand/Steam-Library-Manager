@@ -21,7 +21,11 @@ namespace Steam_Library_Manager
             tabControl1.SelectedTab = tab_InstalledGames;
 
             // Set form icon from resources
-            Icon = Steam_Library_Manager.Properties.Resources.steam_icon;
+            Icon = Properties.Resources.steam_icon;
+
+            // If allowed by user, check for updates
+            if (Properties.Settings.Default.CheckForUpdatesAtStartup)
+                Functions.Updater.CheckForUpdates();
         }
 
         private void linkLabel_SteamPath_LinkClicked(object sender, MouseEventArgs e)
@@ -29,9 +33,9 @@ namespace Steam_Library_Manager
             try
             {
                 // If the selected Steam installation path exists
-                if (Directory.Exists(Properties.Settings.Default.Steam_InstallationPath))
+                if (Directory.Exists(Properties.Settings.Default.SteamInstallationPath))
                     // Open the path in explorer as user requested
-                    Process.Start(Properties.Settings.Default.Steam_InstallationPath);
+                    Process.Start(Properties.Settings.Default.SteamInstallationPath);
                 else
                     // Else, do nothing
                     return;
@@ -55,7 +59,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update our setting in memory
-                Properties.Settings.Default.Steam_InstallationPath = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName) + @"\";
+                Properties.Settings.Default.SteamInstallationPath = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName) + @"\";
 
                 // Update main form as visual
                 Functions.Settings.UpdateMainForm();
@@ -83,7 +87,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update setting value
-                Properties.Settings.Default.SLM_GameSizeCalcMethod = (SLM_sizeCalculationMethod.SelectedIndex == 0) ? "ACF" : "Enum";
+                Properties.Settings.Default.GameSizeCalculationMethod = (SLM_sizeCalculationMethod.SelectedIndex == 0) ? "ACF" : "Enum";
 
                 // Save settings to file
                 Functions.Settings.Save();
@@ -96,7 +100,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update setting value
-                Properties.Settings.Default.SLM_ArchiveSizeCalcMethod = (SLM_archiveSizeCalcMethod.SelectedIndex == 0) ? "Uncompressed" : "Archive";
+                Properties.Settings.Default.ArchiveSizeCalculationMethod = (SLM_archiveSizeCalcMethod.SelectedIndex == 0) ? "Uncompressed" : "Archive";
 
                 // Save settings to file
                 Functions.Settings.Save();
@@ -121,12 +125,36 @@ namespace Steam_Library_Manager
         }
 
 
+        private void button_CheckForUpdates_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Check for updates manually
+                Functions.Updater.CheckForUpdates();
+            }
+            catch { }
+        }
+
+
         private void checkbox_LogErrorsToFile_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 // Update setting value
-                Properties.Settings.Default.SLM_LogErrorsToFile = checkbox_LogErrorsToFile.Checked;
+                Properties.Settings.Default.LogErrorsToFile = checkbox_LogErrorsToFile.Checked;
+
+                // Save settings to file
+                Functions.Settings.Save();
+            }
+            catch { }
+        }
+
+        private void checkbox_CheckForUpdatesAtStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Update setting value
+                Properties.Settings.Default.CheckForUpdatesAtStartup = checkbox_CheckForUpdatesAtStartup.Checked;
 
                 // Save settings to file
                 Functions.Settings.Save();

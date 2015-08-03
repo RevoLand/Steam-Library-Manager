@@ -28,12 +28,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string Steam_InstallationPath {
+        public string SteamInstallationPath {
             get {
-                return ((string)(this["Steam_InstallationPath"]));
+                return ((string)(this["SteamInstallationPath"]));
             }
             set {
-                this["Steam_InstallationPath"] = value;
+                this["SteamInstallationPath"] = value;
             }
         }
         
@@ -42,12 +42,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ACF")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SLM_GameSizeCalcMethod {
+        public string GameSizeCalculationMethod {
             get {
-                return ((string)(this["SLM_GameSizeCalcMethod"]));
+                return ((string)(this["GameSizeCalculationMethod"]));
             }
             set {
-                this["SLM_GameSizeCalcMethod"] = value;
+                this["GameSizeCalculationMethod"] = value;
             }
         }
         
@@ -55,12 +55,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Collections.Specialized.StringCollection SLM_BackupDirectories {
+        public global::System.Collections.Specialized.StringCollection BackupDirectories {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["SLM_BackupDirectories"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["BackupDirectories"]));
             }
             set {
-                this["SLM_BackupDirectories"] = value;
+                this["BackupDirectories"] = value;
             }
         }
         
@@ -69,12 +69,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Uncompressed")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SLM_ArchiveSizeCalcMethod {
+        public string ArchiveSizeCalculationMethod {
             get {
-                return ((string)(this["SLM_ArchiveSizeCalcMethod"]));
+                return ((string)(this["ArchiveSizeCalculationMethod"]));
             }
             set {
-                this["SLM_ArchiveSizeCalcMethod"] = value;
+                this["ArchiveSizeCalculationMethod"] = value;
             }
         }
         
@@ -83,12 +83,26 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool SLM_LogErrorsToFile {
+        public bool LogErrorsToFile {
             get {
-                return ((bool)(this["SLM_LogErrorsToFile"]));
+                return ((bool)(this["LogErrorsToFile"]));
             }
             set {
-                this["SLM_LogErrorsToFile"] = value;
+                this["LogErrorsToFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool CheckForUpdatesAtStartup {
+            get {
+                return ((bool)(this["CheckForUpdatesAtStartup"]));
+            }
+            set {
+                this["CheckForUpdatesAtStartup"] = value;
             }
         }
     }

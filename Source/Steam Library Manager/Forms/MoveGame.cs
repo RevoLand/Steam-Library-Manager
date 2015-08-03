@@ -440,7 +440,7 @@ namespace Steam_Library_Manager.Forms
                 Log("There was an error happened while moving game.");
 
                 // If we are asked to log errors to file
-                if (Properties.Settings.Default.SLM_LogErrorsToFile)
+                if (Properties.Settings.Default.LogErrorsToFile)
                     // Then log errors to file
                     Functions.Log.ErrorsToFile("CopyGame", ex.ToString());
 
@@ -516,7 +516,7 @@ namespace Steam_Library_Manager.Forms
             catch (Exception ex)
             {
                 // If user want us to log errors to file
-                if (Properties.Settings.Default.SLM_LogErrorsToFile)
+                if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
                     Functions.Log.ErrorsToFile("DirectoryRemoval", ex.ToString());
             }

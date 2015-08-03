@@ -89,7 +89,7 @@ namespace Steam_Library_Manager.Functions
                         if (Game.exactInstallPath != null)
                         {
                             // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF")
+                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate game size on disk
                                 Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
                             else
@@ -101,7 +101,7 @@ namespace Steam_Library_Manager.Functions
                         if (Game.downloadPath != null)
                         {
                             // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF")
+                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate "downloading" folder size
                                 Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
                         }
@@ -110,7 +110,7 @@ namespace Steam_Library_Manager.Functions
                         if (Game.workShopPath != null)
                         {
                             // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.SLM_GameSizeCalcMethod != "ACF")
+                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate "workshop" files size
                                 Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.workShopPath, true);
                         }
@@ -169,7 +169,7 @@ namespace Steam_Library_Manager.Functions
                                     Game.Library = Library;
 
                                     // If user want us to get archive size from real uncompressed size
-                                    if (Properties.Settings.Default.SLM_ArchiveSizeCalcMethod.StartsWith("Uncompressed"))
+                                    if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
                                     {
                                         // Open archive to read
                                         using (ZipArchive zip = ZipFile.OpenRead(Game.Library.Directory + Game.appID + ".zip"))
@@ -215,7 +215,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 // If user want us to log errors to file
-                if (Properties.Settings.Default.SLM_LogErrorsToFile)
+                if (Properties.Settings.Default.LogErrorsToFile)
                     // Log
                     Functions.Log.ErrorsToFile("UpdateGameList", ex.ToString());
 
