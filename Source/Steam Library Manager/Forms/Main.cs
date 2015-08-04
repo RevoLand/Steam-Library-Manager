@@ -59,7 +59,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update our setting in memory
-                Properties.Settings.Default.SteamInstallationPath = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName) + @"\";
+                Properties.Settings.Default.SteamInstallationPath = Path.GetDirectoryName(fileDialog_SelectSteamPath.FileName);
 
                 // Update main form as visual
                 Functions.Settings.UpdateMainForm();

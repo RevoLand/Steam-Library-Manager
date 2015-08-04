@@ -67,16 +67,16 @@ namespace Steam_Library_Manager.Functions
                     Game.Library = Library;
 
                     // If game has a folder in "common" dir, define it as exactInstallPath
-                    if (Directory.Exists(Library.Directory + @"common\" + Game.installationPath))
-                        Game.exactInstallPath = Library.Directory + @"common\" + Game.installationPath;
+                    if (Directory.Exists(Path.Combine(Library.Directory ,"common" , Game.installationPath)))
+                        Game.exactInstallPath = Path.Combine(Library.Directory , "common" , Game.installationPath);
 
                     // If game has a folder in "downloading" dir, define it as downloadPath
-                    if (Directory.Exists(Library.Directory + @"downloading\" + Game.appID))
-                        Game.downloadPath = Library.Directory + @"downloading\" + Game.appID;
+                    if (Directory.Exists(Path.Combine(Library.Directory , "downloading" , Game.appID.ToString())))
+                        Game.downloadPath = Path.Combine(Library.Directory, "downloading", Game.appID.ToString());
 
                     // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Library.Directory + @"workshop\content\" + Game.appID))
-                        Game.workShopPath = Library.Directory + @"workshop\content\" + Game.appID;
+                    if (Directory.Exists(Path.Combine(Library.Directory , "workshop", "content" , Game.appID.ToString())))
+                        Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString());
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                     if (Game.exactInstallPath == null && Game.downloadPath == null)
