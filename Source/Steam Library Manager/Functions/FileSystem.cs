@@ -1,4 +1,7 @@
 ﻿using System.IO;
+using System.Text;
+using System.Runtime.InteropServices;
+using System;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -64,6 +67,18 @@ namespace Steam_Library_Manager.Functions
                 return Disk.AvailableFreeSpace;
             }
             catch { return 0; }
+        }
+
+
+        //Source : http://stackoverflow.com/questions/1766748/how-do-i-get-a-relative-path-from-one-path-to-another-in-c-sharp
+        [DllImport("shlwapi.dll", EntryPoint = "PathRelativePathTo")]
+        protected static extern bool PathRelativePathTo(StringBuilder lpszDst, string from, UInt32 attrFrom, string to, UInt32 attrTo);
+
+        public static string GetRelativePath(string from, string to)
+        {
+            StringBuilder builder = new StringBuilder(1024);
+            bool result = PathRelativePathTo(builder, from, 0, to, 0);
+            return builder.ToString();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Steam_Library_Manager.Functions
                 Library.Main = true;
 
                 // Define our library path to SteamApps
-                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps") + "\\";
+                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps");
 
                 // Count how many games we have installed in our library
                 Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Functions
                         Library = new Definitions.List.LibraryList();
 
                         // Define library path
-                        Library.Directory = Path.Combine(Key[i.ToString()].Value , "SteamApps") + "\\";
+                        Library.Directory = Path.Combine(Key[i.ToString()].Value , "SteamApps");
 
                         // Define game count in library
                         Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Functions
                         Library.Backup = true;
 
                         // Define library path
-                        Library.Directory = backupDirectory.ToString() + "\\";
+                        Library.Directory = backupDirectory.ToString();
 
                         // Define game count in library
                         Library.GameCount = Functions.Games.GetGamesCountFromLibrary(Library);
@@ -253,7 +253,7 @@ namespace Steam_Library_Manager.Functions
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
                 {
                     // If current library contains NewLibraryPath
-                    if (Library.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant() + "\\steamapps\\"))
+                    if (Library.Directory.ToLowerInvariant().Contains(Path.Combine(NewLibraryPath.ToLowerInvariant() , "steamapps")))
                         // Then return true
                         return true;
                 }
