@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Steam_Library_Manager.Definitions
@@ -17,7 +18,10 @@ namespace Steam_Library_Manager.Definitions
         public static string LatestVersionLink = "https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Binaries/Steam%20Library%20Manager.exe";
 
         // SLM Version
-        public static string CurrentVersion = "1.0.1", LatestVersion = "", LatestVersionImportance = "";
+        public static Version CurrentVersion = new Version("1.0.1"), LatestVersion = new Version();
+        
+        // Latest version importance
+        public static string LatestVersionImportance = "";
 
         // Version Importance Visual Colors
         public static Dictionary<string, Color> VersionImportanceColors = new Dictionary<string, Color>();
