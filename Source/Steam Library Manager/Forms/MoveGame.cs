@@ -174,8 +174,12 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in common folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories))
                                 {
+                                    //Get the name of the file relative from Game.Library.Directory
+                                    //To work you must add trailing folder separator then remove leading .\\ from the folder
+                                    string relativePath = Functions.FileSystem.GetRelativePath(Game.Library.Directory + Path.DirectorySeparatorChar, currentFile.Path).TrimStart('.').TrimStart(Path.DirectorySeparatorChar);
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, relativePath, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
                                     movedFiles += 1;
@@ -184,7 +188,7 @@ namespace Steam_Library_Manager.Forms
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + relativePath);
                                 }
                             }
 
@@ -194,8 +198,12 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in downloading folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
                                 {
+                                    //Get the name of the file relative from Game.Library.Directory
+                                    //To work you must add trailing folder separator then remove leading .\\ from the folder
+                                    string relativePath = Functions.FileSystem.GetRelativePath(Game.Library.Directory + Path.DirectorySeparatorChar, currentFile.Path).TrimStart('.').TrimStart(Path.DirectorySeparatorChar);
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, relativePath, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
                                     movedFiles += 1;
@@ -204,7 +212,7 @@ namespace Steam_Library_Manager.Forms
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + relativePath);
                                 }
                             }
 
@@ -214,8 +222,12 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in workshop folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                                 {
+                                    //Get the name of the file relative from Game.Library.Directory
+                                    //To work you must add trailing folder separator then remove leading .\\ from the folder
+                                    string relativePath = Functions.FileSystem.GetRelativePath(Game.Library.Directory + Path.DirectorySeparatorChar, currentFile.Path).TrimStart('.').TrimStart(Path.DirectorySeparatorChar);
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, relativePath, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
                                     movedFiles += 1;
@@ -224,15 +236,19 @@ namespace Steam_Library_Manager.Forms
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + relativePath);
                                 }
                             }
 
                             // If game has .patch files in downloading folder
                             foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
                             {
+                                //Get the name of the file relative from Game.Library.Directory
+                                //To work you must add trailing folder separator then remove leading .\\ from the folder
+                                string relativePath = Functions.FileSystem.GetRelativePath(Game.Library.Directory + Path.DirectorySeparatorChar, currentFile.Path).TrimStart('.').TrimStart(Path.DirectorySeparatorChar);
+
                                 // Add file to archive
-                                await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, relativePath, CompressionLevel.Optimal));
                             }
 
                             // Add .ACF file to archive
