@@ -10,22 +10,32 @@ namespace Steam_Library_Manager
         public Main()
         {
             InitializeComponent();
-            
-            // Set our accessor
-            Definitions.Accessors.MainForm = this;
+            try
+            {
+                // Set our accessor
+                Definitions.Accessors.MainForm = this;
 
-            // Update main form from settings
-            Functions.Settings.UpdateMainForm();
+                // If Steam installation path is not set by user
+                if (Properties.Settings.Default.SteamInstallationPath == null || Properties.Settings.Default.SteamInstallationPath == "")
+                {
+                    // Read Steam path from Registry
+                    Properties.Settings.Default.SteamInstallationPath = Microsoft.Win32.Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Valve\Steam", "SteamPath", "").ToString();
+                }
 
-            // Select game & library list as active tab
-            tabControl1.SelectedTab = tab_InstalledGames;
+                // Update main form from settings
+                Functions.Settings.UpdateMainForm();
 
-            // Set form icon from resources
-            Icon = Properties.Resources.steam_icon;
+                // Select game & library list as active tab
+                tabControl1.SelectedTab = tab_InstalledGames;
 
-            // If allowed by user, check for updates
-            if (Properties.Settings.Default.CheckForUpdatesAtStartup)
-                Functions.Updater.CheckForUpdates();
+                // Set form icon from resources
+                Icon = Properties.Resources.steam_icon;
+
+                // If allowed by user, check for updates
+                if (Properties.Settings.Default.CheckForUpdatesAtStartup)
+                    Functions.Updater.CheckForUpdates();
+            }
+            catch { }
         }
 
         private void linkLabel_SteamPath_LinkClicked(object sender, MouseEventArgs e)

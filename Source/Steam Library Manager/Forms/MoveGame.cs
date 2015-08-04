@@ -89,7 +89,7 @@ namespace Steam_Library_Manager.Forms
             string acfName = "appmanifest_" + Game.appID + ".acf";
             string workShopACFname = "appworkshop_" + Game.appID + ".acf";
             string zipName = Game.appID + ".zip";
-            string currentZipName = Path.Combine(Game.Library.Directory , Game.appID.ToString() , ".zip");
+            string currentZipName = Path.Combine(Game.Library.Directory, Game.appID.ToString() + ".zip");
             string newFileName;
 
             // Other definitions
@@ -116,12 +116,12 @@ namespace Steam_Library_Manager.Forms
                 else if (isCompressed && !deCompress && Library.Backup)
                 {
                     // If archive already exists in the target library
-                    if (File.Exists(zipPath + zipName))
+                    if (File.Exists(Path.Combine(zipPath, zipName)))
                         // Remove the compressed archive
-                        File.Delete(zipPath + zipName);
+                        File.Delete(Path.Combine(zipPath, zipName));
 
                     // Copy the archive asynchronously
-                    await Task.Run(() => File.Copy(currentZipName, zipPath + zipName));
+                    await Task.Run(() => File.Copy(currentZipName, Path.Combine(zipPath, zipName)));
                 }
                 else
                 {
@@ -161,12 +161,12 @@ namespace Steam_Library_Manager.Forms
                     if (Compress)
                     {
                         // If compressed archive already exists
-                        if (File.Exists(zipPath + zipName))
+                        if (File.Exists(Path.Combine(zipPath, zipName)))
                             // Remove the compressed archive
-                            File.Delete(zipPath + zipName);
+                            File.Delete(Path.Combine(zipPath, zipName));
 
                         // Create a new compressed archive at target library
-                        using (ZipArchive gameBackup = ZipFile.Open(zipPath + zipName, ZipArchiveMode.Create))
+                        using (ZipArchive gameBackup = ZipFile.Open(Path.Combine(zipPath, zipName), ZipArchiveMode.Create))
                         {
                             // If game has common folder
                             if (Game.exactInstallPath != null)

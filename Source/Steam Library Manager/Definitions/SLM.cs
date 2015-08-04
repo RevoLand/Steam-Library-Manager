@@ -17,7 +17,7 @@ namespace Steam_Library_Manager.Definitions
         public static string LatestVersionLink = "https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Binaries/Steam%20Library%20Manager.exe";
 
         // SLM Version
-        public static string CurrentVersion = "1.0.0", LatestVersion = "", LatestVersionImportance = "";
+        public static string CurrentVersion = "1.0.1", LatestVersion = "", LatestVersionImportance = "";
 
         // Version Importance Visual Colors
         public static Dictionary<string, Color> VersionImportanceColors = new Dictionary<string, Color>();
