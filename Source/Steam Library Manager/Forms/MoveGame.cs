@@ -80,16 +80,16 @@ namespace Steam_Library_Manager.Forms
         async void CopyGame(bool Validate, bool RemoveOld, bool Compress, bool deCompress, bool isCompressed)
         {
             // Path definitions
-            string downloadPath = Path.Combine(Game.Library.Directory , "downloading");
-            string TargetGamePath = Path.Combine(Library.Directory , "common" , Game.installationPath);
-            string TargetDownloadPath = Path.Combine(Library.Directory , "downloading" , Game.appID.ToString());
+            string downloadPath = Game.Library.Directory + @"downloading\";
+            string TargetGamePath = Library.Directory + @"common\" + Game.installationPath;
+            string TargetDownloadPath = Library.Directory + @"downloading\" + Game.appID;
             string zipPath = Library.Directory;
 
             // Name definitions
             string acfName = "appmanifest_" + Game.appID + ".acf";
             string workShopACFname = "appworkshop_" + Game.appID + ".acf";
             string zipName = Game.appID + ".zip";
-            string currentZipName = Path.Combine(Game.Library.Directory , Game.appID.ToString() , ".zip");
+            string currentZipName = Game.Library.Directory + Game.appID + ".zip";
             string newFileName;
 
             // Other definitions
@@ -236,7 +236,7 @@ namespace Steam_Library_Manager.Forms
                             }
 
                             // Add .ACF file to archive
-                            await Task.Run(() => gameBackup.CreateEntryFromFile(Path.Combine(Game.Library.Directory , acfName), acfName, CompressionLevel.Optimal));
+                            await Task.Run(() => gameBackup.CreateEntryFromFile(Game.Library.Directory + acfName, acfName, CompressionLevel.Optimal));
 
                             // Log .ACF file
                             Log(".ACF file has been compressed");
@@ -245,7 +245,7 @@ namespace Steam_Library_Manager.Forms
                             if (Directory.Exists(Game.workShopPath))
                             {
                                 // Add Workshop .ACF file to archive
-                                await Task.Run(() => gameBackup.CreateEntryFromFile(Path.Combine(Game.Library.Directory , "workshop" , workShopACFname), Path.Combine("workshop" , workShopACFname), CompressionLevel.Optimal));
+                                await Task.Run(() => gameBackup.CreateEntryFromFile(Game.Library.Directory + @"workshop\" + workShopACFname, @"workshop\" + workShopACFname, CompressionLevel.Optimal));
 
                                 // Log workshop .ACF file
                                 Log("Workshop .ACF file has been compressed");
@@ -376,15 +376,15 @@ namespace Steam_Library_Manager.Forms
 
                         // If game has .patch files in downloading folder
                         // If downloading folder not exists
-                        if (!Directory.Exists(Path.Combine(Library.Directory , "downloading")))
+                        if (!Directory.Exists(Library.Directory + @"downloading\"))
                             // Create downloading folder
-                            Directory.CreateDirectory(Path.Combine(Library.Directory ,"downloading"));
+                            Directory.CreateDirectory(Library.Directory + @"downloading\");
 
                         // For each .patch file in downloading folder
                         foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
                         {
                             // Set new file name
-                            newFileName = Path.Combine(Library.Directory , "downloading" , currentFile.Name.Replace(downloadPath, ""));
+                            newFileName = Library.Directory + @"downloading\" + currentFile.Name.Replace(downloadPath, "");
 
                             // Copy .patch file to target library asynchronously
                             await Task.Run(() => File.Copy(currentFile.Path, newFileName, true));
@@ -397,7 +397,7 @@ namespace Steam_Library_Manager.Forms
                             foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                             {
                                 // Set new file name
-                                newFileName = Path.Combine(Library.Directory , currentFile.Path.Replace(Game.Library.Directory, ""));
+                                newFileName = Library.Directory + currentFile.Path.Replace(Game.Library.Directory, "");
 
                                 // If directory not exists
                                 if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -419,13 +419,13 @@ namespace Steam_Library_Manager.Forms
                         }
 
                         // Copy .ACF file
-                        File.Copy(Path.Combine(Game.Library.Directory , acfName), Path.Combine(Library.Directory , acfName), true);
+                        File.Copy(Game.Library.Directory + acfName, Library.Directory + acfName, true);
 
                         // If workshop directory exists
                         if (Directory.Exists(Game.workShopPath))
                         {
                             // Copy workshop .ACF file
-                            File.Copy(Path.Combine(Game.Library.Directory , "workshop" , workShopACFname), Path.Combine(Library.Directory , "workshop" , workShopACFname), true);
+                            File.Copy(Game.Library.Directory + @"workshop\" + workShopACFname, Library.Directory + @"workshop\" + workShopACFname, true);
 
                             // Log to user
                             Log(".ACF file has been created at the target directory");
@@ -483,13 +483,13 @@ namespace Steam_Library_Manager.Forms
                         Log("Old .ACF file has been removed");
 
                     // If workshop .ACf file exists
-                    if (File.Exists(Path.Combine(Game.Library.Directory , "workshop" , workShopACFname)))
+                    if (File.Exists(Game.Library.Directory + @"workshop\" + workShopACFname))
                     {
                         // Remove the file
-                        File.Delete(Path.Combine(Game.Library.Directory, "workshop", workShopACFname));
+                        File.Delete(Game.Library.Directory + @"workshop\" + workShopACFname);
 
                         // If we removed file succesfully
-                        if (!File.Exists(Path.Combine(Game.Library.Directory, "workshop", workShopACFname)))
+                        if (!File.Exists(Game.Library.Directory + @"workshop\" + workShopACFname))
                             // Log to user
                             Log("Workshop .ACF file has been removed");
                     }
