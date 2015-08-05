@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.Library.Clear();
 
                 // If Steam.exe not exists in the path we set then return
-                if (!File.Exists(Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.exe"))) return;
+                if (!File.Exists(Path.Combine(Properties.Settings.Default.SteamInstallationPath , "Steam.exe"))) return;
 
                 // Our main library doesn't included in LibraryFolders.vdf so we have to include it manually
                 Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
@@ -24,7 +24,7 @@ namespace Steam_Library_Manager.Functions
                 Library.Main = true;
 
                 // Define our library path to SteamApps
-                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps") + "\\";
+                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath , "SteamApps");
 
                 // Count how many games we have installed in our library
                 Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Functions
                 Framework.KeyValue Key = new Framework.KeyValue();
 
                 // Define our LibraryFolders.VDF path for easier use
-                string vdfFilePath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
+                string vdfFilePath = Path.Combine(Properties.Settings.Default.SteamInstallationPath , "SteamApps" ,"libraryfolders.vdf");
 
                 // If LibraryFolders.vdf exists
                 if (System.IO.File.Exists(vdfFilePath))
@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Functions
                         Library = new Definitions.List.LibraryList();
 
                         // Define library path
-                        Library.Directory = Path.Combine(Key[i.ToString()].Value , "SteamApps") + "\\";
+                        Library.Directory = Path.Combine(Key[i.ToString()].Value , "SteamApps");
 
                         // Define game count in library
                         Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Functions
                         Library.Backup = true;
 
                         // Define library path
-                        Library.Directory = backupDirectory.ToString() + "\\";
+                        Library.Directory = backupDirectory.ToString();
 
                         // Define game count in library
                         Library.GameCount = Functions.Games.GetGamesCountFromLibrary(Library);
@@ -191,16 +191,16 @@ namespace Steam_Library_Manager.Functions
                 if (!Backup)
                 {
                     // Copy Steam.dll as steam needs it
-                    File.Copy(Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.dll"), Path.Combine(newLibraryPath, "Steam.dll"), true);
+                    File.Copy(Path.Combine(Properties.Settings.Default.SteamInstallationPath , "Steam.dll"), Path.Combine(newLibraryPath , "Steam.dll"), true);
 
                     // create SteamApps directory at requested directory
-                    Directory.CreateDirectory(Path.Combine(newLibraryPath, "SteamApps"));
+                    Directory.CreateDirectory(Path.Combine(newLibraryPath , "SteamApps"));
 
                     // If Steam.dll moved succesfully
                     if (File.Exists(Path.Combine(newLibraryPath , "Steam.dll"))) // in case of permissions denied
                     {
                         // Set libraryFolders.vdf path
-                        string vdfPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
+                        string vdfPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath , "SteamApps", "libraryfolders.vdf");
 
                         // Call KeyValue in act
                         Framework.KeyValue Key = new Framework.KeyValue();

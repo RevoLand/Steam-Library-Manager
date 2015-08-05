@@ -67,15 +67,15 @@ namespace Steam_Library_Manager.Functions
                     Game.Library = Library;
 
                     // If game has a folder in "common" dir, define it as exactInstallPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "common", Game.installationPath)))
-                        Game.exactInstallPath = Path.Combine(Library.Directory, "common", Game.installationPath);
+                    if (Directory.Exists(Path.Combine(Library.Directory ,"common" , Game.installationPath)))
+                        Game.exactInstallPath = Path.Combine(Library.Directory , "common" , Game.installationPath);
 
                     // If game has a folder in "downloading" dir, define it as downloadPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "downloading", Game.appID.ToString())))
+                    if (Directory.Exists(Path.Combine(Library.Directory , "downloading" , Game.appID.ToString())))
                         Game.downloadPath = Path.Combine(Library.Directory, "downloading", Game.appID.ToString());
 
                     // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString())))
+                    if (Directory.Exists(Path.Combine(Library.Directory , "workshop", "content" , Game.appID.ToString())))
                         Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString());
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Functions
                                     if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
                                     {
                                         // Open archive to read
-                                        using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.Directory, Game.appID + ".zip")))
+                                        using (ZipArchive zip = ZipFile.OpenRead(Game.Library.Directory + Game.appID + ".zip"))
                                         {
                                             // For each file in archive
                                             foreach (ZipArchiveEntry entry in zip.Entries)
@@ -186,7 +186,7 @@ namespace Steam_Library_Manager.Functions
                                     else
                                     {
                                         // Use FileInfo to get our archive details
-                                        FileInfo zip = new FileInfo(Path.Combine(Game.Library.Directory, Game.appID + ".zip"));
+                                        FileInfo zip = new FileInfo(Game.Library.Directory + Game.appID + ".zip");
 
                                         // And set archive size as game size
                                         Game.sizeOnDisk = zip.Length;
