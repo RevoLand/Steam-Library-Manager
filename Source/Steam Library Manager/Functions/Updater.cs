@@ -24,16 +24,16 @@ namespace Steam_Library_Manager.Functions
                 string[] content = fileContent.Split('|');
 
                 // Update latest version
-                Definitions.SLM.LatestVersion = new Version(content[0]);
+                Definitions.SLM.LatestVersion = content[0];
 
                 // Update version importance detail
                 Definitions.SLM.LatestVersionImportance = content[1];
 
                 // Current Version text
-                Definitions.Accessors.MainForm.label_CurrentVersion.Text = Definitions.SLM.CurrentVersion.ToString();
+                Definitions.Accessors.MainForm.label_CurrentVersion.Text = Definitions.SLM.CurrentVersion;
 
                 // Latest Version text
-                Definitions.Accessors.MainForm.label_LatestVersion.Text = Definitions.SLM.LatestVersion.ToString();
+                Definitions.Accessors.MainForm.label_LatestVersion.Text = Definitions.SLM.LatestVersion;
 
                 // Latest Version Importance
                 Definitions.Accessors.MainForm.label_UpdateImportance.Text = Definitions.SLM.LatestVersionImportance;
@@ -42,7 +42,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Accessors.MainForm.label_UpdateImportance.ForeColor = Definitions.SLM.VersionImportanceColors[Definitions.SLM.LatestVersionImportance];
 
                 // If latest version is newer than current version
-                if (Definitions.SLM.LatestVersion > Definitions.SLM.CurrentVersion)
+                if (Convert.ToDouble(Definitions.SLM.LatestVersion) > Convert.ToDouble(Definitions.SLM.CurrentVersion))
                 {
                     // Show a messagebox to user and ask to open github page to download latest version
                     System.Windows.Forms.DialogResult updateMessageBox = System.Windows.Forms.MessageBox.Show("There is an update available for SLM. Would you like to download it?\n\nClicking \"YES\" will download latest version of SLM close current instance of SLM and update\nYou will have to manually rename LatestVersionSLM.exe\n\nLatest Version: " + Definitions.SLM.LatestVersion + " - Importance: " + Definitions.SLM.LatestVersionImportance, "SLM Update Checker", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk);
