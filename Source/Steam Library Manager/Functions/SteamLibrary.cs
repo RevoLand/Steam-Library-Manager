@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Functions
@@ -15,7 +16,7 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.Library.Clear();
 
                 // If Steam.exe not exists in the path we set then return
-                if (!File.Exists(Properties.Settings.Default.SteamInstallationPath + "Steam.exe")) return;
+                if (!File.Exists(Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.exe"))) return;
 
                 // Our main library doesn't included in LibraryFolders.vdf so we have to include it manually
                 Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
@@ -24,7 +25,7 @@ namespace Steam_Library_Manager.Functions
                 Library.Main = true;
 
                 // Define our library path to SteamApps
-                Library.Directory = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\";
+                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps") + Path.DirectorySeparatorChar.ToString();
 
                 // Count how many games we have installed in our library
                 Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -36,7 +37,7 @@ namespace Steam_Library_Manager.Functions
                 Framework.KeyValue Key = new Framework.KeyValue();
 
                 // Define our LibraryFolders.VDF path for easier use
-                string vdfFilePath = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\libraryfolders.vdf";
+                string vdfFilePath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
 
                 // If LibraryFolders.vdf exists
                 if (System.IO.File.Exists(vdfFilePath))
@@ -55,7 +56,7 @@ namespace Steam_Library_Manager.Functions
                         Library = new Definitions.List.LibraryList();
 
                         // Define library path
-                        Library.Directory = Key[i.ToString()].Value + @"\SteamApps\";
+                        Library.Directory = Path.Combine(Key[i.ToString()].Value, "SteamApps") + Path.DirectorySeparatorChar.ToString();
 
                         // Define game count in library
                         Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -79,7 +80,7 @@ namespace Steam_Library_Manager.Functions
                         Library.Backup = true;
 
                         // Define library path
-                        Library.Directory = backupDirectory.ToString();
+                        Library.Directory = backupDirectory.ToString() + Path.DirectorySeparatorChar;
 
                         // Define game count in library
                         Library.GameCount = Functions.Games.GetGamesCountFromLibrary(Library);
@@ -92,7 +93,10 @@ namespace Steam_Library_Manager.Functions
                 // Update Libraries List visually
                 UpdateMainForm();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
 
         public static void UpdateMainForm()
@@ -141,7 +145,7 @@ namespace Steam_Library_Manager.Functions
                     libraryName.Size = new System.Drawing.Size(width, height);
 
                     // Set label text, currently it is directory path + game count
-                    libraryName.Text = Library.Directory + " (" + Library.GameCount.ToString()  + ")";
+                    libraryName.Text = string.Format("{0} ({1})", Library.Directory, Library.GameCount);
 
                     // Show our label in bottom center of our pictureBox
                     libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -165,7 +169,7 @@ namespace Steam_Library_Manager.Functions
                     rightClickMenu.MenuItems.Add(Library.Directory).Enabled = false;
 
                     // Add an item which will show game count in our library and make it disabled
-                    rightClickMenu.MenuItems.Add("Game Count: " + Library.GameCount.ToString()).Enabled = false;
+                    rightClickMenu.MenuItems.Add(string.Format("Game Count: {0}", Library.GameCount)).Enabled = false;
 
                     // Add our label to pictureBox
                     libraryDetailBox.Controls.Add(libraryName);
@@ -190,17 +194,21 @@ namespace Steam_Library_Manager.Functions
                 // If we are not creating a backup library
                 if (!Backup)
                 {
+                    // Define steam dll paths for better looking
+                    string currentSteamDLLPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.dll");
+                    string newSteamDLLPath = Path.Combine(newLibraryPath, "Steam.dll");
+
                     // Copy Steam.dll as steam needs it
-                    File.Copy(Properties.Settings.Default.SteamInstallationPath + "Steam.dll", newLibraryPath + @"\Steam.dll", true);
+                    File.Copy(currentSteamDLLPath, newSteamDLLPath, true);
 
                     // create SteamApps directory at requested directory
-                    Directory.CreateDirectory(newLibraryPath + @"\SteamApps");
+                    Directory.CreateDirectory(Path.Combine(newLibraryPath, "SteamApps"));
 
                     // If Steam.dll moved succesfully
-                    if (File.Exists(newLibraryPath + @"\Steam.dll")) // in case of permissions denied
+                    if (File.Exists(newSteamDLLPath)) // in case of permissions denied
                     {
                         // Set libraryFolders.vdf path
-                        string vdfPath = Properties.Settings.Default.SteamInstallationPath + @"SteamApps\libraryfolders.vdf";
+                        string vdfPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
 
                         // Call KeyValue in act
                         Framework.KeyValue Key = new Framework.KeyValue();
@@ -215,7 +223,7 @@ namespace Steam_Library_Manager.Functions
                         Key.SaveToFile(vdfPath, false);
 
                         // Show a messagebox to user about process
-                        System.Windows.Forms.MessageBox.Show("New Steam Library added, Please Restart Steam to see it in work."); // to-do: edit text
+                        System.Windows.Forms.MessageBox.Show("New Steam Library added, Please Restart Steam to see it in action."); // to-do: edit text
 
                         // Update game libraries
                         UpdateLibraries();
@@ -226,13 +234,13 @@ namespace Steam_Library_Manager.Functions
                 }
                 else
                 {
-                    // If backup directories in settings null
+                    // If backup directories in settings not set
                     if (Properties.Settings.Default.BackupDirectories == null)
                         // make a new definition
                         Properties.Settings.Default.BackupDirectories = new System.Collections.Specialized.StringCollection();
 
                     // Add our newest backup library to settings
-                    Properties.Settings.Default.BackupDirectories.Add(newLibraryPath + @"\");
+                    Properties.Settings.Default.BackupDirectories.Add(newLibraryPath);
 
                     // Update game libraries
                     UpdateLibraries();
@@ -253,7 +261,7 @@ namespace Steam_Library_Manager.Functions
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
                 {
                     // If current library contains NewLibraryPath
-                    if (Library.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant() + "\\steamapps\\"))
+                    if (Library.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant()))
                         // Then return true
                         return true;
                 }

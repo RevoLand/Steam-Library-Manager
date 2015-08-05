@@ -23,13 +23,11 @@ namespace Steam_Library_Manager.Functions
                 // Check for Updates at Startup checkbox visual update
                 Definitions.Accessors.MainForm.checkbox_CheckForUpdatesAtStartup.Checked = Properties.Settings.Default.CheckForUpdatesAtStartup;
 
+                // Current Version text
+                Definitions.Accessors.MainForm.label_CurrentVersion.Text = Definitions.Updater.CurrentVersion.ToString();
+
                 // Find game directories and update them on form
                 Functions.SteamLibrary.UpdateLibraries();
-
-                // Importance Colors Library
-                Definitions.SLM.VersionImportanceColors.Add("Optional", Color.LightGray); // Optional
-                Definitions.SLM.VersionImportanceColors.Add("Suggested", Color.ForestGreen); // Suggested
-                Definitions.SLM.VersionImportanceColors.Add("Important", Color.DarkRed); // Important
             }
             catch { }
         }

@@ -48,7 +48,7 @@ namespace Steam_Library_Manager.Forms
             }
 
             // Load our game image asynchronously
-            pictureBox_GameImage.LoadAsync("http://cdn.akamai.steamstatic.com/steam/apps/"+ Game.appID +"/header.jpg");
+            pictureBox_GameImage.LoadAsync(string.Format("http://cdn.akamai.steamstatic.com/steam/apps/{0}/header.jpg", Game.appID));
 
             // Update our label for current library with directory path
             linkLabel_currentLibrary.Text = Game.Library.Directory;
@@ -77,62 +77,65 @@ namespace Steam_Library_Manager.Forms
             catch { }
         }
 
-        async void CopyGame(bool Validate, bool RemoveOld, bool Compress, bool deCompress, bool isCompressed)
+        async void CopyGame(bool Validate, bool RemoveOldFiles, bool Compress, bool deCompressArchive, bool isGameCompressed)
         {
             // Path definitions
-            string downloadPath = Game.Library.Directory + @"downloading\";
-            string TargetGamePath = Library.Directory + @"common\" + Game.installationPath;
-            string TargetDownloadPath = Library.Directory + @"downloading\" + Game.appID;
-            string zipPath = Library.Directory;
+            string currentDownloadingPath = Path.Combine(Game.Library.Directory, "downloading");
+
+            string newCommonPath = Path.Combine(Library.Directory, "common", Game.installationPath);
+            string newDownloadingPath = Path.Combine(Library.Directory, "downloading", Game.appID.ToString());
+            string newZipDirectory = Library.Directory;
 
             // Name definitions
-            string acfName = "appmanifest_" + Game.appID + ".acf";
-            string workShopACFname = "appworkshop_" + Game.appID + ".acf";
-            string zipName = Game.appID + ".zip";
-            string currentZipName = Game.Library.Directory + Game.appID + ".zip";
+            string GameACFName = string.Format("appmanifest_{0}.acf", Game.appID);
+            string workShopACFname = string.Format("appworkshop_{0}.acf", Game.appID);
+            string newZipName = string.Format("{0}.zip", Game.appID);
+            string currentZipNameNpath = Path.Combine(Game.Library.Directory, string.Format("{0}.zip", Game.appID));
+            string newZipNameNpath = Path.Combine(Library.Directory, string.Format("{0}.zip", Game.appID));
+
             string newFileName;
 
             // Other definitions
             byte[] currentFileMD5, newFileMD5;
-            int FilesToMove = 0, movedFiles = 0;
+            int TotalFileCountWillBeMoved = 0, TotalMovedFiles = 0;
 
             try
             {
                 // If game is compressed, target library is not backup OR game is compressed and de-compress requested
-                if (isCompressed && !Library.Backup || isCompressed && deCompress)
+                if (isGameCompressed && !Library.Backup || isGameCompressed && deCompressArchive)
                 {
                     // If directory exists at target game path
-                    if (Directory.Exists(TargetGamePath))
+                    if (Directory.Exists(newCommonPath))
                         // Remove the directory
-                        Directory.Delete(TargetGamePath, true);
+                        Directory.Delete(newCommonPath, true);
 
                     // Log to user
                     Log("Uncompressing archive... Please wait");
 
                     // unzip the archive asynchronously to target library
-                    await Task.Run(() => ZipFile.ExtractToDirectory(currentZipName, zipPath));
+                    await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, newZipDirectory));
                 }
                 // If game is compressed and user didn't wanted to decompress and target library is backup
-                else if (isCompressed && !deCompress && Library.Backup)
+                else if (isGameCompressed && !deCompressArchive && Library.Backup)
                 {
                     // If archive already exists in the target library
-                    if (File.Exists(zipPath + zipName))
+                    if (File.Exists(newZipNameNpath))
                         // Remove the compressed archive
-                        File.Delete(zipPath + zipName);
+                        File.Delete(newZipNameNpath);
 
                     // Copy the archive asynchronously
-                    await Task.Run(() => File.Copy(currentZipName, zipPath + zipName));
+                    await Task.Run(() => File.Copy(currentZipNameNpath, newZipNameNpath));
                 }
                 else
                 {
                     // Define free space we have at target libray
-                    long freeSpace = Functions.FileSystem.GetFreeSpace(TargetGamePath);
+                    long freeSpaceOnTargetDisk = Functions.FileSystem.GetFreeSpace(newCommonPath);
 
                     // If free space is less than game size
-                    if (freeSpace < Game.sizeOnDisk)
+                    if (freeSpaceOnTargetDisk < Game.sizeOnDisk)
                     {
                         // Show an error to user
-                        Log("Free space is not enough! Needed Free Space: " + Game.sizeOnDisk + " Available: " + freeSpace);
+                        Log(string.Format("Free space is not enough! Needed Free Space: {0} Available: {1}", Game.sizeOnDisk, freeSpaceOnTargetDisk));
 
                         // And cancel the process
                         return;
@@ -141,32 +144,32 @@ namespace Steam_Library_Manager.Forms
                     // If game has common folder
                     if (Game.exactInstallPath != null)
                         // Increase FilesToMove based on file count in common folder
-                        FilesToMove += Framework.FastDirectoryEnumerator.GetFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories).Length;
+                        TotalFileCountWillBeMoved += Framework.FastDirectoryEnumerator.GetFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories).Length;
 
                     // If game has downloading folder
                     if (Game.downloadPath != null)
                         // Increase FilesToMove based on file count in "downloading" folder
-                        FilesToMove += Framework.FastDirectoryEnumerator.GetFiles(Game.downloadPath, "*", SearchOption.AllDirectories).Length;
+                        TotalFileCountWillBeMoved += Framework.FastDirectoryEnumerator.GetFiles(Game.downloadPath, "*", SearchOption.AllDirectories).Length;
 
                     // If game has workshop folder
                     if (Game.workShopPath != null)
                         // Increase FilesToMove based on file count in workshop folder of game
-                        FilesToMove += Framework.FastDirectoryEnumerator.GetFiles(Game.workShopPath, "*", SearchOption.AllDirectories).Length;
+                        TotalFileCountWillBeMoved += Framework.FastDirectoryEnumerator.GetFiles(Game.workShopPath, "*", SearchOption.AllDirectories).Length;
 
                     // Set progress bar maximum value to FilesToMove
-                    progressBar_CopyStatus.Maximum = FilesToMove;
+                    progressBar_CopyStatus.Maximum = TotalFileCountWillBeMoved;
 
                     #region Compres game
                     // If game will be compressed
                     if (Compress)
                     {
                         // If compressed archive already exists
-                        if (File.Exists(zipPath + zipName))
+                        if (File.Exists(newZipNameNpath))
                             // Remove the compressed archive
-                            File.Delete(zipPath + zipName);
+                            File.Delete(newZipNameNpath);
 
                         // Create a new compressed archive at target library
-                        using (ZipArchive gameBackup = ZipFile.Open(zipPath + zipName, ZipArchiveMode.Create))
+                        using (ZipArchive gameBackup = ZipFile.Open(newZipNameNpath, ZipArchiveMode.Create))
                         {
                             // If game has common folder
                             if (Game.exactInstallPath != null)
@@ -174,17 +177,20 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in common folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories))
                                 {
+                                    // Define a string for better looking
+                                    newFileName = currentFile.Path.Replace(Game.Library.Directory, "");
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, newFileName, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
-                                    movedFiles += 1;
+                                    TotalMovedFiles += 1;
 
                                     // Perform step on progressBar
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log(string.Format("[{0}/{1} Compressed: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
                                 }
                             }
 
@@ -194,17 +200,20 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in downloading folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
                                 {
+                                    // Define a string for better looking
+                                    newFileName = currentFile.Path.Replace(Game.Library.Directory, "");
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, newFileName, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
-                                    movedFiles += 1;
+                                    TotalMovedFiles += 1;
 
                                     // Perform step on progressBar
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log(string.Format("[{0}/{1} Compressed: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
                                 }
                             }
 
@@ -214,29 +223,35 @@ namespace Steam_Library_Manager.Forms
                                 // For each file in workshop folder of game
                                 foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                                 {
+                                    // Define a string for better looking
+                                    newFileName = currentFile.Path.Replace(Game.Library.Directory, "");
+
                                     // Add file to archive
-                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                    await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, newFileName, CompressionLevel.Optimal));
 
                                     // Increase movedFiles
-                                    movedFiles += 1;
+                                    TotalMovedFiles += 1;
 
                                     // Perform step on progressBar
                                     progressBar_CopyStatus.PerformStep();
 
                                     // Log details about process
-                                    Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Compressed: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                    Log(string.Format("[{0}/{1} Compressed: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
                                 }
                             }
 
                             // If game has .patch files in downloading folder
-                            foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
+                            foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(currentDownloadingPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
                             {
+                                // Define a string for better looking
+                                newFileName = currentFile.Path.Replace(Game.Library.Directory, "");
+
                                 // Add file to archive
-                                await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, currentFile.Path.Replace(Game.Library.Directory, ""), CompressionLevel.Optimal));
+                                await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile.Path, newFileName, CompressionLevel.Optimal));
                             }
 
                             // Add .ACF file to archive
-                            await Task.Run(() => gameBackup.CreateEntryFromFile(Game.Library.Directory + acfName, acfName, CompressionLevel.Optimal));
+                            await Task.Run(() => gameBackup.CreateEntryFromFile(Path.Combine(Game.Library.Directory, GameACFName), GameACFName, CompressionLevel.Optimal));
 
                             // Log .ACF file
                             Log(".ACF file has been compressed");
@@ -245,7 +260,7 @@ namespace Steam_Library_Manager.Forms
                             if (Directory.Exists(Game.workShopPath))
                             {
                                 // Add Workshop .ACF file to archive
-                                await Task.Run(() => gameBackup.CreateEntryFromFile(Game.Library.Directory + @"workshop\" + workShopACFname, @"workshop\" + workShopACFname, CompressionLevel.Optimal));
+                                await Task.Run(() => gameBackup.CreateEntryFromFile(Path.Combine(Game.Library.Directory, "workshop", workShopACFname), Path.Combine("workshop", workShopACFname), CompressionLevel.Optimal));
 
                                 // Log workshop .ACF file
                                 Log("Workshop .ACF file has been compressed");
@@ -257,9 +272,9 @@ namespace Steam_Library_Manager.Forms
                     else
                     {
                         // If directory not exists
-                        if (!Directory.Exists(TargetGamePath))
+                        if (!Directory.Exists(newCommonPath))
                             // Create the game directory at target library
-                            Directory.CreateDirectory(TargetGamePath);
+                            Directory.CreateDirectory(newCommonPath);
 
                         // If game has common folder
                         if (Game.exactInstallPath != null)
@@ -271,7 +286,7 @@ namespace Steam_Library_Manager.Forms
                                 using (FileStream currentFileStream = File.OpenRead(currentFile.Path))
                                 {
                                     // Set new file name including target game path
-                                    newFileName = TargetGamePath + currentFile.Path.Replace(Game.exactInstallPath, "");
+                                    newFileName = Path.Combine(newCommonPath, currentFile.Path.Replace(Game.exactInstallPath, ""));
 
                                     // If directory not exists
                                     if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -285,7 +300,7 @@ namespace Steam_Library_Manager.Forms
                                         await currentFileStream.CopyToAsync(newFileStream);
 
                                         // Increase movedFiles
-                                        movedFiles += 1;
+                                        TotalMovedFiles += 1;
                                     }
                                 }
 
@@ -302,8 +317,8 @@ namespace Steam_Library_Manager.Forms
                                     if (BitConverter.ToString(currentFileMD5) != BitConverter.ToString(newFileMD5))
                                     {
                                         // Log it
-                                        Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] File couldn't verified: " + currentFile.Path.Replace(Game.Library.Directory, ""));
-                                        
+                                        Log(string.Format("[{0}/{1} File couldn't verified: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
+
                                         // and cancel the process
                                         return;
                                     }
@@ -311,7 +326,7 @@ namespace Steam_Library_Manager.Forms
                                 }
 
                                 // Log details about copied file
-                                Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                Log(string.Format("[{0}/{1} Copied: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
 
                                 // Perform step on progressbar
                                 progressBar_CopyStatus.PerformStep();
@@ -328,7 +343,7 @@ namespace Steam_Library_Manager.Forms
                                 using (FileStream currentFileStream = File.OpenRead(currentFile.Path))
                                 {
                                     // Set new file name including target download path
-                                    newFileName = TargetDownloadPath + currentFile.Path.Replace(Game.downloadPath, "");
+                                    newFileName = Path.Combine(newDownloadingPath, currentFile.Path.Replace(Game.downloadPath, ""));
 
                                     // If directory not exists
                                     if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -342,7 +357,7 @@ namespace Steam_Library_Manager.Forms
                                         await currentFileStream.CopyToAsync(newFileStream);
 
                                         // Increase movedFiles
-                                        movedFiles += 1;
+                                        TotalMovedFiles += 1;
                                     }
                                 }
 
@@ -359,7 +374,7 @@ namespace Steam_Library_Manager.Forms
                                     if (BitConverter.ToString(currentFileMD5) != BitConverter.ToString(newFileMD5))
                                     {
                                         // Log it
-                                        Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] File couldn't verified: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                        Log(string.Format("[{0}/{1} File couldn't verified: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
 
                                         // and cancel the process
                                         return;
@@ -367,7 +382,7 @@ namespace Steam_Library_Manager.Forms
                                 }
 
                                 // Log details about copied file
-                                Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                Log(string.Format("[{0}/{1} Copied: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
 
                                 // Perform step on progressbar
                                 progressBar_CopyStatus.PerformStep();
@@ -376,15 +391,15 @@ namespace Steam_Library_Manager.Forms
 
                         // If game has .patch files in downloading folder
                         // If downloading folder not exists
-                        if (!Directory.Exists(Library.Directory + @"downloading\"))
+                        if (!Directory.Exists(newDownloadingPath))
                             // Create downloading folder
-                            Directory.CreateDirectory(Library.Directory + @"downloading\");
+                            Directory.CreateDirectory(newDownloadingPath);
 
                         // For each .patch file in downloading folder
-                        foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
+                        foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(currentDownloadingPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
                         {
                             // Set new file name
-                            newFileName = Library.Directory + @"downloading\" + currentFile.Name.Replace(downloadPath, "");
+                            newFileName = Path.Combine(Library.Directory, "downloading", currentFile.Name.Replace(currentDownloadingPath, ""));
 
                             // Copy .patch file to target library asynchronously
                             await Task.Run(() => File.Copy(currentFile.Path, newFileName, true));
@@ -397,7 +412,7 @@ namespace Steam_Library_Manager.Forms
                             foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                             {
                                 // Set new file name
-                                newFileName = Library.Directory + currentFile.Path.Replace(Game.Library.Directory, "");
+                                newFileName = Path.Combine(Library.Directory, currentFile.Path.Replace(Game.Library.Directory, ""));
 
                                 // If directory not exists
                                 if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -408,10 +423,10 @@ namespace Steam_Library_Manager.Forms
                                 await Task.Run(() => File.Copy(currentFile.Path, newFileName, true));
 
                                 // Increase movedFiles
-                                movedFiles += 1;
+                                TotalMovedFiles += 1;
 
                                 // Log details to user
-                                Log("[" + movedFiles.ToString() + "/" + FilesToMove.ToString() + "] Copied: " + currentFile.Path.Replace(Game.Library.Directory, ""));
+                                Log(string.Format("[{0}/{1} Copied: {2}", TotalMovedFiles, TotalFileCountWillBeMoved, newFileName));
 
                                 // Perform a step on progressbar
                                 progressBar_CopyStatus.PerformStep();
@@ -419,13 +434,13 @@ namespace Steam_Library_Manager.Forms
                         }
 
                         // Copy .ACF file
-                        File.Copy(Game.Library.Directory + acfName, Library.Directory + acfName, true);
+                        File.Copy(Path.Combine(Game.Library.Directory, GameACFName), Path.Combine(Library.Directory, GameACFName), true);
 
                         // If workshop directory exists
                         if (Directory.Exists(Game.workShopPath))
                         {
                             // Copy workshop .ACF file
-                            File.Copy(Game.Library.Directory + @"workshop\" + workShopACFname, Library.Directory + @"workshop\" + workShopACFname, true);
+                            File.Copy(Path.Combine(Game.Library.Directory, "workshop", workShopACFname), Path.Combine(Library.Directory, "workshop", workShopACFname), true);
 
                             // Log to user
                             Log(".ACF file has been created at the target directory");
@@ -451,13 +466,13 @@ namespace Steam_Library_Manager.Forms
             try
             {
                 // If game is compressed and we are removing old files
-                if (isCompressed && RemoveOld)
+                if (isGameCompressed && RemoveOldFiles)
                 {
                     // Delete compressed file
-                    await Task.Run(() => File.Delete(currentZipName));
+                    await Task.Run(() => File.Delete(currentZipNameNpath));
 
                     // If archive not exists
-                    if (!File.Exists(currentZipName))
+                    if (!File.Exists(currentZipNameNpath))
                         // Log to user, we have removed the zip succesfully
                         Log("Archive file removed as requested.");
                     else
@@ -465,31 +480,31 @@ namespace Steam_Library_Manager.Forms
                         Log("Couldn't remove archive file!");
                 }
                 // Else if game is not compressed and we are removing old files
-                else if (!isCompressed && RemoveOld)
+                else if (!isGameCompressed && RemoveOldFiles)
                 {
                     // For each .patch file in downloading folder
-                    foreach (Framework.FileData fileName in Framework.FastDirectoryEnumerator.EnumerateFiles(downloadPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
+                    foreach (Framework.FileData fileName in Framework.FastDirectoryEnumerator.EnumerateFiles(currentDownloadingPath, string.Format("*{0}*.patch", Game.appID), SearchOption.TopDirectoryOnly))
                     {
                         // remove the file
                         await Task.Run(() => File.Delete(fileName.Path));
                     }
 
                     // Remove the .ACF file
-                    File.Delete(Game.Library.Directory + acfName);
+                    File.Delete(Path.Combine(Game.Library.Directory, GameACFName));
 
                     // If we removed .ACF file succesfully
-                    if (!File.Exists(Game.Library.Directory + acfName))
+                    if (!File.Exists(Path.Combine(Game.Library.Directory, GameACFName)))
                         // Log to user
                         Log("Old .ACF file has been removed");
 
                     // If workshop .ACf file exists
-                    if (File.Exists(Game.Library.Directory + @"workshop\" + workShopACFname))
+                    if (File.Exists(Path.Combine(Game.Library.Directory, "workshop", workShopACFname)))
                     {
                         // Remove the file
-                        File.Delete(Game.Library.Directory + @"workshop\" + workShopACFname);
+                        File.Delete(Path.Combine(Game.Library.Directory, "workshop", workShopACFname));
 
                         // If we removed file succesfully
-                        if (!File.Exists(Game.Library.Directory + @"workshop\" + workShopACFname))
+                        if (!File.Exists(Path.Combine(Game.Library.Directory, "workshop", workShopACFname)))
                             // Log to user
                             Log("Workshop .ACF file has been removed");
                     }
@@ -553,8 +568,9 @@ namespace Steam_Library_Manager.Forms
                 {
                     default:
                         // Open store in user browser
-                        System.Diagnostics.Process.Start("http://store.steampowered.com/app/" + Game.appID.ToString() + "/");
+                        System.Diagnostics.Process.Start(string.Format("http://store.steampowered.com/app/{0}/", Game.appID));
                         break;
+
                     // Right click
                     case MouseButtons.Right:
                         // Open game installation directory in explorer

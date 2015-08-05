@@ -35,9 +35,8 @@
             this.tab_Settings = new System.Windows.Forms.TabPage();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
             this.groupBox_Version = new System.Windows.Forms.GroupBox();
+            this.checkbox_CheckForUpdatesAtStartup = new System.Windows.Forms.CheckBox();
             this.button_CheckForUpdates = new System.Windows.Forms.Button();
-            this.label_UpdateImportance = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label_LatestVersion = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label_CurrentVersion = new System.Windows.Forms.Label();
@@ -57,7 +56,6 @@
             this.button_RefreshLibraries = new System.Windows.Forms.Button();
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
-            this.checkbox_CheckForUpdatesAtStartup = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -137,8 +135,6 @@
             // 
             this.groupBox_Version.Controls.Add(this.checkbox_CheckForUpdatesAtStartup);
             this.groupBox_Version.Controls.Add(this.button_CheckForUpdates);
-            this.groupBox_Version.Controls.Add(this.label_UpdateImportance);
-            this.groupBox_Version.Controls.Add(this.label6);
             this.groupBox_Version.Controls.Add(this.label_LatestVersion);
             this.groupBox_Version.Controls.Add(this.label7);
             this.groupBox_Version.Controls.Add(this.label_CurrentVersion);
@@ -150,43 +146,34 @@
             this.groupBox_Version.TabStop = false;
             this.groupBox_Version.Text = "Update Checker";
             // 
+            // checkbox_CheckForUpdatesAtStartup
+            // 
+            this.checkbox_CheckForUpdatesAtStartup.AutoSize = true;
+            this.checkbox_CheckForUpdatesAtStartup.Location = new System.Drawing.Point(154, 152);
+            this.checkbox_CheckForUpdatesAtStartup.Name = "checkbox_CheckForUpdatesAtStartup";
+            this.checkbox_CheckForUpdatesAtStartup.Size = new System.Drawing.Size(164, 17);
+            this.checkbox_CheckForUpdatesAtStartup.TabIndex = 7;
+            this.checkbox_CheckForUpdatesAtStartup.Text = "Check for Updates at Startup";
+            this.checkbox_CheckForUpdatesAtStartup.UseVisualStyleBackColor = true;
+            this.checkbox_CheckForUpdatesAtStartup.CheckedChanged += new System.EventHandler(this.checkbox_CheckForUpdatesAtStartup_CheckedChanged);
+            // 
             // button_CheckForUpdates
             // 
             this.button_CheckForUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button_CheckForUpdates.Location = new System.Drawing.Point(179, 136);
+            this.button_CheckForUpdates.Location = new System.Drawing.Point(9, 147);
             this.button_CheckForUpdates.Name = "button_CheckForUpdates";
-            this.button_CheckForUpdates.Size = new System.Drawing.Size(139, 36);
+            this.button_CheckForUpdates.Size = new System.Drawing.Size(139, 25);
             this.button_CheckForUpdates.TabIndex = 6;
             this.button_CheckForUpdates.Text = "Check for Updates";
             this.button_CheckForUpdates.UseVisualStyleBackColor = true;
             this.button_CheckForUpdates.Click += new System.EventHandler(this.button_CheckForUpdates_Click);
             // 
-            // label_UpdateImportance
-            // 
-            this.label_UpdateImportance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label_UpdateImportance.Location = new System.Drawing.Point(149, 92);
-            this.label_UpdateImportance.Name = "label_UpdateImportance";
-            this.label_UpdateImportance.Size = new System.Drawing.Size(169, 28);
-            this.label_UpdateImportance.TabIndex = 5;
-            this.label_UpdateImportance.Text = "N\\A";
-            this.label_UpdateImportance.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label6.Location = new System.Drawing.Point(6, 92);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(115, 15);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Update Importance:";
-            // 
             // label_LatestVersion
             // 
             this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label_LatestVersion.Location = new System.Drawing.Point(149, 59);
+            this.label_LatestVersion.Location = new System.Drawing.Point(109, 59);
             this.label_LatestVersion.Name = "label_LatestVersion";
-            this.label_LatestVersion.Size = new System.Drawing.Size(169, 13);
+            this.label_LatestVersion.Size = new System.Drawing.Size(209, 33);
             this.label_LatestVersion.TabIndex = 3;
             this.label_LatestVersion.Text = "N\\A";
             this.label_LatestVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -204,9 +191,9 @@
             // label_CurrentVersion
             // 
             this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label_CurrentVersion.Location = new System.Drawing.Point(149, 25);
+            this.label_CurrentVersion.Location = new System.Drawing.Point(106, 25);
             this.label_CurrentVersion.Name = "label_CurrentVersion";
-            this.label_CurrentVersion.Size = new System.Drawing.Size(169, 13);
+            this.label_CurrentVersion.Size = new System.Drawing.Size(212, 13);
             this.label_CurrentVersion.TabIndex = 1;
             this.label_CurrentVersion.Text = "N\\A";
             this.label_CurrentVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -375,17 +362,6 @@
             this.button_newSteamLibrary.UseVisualStyleBackColor = true;
             this.button_newSteamLibrary.Click += new System.EventHandler(this.newLibrary_Click);
             // 
-            // checkbox_CheckForUpdatesAtStartup
-            // 
-            this.checkbox_CheckForUpdatesAtStartup.AutoSize = true;
-            this.checkbox_CheckForUpdatesAtStartup.Location = new System.Drawing.Point(9, 147);
-            this.checkbox_CheckForUpdatesAtStartup.Name = "checkbox_CheckForUpdatesAtStartup";
-            this.checkbox_CheckForUpdatesAtStartup.Size = new System.Drawing.Size(164, 17);
-            this.checkbox_CheckForUpdatesAtStartup.TabIndex = 7;
-            this.checkbox_CheckForUpdatesAtStartup.Text = "Check for Updates at Startup";
-            this.checkbox_CheckForUpdatesAtStartup.UseVisualStyleBackColor = true;
-            this.checkbox_CheckForUpdatesAtStartup.CheckedChanged += new System.EventHandler(this.checkbox_CheckForUpdatesAtStartup_CheckedChanged);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -443,8 +419,6 @@
         private System.Windows.Forms.Label label7;
         public System.Windows.Forms.Label label_CurrentVersion;
         public System.Windows.Forms.Label label_LatestVersion;
-        public System.Windows.Forms.Label label_UpdateImportance;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button_CheckForUpdates;
         public System.Windows.Forms.CheckBox checkbox_CheckForUpdatesAtStartup;
     }

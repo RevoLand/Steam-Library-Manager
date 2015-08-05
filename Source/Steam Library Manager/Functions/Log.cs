@@ -10,7 +10,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // Define error file path
-                string FilePath = Definitions.Directories.SLM.CurrentDirectory + "\\" + ErrorType + ".txt";
+                string FilePath = Path.Combine(Definitions.Directories.SLM.CurrentDirectory, ErrorType + ".txt");
                 // using FileWriter, If file not exists Create a new text, else open the pre-generated file
                 using (StreamWriter FileWriter = (!File.Exists(FilePath)) ? File.CreateText(FilePath) : File.AppendText(FilePath))
                 {

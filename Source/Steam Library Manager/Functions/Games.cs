@@ -67,16 +67,16 @@ namespace Steam_Library_Manager.Functions
                     Game.Library = Library;
 
                     // If game has a folder in "common" dir, define it as exactInstallPath
-                    if (Directory.Exists(Library.Directory + @"common\" + Game.installationPath))
-                        Game.exactInstallPath = Library.Directory + @"common\" + Game.installationPath;
+                    if (Directory.Exists(Path.Combine(Library.Directory, "common", Game.installationPath)))
+                        Game.exactInstallPath = Path.Combine(Library.Directory, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "downloading" dir, define it as downloadPath
-                    if (Directory.Exists(Library.Directory + @"downloading\" + Game.appID))
-                        Game.downloadPath = Library.Directory + @"downloading\" + Game.appID;
+                    if (Directory.Exists(Path.Combine(Library.Directory, "downloading", Game.installationPath)))
+                        Game.downloadPath = Path.Combine(Library.Directory, "downloading", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Library.Directory + @"workshop\content\" + Game.appID))
-                        Game.workShopPath = Library.Directory + @"workshop\content\" + Game.appID;
+                    if (Directory.Exists(Path.Combine(Library.Directory, "workshop", "content", Game.installationPath)))
+                        Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                     if (Game.exactInstallPath == null && Game.downloadPath == null)
@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Functions
                                     if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
                                     {
                                         // Open archive to read
-                                        using (ZipArchive zip = ZipFile.OpenRead(Game.Library.Directory + Game.appID + ".zip"))
+                                        using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.Directory, Game.appID + ".zip")))
                                         {
                                             // For each file in archive
                                             foreach (ZipArchiveEntry entry in zip.Entries)
@@ -186,7 +186,7 @@ namespace Steam_Library_Manager.Functions
                                     else
                                     {
                                         // Use FileInfo to get our archive details
-                                        FileInfo zip = new FileInfo(Game.Library.Directory + Game.appID + ".zip");
+                                        FileInfo zip = new FileInfo(Path.Combine(Game.Library.Directory, Game.appID + ".zip"));
 
                                         // And set archive size as game size
                                         Game.sizeOnDisk = zip.Length;
@@ -246,7 +246,7 @@ namespace Steam_Library_Manager.Functions
                     gameDetailBox.Size = new System.Drawing.Size(230, 107);
 
                     // Load game header image asynchronously
-                    gameDetailBox.LoadAsync("https://steamcdn-a.akamaihd.net/steam/apps/" + Game.appID + "/header.jpg");
+                    gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID));
 
                     // Set error image in case of couldn't load game header image
                     gameDetailBox.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
@@ -271,10 +271,10 @@ namespace Steam_Library_Manager.Functions
 
                     // Add right click menu items
                     // Game name (appID) // disabled
-                    rightClickMenu.MenuItems.Add(Game.appName + " (" + Game.appID.ToString() + ")").Enabled = false;
+                    rightClickMenu.MenuItems.Add(string.Format("{0} (ID: {1})", Game.appName, Game.appID)).Enabled = false;
 
                     // Game Size on Disk: 124MB // disabled
-                    rightClickMenu.MenuItems.Add("Game Size on Disk: " + Functions.FileSystem.FormatBytes(Game.sizeOnDisk)).Enabled = false;
+                    rightClickMenu.MenuItems.Add(string.Format("Game Size on Disk: {0}", Functions.FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
 
                     // Spacer
                     rightClickMenu.MenuItems.Add("-");
@@ -353,15 +353,15 @@ namespace Steam_Library_Manager.Functions
                 switch ((sender as MenuItem).Name)
                 {
 
-                    // default use the steam to act
+                    // default use steam to act
                     // more details: https://developer.valvesoftware.com/wiki/Steam_browser_protocol
                     default:
-                        System.Diagnostics.Process.Start("steam://" + (sender as MenuItem).Name + "/" + Game.appID);
+                        System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
                         break;
 
                     // Opens game store page in user browser
                     case "Store":
-                        System.Diagnostics.Process.Start("http://store.steampowered.com/app/" + Game.appID.ToString() + "/");
+                        System.Diagnostics.Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
                         break;
                     
                     // Opens game installation path in explorer
