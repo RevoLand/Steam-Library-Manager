@@ -124,9 +124,9 @@
             this.groupBox_SLM.Controls.Add(this.SLM_button_GameSizeCalcHelp);
             this.groupBox_SLM.Controls.Add(this.SLM_sizeCalculationMethod);
             this.groupBox_SLM.Controls.Add(this.label2);
-            this.groupBox_SLM.Location = new System.Drawing.Point(6, 132);
+            this.groupBox_SLM.Location = new System.Drawing.Point(6, 6);
             this.groupBox_SLM.Name = "groupBox_SLM";
-            this.groupBox_SLM.Size = new System.Drawing.Size(524, 321);
+            this.groupBox_SLM.Size = new System.Drawing.Size(373, 327);
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
             this.groupBox_SLM.Text = "SLM";
@@ -281,7 +281,7 @@
             this.groupBox_Steam.Controls.Add(this.button_SelectSteamPath);
             this.groupBox_Steam.Controls.Add(this.linkLabel_SteamPath);
             this.groupBox_Steam.Controls.Add(this.label1);
-            this.groupBox_Steam.Location = new System.Drawing.Point(6, 6);
+            this.groupBox_Steam.Location = new System.Drawing.Point(385, 6);
             this.groupBox_Steam.Name = "groupBox_Steam";
             this.groupBox_Steam.Size = new System.Drawing.Size(225, 120);
             this.groupBox_Steam.TabIndex = 0;

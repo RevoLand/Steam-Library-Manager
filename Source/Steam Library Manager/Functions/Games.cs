@@ -38,13 +38,13 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.Game.Clear();
 
                 // Foreach *.acf file found in library
-                foreach (Framework.FileData game in Framework.FastDirectoryEnumerator.EnumerateFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly))
+                foreach (string game in Directory.EnumerateFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly))
                 {
                     // Define a new value and call KeyValue
                     Framework.KeyValue Key = new Framework.KeyValue();
 
                     // Read the *.acf file as text
-                    Key.ReadFileAsText(game.Path);
+                    Key.ReadFileAsText(game);
 
                     // If key doesn't contains a child (value in acf file)
                     if (Key.Children.Count == 0)
@@ -128,10 +128,10 @@ namespace Steam_Library_Manager.Functions
                 if (Library.Backup)
                 {
                     // Do a loop for each *.zip file in library
-                    foreach (Framework.FileData gameArchive in Framework.FastDirectoryEnumerator.EnumerateFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly))
+                    foreach (string gameArchive in Directory.EnumerateFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly))
                     {
                         // Open archive for read
-                        using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive.Path))
+                        using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
                         {
                             // For each file in opened archive
                             foreach (ZipArchiveEntry file in compressedArchive.Entries)

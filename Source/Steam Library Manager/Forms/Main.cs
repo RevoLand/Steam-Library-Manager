@@ -84,7 +84,7 @@ namespace Steam_Library_Manager
         private void SLM_button_GameSizeCalcHelp_Click(object sender, EventArgs e)
         {
             // Show messagebox to user
-            MessageBox.Show("ACF, uses the game size specified in \"GameID\".ACF file, much faster than enumeration of game files but may not be accurate 100%\n\nEnum, enumerates all files in the game installation directory and check for file sizes so in a large game library it may take real long but 100% accurate\n\nTip: ACF is preferred, as because while copying or moving a game if any file fails while copying will cause the process to die and it will not delete any files from source dir, also you wouldn't try moving a game to full disk, would you? Well don't worry, you can try :P", "Game Size Calculation Method");
+            MessageBox.Show("ACF, uses the game size specified in {GameID}.ACF file, much faster than enumeration of game files but may not be accurate 100%\n\nEnum, enumerates all files in the game installation directory and check for file sizes so in a large game library it may take real long but 100% accurate\n\nTip: ACF is preferred, as because while copying or moving a game if any file fails while copying will cause the process to die and it will not delete any files from source dir, also you wouldn't try moving a game to full disk, would you? Well don't worry, you can try :P", "Game Size Calculation Method");
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
@@ -128,9 +128,6 @@ namespace Steam_Library_Manager
 
                 // Clear current selected game library
                 panel_GameList.Controls.Clear();
-
-                // Focus to library panel for mousewheel
-                panel_LibraryList.Focus();
             }
             catch { }
         }

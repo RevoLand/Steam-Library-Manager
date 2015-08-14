@@ -13,10 +13,10 @@ namespace Steam_Library_Manager.Functions
                 long directorySize = 0;
 
                 // For each file in the given directory
-                foreach (Framework.FileData currentFile in Framework.FastDirectoryEnumerator.EnumerateFiles(directoryPath, "*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                foreach (string currentFile in Directory.EnumerateFiles(directoryPath, "*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
                     // add current file size to directory size
-                    directorySize += currentFile.Size;
+                    directorySize += currentFile.Length;
                 }
 
                 // and return directory size

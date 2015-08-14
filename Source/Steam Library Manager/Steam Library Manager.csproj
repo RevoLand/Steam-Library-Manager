@@ -88,7 +88,6 @@
     <Compile Include="Forms\MoveGame.Designer.cs">
       <DependentUpon>MoveGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="Framework\FastDirectoryEnumerator.cs" />
     <Compile Include="Framework\KeyValue.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
