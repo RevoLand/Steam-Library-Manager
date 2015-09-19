@@ -69,6 +69,7 @@
             this.tabControl1.Controls.Add(this.tab_InstalledGames);
             this.tabControl1.Controls.Add(this.tab_Settings);
             this.tabControl1.Location = new System.Drawing.Point(4, 11);
+            this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 1;
             this.tabControl1.Size = new System.Drawing.Size(853, 745);

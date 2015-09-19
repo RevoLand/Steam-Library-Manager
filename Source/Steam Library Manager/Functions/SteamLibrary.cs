@@ -118,7 +118,7 @@ namespace Steam_Library_Manager.Functions
                     PictureBox libraryDetailBox = new PictureBox();
 
                     // Set our image for picturebox
-                    libraryDetailBox.Image = global::Steam_Library_Manager.Properties.Resources.Folder;
+                    libraryDetailBox.Image = Properties.Resources.Folder;
 
                     // Set our picturebox size
                     libraryDetailBox.Size = new System.Drawing.Size(width, height);
@@ -165,11 +165,23 @@ namespace Steam_Library_Manager.Functions
                     // Create a new right click menu (aka context menu)
                     ContextMenu rightClickMenu = new ContextMenu();
 
-                    // Add an item which will show our library directory and make it disabled
-                    rightClickMenu.MenuItems.Add(Library.Directory).Enabled = false;
+                    // Define an event handler to use with library context menu
+                    EventHandler mouseClick = new EventHandler(libraryDetailBox_ContextMenuAction);
 
-                    // Add an item which will show game count in our library and make it disabled
-                    rightClickMenu.MenuItems.Add(string.Format("Game Count: {0}", Library.GameCount)).Enabled = false;
+                    // Set our library details as context menu tag
+                    rightClickMenu.Tag = Library;
+
+                    // Add an item which will show our library directory and make it disabled
+                    rightClickMenu.MenuItems.Add(Library.Directory, mouseClick).Name = "Disk";
+
+                    if (Library.Backup)
+                    {
+                        // Spacer
+                        rightClickMenu.MenuItems.Add("-");
+
+                        // Remove the library from slm (only from list)
+                        rightClickMenu.MenuItems.Add("Remove from List", mouseClick).Name = "RemoveFromList";
+                    }
 
                     // Add our label to pictureBox
                     libraryDetailBox.Controls.Add(libraryName);
@@ -186,6 +198,43 @@ namespace Steam_Library_Manager.Functions
             }
             catch { }
         }
+
+        static void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
+        {
+            try
+            {
+                // Define our game from the Tag we given to Context menu
+                Definitions.List.LibraryList Library = (sender as MenuItem).Parent.Tag as Definitions.List.LibraryList;
+
+                // switch based on name we set earlier with context menu
+                switch ((sender as MenuItem).Name)
+                {
+
+                    // Opens game installation path in explorer
+                    case "Disk":
+                        System.Diagnostics.Process.Start(Library.Directory);
+                        break;
+
+                   // Removes a backup library from list
+                    case "RemoveFromList":
+                        if (Library.Backup)
+                        {
+                            // Remove the library from our list
+                            Definitions.List.Library.Remove(Library);
+
+                            // Update backup dir settings
+                            Functions.Settings.UpdateBackupDirs();
+
+                            // Update main form with new settings
+                            UpdateMainForm();
+                        }
+                        break;
+                }
+
+            }
+            catch { }
+        }
+
 
         public static void CreateNewLibrary(string newLibraryPath, bool Backup)
         {
@@ -251,7 +300,6 @@ namespace Steam_Library_Manager.Functions
             }
             catch { }
         }
-
 
         public static bool LibraryExists(string NewLibraryPath)
         {

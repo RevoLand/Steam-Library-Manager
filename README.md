@@ -10,7 +10,7 @@ Prerequisites
 
 Release
 ===================
- - [Latest Release](https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Binaries/Steam%20Library%20Manager.exe)
+ - [Latest Release](https://github.com/RevoLand/Steam-Library-Manager/releases/latest)
 
 To-Do List
 ===================

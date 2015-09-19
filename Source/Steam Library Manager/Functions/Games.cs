@@ -75,8 +75,8 @@ namespace Steam_Library_Manager.Functions
                         Game.downloadPath = Path.Combine(Library.Directory, "downloading", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "workshop", "content", Game.installationPath)))
-                        Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
+                    if (Directory.Exists(Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString())))
+                        Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                     if (Game.exactInstallPath == null && Game.downloadPath == null)
@@ -249,10 +249,10 @@ namespace Steam_Library_Manager.Functions
                     gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID));
 
                     // Set error image in case of couldn't load game header image
-                    gameDetailBox.ErrorImage = global::Steam_Library_Manager.Properties.Resources.no_image_available;
+                    gameDetailBox.ErrorImage = Properties.Resources.no_image_available;
 
                     // Space between pictureBoxes for better looking
-                    gameDetailBox.Margin = new System.Windows.Forms.Padding(20);
+                    gameDetailBox.Margin = new Padding(20);
 
                     // Set our game details as Tag to pictureBox
                     gameDetailBox.Tag = Game;

@@ -238,8 +238,8 @@ namespace Steam_Library_Manager.Framework
         /// <param name="value">The optional value assigned to the root key.</param>
         public KeyValue( string name = null, string value = null )
         {
-            this.Name = name;
-            this.Value = value;
+            Name = name;
+            Value = value;
 
             Children = new List<KeyValue>();
         }
@@ -272,7 +272,7 @@ namespace Steam_Library_Manager.Framework
         {
             get
             {
-                var child = this.Children
+                var child = Children
                     .FirstOrDefault(c => string.Equals(c.Name, key, StringComparison.OrdinalIgnoreCase));
 
                 if (child == null)
@@ -291,7 +291,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a string.</returns>
         public string AsString()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace Steam_Library_Manager.Framework
         {
             int value;
 
-            if ( int.TryParse( this.Value, out value ) == false )
+            if ( int.TryParse(Value, out value ) == false )
             {
                 return defaultValue;
             }
@@ -322,7 +322,7 @@ namespace Steam_Library_Manager.Framework
         {
             long value;
 
-            if ( long.TryParse( this.Value, out value ) == false )
+            if ( long.TryParse(Value, out value ) == false )
             {
                 return defaultValue;
             }
@@ -340,7 +340,7 @@ namespace Steam_Library_Manager.Framework
         {
             float value;
 
-            if ( float.TryParse( this.Value, out value ) == false )
+            if ( float.TryParse(Value, out value ) == false )
             {
                 return defaultValue;
             }
@@ -358,7 +358,7 @@ namespace Steam_Library_Manager.Framework
         {
             int value;
 
-            if ( int.TryParse( this.Value, out value ) == false )
+            if ( int.TryParse(Value, out value ) == false )
             {
                 return defaultValue;
             }
@@ -374,7 +374,7 @@ namespace Steam_Library_Manager.Framework
         /// </returns>
         public override string ToString()
         {
-            return string.Format( "{0} = {1}", this.Name, this.Value );
+            return string.Format( "{0} = {1}", Name, Value);
         }
 
         /// <summary>
@@ -478,7 +478,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
         public bool ReadAsText( Stream input )
         {
-            this.Children = new List<KeyValue>();
+            Children = new List<KeyValue>();
 
             new KVTextReader( this, input );
 
@@ -525,7 +525,7 @@ namespace Steam_Library_Manager.Framework
 
                 KeyValue dat = new KeyValue( name );
                 dat.Children = new List<KeyValue>();
-                this.Children.Add( dat );
+                Children.Add( dat );
 
                 // get the value
                 string value = kvr.ReadToken( out wasQuoted, out wasConditional );
@@ -629,7 +629,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
         public bool ReadAsBinary( Stream input )
         {
-            this.Children = new List<KeyValue>();
+            Children = new List<KeyValue>();
 
             while ( true )
             {
@@ -696,7 +696,7 @@ namespace Steam_Library_Manager.Framework
                     throw new InvalidDataException( string.Format( "An exception ocurred while reading KV '{0}'", current.Name ), ex );
                 }
 
-                this.Children.Add( current );
+                Children.Add( current );
             }
 
             return input.Position == input.Length;

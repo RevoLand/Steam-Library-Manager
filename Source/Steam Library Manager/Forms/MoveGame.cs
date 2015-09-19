@@ -46,8 +46,7 @@ namespace Steam_Library_Manager.Forms
             // else if, Target library is backup library
             else if (Library.Backup)
             {
-                checkbox_Compress.Visible = true;
-                button_Copy.Text = "Backup";
+                checkbox_Compress.Visible = true; button_Copy.Text = "Backup";
             }
 
             // Load our game image asynchronously
