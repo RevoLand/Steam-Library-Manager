@@ -105,5 +105,19 @@ namespace Steam_Library_Manager.Properties {
                 this["CheckForUpdatesAtStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("appName")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string SortGamesBy {
+            get {
+                return ((string)(this["SortGamesBy"]));
+            }
+            set {
+                this["SortGamesBy"] = value;
+            }
+        }
     }
 }

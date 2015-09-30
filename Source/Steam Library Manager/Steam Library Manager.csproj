@@ -89,6 +89,9 @@
       <DependentUpon>MoveGame.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\KeyValue.cs" />
+    <Compile Include="Framework\PictureBoxWithCaching.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
     <Compile Include="Functions\Log.cs" />

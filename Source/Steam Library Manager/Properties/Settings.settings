@@ -20,5 +20,8 @@
     <Setting Name="CheckForUpdatesAtStartup" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="SortGamesBy" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">appName</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -30,10 +30,13 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_InstalledGames = new System.Windows.Forms.TabPage();
+            this.textBox_searchInGames = new System.Windows.Forms.TextBox();
             this.panel_LibraryList = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.SLM_SortGamesBy = new System.Windows.Forms.ComboBox();
             this.groupBox_Version = new System.Windows.Forms.GroupBox();
             this.checkbox_CheckForUpdatesAtStartup = new System.Windows.Forms.CheckBox();
             this.button_CheckForUpdates = new System.Windows.Forms.Button();
@@ -56,6 +59,7 @@
             this.button_RefreshLibraries = new System.Windows.Forms.Button();
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
+            this.label_searchInLibrary = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -72,20 +76,30 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 1;
-            this.tabControl1.Size = new System.Drawing.Size(853, 745);
+            this.tabControl1.Size = new System.Drawing.Size(853, 770);
             this.tabControl1.TabIndex = 0;
             // 
             // tab_InstalledGames
             // 
+            this.tab_InstalledGames.Controls.Add(this.label_searchInLibrary);
+            this.tab_InstalledGames.Controls.Add(this.textBox_searchInGames);
             this.tab_InstalledGames.Controls.Add(this.panel_LibraryList);
             this.tab_InstalledGames.Controls.Add(this.panel_GameList);
             this.tab_InstalledGames.Location = new System.Drawing.Point(4, 22);
             this.tab_InstalledGames.Name = "tab_InstalledGames";
             this.tab_InstalledGames.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 719);
+            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 744);
             this.tab_InstalledGames.TabIndex = 1;
             this.tab_InstalledGames.Text = "Installed Games";
             this.tab_InstalledGames.UseVisualStyleBackColor = true;
+            // 
+            // textBox_searchInGames
+            // 
+            this.textBox_searchInGames.Location = new System.Drawing.Point(653, 718);
+            this.textBox_searchInGames.Name = "textBox_searchInGames";
+            this.textBox_searchInGames.Size = new System.Drawing.Size(188, 20);
+            this.textBox_searchInGames.TabIndex = 3;
+            this.textBox_searchInGames.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox_searchInGames_KeyUp);
             // 
             // panel_LibraryList
             // 
@@ -111,13 +125,15 @@
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Settings.Size = new System.Drawing.Size(845, 719);
+            this.tab_Settings.Size = new System.Drawing.Size(845, 744);
             this.tab_Settings.TabIndex = 2;
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
             // 
             // groupBox_SLM
             // 
+            this.groupBox_SLM.Controls.Add(this.label5);
+            this.groupBox_SLM.Controls.Add(this.SLM_SortGamesBy);
             this.groupBox_SLM.Controls.Add(this.groupBox_Version);
             this.groupBox_SLM.Controls.Add(this.checkbox_LogErrorsToFile);
             this.groupBox_SLM.Controls.Add(this.SLM_archiveSizeCalcMethod);
@@ -131,6 +147,31 @@
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
             this.groupBox_SLM.Text = "SLM";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label5.Location = new System.Drawing.Point(6, 73);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(80, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Sort Games By:";
+            // 
+            // SLM_SortGamesBy
+            // 
+            this.SLM_SortGamesBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SLM_SortGamesBy.IntegralHeight = false;
+            this.SLM_SortGamesBy.ItemHeight = 13;
+            this.SLM_SortGamesBy.Items.AddRange(new object[] {
+            "appName",
+            "appID",
+            "sizeOnDisk"});
+            this.SLM_SortGamesBy.Location = new System.Drawing.Point(158, 70);
+            this.SLM_SortGamesBy.Name = "SLM_SortGamesBy";
+            this.SLM_SortGamesBy.Size = new System.Drawing.Size(175, 21);
+            this.SLM_SortGamesBy.TabIndex = 5;
+            this.SLM_SortGamesBy.SelectedIndexChanged += new System.EventHandler(this.SLM_SortGamesBy_SelectedIndexChanged);
             // 
             // groupBox_Version
             // 
@@ -211,7 +252,7 @@
             // 
             // checkbox_LogErrorsToFile
             // 
-            this.checkbox_LogErrorsToFile.Location = new System.Drawing.Point(158, 70);
+            this.checkbox_LogErrorsToFile.Location = new System.Drawing.Point(163, 96);
             this.checkbox_LogErrorsToFile.Name = "checkbox_LogErrorsToFile";
             this.checkbox_LogErrorsToFile.Size = new System.Drawing.Size(175, 24);
             this.checkbox_LogErrorsToFile.TabIndex = 4;
@@ -363,11 +404,20 @@
             this.button_newSteamLibrary.UseVisualStyleBackColor = true;
             this.button_newSteamLibrary.Click += new System.EventHandler(this.newLibrary_Click);
             // 
+            // label_searchInLibrary
+            // 
+            this.label_searchInLibrary.AutoSize = true;
+            this.label_searchInLibrary.Location = new System.Drawing.Point(483, 721);
+            this.label_searchInLibrary.Name = "label_searchInLibrary";
+            this.label_searchInLibrary.Size = new System.Drawing.Size(163, 13);
+            this.label_searchInLibrary.TabIndex = 4;
+            this.label_searchInLibrary.Text = "Search in Library (by Name or ID)";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(859, 760);
+            this.ClientSize = new System.Drawing.Size(859, 783);
             this.Controls.Add(this.button_newSteamLibrary);
             this.Controls.Add(this.button_newBackupLibrary);
             this.Controls.Add(this.button_RefreshLibraries);
@@ -380,6 +430,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tab_InstalledGames.ResumeLayout(false);
+            this.tab_InstalledGames.PerformLayout();
             this.tab_Settings.ResumeLayout(false);
             this.groupBox_SLM.ResumeLayout(false);
             this.groupBox_SLM.PerformLayout();
@@ -422,6 +473,10 @@
         public System.Windows.Forms.Label label_LatestVersion;
         private System.Windows.Forms.Button button_CheckForUpdates;
         public System.Windows.Forms.CheckBox checkbox_CheckForUpdatesAtStartup;
+        public System.Windows.Forms.ComboBox SLM_SortGamesBy;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox_searchInGames;
+        private System.Windows.Forms.Label label_searchInLibrary;
     }
 }
 

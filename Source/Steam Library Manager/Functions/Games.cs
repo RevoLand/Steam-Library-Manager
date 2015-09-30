@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -65,6 +67,9 @@ namespace Steam_Library_Manager.Functions
 
                     // Set game library
                     Game.Library = Library;
+
+                    // Set game acf path
+                    Game.acfPath = game;
 
                     // If game has a folder in "common" dir, define it as exactInstallPath
                     if (Directory.Exists(Path.Combine(Library.Directory, "common", Game.installationPath)))
@@ -196,7 +201,7 @@ namespace Steam_Library_Manager.Functions
                                     Definitions.List.Game.Add(Game);
 
                                     // Update main form as visual
-                                    Functions.Games.UpdateMainForm();
+                                    Functions.Games.UpdateMainForm(null, null);
 
                                     // we found what we are looking for, return
                                     return;
@@ -210,7 +215,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Accessors.MainForm.panel_GameList.Focus();
 
                 // Update main form as visual
-                Functions.Games.UpdateMainForm();
+                Functions.Games.UpdateMainForm(null, null);
             }
             catch (Exception ex)
             {
@@ -224,7 +229,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateMainForm()
+        public static void UpdateMainForm(Func<Definitions.List.GamesList, Object> Sort, string Search)
         {
             try
             {
@@ -233,11 +238,29 @@ namespace Steam_Library_Manager.Functions
                     // Then clean panel
                     Definitions.Accessors.MainForm.panel_GameList.Controls.Clear();
 
+                // Define our sorting method
+                switch (Properties.Settings.Default.SortGamesBy)
+                {
+                    default:
+                    case "appName":
+                        Sort = x => x.appName;
+                        break;
+                    case "appID":
+                        Sort = x => x.appID;
+                        break;
+                    case "sizeOnDisk":
+                        Sort = x => x.sizeOnDisk;
+                        break;
+                }
+
                 // Do a loop for each game in library
-                foreach (Definitions.List.GamesList Game in Definitions.List.Game)
+                foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.OrderBy(Sort) : Definitions.List.Game.Where(
+                    y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) || // Search by appName
+                    y.appID.ToString().Contains(Search) // Search by app ID
+                    )))
                 {
                     // Define a new pictureBox for game
-                    PictureBox gameDetailBox = new PictureBox();
+                    Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
 
                     // Set picture mode of pictureBox
                     gameDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -303,6 +326,9 @@ namespace Steam_Library_Manager.Functions
                     // Check system requirements
                     rightClickMenu.MenuItems.Add("Check System Requirements", mouseClick).Name = "checksysreqs";
 
+                    // Open .acf file
+                    rightClickMenu.MenuItems.Add("Open ACF file", mouseClick).Name = "acfFile";
+
                     // Spacer
                     rightClickMenu.MenuItems.Add("-");
 
@@ -330,7 +356,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // If clicked button is left (so it will not conflict with context menu)
-                if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                if (e.Button == MouseButtons.Left)
                 {
                     // Define our picturebox from sender
                     PictureBox img = sender as PictureBox;
@@ -356,17 +382,22 @@ namespace Steam_Library_Manager.Functions
                     // default use steam to act
                     // more details: https://developer.valvesoftware.com/wiki/Steam_browser_protocol
                     default:
-                        System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
+                        Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
                         break;
 
                     // Opens game store page in user browser
                     case "Store":
-                        System.Diagnostics.Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
+                        Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
                         break;
                     
                     // Opens game installation path in explorer
                     case "Disk":
-                        System.Diagnostics.Process.Start(Game.exactInstallPath);
+                        Process.Start(Game.exactInstallPath);
+                        break;
+
+                        // Opens game acf file in default text viewer
+                    case "acfFile":
+                        Process.Start(Game.acfPath);
                         break;
                 }
 

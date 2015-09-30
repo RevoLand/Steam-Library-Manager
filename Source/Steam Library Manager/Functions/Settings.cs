@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Steam_Library_Manager.Functions
+﻿namespace Steam_Library_Manager.Functions
 {
     class Settings
     {
@@ -16,6 +14,9 @@ namespace Steam_Library_Manager.Functions
 
                 // Update archive size calculation method selectbox
                 Definitions.Accessors.MainForm.SLM_archiveSizeCalcMethod.SelectedIndex = (!Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed")) ? 1 : 0;
+
+                // Update sort games method by saved one
+                Definitions.Accessors.MainForm.SLM_SortGamesBy.SelectedItem = Properties.Settings.Default.SortGamesBy;
 
                 // Update log errors to file checkbox
                 Definitions.Accessors.MainForm.checkbox_LogErrorsToFile.Checked = Properties.Settings.Default.LogErrorsToFile;

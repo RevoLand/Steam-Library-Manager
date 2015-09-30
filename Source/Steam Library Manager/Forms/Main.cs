@@ -207,5 +207,34 @@ namespace Steam_Library_Manager
             }
             catch { }
         }
+
+        private void SLM_SortGamesBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Update value in memory
+                Properties.Settings.Default.SortGamesBy = SLM_SortGamesBy.SelectedItem.ToString();
+
+                // Save settings to file
+                Functions.Settings.Save();
+
+                if (Definitions.SLM.LatestSelectedLibrary != null)
+                    // Update main form with new settings
+                    Functions.Games.UpdateMainForm(null, null);
+            }
+            catch { }
+        }
+
+        private void textBox_searchInGames_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (Definitions.SLM.LatestSelectedLibrary.GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
+                    return;
+
+                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text);
+            }
+            catch { }
+        }
     }
 }

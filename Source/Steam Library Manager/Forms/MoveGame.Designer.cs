@@ -40,7 +40,7 @@
             label4 = new System.Windows.Forms.Label();
             label_AvailableSpace = new System.Windows.Forms.Label();
             label_NeededSpace = new System.Windows.Forms.Label();
-            pictureBox_GameImage = new System.Windows.Forms.PictureBox();
+            pictureBox_GameImage = new Framework.PictureBoxWithCaching();
             linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
             checkbox_Compress = new System.Windows.Forms.CheckBox();
             checkbox_DeCompress = new System.Windows.Forms.CheckBox();
@@ -241,7 +241,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label_AvailableSpace;
         private System.Windows.Forms.Label label_NeededSpace;
-        private System.Windows.Forms.PictureBox pictureBox_GameImage;
+        private Framework.PictureBoxWithCaching pictureBox_GameImage;
         private System.Windows.Forms.Button button_Copy;
         private System.Windows.Forms.LinkLabel linkLabel_TargetLibrary;
         private System.Windows.Forms.CheckBox checkbox_Compress;
