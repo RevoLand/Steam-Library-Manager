@@ -1,9 +1,0 @@
-D:\Projeler\Steam\Steam-Library-Manager\Binaries\Steam Library Manager.exe.config
-D:\Projeler\Steam\Steam-Library-Manager\Binaries\Steam Library Manager.exe
-D:\Projeler\Steam\Steam-Library-Manager\Binaries\Steam Library Manager.pdb
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam_Library_Manager.Main.resources
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam_Library_Manager.Forms.MoveGame.resources
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam_Library_Manager.Properties.Resources.resources
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam Library Manager.csproj.GenerateResource.Cache
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam Library Manager.exe
-D:\Projeler\Steam\Steam-Library-Manager\Source\Steam Library Manager\obj\Release\Steam Library Manager.pdb
