@@ -257,7 +257,8 @@ namespace Steam_Library_Manager.Functions
                 foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.OrderBy(Sort) : Definitions.List.Game.Where(
                     y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) || // Search by appName
                     y.appID.ToString().Contains(Search) // Search by app ID
-                    )))
+                    ).OrderBy(Sort)
+                    ))
                 {
                     // Define a new pictureBox for game
                     Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
