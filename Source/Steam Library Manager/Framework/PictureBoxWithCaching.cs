@@ -16,56 +16,78 @@ namespace Steam_Library_Manager.Framework
 {
     class PictureBoxWithCaching:PictureBox
     {
-        private string _pathToCacheFolder;
-        private bool _withoutCaching;
-        private string _pathToCachedFile;
-        private string _url;
+        private bool _withoutCaching = false;
+        private string _pathToCachedFile, _url;
+        private BackgroundWorker _bw = new BackgroundWorker();
 
         public PictureBoxWithCaching()
         {
             try
             {
-                _pathToCacheFolder = Definitions.Directories.SLM.CacheDirectory;
-                if (!Directory.Exists(_pathToCacheFolder))
+                if (!Directory.Exists(Definitions.Directories.SLM.CacheDirectory))
                 {
-                    Directory.CreateDirectory(_pathToCacheFolder);
+                    Directory.CreateDirectory(Definitions.Directories.SLM.CacheDirectory);
                 }
+
                 _bw.DoWork += DoWork;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString());
                 _withoutCaching = true;
+            }
+        }
+
+        private void DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                if (!File.Exists(_pathToCachedFile) || new FileInfo(_pathToCachedFile).Length == 0)
+                {
+                    WebClient wc = new WebClient();
+                    wc.DownloadFile(new Uri(_url), _pathToCachedFile);
+                    base.LoadAsync(_pathToCachedFile);
+                }
+            }
+            catch (WebException ex)
+            {
+                base.LoadAsync(ex.Source); // so it will load "no image available"
+                //_withoutCaching = true;
             }
         }
 
         public new void LoadAsync(string url)
         {
-            if (_withoutCaching)
+            try
             {
-                base.LoadAsync(url);
-                return;
-            }
-            _url = url;
+                if (_withoutCaching)
+                {
+                    base.LoadAsync(url);
+                    return;
+                }
+                _url = url;
 
-            var urlAsMD5 = calculateMD5(url);
-             _pathToCachedFile = Path.Combine(_pathToCacheFolder, urlAsMD5);
-            
-            if (!File.Exists(_pathToCachedFile))
-            {
-                _bw.RunWorkerAsync();
+                var urlAsMD5 = calculateMD5(url);
+                _pathToCachedFile = Path.Combine(Definitions.Directories.SLM.CacheDirectory, urlAsMD5);
+
+                if (!File.Exists(_pathToCachedFile) || new FileInfo(_pathToCachedFile).Length == 0)
+                    _bw.RunWorkerAsync();
+                else
+                    base.LoadAsync(_pathToCachedFile);
             }
-            else
+            catch (Exception ex)
             {
-                base.LoadAsync(_pathToCachedFile);
+                MessageBox.Show(ex.ToString());
+                _withoutCaching = true;
             }
         }
+
         private string calculateMD5(string input)
         {
             var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
             byte[] inputStringAsByteArray = Encoding.Default.GetBytes(input);
             byte[] md5AsByteArray = md5.ComputeHash(inputStringAsByteArray);
-            
+
             var sb = new StringBuilder();
             foreach (byte b in md5AsByteArray)
             {
@@ -73,15 +95,6 @@ namespace Steam_Library_Manager.Framework
             }
 
             return sb.ToString();
-        }
-
-        private BackgroundWorker _bw = new BackgroundWorker();
-
-        private void DoWork(object sender, DoWorkEventArgs e)
-        {
-            var wc = new WebClient();
-            wc.DownloadFileAsync(new Uri(_url), _pathToCachedFile);
-            base.LoadAsync(_pathToCachedFile);
         }
     }
 }

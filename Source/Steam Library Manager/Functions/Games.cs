@@ -62,6 +62,11 @@ namespace Steam_Library_Manager.Functions
                     // Set game name
                     Game.appName = Key["name"].Value;
 
+                    // If app name couldn't find
+                    if (string.IsNullOrEmpty(Game.appName))
+                        // Check for userconfig for name
+                        Game.appName = Key["UserConfig"]["name"].Value;
+
                     // Set installation path
                     Game.installationPath = Key["installdir"].Value;
 
