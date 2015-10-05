@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -306,12 +307,11 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // For each current game libraries
-                foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
+                foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant())))
                 {
                     // If current library contains NewLibraryPath
-                    if (Library.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant()))
-                        // Then return true
-                        return true;
+                    // Then return true
+                    return true;
                 }
                 // else, return false which means library is not exists
                 return false;
@@ -361,7 +361,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
 
                 // Define our game details
-                Definitions.List.GamesList Game = (e.Data.GetData("System.Windows.Forms.PictureBox") as PictureBox).Tag as Definitions.List.GamesList;
+                Definitions.List.GamesList Game = (e.Data.GetData("Steam_Library_Manager.Framework.PictureBoxWithCaching") as Framework.PictureBoxWithCaching).Tag as Definitions.List.GamesList;
 
                 // If we dropped game to the library which is already on it then do nothing
                 if (Game.Library == Library) return;

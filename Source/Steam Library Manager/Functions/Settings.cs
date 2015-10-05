@@ -1,4 +1,5 @@
-﻿namespace Steam_Library_Manager.Functions
+﻿using System.Linq;
+namespace Steam_Library_Manager.Functions
 {
     class Settings
     {
@@ -40,13 +41,11 @@
 				// Define a new string collection to update backup library settings
                 System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
-				// foreach defined library in library list
-                foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
+                // foreach defined library in library list
+                foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.Backup))
                 {
-					// if our library is a backup library
-                    if (Library.Backup)
-						// then add this library path to new defined string collection
-                        BackupDirs.Add(Library.Directory.Remove(Library.Directory.Length -1, 1));
+                    // then add this library path to new defined string collection
+                    BackupDirs.Add(Library.Directory.Remove(Library.Directory.Length - 1, 1));
                 }
 
 				// change our current backup directories setting with new defined string collection

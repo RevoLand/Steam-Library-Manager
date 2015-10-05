@@ -144,73 +144,69 @@ namespace Steam_Library_Manager.Functions
                         using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
                         {
                             // For each file in opened archive
-                            foreach (ZipArchiveEntry file in compressedArchive.Entries)
+                            foreach (ZipArchiveEntry file in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
                             {
-                                // Check the file if it's name contains .ACF
-                                if (file.Name.Contains(".acf"))
+                                // If it contains
+                                // Define a KeyValue reader
+                                Framework.KeyValue Key = new Framework.KeyValue();
+
+                                // Open .acf file from archive as text
+                                Key.ReadAsText(file.Open());
+
+                                // If acf file has no children, skip this archive
+                                if (Key.Children.Count == 0)
+                                    return;
+
+                                // Define a new game
+                                Definitions.List.GamesList Game = new Definitions.List.GamesList();
+
+                                // Define our app ID
+                                Game.appID = Convert.ToInt32(Key["appID"].Value);
+
+                                // Define our app name
+                                Game.appName = Key["name"].Value;
+
+                                // Define it is an archive
+                                Game.Compressed = true;
+
+                                // Define installation path for game
+                                Game.installationPath = Key["installdir"].Value;
+
+                                // Define our library
+                                Game.Library = Library;
+
+                                // If user want us to get archive size from real uncompressed size
+                                if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
                                 {
-                                    // If it contains
-                                    // Define a KeyValue reader
-                                    Framework.KeyValue Key = new Framework.KeyValue();
-
-                                    // Open .acf file from archive as text
-                                    Key.ReadAsText(file.Open());
-
-                                    // If acf file has no children, skip this archive
-                                    if (Key.Children.Count == 0)
-                                        return;
-
-                                    // Define a new game
-                                    Definitions.List.GamesList Game = new Definitions.List.GamesList();
-
-                                    // Define our app ID
-                                    Game.appID = Convert.ToInt32(Key["appID"].Value);
-
-                                    // Define our app name
-                                    Game.appName = Key["name"].Value;
-
-                                    // Define it is an archive
-                                    Game.Compressed = true;
-
-                                    // Define installation path for game
-                                    Game.installationPath = Key["installdir"].Value;
-
-                                    // Define our library
-                                    Game.Library = Library;
-
-                                    // If user want us to get archive size from real uncompressed size
-                                    if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
+                                    // Open archive to read
+                                    using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.Directory, Game.appID + ".zip")))
                                     {
-                                        // Open archive to read
-                                        using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.Directory, Game.appID + ".zip")))
+                                        // For each file in archive
+                                        foreach (ZipArchiveEntry entry in zip.Entries)
                                         {
-                                            // For each file in archive
-                                            foreach (ZipArchiveEntry entry in zip.Entries)
-                                            {
-                                                // Add file size to sizeOnDisk
-                                                Game.sizeOnDisk += entry.Length;
-                                            }
+                                            // Add file size to sizeOnDisk
+                                            Game.sizeOnDisk += entry.Length;
                                         }
                                     }
-                                    // Else
-                                    else
-                                    {
-                                        // Use FileInfo to get our archive details
-                                        FileInfo zip = new FileInfo(Path.Combine(Game.Library.Directory, Game.appID + ".zip"));
-
-                                        // And set archive size as game size
-                                        Game.sizeOnDisk = zip.Length;
-                                    }
-
-                                    // Add our new game to global definiton
-                                    Definitions.List.Game.Add(Game);
-
-                                    // Update main form as visual
-                                    Functions.Games.UpdateMainForm(null, null);
-
-                                    // we found what we are looking for, return
-                                    return;
                                 }
+                                // Else
+                                else
+                                {
+                                    // Use FileInfo to get our archive details
+                                    FileInfo zip = new FileInfo(Path.Combine(Game.Library.Directory, Game.appID + ".zip"));
+
+                                    // And set archive size as game size
+                                    Game.sizeOnDisk = zip.Length;
+                                }
+
+                                // Add our new game to global definiton
+                                Definitions.List.Game.Add(Game);
+
+                                // Update main form as visual
+                                Functions.Games.UpdateMainForm(null, null);
+
+                                // we found what we are looking for, return
+                                return;
                             }
                         }
                     }
