@@ -49,9 +49,9 @@ namespace Steam_Library_Manager.Framework
                     base.LoadAsync(_pathToCachedFile);
                 }
             }
-            catch (WebException ex)
+            catch (WebException)
             {
-                base.LoadAsync(ex.Source); // so it will load "no image available"
+                base.LoadAsync("SLM"); // so it will load "no image available"
                 //_withoutCaching = true;
             }
         }

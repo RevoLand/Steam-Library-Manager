@@ -71,7 +71,13 @@ namespace Steam_Library_Manager.Functions
                         System.Windows.Forms.MessageBox.Show("IT IS NOT SUGGESTED TO SKIP AN IMPORTANT UPGRADE, YOU MAY LOSE DATA WHILE MOVING A GAME, BE AWARE!", "YOU SHOULD NOT SKIP AN IMPORTANT UPDATE", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("Updater", ex.ToString());
+            }
         }
     }
 }

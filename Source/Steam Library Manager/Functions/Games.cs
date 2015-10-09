@@ -223,7 +223,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log
-                    Functions.Log.ErrorsToFile("UpdateGameList", ex.ToString());
+                    Log.ErrorsToFile("UpdateGameList", ex.ToString());
 
                 // Show a messagebox to user
                 MessageBox.Show("An error happened while updating game list!\n" + ex.ToString());
@@ -350,7 +350,13 @@ namespace Steam_Library_Manager.Functions
                     Definitions.Accessors.MainForm.panel_GameList.Controls.Add(gameDetailBox);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Games", ex.ToString());
+            }
         }
 
         static void gameDetailBox_MouseDown(object sender, MouseEventArgs e)
@@ -367,7 +373,13 @@ namespace Steam_Library_Manager.Functions
                     img.DoDragDrop(img, DragDropEffects.Move);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Games", ex.ToString());
+            }
         }
 
         static void gameDetailBox_ContextMenuAction(object sender, EventArgs e)
@@ -404,7 +416,13 @@ namespace Steam_Library_Manager.Functions
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Games", ex.ToString());
+            }
         }
 
     }

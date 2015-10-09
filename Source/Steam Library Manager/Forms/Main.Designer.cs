@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_InstalledGames = new System.Windows.Forms.TabPage();
+            this.label_searchInLibrary = new System.Windows.Forms.Label();
             this.textBox_searchInGames = new System.Windows.Forms.TextBox();
             this.panel_LibraryList = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
@@ -59,7 +60,6 @@
             this.button_RefreshLibraries = new System.Windows.Forms.Button();
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
-            this.label_searchInLibrary = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
@@ -76,7 +76,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 1;
-            this.tabControl1.Size = new System.Drawing.Size(853, 770);
+            this.tabControl1.Size = new System.Drawing.Size(853, 772);
             this.tabControl1.TabIndex = 0;
             // 
             // tab_InstalledGames
@@ -88,16 +88,27 @@
             this.tab_InstalledGames.Location = new System.Drawing.Point(4, 22);
             this.tab_InstalledGames.Name = "tab_InstalledGames";
             this.tab_InstalledGames.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 744);
+            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 746);
             this.tab_InstalledGames.TabIndex = 1;
             this.tab_InstalledGames.Text = "Installed Games";
             this.tab_InstalledGames.UseVisualStyleBackColor = true;
             // 
+            // label_searchInLibrary
+            // 
+            this.label_searchInLibrary.AutoSize = true;
+            this.label_searchInLibrary.Location = new System.Drawing.Point(484, 722);
+            this.label_searchInLibrary.Name = "label_searchInLibrary";
+            this.label_searchInLibrary.Size = new System.Drawing.Size(163, 13);
+            this.label_searchInLibrary.TabIndex = 4;
+            this.label_searchInLibrary.Text = "Search in Library (by Name or ID)";
+            // 
             // textBox_searchInGames
             // 
+            this.textBox_searchInGames.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_searchInGames.Location = new System.Drawing.Point(653, 718);
+            this.textBox_searchInGames.Multiline = true;
             this.textBox_searchInGames.Name = "textBox_searchInGames";
-            this.textBox_searchInGames.Size = new System.Drawing.Size(188, 20);
+            this.textBox_searchInGames.Size = new System.Drawing.Size(188, 23);
             this.textBox_searchInGames.TabIndex = 3;
             this.textBox_searchInGames.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox_searchInGames_KeyUp);
             // 
@@ -125,7 +136,7 @@
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Settings.Size = new System.Drawing.Size(845, 744);
+            this.tab_Settings.Size = new System.Drawing.Size(845, 760);
             this.tab_Settings.TabIndex = 2;
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
@@ -404,20 +415,11 @@
             this.button_newSteamLibrary.UseVisualStyleBackColor = true;
             this.button_newSteamLibrary.Click += new System.EventHandler(this.newLibrary_Click);
             // 
-            // label_searchInLibrary
-            // 
-            this.label_searchInLibrary.AutoSize = true;
-            this.label_searchInLibrary.Location = new System.Drawing.Point(483, 721);
-            this.label_searchInLibrary.Name = "label_searchInLibrary";
-            this.label_searchInLibrary.Size = new System.Drawing.Size(163, 13);
-            this.label_searchInLibrary.TabIndex = 4;
-            this.label_searchInLibrary.Text = "Search in Library (by Name or ID)";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(859, 783);
+            this.ClientSize = new System.Drawing.Size(859, 786);
             this.Controls.Add(this.button_newSteamLibrary);
             this.Controls.Add(this.button_newBackupLibrary);
             this.Controls.Add(this.button_RefreshLibraries);

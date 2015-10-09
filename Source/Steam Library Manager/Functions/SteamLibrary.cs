@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Functions
                 string vdfFilePath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
 
                 // If LibraryFolders.vdf exists
-                if (System.IO.File.Exists(vdfFilePath))
+                if (File.Exists(vdfFilePath))
                 {
                     // Read our vdf file as text
                     Key.ReadFileAsText(vdfFilePath);
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Functions
                         Library.Directory = backupDirectory.ToString() + Path.DirectorySeparatorChar;
 
                         // Define game count in library
-                        Library.GameCount = Functions.Games.GetGamesCountFromLibrary(Library);
+                        Library.GameCount = Games.GetGamesCountFromLibrary(Library);
 
                         // Add our new library to list
                         Definitions.List.Library.Add(Library);
@@ -96,7 +96,10 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("Libraries", ex.ToString());
             }
         }
 
@@ -210,7 +213,6 @@ namespace Steam_Library_Manager.Functions
                 // switch based on name we set earlier with context menu
                 switch ((sender as MenuItem).Name)
                 {
-
                     // Opens game installation path in explorer
                     case "Disk":
                         System.Diagnostics.Process.Start(Library.Directory);
@@ -224,7 +226,7 @@ namespace Steam_Library_Manager.Functions
                             Definitions.List.Library.Remove(Library);
 
                             // Update backup dir settings
-                            Functions.Settings.UpdateBackupDirs();
+                            Settings.UpdateBackupDirs();
 
                             // Update main form with new settings
                             UpdateMainForm();
@@ -273,14 +275,14 @@ namespace Steam_Library_Manager.Functions
                         Key.SaveToFile(vdfPath, false);
 
                         // Show a messagebox to user about process
-                        System.Windows.Forms.MessageBox.Show("New Steam Library added, Please Restart Steam to see it in action."); // to-do: edit text
+                        MessageBox.Show("New Steam Library added, Please Restart Steam to see it in action."); // to-do: edit text
 
                         // Update game libraries
                         UpdateLibraries();
                     }
                     else
                         // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
-                        System.Windows.Forms.MessageBox.Show("Failed to create new Steam Library, Try to run SLM as Administrator?");
+                        MessageBox.Show("Failed to create new Steam Library, Try to run SLM as Administrator?");
                 }
                 else
                 {
@@ -296,7 +298,7 @@ namespace Steam_Library_Manager.Functions
                     UpdateLibraries();
 
                     // Save our settings
-                    Functions.Settings.Save();
+                    Settings.Save();
                 }
             }
             catch { }
@@ -325,7 +327,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // If user not clicked with left button return (so right-click menu will stay without a problem)
-                if (e.Button != System.Windows.Forms.MouseButtons.Left) return;
+                if (e.Button != MouseButtons.Left) return;
 
                 // Define our library details from .Tag attribute which we set earlier
                 Definitions.List.LibraryList Library = (sender as Label).Tag as Definitions.List.LibraryList;
@@ -337,7 +339,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.SLM.LatestSelectedLibrary = Library;
 
                 // Update games list from current selection
-                Functions.Games.UpdateGamesList(Library);
+                Games.UpdateGamesList(Library);
             }
             catch { }
         }

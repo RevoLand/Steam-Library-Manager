@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 namespace Steam_Library_Manager.Functions
 {
     class Settings
@@ -31,7 +32,13 @@ namespace Steam_Library_Manager.Functions
                 // Find game directories and update them on form
                 Functions.SteamLibrary.UpdateLibraries();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Settings", ex.ToString());
+            }
         }
 
         public static void UpdateBackupDirs()
@@ -54,7 +61,13 @@ namespace Steam_Library_Manager.Functions
 				// Save the settings to file
                 Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Settings", ex.ToString());
+            }
         }
 
         public static void Save()
@@ -64,7 +77,13 @@ namespace Steam_Library_Manager.Functions
                 // Save settings to file
                 Properties.Settings.Default.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Settings", ex.ToString());
+            }
         }
 
     }

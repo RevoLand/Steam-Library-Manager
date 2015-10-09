@@ -277,7 +277,7 @@ namespace Steam_Library_Manager.Forms
                             Directory.CreateDirectory(newCommonPath);
 
                         // If game has common folder
-                        if (Game.exactInstallPath != null)
+                        if (!string.IsNullOrEmpty(Game.exactInstallPath))
                         {
                             // For each file in common folder of game
                             foreach (string currentFile in Directory.EnumerateFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories))
@@ -334,7 +334,7 @@ namespace Steam_Library_Manager.Forms
                         }
 
                         // If game has downloading folder
-                        if (Game.downloadPath != null)
+                        if (!string.IsNullOrEmpty(Game.downloadPath))
                         {
                             // For each files in downloading folder of game
                             foreach (string currentFile in Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
@@ -387,26 +387,27 @@ namespace Steam_Library_Manager.Forms
                                 // Perform step on progressbar
                                 progressBar_CopyStatus.PerformStep();
                             }
-                        }
 
-                        // If game has .patch files in downloading folder
-                        // If downloading folder not exists
-                        if (!Directory.Exists(newDownloadingPath))
-                            // Create downloading folder
-                            Directory.CreateDirectory(newDownloadingPath);
 
-                        // For each .patch file in downloading folder
-                        foreach (string currentFile in Directory.EnumerateFiles(currentDownloadingPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
-                        {
-                            // Set new file name
-                            newFileName = Path.Combine(Library.Directory, "downloading", currentFile.Replace(currentDownloadingPath, ""));
+                            // If game has .patch files in downloading folder
+                            // If downloading folder not exists
+                            if (!Directory.Exists(newDownloadingPath))
+                                // Create downloading folder
+                                Directory.CreateDirectory(newDownloadingPath);
 
-                            // Copy .patch file to target library asynchronously
-                            await Task.Run(() => File.Copy(currentFile, newFileName, true));
+                            // For each .patch file in downloading folder
+                            foreach (string currentFile in Directory.EnumerateFiles(currentDownloadingPath, "*" + Game.appID + "*.patch", SearchOption.TopDirectoryOnly))
+                            {
+                                // Set new file name
+                                newFileName = Path.Combine(Library.Directory, "downloading", currentFile.Replace(currentDownloadingPath, ""));
+
+                                // Copy .patch file to target library asynchronously
+                                await Task.Run(() => File.Copy(currentFile, newFileName, true));
+                            }
                         }
 
                         // If game has workshop folder
-                        if (Game.workShopPath != null)
+                        if (!string.IsNullOrEmpty(Game.workShopPath))
                         {
                             // For each file in workshop folder of game
                             foreach (string currentFile in Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
@@ -510,17 +511,17 @@ namespace Steam_Library_Manager.Forms
                     }
 
                     // If game has downloading folder
-                    if (Game.downloadPath != null)
+                    if (!string.IsNullOrEmpty(Game.downloadPath))
                         // Remove this folder with contents
                         Directory.Delete(Game.downloadPath, true);
 
                     // If game has workshop folder
-                    if (Game.workShopPath != null)
+                    if (!string.IsNullOrEmpty(Game.workShopPath))
                         // Remove this folder with contents
                         Directory.Delete(Game.workShopPath, true);
 
                     // If game has common folder
-                    if (Game.exactInstallPath != null)
+                    if (!string.IsNullOrEmpty(Game.exactInstallPath))
                         // Remove this folder with contents
                         Directory.Delete(Game.exactInstallPath, true);
 

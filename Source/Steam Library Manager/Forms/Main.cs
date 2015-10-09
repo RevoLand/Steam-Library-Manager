@@ -36,7 +36,13 @@ namespace Steam_Library_Manager
                 if (Properties.Settings.Default.CheckForUpdatesAtStartup)
                     Functions.Updater.CheckForUpdates();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void linkLabel_SteamPath_LinkClicked(object sender, MouseEventArgs e)
@@ -51,7 +57,13 @@ namespace Steam_Library_Manager
                     // Else, do nothing
                     return;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void button_SelectSteamPath_Click(object sender, System.EventArgs e)
@@ -61,7 +73,13 @@ namespace Steam_Library_Manager
                 // Show file dialog to select Steam path
                 fileDialog_SelectSteamPath.ShowDialog();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         // If file has been selected from file selection dialog (fileDialog_SelectSteamPath)
@@ -78,7 +96,13 @@ namespace Steam_Library_Manager
                 // Save settings
                 Functions.Settings.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void SLM_button_GameSizeCalcHelp_Click(object sender, EventArgs e)
@@ -103,7 +127,13 @@ namespace Steam_Library_Manager
                 // Save settings to file
                 Functions.Settings.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void SLM_archiveSizeCalcMethod_SelectedIndexChanged(object sender, EventArgs e)
@@ -116,7 +146,13 @@ namespace Steam_Library_Manager
                 // Save settings to file
                 Functions.Settings.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void button_RefreshLibraries_Click(object sender, EventArgs e)
@@ -129,7 +165,13 @@ namespace Steam_Library_Manager
                 // Clear current selected game library
                 panel_GameList.Controls.Clear();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
 
@@ -140,7 +182,13 @@ namespace Steam_Library_Manager
                 // Check for updates manually
                 Functions.Updater.CheckForUpdates();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
 
@@ -154,7 +202,13 @@ namespace Steam_Library_Manager
                 // Save settings to file
                 Functions.Settings.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void checkbox_CheckForUpdatesAtStartup_CheckedChanged(object sender, EventArgs e)
@@ -167,7 +221,13 @@ namespace Steam_Library_Manager
                 // Save settings to file
                 Functions.Settings.Save();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void newLibrary_Click(object sender, EventArgs e)
@@ -205,7 +265,13 @@ namespace Steam_Library_Manager
                         MessageBox.Show("Library exists in the selected path! Are you trying to bug yourself?!");
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void SLM_SortGamesBy_SelectedIndexChanged(object sender, EventArgs e)
@@ -222,19 +288,31 @@ namespace Steam_Library_Manager
                     // Update main form with new settings
                     Functions.Games.UpdateMainForm(null, null);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
 
         private void textBox_searchInGames_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
-                if (Definitions.SLM.LatestSelectedLibrary.GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
+                if (Definitions.SLM.LatestSelectedLibrary == null || Definitions.SLM.LatestSelectedLibrary.GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
                     return;
 
                 Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Functions.Log.ErrorsToFile("MainForm", ex.ToString());
+            }
         }
     }
 }
