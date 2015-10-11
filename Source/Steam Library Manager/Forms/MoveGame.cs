@@ -142,17 +142,17 @@ namespace Steam_Library_Manager.Forms
                     }
 
                     // If game has common folder
-                    if (Game.exactInstallPath != null)
+                    if (!string.IsNullOrEmpty(Game.exactInstallPath))
                         // Increase FilesToMove based on file count in common folder
                         TotalFileCountWillBeMoved += Directory.GetFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories).Length;
 
                     // If game has downloading folder
-                    if (Game.downloadPath != null)
+                    if (!string.IsNullOrEmpty(Game.downloadPath))
                         // Increase FilesToMove based on file count in "downloading" folder
                         TotalFileCountWillBeMoved += Directory.GetFiles(Game.downloadPath, "*", SearchOption.AllDirectories).Length;
 
                     // If game has workshop folder
-                    if (Game.workShopPath != null)
+                    if (!string.IsNullOrEmpty(Game.workShopPath))
                         // Increase FilesToMove based on file count in workshop folder of game
                         TotalFileCountWillBeMoved += Directory.GetFiles(Game.workShopPath, "*", SearchOption.AllDirectories).Length;
 
@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Forms
                         using (ZipArchive gameBackup = ZipFile.Open(newZipNameNpath, ZipArchiveMode.Create))
                         {
                             // If game has common folder
-                            if (Game.exactInstallPath != null)
+                            if (!string.IsNullOrEmpty(Game.exactInstallPath))
                             {
                                 // For each file in common folder of game
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.exactInstallPath, "*", SearchOption.AllDirectories))
@@ -195,7 +195,7 @@ namespace Steam_Library_Manager.Forms
                             }
 
                             // If game has downloading folder
-                            if (Game.downloadPath != null)
+                            if (!string.IsNullOrEmpty(Game.downloadPath))
                             {
                                 // For each file in downloading folder of game
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
@@ -218,7 +218,7 @@ namespace Steam_Library_Manager.Forms
                             }
 
                             // If game has workshop files
-                            if (Game.workShopPath != null)
+                            if (!string.IsNullOrEmpty(Game.workShopPath))
                             {
                                 // For each file in workshop folder of game
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))

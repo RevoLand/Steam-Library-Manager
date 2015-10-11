@@ -89,40 +89,40 @@ namespace Steam_Library_Manager.Functions
                         Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                    if (Game.exactInstallPath == null && Game.downloadPath == null)
+                    if (string.IsNullOrEmpty(Game.exactInstallPath) && string.IsNullOrEmpty(Game.downloadPath))
                         continue; // Do not add pre-loads to list
 
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Key["SizeOnDisk"].Value != "0")
                     {
                         // If game has "common" folder
-                        if (Game.exactInstallPath != null)
+                        if (!string.IsNullOrEmpty(Game.exactInstallPath))
                         {
                             // If game size calculation method NOT set as "ACF"
                             if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate game size on disk
-                                Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.exactInstallPath, true);
                             else
                                 // Else use the game size from .ACF file
                                 Game.sizeOnDisk += Convert.ToInt64(Key["SizeOnDisk"].Value);
                         }
 
                         // If game has downloading files
-                        if (Game.downloadPath != null)
+                        if (!string.IsNullOrEmpty(Game.downloadPath))
                         {
                             // If game size calculation method NOT set as "ACF"
                             if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate "downloading" folder size
-                                Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.downloadPath, true);
+                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.downloadPath, true);
                         }
 
                         // If game has "workshop" files
-                        if (Game.workShopPath != null)
+                        if (!string.IsNullOrEmpty(Game.workShopPath))
                         {
                             // If game size calculation method NOT set as "ACF"
                             if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate "workshop" files size
-                                Game.sizeOnDisk += Functions.FileSystem.GetDirectorySize(Game.workShopPath, true);
+                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.workShopPath, true);
                         }
 
                     }
@@ -203,7 +203,7 @@ namespace Steam_Library_Manager.Functions
                                 Definitions.List.Game.Add(Game);
 
                                 // Update main form as visual
-                                Functions.Games.UpdateMainForm(null, null);
+                                UpdateMainForm(null, null);
 
                                 // we found what we are looking for, return
                                 return;
@@ -216,7 +216,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Accessors.MainForm.panel_GameList.Focus();
 
                 // Update main form as visual
-                Functions.Games.UpdateMainForm(null, null);
+                UpdateMainForm(null, null);
             }
             catch (Exception ex)
             {
@@ -230,7 +230,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateMainForm(Func<Definitions.List.GamesList, Object> Sort, string Search)
+        public static void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search)
         {
             try
             {
@@ -299,7 +299,7 @@ namespace Steam_Library_Manager.Functions
                     rightClickMenu.MenuItems.Add(string.Format("{0} (ID: {1})", Game.appName, Game.appID)).Enabled = false;
 
                     // Game Size on Disk: 124MB // disabled
-                    rightClickMenu.MenuItems.Add(string.Format("Game Size on Disk: {0}", Functions.FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
+                    rightClickMenu.MenuItems.Add(string.Format("Game Size on Disk: {0}", FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
 
                     // Spacer
                     rightClickMenu.MenuItems.Add("-");

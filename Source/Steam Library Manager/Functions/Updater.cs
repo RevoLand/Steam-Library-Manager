@@ -17,7 +17,7 @@ namespace Steam_Library_Manager.Functions
                 string versionFileContents = await UpdaterClient.DownloadStringTaskAsync(Definitions.Updater.VersionControlURL);
 
                 // If couldn't get file content (ex: not connected to web) return
-                if (versionFileContents == null)
+                if (string.IsNullOrEmpty(versionFileContents))
                     return;
 
                 // Split file content by "|"
