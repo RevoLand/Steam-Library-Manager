@@ -1,6 +1,6 @@
-Steam Library Manager
-===================
 <p align="center">
+	![Steam Library Manager](/Extras/Logo/slm.png?raw=true)
+	<br />
 	<a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest">
 		<img src="https://img.shields.io/github/release/RevoLand/Steam-Library-Manager.svg?style=flat-square" alt="Latest Release">
 	</a>
@@ -39,3 +39,9 @@ To-Do List
 Changelog
 ===================
  - N/A
+
+Contact
+===================
+**Steam:** https://steamcommunity.com/id/RevoLand/
+<br />
+**Skype:** revolutionland

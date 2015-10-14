@@ -1,4 +1,7 @@
-Binaries/*.txt
 Binaries/*.settings
+Binaries/*.config
+Binaries/*.pdb
+Binaries/*vshost*
+Binaries/*vshost*
 *.suo
 Source/Steam Library Manager/obj/*
