@@ -26,7 +26,13 @@ namespace Steam_Library_Manager.Functions
                 Library.Main = true;
 
                 // Define our library path to SteamApps
-                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps") + Path.DirectorySeparatorChar.ToString();
+                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps");
+
+                // Define download folder path
+                Library.downloadPath = Path.Combine(Library.Directory, "downloading");
+
+                // Define workshop folder path
+                Library.workshopPath = Path.Combine(Library.Directory, "workshop");
 
                 // Count how many games we have installed in our library
                 Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -57,7 +63,13 @@ namespace Steam_Library_Manager.Functions
                         Library = new Definitions.List.LibraryList();
 
                         // Define library path
-                        Library.Directory = Path.Combine(Key[i.ToString()].Value, "SteamApps") + Path.DirectorySeparatorChar.ToString();
+                        Library.Directory = Path.Combine(Key[i.ToString()].Value, "SteamApps");
+
+                        // Define download folder path
+                        Library.downloadPath = Path.Combine(Library.Directory, "downloading");
+
+                        // Define workshop folder path
+                        Library.workshopPath = Path.Combine(Library.Directory, "workshop");
 
                         // Define game count in library
                         Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -72,7 +84,7 @@ namespace Steam_Library_Manager.Functions
                 if (Properties.Settings.Default.BackupDirectories != null)
                 {
                     // for each backup library we have do a loop
-                    foreach (object backupDirectory in Properties.Settings.Default.BackupDirectories)
+                    foreach (string backupDirectory in Properties.Settings.Default.BackupDirectories)
                     {
                         // Define a new library
                         Library = new Definitions.List.LibraryList();
@@ -81,7 +93,7 @@ namespace Steam_Library_Manager.Functions
                         Library.Backup = true;
 
                         // Define library path
-                        Library.Directory = backupDirectory.ToString() + Path.DirectorySeparatorChar;
+                        Library.Directory = backupDirectory;
 
                         // Define game count in library
                         Library.GameCount = Games.GetGamesCountFromLibrary(Library);
@@ -99,7 +111,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile("Libraries", ex.ToString());
+                    Log.ErrorsToFile("Libraries", ex.ToString());
             }
         }
 

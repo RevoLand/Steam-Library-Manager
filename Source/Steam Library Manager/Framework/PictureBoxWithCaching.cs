@@ -51,7 +51,8 @@ namespace Steam_Library_Manager.Framework
             }
             catch (WebException)
             {
-                base.LoadAsync("SLM"); // so it will load "no image available"
+                Image = Properties.Resources.no_image_available; // so it will load "no image available"
+                SizeMode = PictureBoxSizeMode.CenterImage;
                 //_withoutCaching = true;
             }
         }
@@ -85,8 +86,7 @@ namespace Steam_Library_Manager.Framework
         private string calculateMD5(string input)
         {
             var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            byte[] inputStringAsByteArray = Encoding.Default.GetBytes(input);
-            byte[] md5AsByteArray = md5.ComputeHash(inputStringAsByteArray);
+            byte[] md5AsByteArray = md5.ComputeHash(Encoding.Default.GetBytes(input));
 
             var sb = new StringBuilder();
             foreach (byte b in md5AsByteArray)

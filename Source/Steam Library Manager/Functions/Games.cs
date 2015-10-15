@@ -39,6 +39,9 @@ namespace Steam_Library_Manager.Functions
                     // Clear the list
                     Definitions.List.Game.Clear();
 
+                if (!Directory.Exists(Library.Directory))
+                    return;
+
                 // Foreach *.acf file found in library
                 foreach (string game in Directory.EnumerateFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly))
                 {
@@ -67,18 +70,28 @@ namespace Steam_Library_Manager.Functions
                         // Check for userconfig for name
                         Game.appName = Key["UserConfig"]["name"].Value;
 
+                    // Set acf name, appmanifest_107410.acf as example
+                    Game.acfName = string.Format("appmanifest_{0}.acf", Game.appID);
+
+                    // Set game acf path
+                    Game.acfPath = game;
+
+                    // Set workshop acf name
+                    Game.workShopAcfName = string.Format("appworkshop_{0}.acf", Game.appID);
+
+                    if (!string.IsNullOrEmpty(Library.workshopPath))
+                        // Set path for acf file
+                        Game.workShopAcfPath = Path.Combine(Library.workshopPath, Game.workShopAcfName);
+
                     // Set installation path
                     Game.installationPath = Key["installdir"].Value;
 
                     // Set game library
                     Game.Library = Library;
 
-                    // Set game acf path
-                    Game.acfPath = game;
-
                     // If game has a folder in "common" dir, define it as exactInstallPath
                     if (Directory.Exists(Path.Combine(Library.Directory, "common", Game.installationPath)))
-                        Game.exactInstallPath = Path.Combine(Library.Directory, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
+                        Game.commonPath = Path.Combine(Library.Directory, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "downloading" dir, define it as downloadPath
                     if (Directory.Exists(Path.Combine(Library.Directory, "downloading", Game.installationPath)))
@@ -89,19 +102,19 @@ namespace Steam_Library_Manager.Functions
                         Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                    if (string.IsNullOrEmpty(Game.exactInstallPath) && string.IsNullOrEmpty(Game.downloadPath))
+                    if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath))
                         continue; // Do not add pre-loads to list
 
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Key["SizeOnDisk"].Value != "0")
                     {
                         // If game has "common" folder
-                        if (!string.IsNullOrEmpty(Game.exactInstallPath))
+                        if (!string.IsNullOrEmpty(Game.commonPath))
                         {
                             // If game size calculation method NOT set as "ACF"
                             if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
                                 // Calculate game size on disk
-                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.exactInstallPath, true);
+                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.commonPath, true);
                             else
                                 // Else use the game size from .ACF file
                                 Game.sizeOnDisk += Convert.ToInt64(Key["SizeOnDisk"].Value);
@@ -226,7 +239,9 @@ namespace Steam_Library_Manager.Functions
                     Log.ErrorsToFile("UpdateGameList", ex.ToString());
 
                 // Show a messagebox to user
-                MessageBox.Show("An error happened while updating game list!\n" + ex.ToString());
+                MessageBox.Show("An error happened while updating game list!\n\n\n" + ex.ToString());
+
+                UpdateMainForm(null, null);
             }
         }
 
@@ -293,6 +308,12 @@ namespace Steam_Library_Manager.Functions
 
                     // Define an event handler
                     EventHandler mouseClick = new EventHandler(gameDetailBox_ContextMenuAction);
+
+                    if (Game.Compressed)
+                    {
+                        rightClickMenu.MenuItems.Add("Compressed").Enabled = false;
+                        rightClickMenu.MenuItems.Add("-");
+                    }
 
                     // Add right click menu items
                     // Game name (appID) // disabled
@@ -406,7 +427,7 @@ namespace Steam_Library_Manager.Functions
                     
                     // Opens game installation path in explorer
                     case "Disk":
-                        Process.Start(Game.exactInstallPath);
+                        Process.Start(Game.commonPath);
                         break;
 
                         // Opens game acf file in default text viewer

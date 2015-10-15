@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_InstalledGames = new System.Windows.Forms.TabPage();
             this.label_searchInLibrary = new System.Windows.Forms.Label();
@@ -104,7 +105,7 @@
             // 
             // textBox_searchInGames
             // 
-            this.textBox_searchInGames.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_searchInGames.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
             this.textBox_searchInGames.Location = new System.Drawing.Point(653, 718);
             this.textBox_searchInGames.Multiline = true;
             this.textBox_searchInGames.Name = "textBox_searchInGames";
@@ -136,7 +137,7 @@
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Settings.Size = new System.Drawing.Size(845, 760);
+            this.tab_Settings.Size = new System.Drawing.Size(845, 746);
             this.tab_Settings.TabIndex = 2;
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
@@ -212,7 +213,7 @@
             // 
             // button_CheckForUpdates
             // 
-            this.button_CheckForUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.button_CheckForUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.button_CheckForUpdates.Location = new System.Drawing.Point(9, 147);
             this.button_CheckForUpdates.Name = "button_CheckForUpdates";
             this.button_CheckForUpdates.Size = new System.Drawing.Size(139, 25);
@@ -223,7 +224,7 @@
             // 
             // label_LatestVersion
             // 
-            this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.label_LatestVersion.Location = new System.Drawing.Point(109, 59);
             this.label_LatestVersion.Name = "label_LatestVersion";
             this.label_LatestVersion.Size = new System.Drawing.Size(209, 33);
@@ -234,7 +235,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.label7.Location = new System.Drawing.Point(6, 59);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(87, 15);
@@ -243,7 +244,7 @@
             // 
             // label_CurrentVersion
             // 
-            this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.label_CurrentVersion.Location = new System.Drawing.Point(106, 25);
             this.label_CurrentVersion.Name = "label_CurrentVersion";
             this.label_CurrentVersion.Size = new System.Drawing.Size(212, 13);
@@ -254,7 +255,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.label4.Location = new System.Drawing.Point(6, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 15);
@@ -425,6 +426,7 @@
             this.Controls.Add(this.button_RefreshLibraries);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);

@@ -16,7 +16,7 @@ namespace Steam_Library_Manager.Definitions
         {
             public bool Main, Backup;
             public int GameCount;
-            public string Directory;
+            public string Directory, commonPath, downloadPath, workshopPath;
         }
 
         // Game details we are using, contains things like appID, installationPath etc.
@@ -24,7 +24,7 @@ namespace Steam_Library_Manager.Definitions
         {
             public int appID;
             public LibraryList Library;
-            public string appName, installationPath, acfPath, exactInstallPath, downloadPath, workShopPath;
+            public string appName, installationPath, acfName, acfPath, commonPath, downloadPath, workShopPath, workShopAcfName, workShopAcfPath;
             public long sizeOnDisk;
             public bool Compressed;
         }

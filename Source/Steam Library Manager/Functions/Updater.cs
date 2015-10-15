@@ -76,7 +76,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile("Updater", ex.ToString());
+                    Log.ErrorsToFile("Updater", ex.ToString());
             }
         }
     }

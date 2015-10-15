@@ -66,7 +66,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void button_SelectSteamPath_Click(object sender, System.EventArgs e)
+        private void button_SelectSteamPath_Click(object sender, EventArgs e)
         {
             try
             {
