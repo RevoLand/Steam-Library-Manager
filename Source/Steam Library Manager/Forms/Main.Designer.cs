@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_InstalledGames = new System.Windows.Forms.TabPage();
             this.label_searchInLibrary = new System.Windows.Forms.Label();
@@ -37,36 +36,40 @@
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
+            this.button_changeDefaultTextEditor = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.SLM_defaultTextEditor = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.SLM_SortGamesBy = new System.Windows.Forms.ComboBox();
-            this.groupBox_Version = new System.Windows.Forms.GroupBox();
-            this.checkbox_CheckForUpdatesAtStartup = new System.Windows.Forms.CheckBox();
-            this.button_CheckForUpdates = new System.Windows.Forms.Button();
-            this.label_LatestVersion = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label_CurrentVersion = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.checkbox_LogErrorsToFile = new System.Windows.Forms.CheckBox();
             this.SLM_archiveSizeCalcMethod = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.SLM_button_GameSizeCalcHelp = new System.Windows.Forms.Button();
             this.SLM_sizeCalculationMethod = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox_Steam = new System.Windows.Forms.GroupBox();
             this.button_SelectSteamPath = new System.Windows.Forms.Button();
             this.linkLabel_SteamPath = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
+            this.groupBox_Version = new System.Windows.Forms.GroupBox();
+            this.label_versionResult = new System.Windows.Forms.Label();
+            this.checkbox_CheckForUpdatesAtStartup = new System.Windows.Forms.CheckBox();
+            this.button_CheckForUpdates = new System.Windows.Forms.Button();
+            this.label_LatestVersion = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label_CurrentVersion = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.fileDialog_SelectSteamPath = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowser_SelectNewLibraryPath = new System.Windows.Forms.FolderBrowserDialog();
             this.button_RefreshLibraries = new System.Windows.Forms.Button();
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
+            this.fileDialog_defaultTextEditor = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
             this.groupBox_SLM.SuspendLayout();
-            this.groupBox_Version.SuspendLayout();
             this.groupBox_Steam.SuspendLayout();
+            this.groupBox_Version.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -134,6 +137,7 @@
             // 
             this.tab_Settings.Controls.Add(this.groupBox_SLM);
             this.tab_Settings.Controls.Add(this.groupBox_Steam);
+            this.tab_Settings.Controls.Add(this.groupBox_Version);
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.Padding = new System.Windows.Forms.Padding(3);
@@ -144,27 +148,55 @@
             // 
             // groupBox_SLM
             // 
+            this.groupBox_SLM.Controls.Add(this.button_changeDefaultTextEditor);
+            this.groupBox_SLM.Controls.Add(this.label6);
+            this.groupBox_SLM.Controls.Add(this.SLM_defaultTextEditor);
             this.groupBox_SLM.Controls.Add(this.label5);
             this.groupBox_SLM.Controls.Add(this.SLM_SortGamesBy);
-            this.groupBox_SLM.Controls.Add(this.groupBox_Version);
             this.groupBox_SLM.Controls.Add(this.checkbox_LogErrorsToFile);
             this.groupBox_SLM.Controls.Add(this.SLM_archiveSizeCalcMethod);
             this.groupBox_SLM.Controls.Add(this.label3);
-            this.groupBox_SLM.Controls.Add(this.SLM_button_GameSizeCalcHelp);
             this.groupBox_SLM.Controls.Add(this.SLM_sizeCalculationMethod);
             this.groupBox_SLM.Controls.Add(this.label2);
-            this.groupBox_SLM.Location = new System.Drawing.Point(6, 6);
+            this.groupBox_SLM.Location = new System.Drawing.Point(15, 6);
             this.groupBox_SLM.Name = "groupBox_SLM";
-            this.groupBox_SLM.Size = new System.Drawing.Size(373, 327);
+            this.groupBox_SLM.Size = new System.Drawing.Size(283, 215);
             this.groupBox_SLM.TabIndex = 2;
             this.groupBox_SLM.TabStop = false;
-            this.groupBox_SLM.Text = "SLM";
+            this.groupBox_SLM.Text = "Steam Library Manager Settings";
+            // 
+            // button_changeDefaultTextEditor
+            // 
+            this.button_changeDefaultTextEditor.Location = new System.Drawing.Point(216, 161);
+            this.button_changeDefaultTextEditor.Name = "button_changeDefaultTextEditor";
+            this.button_changeDefaultTextEditor.Size = new System.Drawing.Size(61, 23);
+            this.button_changeDefaultTextEditor.TabIndex = 9;
+            this.button_changeDefaultTextEditor.Text = "Change";
+            this.button_changeDefaultTextEditor.UseVisualStyleBackColor = true;
+            this.button_changeDefaultTextEditor.Click += new System.EventHandler(this.button_changeDefaultTextEditor_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 145);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Default Text Editor:";
+            // 
+            // SLM_defaultTextEditor
+            // 
+            this.SLM_defaultTextEditor.Location = new System.Drawing.Point(9, 161);
+            this.SLM_defaultTextEditor.Name = "SLM_defaultTextEditor";
+            this.SLM_defaultTextEditor.ReadOnly = true;
+            this.SLM_defaultTextEditor.Size = new System.Drawing.Size(201, 20);
+            this.SLM_defaultTextEditor.TabIndex = 7;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label5.Location = new System.Drawing.Point(6, 73);
+            this.label5.Location = new System.Drawing.Point(6, 105);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(80, 13);
             this.label5.TabIndex = 6;
@@ -179,92 +211,15 @@
             "appName",
             "appID",
             "sizeOnDisk"});
-            this.SLM_SortGamesBy.Location = new System.Drawing.Point(158, 70);
+            this.SLM_SortGamesBy.Location = new System.Drawing.Point(9, 121);
             this.SLM_SortGamesBy.Name = "SLM_SortGamesBy";
-            this.SLM_SortGamesBy.Size = new System.Drawing.Size(175, 21);
+            this.SLM_SortGamesBy.Size = new System.Drawing.Size(268, 21);
             this.SLM_SortGamesBy.TabIndex = 5;
             this.SLM_SortGamesBy.SelectedIndexChanged += new System.EventHandler(this.SLM_SortGamesBy_SelectedIndexChanged);
             // 
-            // groupBox_Version
-            // 
-            this.groupBox_Version.Controls.Add(this.checkbox_CheckForUpdatesAtStartup);
-            this.groupBox_Version.Controls.Add(this.button_CheckForUpdates);
-            this.groupBox_Version.Controls.Add(this.label_LatestVersion);
-            this.groupBox_Version.Controls.Add(this.label7);
-            this.groupBox_Version.Controls.Add(this.label_CurrentVersion);
-            this.groupBox_Version.Controls.Add(this.label4);
-            this.groupBox_Version.Location = new System.Drawing.Point(9, 137);
-            this.groupBox_Version.Name = "groupBox_Version";
-            this.groupBox_Version.Size = new System.Drawing.Size(324, 178);
-            this.groupBox_Version.TabIndex = 3;
-            this.groupBox_Version.TabStop = false;
-            this.groupBox_Version.Text = "Update Checker";
-            // 
-            // checkbox_CheckForUpdatesAtStartup
-            // 
-            this.checkbox_CheckForUpdatesAtStartup.AutoSize = true;
-            this.checkbox_CheckForUpdatesAtStartup.Location = new System.Drawing.Point(154, 152);
-            this.checkbox_CheckForUpdatesAtStartup.Name = "checkbox_CheckForUpdatesAtStartup";
-            this.checkbox_CheckForUpdatesAtStartup.Size = new System.Drawing.Size(164, 17);
-            this.checkbox_CheckForUpdatesAtStartup.TabIndex = 7;
-            this.checkbox_CheckForUpdatesAtStartup.Text = "Check for Updates at Startup";
-            this.checkbox_CheckForUpdatesAtStartup.UseVisualStyleBackColor = true;
-            this.checkbox_CheckForUpdatesAtStartup.CheckedChanged += new System.EventHandler(this.checkbox_CheckForUpdatesAtStartup_CheckedChanged);
-            // 
-            // button_CheckForUpdates
-            // 
-            this.button_CheckForUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.button_CheckForUpdates.Location = new System.Drawing.Point(9, 147);
-            this.button_CheckForUpdates.Name = "button_CheckForUpdates";
-            this.button_CheckForUpdates.Size = new System.Drawing.Size(139, 25);
-            this.button_CheckForUpdates.TabIndex = 6;
-            this.button_CheckForUpdates.Text = "Check for Updates";
-            this.button_CheckForUpdates.UseVisualStyleBackColor = true;
-            this.button_CheckForUpdates.Click += new System.EventHandler(this.button_CheckForUpdates_Click);
-            // 
-            // label_LatestVersion
-            // 
-            this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_LatestVersion.Location = new System.Drawing.Point(109, 59);
-            this.label_LatestVersion.Name = "label_LatestVersion";
-            this.label_LatestVersion.Size = new System.Drawing.Size(209, 33);
-            this.label_LatestVersion.TabIndex = 3;
-            this.label_LatestVersion.Text = "N\\A";
-            this.label_LatestVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label7.Location = new System.Drawing.Point(6, 59);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(87, 15);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Latest Version:";
-            // 
-            // label_CurrentVersion
-            // 
-            this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_CurrentVersion.Location = new System.Drawing.Point(106, 25);
-            this.label_CurrentVersion.Name = "label_CurrentVersion";
-            this.label_CurrentVersion.Size = new System.Drawing.Size(212, 13);
-            this.label_CurrentVersion.TabIndex = 1;
-            this.label_CurrentVersion.Text = "N\\A";
-            this.label_CurrentVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label4.Location = new System.Drawing.Point(6, 25);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 15);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Current Version:";
-            // 
             // checkbox_LogErrorsToFile
             // 
-            this.checkbox_LogErrorsToFile.Location = new System.Drawing.Point(163, 96);
+            this.checkbox_LogErrorsToFile.Location = new System.Drawing.Point(6, 187);
             this.checkbox_LogErrorsToFile.Name = "checkbox_LogErrorsToFile";
             this.checkbox_LogErrorsToFile.Size = new System.Drawing.Size(175, 24);
             this.checkbox_LogErrorsToFile.TabIndex = 4;
@@ -280,9 +235,9 @@
             this.SLM_archiveSizeCalcMethod.Items.AddRange(new object[] {
             "Uncompressed size (Slow, Accurate)",
             "Archive size (Fast, gets archive size)"});
-            this.SLM_archiveSizeCalcMethod.Location = new System.Drawing.Point(158, 43);
+            this.SLM_archiveSizeCalcMethod.Location = new System.Drawing.Point(9, 82);
             this.SLM_archiveSizeCalcMethod.Name = "SLM_archiveSizeCalcMethod";
-            this.SLM_archiveSizeCalcMethod.Size = new System.Drawing.Size(175, 21);
+            this.SLM_archiveSizeCalcMethod.Size = new System.Drawing.Size(268, 21);
             this.SLM_archiveSizeCalcMethod.TabIndex = 4;
             this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
             // 
@@ -290,21 +245,11 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(6, 46);
+            this.label3.Location = new System.Drawing.Point(6, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(124, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Archive Size Calculation:";
-            // 
-            // SLM_button_GameSizeCalcHelp
-            // 
-            this.SLM_button_GameSizeCalcHelp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.SLM_button_GameSizeCalcHelp.Location = new System.Drawing.Point(338, 14);
-            this.SLM_button_GameSizeCalcHelp.Name = "SLM_button_GameSizeCalcHelp";
-            this.SLM_button_GameSizeCalcHelp.Size = new System.Drawing.Size(25, 22);
-            this.SLM_button_GameSizeCalcHelp.TabIndex = 2;
-            this.SLM_button_GameSizeCalcHelp.Text = "?";
-            this.SLM_button_GameSizeCalcHelp.Click += new System.EventHandler(this.SLM_button_GameSizeCalcHelp_Click);
             // 
             // SLM_sizeCalculationMethod
             // 
@@ -314,9 +259,9 @@
             this.SLM_sizeCalculationMethod.Items.AddRange(new object[] {
             "ACF - Fast, not Accurate",
             "Enum - Slow, Accurate"});
-            this.SLM_sizeCalculationMethod.Location = new System.Drawing.Point(158, 15);
+            this.SLM_sizeCalculationMethod.Location = new System.Drawing.Point(9, 41);
             this.SLM_sizeCalculationMethod.Name = "SLM_sizeCalculationMethod";
-            this.SLM_sizeCalculationMethod.Size = new System.Drawing.Size(175, 21);
+            this.SLM_sizeCalculationMethod.Size = new System.Drawing.Size(268, 21);
             this.SLM_sizeCalculationMethod.TabIndex = 1;
             this.SLM_sizeCalculationMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_sizeCalculationMethod_SelectedIndexChanged);
             // 
@@ -324,20 +269,20 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(6, 19);
+            this.label2.Location = new System.Drawing.Point(6, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.Size = new System.Drawing.Size(151, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Game Size Calculation:";
+            this.label2.Text = "Game size calculation method:";
             // 
             // groupBox_Steam
             // 
             this.groupBox_Steam.Controls.Add(this.button_SelectSteamPath);
             this.groupBox_Steam.Controls.Add(this.linkLabel_SteamPath);
             this.groupBox_Steam.Controls.Add(this.label1);
-            this.groupBox_Steam.Location = new System.Drawing.Point(385, 6);
+            this.groupBox_Steam.Location = new System.Drawing.Point(603, 6);
             this.groupBox_Steam.Name = "groupBox_Steam";
-            this.groupBox_Steam.Size = new System.Drawing.Size(225, 120);
+            this.groupBox_Steam.Size = new System.Drawing.Size(225, 103);
             this.groupBox_Steam.TabIndex = 0;
             this.groupBox_Steam.TabStop = false;
             this.groupBox_Steam.Text = "Steam";
@@ -345,7 +290,7 @@
             // button_SelectSteamPath
             // 
             this.button_SelectSteamPath.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button_SelectSteamPath.Location = new System.Drawing.Point(56, 82);
+            this.button_SelectSteamPath.Location = new System.Drawing.Point(57, 63);
             this.button_SelectSteamPath.Name = "button_SelectSteamPath";
             this.button_SelectSteamPath.Size = new System.Drawing.Size(112, 32);
             this.button_SelectSteamPath.TabIndex = 3;
@@ -372,7 +317,91 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Current Steam path:";
+            this.label1.Text = "Steam path:";
+            // 
+            // groupBox_Version
+            // 
+            this.groupBox_Version.Controls.Add(this.label_versionResult);
+            this.groupBox_Version.Controls.Add(this.checkbox_CheckForUpdatesAtStartup);
+            this.groupBox_Version.Controls.Add(this.button_CheckForUpdates);
+            this.groupBox_Version.Controls.Add(this.label_LatestVersion);
+            this.groupBox_Version.Controls.Add(this.label7);
+            this.groupBox_Version.Controls.Add(this.label_CurrentVersion);
+            this.groupBox_Version.Controls.Add(this.label4);
+            this.groupBox_Version.Location = new System.Drawing.Point(307, 6);
+            this.groupBox_Version.Name = "groupBox_Version";
+            this.groupBox_Version.Size = new System.Drawing.Size(290, 192);
+            this.groupBox_Version.TabIndex = 3;
+            this.groupBox_Version.TabStop = false;
+            this.groupBox_Version.Text = "Version";
+            // 
+            // label_versionResult
+            // 
+            this.label_versionResult.Location = new System.Drawing.Point(7, 135);
+            this.label_versionResult.Name = "label_versionResult";
+            this.label_versionResult.Size = new System.Drawing.Size(277, 23);
+            this.label_versionResult.TabIndex = 8;
+            this.label_versionResult.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // checkbox_CheckForUpdatesAtStartup
+            // 
+            this.checkbox_CheckForUpdatesAtStartup.AutoSize = true;
+            this.checkbox_CheckForUpdatesAtStartup.Location = new System.Drawing.Point(6, 167);
+            this.checkbox_CheckForUpdatesAtStartup.Name = "checkbox_CheckForUpdatesAtStartup";
+            this.checkbox_CheckForUpdatesAtStartup.Size = new System.Drawing.Size(164, 17);
+            this.checkbox_CheckForUpdatesAtStartup.TabIndex = 7;
+            this.checkbox_CheckForUpdatesAtStartup.Text = "Check for Updates at Startup";
+            this.checkbox_CheckForUpdatesAtStartup.UseVisualStyleBackColor = true;
+            this.checkbox_CheckForUpdatesAtStartup.CheckedChanged += new System.EventHandler(this.checkbox_CheckForUpdatesAtStartup_CheckedChanged);
+            // 
+            // button_CheckForUpdates
+            // 
+            this.button_CheckForUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.button_CheckForUpdates.Location = new System.Drawing.Point(97, 106);
+            this.button_CheckForUpdates.Name = "button_CheckForUpdates";
+            this.button_CheckForUpdates.Size = new System.Drawing.Size(104, 25);
+            this.button_CheckForUpdates.TabIndex = 6;
+            this.button_CheckForUpdates.Text = "Update";
+            this.button_CheckForUpdates.UseVisualStyleBackColor = true;
+            this.button_CheckForUpdates.Click += new System.EventHandler(this.button_CheckForUpdates_Click);
+            // 
+            // label_LatestVersion
+            // 
+            this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label_LatestVersion.Location = new System.Drawing.Point(7, 83);
+            this.label_LatestVersion.Name = "label_LatestVersion";
+            this.label_LatestVersion.Size = new System.Drawing.Size(168, 20);
+            this.label_LatestVersion.TabIndex = 3;
+            this.label_LatestVersion.Text = "N\\A";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label7.Location = new System.Drawing.Point(6, 65);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(87, 15);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Latest Version:";
+            // 
+            // label_CurrentVersion
+            // 
+            this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label_CurrentVersion.Location = new System.Drawing.Point(7, 41);
+            this.label_CurrentVersion.Name = "label_CurrentVersion";
+            this.label_CurrentVersion.Size = new System.Drawing.Size(168, 20);
+            this.label_CurrentVersion.TabIndex = 1;
+            this.label_CurrentVersion.Text = "N\\A";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label4.Location = new System.Drawing.Point(6, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 15);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Current Version:";
             // 
             // fileDialog_SelectSteamPath
             // 
@@ -416,6 +445,10 @@
             this.button_newSteamLibrary.UseVisualStyleBackColor = true;
             this.button_newSteamLibrary.Click += new System.EventHandler(this.newLibrary_Click);
             // 
+            // fileDialog_defaultTextEditor
+            // 
+            this.fileDialog_defaultTextEditor.Filter = "|*.exe";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -426,7 +459,7 @@
             this.Controls.Add(this.button_RefreshLibraries);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = Properties.Resources.steam_icon;
+            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
@@ -438,10 +471,10 @@
             this.tab_Settings.ResumeLayout(false);
             this.groupBox_SLM.ResumeLayout(false);
             this.groupBox_SLM.PerformLayout();
-            this.groupBox_Version.ResumeLayout(false);
-            this.groupBox_Version.PerformLayout();
             this.groupBox_Steam.ResumeLayout(false);
             this.groupBox_Steam.PerformLayout();
+            this.groupBox_Version.ResumeLayout(false);
+            this.groupBox_Version.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -461,7 +494,6 @@
         public System.Windows.Forms.FlowLayoutPanel panel_LibraryList;
         private System.Windows.Forms.GroupBox groupBox_SLM;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button SLM_button_GameSizeCalcHelp;
         public System.Windows.Forms.ComboBox SLM_sizeCalculationMethod;
         public System.Windows.Forms.FolderBrowserDialog folderBrowser_SelectNewLibraryPath;
         public System.Windows.Forms.ComboBox SLM_archiveSizeCalcMethod;
@@ -481,6 +513,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox_searchInGames;
         private System.Windows.Forms.Label label_searchInLibrary;
+        private System.Windows.Forms.OpenFileDialog fileDialog_defaultTextEditor;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button_changeDefaultTextEditor;
+        public System.Windows.Forms.TextBox SLM_defaultTextEditor;
+        public System.Windows.Forms.Label label_versionResult;
     }
 }
 

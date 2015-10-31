@@ -32,6 +32,8 @@ namespace Steam_Library_Manager.Functions
                 // If latest version is newer than current version
                 if (Definitions.Updater.LatestVersion > Definitions.Updater.CurrentVersion)
                 {
+                    Definitions.Accessors.MainForm.label_versionResult.Text = "Your SLM version is OUT OF DATE, please update.";
+
                     // Show a messagebox to user and ask to open github page to download latest version
                     System.Windows.Forms.DialogResult updateMessageBox = System.Windows.Forms.MessageBox.Show("There is an update available for SLM. Would you like to download it?\n\nClicking \"YES\" will download latest version of SLM close current instance of SLM and update\n\nLatest Version: " + Definitions.Updater.LatestVersion + " - Importance: " + versionFileContent[1], "SLM Update Checker", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk);
 
@@ -56,7 +58,7 @@ namespace Steam_Library_Manager.Functions
                         cmdStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                         // Set CMD arguments
-                        cmdStartInfo.Arguments = "/C ping 1.1.1.1 -n 1 -w 1500 > nul & move /y LatestVersionSLM.exe \"" + System.AppDomain.CurrentDomain.FriendlyName  + "\" & msg %username% \"SLM Updated!\"";
+                        cmdStartInfo.Arguments = "/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"" + AppDomain.CurrentDomain.FriendlyName + "\" & msg %username% \"SLM Updated!\"";
 
                         // Set startinfo for cmd process
                         cmdProcess.StartInfo = cmdStartInfo;
@@ -70,6 +72,8 @@ namespace Steam_Library_Manager.Functions
                     else if (versionFileContent[1] == "Important")
                         System.Windows.Forms.MessageBox.Show("IT IS NOT SUGGESTED TO SKIP AN IMPORTANT UPGRADE, YOU MAY LOSE DATA WHILE MOVING A GAME, BE AWARE!", "YOU SHOULD NOT SKIP AN IMPORTANT UPDATE", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 }
+                else
+                    Definitions.Accessors.MainForm.label_versionResult.Text = "You are using Latest Version of SLM.";
             }
             catch (Exception ex)
             {

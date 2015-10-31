@@ -30,7 +30,7 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public static void UpdateGamesList(Definitions.List.LibraryList Library)
+        public static void UpdateGameList(Definitions.List.LibraryList Library)
         {
             try
             {
@@ -283,7 +283,7 @@ namespace Steam_Library_Manager.Functions
                     gameDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
                     // Set game image size
-                    gameDetailBox.Size = new System.Drawing.Size(230, 107);
+                    gameDetailBox.Size = Properties.Settings.Default.GamePictureBoxSize;
 
                     // Load game header image asynchronously
                     gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID));
@@ -309,13 +309,25 @@ namespace Steam_Library_Manager.Functions
                     // Define an event handler
                     EventHandler mouseClick = new EventHandler(gameDetailBox_ContextMenuAction);
 
+                    // If game is compressed
                     if (Game.Compressed)
                     {
-                        rightClickMenu.MenuItems.Add("Compressed").Enabled = false;
-                        rightClickMenu.MenuItems.Add("-");
+                        // Make a new picturebox
+                        PictureBox compressedIcon = new PictureBox();
+
+                        // Set picture box image to compressedLibraryIcon
+                        compressedIcon.Image = Properties.Resources.compressedLibraryIcon;
+
+                        // Put picturebox to right corner of game image
+                        compressedIcon.Left = Properties.Settings.Default.GamePictureBoxSize.Width - 20;
+                        compressedIcon.Top = 5;
+
+                        // Add icon to game picture
+                        gameDetailBox.Controls.Add(compressedIcon);
                     }
 
                     // Add right click menu items
+                    #region Context menu items
                     // Game name (appID) // disabled
                     rightClickMenu.MenuItems.Add(string.Format("{0} (ID: {1})", Game.appName, Game.appID)).Enabled = false;
 
@@ -363,6 +375,8 @@ namespace Steam_Library_Manager.Functions
 
                     // Uninstall, via Steam
                     rightClickMenu.MenuItems.Add("Uninstall", mouseClick).Name = "uninstall";
+
+#endregion
 
                     // Set our context menu to pictureBox
                     gameDetailBox.ContextMenu = rightClickMenu;
@@ -432,7 +446,7 @@ namespace Steam_Library_Manager.Functions
 
                         // Opens game acf file in default text viewer
                     case "acfFile":
-                        Process.Start(Game.acfPath);
+                        Process.Start(Properties.Settings.Default.DefaultTextEditor, Game.acfPath);
                         break;
                 }
 

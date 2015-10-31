@@ -29,8 +29,14 @@ namespace Steam_Library_Manager.Functions
                 // Current Version text
                 Definitions.Accessors.MainForm.label_CurrentVersion.Text = Definitions.Updater.CurrentVersion.ToString();
 
+                // Default text editor
+                if (string.IsNullOrEmpty(Properties.Settings.Default.DefaultTextEditor) || Properties.Settings.Default.DefaultTextEditor.Contains("%windir%"))
+                    Properties.Settings.Default.DefaultTextEditor = System.IO.Path.Combine(Environment.SystemDirectory, "notepad.exe");
+
+                Definitions.Accessors.MainForm.SLM_defaultTextEditor.Text = Properties.Settings.Default.DefaultTextEditor;
+
                 // Find game directories and update them on form
-                Functions.SteamLibrary.UpdateLibraries();
+                SteamLibrary.UpdateLibraries();
             }
             catch (Exception ex)
             {

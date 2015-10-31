@@ -119,5 +119,33 @@ namespace Steam_Library_Manager.Properties {
                 this["SortGamesBy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("230, 107")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Drawing.Size GamePictureBoxSize {
+            get {
+                return ((global::System.Drawing.Size)(this["GamePictureBoxSize"]));
+            }
+            set {
+                this["GamePictureBoxSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("%windir%\\notepad.exe")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string DefaultTextEditor {
+            get {
+                return ((string)(this["DefaultTextEditor"]));
+            }
+            set {
+                this["DefaultTextEditor"] = value;
+            }
+        }
     }
 }

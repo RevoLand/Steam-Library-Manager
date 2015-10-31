@@ -23,5 +23,11 @@
     <Setting Name="SortGamesBy" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">appName</Value>
     </Setting>
+    <Setting Name="GamePictureBoxSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">230, 107</Value>
+    </Setting>
+    <Setting Name="DefaultTextEditor" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%windir%\notepad.exe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

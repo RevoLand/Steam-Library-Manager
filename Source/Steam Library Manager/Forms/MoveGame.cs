@@ -503,18 +503,6 @@ namespace Steam_Library_Manager.Forms
                         }
                     }
 
-                    // If workshop .ACF file exists
-                    if (File.Exists(Path.Combine(Game.Library.workshopPath, Game.workShopAcfName)))
-                    {
-                        // Remove the file
-                        File.Delete(Path.Combine(Game.Library.workshopPath, Game.workShopAcfName));
-
-                        // If we removed file succesfully
-                        if (!File.Exists(Path.Combine(Game.Library.workshopPath, Game.workShopAcfName)))
-                            // Log to user
-                            Log("Workshop .ACF file has been removed");
-                    }
-
                     // If game has downloading folder
                     if (!string.IsNullOrEmpty(Game.downloadPath))
                         // Remove this folder with contents
@@ -522,8 +510,16 @@ namespace Steam_Library_Manager.Forms
 
                     // If game has workshop folder
                     if (!string.IsNullOrEmpty(Game.workShopPath))
+                    {
                         // Remove this folder with contents
                         Directory.Delete(Game.workShopPath, true);
+
+                        if (File.Exists(Path.Combine(Game.Library.workshopPath, Game.workShopAcfName)))
+                        {
+                            // Remove the file
+                            File.Delete(Path.Combine(Game.Library.workshopPath, Game.workShopAcfName));
+                        }
+                    }
 
                     // If game has common folder
                     if (!string.IsNullOrEmpty(Game.commonPath))
@@ -556,7 +552,7 @@ namespace Steam_Library_Manager.Forms
             Functions.SteamLibrary.UpdateLibraries();
 
             // Update latest selected library
-            Functions.Games.UpdateGamesList(Definitions.SLM.LatestSelectedGame.Library);
+            Functions.Games.UpdateGameList(Definitions.SLM.LatestSelectedGame.Library);
         }
 
         private void Log(string Text)

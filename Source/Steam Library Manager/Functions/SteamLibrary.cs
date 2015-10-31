@@ -28,6 +28,9 @@ namespace Steam_Library_Manager.Functions
                 // Define our library path to SteamApps
                 Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps");
 
+                // Define common folder path for future use
+                Library.commonPath = Path.Combine(Library.Directory, "common");
+
                 // Define download folder path
                 Library.downloadPath = Path.Combine(Library.Directory, "downloading");
 
@@ -64,6 +67,9 @@ namespace Steam_Library_Manager.Functions
 
                         // Define library path
                         Library.Directory = Path.Combine(Key[i.ToString()].Value, "SteamApps");
+
+                        // Define common folder path for future use
+                        Library.commonPath = Path.Combine(Library.Directory, "common");
 
                         // Define download folder path
                         Library.downloadPath = Path.Combine(Library.Directory, "downloading");
@@ -134,7 +140,7 @@ namespace Steam_Library_Manager.Functions
                     PictureBox libraryDetailBox = new PictureBox();
 
                     // Set our image for picturebox
-                    libraryDetailBox.Image = Properties.Resources.Folder;
+                    libraryDetailBox.Image = Properties.Resources.libraryIcon;
 
                     // Set our picturebox size
                     libraryDetailBox.Size = new System.Drawing.Size(width, height);
@@ -250,7 +256,6 @@ namespace Steam_Library_Manager.Functions
             catch { }
         }
 
-
         public static void CreateNewLibrary(string newLibraryPath, bool Backup)
         {
             try
@@ -351,7 +356,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.SLM.LatestSelectedLibrary = Library;
 
                 // Update games list from current selection
-                Games.UpdateGamesList(Library);
+                Games.UpdateGameList(Library);
             }
             catch { }
         }
