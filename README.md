@@ -28,8 +28,8 @@ Prerequisites
 
 To-Do List
 ===================
- - Move Library
- - Delete Library (and ask to move current installed games in that library)
+ - Move Library :hourglass:
+ - Delete Library (and ask to move current installed games in that library) :hourglass:
  - Backup Library
  - Restore Library backup
  - Further optimizations and bug fixes
