@@ -33,7 +33,7 @@ To-Do List
  - Backup Library
  - Restore Library backup
  - Further optimizations and bug fixes
- - "Open with..." option for text files (ex: .acf) &#9989;
+ - "Open with..." option for text files (ex: .acf) :white_check_mark:
  - Localization
 
 Changelog
