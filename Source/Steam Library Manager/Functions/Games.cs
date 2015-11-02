@@ -17,12 +17,12 @@ namespace Steam_Library_Manager.Functions
                 int gameCount = 0;
 
                 // Get *.acf file count from library path
-                gameCount += Directory.GetFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly).Length;
+                gameCount += Directory.GetFiles(Library.steamAppsPath, "*.acf", SearchOption.TopDirectoryOnly).Length;
 
                 // If library is a backup library
                 if (Library.Backup)
                     // Also get *.zip file count from backup library path
-                    gameCount += Directory.GetFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly).Length;
+                    gameCount += Directory.GetFiles(Library.steamAppsPath, "*.zip", SearchOption.TopDirectoryOnly).Length;
 
                 // return total game count we have found
                 return gameCount;
@@ -39,11 +39,11 @@ namespace Steam_Library_Manager.Functions
                     // Clear the list
                     Definitions.List.Game.Clear();
 
-                if (!Directory.Exists(Library.Directory))
+                if (!Directory.Exists(Library.steamAppsPath))
                     return;
 
                 // Foreach *.acf file found in library
-                foreach (string game in Directory.EnumerateFiles(Library.Directory, "*.acf", SearchOption.TopDirectoryOnly))
+                foreach (string game in Directory.EnumerateFiles(Library.steamAppsPath, "*.acf", SearchOption.TopDirectoryOnly))
                 {
                     // Define a new value and call KeyValue
                     Framework.KeyValue Key = new Framework.KeyValue();
@@ -90,16 +90,16 @@ namespace Steam_Library_Manager.Functions
                     Game.Library = Library;
 
                     // If game has a folder in "common" dir, define it as exactInstallPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "common", Game.installationPath)))
-                        Game.commonPath = Path.Combine(Library.Directory, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
+                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "common", Game.installationPath)))
+                        Game.commonPath = Path.Combine(Library.steamAppsPath, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "downloading" dir, define it as downloadPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "downloading", Game.installationPath)))
-                        Game.downloadPath = Path.Combine(Library.Directory, "downloading", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
+                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "downloading", Game.installationPath)))
+                        Game.downloadPath = Path.Combine(Library.steamAppsPath, "downloading", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
 
                     // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString())))
-                        Game.workShopPath = Path.Combine(Library.Directory, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
+                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "workshop", "content", Game.appID.ToString())))
+                        Game.workShopPath = Path.Combine(Library.steamAppsPath, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
 
                     // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                     if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath))
@@ -151,7 +151,7 @@ namespace Steam_Library_Manager.Functions
                 if (Library.Backup)
                 {
                     // Do a loop for each *.zip file in library
-                    foreach (string gameArchive in Directory.EnumerateFiles(Library.Directory, "*.zip", SearchOption.TopDirectoryOnly))
+                    foreach (string gameArchive in Directory.EnumerateFiles(Library.steamAppsPath, "*.zip", SearchOption.TopDirectoryOnly))
                     {
                         // Open archive for read
                         using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
@@ -192,7 +192,7 @@ namespace Steam_Library_Manager.Functions
                                 if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
                                 {
                                     // Open archive to read
-                                    using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.Directory, Game.appID + ".zip")))
+                                    using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip")))
                                     {
                                         // For each file in archive
                                         foreach (ZipArchiveEntry entry in zip.Entries)
@@ -206,7 +206,7 @@ namespace Steam_Library_Manager.Functions
                                 else
                                 {
                                     // Use FileInfo to get our archive details
-                                    FileInfo zip = new FileInfo(Path.Combine(Game.Library.Directory, Game.appID + ".zip"));
+                                    FileInfo zip = new FileInfo(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
 
                                     // And set archive size as game size
                                     Game.sizeOnDisk = zip.Length;

@@ -60,13 +60,13 @@ namespace Steam_Library_Manager.Forms
             pictureBox_GameImage.LoadAsync(string.Format("http://cdn.akamai.steamstatic.com/steam/apps/{0}/header.jpg", Game.appID));
 
             // Update our label for current library with directory path
-            linkLabel_currentLibrary.Text = Game.Library.Directory;
+            linkLabel_currentLibrary.Text = Game.Library.steamAppsPath;
 
             // Update our label for target library with directory path
-            linkLabel_TargetLibrary.Text = Library.Directory;
+            linkLabel_TargetLibrary.Text = Library.steamAppsPath;
 
             // Get free space at target library and update Available space label
-            label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.Directory));
+            label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.steamAppsPath));
 
             // Get game size and update Needed space label
             label_NeededSpace.Text = Functions.FileSystem.FormatBytes(Game.sizeOnDisk);
@@ -92,13 +92,13 @@ namespace Steam_Library_Manager.Forms
             timeElapsed.Start();
 
             // Path definitions
-            string newCommonPath = Path.Combine(Library.Directory, "common", Game.installationPath);
-            string newDownloadingPath = Path.Combine(Library.Directory, "downloading", Game.appID.ToString());
+            string newCommonPath = Path.Combine(Library.commonPath, Game.installationPath);
+            string newDownloadingPath = Path.Combine(Library.downloadPath, Game.appID.ToString());
 
             // Name definitions
             string zipName = string.Format("{0}.zip", Game.appID);
-            string currentZipNameNpath = Path.Combine(Game.Library.Directory, zipName);
-            string newZipNameNpath = Path.Combine(Library.Directory, zipName);
+            string currentZipNameNpath = Path.Combine(Game.Library.steamAppsPath, zipName);
+            string newZipNameNpath = Path.Combine(Library.steamAppsPath, zipName);
             string newFileName;
 
             // Other definitions
@@ -115,14 +115,14 @@ namespace Steam_Library_Manager.Forms
                     {
                         // Remove the directory
                         Directory.Delete(newCommonPath, true);
-                        File.Delete(Path.Combine(Library.Directory, Game.acfName));
+                        File.Delete(Path.Combine(Library.steamAppsPath, Game.acfName));
                     }
 
                     // Log to user
                     Log("Uncompressing archive... Please wait");
 
                     // unzip the archive asynchronously to target library
-                    await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, Library.Directory));
+                    await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, Library.steamAppsPath));
                 }
                 // If game is compressed and user didn't wanted to decompress and target library is backup
                 else if (isGameCompressed && !deCompressArchive && Library.Backup)
@@ -187,7 +187,7 @@ namespace Steam_Library_Manager.Forms
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories))
                                 {
                                     // Define a string for better looking
-                                    newFileName = currentFile.Substring(Game.Library.Directory.Length + 1);
+                                    newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
 
                                     // Add file to archive
                                     await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
@@ -210,7 +210,7 @@ namespace Steam_Library_Manager.Forms
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories))
                                 {
                                     // Define a string for better looking
-                                    newFileName = currentFile.Substring(Game.Library.Directory.Length + 1);
+                                    newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
 
                                     // Add file to archive
                                     await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
@@ -229,7 +229,7 @@ namespace Steam_Library_Manager.Forms
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.Library.downloadPath, string.Format("*{0}*.patch", Game.appID), SearchOption.TopDirectoryOnly))
                                 {
                                     // Define a string for better looking
-                                    newFileName = currentFile.Substring(Game.Library.Directory.Length + 1);
+                                    newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
 
                                     // Add file to archive
                                     await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
@@ -243,7 +243,7 @@ namespace Steam_Library_Manager.Forms
                                 foreach (string currentFile in Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                                 {
                                     // Define a string for better looking
-                                    newFileName = currentFile.Substring(Game.Library.Directory.Length + 1);
+                                    newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
 
                                     // Add file to archive
                                     await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
@@ -406,7 +406,7 @@ namespace Steam_Library_Manager.Forms
                             foreach (string currentFile in Directory.EnumerateFiles(Game.Library.downloadPath, string.Format("*{0}*.patch", Game.appID), SearchOption.TopDirectoryOnly))
                             {
                                 // Set new file name
-                                newFileName = Path.Combine(Library.Directory, "downloading", currentFile.Replace(Game.Library.downloadPath, ""));
+                                newFileName = Path.Combine(Library.steamAppsPath, "downloading", currentFile.Replace(Game.Library.downloadPath, ""));
 
                                 // Copy .patch file to target library asynchronously
                                 await Task.Run(() => File.Copy(currentFile, newFileName, true));
@@ -420,7 +420,7 @@ namespace Steam_Library_Manager.Forms
                             foreach (string currentFile in Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories))
                             {
                                 // Set new file name
-                                newFileName = Path.Combine(Library.Directory, currentFile.Replace(Game.Library.Directory, ""));
+                                newFileName = Path.Combine(Library.steamAppsPath, currentFile.Replace(Game.Library.steamAppsPath, ""));
 
                                 // If directory not exists
                                 if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -448,7 +448,7 @@ namespace Steam_Library_Manager.Forms
                         }
 
                         // Copy .ACF file
-                        File.Copy(Game.acfPath, Path.Combine(Library.Directory, Game.acfName), true);
+                        File.Copy(Game.acfPath, Path.Combine(Library.steamAppsPath, Game.acfName), true);
                     }
                 }
             }
@@ -549,7 +549,7 @@ namespace Steam_Library_Manager.Forms
             Log(string.Format("Time elapsed: {0}", timeElapsed.Elapsed));
 
             // Update game libraries
-            Functions.SteamLibrary.UpdateLibraries();
+            Functions.SteamLibrary.UpdateLibraryList();
 
             // Update latest selected library
             Functions.Games.UpdateGameList(Definitions.SLM.LatestSelectedGame.Library);
@@ -592,7 +592,7 @@ namespace Steam_Library_Manager.Forms
             try
             {
                 // On click to target library, open library in explorer
-                Process.Start(Library.Directory);
+                Process.Start(Library.steamAppsPath);
             }
             catch { }
         }
@@ -602,7 +602,7 @@ namespace Steam_Library_Manager.Forms
             try
             {
                 // On click to current library, open library in explorer
-                Process.Start(Game.Library.Directory);
+                Process.Start(Game.Library.steamAppsPath);
             }
             catch { }
         }

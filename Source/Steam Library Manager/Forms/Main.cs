@@ -154,7 +154,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update game & backup libraries
-                Functions.SteamLibrary.UpdateLibraries();
+                Functions.SteamLibrary.UpdateLibraryList();
 
                 // Clear current selected game library
                 panel_GameList.Controls.Clear();

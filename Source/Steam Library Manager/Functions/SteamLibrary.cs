@@ -7,7 +7,45 @@ namespace Steam_Library_Manager.Functions
 {
     class SteamLibrary
     {
-        public static void UpdateLibraries()
+
+        public static void AddNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
+        {
+            try
+            {
+                Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
+
+                // Define if library is main library
+                Library.Main = mainLibrary;
+
+                // Define if library is a backup dir
+                Library.Backup = backupLibrary;
+
+                // Define full path of library
+                Library.fullPath = libraryPath;
+
+                // Define our library path to SteamApps
+                Library.steamAppsPath = Path.Combine(libraryPath, "SteamApps");
+
+                // Define common folder path for future use
+                Library.commonPath = Path.Combine(Library.steamAppsPath, "common");
+
+                // Define download folder path
+                Library.downloadPath = Path.Combine(Library.steamAppsPath, "downloading");
+
+                // Define workshop folder path
+                Library.workshopPath = Path.Combine(Library.steamAppsPath, "workshop");
+
+                // Count how many games we have installed in our library
+                Library.GameCount = Games.GetGamesCountFromLibrary(Library);
+
+                // And add collected informations to our global list
+                Definitions.List.Library.Add(Library);
+            }
+            catch { }
+
+        }
+
+        public static void UpdateLibraryList()
         {
             try
             {
@@ -19,41 +57,16 @@ namespace Steam_Library_Manager.Functions
                 // If Steam.exe not exists in the path we set then return
                 if (!File.Exists(Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.exe"))) return;
 
-                // Our main library doesn't included in LibraryFolders.vdf so we have to include it manually
-                Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
-
-                // Tell it is our main game library which can be handy in future
-                Library.Main = true;
-
-                // Define our library path to SteamApps
-                Library.Directory = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps");
-
-                // Define common folder path for future use
-                Library.commonPath = Path.Combine(Library.Directory, "common");
-
-                // Define download folder path
-                Library.downloadPath = Path.Combine(Library.Directory, "downloading");
-
-                // Define workshop folder path
-                Library.workshopPath = Path.Combine(Library.Directory, "workshop");
-
-                // Count how many games we have installed in our library
-                Library.GameCount = Games.GetGamesCountFromLibrary(Library);
-
-                // And add collected informations to our global list
-                Definitions.List.Library.Add(Library);
+                AddNewLibrary(Properties.Settings.Default.SteamInstallationPath, true, false);
 
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
 
-                // Define our LibraryFolders.VDF path for easier use
-                string vdfFilePath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "SteamApps", "libraryfolders.vdf");
-
                 // If LibraryFolders.vdf exists
-                if (File.Exists(vdfFilePath))
+                if (File.Exists(Definitions.Steam.vdfFilePath))
                 {
                     // Read our vdf file as text
-                    Key.ReadFileAsText(vdfFilePath);
+                    Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
 
                     // Until someone gives a better idea, try to look for 255 Keys but break at first null key
                     for (int i = 1; i < Definitions.Steam.maxLibraryCount; i++)
@@ -62,26 +75,7 @@ namespace Steam_Library_Manager.Functions
                         if (Key[i.ToString()].Value == null)
                             break;
 
-                        // Define a new library
-                        Library = new Definitions.List.LibraryList();
-
-                        // Define library path
-                        Library.Directory = Path.Combine(Key[i.ToString()].Value, "SteamApps");
-
-                        // Define common folder path for future use
-                        Library.commonPath = Path.Combine(Library.Directory, "common");
-
-                        // Define download folder path
-                        Library.downloadPath = Path.Combine(Library.Directory, "downloading");
-
-                        // Define workshop folder path
-                        Library.workshopPath = Path.Combine(Library.Directory, "workshop");
-
-                        // Define game count in library
-                        Library.GameCount = Games.GetGamesCountFromLibrary(Library);
-
-                        // Add our new library to list
-                        Definitions.List.Library.Add(Library);
+                        AddNewLibrary(Key[i.ToString()].Value, false, false);
                     }
                 }
                 else { /* Could not locate LibraryFolders.vdf */ }
@@ -92,20 +86,7 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have do a loop
                     foreach (string backupDirectory in Properties.Settings.Default.BackupDirectories)
                     {
-                        // Define a new library
-                        Library = new Definitions.List.LibraryList();
-
-                        // Define it is a backup library
-                        Library.Backup = true;
-
-                        // Define library path
-                        Library.Directory = backupDirectory;
-
-                        // Define game count in library
-                        Library.GameCount = Games.GetGamesCountFromLibrary(Library);
-
-                        // Add our new library to list
-                        Definitions.List.Library.Add(Library);
+                        AddNewLibrary(backupDirectory, false, true);
                     }
                 }
 
@@ -167,7 +148,7 @@ namespace Steam_Library_Manager.Functions
                     libraryName.Size = new System.Drawing.Size(width, height);
 
                     // Set label text, currently it is directory path + game count
-                    libraryName.Text = string.Format("{0} ({1})", Library.Directory, Library.GameCount);
+                    libraryName.Text = string.Format("{0} ({1})", Library.steamAppsPath, Library.GameCount);
 
                     // Show our label in bottom center of our pictureBox
                     libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -194,7 +175,10 @@ namespace Steam_Library_Manager.Functions
                     rightClickMenu.Tag = Library;
 
                     // Add an item which will show our library directory and make it disabled
-                    rightClickMenu.MenuItems.Add(Library.Directory, mouseClick).Name = "Disk";
+                    rightClickMenu.MenuItems.Add(Library.steamAppsPath, mouseClick).Name = "Disk";
+
+                    // Move library
+                    rightClickMenu.MenuItems.Add("Move Library", mouseClick).Name = "moveLibrary";
 
                     if (Library.Backup)
                     {
@@ -221,7 +205,7 @@ namespace Steam_Library_Manager.Functions
             catch { }
         }
 
-        static void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
+        static async void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
         {
             try
             {
@@ -233,10 +217,100 @@ namespace Steam_Library_Manager.Functions
                 {
                     // Opens game installation path in explorer
                     case "Disk":
-                        System.Diagnostics.Process.Start(Library.Directory);
+                        System.Diagnostics.Process.Start(Library.steamAppsPath);
                         break;
 
-                   // Removes a backup library from list
+                    case "moveLibrary":
+                        if (Library.Main)
+                            return;
+
+                        string newFileName;
+
+                        // Create a new dialog result and show to user
+                        DialogResult newLibrarySelection = Definitions.Accessors.MainForm.folderBrowser_SelectNewLibraryPath.ShowDialog();
+
+                        // If our dialog is closed with OK (directory selected)
+                        if (newLibrarySelection == DialogResult.OK)
+                        {
+                            // Define selected path for easier usage in future
+                            string newLibraryPath = Definitions.Accessors.MainForm.folderBrowser_SelectNewLibraryPath.SelectedPath;
+
+                            // Check if the selected path is exists
+                            if (!LibraryExists(newLibraryPath))
+                            {
+                                DialogResult confirmLibraryAction = MessageBox.Show(string.Format("Do you want to move library located at [{0}] to [{1}] ?", Library.fullPath, newLibraryPath), "Move Library", MessageBoxButtons.YesNo);
+
+                                if (confirmLibraryAction == DialogResult.Yes)
+                                {
+                                    switch (Library.Backup)
+                                    {
+                                        case false:
+
+                                            // For each file in common folder of game
+                                            foreach (string currentFile in Directory.EnumerateFiles(Library.steamAppsPath, "*", SearchOption.AllDirectories))
+                                            {
+                                                // Make a new file stream from the file we are reading so we can copy the file asynchronously
+                                                using (FileStream currentFileStream = File.OpenRead(currentFile))
+                                                {
+                                                    // Set new file name including target game path
+                                                    newFileName = Path.Combine(newLibraryPath, currentFile.Replace(Library.fullPath + @"\", ""));
+
+                                                    // If directory not exists
+                                                    if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
+                                                        // Create a directory at target library for new file, if we do not the process will fail
+                                                        Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+
+                                                    // Create a new file
+                                                    using (FileStream newFileStream = File.Create(newFileName))
+                                                    {
+                                                        // Copy the file to target library asynchronously
+                                                        await currentFileStream.CopyToAsync(newFileStream);
+                                                    }
+                                                }
+                                            }
+
+                                            // Define steam dll paths for better looking
+                                            string currentSteamDLLPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.dll");
+                                            string newSteamDLLPath = Path.Combine(newLibraryPath, "Steam.dll");
+
+                                            // Copy Steam.dll as steam needs it
+                                            File.Copy(currentSteamDLLPath, newSteamDLLPath, true);
+
+                                            // Make a KeyValue reader
+                                            Framework.KeyValue Key = new Framework.KeyValue();
+
+                                            // Read vdf file
+                                            Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
+
+                                            // Change old library path with new one
+                                            Key.Children.Find(key => key.Value.Contains(Library.fullPath)).Value = newLibraryPath;
+
+                                            // Update libraryFolders.vdf file with changes
+                                            Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
+
+                                            // Remove old library
+                                            Directory.Delete(Library.steamAppsPath, true);
+
+                                            // Show a message box to user, temporarily
+                                            MessageBox.Show(string.Format("Library [{0}] moved to [{1}]", Library.fullPath, newLibraryPath));
+
+                                            // Update library list
+                                            UpdateLibraryList();
+                                            break;
+                                    }
+                                }
+                                else
+                                    return;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Library already exists at selected path, please select another path.");
+                            }
+
+                        }
+                        break;
+
+                    // Removes a backup library from list
                     case "RemoveFromList":
                         if (Library.Backup)
                         {
@@ -253,7 +327,13 @@ namespace Steam_Library_Manager.Functions
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // If user want us to log errors to file
+                if (Properties.Settings.Default.LogErrorsToFile)
+                    // Log errors to DirectoryRemoval.txt
+                    Log.ErrorsToFile("Libraries", ex.ToString());
+            }
         }
 
         public static void CreateNewLibrary(string newLibraryPath, bool Backup)
@@ -295,7 +375,7 @@ namespace Steam_Library_Manager.Functions
                         MessageBox.Show("New Steam Library added, Please Restart Steam to see it in action."); // to-do: edit text
 
                         // Update game libraries
-                        UpdateLibraries();
+                        UpdateLibraryList();
                     }
                     else
                         // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
@@ -312,7 +392,7 @@ namespace Steam_Library_Manager.Functions
                     Properties.Settings.Default.BackupDirectories.Add(newLibraryPath);
 
                     // Update game libraries
-                    UpdateLibraries();
+                    UpdateLibraryList();
 
                     // Save our settings
                     Settings.Save();
@@ -326,7 +406,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // For each current game libraries
-                foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.Directory.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant())))
+                foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.steamAppsPath.ToLowerInvariant().Contains(NewLibraryPath.ToLowerInvariant())))
                 {
                     // If current library contains NewLibraryPath
                     // Then return true

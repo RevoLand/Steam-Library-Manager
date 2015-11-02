@@ -100,11 +100,11 @@
             // label_searchInLibrary
             // 
             this.label_searchInLibrary.AutoSize = true;
-            this.label_searchInLibrary.Location = new System.Drawing.Point(484, 722);
+            this.label_searchInLibrary.Location = new System.Drawing.Point(480, 724);
             this.label_searchInLibrary.Name = "label_searchInLibrary";
-            this.label_searchInLibrary.Size = new System.Drawing.Size(163, 13);
+            this.label_searchInLibrary.Size = new System.Drawing.Size(167, 13);
             this.label_searchInLibrary.TabIndex = 4;
-            this.label_searchInLibrary.Text = "Search in Library (by Name or ID)";
+            this.label_searchInLibrary.Text = "Search in Library (Name or appID)";
             // 
             // textBox_searchInGames
             // 
@@ -367,8 +367,7 @@
             // 
             // label_LatestVersion
             // 
-            this.label_LatestVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_LatestVersion.Location = new System.Drawing.Point(7, 83);
+            this.label_LatestVersion.Location = new System.Drawing.Point(3, 77);
             this.label_LatestVersion.Name = "label_LatestVersion";
             this.label_LatestVersion.Size = new System.Drawing.Size(168, 20);
             this.label_LatestVersion.TabIndex = 3;
@@ -377,17 +376,15 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label7.Location = new System.Drawing.Point(6, 65);
+            this.label7.Location = new System.Drawing.Point(3, 61);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(87, 15);
+            this.label7.Size = new System.Drawing.Size(77, 13);
             this.label7.TabIndex = 2;
             this.label7.Text = "Latest Version:";
             // 
             // label_CurrentVersion
             // 
-            this.label_CurrentVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.label_CurrentVersion.Location = new System.Drawing.Point(7, 41);
+            this.label_CurrentVersion.Location = new System.Drawing.Point(3, 41);
             this.label_CurrentVersion.Name = "label_CurrentVersion";
             this.label_CurrentVersion.Size = new System.Drawing.Size(168, 20);
             this.label_CurrentVersion.TabIndex = 1;
@@ -396,10 +393,9 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label4.Location = new System.Drawing.Point(6, 23);
+            this.label4.Location = new System.Drawing.Point(3, 25);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 15);
+            this.label4.Size = new System.Drawing.Size(82, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Current Version:";
             // 

@@ -49,9 +49,9 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(9, 209);
+            this.label1.Location = new System.Drawing.Point(15, 180);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 21);
+            this.label1.Size = new System.Drawing.Size(272, 21);
             this.label1.TabIndex = 3;
             this.label1.Text = "Target Library:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -59,7 +59,7 @@
             // checkbox_Validate
             // 
             this.checkbox_Validate.AutoSize = true;
-            this.checkbox_Validate.Location = new System.Drawing.Point(222, 253);
+            this.checkbox_Validate.Location = new System.Drawing.Point(224, 224);
             this.checkbox_Validate.Name = "checkbox_Validate";
             this.checkbox_Validate.Size = new System.Drawing.Size(63, 17);
             this.checkbox_Validate.TabIndex = 4;
@@ -68,7 +68,7 @@
             // checkbox_RemoveOldFiles
             // 
             this.checkbox_RemoveOldFiles.AutoSize = true;
-            this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 253);
+            this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 224);
             this.checkbox_RemoveOldFiles.Name = "checkbox_RemoveOldFiles";
             this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(105, 17);
             this.checkbox_RemoveOldFiles.TabIndex = 5;
@@ -76,7 +76,7 @@
             // 
             // button_Copy
             // 
-            this.button_Copy.Location = new System.Drawing.Point(12, 308);
+            this.button_Copy.Location = new System.Drawing.Point(12, 281);
             this.button_Copy.Name = "button_Copy";
             this.button_Copy.Size = new System.Drawing.Size(275, 40);
             this.button_Copy.TabIndex = 6;
@@ -85,7 +85,7 @@
             // 
             // progressBar_CopyStatus
             // 
-            this.progressBar_CopyStatus.Location = new System.Drawing.Point(12, 517);
+            this.progressBar_CopyStatus.Location = new System.Drawing.Point(12, 490);
             this.progressBar_CopyStatus.Name = "progressBar_CopyStatus";
             this.progressBar_CopyStatus.Size = new System.Drawing.Size(275, 23);
             this.progressBar_CopyStatus.Step = 1;
@@ -94,7 +94,7 @@
             // textBox_Logs
             // 
             this.textBox_Logs.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.textBox_Logs.Location = new System.Drawing.Point(12, 354);
+            this.textBox_Logs.Location = new System.Drawing.Point(12, 327);
             this.textBox_Logs.Multiline = true;
             this.textBox_Logs.Name = "textBox_Logs";
             this.textBox_Logs.ReadOnly = true;
@@ -104,7 +104,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(9, 165);
+            this.label2.Location = new System.Drawing.Point(12, 139);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(275, 21);
             this.label2.TabIndex = 9;
@@ -113,7 +113,7 @@
             // 
             // linkLabel_currentLibrary
             // 
-            this.linkLabel_currentLibrary.Location = new System.Drawing.Point(9, 189);
+            this.linkLabel_currentLibrary.Location = new System.Drawing.Point(12, 160);
             this.linkLabel_currentLibrary.Name = "linkLabel_currentLibrary";
             this.linkLabel_currentLibrary.Size = new System.Drawing.Size(275, 20);
             this.linkLabel_currentLibrary.TabIndex = 10;
@@ -124,7 +124,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 273);
+            this.label3.Location = new System.Drawing.Point(12, 244);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 11;
@@ -133,7 +133,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 290);
+            this.label4.Location = new System.Drawing.Point(12, 261);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 12;
@@ -141,7 +141,7 @@
             // 
             // label_AvailableSpace
             // 
-            this.label_AvailableSpace.Location = new System.Drawing.Point(208, 273);
+            this.label_AvailableSpace.Location = new System.Drawing.Point(208, 244);
             this.label_AvailableSpace.Name = "label_AvailableSpace";
             this.label_AvailableSpace.Size = new System.Drawing.Size(79, 17);
             this.label_AvailableSpace.TabIndex = 13;
@@ -150,7 +150,7 @@
             // 
             // label_NeededSpace
             // 
-            this.label_NeededSpace.Location = new System.Drawing.Point(211, 288);
+            this.label_NeededSpace.Location = new System.Drawing.Point(213, 261);
             this.label_NeededSpace.Name = "label_NeededSpace";
             this.label_NeededSpace.Size = new System.Drawing.Size(74, 17);
             this.label_NeededSpace.TabIndex = 14;
@@ -159,7 +159,7 @@
             // 
             // linkLabel_TargetLibrary
             // 
-            this.linkLabel_TargetLibrary.Location = new System.Drawing.Point(9, 230);
+            this.linkLabel_TargetLibrary.Location = new System.Drawing.Point(12, 201);
             this.linkLabel_TargetLibrary.Name = "linkLabel_TargetLibrary";
             this.linkLabel_TargetLibrary.Size = new System.Drawing.Size(275, 20);
             this.linkLabel_TargetLibrary.TabIndex = 17;
@@ -170,7 +170,7 @@
             // checkbox_Compress
             // 
             this.checkbox_Compress.AutoSize = true;
-            this.checkbox_Compress.Location = new System.Drawing.Point(123, 253);
+            this.checkbox_Compress.Location = new System.Drawing.Point(123, 224);
             this.checkbox_Compress.Name = "checkbox_Compress";
             this.checkbox_Compress.Size = new System.Drawing.Size(72, 17);
             this.checkbox_Compress.TabIndex = 18;
@@ -180,7 +180,7 @@
             // checkbox_DeCompress
             // 
             this.checkbox_DeCompress.AutoSize = true;
-            this.checkbox_DeCompress.Location = new System.Drawing.Point(123, 253);
+            this.checkbox_DeCompress.Location = new System.Drawing.Point(123, 224);
             this.checkbox_DeCompress.Name = "checkbox_DeCompress";
             this.checkbox_DeCompress.Size = new System.Drawing.Size(90, 17);
             this.checkbox_DeCompress.TabIndex = 19;
@@ -189,7 +189,7 @@
             // 
             // pictureBox_GameImage
             // 
-            this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 33);
+            this.pictureBox_GameImage.Location = new System.Drawing.Point(12, 7);
             this.pictureBox_GameImage.Name = "pictureBox_GameImage";
             this.pictureBox_GameImage.Size = new System.Drawing.Size(275, 129);
             this.pictureBox_GameImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -201,7 +201,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 546);
+            this.ClientSize = new System.Drawing.Size(300, 521);
             this.Controls.Add(this.checkbox_DeCompress);
             this.Controls.Add(this.checkbox_Compress);
             this.Controls.Add(this.linkLabel_TargetLibrary);
