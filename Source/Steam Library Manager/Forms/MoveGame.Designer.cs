@@ -43,7 +43,7 @@
             this.linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
             this.checkbox_Compress = new System.Windows.Forms.CheckBox();
             this.checkbox_DeCompress = new System.Windows.Forms.CheckBox();
-            this.pictureBox_GameImage = new Steam_Library_Manager.Framework.PictureBoxWithCaching();
+            this.pictureBox_GameImage = new Framework.PictureBoxWithCaching();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -220,7 +220,7 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
+            this.Icon = Properties.Resources.steam_icon;
             this.MaximizeBox = false;
             this.Name = "MoveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);

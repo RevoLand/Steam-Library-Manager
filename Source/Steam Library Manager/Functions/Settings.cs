@@ -58,7 +58,7 @@ namespace Steam_Library_Manager.Functions
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.Backup))
                 {
                     // then add this library path to new defined string collection
-                    BackupDirs.Add(Library.steamAppsPath.Remove(Library.steamAppsPath.Length - 1, 1));
+                    BackupDirs.Add(Library.fullPath);
                 }
 
 				// change our current backup directories setting with new defined string collection

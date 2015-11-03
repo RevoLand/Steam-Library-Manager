@@ -29,5 +29,8 @@
     <Setting Name="DefaultTextEditor" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">%windir%\notepad.exe</Value>
     </Setting>
+    <Setting Name="libraryPictureSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">195, 155</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -35,6 +35,7 @@
             this.panel_LibraryList = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
+            this.gameContextMenuItems = new System.Windows.Forms.DataGridView();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
             this.button_changeDefaultTextEditor = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -64,9 +65,13 @@
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
             this.fileDialog_defaultTextEditor = new System.Windows.Forms.OpenFileDialog();
+            this.itemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gameContextMenuItems)).BeginInit();
             this.groupBox_SLM.SuspendLayout();
             this.groupBox_Steam.SuspendLayout();
             this.groupBox_Version.SuspendLayout();
@@ -76,11 +81,10 @@
             // 
             this.tabControl1.Controls.Add(this.tab_InstalledGames);
             this.tabControl1.Controls.Add(this.tab_Settings);
-            this.tabControl1.Location = new System.Drawing.Point(4, 11);
-            this.tabControl1.Multiline = true;
+            this.tabControl1.Location = new System.Drawing.Point(4, 33);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 1;
-            this.tabControl1.Size = new System.Drawing.Size(853, 772);
+            this.tabControl1.Size = new System.Drawing.Size(853, 750);
             this.tabControl1.TabIndex = 0;
             // 
             // tab_InstalledGames
@@ -92,7 +96,7 @@
             this.tab_InstalledGames.Location = new System.Drawing.Point(4, 22);
             this.tab_InstalledGames.Name = "tab_InstalledGames";
             this.tab_InstalledGames.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 746);
+            this.tab_InstalledGames.Size = new System.Drawing.Size(845, 724);
             this.tab_InstalledGames.TabIndex = 1;
             this.tab_InstalledGames.Text = "Installed Games";
             this.tab_InstalledGames.UseVisualStyleBackColor = true;
@@ -100,7 +104,7 @@
             // label_searchInLibrary
             // 
             this.label_searchInLibrary.AutoSize = true;
-            this.label_searchInLibrary.Location = new System.Drawing.Point(480, 724);
+            this.label_searchInLibrary.Location = new System.Drawing.Point(481, 701);
             this.label_searchInLibrary.Name = "label_searchInLibrary";
             this.label_searchInLibrary.Size = new System.Drawing.Size(167, 13);
             this.label_searchInLibrary.TabIndex = 4;
@@ -109,7 +113,7 @@
             // textBox_searchInGames
             // 
             this.textBox_searchInGames.Font = new System.Drawing.Font("Segoe UI Semilight", 9.75F);
-            this.textBox_searchInGames.Location = new System.Drawing.Point(653, 718);
+            this.textBox_searchInGames.Location = new System.Drawing.Point(654, 695);
             this.textBox_searchInGames.Multiline = true;
             this.textBox_searchInGames.Name = "textBox_searchInGames";
             this.textBox_searchInGames.Size = new System.Drawing.Size(188, 23);
@@ -119,32 +123,45 @@
             // panel_LibraryList
             // 
             this.panel_LibraryList.AutoScroll = true;
-            this.panel_LibraryList.Location = new System.Drawing.Point(2, 6);
+            this.panel_LibraryList.Location = new System.Drawing.Point(2, 15);
             this.panel_LibraryList.Name = "panel_LibraryList";
-            this.panel_LibraryList.Size = new System.Drawing.Size(839, 164);
+            this.panel_LibraryList.Size = new System.Drawing.Size(839, 173);
             this.panel_LibraryList.TabIndex = 2;
             // 
             // panel_GameList
             // 
             this.panel_GameList.AutoScroll = true;
-            this.panel_GameList.Location = new System.Drawing.Point(2, 173);
+            this.panel_GameList.Location = new System.Drawing.Point(2, 192);
             this.panel_GameList.Margin = new System.Windows.Forms.Padding(10);
             this.panel_GameList.Name = "panel_GameList";
-            this.panel_GameList.Size = new System.Drawing.Size(839, 539);
+            this.panel_GameList.Size = new System.Drawing.Size(839, 499);
             this.panel_GameList.TabIndex = 0;
             // 
             // tab_Settings
             // 
+            this.tab_Settings.Controls.Add(this.gameContextMenuItems);
             this.tab_Settings.Controls.Add(this.groupBox_SLM);
             this.tab_Settings.Controls.Add(this.groupBox_Steam);
             this.tab_Settings.Controls.Add(this.groupBox_Version);
             this.tab_Settings.Location = new System.Drawing.Point(4, 22);
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_Settings.Size = new System.Drawing.Size(845, 746);
+            this.tab_Settings.Size = new System.Drawing.Size(845, 724);
             this.tab_Settings.TabIndex = 2;
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
+            // 
+            // gameContextMenuItems
+            // 
+            this.gameContextMenuItems.AllowUserToOrderColumns = true;
+            this.gameContextMenuItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.itemName,
+            this.itemValue,
+            this.itemEnabled});
+            this.gameContextMenuItems.Location = new System.Drawing.Point(15, 227);
+            this.gameContextMenuItems.Name = "gameContextMenuItems";
+            this.gameContextMenuItems.Size = new System.Drawing.Size(343, 231);
+            this.gameContextMenuItems.TabIndex = 4;
             // 
             // groupBox_SLM
             // 
@@ -411,7 +428,7 @@
             // 
             // button_RefreshLibraries
             // 
-            this.button_RefreshLibraries.Location = new System.Drawing.Point(714, 2);
+            this.button_RefreshLibraries.Location = new System.Drawing.Point(466, 2);
             this.button_RefreshLibraries.Name = "button_RefreshLibraries";
             this.button_RefreshLibraries.Size = new System.Drawing.Size(125, 25);
             this.button_RefreshLibraries.TabIndex = 1;
@@ -421,7 +438,7 @@
             // 
             // button_newBackupLibrary
             // 
-            this.button_newBackupLibrary.Location = new System.Drawing.Point(583, 2);
+            this.button_newBackupLibrary.Location = new System.Drawing.Point(728, 2);
             this.button_newBackupLibrary.Name = "button_newBackupLibrary";
             this.button_newBackupLibrary.Size = new System.Drawing.Size(125, 25);
             this.button_newBackupLibrary.TabIndex = 2;
@@ -432,7 +449,7 @@
             // 
             // button_newSteamLibrary
             // 
-            this.button_newSteamLibrary.Location = new System.Drawing.Point(452, 2);
+            this.button_newSteamLibrary.Location = new System.Drawing.Point(597, 2);
             this.button_newSteamLibrary.Name = "button_newSteamLibrary";
             this.button_newSteamLibrary.Size = new System.Drawing.Size(125, 25);
             this.button_newSteamLibrary.TabIndex = 3;
@@ -444,6 +461,21 @@
             // fileDialog_defaultTextEditor
             // 
             this.fileDialog_defaultTextEditor.Filter = "|*.exe";
+            // 
+            // itemName
+            // 
+            this.itemName.HeaderText = "Name";
+            this.itemName.Name = "itemName";
+            // 
+            // itemValue
+            // 
+            this.itemValue.HeaderText = "Value";
+            this.itemValue.Name = "itemValue";
+            // 
+            // itemEnabled
+            // 
+            this.itemEnabled.HeaderText = "Enabled";
+            this.itemEnabled.Name = "itemEnabled";
             // 
             // Main
             // 
@@ -465,6 +497,7 @@
             this.tab_InstalledGames.ResumeLayout(false);
             this.tab_InstalledGames.PerformLayout();
             this.tab_Settings.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gameContextMenuItems)).EndInit();
             this.groupBox_SLM.ResumeLayout(false);
             this.groupBox_SLM.PerformLayout();
             this.groupBox_Steam.ResumeLayout(false);
@@ -514,6 +547,10 @@
         private System.Windows.Forms.Button button_changeDefaultTextEditor;
         public System.Windows.Forms.TextBox SLM_defaultTextEditor;
         public System.Windows.Forms.Label label_versionResult;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemValue;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn itemEnabled;
+        public System.Windows.Forms.DataGridView gameContextMenuItems;
     }
 }
 

@@ -147,5 +147,19 @@ namespace Steam_Library_Manager.Properties {
                 this["DefaultTextEditor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("195, 155")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Drawing.Size libraryPictureSize {
+            get {
+                return ((global::System.Drawing.Size)(this["libraryPictureSize"]));
+            }
+            set {
+                this["libraryPictureSize"] = value;
+            }
+        }
     }
 }

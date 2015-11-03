@@ -34,6 +34,7 @@ To-Do List
  - Restore Library backup
  - Further optimizations and bug fixes
  - "Open with..." option for text files (ex: .acf) :white_check_mark:
+ - If backup library set in settings file not found, ask user to change path :white_check_mark:
  - Localization
 
 Changelog

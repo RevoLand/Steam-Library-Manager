@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Functions
 {
     class Games
     {
-        public static int GetGamesCountFromLibrary(Definitions.List.LibraryList Library)
+        public static int GetGameCountFromLibrary(Definitions.List.LibraryList Library)
         {
             try
             {
@@ -28,6 +28,116 @@ namespace Steam_Library_Manager.Functions
                 return gameCount;
             }
             catch { return 0; }
+        }
+
+        public static void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.LibraryList Library, long sizeOnDisk, bool isCompressed)
+        {
+            try
+            {
+                // Make a new definition for game
+                Definitions.List.GamesList Game = new Definitions.List.GamesList();
+
+                // Set game appID
+                Game.appID = appID;
+
+                // Define it is an archive
+                Game.Compressed = isCompressed;
+
+                // Set game name
+                Game.appName = appName;
+
+                // Set acf name, appmanifest_107410.acf as example
+                Game.acfName = string.Format("appmanifest_{0}.acf", appID);
+
+                // Set game acf path
+                Game.acfPath = acfPath;
+
+                // Set workshop acf name
+                Game.workShopAcfName = string.Format("appworkshop_{0}.acf", appID);
+
+                if (!string.IsNullOrEmpty(Library.workshopPath))
+                    // Set path for acf file
+                    Game.workShopAcfPath = Path.Combine(Library.workshopPath, Game.workShopAcfName);
+
+                // Set installation path
+                Game.installationPath = installationPath;
+
+                // Set game library
+                Game.Library = Library;
+
+                // If game has a folder in "common" dir, define it as exactInstallPath
+                if (Directory.Exists(Path.Combine(Library.commonPath, installationPath)))
+                    Game.commonPath = Path.Combine(Library.commonPath, installationPath) + Path.DirectorySeparatorChar.ToString();
+
+                // If game has a folder in "downloading" dir, define it as downloadPath
+                if (Directory.Exists(Path.Combine(Library.downloadPath, installationPath)))
+                    Game.downloadPath = Path.Combine(Library.downloadPath, installationPath) + Path.DirectorySeparatorChar.ToString();
+
+                // If game has a folder in "workshop" dir, define it as workShopPath
+                if (Directory.Exists(Path.Combine(Library.workshopPath, "content", appID.ToString())))
+                    Game.workShopPath = Path.Combine(Library.workshopPath, "content", appID.ToString()) + Path.DirectorySeparatorChar.ToString();
+
+                // If game do not have a folder in "common" directory and "downloading" directory then skip this game
+                if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath))
+                    return; // Do not add pre-loads to list
+
+                // If SizeOnDisk value from .ACF file is not equals to 0
+                if (sizeOnDisk != 0 && Properties.Settings.Default.GameSizeCalculationMethod != "ACF" && !isCompressed)
+                {
+                    // If game has "common" folder
+                    if (!string.IsNullOrEmpty(Game.commonPath))
+                    {
+                        // Calculate game size on disk
+                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.commonPath, true);
+                    }
+
+                    // If game has downloading files
+                    if (!string.IsNullOrEmpty(Game.downloadPath))
+                    {
+                        // Calculate "downloading" folder size
+                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.downloadPath, true);
+                    }
+
+                    // If game has "workshop" files
+                    if (!string.IsNullOrEmpty(Game.workShopPath))
+                    {
+                        // Calculate "workshop" files size
+                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.workShopPath, true);
+                    }
+                }
+                else if (sizeOnDisk != 0 && isCompressed)
+                {
+                    // If user want us to get archive size from real uncompressed size
+                    if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
+                    {
+                        // Open archive to read
+                        using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip")))
+                        {
+                            // For each file in archive
+                            foreach (ZipArchiveEntry entry in zip.Entries)
+                            {
+                                // Add file size to sizeOnDisk
+                                Game.sizeOnDisk += entry.Length;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Use FileInfo to get our archive details
+                        FileInfo zip = new FileInfo(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
+
+                        // And set archive size as game size
+                        Game.sizeOnDisk = zip.Length;
+                    }
+                }
+                else
+                    // Else set game size to size in acf
+                    Game.sizeOnDisk = sizeOnDisk;
+
+                // Add our game details to global list
+                Definitions.List.Game.Add(Game);
+            }
+            catch { }
         }
 
         public static void UpdateGameList(Definitions.List.LibraryList Library)
@@ -56,95 +166,7 @@ namespace Steam_Library_Manager.Functions
                         // Skip this file (game)
                         continue;
 
-                    // Make a new definition for game
-                    Definitions.List.GamesList Game = new Definitions.List.GamesList();
-
-                    // Set game appID
-                    Game.appID = Convert.ToInt32(Key["appID"].Value);
-
-                    // Set game name
-                    Game.appName = Key["name"].Value;
-
-                    // If app name couldn't find
-                    if (string.IsNullOrEmpty(Game.appName))
-                        // Check for userconfig for name
-                        Game.appName = Key["UserConfig"]["name"].Value;
-
-                    // Set acf name, appmanifest_107410.acf as example
-                    Game.acfName = string.Format("appmanifest_{0}.acf", Game.appID);
-
-                    // Set game acf path
-                    Game.acfPath = game;
-
-                    // Set workshop acf name
-                    Game.workShopAcfName = string.Format("appworkshop_{0}.acf", Game.appID);
-
-                    if (!string.IsNullOrEmpty(Library.workshopPath))
-                        // Set path for acf file
-                        Game.workShopAcfPath = Path.Combine(Library.workshopPath, Game.workShopAcfName);
-
-                    // Set installation path
-                    Game.installationPath = Key["installdir"].Value;
-
-                    // Set game library
-                    Game.Library = Library;
-
-                    // If game has a folder in "common" dir, define it as exactInstallPath
-                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "common", Game.installationPath)))
-                        Game.commonPath = Path.Combine(Library.steamAppsPath, "common", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
-
-                    // If game has a folder in "downloading" dir, define it as downloadPath
-                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "downloading", Game.installationPath)))
-                        Game.downloadPath = Path.Combine(Library.steamAppsPath, "downloading", Game.installationPath) + Path.DirectorySeparatorChar.ToString();
-
-                    // If game has a folder in "workshop" dir, define it as workShopPath
-                    if (Directory.Exists(Path.Combine(Library.steamAppsPath, "workshop", "content", Game.appID.ToString())))
-                        Game.workShopPath = Path.Combine(Library.steamAppsPath, "workshop", "content", Game.appID.ToString()) + Path.DirectorySeparatorChar.ToString();
-
-                    // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                    if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath))
-                        continue; // Do not add pre-loads to list
-
-                    // If SizeOnDisk value from .ACF file is not equals to 0
-                    if (Key["SizeOnDisk"].Value != "0")
-                    {
-                        // If game has "common" folder
-                        if (!string.IsNullOrEmpty(Game.commonPath))
-                        {
-                            // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
-                                // Calculate game size on disk
-                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.commonPath, true);
-                            else
-                                // Else use the game size from .ACF file
-                                Game.sizeOnDisk += Convert.ToInt64(Key["SizeOnDisk"].Value);
-                        }
-
-                        // If game has downloading files
-                        if (!string.IsNullOrEmpty(Game.downloadPath))
-                        {
-                            // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
-                                // Calculate "downloading" folder size
-                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.downloadPath, true);
-                        }
-
-                        // If game has "workshop" files
-                        if (!string.IsNullOrEmpty(Game.workShopPath))
-                        {
-                            // If game size calculation method NOT set as "ACF"
-                            if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF")
-                                // Calculate "workshop" files size
-                                Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.workShopPath, true);
-                        }
-
-                    }
-                    else
-                        // Else set game size to 0
-                        Game.sizeOnDisk = 0;
-
-                    // Add our game details to global list
-                    Definitions.List.Game.Add(Game);
+                    AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 }
 
                 // If library is backup library
@@ -170,50 +192,7 @@ namespace Steam_Library_Manager.Functions
                                 if (Key.Children.Count == 0)
                                     return;
 
-                                // Define a new game
-                                Definitions.List.GamesList Game = new Definitions.List.GamesList();
-
-                                // Define our app ID
-                                Game.appID = Convert.ToInt32(Key["appID"].Value);
-
-                                // Define our app name
-                                Game.appName = Key["name"].Value;
-
-                                // Define it is an archive
-                                Game.Compressed = true;
-
-                                // Define installation path for game
-                                Game.installationPath = Key["installdir"].Value;
-
-                                // Define our library
-                                Game.Library = Library;
-
-                                // If user want us to get archive size from real uncompressed size
-                                if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
-                                {
-                                    // Open archive to read
-                                    using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip")))
-                                    {
-                                        // For each file in archive
-                                        foreach (ZipArchiveEntry entry in zip.Entries)
-                                        {
-                                            // Add file size to sizeOnDisk
-                                            Game.sizeOnDisk += entry.Length;
-                                        }
-                                    }
-                                }
-                                // Else
-                                else
-                                {
-                                    // Use FileInfo to get our archive details
-                                    FileInfo zip = new FileInfo(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
-
-                                    // And set archive size as game size
-                                    Game.sizeOnDisk = zip.Length;
-                                }
-
-                                // Add our new game to global definiton
-                                Definitions.List.Game.Add(Game);
+                                AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
 
                                 // Update main form as visual
                                 UpdateMainForm(null, null);
@@ -241,6 +220,7 @@ namespace Steam_Library_Manager.Functions
                 // Show a messagebox to user
                 MessageBox.Show("An error happened while updating game list!\n\n\n" + ex.ToString());
 
+                // Update main form as visual
                 UpdateMainForm(null, null);
             }
         }
@@ -303,9 +283,6 @@ namespace Steam_Library_Manager.Functions
                     // Create a new right click menu (context menu)
                     ContextMenu rightClickMenu = new ContextMenu();
 
-                    // Set our game details to context menu as Tag
-                    rightClickMenu.Tag = Game;
-
                     // Define an event handler
                     EventHandler mouseClick = new EventHandler(gameDetailBox_ContextMenuAction);
 
@@ -325,6 +302,7 @@ namespace Steam_Library_Manager.Functions
                         // Add icon to game picture
                         gameDetailBox.Controls.Add(compressedIcon);
                     }
+
 
                     // Add right click menu items
                     #region Context menu items
@@ -368,15 +346,17 @@ namespace Steam_Library_Manager.Functions
                     rightClickMenu.MenuItems.Add("-");
 
                     // View on Store, opens in user browser not steam browser
-                    rightClickMenu.MenuItems.Add("View on Store", mouseClick).Name = "Store";
+                    rightClickMenu.MenuItems.Add("View on Store (Steam Client)", mouseClick).Name = "store";
+
+                    // View on Store, opens in user browser not steam browser
+                    rightClickMenu.MenuItems.Add("View on Store", mouseClick).Name = "uStore";
 
                     // View on Disk, opens in explorer
                     rightClickMenu.MenuItems.Add("View on Disk", mouseClick).Name = "Disk";
 
                     // Uninstall, via Steam
                     rightClickMenu.MenuItems.Add("Uninstall", mouseClick).Name = "uninstall";
-
-#endregion
+                    #endregion
 
                     // Set our context menu to pictureBox
                     gameDetailBox.ContextMenu = rightClickMenu;
@@ -422,7 +402,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // Define our game from the Tag we given to Context menu
-                Definitions.List.GamesList Game = (sender as MenuItem).Parent.Tag as Definitions.List.GamesList;
+                Definitions.List.GamesList Game = (sender as MenuItem).GetContextMenu().SourceControl.Tag as Definitions.List.GamesList;
 
                 // switch based on name we set earlier with context menu
                 switch ((sender as MenuItem).Name)
@@ -435,7 +415,7 @@ namespace Steam_Library_Manager.Functions
                         break;
 
                     // Opens game store page in user browser
-                    case "Store":
+                    case "uStore":
                         Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
                         break;
                     
