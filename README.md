@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="/Extras/Logo/slm.png?raw=true" alt="Steam Library Manager" />
+	<img src="/Extras/Logo/slm.png?raw=true" width="600px" height="300px" alt="Steam Library Manager" />
 	<br />
 	<a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest">
 		<img src="https://img.shields.io/github/release/RevoLand/Steam-Library-Manager.svg?style=flat-square" alt="Latest Release">
