@@ -4,7 +4,6 @@
     class SLM
     {
         // Definitions we are using to pass library and game details to MoveGame form
-        public static List.LibraryList LatestSelectedLibrary, LatestDropLibrary;
-        public static List.GamesList LatestSelectedGame;
+        public static List.LibraryList LatestSelectedLibrary;
     }
 }

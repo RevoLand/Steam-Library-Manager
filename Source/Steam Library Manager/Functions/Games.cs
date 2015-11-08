@@ -146,8 +146,12 @@ namespace Steam_Library_Manager.Functions
             {
                 // If our list is not empty
                 if (Definitions.List.Game.Count != 0)
-                    // Clear the list
-                    Definitions.List.Game.Clear();
+                {
+                    if (Library == null)
+                        Definitions.List.Game.Clear();
+                    else
+                        Definitions.List.Game.RemoveAll(x => x.Library == Library);
+                }
 
                 if (!Directory.Exists(Library.steamAppsPath))
                     return;
@@ -194,9 +198,6 @@ namespace Steam_Library_Manager.Functions
 
                                 AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
 
-                                // Update main form as visual
-                                UpdateMainForm(null, null);
-
                                 // we found what we are looking for, return
                                 return;
                             }
@@ -204,11 +205,8 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
 
-                // Focus to game list panel
-                Definitions.Accessors.MainForm.panel_GameList.Focus();
-
-                // Update main form as visual
-                UpdateMainForm(null, null);
+                if (Definitions.SLM.LatestSelectedLibrary == Library)
+                    UpdateMainForm(null, null, Library);
             }
             catch (Exception ex)
             {
@@ -219,13 +217,10 @@ namespace Steam_Library_Manager.Functions
 
                 // Show a messagebox to user
                 MessageBox.Show("An error happened while updating game list!\n\n\n" + ex.ToString());
-
-                // Update main form as visual
-                UpdateMainForm(null, null);
             }
         }
 
-        public static void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search)
+        public static void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search, Definitions.List.LibraryList Library)
         {
             try
             {
@@ -250,7 +245,7 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 // Do a loop for each game in library
-                foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.OrderBy(Sort) : Definitions.List.Game.Where(
+                foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Game.Where(x => x.Library == Library).Where(
                     y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) || // Search by appName
                     y.appID.ToString().Contains(Search) // Search by app ID
                     ).OrderBy(Sort)

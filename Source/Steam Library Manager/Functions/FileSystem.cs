@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -65,6 +67,22 @@ namespace Steam_Library_Manager.Functions
                 return Disk.AvailableFreeSpace;
             }
             catch { return 0; }
+        }
+
+        public async static void deleteOldLibrary(Definitions.List.LibraryList Library)
+        {
+            try
+            {
+                await Task.Factory.StartNew(() =>
+                {
+                    if (Directory.Exists(Library.steamAppsPath))
+                        Directory.Delete(Library.steamAppsPath, true);
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

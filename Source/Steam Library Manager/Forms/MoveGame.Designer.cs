@@ -1,6 +1,6 @@
 ﻿namespace Steam_Library_Manager.Forms
 {
-    partial class MoveGame
+    partial class moveGame
     {
         /// <summary>
         /// Required designer variable.
@@ -43,7 +43,7 @@
             this.linkLabel_TargetLibrary = new System.Windows.Forms.LinkLabel();
             this.checkbox_Compress = new System.Windows.Forms.CheckBox();
             this.checkbox_DeCompress = new System.Windows.Forms.CheckBox();
-            this.pictureBox_GameImage = new Framework.PictureBoxWithCaching();
+            this.pictureBox_GameImage = new Steam_Library_Manager.Framework.PictureBoxWithCaching();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,6 +89,7 @@
             this.progressBar_CopyStatus.Name = "progressBar_CopyStatus";
             this.progressBar_CopyStatus.Size = new System.Drawing.Size(275, 23);
             this.progressBar_CopyStatus.Step = 1;
+            this.progressBar_CopyStatus.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar_CopyStatus.TabIndex = 7;
             // 
             // textBox_Logs
@@ -197,11 +198,11 @@
             this.pictureBox_GameImage.TabStop = false;
             this.pictureBox_GameImage.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_GameImage_MouseClick);
             // 
-            // MoveGame
+            // moveGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 521);
+            this.ClientSize = new System.Drawing.Size(300, 522);
             this.Controls.Add(this.checkbox_DeCompress);
             this.Controls.Add(this.checkbox_Compress);
             this.Controls.Add(this.linkLabel_TargetLibrary);
@@ -220,9 +221,9 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semilight", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = Properties.Resources.steam_icon;
+            this.Icon = global::Steam_Library_Manager.Properties.Resources.steam_icon;
             this.MaximizeBox = false;
-            this.Name = "MoveGame";
+            this.Name = "moveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.Text = "MoveGame";
             this.Load += new System.EventHandler(this.MoveGame_Load);

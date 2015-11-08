@@ -28,9 +28,9 @@ Prerequisites
 
 To-Do List
 ===================
- - Move Library :hourglass:
- - Delete Library (and ask to move current installed games in that library) :hourglass:
- - Backup Library
+ - Move Library :white_check_mark:
+ - Delete Library (and ask to move current installed games in that library) :white_check_mark:
+ - Backup Library :white_check_mark:
  - Restore Library backup
  - Further optimizations and bug fixes
  - "Open with..." option for text files (ex: .acf) :white_check_mark:

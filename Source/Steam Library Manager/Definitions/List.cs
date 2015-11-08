@@ -16,7 +16,9 @@ namespace Steam_Library_Manager.Definitions
         {
             public bool Main, Backup;
             public int GameCount;
-            public string fullPath, steamAppsPath, commonPath, downloadPath, workshopPath;
+            public string steamAppsPath, commonPath, downloadPath, workshopPath;
+
+            public string fullPath { get; set; }
         }
 
         // Game details we are using, contains things like appID, installationPath etc.

@@ -35,7 +35,6 @@
             this.panel_LibraryList = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
-            this.gameContextMenuItems = new System.Windows.Forms.DataGridView();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
             this.button_changeDefaultTextEditor = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -65,13 +64,9 @@
             this.button_newBackupLibrary = new System.Windows.Forms.Button();
             this.button_newSteamLibrary = new System.Windows.Forms.Button();
             this.fileDialog_defaultTextEditor = new System.Windows.Forms.OpenFileDialog();
-            this.itemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tab_InstalledGames.SuspendLayout();
             this.tab_Settings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gameContextMenuItems)).BeginInit();
             this.groupBox_SLM.SuspendLayout();
             this.groupBox_Steam.SuspendLayout();
             this.groupBox_Version.SuspendLayout();
@@ -139,7 +134,6 @@
             // 
             // tab_Settings
             // 
-            this.tab_Settings.Controls.Add(this.gameContextMenuItems);
             this.tab_Settings.Controls.Add(this.groupBox_SLM);
             this.tab_Settings.Controls.Add(this.groupBox_Steam);
             this.tab_Settings.Controls.Add(this.groupBox_Version);
@@ -150,18 +144,6 @@
             this.tab_Settings.TabIndex = 2;
             this.tab_Settings.Text = "Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
-            // 
-            // gameContextMenuItems
-            // 
-            this.gameContextMenuItems.AllowUserToOrderColumns = true;
-            this.gameContextMenuItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.itemName,
-            this.itemValue,
-            this.itemEnabled});
-            this.gameContextMenuItems.Location = new System.Drawing.Point(15, 227);
-            this.gameContextMenuItems.Name = "gameContextMenuItems";
-            this.gameContextMenuItems.Size = new System.Drawing.Size(343, 231);
-            this.gameContextMenuItems.TabIndex = 4;
             // 
             // groupBox_SLM
             // 
@@ -462,21 +444,6 @@
             // 
             this.fileDialog_defaultTextEditor.Filter = "|*.exe";
             // 
-            // itemName
-            // 
-            this.itemName.HeaderText = "Name";
-            this.itemName.Name = "itemName";
-            // 
-            // itemValue
-            // 
-            this.itemValue.HeaderText = "Value";
-            this.itemValue.Name = "itemValue";
-            // 
-            // itemEnabled
-            // 
-            this.itemEnabled.HeaderText = "Enabled";
-            this.itemEnabled.Name = "itemEnabled";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -497,7 +464,6 @@
             this.tab_InstalledGames.ResumeLayout(false);
             this.tab_InstalledGames.PerformLayout();
             this.tab_Settings.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gameContextMenuItems)).EndInit();
             this.groupBox_SLM.ResumeLayout(false);
             this.groupBox_SLM.PerformLayout();
             this.groupBox_Steam.ResumeLayout(false);
@@ -547,10 +513,6 @@
         private System.Windows.Forms.Button button_changeDefaultTextEditor;
         public System.Windows.Forms.TextBox SLM_defaultTextEditor;
         public System.Windows.Forms.Label label_versionResult;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemValue;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn itemEnabled;
-        public System.Windows.Forms.DataGridView gameContextMenuItems;
     }
 }
 

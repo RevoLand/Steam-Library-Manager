@@ -45,6 +45,18 @@ namespace Steam_Library_Manager
             }
         }
 
+        public static void SafeInvoke(Control control, Action handler)
+        {
+            if (control.InvokeRequired)
+            {
+                control.Invoke(handler);
+            }
+            else
+            {
+                handler();
+            }
+        }
+
         private void linkLabel_SteamPath_LinkClicked(object sender, MouseEventArgs e)
         {
             try
@@ -154,7 +166,7 @@ namespace Steam_Library_Manager
             try
             {
                 // Update game & backup libraries
-                Functions.SteamLibrary.UpdateLibraryList();
+                Functions.SteamLibrary.updateLibraryList();
 
                 // Clear current selected game library
                 panel_GameList.Controls.Clear();
@@ -244,12 +256,12 @@ namespace Steam_Library_Manager
                     string selectedPath = folderBrowser_SelectNewLibraryPath.SelectedPath;
 
                     // Check if the selected path is exists
-                    if (!Functions.SteamLibrary.LibraryExists(selectedPath))
+                    if (!Functions.SteamLibrary.libraryExists(selectedPath))
                     {
                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                         if (Directory.GetDirectoryRoot(selectedPath) != selectedPath)
                             // If it is not equals then create a new library at selected path
-                            Functions.SteamLibrary.CreateNewLibrary(selectedPath, Backup);
+                            Functions.SteamLibrary.createNewLibrary(selectedPath, Backup);
                         else
                             // Else show an error message to user
                             MessageBox.Show(libraryType + " Libraries can not be created in root");
@@ -280,7 +292,7 @@ namespace Steam_Library_Manager
 
                 if (Definitions.SLM.LatestSelectedLibrary != null)
                     // Update main form with new settings
-                    Functions.Games.UpdateMainForm(null, null);
+                    Functions.Games.UpdateMainForm(null, null, Definitions.SLM.LatestSelectedLibrary);
             }
             catch (Exception ex)
             {
@@ -298,7 +310,7 @@ namespace Steam_Library_Manager
                 if (Definitions.SLM.LatestSelectedLibrary == null || Definitions.SLM.LatestSelectedLibrary.GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
                     return;
 
-                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text);
+                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text, Definitions.SLM.LatestSelectedLibrary);
             }
             catch (Exception ex)
             {

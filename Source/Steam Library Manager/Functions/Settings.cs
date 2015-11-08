@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Accessors.MainForm.SLM_defaultTextEditor.Text = Properties.Settings.Default.DefaultTextEditor;
 
                 // Find game directories and update them on form
-                SteamLibrary.UpdateLibraryList();
+                SteamLibrary.updateLibraryList();
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateBackupDirs()
+        public static void updateBackupDirs()
         {
             try
             {

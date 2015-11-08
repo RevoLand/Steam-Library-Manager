@@ -7,15 +7,15 @@ using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Forms
 {
-    public partial class MoveGame : Form
+    partial class moveGame : Form
     {
         // Define our game from LatestSelectedGame
-        Definitions.List.GamesList Game = Definitions.SLM.LatestSelectedGame;
+        Definitions.List.GamesList Game;
 
         // Define our library from LatestDropLibrary
-        Definitions.List.LibraryList Library = Definitions.SLM.LatestDropLibrary;
+        Definitions.List.LibraryList Library;
 
-        public MoveGame()
+        public moveGame(Definitions.List.GamesList gameToMove, Definitions.List.LibraryList libraryToMove)
         {
             InitializeComponent();
 
@@ -24,6 +24,9 @@ namespace Steam_Library_Manager.Forms
 
             // Set an error image for pictureBox (game image)
             pictureBox_GameImage.ErrorImage = Properties.Resources.no_image_available;
+
+            Game = gameToMove;
+            Library = libraryToMove;
         }
 
         // On MoveGame form load
@@ -55,6 +58,8 @@ namespace Steam_Library_Manager.Forms
                 checkbox_Compress.Visible = true;
                 button_Copy.Text = "Backup";
             }
+
+            Text = string.Format("{0} - SLM", Game.appName);
 
             // Load our game image asynchronously
             pictureBox_GameImage.LoadAsync(string.Format("http://cdn.akamai.steamstatic.com/steam/apps/{0}/header.jpg", Game.appID));
@@ -549,10 +554,7 @@ namespace Steam_Library_Manager.Forms
             Log(string.Format("Time elapsed: {0}", timeElapsed.Elapsed));
 
             // Update game libraries
-            Functions.SteamLibrary.UpdateLibraryList();
-
-            // Update latest selected library
-            Functions.Games.UpdateGameList(Definitions.SLM.LatestSelectedGame.Library);
+            Functions.SteamLibrary.updateLibraryList();
         }
 
         private void Log(string Text)
