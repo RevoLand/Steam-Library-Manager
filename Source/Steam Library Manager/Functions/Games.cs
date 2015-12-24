@@ -4,11 +4,265 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
 {
     class Games
     {
+        public async Task<List<string>> getFileList(Definitions.List.GamesList Game, bool includeDownloads = true, bool includeWorkshop = true)
+        {
+            List<string> FileList = new List<string>();
+
+            if (!string.IsNullOrEmpty(Game.commonPath) && Directory.Exists(Game.commonPath))
+            {
+                FileList.AddRange(await getCommonFiles(Game));
+            }
+
+            if (includeDownloads && !string.IsNullOrEmpty(Game.downloadPath) && Directory.Exists(Game.downloadPath))
+            {
+                FileList.AddRange(await getDownloadFiles(Game));
+                FileList.AddRange(await getPatchFiles(Game));
+            }
+
+            if (includeWorkshop && !string.IsNullOrEmpty(Game.workShopAcfPath) && Directory.Exists(Game.workShopPath))
+            {
+                FileList.AddRange(await getWorkshopFiles(Game));
+            }
+
+            return FileList;
+        }
+
+        async Task<IEnumerable<string>> getCommonFiles(Definitions.List.GamesList Game)
+        {
+            return await Task.Run(() => Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories).ToList());
+        }
+
+        async Task<IEnumerable<string>> getDownloadFiles(Definitions.List.GamesList Game)
+        {
+            return await Task.Run(() => Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories).ToList());
+        }
+
+        async Task<IEnumerable<string>> getPatchFiles(Definitions.List.GamesList Game)
+        {
+            return await Task.Run(() => Directory.EnumerateFiles(Game.Library.downloadPath, $"*{Game.appID}*.patch", SearchOption.TopDirectoryOnly).ToList());
+        }
+
+        async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.GamesList Game)
+        {
+            return await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
+        }
+
+        public async Task<bool> copyGameArchive(Forms.moveGame currentForm, string currentZipNameNpath, string newZipNameNpath)
+        {
+            try
+            {
+                // If archive already exists in the target library
+                if (File.Exists(newZipNameNpath))
+                {
+                    // And file size doesn't equals
+                    if (FileSystem.getFileSize(currentZipNameNpath) != FileSystem.getFileSize(newZipNameNpath))
+                        // Remove the compressed archive
+                        await Task.Run(() => File.Delete(newZipNameNpath));
+                }
+                else
+                    await Task.Run(() => File.Copy(currentZipNameNpath, newZipNameNpath));
+            }
+            catch (Exception ex)
+            {
+                currentForm.Log(ex.ToString());
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> decompressArchive(Forms.moveGame currentForm, string newCommonPath, string currentZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
+        {
+            try
+            {
+                // If directory exists at target game path
+                if (Directory.Exists(newCommonPath))
+                {
+                    // Remove the directory
+                    await Task.Run(() => Directory.Delete(newCommonPath, true));
+
+                    await Task.Run(() => File.Delete(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)));
+                }
+
+                await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, targetLibrary.steamAppsPath));
+            }
+            catch (Exception ex)
+            {
+                currentForm.Log(ex.ToString());
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newCommonPath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate)
+        {
+            string newFileName;
+            try
+            {
+                foreach (string currentFile in gameFiles)
+                {
+                    using (FileStream currentFileStream = File.OpenRead(currentFile))
+                    {
+                        newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
+
+                        if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
+                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+
+                        // Create a new file
+                        using (FileStream newFileStream = File.Create(newFileName))
+                        {
+                            // Copy the file to target library asynchronously
+                            await currentFileStream.CopyToAsync(newFileStream);
+
+                            // Perform step
+                            currentForm.progressBar_CopyStatus.PerformStep();
+
+                            // Log to user
+                            currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+                        }
+
+                        if (Validate)
+                        {
+                            // Compare the hashes, if any of them not equals
+                            if (BitConverter.ToString(FileSystem.GetFileMD5(currentFile)) != BitConverter.ToString(FileSystem.GetFileMD5(newFileName)))
+                            {
+                                // Log it
+                                currentForm.Log(string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+
+                                // and cancel the process
+                                return false;
+                            }
+                        }
+                    }
+
+                    // Copy .ACF file
+                    await Task.Run(() => File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath, Game.acfName), true));
+
+                    if (File.Exists(Game.workShopAcfName))
+                        await Task.Run(() => File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath), true));
+                }
+            }
+            catch (Exception ex)
+            {
+                currentForm.Log(ex.ToString());
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
+        {
+            string newFileName;
+            try
+            {
+                if (Directory.Exists(Path.GetDirectoryName(newZipNameNpath)))
+                {
+                    // If compressed archive already exists
+                    if (File.Exists(newZipNameNpath))
+                        // Remove the compressed archive
+                        File.Delete(newZipNameNpath);
+                }
+                else
+                    Directory.CreateDirectory(Path.GetDirectoryName(newZipNameNpath));
+
+                // Create a new compressed archive at target library
+                using (ZipArchive gameBackup = ZipFile.Open(newZipNameNpath, ZipArchiveMode.Create))
+                {
+                    // For each file in common folder of game
+                    foreach (string currentFile in gameFiles)
+                    {
+                        // Define a string for better looking
+                        newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
+
+                        // Add file to archive
+                        await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
+
+                        // Perform step on progressBar
+                        currentForm.progressBar_CopyStatus.PerformStep();
+
+                        // Log details about process
+                        currentForm.Log(string.Format("[{0}/{1}] Compressed: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+                    }
+
+                    // Add .ACF file to archive
+                    await Task.Run(() => gameBackup.CreateEntryFromFile(Game.acfPath, Game.acfName, CompressionLevel.Optimal));
+                }
+            }
+            catch (Exception ex)
+            {
+                currentForm.Log(ex.ToString());
+
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> deleteGameFiles(Definitions.List.GamesList Game, List<string> gameFiles = null)
+        {
+            try
+            {
+                if (Game.Compressed)
+                {
+                    string currentZipNameNpath = Path.Combine(Game.Library.steamAppsPath, $"{Game.appID}.zip");
+
+                    if (File.Exists(currentZipNameNpath))
+                        await Task.Run(() => File.Delete(currentZipNameNpath));
+                }
+                else
+                {
+                    if (gameFiles == null || gameFiles.Count == 0)
+                        gameFiles = await getFileList(Game);
+
+                    foreach (string currentFile in gameFiles)
+                    {
+                        if (File.Exists(currentFile))
+                            await Task.Run(() => File.Delete(currentFile));
+                    }
+
+                    // common folder, if exists
+                    if (Directory.Exists(Game.commonPath))
+                        await Task.Run(() => Directory.Delete(Game.commonPath, true));
+
+                    // downloading folder, if exists
+                    if (Directory.Exists(Game.downloadPath))
+                        await Task.Run(() => Directory.Delete(Game.downloadPath, true));
+
+                    // workshop folder, if exists
+                    if (Directory.Exists(Game.workShopPath))
+                        await Task.Run(() => Directory.Delete(Game.workShopPath, true));
+
+                    // game .acf file
+                    if (File.Exists(Game.acfPath))
+                        await Task.Run(() => File.Delete(Game.acfPath));
+
+                    // workshop .acf file
+                    if (File.Exists(Game.workShopAcfPath))
+                        await Task.Run(() => File.Delete(Game.workShopAcfPath));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+                return false;
+            }
+
+            return true;
+        }
+
         public static int GetGameCountFromLibrary(Definitions.List.LibraryList Library)
         {
             try
@@ -78,7 +332,7 @@ namespace Steam_Library_Manager.Functions
                     Game.workShopPath = Path.Combine(Library.workshopPath, "content", appID.ToString()) + Path.DirectorySeparatorChar.ToString();
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath))
+                if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath) && !Game.Compressed)
                     return; // Do not add pre-loads to list
 
                 // If SizeOnDisk value from .ACF file is not equals to 0
@@ -137,7 +391,10 @@ namespace Steam_Library_Manager.Functions
                 // Add our game details to global list
                 Definitions.List.Game.Add(Game);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         public static void UpdateGameList(Definitions.List.LibraryList Library)
@@ -246,8 +503,8 @@ namespace Steam_Library_Manager.Functions
 
                 // Do a loop for each game in library
                 foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Game.Where(x => x.Library == Library).Where(
-                    y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) || // Search by appName
-                    y.appID.ToString().Contains(Search) // Search by app ID
+                    y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                    || y.appID.ToString().Contains(Search) // Search by app ID
                     ).OrderBy(Sort)
                     ))
                 {
@@ -351,6 +608,9 @@ namespace Steam_Library_Manager.Functions
 
                     // Uninstall, via Steam
                     rightClickMenu.MenuItems.Add("Uninstall", mouseClick).Name = "uninstall";
+
+                    //  Uninstall, via SLM
+                    rightClickMenu.MenuItems.Add("Uninstall (SLM)", mouseClick).Name = "uninstallSLM";
                     #endregion
 
                     // Set our context menu to pictureBox
@@ -392,7 +652,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        static void gameDetailBox_ContextMenuAction(object sender, EventArgs e)
+        static async void gameDetailBox_ContextMenuAction(object sender, EventArgs e)
         {
             try
             {
@@ -413,15 +673,27 @@ namespace Steam_Library_Manager.Functions
                     case "uStore":
                         Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
                         break;
-                    
+
                     // Opens game installation path in explorer
                     case "Disk":
                         Process.Start(Game.commonPath);
                         break;
 
-                        // Opens game acf file in default text viewer
+                    // Opens game acf file in default text viewer
                     case "acfFile":
                         Process.Start(Properties.Settings.Default.DefaultTextEditor, Game.acfPath);
+                        break;
+                    case "uninstallSLM":
+                        Games gameFunctions = new Games();
+                        if (await gameFunctions.deleteGameFiles(Game))
+                        {
+                            SteamLibrary.updateLibraryList();
+                            SteamLibrary.updateMainForm();
+                            UpdateGameList(Game.Library);
+
+                            MessageBox.Show("Successfully removed");
+                        }
+                        
                         break;
                 }
 

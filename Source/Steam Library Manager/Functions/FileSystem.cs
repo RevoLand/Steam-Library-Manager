@@ -29,6 +29,11 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
+        public async static Task<long> getFileSize(string filePath)
+        {
+            return await Task.Run(() => new FileInfo(filePath).Length);
+        }
+
         public static byte[] GetFileMD5(string filePath)
         {
             // Create a new md5 function and using it

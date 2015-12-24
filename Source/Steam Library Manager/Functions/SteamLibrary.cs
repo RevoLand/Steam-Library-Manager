@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Functions
@@ -311,7 +312,7 @@ namespace Steam_Library_Manager.Functions
                     libraryName.AutoSize = true;
 
                     // Set label text, currently it is directory path + game count
-                    libraryName.Text = string.Format("{0} ({1})", Library.fullPath, Library.GameCount);
+                    libraryName.Text = string.Format("[{2}] {0} ({1})", Library.fullPath, Library.GameCount, FileSystem.FormatBytes(FileSystem.GetFreeSpace(Library.fullPath)));
 
                     // Show our label in bottom center of our pictureBox
                     libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -347,8 +348,11 @@ namespace Steam_Library_Manager.Functions
                     // spacer
                     rightClickMenu.MenuItems.Add("-");
 
-                    // Refresh games in library
+                    // Delete library
                     rightClickMenu.MenuItems.Add("Delete Library", mouseClick).Name = "deleteLibrary";
+
+                    // Delete games in library
+                    rightClickMenu.MenuItems.Add("Delete Games in Library", mouseClick).Name = "deleteLibrarySLM";
 
                     if (Library.Backup)
                     {
@@ -389,7 +393,7 @@ namespace Steam_Library_Manager.Functions
             catch { return true; }
         }
 
-        static void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
+        static async void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
         {
             try
             {
@@ -416,97 +420,27 @@ namespace Steam_Library_Manager.Functions
                         else if (moveGamesBeforeDeletion == DialogResult.No)
                             removeLibrary(Library, true);
                         break;
+                    case "deleteLibrarySLM":
+                        foreach (Definitions.List.GamesList Game in Definitions.List.Game.Where(x => x.Library == Library))
+                        {
+                            Games gameFunctions = new Games();
+
+                            if (!await gameFunctions.deleteGameFiles(Game))
+                            {
+                                MessageBox.Show($"An error happened while removing games from library: {Library.fullPath}");
+
+                                return;
+                            }
+                        }
+
+                        SteamLibrary.updateLibraryList();
+                        SteamLibrary.updateMainForm();
+                        Games.UpdateGameList(Library);
+
+                        MessageBox.Show($"Done!\nAll games in Library ({Library.fullPath}) deleted.");
+                        break;
                     case "moveLibrary":
                         new Forms.moveLibrary(Library).Show();
-                        /*
-                        if (Library.Main)
-                            return;
-
-                        string newFileName;
-
-                        // Create a new dialog result and show to user
-                        DialogResult newLibrarySelection = Definitions.Accessors.MainForm.folderBrowser_SelectNewLibraryPath.ShowDialog();
-
-                        // If our dialog is closed with OK (directory selected)
-                        if (newLibrarySelection == DialogResult.OK)
-                        {
-                            // Define selected path for easier usage in future
-                            string newLibraryPath = Definitions.Accessors.MainForm.folderBrowser_SelectNewLibraryPath.SelectedPath;
-
-                            // Check if the selected path is exists
-                            if (!LibraryExists(newLibraryPath))
-                            {
-                                DialogResult confirmLibraryAction = MessageBox.Show(string.Format("Do you want to move library located at [{0}] to [{1}] ?", Library.fullPath, newLibraryPath), "Move Library", MessageBoxButtons.YesNo);
-
-                                if (confirmLibraryAction == DialogResult.Yes)
-                                {
-                                    switch (Library.Backup)
-                                    {
-                                        case false:
-
-                                            // For each file in common folder of game
-                                            foreach (string currentFile in Directory.EnumerateFiles(Library.steamAppsPath, "*", SearchOption.AllDirectories))
-                                            {
-                                                // Make a new file stream from the file we are reading so we can copy the file asynchronously
-                                                using (FileStream currentFileStream = File.OpenRead(currentFile))
-                                                {
-                                                    // Set new file name including target game path
-                                                    newFileName = Path.Combine(newLibraryPath, currentFile.Replace(Library.fullPath + @"\", ""));
-
-                                                    // If directory not exists
-                                                    if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
-                                                        // Create a directory at target library for new file, if we do not the process will fail
-                                                        Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-
-                                                    // Create a new file
-                                                    using (FileStream newFileStream = File.Create(newFileName))
-                                                    {
-                                                        // Copy the file to target library asynchronously
-                                                        await currentFileStream.CopyToAsync(newFileStream);
-                                                    }
-                                                }
-                                            }
-
-                                            // Define steam dll paths for better looking
-                                            string currentSteamDLLPath = Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.dll");
-                                            string newSteamDLLPath = Path.Combine(newLibraryPath, "Steam.dll");
-
-                                            // Copy Steam.dll as steam needs it
-                                            File.Copy(currentSteamDLLPath, newSteamDLLPath, true);
-
-                                            // Make a KeyValue reader
-                                            Framework.KeyValue Key = new Framework.KeyValue();
-
-                                            // Read vdf file
-                                            Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
-
-                                            // Change old library path with new one
-                                            Key.Children.Find(key => key.Value.Contains(Library.fullPath)).Value = newLibraryPath;
-
-                                            // Update libraryFolders.vdf file with changes
-                                            Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
-
-                                            // Remove old library
-                                            Directory.Delete(Library.steamAppsPath, true);
-
-                                            // Show a message box to user, temporarily
-                                            MessageBox.Show(string.Format("Library [{0}] moved to [{1}]", Library.fullPath, newLibraryPath));
-
-                                            // Update library list
-                                            UpdateLibraryList();
-                                            break;
-                                    }
-                                }
-                                else
-                                    return;
-                            }
-                            else
-                            {
-                                MessageBox.Show("Library already exists at selected path, please select another path.");
-                            }
-
-                        }
-                        */
                         break;
 
                     // Removes a backup library from list
