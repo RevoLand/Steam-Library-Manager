@@ -5,7 +5,7 @@
 		<img src="https://img.shields.io/github/release/RevoLand/Steam-Library-Manager.svg?style=flat-square" alt="Latest Release">
 	</a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest">
-        <img src="https://img.shields.io/github/downloads/RevoLand/Steam-Library-Manager/latest/total.svg?style=flat-square" alt="Download count">
+        <img src="https://img.shields.io/github/downloads/RevoLand/Steam-Library-Manager/total.svg?style=flat-square" alt="Total Downloads">
     </a>
     <a href="https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/LICENSE">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="SLM License">
