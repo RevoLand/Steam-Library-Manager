@@ -213,7 +213,7 @@ namespace Steam_Library_Manager.Forms
             try
             {
                 // Append log to textbox
-                textBox_Logs.AppendText(Text + "\n");
+                textBox_Logs.AppendText(Text + Environment.NewLine);
             }
             catch { }
         }

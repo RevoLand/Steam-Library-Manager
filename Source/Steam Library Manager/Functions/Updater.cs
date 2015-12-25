@@ -69,7 +69,7 @@ namespace Steam_Library_Manager.Functions
                         // Exit SLM completely
                         System.Windows.Forms.Application.Exit();
                     }
-                    else if (versionFileContent[1] == "Important")
+                    else if (!string.IsNullOrEmpty(versionFileContent[1]) && versionFileContent[1] == "Important")
                         System.Windows.Forms.MessageBox.Show("IT IS NOT SUGGESTED TO SKIP AN IMPORTANT UPGRADE, YOU MAY LOSE DATA WHILE MOVING A GAME, BE AWARE!", "YOU SHOULD NOT SKIP AN IMPORTANT UPDATE", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 }
                 else

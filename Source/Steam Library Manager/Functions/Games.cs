@@ -128,7 +128,7 @@ namespace Steam_Library_Manager.Functions
                             currentForm.progressBar_CopyStatus.PerformStep();
 
                             // Log to user
-                            currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+                            currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
                         }
 
                         if (Validate)
@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Functions
                             if (BitConverter.ToString(FileSystem.GetFileMD5(currentFile)) != BitConverter.ToString(FileSystem.GetFileMD5(newFileName)))
                             {
                                 // Log it
-                                currentForm.Log(string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+                                currentForm.Log(string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
 
                                 // and cancel the process
                                 return false;
@@ -532,12 +532,6 @@ namespace Steam_Library_Manager.Functions
                     // On we click to pictureBox (drag & drop event)
                     gameDetailBox.MouseDown += gameDetailBox_MouseDown;
 
-                    // Create a new right click menu (context menu)
-                    ContextMenu rightClickMenu = new ContextMenu();
-
-                    // Define an event handler
-                    EventHandler mouseClick = new EventHandler(gameDetailBox_ContextMenuAction);
-
                     // If game is compressed
                     if (Game.Compressed)
                     {
@@ -555,66 +549,8 @@ namespace Steam_Library_Manager.Functions
                         gameDetailBox.Controls.Add(compressedIcon);
                     }
 
-
-                    // Add right click menu items
-                    #region Context menu items
-                    // Game name (appID) // disabled
-                    rightClickMenu.MenuItems.Add(string.Format("{0} (ID: {1})", Game.appName, Game.appID)).Enabled = false;
-
-                    // Game Size on Disk: 124MB // disabled
-                    rightClickMenu.MenuItems.Add(string.Format("Game Size on Disk: {0}", FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
-
-                    // Spacer
-                    rightClickMenu.MenuItems.Add("-");
-
-                    // Play
-                    rightClickMenu.MenuItems.Add("Play", mouseClick).Name = "rungameid";
-
-                    // Spacer
-                    rightClickMenu.MenuItems.Add("-");
-
-                    // Backup (SLM) // disabled
-                    rightClickMenu.MenuItems.Add("Backup (SLM)", mouseClick).Enabled = false;
-
-                    // Backup (Steam)
-                    rightClickMenu.MenuItems.Add("Backup (Steam)", mouseClick).Name = "backup";
-
-                    // Defrag game files
-                    rightClickMenu.MenuItems.Add("Defrag", mouseClick).Name = "defrag";
-
-                    // Validate game files
-                    rightClickMenu.MenuItems.Add("Validate Files", mouseClick).Name = "validate";
-
-                    // Spacer
-                    rightClickMenu.MenuItems.Add("-");
-
-                    // Check system requirements
-                    rightClickMenu.MenuItems.Add("Check System Requirements", mouseClick).Name = "checksysreqs";
-
-                    // Open .acf file
-                    rightClickMenu.MenuItems.Add("Open ACF file", mouseClick).Name = "acfFile";
-
-                    // Spacer
-                    rightClickMenu.MenuItems.Add("-");
-
-                    // View on Store, opens in user browser not steam browser
-                    rightClickMenu.MenuItems.Add("View on Store (Steam Client)", mouseClick).Name = "store";
-
-                    // View on Store, opens in user browser not steam browser
-                    rightClickMenu.MenuItems.Add("View on Store", mouseClick).Name = "uStore";
-
-                    // View on Disk, opens in explorer
-                    rightClickMenu.MenuItems.Add("View on Disk", mouseClick).Name = "Disk";
-
-                    // Uninstall, via Steam
-                    rightClickMenu.MenuItems.Add("Uninstall", mouseClick).Name = "uninstall";
-
-                    //  Uninstall, via SLM
-                    rightClickMenu.MenuItems.Add("Uninstall (SLM)", mouseClick).Name = "uninstallSLM";
-                    #endregion
-
                     // Set our context menu to pictureBox
-                    gameDetailBox.ContextMenu = rightClickMenu;
+                    gameDetailBox.ContextMenuStrip = Content.Games.generateRightClickMenu(Game);
 
                     // Add our new game pictureBox to panel
                     Definitions.Accessors.MainForm.panel_GameList.Controls.Add(gameDetailBox);
@@ -642,61 +578,6 @@ namespace Steam_Library_Manager.Functions
                     // Do drag & drop with our pictureBox
                     img.DoDragDrop(img, DragDropEffects.Move);
                 }
-            }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Games", ex.ToString());
-            }
-        }
-
-        static async void gameDetailBox_ContextMenuAction(object sender, EventArgs e)
-        {
-            try
-            {
-                // Define our game from the Tag we given to Context menu
-                Definitions.List.GamesList Game = (sender as MenuItem).GetContextMenu().SourceControl.Tag as Definitions.List.GamesList;
-
-                // switch based on name we set earlier with context menu
-                switch ((sender as MenuItem).Name)
-                {
-
-                    // default use steam to act
-                    // more details: https://developer.valvesoftware.com/wiki/Steam_browser_protocol
-                    default:
-                        Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
-                        break;
-
-                    // Opens game store page in user browser
-                    case "uStore":
-                        Process.Start(string.Format("http://store.steampowered.com/app/{0}", Game.appID));
-                        break;
-
-                    // Opens game installation path in explorer
-                    case "Disk":
-                        Process.Start(Game.commonPath);
-                        break;
-
-                    // Opens game acf file in default text viewer
-                    case "acfFile":
-                        Process.Start(Properties.Settings.Default.DefaultTextEditor, Game.acfPath);
-                        break;
-                    case "uninstallSLM":
-                        Games gameFunctions = new Games();
-                        if (await gameFunctions.deleteGameFiles(Game))
-                        {
-                            SteamLibrary.updateLibraryList();
-                            SteamLibrary.updateMainForm();
-                            UpdateGameList(Game.Library);
-
-                            MessageBox.Show("Successfully removed");
-                        }
-                        
-                        break;
-                }
-
             }
             catch (Exception ex)
             {
