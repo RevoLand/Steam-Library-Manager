@@ -34,25 +34,13 @@ namespace Steam_Library_Manager.Functions
             return FileList;
         }
 
-        async Task<IEnumerable<string>> getCommonFiles(Definitions.List.GamesList Game)
-        {
-            return await Task.Run(() => Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories).ToList());
-        }
+        async Task<IEnumerable<string>> getCommonFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories).ToList());
 
-        async Task<IEnumerable<string>> getDownloadFiles(Definitions.List.GamesList Game)
-        {
-            return await Task.Run(() => Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories).ToList());
-        }
+        async Task<IEnumerable<string>> getDownloadFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories).ToList());
 
-        async Task<IEnumerable<string>> getPatchFiles(Definitions.List.GamesList Game)
-        {
-            return await Task.Run(() => Directory.EnumerateFiles(Game.Library.downloadPath, $"*{Game.appID}*.patch", SearchOption.TopDirectoryOnly).ToList());
-        }
+        async Task<IEnumerable<string>> getPatchFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.Library.downloadPath, $"*{Game.appID}*.patch", SearchOption.TopDirectoryOnly).ToList());
 
-        async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.GamesList Game)
-        {
-            return await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
-        }
+        async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
 
         public async Task<bool> copyGameArchive(Forms.moveGame currentForm, string currentZipNameNpath, string newZipNameNpath)
         {

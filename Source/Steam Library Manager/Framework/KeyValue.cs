@@ -289,10 +289,7 @@ namespace Steam_Library_Manager.Framework
         /// Returns the value of this instance as a string.
         /// </summary>
         /// <returns>The value of this instance as a string.</returns>
-        public string AsString()
-        {
-            return Value;
-        }
+        public string AsString() => Value;
 
         /// <summary>
         /// Attempts to convert and return the value of this instance as an integer.
@@ -372,10 +369,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString()
-        {
-            return string.Format( "{0} = {1}", Name, Value);
-        }
+        public override string ToString() => string.Format("{0} = {1}", Name, Value);
 
         /// <summary>
         /// Attempts to load the given filename as a text <see cref="KeyValue"/>.
@@ -385,10 +379,7 @@ namespace Steam_Library_Manager.Framework
         /// <remarks>
         /// This method will swallow any exceptions that occur when reading, use <see cref="ReadAsText"/> if you wish to handle exceptions.
         /// </remarks>
-        public static KeyValue LoadAsText( string path )
-        {
-            return LoadFromFile( path, false );
-        }
+        public static KeyValue LoadAsText(string path) => LoadFromFile(path, false);
 
         /// <summary>
         /// Attempts to load the given filename as a binary <see cref="KeyValue"/>.
@@ -398,10 +389,7 @@ namespace Steam_Library_Manager.Framework
         /// <remarks>
         /// This method will swallow any exceptions that occur when reading, use <see cref="ReadAsBinary"/> if you wish to handle exceptions.
         /// </remarks>
-        public static KeyValue LoadAsBinary( string path )
-        {
-            return LoadFromFile( path, true );
-        }
+        public static KeyValue LoadAsBinary(string path) => LoadFromFile(path, true);
 
 
         static KeyValue LoadFromFile( string path, bool asBinary )

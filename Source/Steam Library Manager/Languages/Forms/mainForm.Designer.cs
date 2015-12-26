@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Steam_Library_Manager.Properties {
+namespace Steam_Library_Manager.Languages.Forms {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Steam_Library_Manager.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    public class mainForm {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal mainForm() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Steam_Library_Manager.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Steam_Library_Manager.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Steam_Library_Manager.Languages.Forms.mainForm", typeof(mainForm).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,42 +61,38 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Select Steam.exe from installation path.
         /// </summary>
-        public static System.Drawing.Bitmap compressedLibraryIcon {
+        public static string fileDialog_selectSteamPath_Title {
             get {
-                object obj = ResourceManager.GetObject("compressedLibraryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("fileDialog_selectSteamPath_Title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Main Form.
         /// </summary>
-        public static System.Drawing.Bitmap libraryIcon {
+        public static string form_MainForm {
             get {
-                object obj = ResourceManager.GetObject("libraryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("form_MainForm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to Library exists in the selected path! Are you trying to bug yourself?!.
         /// </summary>
-        public static System.Drawing.Bitmap no_image_available {
+        public static string message_libraryExistsAtSelectedPath {
             get {
-                object obj = ResourceManager.GetObject("no_image_available", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("message_libraryExistsAtSelectedPath", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized string similar to Libraries can not be created in root.
         /// </summary>
-        public static System.Drawing.Icon steam_icon {
+        public static string message_noLibraryInDiskRoot {
             get {
-                object obj = ResourceManager.GetObject("steam_icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ResourceManager.GetString("message_noLibraryInDiskRoot", resourceCulture);
             }
         }
     }

@@ -9,7 +9,7 @@ using System.Xml;
 // Source: https://github.com/crdx/PortableSettingsProvider
 namespace Steam_Library_Manager.Framework
 {
-   public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
+    public sealed class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
    {
       private const string _rootNodeName = "settings";
       private const string _localSettingsNodeName = "localSettings";
@@ -17,16 +17,10 @@ namespace Steam_Library_Manager.Framework
       private const string _className = "PortableSettingsProvider";
       private XmlDocument _xmlDocument;
 
-      private string _filePath
-      {
-         get
-         {
-            return Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
-               string.Format("{0}.settings", ApplicationName));
-         }
-      }
+        private string _filePath => Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
+     string.Format("{0}.settings", ApplicationName));
 
-      private XmlNode _localSettingsNode
+        private XmlNode _localSettingsNode
       {
          get
          {
@@ -43,17 +37,11 @@ namespace Steam_Library_Manager.Framework
          }
       }
 
-      private XmlNode _globalSettingsNode
-      {
-         get { return GetSettingsNode(_globalSettingsNodeName); }
-      }
+        private XmlNode _globalSettingsNode => GetSettingsNode(_globalSettingsNodeName);
 
-      private XmlNode _rootNode
-      {
-         get { return _rootDocument.SelectSingleNode(_rootNodeName); }
-      }
+        private XmlNode _rootNode => _rootDocument.SelectSingleNode(_rootNodeName);
 
-      private XmlDocument _rootDocument
+        private XmlDocument _rootDocument
       {
          get
          {
@@ -85,12 +73,9 @@ namespace Steam_Library_Manager.Framework
          set { }
       }
 
-      public override string Name
-      {
-         get { return _className; }
-      }
+        public override string Name => _className;
 
-      public override void Initialize(string name, NameValueCollection config)
+        public override void Initialize(string name, NameValueCollection config)
       {
          base.Initialize(Name, config);
       }
@@ -206,13 +191,10 @@ namespace Steam_Library_Manager.Framework
          _xmlDocument.Save(_filePath);
       }
 
-      public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
-      {
-          // do nothing
-          return new SettingsPropertyValue(property);
-      }
+        // do nothing
+        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property) => new SettingsPropertyValue(property);
 
-      public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
+        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
       {
       }
    }

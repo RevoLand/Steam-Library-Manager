@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Steam_Library_Manager.Languages.Forms.Games;
 
 namespace Steam_Library_Manager.Content
 {
@@ -10,7 +11,7 @@ namespace Steam_Library_Manager.Content
         public static ContextMenuStrip generateRightClickMenu(Definitions.List.GamesList Game)
         {
             // Create a new right click menu (context menu)
-            ContextMenuStrip rightClickMenu = new ContextMenuStrip();
+            ContextMenuStrip menu = new ContextMenuStrip();
 
             // Define an event handler
             EventHandler mouseClick = new EventHandler(gameDetailBox_ContextMenuAction);
@@ -18,63 +19,60 @@ namespace Steam_Library_Manager.Content
             //rightClickMenu.Tag = Game;
 
             // Game name (appID) // disabled
-            rightClickMenu.Items.Add(string.Format("{0} (ID: {1})", Game.appName, Game.appID)).Enabled = false;
+            menu.Items.Add(string.Format(rightClickMenu.menuItem_gameNameWithAppID, Game.appName, Game.appID)).Enabled = false;
 
             // Game Size on Disk: 124MB // disabled
-            rightClickMenu.Items.Add(string.Format("Game Size on Disk: {0}", Functions.FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
+            menu.Items.Add(string.Format(rightClickMenu.menuItem_gameSizeOnDisk, Functions.FileSystem.FormatBytes(Game.sizeOnDisk))).Enabled = false;
 
             // Spacer
-            rightClickMenu.Items.Add(Definitions.SLM.Spacer);
+            menu.Items.Add(Definitions.SLM.Spacer);
 
             // Play
-            rightClickMenu.Items.Add("Play", null, mouseClick).Name = "rungameid";
+            menu.Items.Add(rightClickMenu.menuItem_play, null, mouseClick).Name = "rungameid";
 
             // Spacer
-            rightClickMenu.Items.Add(Definitions.SLM.Spacer);
-
-            // Backup (SLM) // disabled
-            rightClickMenu.Items.Add("Backup (SLM)", null, mouseClick).Enabled = false;
+            menu.Items.Add(Definitions.SLM.Spacer);
 
             // Backup (Steam)
-            rightClickMenu.Items.Add("Backup (Steam)", null, mouseClick).Name = "backup";
+            menu.Items.Add(rightClickMenu.menuItem_backupUsingSteam, null, mouseClick).Name = "backup";
 
             // Defrag game files
-            rightClickMenu.Items.Add("Defrag", null, mouseClick).Name = "defrag";
+            menu.Items.Add(rightClickMenu.menuItem_defrag, null, mouseClick).Name = "defrag";
 
             // Validate game files
-            rightClickMenu.Items.Add("Validate Files", null, mouseClick).Name = "validate";
+            menu.Items.Add(rightClickMenu.menuItem_validateGameFiles, null, mouseClick).Name = "validate";
 
             // Spacer
-            rightClickMenu.Items.Add(Definitions.SLM.Spacer);
+            menu.Items.Add(Definitions.SLM.Spacer);
 
             // Check system requirements
-            rightClickMenu.Items.Add("Check System Requirements", null, mouseClick).Name = "checksysreqs";
+            menu.Items.Add(rightClickMenu.menuItem_checkSysRequirements, null, mouseClick).Name = "checksysreqs";
 
             // Open .acf file
-            rightClickMenu.Items.Add("Open ACF file", null, mouseClick).Name = "acfFile";
+            menu.Items.Add(rightClickMenu.menuItem_openAcfFile, null, mouseClick).Name = "acfFile";
 
             // Spacer
-            rightClickMenu.Items.Add(Definitions.SLM.Spacer);
+            menu.Items.Add(Definitions.SLM.Spacer);
 
             // View on Store, opens in user browser not steam browser
-            rightClickMenu.Items.Add("View on Store (Steam Client)", null, mouseClick).Name = "store";
+            menu.Items.Add(rightClickMenu.menuItem_viewOnStoreWithSteam, null, mouseClick).Name = "store";
 
             // View on Store, opens in user browser not steam browser
-            rightClickMenu.Items.Add("View on Store", null, mouseClick).Name = "uStore";
+            menu.Items.Add(rightClickMenu.menuItem_viewOnStore, null, mouseClick).Name = "uStore";
 
             // View on Disk, opens in explorer
-            rightClickMenu.Items.Add("View on Disk", null, mouseClick).Name = "Disk";
+            menu.Items.Add(rightClickMenu.menuItem_viewOnDisk, null, mouseClick).Name = "Disk";
 
             // Spacer
-            rightClickMenu.Items.Add(Definitions.SLM.Spacer);
+            menu.Items.Add(Definitions.SLM.Spacer);
 
             // Uninstall, via Steam
-            rightClickMenu.Items.Add("Uninstall", null, mouseClick).Name = "uninstall";
+            menu.Items.Add(rightClickMenu.menuItem_uninstall, null, mouseClick).Name = "uninstall";
 
             //  Uninstall, via SLM
-            rightClickMenu.Items.Add("Uninstall (SLM)", null, mouseClick).Name = "uninstallSLM";
+            menu.Items.Add(rightClickMenu.menuItem_uninstallWithSLM, null, mouseClick).Name = "uninstallSLM";
 
-            return rightClickMenu;
+            return menu;
         }
 
         static async void gameDetailBox_ContextMenuAction(object sender, EventArgs e)
@@ -109,16 +107,21 @@ namespace Steam_Library_Manager.Content
                         Process.Start(Properties.Settings.Default.DefaultTextEditor, Game.acfPath);
                         break;
                     case "uninstallSLM":
-                        Functions.Games gameFunctions = new Functions.Games();
-                        if (await gameFunctions.deleteGameFiles(Game))
+
+                        DialogResult areYouSure = MessageBox.Show(string.Format(rightClickMenu.message_sureToRemoveGame, Game.appName), rightClickMenu.messageTitle_sureToRemoveGame, MessageBoxButtons.YesNoCancel);
+
+                        if (areYouSure == DialogResult.Yes)
                         {
-                            SteamLibrary.updateLibraryList();
-                            SteamLibrary.updateMainForm();
-                            Functions.Games.UpdateGameList(Game.Library);
+                            Functions.Games gameFunctions = new Functions.Games();
+                            if (await gameFunctions.deleteGameFiles(Game))
+                            {
+                                SteamLibrary.updateLibraryList();
+                                SteamLibrary.updateMainForm();
+                                Functions.Games.UpdateGameList(Game.Library);
 
-                            MessageBox.Show("Successfully removed");
+                                MessageBox.Show(string.Format(rightClickMenu.message_appRemovedAsRequested, Game.appName));
+                            }
                         }
-
                         break;
                 }
 
@@ -128,7 +131,7 @@ namespace Steam_Library_Manager.Content
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Games", ex.ToString());
+                    Log.ErrorsToFile(rightClickMenu.Games, ex.ToString());
             }
         }
 

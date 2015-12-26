@@ -53,7 +53,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(272, 21);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Target Library:";
+            this.label1.Text = "Hedef Kütüphane:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // checkbox_Validate
@@ -70,9 +70,9 @@
             this.checkbox_RemoveOldFiles.AutoSize = true;
             this.checkbox_RemoveOldFiles.Location = new System.Drawing.Point(12, 224);
             this.checkbox_RemoveOldFiles.Name = "checkbox_RemoveOldFiles";
-            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(105, 17);
+            this.checkbox_RemoveOldFiles.Size = new System.Drawing.Size(98, 17);
             this.checkbox_RemoveOldFiles.TabIndex = 5;
-            this.checkbox_RemoveOldFiles.Text = "Remove Old Files";
+            this.checkbox_RemoveOldFiles.Text = "Eski dosyaları sil";
             // 
             // button_Copy
             // 
@@ -80,7 +80,7 @@
             this.button_Copy.Name = "button_Copy";
             this.button_Copy.Size = new System.Drawing.Size(275, 40);
             this.button_Copy.TabIndex = 6;
-            this.button_Copy.Text = "Copy";
+            this.button_Copy.Text = "Kopyala";
             this.button_Copy.Click += new System.EventHandler(this.button_Copy_Click);
             // 
             // progressBar_CopyStatus
@@ -109,7 +109,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(275, 21);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Current Library:";
+            this.label2.Text = "Mevcut Kütüphane:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLabel_currentLibrary
@@ -127,18 +127,18 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 244);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.Size = new System.Drawing.Size(86, 13);
             this.label3.TabIndex = 11;
-            this.label3.Text = "Available Space:";
+            this.label3.Text = "Mevcut boş alan:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 261);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 13);
+            this.label4.Size = new System.Drawing.Size(91, 13);
             this.label4.TabIndex = 12;
-            this.label4.Text = "Needed Space:";
+            this.label4.Text = "Gereken boş alan:";
             // 
             // label_AvailableSpace
             // 
@@ -173,9 +173,9 @@
             this.checkbox_Compress.AutoSize = true;
             this.checkbox_Compress.Location = new System.Drawing.Point(123, 224);
             this.checkbox_Compress.Name = "checkbox_Compress";
-            this.checkbox_Compress.Size = new System.Drawing.Size(72, 17);
+            this.checkbox_Compress.Size = new System.Drawing.Size(56, 17);
             this.checkbox_Compress.TabIndex = 18;
-            this.checkbox_Compress.Text = "Compress";
+            this.checkbox_Compress.Text = "Arşivle";
             this.checkbox_Compress.Visible = false;
             // 
             // checkbox_DeCompress
@@ -183,9 +183,9 @@
             this.checkbox_DeCompress.AutoSize = true;
             this.checkbox_DeCompress.Location = new System.Drawing.Point(123, 224);
             this.checkbox_DeCompress.Name = "checkbox_DeCompress";
-            this.checkbox_DeCompress.Size = new System.Drawing.Size(90, 17);
+            this.checkbox_DeCompress.Size = new System.Drawing.Size(78, 17);
             this.checkbox_DeCompress.TabIndex = 19;
-            this.checkbox_DeCompress.Text = "De-Compress";
+            this.checkbox_DeCompress.Text = "Arşivi çıkart";
             this.checkbox_DeCompress.Visible = false;
             // 
             // pictureBox_GameImage
@@ -225,7 +225,7 @@
             this.MaximizeBox = false;
             this.Name = "moveGame";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
-            this.Text = "MoveGame";
+            this.Text = "Taşı";
             this.Load += new System.EventHandler(this.MoveGame_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_GameImage)).EndInit();
             this.ResumeLayout(false);

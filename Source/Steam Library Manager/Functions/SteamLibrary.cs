@@ -271,7 +271,7 @@ namespace Steam_Library_Manager.Functions
                 // If our panel for library listing is not empty
                 if (Definitions.Accessors.MainForm.panel_LibraryList.Controls.Count > 0)
                     // Clear the panel
-                    Main.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Clear());
+                    MainForm.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Clear());
 
                 // Do the loop for each Library in our library list
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
@@ -329,7 +329,7 @@ namespace Steam_Library_Manager.Functions
                     libraryDetailBox.ContextMenuStrip = Content.Libraries.generateRightClickMenu(Library);
 
                     // Add our pictureBox to library listening panel
-                    Main.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Add(libraryDetailBox));
+                    MainForm.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Add(libraryDetailBox));
                 }
             }
             catch (Exception ex)

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Steam_Library_Manager</RootNamespace>
     <AssemblyName>Steam Library Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -46,8 +46,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Binaries\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -83,11 +82,11 @@
     <Compile Include="Definitions\SLM.cs" />
     <Compile Include="Definitions\Steam.cs" />
     <Compile Include="Definitions\Updater.cs" />
-    <Compile Include="Forms\Main.cs">
+    <Compile Include="Forms\mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="Forms\mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\moveGame.cs">
       <SubType>Form</SubType>
@@ -101,6 +100,11 @@
     <Compile Include="Forms\moveLibrary.Designer.cs">
       <DependentUpon>moveLibrary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\moveLibrary.tr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>moveLibrary.tr.resx</DependentUpon>
+    </Compile>
     <Compile Include="Framework\KeyValue.cs" />
     <Compile Include="Framework\PictureBoxWithCaching.cs">
       <SubType>Component</SubType>
@@ -112,6 +116,26 @@
     <Compile Include="Functions\SteamLibrary.cs" />
     <Compile Include="Framework\PortableSettingsProvider.cs" />
     <Compile Include="Functions\Updater.cs" />
+    <Compile Include="Languages\Forms\Games\rightClickMenu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rightClickMenu.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Forms\Libraries\rightClickMenu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rightClickMenu.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Forms\mainForm.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>mainForm.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Forms\mainForm.tr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>mainForm.tr.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -125,14 +149,41 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.cs" />
-    <EmbeddedResource Include="Forms\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\mainForm.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\mainForm.tr.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\moveGame.resx">
       <DependentUpon>moveGame.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\moveGame.tr.resx">
+      <DependentUpon>moveGame.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\moveLibrary.resx">
       <DependentUpon>moveLibrary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\moveLibrary.tr.resx">
+      <DependentUpon>moveLibrary.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>moveLibrary.tr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\Games\rightClickMenu.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\Libraries\rightClickMenu.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\mainForm.tr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>mainForm.tr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\mainForm.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>mainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -173,15 +224,13 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\libraryIcon.png" />
+    <EmbeddedResource Include="Resources\libraryIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <EmbeddedResource Include="Resources\compressedLibraryIcon.png" />
+    <EmbeddedResource Include="Resources\steam-icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\compressedLibraryIcon.png" />
-    <Content Include="Resources\steam-icon.ico" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using Steam_Library_Manager.Languages.Forms.Libraries;
 
 namespace Steam_Library_Manager.Content
 {
@@ -15,28 +16,28 @@ namespace Steam_Library_Manager.Content
             EventHandler clickHandler = new EventHandler(libraryDetailBox_ContextMenuAction);
 
             // Add an item which will show our library directory and make it disabled
-            menu.Items.Add("Open Library in Explorer", null, clickHandler).Name = "Disk";
+            menu.Items.Add(rightClickMenu.menuItem_openLibraryInExplorer, null, clickHandler).Name = "Disk";
 
             // spacer
             menu.Items.Add(Definitions.SLM.Spacer);
 
             // Move library
-            menu.Items.Add("Move Library", null, clickHandler).Name = "moveLibrary";
+            menu.Items.Add(rightClickMenu.menuItem_moveLibrary, null, clickHandler).Name = "moveLibrary";
 
             // spacer
             menu.Items.Add(Definitions.SLM.Spacer);
 
             // Refresh games in library
-            menu.Items.Add("Refresh games in library", null, clickHandler).Name = "RefreshGameList";
+            menu.Items.Add(rightClickMenu.menuItem_refreshGameList, null, clickHandler).Name = "RefreshGameList";
 
             // spacer
             menu.Items.Add(Definitions.SLM.Spacer);
 
             // Delete library
-            menu.Items.Add("Delete Library", null, clickHandler).Name = "deleteLibrary";
+            menu.Items.Add(rightClickMenu.menuItem_deleteLibrary, null, clickHandler).Name = "deleteLibrary";
 
             // Delete games in library
-            menu.Items.Add("Delete Games in Library", null, clickHandler).Name = "deleteLibrarySLM";
+            menu.Items.Add(rightClickMenu.menuItem_deleteGamesInLibrary, null, clickHandler).Name = "deleteLibrarySLM";
 
             if (Library.Backup)
             {
@@ -44,7 +45,7 @@ namespace Steam_Library_Manager.Content
                 menu.Items.Add(Definitions.SLM.Spacer);
 
                 // Remove the library from slm (only from list)
-                menu.Items.Add("Remove from List").Name = "RemoveFromList";
+                menu.Items.Add(rightClickMenu.menuITem_removeBackupLibraryFromList).Name = "RemoveFromList";
             }
 
             return menu;
@@ -68,7 +69,7 @@ namespace Steam_Library_Manager.Content
                         Functions.Games.UpdateGameList(Library);
                         break;
                     case "deleteLibrary":
-                        DialogResult moveGamesBeforeDeletion = MessageBox.Show("Move Games in Library before deleting?", "Move Games", MessageBoxButtons.YesNoCancel);
+                        DialogResult moveGamesBeforeDeletion = MessageBox.Show(rightClickMenu.message_moveGamesInLibraryBeforeDelete, rightClickMenu.messageTitle_moveGamesInLibraryBeforeDelete, MessageBoxButtons.YesNoCancel);
 
                         if (moveGamesBeforeDeletion == DialogResult.Yes)
                             new Forms.moveLibrary(Library).Show();
@@ -82,7 +83,7 @@ namespace Steam_Library_Manager.Content
 
                             if (!await gameFunctions.deleteGameFiles(Game))
                             {
-                                MessageBox.Show($"An error happened while removing games from library: {Library.fullPath}");
+                                MessageBox.Show(string.Format(rightClickMenu.message_unknownErrorWhileDeletingGames, Library.fullPath));
 
                                 return;
                             }
@@ -92,7 +93,7 @@ namespace Steam_Library_Manager.Content
                         Functions.SteamLibrary.updateMainForm();
                         Functions.Games.UpdateGameList(Library);
 
-                        MessageBox.Show($"Done!\nAll games in Library ({Library.fullPath}) deleted.");
+                        MessageBox.Show(string.Format(rightClickMenu.message_allGamesSuccesfullyDeleted, Library.fullPath));
                         break;
                     case "moveLibrary":
                         new Forms.moveLibrary(Library).Show();
@@ -120,7 +121,7 @@ namespace Steam_Library_Manager.Content
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile("Libraries", ex.ToString());
+                    Functions.Log.ErrorsToFile(rightClickMenu.Libraries, ex.ToString());
             }
         }
 

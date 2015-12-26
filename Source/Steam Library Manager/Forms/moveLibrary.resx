@@ -117,6 +117,467 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;groupBox_targetLibrary.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInTargetLibrary.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panel_gamesInLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="&gt;&gt;checkbox_removeOldFiles.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label_availableSpaceAtTargetLibrary.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="label_availableSpaceAtTargetLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>164, 53</value>
+  </data>
+  <data name="&gt;&gt;progressBar_libraryMoveProgress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_gamesInTargetLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInLibrary.Parent" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="panel_gamesInLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>506, 214</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 53</value>
+  </data>
+  <data name="&gt;&gt;panel_gamesInLibrary.Name" xml:space="preserve">
+    <value>panel_gamesInLibrary</value>
+  </data>
+  <data name="&gt;&gt;groupBox_targetLibrary.Name" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="&gt;&gt;groupBox_targetLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>moveLibrary</value>
+  </data>
+  <data name="label_gamesInLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>164, 14</value>
+  </data>
+  <data name="label_progressInformation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>212, 13</value>
+  </data>
+  <data name="button_moveLibrary.Text" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="checkbox_removeOldFiles.Text" xml:space="preserve">
+    <value>Remove Old Library</value>
+  </data>
+  <data name="label_gamesInLibrary.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label_progressInformation.Name" xml:space="preserve">
+    <value>label_progressInformation</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="&gt;&gt;checkbox_removeOldFiles.Name" xml:space="preserve">
+    <value>checkbox_removeOldFiles</value>
+  </data>
+  <data name="button_moveLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 415</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 13</value>
+  </data>
+  <data name="&gt;&gt;progressBar_libraryMoveProgress.Name" xml:space="preserve">
+    <value>progressBar_libraryMoveProgress</value>
+  </data>
+  <data name="panel_gamesInLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label_gamesInLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Available Space:</value>
+  </data>
+  <data name="button_newLibraryButton.Text" xml:space="preserve">
+    <value>New Library</value>
+  </data>
+  <data name="label_neededSpace.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser_selectNewLibraryPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_moveLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 25</value>
+  </data>
+  <data name="&gt;&gt;groupBox_selectedLibrary.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="label_progressInformation.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="combobox_libraryList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="button_newLibraryButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>167, 14</value>
+  </data>
+  <data name="label_neededSpace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="combobox_libraryList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 21</value>
+  </data>
+  <data name="groupBox_targetLibrary.Text" xml:space="preserve">
+    <value>Target Library</value>
+  </data>
+  <data name="checkbox_removeOldFiles.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;groupBox_selectedLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 40</value>
+  </data>
+  <data name="label_gamesInTargetLibrary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 14</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>moveLibrary</value>
+  </data>
+  <data name="&gt;&gt;button_newLibraryButton.Name" xml:space="preserve">
+    <value>button_newLibraryButton</value>
+  </data>
+  <data name="label_gamesInLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_newLibraryButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
+  <data name="label_neededSpace.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInTargetLibrary.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="label_progressInformation.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;panel_gamesInLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;button_moveLibrary.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label_neededSpace.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label_availableSpaceAtTargetLibrary.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="&gt;&gt;label_availableSpaceAtTargetLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_newLibraryButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressBar_libraryMoveProgress.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="folderBrowser_selectNewLibraryPath.Description" xml:space="preserve">
+    <value>Select a new path for library. This can't be root nor existing library</value>
+  </data>
+  <data name="&gt;&gt;button_newLibraryButton.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="groupBox_selectedLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="&gt;&gt;button_moveLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="checkbox_removeOldFiles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 17</value>
+  </data>
+  <data name="label_gamesInTargetLibrary.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInTargetLibrary.Name" xml:space="preserve">
+    <value>label_gamesInTargetLibrary</value>
+  </data>
+  <data name="&gt;&gt;button_moveLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_gamesInTargetLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="progressBar_libraryMoveProgress.Size" type="System.Drawing.Size, System.Drawing">
+    <value>506, 39</value>
+  </data>
+  <data name="&gt;&gt;checkbox_removeOldFiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_moveLibrary.Name" xml:space="preserve">
+    <value>button_moveLibrary</value>
+  </data>
+  <data name="&gt;&gt;label_availableSpaceAtTargetLibrary.Name" xml:space="preserve">
+    <value>label_availableSpaceAtTargetLibrary</value>
+  </data>
+  <data name="label_availableSpaceAtTargetLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInTargetLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="progressBar_libraryMoveProgress.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;groupBox_targetLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="checkbox_removeOldFiles.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 154</value>
+  </data>
+  <data name="groupBox_selectedLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 177</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label_neededSpace.Location" type="System.Drawing.Point, System.Drawing">
+    <value>164, 27</value>
+  </data>
+  <data name="&gt;&gt;combobox_libraryList.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="panel_gamesInLibrary.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInLibrary.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label_neededSpace.Parent" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="progressBar_libraryMoveProgress.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 453</value>
+  </data>
+  <data name="combobox_libraryList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 16</value>
+  </data>
+  <data name="&gt;&gt;label_neededSpace.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Needed Space:</value>
+  </data>
+  <data name="&gt;&gt;panel_gamesInLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_availableSpaceAtTargetLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="label_gamesInTargetLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>164, 40</value>
+  </data>
+  <data name="&gt;&gt;checkbox_removeOldFiles.Parent" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="&gt;&gt;label_progressInformation.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="button_moveLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 13</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser_selectNewLibraryPath.Name" xml:space="preserve">
+    <value>folderBrowser_selectNewLibraryPath</value>
+  </data>
+  <data name="&gt;&gt;groupBox_selectedLibrary.Name" xml:space="preserve">
+    <value>groupBox_selectedLibrary</value>
+  </data>
+  <data name="&gt;&gt;label_progressInformation.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Games in Library:</value>
+  </data>
+  <data name="&gt;&gt;combobox_libraryList.Name" xml:space="preserve">
+    <value>combobox_libraryList</value>
+  </data>
+  <data name="&gt;&gt;label_availableSpaceAtTargetLibrary.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;button_newLibraryButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button_newLibraryButton.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="groupBox_targetLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>271, 232</value>
+  </data>
+  <data name="label_gamesInLibrary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="groupBox_targetLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="&gt;&gt;label_neededSpace.Name" xml:space="preserve">
+    <value>label_neededSpace</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>530, 517</value>
+  </data>
+  <data name="groupBox_selectedLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 232</value>
+  </data>
+  <data name="groupBox_selectedLibrary.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="&gt;&gt;combobox_libraryList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox_selectedLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_progressInformation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>306, 495</value>
+  </data>
+  <data name="&gt;&gt;label_progressInformation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_targetLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 177</value>
+  </data>
+  <data name="checkbox_removeOldFiles.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;panel_gamesInLibrary.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;combobox_libraryList.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 13</value>
+  </data>
+  <data name="label_availableSpaceAtTargetLibrary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;label_gamesInLibrary.Name" xml:space="preserve">
+    <value>label_gamesInLibrary</value>
+  </data>
+  <data name="&gt;&gt;progressBar_libraryMoveProgress.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label_neededSpace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>groupBox_targetLibrary</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Games in Library:</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>tr</value>
+  </metadata>
   <metadata name="folderBrowser_selectNewLibraryPath.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

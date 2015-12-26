@@ -1,0 +1,1062 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="button_changeDefaultTextEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>216, 161</value>
+  </data>
+  <data name="&gt;&gt;panel_LibraryList.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 13</value>
+  </data>
+  <data name="tab_InstalledGames.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 724</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;SLM_defaultTextEditor.Name" xml:space="preserve">
+    <value>SLM_defaultTextEditor</value>
+  </data>
+  <data name="&gt;&gt;button_newSteamLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;SLM_SortGamesBy.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 33</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 145</value>
+  </data>
+  <data name="&gt;&gt;SLM_SortGamesBy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;SLM_defaultTextEditor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="textBox_searchInGames.Location" type="System.Drawing.Point, System.Drawing">
+    <value>654, 695</value>
+  </data>
+  <data name="&gt;&gt;checkbox_CheckForUpdatesAtStartup.Name" xml:space="preserve">
+    <value>checkbox_CheckForUpdatesAtStartup</value>
+  </data>
+  <data name="button_newSteamLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="button_SelectSteamPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>57, 63</value>
+  </data>
+  <data name="groupBox_SLM.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>20, 30, 20, 20</value>
+  </data>
+  <data name="&gt;&gt;button_changeDefaultTextEditor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_searchInLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="checkbox_LogErrorsToFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 187</value>
+  </data>
+  <data name="checkbox_LogErrorsToFile.Text" xml:space="preserve">
+    <value>Log errors to File</value>
+  </data>
+  <data name="&gt;&gt;button_CheckForUpdates.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_CurrentVersion.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="label_CurrentVersion.Text" xml:space="preserve">
+    <value>N\A</value>
+  </data>
+  <data name="&gt;&gt;SLM_defaultTextEditor.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SLM.Parent" xml:space="preserve">
+    <value>tab_Settings</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 41</value>
+  </data>
+  <data name="&gt;&gt;tab_InstalledGames.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="checkbox_CheckForUpdatesAtStartup.Text" xml:space="preserve">
+    <value>Check for Updates at Startup</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>859, 786</value>
+  </data>
+  <data name="&gt;&gt;SLM_sizeCalculationMethod.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox_Version.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 6</value>
+  </data>
+  <data name="tab_Settings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Game size calculation method:</value>
+  </data>
+  <data name="checkbox_CheckForUpdatesAtStartup.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="SLM_SortGamesBy.Items2" xml:space="preserve">
+    <value>sizeOnDisk</value>
+  </data>
+  <data name="SLM_SortGamesBy.Items" xml:space="preserve">
+    <value>appName</value>
+  </data>
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="tab_InstalledGames.Text" xml:space="preserve">
+    <value>Installed Games</value>
+  </data>
+  <data name="label_versionResult.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="button_newSteamLibrary.Text" xml:space="preserve">
+    <value>New Steam Library</value>
+  </data>
+  <data name="checkbox_LogErrorsToFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>175, 24</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="button_newBackupLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>728, 2</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;textBox_searchInGames.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;checkbox_CheckForUpdatesAtStartup.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="button_RefreshLibraries.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="panel_GameList.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox_Version.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label_CurrentVersion.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_LatestVersion.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Version.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="groupBox_Steam.Text" xml:space="preserve">
+    <value>Steam</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <data name="checkbox_CheckForUpdatesAtStartup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 17</value>
+  </data>
+  <data name="panel_LibraryList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 15</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Version.Name" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="fileDialog_SelectSteamPath.Title" xml:space="preserve">
+    <value>Select Steam.exe</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="tab_Settings.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;checkbox_LogErrorsToFile.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Archive Size Calculation:</value>
+  </data>
+  <data name="button_CheckForUpdates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 25</value>
+  </data>
+  <data name="&gt;&gt;textBox_searchInGames.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Sort Games By:</value>
+  </data>
+  <data name="SLM_defaultTextEditor.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;panel_GameList.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="linkLabel_SteamPath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 38</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.Items" xml:space="preserve">
+    <value>ACF - Fast, not Accurate</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_searchInLibrary.Text" xml:space="preserve">
+    <value>Search in Library (Name or appID)</value>
+  </data>
+  <data name="&gt;&gt;tab_Settings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_defaultTextEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>201, 20</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;SLM_SortGamesBy.Name" xml:space="preserve">
+    <value>SLM_SortGamesBy</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.Items" xml:space="preserve">
+    <value>Uncompressed size (Slow, Accurate)</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;SLM_SortGamesBy.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;label_versionResult.Name" xml:space="preserve">
+    <value>label_versionResult</value>
+  </data>
+  <data name="&gt;&gt;button_changeDefaultTextEditor.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;checkbox_LogErrorsToFile.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="panel_GameList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 192</value>
+  </data>
+  <data name="textBox_searchInGames.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 23</value>
+  </data>
+  <data name="label_LatestVersion.Text" xml:space="preserve">
+    <value>N\A</value>
+  </data>
+  <data name="SLM_SortGamesBy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 121</value>
+  </data>
+  <data name="&gt;&gt;SLM_archiveSizeCalcMethod.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="&gt;&gt;button_SelectSteamPath.Parent" xml:space="preserve">
+    <value>groupBox_Steam</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SLM.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Steam.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="checkbox_CheckForUpdatesAtStartup.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 25</value>
+  </data>
+  <data name="&gt;&gt;panel_LibraryList.Parent" xml:space="preserve">
+    <value>tab_InstalledGames</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_newBackupLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 16</value>
+  </data>
+  <data name="&gt;&gt;SLM_defaultTextEditor.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label_LatestVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;button_newSteamLibrary.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MainForm</value>
+  </data>
+  <data name="groupBox_SLM.Text" xml:space="preserve">
+    <value>Steam Library Manager Settings</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_SortGamesBy.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="fileDialog_defaultTextEditor.Filter" xml:space="preserve">
+    <value>|*.exe</value>
+  </data>
+  <data name="button_SelectSteamPath.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;button_CheckForUpdates.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="button_RefreshLibraries.Location" type="System.Drawing.Point, System.Drawing">
+    <value>466, 2</value>
+  </data>
+  <data name="&gt;&gt;panel_GameList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.ItemHeight" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="&gt;&gt;button_RefreshLibraries.Name" xml:space="preserve">
+    <value>button_RefreshLibraries</value>
+  </data>
+  <data name="&gt;&gt;tab_InstalledGames.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;button_changeDefaultTextEditor.Name" xml:space="preserve">
+    <value>button_changeDefaultTextEditor</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Version.Parent" xml:space="preserve">
+    <value>tab_Settings</value>
+  </data>
+  <data name="&gt;&gt;linkLabel_SteamPath.Name" xml:space="preserve">
+    <value>linkLabel_SteamPath</value>
+  </data>
+  <data name="groupBox_Steam.Location" type="System.Drawing.Point, System.Drawing">
+    <value>603, 6</value>
+  </data>
+  <data name="&gt;&gt;panel_GameList.Name" xml:space="preserve">
+    <value>panel_GameList</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 13</value>
+  </data>
+  <data name="&gt;&gt;linkLabel_SteamPath.Parent" xml:space="preserve">
+    <value>groupBox_Steam</value>
+  </data>
+  <data name="button_CheckForUpdates.Location" type="System.Drawing.Point, System.Drawing">
+    <value>97, 106</value>
+  </data>
+  <data name="&gt;&gt;textBox_searchInGames.Parent" xml:space="preserve">
+    <value>tab_InstalledGames</value>
+  </data>
+  <data name="button_RefreshLibraries.Text" xml:space="preserve">
+    <value>Refresh Library List</value>
+  </data>
+  <data name="&gt;&gt;fileDialog_defaultTextEditor.Name" xml:space="preserve">
+    <value>fileDialog_defaultTextEditor</value>
+  </data>
+  <data name="&gt;&gt;button_CheckForUpdates.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;checkbox_LogErrorsToFile.Name" xml:space="preserve">
+    <value>checkbox_LogErrorsToFile</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="SLM_SortGamesBy.Items1" xml:space="preserve">
+    <value>appID</value>
+  </data>
+  <data name="&gt;&gt;button_SelectSteamPath.Name" xml:space="preserve">
+    <value>button_SelectSteamPath</value>
+  </data>
+  <data name="&gt;&gt;button_RefreshLibraries.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;SLM_sizeCalculationMethod.Name" xml:space="preserve">
+    <value>SLM_sizeCalculationMethod</value>
+  </data>
+  <data name="textBox_searchInGames.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI Semilight, 9.75pt</value>
+  </data>
+  <data name="button_RefreshLibraries.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="button_newBackupLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_CurrentVersion.Name" xml:space="preserve">
+    <value>label_CurrentVersion</value>
+  </data>
+  <data name="groupBox_Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="button_CheckForUpdates.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="&gt;&gt;button_SelectSteamPath.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tab_InstalledGames.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="&gt;&gt;label_CurrentVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_changeDefaultTextEditor.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="linkLabel_SteamPath.Text" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="&gt;&gt;label_LatestVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_SelectSteamPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 32</value>
+  </data>
+  <data name="&gt;&gt;tab_Settings.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Default Text Editor:</value>
+  </data>
+  <data name="textBox_searchInGames.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox_Version.Size" type="System.Drawing.Size, System.Drawing">
+    <value>290, 192</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;panel_LibraryList.Name" xml:space="preserve">
+    <value>panel_LibraryList</value>
+  </data>
+  <data name="&gt;&gt;label_LatestVersion.Name" xml:space="preserve">
+    <value>label_LatestVersion</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 21</value>
+  </data>
+  <data name="&gt;&gt;tab_InstalledGames.Name" xml:space="preserve">
+    <value>tab_InstalledGames</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;button_newBackupLibrary.Name" xml:space="preserve">
+    <value>button_newBackupLibrary</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Latest Version:</value>
+  </data>
+  <data name="panel_GameList.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 10, 10, 10</value>
+  </data>
+  <data name="label_CurrentVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 20</value>
+  </data>
+  <data name="label_searchInLibrary.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="label_versionResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 23</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox_Steam.Size" type="System.Drawing.Size, System.Drawing">
+    <value>225, 103</value>
+  </data>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 65</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;SLM_archiveSizeCalcMethod.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label_searchInLibrary.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="button_changeDefaultTextEditor.Text" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Version.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.Items1" xml:space="preserve">
+    <value>Archive size (Fast, gets archive size)</value>
+  </data>
+  <data name="&gt;&gt;SLM_archiveSizeCalcMethod.Name" xml:space="preserve">
+    <value>SLM_archiveSizeCalcMethod</value>
+  </data>
+  <data name="panel_LibraryList.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser_SelectNewLibraryPath.Name" xml:space="preserve">
+    <value>folderBrowser_SelectNewLibraryPath</value>
+  </data>
+  <data name="button_newSteamLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>597, 2</value>
+  </data>
+  <data name="groupBox_Steam.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="linkLabel_SteamPath.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;button_newBackupLibrary.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Steam.Parent" xml:space="preserve">
+    <value>tab_Settings</value>
+  </data>
+  <data name="&gt;&gt;linkLabel_SteamPath.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;fileDialog_defaultTextEditor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="&gt;&gt;label_searchInLibrary.Parent" xml:space="preserve">
+    <value>tab_InstalledGames</value>
+  </data>
+  <data name="button_CheckForUpdates.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser_SelectNewLibraryPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_versionResult.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBox_Steam</value>
+  </data>
+  <data name="groupBox_SLM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>283, 215</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="label_CurrentVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 41</value>
+  </data>
+  <data name="label_LatestVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 20</value>
+  </data>
+  <data name="&gt;&gt;button_RefreshLibraries.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_newSteamLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_CheckForUpdates.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="&gt;&gt;button_newBackupLibrary.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Steam.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_versionResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 135</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 61</value>
+  </data>
+  <data name="&gt;&gt;checkbox_CheckForUpdatesAtStartup.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="label_LatestVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 77</value>
+  </data>
+  <data name="label_CurrentVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;button_RefreshLibraries.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 105</value>
+  </data>
+  <data name="fileDialog_SelectSteamPath.Filter" xml:space="preserve">
+    <value>Steam|steam.exe</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;linkLabel_SteamPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 13</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="SLM_defaultTextEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 161</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SLM.Name" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="SLM_SortGamesBy.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="checkbox_LogErrorsToFile.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="textBox_searchInGames.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;checkbox_LogErrorsToFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="linkLabel_SteamPath.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tab_Settings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 724</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Steam path:</value>
+  </data>
+  <data name="&gt;&gt;button_SelectSteamPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_searchInLibrary.Location" type="System.Drawing.Point, System.Drawing">
+    <value>481, 701</value>
+  </data>
+  <data name="button_newSteamLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
+  <data name="tab_InstalledGames.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SLM.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_CheckForUpdates.Name" xml:space="preserve">
+    <value>button_CheckForUpdates</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 13</value>
+  </data>
+  <data name="&gt;&gt;button_newSteamLibrary.Name" xml:space="preserve">
+    <value>button_newSteamLibrary</value>
+  </data>
+  <data name="tab_Settings.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fileDialog_SelectSteamPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_searchInLibrary.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label_searchInLibrary.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 13</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="SLM_SortGamesBy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 21</value>
+  </data>
+  <data name="tab_InstalledGames.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="checkbox_CheckForUpdatesAtStartup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 167</value>
+  </data>
+  <data name="&gt;&gt;panel_GameList.Parent" xml:space="preserve">
+    <value>tab_InstalledGames</value>
+  </data>
+  <data name="button_changeDefaultTextEditor.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;textBox_searchInGames.Name" xml:space="preserve">
+    <value>textBox_searchInGames</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="button_SelectSteamPath.Text" xml:space="preserve">
+    <value>Select STEAM Path</value>
+  </data>
+  <data name="&gt;&gt;tab_Settings.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;SLM_sizeCalculationMethod.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label_versionResult.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel_GameList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label_searchInLibrary.Name" xml:space="preserve">
+    <value>label_searchInLibrary</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;checkbox_CheckForUpdatesAtStartup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="linkLabel_SteamPath.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Steam.Name" xml:space="preserve">
+    <value>groupBox_Steam</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tab_Settings.Name" xml:space="preserve">
+    <value>tab_Settings</value>
+  </data>
+  <data name="button_newBackupLibrary.Text" xml:space="preserve">
+    <value>New Backup Library</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 21</value>
+  </data>
+  <data name="&gt;&gt;button_newBackupLibrary.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SLM_archiveSizeCalcMethod.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 82</value>
+  </data>
+  <data name="panel_LibraryList.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 13</value>
+  </data>
+  <data name="&gt;&gt;label_LatestVersion.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="panel_GameList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>839, 499</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>853, 750</value>
+  </data>
+  <data name="panel_LibraryList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>839, 173</value>
+  </data>
+  <data name="SLM_sizeCalculationMethod.Items1" xml:space="preserve">
+    <value>Enum - Slow, Accurate</value>
+  </data>
+  <data name="&gt;&gt;tab_InstalledGames.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;SLM_sizeCalculationMethod.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="label_versionResult.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="groupBox_SLM.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 6</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="SLM_SortGamesBy.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="button_changeDefaultTextEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 23</value>
+  </data>
+  <data name="tab_Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="button_SelectSteamPath.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>groupBox_Version</value>
+  </data>
+  <data name="&gt;&gt;SLM_archiveSizeCalcMethod.Parent" xml:space="preserve">
+    <value>groupBox_SLM</value>
+  </data>
+  <data name="&gt;&gt;label_versionResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="linkLabel_SteamPath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>27, 13</value>
+  </data>
+  <data name="&gt;&gt;panel_LibraryList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="linkLabel_SteamPath.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;fileDialog_SelectSteamPath.Name" xml:space="preserve">
+    <value>fileDialog_SelectSteamPath</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <metadata name="fileDialog_defaultTextEditor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>467, 17</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>tr</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="folderBrowser_SelectNewLibraryPath.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>216, 17</value>
+  </metadata>
+  <metadata name="fileDialog_SelectSteamPath.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+</root>
