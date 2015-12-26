@@ -3,7 +3,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -94,14 +93,13 @@ namespace Steam_Library_Manager.Functions
 
         public async Task<bool> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newCommonPath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate)
         {
-            string newFileName;
             try
             {
                 foreach (string currentFile in gameFiles)
                 {
                     using (FileStream currentFileStream = File.OpenRead(currentFile))
                     {
-                        newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
+                        string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
 
                         if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
                             Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
@@ -112,11 +110,12 @@ namespace Steam_Library_Manager.Functions
                             // Copy the file to target library asynchronously
                             await currentFileStream.CopyToAsync(newFileStream);
 
-                            // Perform step
+                            // Perform step on progress bar
                             currentForm.progressBar_CopyStatus.PerformStep();
 
-                            // Log to user
-                            currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+                            // TO-DO
+                            //currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+
                         }
 
                         if (Validate)
@@ -132,13 +131,13 @@ namespace Steam_Library_Manager.Functions
                             }
                         }
                     }
-
-                    // Copy .ACF file
-                    await Task.Run(() => File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath, Game.acfName), true));
-
-                    if (File.Exists(Game.workShopAcfName))
-                        await Task.Run(() => File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath), true));
                 }
+
+                // Copy .ACF file
+                await Task.Run(() => File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath, Game.acfName), true));
+
+                if (File.Exists(Game.workShopAcfName))
+                    await Task.Run(() => File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath), true));
             }
             catch (Exception ex)
             {
@@ -272,7 +271,7 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public static void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.LibraryList Library, long sizeOnDisk, bool isCompressed)
+        public static async void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.LibraryList Library, long sizeOnDisk, bool isCompressed)
         {
             try
             {
@@ -323,31 +322,19 @@ namespace Steam_Library_Manager.Functions
                 if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath) && !Game.Compressed)
                     return; // Do not add pre-loads to list
 
+                Games gameFunctions = new Games();
+
                 // If SizeOnDisk value from .ACF file is not equals to 0
-                if (sizeOnDisk != 0 && Properties.Settings.Default.GameSizeCalculationMethod != "ACF" && !isCompressed)
+                if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF" && !isCompressed)
                 {
-                    // If game has "common" folder
-                    if (!string.IsNullOrEmpty(Game.commonPath))
-                    {
-                        // Calculate game size on disk
-                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.commonPath, true);
-                    }
+                    List<string> gameFiles = await gameFunctions.getFileList(Game);
 
-                    // If game has downloading files
-                    if (!string.IsNullOrEmpty(Game.downloadPath))
+                    foreach (string file in gameFiles)
                     {
-                        // Calculate "downloading" folder size
-                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.downloadPath, true);
-                    }
-
-                    // If game has "workshop" files
-                    if (!string.IsNullOrEmpty(Game.workShopPath))
-                    {
-                        // Calculate "workshop" files size
-                        Game.sizeOnDisk += FileSystem.GetDirectorySize(Game.workShopPath, true);
+                        Game.sizeOnDisk += await Task.Run(() => new FileInfo(file).Length);
                     }
                 }
-                else if (sizeOnDisk != 0 && isCompressed)
+                else if (isCompressed)
                 {
                     // If user want us to get archive size from real uncompressed size
                     if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
@@ -365,11 +352,8 @@ namespace Steam_Library_Manager.Functions
                     }
                     else
                     {
-                        // Use FileInfo to get our archive details
-                        FileInfo zip = new FileInfo(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
-
                         // And set archive size as game size
-                        Game.sizeOnDisk = zip.Length;
+                        Game.sizeOnDisk = await FileSystem.getFileSize(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
                     }
                 }
                 else
@@ -465,7 +449,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search, Definitions.List.LibraryList Library)
+        public static async void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search, Definitions.List.LibraryList Library)
         {
             try
             {
@@ -496,75 +480,9 @@ namespace Steam_Library_Manager.Functions
                     ).OrderBy(Sort)
                     ))
                 {
-                    // Define a new pictureBox for game
-                    Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
-
-                    // Set picture mode of pictureBox
-                    gameDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                    // Set game image size
-                    gameDetailBox.Size = Properties.Settings.Default.GamePictureBoxSize;
-
-                    // Load game header image asynchronously
-                    gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID));
-
-                    // Set error image in case of couldn't load game header image
-                    gameDetailBox.ErrorImage = Properties.Resources.no_image_available;
-
-                    // Space between pictureBoxes for better looking
-                    gameDetailBox.Margin = new Padding(20);
-
-                    // Set our game details as Tag to pictureBox
-                    gameDetailBox.Tag = Game;
-
-                    // On we click to pictureBox (drag & drop event)
-                    gameDetailBox.MouseDown += gameDetailBox_MouseDown;
-
-                    // If game is compressed
-                    if (Game.Compressed)
-                    {
-                        // Make a new picturebox
-                        PictureBox compressedIcon = new PictureBox();
-
-                        // Set picture box image to compressedLibraryIcon
-                        compressedIcon.Image = Properties.Resources.compressedLibraryIcon;
-
-                        // Put picturebox to right corner of game image
-                        compressedIcon.Left = Properties.Settings.Default.GamePictureBoxSize.Width - 20;
-                        compressedIcon.Top = 5;
-
-                        // Add icon to game picture
-                        gameDetailBox.Controls.Add(compressedIcon);
-                    }
-
-                    // Set our context menu to pictureBox
-                    gameDetailBox.ContextMenuStrip = Content.Games.generateRightClickMenu(Game);
 
                     // Add our new game pictureBox to panel
-                    Definitions.Accessors.MainForm.panel_GameList.Controls.Add(gameDetailBox);
-                }
-            }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Games", ex.ToString());
-            }
-        }
-
-        static void gameDetailBox_MouseDown(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                // If clicked button is left (so it will not conflict with context menu)
-                if (e.Button == MouseButtons.Left)
-                {
-                    // Define our picturebox from sender
-                    PictureBox img = sender as PictureBox;
-
-                    // Do drag & drop with our pictureBox
-                    img.DoDragDrop(img, DragDropEffects.Move);
+                    Definitions.Accessors.MainForm.panel_GameList.Controls.Add(await Content.Games.generateGameBox(Game));
                 }
             }
             catch (Exception ex)

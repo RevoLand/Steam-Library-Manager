@@ -3,11 +3,75 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using Steam_Library_Manager.Languages.Forms.Games;
+using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Content
 {
     class Games
     {
+        public static async Task<Framework.PictureBoxWithCaching> generateGameBox(Definitions.List.GamesList Game)
+        {
+            // Define a new pictureBox for game
+            Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
+
+            // Set picture mode of pictureBox
+            gameDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            // Set game image size
+            gameDetailBox.Size = Properties.Settings.Default.GamePictureBoxSize;
+
+            // Load game header image asynchronously
+            await Task.Run(() => gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID)));
+
+            // Set error image in case of couldn't load game header image
+            gameDetailBox.ErrorImage = Properties.Resources.no_image_available;
+
+            // Space between pictureBoxes for better looking
+            gameDetailBox.Margin = new Padding(20);
+
+            // Set our game details as Tag to pictureBox
+            gameDetailBox.Tag = Game;
+
+            // On we click to pictureBox (drag & drop event)
+            gameDetailBox.MouseDown += gameDetailBox_MouseDown;
+
+            // If game is compressed
+            if (Game.Compressed)
+            {
+                // Make a new picturebox
+                PictureBox compressedIcon = new PictureBox();
+
+                // Set picture box image to compressedLibraryIcon
+                compressedIcon.Image = Properties.Resources.compressedLibraryIcon;
+
+                // Put picturebox to right corner of game image
+                compressedIcon.Left = Properties.Settings.Default.GamePictureBoxSize.Width - 20;
+                compressedIcon.Top = 5;
+
+                // Add icon to game picture
+                gameDetailBox.Controls.Add(compressedIcon);
+            }
+
+            // Set our context menu to pictureBox
+            gameDetailBox.ContextMenuStrip = generateRightClickMenu(Game);
+
+            return gameDetailBox;
+        }
+
+
+        static void gameDetailBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            // If clicked button is left (so it will not conflict with context menu)
+            if (e.Button == MouseButtons.Left)
+            {
+                // Define our picturebox from sender
+                Framework.PictureBoxWithCaching img = sender as Framework.PictureBoxWithCaching;
+
+                // Do drag & drop with our pictureBox
+                img.DoDragDrop(img, DragDropEffects.Move);
+            }
+        }
+
         public static ContextMenuStrip generateRightClickMenu(Definitions.List.GamesList Game)
         {
             // Create a new right click menu (context menu)

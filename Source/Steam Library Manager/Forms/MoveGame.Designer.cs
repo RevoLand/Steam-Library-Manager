@@ -61,9 +61,9 @@
             this.checkbox_Validate.AutoSize = true;
             this.checkbox_Validate.Location = new System.Drawing.Point(224, 224);
             this.checkbox_Validate.Name = "checkbox_Validate";
-            this.checkbox_Validate.Size = new System.Drawing.Size(63, 17);
+            this.checkbox_Validate.Size = new System.Drawing.Size(64, 17);
             this.checkbox_Validate.TabIndex = 4;
-            this.checkbox_Validate.Text = "Validate";
+            this.checkbox_Validate.Text = "Doğrula";
             // 
             // checkbox_RemoveOldFiles
             // 

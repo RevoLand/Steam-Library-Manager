@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Forms
@@ -43,7 +41,7 @@ namespace Steam_Library_Manager.Forms
             else if (Game.Library.Backup && !Library.Backup)
             {
                 checkbox_Validate.Visible = false;
-                button_Copy.Text = "Restore";
+                button_Copy.Text = Languages.Forms.moveGame.button_copyText_Restore;
 
                 // If game is compressed, set De-compress checkbox visible, set checkbox checked and set checkbox disabled
                 if (Game.Compressed)
@@ -57,10 +55,10 @@ namespace Steam_Library_Manager.Forms
             else if (Library.Backup)
             {
                 checkbox_Compress.Visible = true;
-                button_Copy.Text = "Backup";
+                button_Copy.Text = Languages.Forms.moveGame.button_copyText_Backup;
             }
 
-            Text = string.Format("{0} - SLM", Game.appName);
+            Text = string.Format(Languages.Forms.moveGame.form_Text, Game.appName);
 
             // Load our game image asynchronously
             pictureBox_GameImage.LoadAsync(string.Format("http://cdn.akamai.steamstatic.com/steam/apps/{0}/header.jpg", Game.appID));
@@ -95,11 +93,11 @@ namespace Steam_Library_Manager.Forms
 
             if (!Game.Compressed)
             {
-                Log("Please wait while SLM generates file list.");
+                Log(Languages.Forms.moveGame.logMessage_generatingFileList);
 
                 gameFiles.AddRange(await gameFunctions.getFileList(Game, true, true));
 
-                Log($"File list generated. Total file count will be moved: {gameFiles.Count}");
+                Log(string.Format(Languages.Forms.moveGame.logMessage_fileListGenerated, gameFiles.Count));
             }
 
             Stopwatch timeElapsed = new Stopwatch();
@@ -120,7 +118,7 @@ namespace Steam_Library_Manager.Forms
             if (freeSpaceOnTargetDisk < Game.sizeOnDisk)
             {
                 // Show an error to user
-                Log(string.Format("Free space is not enough! Needed Free Space: {0} Available: {1}", Game.sizeOnDisk, freeSpaceOnTargetDisk));
+                Log(string.Format(Languages.Forms.moveGame.logError_freeSpaceIsNotEnough, Game.sizeOnDisk, freeSpaceOnTargetDisk));
 
                 // And cancel the process
                 return;
@@ -131,7 +129,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (!await gameFunctions.decompressArchive(this, newCommonPath, currentZipNameNpath, Game, Library))
                 {
-                    Log("An error happened while de-compressing archive");
+                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileDecompressing);
 
                     return;
                 }
@@ -141,7 +139,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (!await gameFunctions.copyGameArchive(this, currentZipNameNpath, newZipNameNpath))
                 {
-                    Log("An error happened while copying game archive");
+                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingArchive);
 
                     return;
                 }
@@ -156,7 +154,7 @@ namespace Steam_Library_Manager.Forms
                 {
                     if (!await gameFunctions.compressGameFiles(this, gameFiles, newZipNameNpath, Game, Library))
                     {
-                        Log("An error happened while compressing game files");
+                        Log(Languages.Forms.moveGame.logError_unknownErrorWhileCompressing);
 
                         return;
                     }
@@ -167,42 +165,32 @@ namespace Steam_Library_Manager.Forms
                 {
                     if (!await gameFunctions.copyGameFiles(this, gameFiles, newCommonPath, Game, Library, Validate))
                     {
-                        Log("An error happened while coping game files");
+                        Log(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingFiles);
 
                         return;
                     }
                 }
             }
 
-            try
+            if (RemoveOldFiles)
             {
-                if (RemoveOldFiles)
+                if (!await gameFunctions.deleteGameFiles(Game, gameFiles))
                 {
-                    if (!await gameFunctions.deleteGameFiles(Game, gameFiles))
-                    {
-                        Log("An error happened while removing old files");
+                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileRemovingFiles);
 
-                        return;
-                    }
+                    return;
                 }
-            }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile("DirectoryRemoval", ex.ToString());
             }
 
             // stop our stopwatch
             timeElapsed.Stop();
 
             // Update button text
-            button_Copy.Text = "Completed!";
+            button_Copy.Text = Languages.Forms.moveGame.button_copyText_Completed;
 
             // Log to user
-            Log("Process has been completed, you may close this window now.");
-            Log(string.Format("Time elapsed: {0}", timeElapsed.Elapsed));
+            Log(Languages.Forms.moveGame.logMessage_processCompleted);
+            Log(string.Format(Languages.Forms.moveGame.logMessage_timeElapsed, timeElapsed.Elapsed));
 
             // Update game libraries
             Functions.SteamLibrary.updateLibraryList();
@@ -210,12 +198,8 @@ namespace Steam_Library_Manager.Forms
 
         public void Log(string Text)
         {
-            try
-            {
-                // Append log to textbox
-                textBox_Logs.AppendText(Text + Environment.NewLine);
-            }
-            catch { }
+            // Append log to textbox
+            textBox_Logs.AppendText(Text + Environment.NewLine);
         }
 
         // On click to game image

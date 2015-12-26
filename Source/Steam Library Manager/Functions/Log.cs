@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
 {
     class Log
     {
-        public static void ErrorsToFile(string ErrorType, string Error)
+        public static async void ErrorsToFile(string ErrorType, string Error)
         {
             try
             {
@@ -15,7 +16,7 @@ namespace Steam_Library_Manager.Functions
                 using (StreamWriter FileWriter = (!File.Exists(FilePath)) ? File.CreateText(FilePath) : File.AppendText(FilePath))
                 {
                     // Write error to file
-                    FileWriter.WriteLine(string.Format("[{0}] {1}", DateTime.Now, Error));
+                    await Task.Run(() => FileWriter.WriteLine(string.Format("[{0}] {1}", DateTime.Now, Error)));
                 }
             }
             catch (Exception ex)

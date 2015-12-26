@@ -27,15 +27,15 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Updater.LatestVersion = new Version(versionFileContent[0]);
 
                 // Latest Version text
-                Definitions.Accessors.MainForm.label_LatestVersion.Text = string.Format("{0} ({1})", Definitions.Updater.LatestVersion, versionFileContent[1]);
+                Definitions.Accessors.MainForm.label_LatestVersion.Text = string.Format(Languages.Updater.label_latestVersionText, Definitions.Updater.LatestVersion, versionFileContent[1]);
 
                 // If latest version is newer than current version
                 if (Definitions.Updater.LatestVersion > Definitions.Updater.CurrentVersion)
                 {
-                    Definitions.Accessors.MainForm.label_versionResult.Text = "Your SLM version is OUT OF DATE, please update.";
+                    Definitions.Accessors.MainForm.label_versionResult.Text = Languages.Updater.label_versionResult_OutOfDate;
 
                     // Show a messagebox to user and ask to open github page to download latest version
-                    System.Windows.Forms.DialogResult updateMessageBox = System.Windows.Forms.MessageBox.Show("There is an update available for SLM. Would you like to download it?\n\nClicking \"YES\" will download latest version of SLM close current instance of SLM and update\n\nLatest Version: " + Definitions.Updater.LatestVersion + " - Importance: " + versionFileContent[1], "SLM Update Checker", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk);
+                    System.Windows.Forms.DialogResult updateMessageBox = System.Windows.Forms.MessageBox.Show(string.Format(Languages.Updater.message_updateAvailable, Definitions.Updater.LatestVersion, versionFileContent[1], Environment.NewLine), Languages.Updater.messageTitle_updateAvailable, System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk);
 
                     // If user would like to open GitHub page in browser and close SLM
                     if (updateMessageBox == System.Windows.Forms.DialogResult.Yes)
@@ -58,7 +58,7 @@ namespace Steam_Library_Manager.Functions
                         cmdStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                         // Set CMD arguments
-                        cmdStartInfo.Arguments = "/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"" + AppDomain.CurrentDomain.FriendlyName + "\" & msg %username% \"SLM Updated!\"";
+                        cmdStartInfo.Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, Languages.Updater.message_slmUpdated);
 
                         // Set startinfo for cmd process
                         cmdProcess.StartInfo = cmdStartInfo;
@@ -70,17 +70,17 @@ namespace Steam_Library_Manager.Functions
                         System.Windows.Forms.Application.Exit();
                     }
                     else if (!string.IsNullOrEmpty(versionFileContent[1]) && versionFileContent[1] == "Important")
-                        System.Windows.Forms.MessageBox.Show("IT IS NOT SUGGESTED TO SKIP AN IMPORTANT UPGRADE, YOU MAY LOSE DATA WHILE MOVING A GAME, BE AWARE!", "YOU SHOULD NOT SKIP AN IMPORTANT UPDATE", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                        System.Windows.Forms.MessageBox.Show(Languages.Updater.message_notSuggestedToSkip, Languages.Updater.messageTitle_notSuggestedToSkip, System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
                 }
                 else
-                    Definitions.Accessors.MainForm.label_versionResult.Text = "You are using Latest Version of SLM.";
+                    Definitions.Accessors.MainForm.label_versionResult.Text = Languages.Updater.label_usingLatestVersion;
             }
             catch (Exception ex)
             {
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Updater", ex.ToString());
+                    Log.ErrorsToFile(Languages.Updater.source_Updater, ex.ToString());
             }
         }
     }

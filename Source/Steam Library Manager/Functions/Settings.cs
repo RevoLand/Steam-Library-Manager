@@ -35,6 +35,8 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.Accessors.MainForm.SLM_defaultTextEditor.Text = Properties.Settings.Default.DefaultTextEditor;
 
+                Definitions.Steam.vdfFilePath = System.IO.Path.Combine(Properties.Settings.Default.SteamInstallationPath, "config", "config.vdf");
+
                 // Find game directories and update them on form
                 SteamLibrary.updateLibraryList();
             }
@@ -78,18 +80,8 @@ namespace Steam_Library_Manager.Functions
 
         public static void Save()
         {
-            try
-            {
-                // Save settings to file
-                Properties.Settings.Default.Save();
-            }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Settings", ex.ToString());
-            }
+            // Save settings to file
+            Properties.Settings.Default.Save();
         }
 
     }

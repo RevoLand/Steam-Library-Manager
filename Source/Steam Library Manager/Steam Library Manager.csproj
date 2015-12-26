@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Steam_Library_Manager</RootNamespace>
     <AssemblyName>Steam Library Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -136,6 +136,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>mainForm.tr.resx</DependentUpon>
     </Compile>
+    <Compile Include="Languages\Forms\moveGame.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>moveGame.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Updater.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Updater.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -185,6 +195,15 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>mainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\moveGame.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>moveGame.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Updater.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Updater.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Updater.tr.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
