@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -66,17 +67,19 @@ namespace Steam_Library_Manager.Functions
             return true;
         }
 
-        public async Task<bool> decompressArchive(Forms.moveGame currentForm, string newCommonPath, string currentZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
+        public async Task<bool> decompressArchive(Forms.moveGame currentForm, string currentZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
         {
             try
             {
+                string newCommonPath = Path.Combine(targetLibrary.commonPath, Game.installationPath);
                 // If directory exists at target game path
                 if (Directory.Exists(newCommonPath))
                 {
                     // Remove the directory
                     await Task.Run(() => Directory.Delete(newCommonPath, true));
 
-                    await Task.Run(() => File.Delete(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)));
+                    if (File.Exists(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)))
+                        await Task.Run(() => File.Delete(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)));
                 }
 
                 await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, targetLibrary.steamAppsPath));
@@ -91,12 +94,26 @@ namespace Steam_Library_Manager.Functions
             return true;
         }
 
-        public async Task<bool> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newCommonPath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate)
+        public async Task<int> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate, CancellationToken token)
         {
+            List<string> movedFiles = new List<string>();
             try
             {
                 foreach (string currentFile in gameFiles)
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        DialogResult askUserToRemoveMovedFiles = MessageBox.Show("You have canceled the process. Would you like to remove moved files from target library?", "Remove moved files?", MessageBoxButtons.YesNo);
+
+                        if (askUserToRemoveMovedFiles == DialogResult.Yes)
+                        {
+                            FileSystem.removeGivenFiles(movedFiles, Game, targetLibrary);
+                            Log(currentForm, "Moved files removed.");
+                        }
+
+                        return -1;
+                    }
+
                     string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
 
                     if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
@@ -108,7 +125,11 @@ namespace Steam_Library_Manager.Functions
                     // Perform step on progress bar
                     currentForm.progressBar_CopyStatus.PerformStep();
 
+                    // Log to textbox
                     Log(currentForm, string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+                    
+                    // add moved file path to list 
+                    movedFiles.Add(newFileName);
 
                     if (Validate)
                     {
@@ -119,7 +140,7 @@ namespace Steam_Library_Manager.Functions
                             Log(currentForm, string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
 
                             // and cancel the process
-                            return false;
+                            return 0;
                         }
                     }
                 }
@@ -134,10 +155,10 @@ namespace Steam_Library_Manager.Functions
             {
                 currentForm.Log(ex.ToString());
 
-                return false;
+                return 0;
             }
 
-            return true;
+            return 1;
         }
 
         async void Log(Forms.moveGame currentForm, string Text)

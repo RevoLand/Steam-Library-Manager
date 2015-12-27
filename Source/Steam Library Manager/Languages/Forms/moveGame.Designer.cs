@@ -185,5 +185,14 @@ namespace Steam_Library_Manager.Languages.Forms {
                 return ResourceManager.GetString("logMessage_timeElapsed", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User canceled process..
+        /// </summary>
+        internal static string logMessage_userCanceledProcess {
+            get {
+                return ResourceManager.GetString("logMessage_userCanceledProcess", resourceCulture);
+            }
+        }
     }
 }

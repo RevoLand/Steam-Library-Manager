@@ -159,4 +159,7 @@
   <data name="logMessage_timeElapsed" xml:space="preserve">
     <value>Time elapsed: {0}</value>
   </data>
+  <data name="logMessage_userCanceledProcess" xml:space="preserve">
+    <value>User canceled process.</value>
+  </data>
 </root>

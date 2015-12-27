@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -6,6 +7,34 @@ namespace Steam_Library_Manager.Functions
 {
     class FileSystem
     {
+        public static async void removeGivenFiles(List<string> fileList, Definitions.List.GamesList Game = null, Definitions.List.LibraryList targetLibrary = null, bool removeAcfFile = true)
+        {
+            try
+            {
+                foreach (string currentFile in fileList)
+                {
+                    if (File.Exists(currentFile))
+                        await Task.Run(() => File.Delete(currentFile));
+                }
+
+                if (Game != null && targetLibrary != null)
+                {
+                    string combinedInstallationPath = Path.Combine(targetLibrary.commonPath, Game.installationPath);
+
+                    if (Directory.Exists(combinedInstallationPath))
+                        Directory.Delete(combinedInstallationPath, true);
+
+                    if (removeAcfFile)
+                    {
+                        string acfPath = Game.acfPath.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
+                        if (File.Exists(acfPath))
+                            File.Delete(acfPath);
+                    }
+                }
+            }
+            catch { }
+        }
+
         // Get directory size from path, with or without sub directories
         public static long GetDirectorySize(string directoryPath, bool includeSub)
         {
