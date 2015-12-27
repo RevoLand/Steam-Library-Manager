@@ -84,5 +84,27 @@ namespace Steam_Library_Manager.Functions
             Properties.Settings.Default.Save();
         }
 
+        public static Func<Definitions.List.GamesList, object> getSortingMethod()
+        {
+            Func<Definitions.List.GamesList, object> Sort;
+
+            // Define our sorting method
+            switch (Properties.Settings.Default.SortGamesBy)
+            {
+                default:
+                case "appName":
+                    Sort = x => x.appName;
+                    break;
+                case "appID":
+                    Sort = x => x.appID;
+                    break;
+                case "sizeOnDisk":
+                    Sort = x => x.sizeOnDisk;
+                    break;
+            }
+
+            return Sort;
+        }
+
     }
 }

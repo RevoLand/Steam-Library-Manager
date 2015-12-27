@@ -20,48 +20,23 @@ namespace Steam_Library_Manager.Forms
 
             libraryToMove = Library;
 
-            Text = string.Format("{0} - SLM - Move Library", libraryToMove.fullPath);
+            Text = string.Format(Languages.Forms.moveLibrary.form_Title, libraryToMove.fullPath);
         }
 
-        private void moveLibrary_Load(object sender, EventArgs e)
+        private async void moveLibrary_Load(object sender, EventArgs e)
         {
             try
             {
-                Func<Definitions.List.GamesList, object> Sort;
-
-                // Define our sorting method
-                switch (Properties.Settings.Default.SortGamesBy)
-                {
-                    default:
-                    case "appName":
-                        Sort = x => x.appName;
-                        break;
-                    case "appID":
-                        Sort = x => x.appID;
-                        break;
-                    case "sizeOnDisk":
-                        Sort = x => x.sizeOnDisk;
-                        break;
-                }
-
+                Func<Definitions.List.GamesList, object> Sort = Functions.Settings.getSortingMethod();
                 long neededSize = 0;
 
                 foreach (Definitions.List.GamesList Game in Definitions.List.Game.Where(x => x.Library == libraryToMove).OrderBy(Sort))
                 {
                     // Define a new pictureBox for game
-                    Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
-
-                    // Set picture mode of pictureBox
-                    gameDetailBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    Framework.PictureBoxWithCaching gameDetailBox = await Content.Games.generateGameBox(Game);
 
                     // Set game image size
                     gameDetailBox.Size = new System.Drawing.Size(Properties.Settings.Default.GamePictureBoxSize.Width / 2, Properties.Settings.Default.GamePictureBoxSize.Height / 2);
-
-                    // Load game header image asynchronously
-                    gameDetailBox.LoadAsync(string.Format("https://steamcdn-a.akamaihd.net/steam/apps/{0}/header.jpg", Game.appID));
-
-                    // Set error image in case of couldn't load game header image
-                    gameDetailBox.ErrorImage = Properties.Resources.no_image_available;
 
                     // add picturebox to our panel
                     panel_gamesInLibrary.Controls.Add(gameDetailBox);
@@ -73,7 +48,7 @@ namespace Steam_Library_Manager.Forms
                 combobox_libraryList.DataSource = Definitions.List.Library.FindAll(x => x != libraryToMove);
                 combobox_libraryList.DisplayMember = "fullPath";
 
-                groupBox_selectedLibrary.Text = string.Format("Details: {0}", libraryToMove.fullPath);
+                groupBox_selectedLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_selectedLibraryText, libraryToMove.fullPath);
                 label_gamesInLibrary.Text = libraryToMove.GameCount.ToString();
                 label_neededSpace.Text = Functions.FileSystem.FormatBytes(neededSize);
             }
@@ -95,14 +70,14 @@ namespace Steam_Library_Manager.Forms
                     label_gamesInTargetLibrary.Text = Library.GameCount.ToString();
                     label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.fullPath));
 
-                    groupBox_targetLibrary.Text = string.Format("Target: {0}", Library.fullPath);
+                    groupBox_targetLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_targetLibraryText, Library.fullPath);
                 }
                 else
                 {
                     label_gamesInTargetLibrary.Text = "0";
                     label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(newLibraryPath));
 
-                    groupBox_targetLibrary.Text = string.Format("Target: {0}", newLibraryPath);
+                    groupBox_targetLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_targetLibraryText, newLibraryPath);
                 }
             }
             catch { }
@@ -120,7 +95,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
                 {
-                    DialogResult backupLibraryDialog = MessageBox.Show("Backup Library?", "Backup?", MessageBoxButtons.YesNo);
+                    DialogResult backupLibraryDialog = MessageBox.Show(Languages.Forms.moveLibrary.message_isBackupLibrary, Languages.Forms.moveLibrary.messageTitle_isBackupLibrary, MessageBoxButtons.YesNo);
                     if (backupLibraryDialog == DialogResult.Yes)
                         backupLibrary = true;
                     else
@@ -132,13 +107,13 @@ namespace Steam_Library_Manager.Forms
                 else
                 {
                     newLibraryPath = "";
-                    MessageBox.Show("Steam libraries can not be created in root");
+                    MessageBox.Show(Languages.Forms.moveLibrary.messageError_noLibraryInRoot);
                 }
             }
             else
             {
                 newLibraryPath = "";
-                MessageBox.Show("Library exists at selected path");
+                MessageBox.Show(Languages.Forms.moveLibrary.messageError_libraryExists);
             }
         }
 
@@ -162,7 +137,7 @@ namespace Steam_Library_Manager.Forms
             try
             {
                 progressBar_libraryMoveProgress.Maximum = totalFilesToMove;
-                label_progressInformation.Text = string.Format("Files: {0} / {1}", movedFiles, totalFilesToMove);
+                label_progressInformation.Text = string.Format(Languages.Forms.moveLibrary.label_progressInformationText, movedFiles, totalFilesToMove);
 
                 if (string.IsNullOrEmpty(newLibraryPath))
                 {
@@ -190,7 +165,7 @@ namespace Steam_Library_Manager.Forms
                             await currentFileStream.CopyToAsync(newFileStream);
 
                             progressBar_libraryMoveProgress.PerformStep();
-                            label_progressInformation.Text = string.Format("Files: {0} / {1}", movedFiles += 1, totalFilesToMove);
+                            label_progressInformation.Text = string.Format(Languages.Forms.moveLibrary.label_progressInformationText, movedFiles += 1, totalFilesToMove);
                         }
                     }
                 }
@@ -209,7 +184,7 @@ namespace Steam_Library_Manager.Forms
                 // Update library list
                 Functions.SteamLibrary.updateLibraryList();
 
-                MessageBox.Show("Completed!");
+                MessageBox.Show(Languages.Forms.moveLibrary.message_Completed);
             }
             catch (Exception ex)
             {

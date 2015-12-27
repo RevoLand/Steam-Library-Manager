@@ -117,37 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+  <data name="messageError_fileNotVerified" xml:space="preserve">
+    <value>[{0}/{1}] File couldn't verified: {2}</value>
   </data>
-  <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+  <data name="messageError_unknownErrorWhileUpdatingGames" xml:space="preserve">
+    <value>An error happened while updating game list!{1}{1}{1}{0}</value>
   </data>
-  <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+  <data name="messageTitle_canceledProcess" xml:space="preserve">
+    <value>Remove moved files?</value>
   </data>
-  <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+  <data name="message_canceledProcess" xml:space="preserve">
+    <value>You have canceled the process. Would you like to remove moved files from target library?</value>
   </data>
-  <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+  <data name="message_compressStatus" xml:space="preserve">
+    <value>[{0}/{1}] Compressed: {2}</value>
   </data>
-  <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+  <data name="message_filesRemoved" xml:space="preserve">
+    <value>Moved files removed.</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+  <data name="message_processStatus" xml:space="preserve">
+    <value>[{0}/{1}] Copied: {2}</value>
   </data>
-  <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
+  <data name="source_Games" xml:space="preserve">
+    <value>Games</value>
   </data>
-  <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
-  </data>
-  <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
-  </data>
-  <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+  <data name="source_updateGameList" xml:space="preserve">
+    <value>Games - #updateGameList</value>
   </data>
 </root>

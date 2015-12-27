@@ -120,6 +120,9 @@
   <data name="button_copyText_Backup" xml:space="preserve">
     <value>Backup</value>
   </data>
+  <data name="button_copyText_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="button_copyText_Completed" xml:space="preserve">
     <value>Completed!</value>
   </data>

@@ -70,6 +70,15 @@ namespace Steam_Library_Manager.Languages.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string button_copyText_Cancel {
+            get {
+                return ResourceManager.GetString("button_copyText_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed!.
         /// </summary>
         internal static string button_copyText_Completed {

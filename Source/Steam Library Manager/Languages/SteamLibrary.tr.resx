@@ -117,37 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+  <data name="label_libraryName" xml:space="preserve">
+    <value>[{2}] {0} ({1})</value>
   </data>
-  <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+  <data name="messageError_failedToCreateNewLibrary" xml:space="preserve">
+    <value>Yeni kütüphane oluşturma işlemi başarısız oldu.</value>
   </data>
-  <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+  <data name="messageError_libraryExists" xml:space="preserve">
+    <value>Seçilen dizinde zaten bir kütüphane mevcut.</value>
   </data>
-  <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+  <data name="messageError_noLibraryInRoot" xml:space="preserve">
+    <value>Kütüphaneler ana dizinde oluşturulamaz</value>
   </data>
-  <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+  <data name="messageWarningTitle_updateWrongBackupDir" xml:space="preserve">
+    <value>{0} dizininde kütüphane bulunamadı!</value>
   </data>
-  <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+  <data name="messageWarning_updateWrongBackupDir" xml:space="preserve">
+    <value>{0} dizininde bulunan Yedek kütüphanesi bulunamadı.{1}{1}Kütüphanenin bulunduğu dizini  yeniden seçmek ister misiniz?</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+  <data name="message_newSteamLibraryCreated" xml:space="preserve">
+    <value>Yeni Steam kütüphanesi oluşturuldu. Lütfen işe yaraması için Steam'i yeniden başlatın.</value>
   </data>
-  <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
-  </data>
-  <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
-  </data>
-  <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
-  </data>
-  <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+  <data name="source_Libraries" xml:space="preserve">
+    <value>Kütüphane</value>
   </data>
 </root>

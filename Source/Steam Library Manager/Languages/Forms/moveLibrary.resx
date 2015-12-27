@@ -117,37 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+  <data name="form_Title" xml:space="preserve">
+    <value>{0} - SLM - Move Library</value>
   </data>
-  <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+  <data name="groupBox_selectedLibraryText" xml:space="preserve">
+    <value>Details: {0}</value>
   </data>
-  <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+  <data name="groupBox_targetLibraryText" xml:space="preserve">
+    <value>Target: {0}</value>
   </data>
-  <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+  <data name="label_progressInformationText" xml:space="preserve">
+    <value>Files: {0} / {1}</value>
   </data>
-  <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+  <data name="messageError_libraryExists" xml:space="preserve">
+    <value>Library exists at selected path</value>
   </data>
-  <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+  <data name="messageError_noLibraryInRoot" xml:space="preserve">
+    <value>Steam libraries can not be created in root</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+  <data name="messageTitle_isBackupLibrary" xml:space="preserve">
+    <value>Backup?</value>
   </data>
-  <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
+  <data name="message_Completed" xml:space="preserve">
+    <value>Completed!</value>
   </data>
-  <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
-  </data>
-  <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
-  </data>
-  <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+  <data name="message_isBackupLibrary" xml:space="preserve">
+    <value>Backup Library?</value>
   </data>
 </root>

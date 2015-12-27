@@ -136,9 +136,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 261);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 13);
+            this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 12;
-            this.label4.Text = "Gereken boş alan:";
+            this.label4.Text = "Gerekli boş alan:";
             // 
             // label_AvailableSpace
             // 

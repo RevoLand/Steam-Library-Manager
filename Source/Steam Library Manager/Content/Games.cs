@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Content
                         break;
                     case "uninstallSLM":
 
-                        DialogResult areYouSure = MessageBox.Show(string.Format(rightClickMenu.message_sureToRemoveGame, Game.appName), rightClickMenu.messageTitle_sureToRemoveGame, MessageBoxButtons.YesNoCancel);
+                        DialogResult areYouSure = MessageBox.Show(string.Format(rightClickMenu.message_sureToRemoveGame, Game.appName, Environment.NewLine), rightClickMenu.messageTitle_sureToRemoveGame, MessageBoxButtons.YesNoCancel);
 
                         if (areYouSure == DialogResult.Yes)
                         {

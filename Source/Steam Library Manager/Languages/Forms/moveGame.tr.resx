@@ -117,37 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+  <data name="button_copyText_Backup" xml:space="preserve">
+    <value>Yedekle</value>
   </data>
-  <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+  <data name="button_copyText_Cancel" xml:space="preserve">
+    <value>İptal et</value>
   </data>
-  <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+  <data name="button_copyText_Completed" xml:space="preserve">
+    <value>Tamamlandı</value>
   </data>
-  <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+  <data name="button_copyText_Restore" xml:space="preserve">
+    <value>Geri yükle</value>
   </data>
-  <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+  <data name="form_Text" xml:space="preserve">
+    <value>{0} - SLM</value>
   </data>
-  <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+  <data name="logError_freeSpaceIsNotEnough" xml:space="preserve">
+    <value>Yeterli disk alanı yok! Gereken disk alanı: {0} Mevcut disk alanı: {1}</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+  <data name="logError_unknownErrorWhileCompressing" xml:space="preserve">
+    <value>Oyun dosyalarını sıkıştırırken bilinmeyen bir hata ile karşılaşıldı</value>
   </data>
-  <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
+  <data name="logError_unknownErrorWhileCopyingArchive" xml:space="preserve">
+    <value>Sıkıştırılmış arşivi taşırken bilinmeyen bir hata ile karşılaşıldı</value>
   </data>
-  <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
+  <data name="logError_unknownErrorWhileCopyingFiles" xml:space="preserve">
+    <value>Oyun dosyalarını kopyalarken bilinmeyen bir hata ile karşılaşıldı</value>
   </data>
-  <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
+  <data name="logError_unknownErrorWhileDecompressing" xml:space="preserve">
+    <value>Arşivi çıkartırken bir hata ile karşılaşıldı</value>
   </data>
-  <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+  <data name="logError_unknownErrorWhileRemovingFiles" xml:space="preserve">
+    <value>Eski dosyaları silerken bir hata ile karşılaşıldı</value>
+  </data>
+  <data name="logMessage_fileListGenerated" xml:space="preserve">
+    <value>Dosya listesi oluşturuldu. İşlenecek dosya sayısı: {0}</value>
+  </data>
+  <data name="logMessage_generatingFileList" xml:space="preserve">
+    <value>Lütfen SLM dosya listesini oluştururken bekleyin.</value>
+  </data>
+  <data name="logMessage_processCompleted" xml:space="preserve">
+    <value>İşlem tamamlandı. Artık bu pencereyi kapatabilirsiniz.</value>
+  </data>
+  <data name="logMessage_timeElapsed" xml:space="preserve">
+    <value>Geçen süre: {0}</value>
+  </data>
+  <data name="logMessage_userCanceledProcess" xml:space="preserve">
+    <value>İşlem kullanıcı tarafından iptal edildi</value>
   </data>
 </root>

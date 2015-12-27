@@ -93,7 +93,7 @@ namespace Steam_Library_Manager.Forms
             {
                 isWorkingCurrently = true;
 
-                button_Copy.Text = "Cancel";
+                button_Copy.Text = Languages.Forms.moveGame.button_copyText_Cancel;
 
                 // Call our function and start the process, also provide things like validate, compress, backup etc 
                 // so after clicking button, changes made on form will not affect the process

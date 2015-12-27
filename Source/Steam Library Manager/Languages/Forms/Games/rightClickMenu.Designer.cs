@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Games.
+        ///   Looks up a localized string similar to Oyunlar.
         /// </summary>
         public static string Games {
             get {
@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backup using Steam.
+        ///   Looks up a localized string similar to Steam üzerinden yedekle.
         /// </summary>
         public static string menuItem_backupUsingSteam {
             get {
@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check System Requirements.
+        ///   Looks up a localized string similar to Sistem gereksinimlerini kontrol et.
         /// </summary>
         public static string menuItem_checkSysRequirements {
             get {
@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Defrag game files.
+        ///   Looks up a localized string similar to Oyunun dosyalarını birleştir (defrag).
         /// </summary>
         public static string menuItem_defrag {
             get {
@@ -106,7 +106,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game Size on Disk: {0}.
+        ///   Looks up a localized string similar to Disk üzerindeki boyutu: {0}.
         /// </summary>
         public static string menuItem_gameSizeOnDisk {
             get {
@@ -115,7 +115,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open ACF file.
+        ///   Looks up a localized string similar to ACF dosyasını aç.
         /// </summary>
         public static string menuItem_openAcfFile {
             get {
@@ -124,7 +124,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Play.
+        ///   Looks up a localized string similar to Oyna.
         /// </summary>
         public static string menuItem_play {
             get {
@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uninstall.
+        ///   Looks up a localized string similar to Sil.
         /// </summary>
         public static string menuItem_uninstall {
             get {
@@ -142,7 +142,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove game files using SLM.
+        ///   Looks up a localized string similar to SLM ile sil.
         /// </summary>
         public static string menuItem_uninstallWithSLM {
             get {
@@ -151,7 +151,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validate game files.
+        ///   Looks up a localized string similar to Oyunun içerik dosyalarını doğrula.
         /// </summary>
         public static string menuItem_validateGameFiles {
             get {
@@ -160,7 +160,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View on Disk.
+        ///   Looks up a localized string similar to Dosya gezgininde görüntüle.
         /// </summary>
         public static string menuItem_viewOnDisk {
             get {
@@ -169,7 +169,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View on Store.
+        ///   Looks up a localized string similar to Mağazada görüntüle.
         /// </summary>
         public static string menuItem_viewOnStore {
             get {
@@ -178,7 +178,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View on Store (Steam Client).
+        ///   Looks up a localized string similar to Steam istemcisi ile mağazada görüntüle.
         /// </summary>
         public static string menuItem_viewOnStoreWithSteam {
             get {
@@ -187,7 +187,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All files for {0} successfully removed as requested..
+        ///   Looks up a localized string similar to {0} adlı oyunun tüm dosyaları istendiği üzere silindi..
         /// </summary>
         public static string message_appRemovedAsRequested {
             get {
@@ -196,7 +196,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you really want to remove {0}?\nThis process can not be reversed, YOU HAVE BEEN WARNED!.
+        ///   Looks up a localized string similar to {0} adlı oyunu silmek istediğinize emin misiniz?{1}{1}BU İŞLEM GERİ ALINAMAZ!.
         /// </summary>
         public static string message_sureToRemoveGame {
             get {
@@ -205,7 +205,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure?.
+        ///   Looks up a localized string similar to Bu işlemi yapmak istediğinize emin misiniz?.
         /// </summary>
         public static string messageTitle_sureToRemoveGame {
             get {

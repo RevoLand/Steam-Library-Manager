@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+    <value>Kütüphane</value>
   </data>
   <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+    <value>Kütüphanede bulunan oyunları sil</value>
   </data>
   <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+    <value>Kütüphaneyi sil</value>
   </data>
   <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+    <value>Kütüphaneyi taşı</value>
   </data>
   <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+    <value>Kütüphaneyi dosya gezgininde görüntüle</value>
   </data>
   <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+    <value>Kütüphaneyi güncelle</value>
   </data>
   <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+    <value>Listeden kaldır</value>
   </data>
   <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
+    <value>Oyunları taşı</value>
   </data>
   <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
+    <value>İşlem tamamlandı!{1}{1}({0}) hedefindeki kütüphanede bulunan tüm oyunlar silindi.</value>
   </data>
   <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
+    <value>Kütüphaneyi silmeden önce içerisinde bulunan oyunları taşımak ister misiniz?</value>
   </data>
   <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+    <value>Kütüphanede {0} bulunan oyunları silerken bir hata oluştu</value>
   </data>
 </root>

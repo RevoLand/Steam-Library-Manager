@@ -102,14 +102,14 @@ namespace Steam_Library_Manager.Functions
                         Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
 
                         // Show a messagebox to user about process
-                        MessageBox.Show("New Steam Library added, Please Restart Steam to see it in action."); // to-do: edit text
+                        MessageBox.Show(Languages.SteamLibrary.message_newSteamLibraryCreated);
 
                         // Update game libraries
                         updateLibraryList();
                     }
                     else
                         // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
-                        MessageBox.Show("Failed to create new Steam Library, Try to run SLM as Administrator?");
+                        MessageBox.Show(Languages.SteamLibrary.messageError_failedToCreateNewLibrary);
                 }
                 else
                 {
@@ -212,7 +212,7 @@ namespace Steam_Library_Manager.Functions
                         if (!Directory.Exists(backupDirectory))
                         {
                             // Make a new dialog and ask user to update library path
-                            DialogResult askUserToUpdatePath = MessageBox.Show(string.Format("Backup library couldn't be found: {0}\n\n Would you like to change path?", backupDirectory), string.Format("Backup directory {0} not found", backupDirectory), MessageBoxButtons.YesNo);
+                            DialogResult askUserToUpdatePath = MessageBox.Show(string.Format(Languages.SteamLibrary.messageWarning_updateWrongBackupDir, backupDirectory, Environment.NewLine), string.Format(Languages.SteamLibrary.messageWarningTitle_updateWrongBackupDir, backupDirectory), MessageBoxButtons.YesNo);
 
                             // If user wants to update
                             if (askUserToUpdatePath == DialogResult.Yes)
@@ -231,16 +231,14 @@ namespace Steam_Library_Manager.Functions
                                     {
                                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                                         if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
-                                        {
                                             addNewLibrary(newLibraryPath, false, true);
-                                        }
                                         else
                                             // Else show an error message to user
-                                            MessageBox.Show("Libraries can not be created in root");
+                                            MessageBox.Show(Languages.SteamLibrary.messageError_noLibraryInRoot);
                                     }
                                     else
                                         // If selected path exists as library then show an error to user
-                                        MessageBox.Show("Library exists in the selected path! Are you trying to bug yourself?!");
+                                        MessageBox.Show(Languages.SteamLibrary.messageError_libraryExists);
                                 }
                             }
                         }
@@ -260,7 +258,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Libraries", ex.ToString());
+                    Log.ErrorsToFile(Languages.SteamLibrary.source_Libraries, ex.ToString());
             }
         }
 
@@ -277,56 +275,7 @@ namespace Steam_Library_Manager.Functions
                 foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
                 {
                     // Define a new pictureBox
-                    PictureBox libraryDetailBox = new PictureBox();
-
-                    // Set our image for picturebox
-                    libraryDetailBox.Image = Properties.Resources.libraryIcon;
-
-                    // Set our picturebox size
-                    libraryDetailBox.Size = Properties.Settings.Default.libraryPictureSize;
-
-                    // Center our image, we are using an image smaller than our pictureBox size and centering image so our library name label will read easily
-                    libraryDetailBox.SizeMode = PictureBoxSizeMode.CenterImage;
-
-                    // Define our Library as Tag of pictureBox so we can easily get details of this library (pictureBox) in future 
-                    libraryDetailBox.Tag = Library;
-
-                    // Set events for library name click
-                    libraryDetailBox.MouseClick += libraryDetailBox_OnSelect;
-
-                    // Allow drops to our pictureBox
-                    ((Control)libraryDetailBox).AllowDrop = true;
-
-                    // Definition of DragEnter event
-                    libraryDetailBox.DragEnter += libraryDetailBox_DragEnter;
-
-                    // Definition of DragDrop event
-                    libraryDetailBox.DragDrop += libraryDetailBox_DragDrop;
-
-                    // Create a new Label to show on pictureBox as Library name
-                    Label libraryName = new Label();
-
-                    // Set our label size
-                    libraryName.AutoSize = true;
-
-                    // Set label text, currently it is directory path + game count
-                    libraryName.Text = string.Format("[{2}] {0} ({1})", Library.fullPath, Library.GameCount, FileSystem.FormatBytes(FileSystem.GetFreeSpace(Library.fullPath)));
-
-                    // Show our label in bottom center of our pictureBox
-                    libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-
-                    // Set our label background color to transparent, actually we may try using a color in future
-                    libraryName.BackColor = System.Drawing.Color.Transparent;
-
-                    // Set our font to Segoe UI Semilight for better looking, all suggestions are welcome
-                    libraryName.Font = new System.Drawing.Font("Segoe UI Semilight", 8);
-                    libraryName.Top = Properties.Settings.Default.libraryPictureSize.Height - 15;
-
-                    // Add our label to pictureBox
-                    libraryDetailBox.Controls.Add(libraryName);
-
-                    // Add our right click (context) menu to pictureBox
-                    libraryDetailBox.ContextMenuStrip = Content.Libraries.generateRightClickMenu(Library);
+                    PictureBox libraryDetailBox = Content.Libraries.generateLibraryBox(Library);
 
                     // Add our pictureBox to library listening panel
                     MainForm.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Add(libraryDetailBox));
@@ -351,58 +300,5 @@ namespace Steam_Library_Manager.Functions
             // In any error return true to prevent possible bugs
             catch { return true; }
         }
-
-        static void libraryDetailBox_OnSelect(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                // If user not clicked with left button return (so right-click menu will stay without a problem)
-                if (e.Button != MouseButtons.Left) return;
-
-                // Define our library details from .Tag attribute which we set earlier
-                Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
-
-                // If we are selecting the same library do nothing, which could be clicked by mistake and result in extra waiting time based on settings situation
-                if (Definitions.SLM.LatestSelectedLibrary == Library && Definitions.SLM.LatestSelectedLibrary.GameCount == Library.GameCount) return;
-
-                // Update latest selected library
-                Definitions.SLM.LatestSelectedLibrary = Library;
-
-                // Update games list from current selection
-                Games.UpdateMainForm(null, null, Library);
-            }
-            catch { }
-        }
-
-        static void libraryDetailBox_DragEnter(object sender, DragEventArgs e)
-        {
-            try
-            {
-                // Sets visual effect, if we do not set it we will not be able to drop games to library
-                e.Effect = DragDropEffects.Move;
-            }
-            catch { }
-        }
-
-        // On drop of dragged game image
-        static void libraryDetailBox_DragDrop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                // Define our library details
-                Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
-
-                // Define our game details
-                Definitions.List.GamesList Game = (e.Data.GetData("Steam_Library_Manager.Framework.PictureBoxWithCaching") as Framework.PictureBoxWithCaching).Tag as Definitions.List.GamesList;
-
-                // If we dropped game to the library which is already on it then do nothing
-                if (Game.Library == Library) return;
-
-                // Create a new instance of MoveGame form
-                new Forms.moveGame(Game, Library).Show();
-            }
-            catch { }
-        }
-
     }
 }

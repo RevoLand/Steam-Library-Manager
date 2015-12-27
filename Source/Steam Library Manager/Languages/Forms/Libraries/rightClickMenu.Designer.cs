@@ -124,7 +124,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Done!\nAll games in Library ({0}) deleted..
+        ///   Looks up a localized string similar to Done!{1}All games in Library ({0}) deleted..
         /// </summary>
         public static string message_allGamesSuccesfullyDeleted {
             get {

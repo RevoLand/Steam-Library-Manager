@@ -116,6 +116,11 @@
     <Compile Include="Functions\SteamLibrary.cs" />
     <Compile Include="Framework\PortableSettingsProvider.cs" />
     <Compile Include="Functions\Updater.cs" />
+    <Compile Include="Languages\FileSystem.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileSystem.resx</DependentUpon>
+    </Compile>
     <Compile Include="Languages\Forms\Games\rightClickMenu.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,6 +145,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>moveGame.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Forms\moveLibrary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>moveLibrary.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Games.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Games.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\SteamLibrary.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SteamLibrary.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\Updater.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -179,14 +199,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>moveLibrary.tr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Languages\FileSystem.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FileSystem.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\FileSystem.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\Games\rightClickMenu.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\Games\rightClickMenu.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\Libraries\rightClickMenu.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\Libraries\rightClickMenu.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\mainForm.tr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>mainForm.tr.Designer.cs</LastGenOutput>
@@ -199,6 +226,22 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>moveGame.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\moveGame.tr.resx" />
+    <EmbeddedResource Include="Languages\Forms\moveLibrary.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>moveLibrary.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\moveLibrary.tr.resx" />
+    <EmbeddedResource Include="Languages\Games.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Games.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Games.tr.resx" />
+    <EmbeddedResource Include="Languages\SteamLibrary.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SteamLibrary.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\SteamLibrary.tr.resx" />
     <EmbeddedResource Include="Languages\Updater.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Updater.Designer.cs</LastGenOutput>

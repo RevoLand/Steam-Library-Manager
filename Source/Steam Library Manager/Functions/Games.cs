@@ -103,12 +103,12 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (token.IsCancellationRequested)
                     {
-                        DialogResult askUserToRemoveMovedFiles = MessageBox.Show("You have canceled the process. Would you like to remove moved files from target library?", "Remove moved files?", MessageBoxButtons.YesNo);
+                        DialogResult askUserToRemoveMovedFiles = MessageBox.Show(Languages.Games.message_canceledProcess, Languages.Games.messageTitle_canceledProcess, MessageBoxButtons.YesNo);
 
                         if (askUserToRemoveMovedFiles == DialogResult.Yes)
                         {
                             FileSystem.removeGivenFiles(movedFiles, Game, targetLibrary);
-                            Log(currentForm, "Moved files removed.");
+                            Log(currentForm, Languages.Games.message_filesRemoved);
                         }
 
                         return -1;
@@ -126,7 +126,7 @@ namespace Steam_Library_Manager.Functions
                     currentForm.progressBar_CopyStatus.PerformStep();
 
                     // Log to textbox
-                    Log(currentForm, string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+                    Log(currentForm, string.Format(Languages.Games.message_processStatus, gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
                     
                     // add moved file path to list 
                     movedFiles.Add(newFileName);
@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Functions
                         if (BitConverter.ToString(FileSystem.GetFileMD5(currentFile)) != BitConverter.ToString(FileSystem.GetFileMD5(newFileName)))
                         {
                             // Log it
-                            Log(currentForm, string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+                            Log(currentForm, string.Format(Languages.Games.messageError_fileNotVerified, gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
 
                             // and cancel the process
                             return 0;
@@ -197,7 +197,7 @@ namespace Steam_Library_Manager.Functions
                         currentForm.progressBar_CopyStatus.PerformStep();
 
                         // Log details about process
-                        currentForm.Log(string.Format("[{0}/{1}] Compressed: {2}", gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
+                        currentForm.Log(string.Format(Languages.Games.message_compressStatus, gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
                     }
 
                     // Add .ACF file to archive
@@ -459,10 +459,10 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log
-                    Functions.Log.ErrorsToFile("UpdateGameList", ex.ToString());
+                    Functions.Log.ErrorsToFile(Languages.Games.source_updateGameList, ex.ToString());
 
                 // Show a messagebox to user
-                MessageBox.Show("An error happened while updating game list!\n\n\n" + ex.ToString());
+                MessageBox.Show(string.Format(Languages.Games.messageError_unknownErrorWhileUpdatingGames, ex, Environment.NewLine));
             }
         }
 
@@ -470,25 +470,12 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                Sort = Settings.getSortingMethod();
+
                 // If our panel for game list not empty
                 if (Definitions.Accessors.MainForm.panel_GameList.Controls.Count != 0)
                     // Then clean panel
                     Definitions.Accessors.MainForm.panel_GameList.Controls.Clear();
-
-                // Define our sorting method
-                switch (Properties.Settings.Default.SortGamesBy)
-                {
-                    default:
-                    case "appName":
-                        Sort = x => x.appName;
-                        break;
-                    case "appID":
-                        Sort = x => x.appID;
-                        break;
-                    case "sizeOnDisk":
-                        Sort = x => x.sizeOnDisk;
-                        break;
-                }
 
                 // Do a loop for each game in library
                 foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Game.Where(x => x.Library == Library).Where(
@@ -507,7 +494,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile("Games", ex.ToString());
+                    Functions.Log.ErrorsToFile(Languages.Games.source_Games, ex.ToString());
             }
         }
 

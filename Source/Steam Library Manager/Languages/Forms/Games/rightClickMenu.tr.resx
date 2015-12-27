@@ -117,37 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Libraries" xml:space="preserve">
-    <value>Libraries</value>
+  <data name="Games" xml:space="preserve">
+    <value>Games</value>
   </data>
-  <data name="menuItem_deleteGamesInLibrary" xml:space="preserve">
-    <value>Delete games in library</value>
+  <data name="menuItem_backupUsingSteam" xml:space="preserve">
+    <value>Backup using Steam</value>
   </data>
-  <data name="menuItem_deleteLibrary" xml:space="preserve">
-    <value>Delete library</value>
+  <data name="menuItem_checkSysRequirements" xml:space="preserve">
+    <value>Check System Requirements</value>
   </data>
-  <data name="menuItem_moveLibrary" xml:space="preserve">
-    <value>Move library</value>
+  <data name="menuItem_defrag" xml:space="preserve">
+    <value>Defrag game files</value>
   </data>
-  <data name="menuItem_openLibraryInExplorer" xml:space="preserve">
-    <value>Open library in file explorer</value>
+  <data name="menuItem_gameNameWithAppID" xml:space="preserve">
+    <value>{0} (ID: {1})</value>
   </data>
-  <data name="menuItem_refreshGameList" xml:space="preserve">
-    <value>Refresh games in library</value>
+  <data name="menuItem_gameSizeOnDisk" xml:space="preserve">
+    <value>Game Size on Disk: {0}</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
-    <value>Remove from list</value>
+  <data name="menuItem_openAcfFile" xml:space="preserve">
+    <value>Open ACF file</value>
   </data>
-  <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games</value>
+  <data name="menuItem_play" xml:space="preserve">
+    <value>Play</value>
   </data>
-  <data name="message_allGamesSuccesfullyDeleted" xml:space="preserve">
-    <value>Done!{1}All games in Library ({0}) deleted.</value>
+  <data name="menuItem_uninstall" xml:space="preserve">
+    <value>Uninstall</value>
   </data>
-  <data name="message_moveGamesInLibraryBeforeDelete" xml:space="preserve">
-    <value>Move games in library before deleting?</value>
+  <data name="menuItem_uninstallWithSLM" xml:space="preserve">
+    <value>Remove game files using SLM</value>
   </data>
-  <data name="message_unknownErrorWhileDeletingGames" xml:space="preserve">
-    <value>An error happened while removing games from library {0}</value>
+  <data name="menuItem_validateGameFiles" xml:space="preserve">
+    <value>Validate game files</value>
+  </data>
+  <data name="menuItem_viewOnDisk" xml:space="preserve">
+    <value>View on Disk</value>
+  </data>
+  <data name="menuItem_viewOnStore" xml:space="preserve">
+    <value>View on Store</value>
+  </data>
+  <data name="menuItem_viewOnStoreWithSteam" xml:space="preserve">
+    <value>View on Store (Steam Client)</value>
+  </data>
+  <data name="messageTitle_sureToRemoveGame" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="message_appRemovedAsRequested" xml:space="preserve">
+    <value>All files for {0} successfully removed as requested.</value>
+  </data>
+  <data name="message_sureToRemoveGame" xml:space="preserve">
+    <value>Do you really want to remove {0}?{1}{1}This process can not be reversed, YOU HAVE BEEN WARNED!</value>
+    <comment>{0} = Game.appName</comment>
   </data>
 </root>
