@@ -153,7 +153,7 @@ namespace Steam_Library_Manager.Content
                     // default use steam to act
                     // more details: https://developer.valvesoftware.com/wiki/Steam_browser_protocol
                     default:
-                        Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
+                        Process.Start(string.Format("steam://{0}/{1}", (sender as ToolStripMenuItem).Name, Game.appID));
                         break;
 
                     // Opens game store page in user browser

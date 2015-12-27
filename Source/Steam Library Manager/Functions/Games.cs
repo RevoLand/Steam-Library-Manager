@@ -97,38 +97,29 @@ namespace Steam_Library_Manager.Functions
             {
                 foreach (string currentFile in gameFiles)
                 {
-                    using (FileStream currentFileStream = File.OpenRead(currentFile))
+                    string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
+
+                    if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+
+                    // Copy the file to target library asynchronously
+                    await Task.Run(() => File.Copy(currentFile, newFileName, true));
+
+                    // Perform step on progress bar
+                    currentForm.progressBar_CopyStatus.PerformStep();
+
+                    Log(currentForm, string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
+
+                    if (Validate)
                     {
-                        string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
-
-                        if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
-                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-
-                        // Create a new file
-                        using (FileStream newFileStream = File.Create(newFileName))
+                        // Compare the hashes, if any of them not equals
+                        if (BitConverter.ToString(FileSystem.GetFileMD5(currentFile)) != BitConverter.ToString(FileSystem.GetFileMD5(newFileName)))
                         {
-                            // Copy the file to target library asynchronously
-                            await currentFileStream.CopyToAsync(newFileStream);
+                            // Log it
+                            Log(currentForm, string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
 
-                            // Perform step on progress bar
-                            currentForm.progressBar_CopyStatus.PerformStep();
-
-                            // TO-DO
-                            //currentForm.Log(string.Format("[{0}/{1}] Copied: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
-
-                        }
-
-                        if (Validate)
-                        {
-                            // Compare the hashes, if any of them not equals
-                            if (BitConverter.ToString(FileSystem.GetFileMD5(currentFile)) != BitConverter.ToString(FileSystem.GetFileMD5(newFileName)))
-                            {
-                                // Log it
-                                currentForm.Log(string.Format("[{0}/{1}] File couldn't verified: {2}", gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
-
-                                // and cancel the process
-                                return false;
-                            }
+                            // and cancel the process
+                            return false;
                         }
                     }
                 }
@@ -147,6 +138,11 @@ namespace Steam_Library_Manager.Functions
             }
 
             return true;
+        }
+
+        async void Log(Forms.moveGame currentForm, string Text)
+        {
+            await Task.Run(() => MainForm.SafeInvoke(currentForm.textBox_Logs, () => currentForm.textBox_Logs.AppendText(Text + Environment.NewLine)));
         }
 
         public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
@@ -442,7 +438,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log
-                    Log.ErrorsToFile("UpdateGameList", ex.ToString());
+                    Functions.Log.ErrorsToFile("UpdateGameList", ex.ToString());
 
                 // Show a messagebox to user
                 MessageBox.Show("An error happened while updating game list!\n\n\n" + ex.ToString());
@@ -490,7 +486,7 @@ namespace Steam_Library_Manager.Functions
                 // If user want us to log errors to file
                 if (Properties.Settings.Default.LogErrorsToFile)
                     // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile("Games", ex.ToString());
+                    Functions.Log.ErrorsToFile("Games", ex.ToString());
             }
         }
 

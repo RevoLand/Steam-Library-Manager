@@ -88,8 +88,11 @@ namespace Steam_Library_Manager.Forms
 
         async void CopyGame(bool Validate, bool RemoveOldFiles, bool Compress, bool deCompressArchive, bool isGameCompressed)
         {
+            Stopwatch timeElapsed = new Stopwatch();
             Functions.Games gameFunctions = new Functions.Games();
             List<string> gameFiles = new List<string>();
+
+            timeElapsed.Start();
 
             if (!Game.Compressed)
             {
@@ -99,9 +102,6 @@ namespace Steam_Library_Manager.Forms
 
                 Log(string.Format(Languages.Forms.moveGame.logMessage_fileListGenerated, gameFiles.Count));
             }
-
-            Stopwatch timeElapsed = new Stopwatch();
-            timeElapsed.Start();
 
             // Path definitions
             string newCommonPath = Path.Combine(Library.commonPath, Game.installationPath);
@@ -190,6 +190,7 @@ namespace Steam_Library_Manager.Forms
 
             // Log to user
             Log(Languages.Forms.moveGame.logMessage_processCompleted);
+
             Log(string.Format(Languages.Forms.moveGame.logMessage_timeElapsed, timeElapsed.Elapsed));
 
             // Update game libraries

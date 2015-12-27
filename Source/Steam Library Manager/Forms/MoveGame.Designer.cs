@@ -238,7 +238,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkbox_Validate;
         private System.Windows.Forms.CheckBox checkbox_RemoveOldFiles;
-        private System.Windows.Forms.TextBox textBox_Logs;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel_currentLibrary;
         private System.Windows.Forms.Label label3;
@@ -251,5 +250,6 @@
         private System.Windows.Forms.CheckBox checkbox_Compress;
         private System.Windows.Forms.CheckBox checkbox_DeCompress;
         public System.Windows.Forms.ProgressBar progressBar_CopyStatus;
+        public System.Windows.Forms.TextBox textBox_Logs;
     }
 }
