@@ -32,5 +32,8 @@
     <Setting Name="libraryPictureSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Drawing.Size" Scope="User">
       <Value Profile="(Default)">195, 155</Value>
     </Setting>
+    <Setting Name="defaultLanguage" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

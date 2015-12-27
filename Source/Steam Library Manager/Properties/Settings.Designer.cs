@@ -161,5 +161,19 @@ namespace Steam_Library_Manager.Properties {
                 this["libraryPictureSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string defaultLanguage {
+            get {
+                return ((string)(this["defaultLanguage"]));
+            }
+            set {
+                this["defaultLanguage"] = value;
+            }
+        }
     }
 }

@@ -14,6 +14,9 @@ namespace Steam_Library_Manager
         {
             try
             {
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.defaultLanguage))
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage, true);
+
                 InitializeComponent();
 
                 // Set our accessor
@@ -234,6 +237,17 @@ namespace Steam_Library_Manager
 
                 Functions.Settings.Save();
             }
+        }
+
+        private void comboBox_defaultLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.defaultLanguage == comboBox_defaultLanguage.SelectedItem.ToString()) return;
+
+            Properties.Settings.Default.defaultLanguage = comboBox_defaultLanguage.SelectedItem.ToString();
+
+            MessageBox.Show(mainForm.message_restartToChangeLanguage);
+
+            Functions.Settings.Save();
         }
     }
 }

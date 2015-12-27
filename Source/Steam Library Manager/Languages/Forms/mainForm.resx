@@ -129,4 +129,7 @@
   <data name="message_noLibraryInDiskRoot" xml:space="preserve">
     <value>Libraries can not be created in root</value>
   </data>
+  <data name="message_restartToChangeLanguage" xml:space="preserve">
+    <value>You have to restart SLM to get new language applied</value>
+  </data>
 </root>

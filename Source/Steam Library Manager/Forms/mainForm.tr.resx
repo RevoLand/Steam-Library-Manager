@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="tab_InstalledGames.Text" xml:space="preserve">
+    <value>Kurulu Oyunlar</value>
+  </data>
+  <data name="tab_Settings.Text" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label_searchInLibrary.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -134,8 +140,23 @@
   <data name="label_searchInLibrary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
-  <data name="tab_InstalledGames.Text" xml:space="preserve">
-    <value>Kurulu Oyunlar</value>
+  <data name="groupBox_SLM.Text" xml:space="preserve">
+    <value>Steam Kütüphane Yöneticisi Ayarları</value>
+  </data>
+  <data name="comboBox_defaultLanguage.Items" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="comboBox_defaultLanguage.Items1" xml:space="preserve">
+    <value>tr</value>
+  </data>
+  <data name="comboBox_defaultLanguage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 21</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 13</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>SLM Lisanı:</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 13</value>
@@ -175,9 +196,6 @@
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Oyun boyutu hesaplama yöntemi</value>
-  </data>
-  <data name="groupBox_SLM.Text" xml:space="preserve">
-    <value>Steam Kütüphane Yöneticisi Ayarları</value>
   </data>
   <data name="button_SelectSteamPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>35, 63</value>
@@ -220,9 +238,6 @@
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Mevcut sürüm</value>
-  </data>
-  <data name="tab_Settings.Text" xml:space="preserve">
-    <value>Ayarlar</value>
   </data>
   <data name="fileDialog_SelectSteamPath.Title" xml:space="preserve">
     <value>Steam.exe'yi seçin</value>

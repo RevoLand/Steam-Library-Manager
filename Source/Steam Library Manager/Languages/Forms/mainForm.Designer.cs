@@ -95,5 +95,14 @@ namespace Steam_Library_Manager.Languages.Forms {
                 return ResourceManager.GetString("message_noLibraryInDiskRoot", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have to restart SLM to get new language applied.
+        /// </summary>
+        public static string message_restartToChangeLanguage {
+            get {
+                return ResourceManager.GetString("message_restartToChangeLanguage", resourceCulture);
+            }
+        }
     }
 }

@@ -129,4 +129,7 @@
   <data name="message_noLibraryInDiskRoot" xml:space="preserve">
     <value>Ana dizinde kütüphane oluşturulamaz</value>
   </data>
+  <data name="message_restartToChangeLanguage" xml:space="preserve">
+    <value>Lisan değişikliğinin aktif olması için SLM'yi yeniden başlatmalısınız.</value>
+  </data>
 </root>

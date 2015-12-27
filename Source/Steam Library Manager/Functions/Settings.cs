@@ -33,8 +33,13 @@ namespace Steam_Library_Manager.Functions
                 if (string.IsNullOrEmpty(Properties.Settings.Default.DefaultTextEditor) || Properties.Settings.Default.DefaultTextEditor.Contains("%windir%"))
                     Properties.Settings.Default.DefaultTextEditor = System.IO.Path.Combine(Environment.SystemDirectory, "notepad.exe");
 
+                // default text editor
                 Definitions.Accessors.MainForm.SLM_defaultTextEditor.Text = Properties.Settings.Default.DefaultTextEditor;
 
+                // default language
+                Definitions.Accessors.MainForm.comboBox_defaultLanguage.SelectedItem = Properties.Settings.Default.defaultLanguage;
+
+                // vdf path
                 Definitions.Steam.vdfFilePath = System.IO.Path.Combine(Properties.Settings.Default.SteamInstallationPath, "config", "config.vdf");
 
                 // Find game directories and update them on form
