@@ -61,6 +61,15 @@ namespace Steam_Library_Manager.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {2} left - {0} / {1}.
+        /// </summary>
+        internal static string label_movedFileSize {
+            get {
+                return ResourceManager.GetString("label_movedFileSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have canceled the process. Would you like to remove moved files from target library?.
         /// </summary>
         internal static string message_canceledProcess {

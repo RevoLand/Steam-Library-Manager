@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Steam_Library_Manager.Languages.Forms;
-using System.Reflection;
 
 namespace Steam_Library_Manager
 {
@@ -192,19 +191,19 @@ namespace Steam_Library_Manager
             // Save settings to file
             Functions.Settings.Save();
 
-            if (Definitions.SLM.LatestSelectedLibrary != null)
+            if (Definitions.Accessors.MainForm.panel_GameList.Tag != null)
                 // Update main form with new settings
-                Functions.Games.UpdateMainForm(null, null, Definitions.SLM.LatestSelectedLibrary);
+                Functions.Games.UpdateMainForm(null, null, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList));
         }
 
         private void textBox_searchInGames_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
-                if (Definitions.SLM.LatestSelectedLibrary == null || Definitions.SLM.LatestSelectedLibrary.GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
+                if (Definitions.Accessors.MainForm.panel_GameList.Tag == null || (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList).GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
                     return;
 
-                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text, Definitions.SLM.LatestSelectedLibrary);
+                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList));
             }
             catch (Exception ex)
             {

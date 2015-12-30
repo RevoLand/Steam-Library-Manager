@@ -121,6 +121,8 @@ namespace Steam_Library_Manager.Forms
 
         private void button_moveLibrary_Click(object sender, EventArgs e)
         {
+            if (libraryToMove.GameCount == 0) return;
+
             button_moveLibrary.Enabled = false;
 
             if (libraryToMove.Main)

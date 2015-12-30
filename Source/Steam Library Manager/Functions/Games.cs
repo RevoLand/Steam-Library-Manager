@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
 
-                if (Definitions.SLM.LatestSelectedLibrary == Library)
+                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library)
                     UpdateMainForm(null, null, Library);
             }
             catch (Exception ex)

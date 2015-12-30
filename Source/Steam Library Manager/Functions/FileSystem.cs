@@ -144,8 +144,7 @@ namespace Steam_Library_Manager.Functions
                                 while ((currentBlockSize = await currentFileContent.ReadAsync(buffer, 0, buffer.Length)) > 0)
                                 {
                                     movenSize += currentBlockSize;
-                                    currentForm.label_movedFileSize.Text = string.Format("{0} / {1} - {2} left", FormatBytes(movenSize), FormatBytes(totalSize), FormatBytes(totalSize - movenSize));
-                                    //MainForm.SafeInvoke(currentForm.label_movedFileSize, () => currentForm.label_movedFileSize.Text = sizeString);
+                                    currentForm.label_movedFileSize.Text = string.Format(Languages.Games.label_movedFileSize, FormatBytes(movenSize), FormatBytes(totalSize), FormatBytes(totalSize - movenSize));
                                 }
 
                                 // Perform step on progress bar

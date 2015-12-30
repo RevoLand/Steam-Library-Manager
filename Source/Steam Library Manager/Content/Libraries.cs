@@ -190,10 +190,9 @@ namespace Steam_Library_Manager.Content
                 Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
 
                 // If we are selecting the same library do nothing, which could be clicked by mistake and result in extra waiting time based on settings situation
-                if (Definitions.SLM.LatestSelectedLibrary == Library && Definitions.SLM.LatestSelectedLibrary.GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
+                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library && (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList).GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
 
-                // Update latest selected library
-                Definitions.SLM.LatestSelectedLibrary = Library;
+                Definitions.Accessors.MainForm.panel_GameList.Tag = Library;
 
                 // Update games list from current selection
                 Functions.Games.UpdateMainForm(null, null, Library);
