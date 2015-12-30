@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Functions
@@ -134,7 +135,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void addNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
+        public static async void addNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
         {
             try
             {
@@ -162,18 +163,18 @@ namespace Steam_Library_Manager.Functions
                 Library.workshopPath = Path.Combine(Library.steamAppsPath, "workshop");
 
                 // Count how many games we have installed in our library
-                Library.GameCount = Games.GetGameCountFromLibrary(Library);
+                Library.GameCount = FileSystem.Game.GetGameCountFromLibrary(Library);
 
                 // And add collected informations to our global list
                 Definitions.List.Library.Add(Library);
 
-                Games.UpdateGameList(Library);
+                await Task.Run(() => Games.UpdateGameList(Library));
             }
             catch { }
 
         }
 
-        public static void updateLibraryList()
+        public static async void updateLibraryList()
         {
             try
             {
@@ -197,7 +198,7 @@ namespace Steam_Library_Manager.Functions
 
                     foreach (Framework.KeyValue key in Key.Children[0].Children[0].Children[0].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                     {
-                        addNewLibrary(key.Value, false, false);
+                        await Task.Run(() => addNewLibrary(key.Value, false, false));
                     }
                 }
                 else { /* Could not locate LibraryFolders.vdf */ }
@@ -231,7 +232,7 @@ namespace Steam_Library_Manager.Functions
                                     {
                                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                                         if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
-                                            addNewLibrary(newLibraryPath, false, true);
+                                            await Task.Run(() => addNewLibrary(newLibraryPath, false, true));
                                         else
                                             // Else show an error message to user
                                             MessageBox.Show(Languages.SteamLibrary.messageError_noLibraryInRoot);
@@ -243,7 +244,7 @@ namespace Steam_Library_Manager.Functions
                             }
                         }
                         else
-                            addNewLibrary(backupDirectory, false, true);
+                            await Task.Run(() => addNewLibrary(backupDirectory, false, true));
                     }
 
                     // Save backup dirs

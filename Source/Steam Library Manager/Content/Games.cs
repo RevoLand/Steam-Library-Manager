@@ -176,7 +176,7 @@ namespace Steam_Library_Manager.Content
 
                         if (areYouSure == DialogResult.Yes)
                         {
-                            Functions.Games gameFunctions = new Functions.Games();
+                            FileSystem.Game gameFunctions = new FileSystem.Game();
                             if (await gameFunctions.deleteGameFiles(Game))
                             {
                                 SteamLibrary.updateLibraryList();

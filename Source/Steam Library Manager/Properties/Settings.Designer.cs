@@ -175,5 +175,19 @@ namespace Steam_Library_Manager.Properties {
                 this["defaultLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("forEach")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string methodForMovingGame {
+            get {
+                return ((string)(this["methodForMovingGame"]));
+            }
+            set {
+                this["methodForMovingGame"] = value;
+            }
+        }
     }
 }

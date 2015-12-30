@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Forms
@@ -20,6 +21,8 @@ namespace Steam_Library_Manager.Forms
 
         public moveGame(Definitions.List.GamesList gameToMove, Definitions.List.LibraryList libraryToMove)
         {
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+
             InitializeComponent();
 
             // Set our form icon
@@ -81,10 +84,13 @@ namespace Steam_Library_Manager.Forms
             linkLabel_TargetLibrary.Text = Library.steamAppsPath;
 
             // Get free space at target library and update Available space label
-            label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.steamAppsPath));
+            label_AvailableSpace.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.getAvailableFreeSpace(Library.steamAppsPath));
 
             // Get game size and update Needed space label
             label_NeededSpace.Text = Functions.FileSystem.FormatBytes(Game.sizeOnDisk);
+
+            if (Properties.Settings.Default.methodForMovingGame == "forEach")
+                label_movedFileSize.Visible = false;
         }
 
         private void button_Copy_Click(object sender, EventArgs e)
@@ -110,18 +116,18 @@ namespace Steam_Library_Manager.Forms
         async void CopyGame(bool Validate, bool RemoveOldFiles, bool Compress, bool deCompressArchive, bool isGameCompressed)
         {
             Stopwatch timeElapsed = new Stopwatch();
-            Functions.Games gameFunctions = new Functions.Games();
+            Functions.FileSystem.Game gameFunctions = new Functions.FileSystem.Game();
             List<string> gameFiles = new List<string>();
 
             timeElapsed.Start();
 
             if (!Game.Compressed)
             {
-                Log(Languages.Forms.moveGame.logMessage_generatingFileList);
+                logToForm(Languages.Forms.moveGame.logMessage_generatingFileList);
 
                 gameFiles.AddRange(await gameFunctions.getFileList(Game, true, true));
 
-                Log(string.Format(Languages.Forms.moveGame.logMessage_fileListGenerated, gameFiles.Count));
+                logToForm(string.Format(Languages.Forms.moveGame.logMessage_fileListGenerated, gameFiles.Count));
             }
 
             // Name definitions
@@ -130,13 +136,13 @@ namespace Steam_Library_Manager.Forms
             string newZipNameNpath = Path.Combine(Library.steamAppsPath, zipName);
 
             // Define free space we have at target libray
-            long freeSpaceOnTargetDisk = Functions.FileSystem.GetFreeSpace(Library.fullPath);
+            long freeSpaceOnTargetDisk = Functions.FileSystem.getAvailableFreeSpace(Library.fullPath);
 
             // If free space is less than game size
             if (freeSpaceOnTargetDisk < Game.sizeOnDisk)
             {
                 // Show an error to user
-                Log(string.Format(Languages.Forms.moveGame.logError_freeSpaceIsNotEnough, Game.sizeOnDisk, freeSpaceOnTargetDisk));
+                logToForm(string.Format(Languages.Forms.moveGame.logError_freeSpaceIsNotEnough, Game.sizeOnDisk, freeSpaceOnTargetDisk));
 
                 // And cancel the process
                 return;
@@ -147,7 +153,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (!await gameFunctions.decompressArchive(this, currentZipNameNpath, Game, Library))
                 {
-                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileDecompressing);
+                    logToForm(Languages.Forms.moveGame.logError_unknownErrorWhileDecompressing);
 
                     return;
                 }
@@ -157,7 +163,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (!await gameFunctions.copyGameArchive(this, currentZipNameNpath, newZipNameNpath))
                 {
-                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingArchive);
+                    logToForm(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingArchive);
 
                     return;
                 }
@@ -172,7 +178,7 @@ namespace Steam_Library_Manager.Forms
                 {
                     if (!await gameFunctions.compressGameFiles(this, gameFiles, newZipNameNpath, Game, Library))
                     {
-                        Log(Languages.Forms.moveGame.logError_unknownErrorWhileCompressing);
+                        logToForm(Languages.Forms.moveGame.logError_unknownErrorWhileCompressing);
 
                         return;
                     }
@@ -181,17 +187,22 @@ namespace Steam_Library_Manager.Forms
                 // If game will not be compressed
                 else
                 {
-                    int copyResult = await gameFunctions.copyGameFiles(this, gameFiles, Game, Library, Validate, processCancelation.Token);
+                    int copyResult = 0;
+
+                    if (Properties.Settings.Default.methodForMovingGame == "forEach")
+                        copyResult = await gameFunctions.copyGameFiles(this, gameFiles, Game, Library, Validate, processCancelation.Token);
+                    else
+                        copyResult = await gameFunctions.copyGameFilesNew(this, gameFiles, Game, Library, Validate, processCancelation.Token);
 
                     if (copyResult == 0)
                     {
-                        Log(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingFiles);
+                        logToForm(Languages.Forms.moveGame.logError_unknownErrorWhileCopyingFiles);
 
                         return;
                     }
                     else if (copyResult == -1)
                     {
-                        Log(Languages.Forms.moveGame.logMessage_userCanceledProcess);
+                        logToForm(Languages.Forms.moveGame.logMessage_userCanceledProcess);
 
                         return;
                     }
@@ -202,31 +213,34 @@ namespace Steam_Library_Manager.Forms
             {
                 if (!await gameFunctions.deleteGameFiles(Game, gameFiles))
                 {
-                    Log(Languages.Forms.moveGame.logError_unknownErrorWhileRemovingFiles);
+                    logToForm(Languages.Forms.moveGame.logError_unknownErrorWhileRemovingFiles);
 
                     return;
                 }
             }
 
-            // stop our stopwatch
-            timeElapsed.Stop();
-
             // Update button text
             button_Copy.Text = Languages.Forms.moveGame.button_copyText_Completed;
+            button_Copy.Enabled = false;
+            timeElapsed.Stop();
 
             // Log to user
-            Log(Languages.Forms.moveGame.logMessage_processCompleted);
-
-            Log(string.Format(Languages.Forms.moveGame.logMessage_timeElapsed, timeElapsed.Elapsed));
+            logToForm(Languages.Forms.moveGame.logMessage_processCompleted);
+            logToForm(string.Format(Languages.Forms.moveGame.logMessage_timeElapsed, timeElapsed.Elapsed));
 
             // Update game libraries
             Functions.SteamLibrary.updateLibraryList();
         }
 
-        public void Log(string Text)
+        void logToForm(string Text)
         {
             // Append log to textbox
             textBox_Logs.AppendText(Text + Environment.NewLine);
+        }
+
+        public async void logToFormAsync(string Text)
+        {
+            await Task.Run(() => MainForm.SafeInvoke(textBox_Logs, () => textBox_Logs.AppendText(Text + Environment.NewLine)));
         }
 
         // On click to game image

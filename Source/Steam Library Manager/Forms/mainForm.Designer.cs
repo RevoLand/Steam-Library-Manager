@@ -37,6 +37,8 @@
             this.panel_GameList = new System.Windows.Forms.FlowLayoutPanel();
             this.tab_Settings = new System.Windows.Forms.TabPage();
             this.groupBox_SLM = new System.Windows.Forms.GroupBox();
+            this.comboBox_moveGameMethod = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.comboBox_defaultLanguage = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.button_changeDefaultTextEditor = new System.Windows.Forms.Button();
@@ -81,7 +83,7 @@
             this.tabControl1.Controls.Add(this.tab_Settings);
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 1;
+            this.tabControl1.SelectedIndex = 0;
             // 
             // tab_InstalledGames
             // 
@@ -125,6 +127,8 @@
             // 
             // groupBox_SLM
             // 
+            this.groupBox_SLM.Controls.Add(this.comboBox_moveGameMethod);
+            this.groupBox_SLM.Controls.Add(this.label9);
             this.groupBox_SLM.Controls.Add(this.comboBox_defaultLanguage);
             this.groupBox_SLM.Controls.Add(this.label8);
             this.groupBox_SLM.Controls.Add(this.button_changeDefaultTextEditor);
@@ -140,6 +144,22 @@
             resources.ApplyResources(this.groupBox_SLM, "groupBox_SLM");
             this.groupBox_SLM.Name = "groupBox_SLM";
             this.groupBox_SLM.TabStop = false;
+            // 
+            // comboBox_moveGameMethod
+            // 
+            this.comboBox_moveGameMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_moveGameMethod.FormattingEnabled = true;
+            this.comboBox_moveGameMethod.Items.AddRange(new object[] {
+            resources.GetString("comboBox_moveGameMethod.Items"),
+            resources.GetString("comboBox_moveGameMethod.Items1")});
+            resources.ApplyResources(this.comboBox_moveGameMethod, "comboBox_moveGameMethod");
+            this.comboBox_moveGameMethod.Name = "comboBox_moveGameMethod";
+            this.comboBox_moveGameMethod.SelectedIndexChanged += new System.EventHandler(this.comboBox_moveGameMethod_SelectedIndexChanged);
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
             // 
             // comboBox_defaultLanguage
             // 
@@ -411,6 +431,8 @@
         public System.Windows.Forms.Label label_versionResult;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.ComboBox comboBox_defaultLanguage;
+        public System.Windows.Forms.ComboBox comboBox_moveGameMethod;
+        private System.Windows.Forms.Label label9;
     }
 }
 

@@ -118,55 +118,55 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Games" xml:space="preserve">
-    <value>Oyunlar</value>
+    <value>Games</value>
   </data>
   <data name="menuItem_backupUsingSteam" xml:space="preserve">
-    <value>Steam üzerinden yedekle</value>
+    <value>Backup using Steam</value>
   </data>
   <data name="menuItem_checkSysRequirements" xml:space="preserve">
-    <value>Sistem gereksinimlerini kontrol et</value>
+    <value>Check System Requirements</value>
   </data>
   <data name="menuItem_defrag" xml:space="preserve">
-    <value>Oyunun dosyalarını birleştir (defrag)</value>
+    <value>Defrag game files</value>
   </data>
   <data name="menuItem_gameNameWithAppID" xml:space="preserve">
     <value>{0} (ID: {1})</value>
   </data>
   <data name="menuItem_gameSizeOnDisk" xml:space="preserve">
-    <value>Disk üzerindeki boyutu: {0}</value>
+    <value>Game Size on Disk: {0}</value>
   </data>
   <data name="menuItem_openAcfFile" xml:space="preserve">
-    <value>ACF dosyasını aç</value>
+    <value>Open ACF file</value>
   </data>
   <data name="menuItem_play" xml:space="preserve">
-    <value>Oyna</value>
+    <value>Play</value>
   </data>
   <data name="menuItem_uninstall" xml:space="preserve">
-    <value>Sil</value>
+    <value>Uninstall</value>
   </data>
   <data name="menuItem_uninstallWithSLM" xml:space="preserve">
-    <value>SLM ile sil</value>
+    <value>Remove game files using SLM</value>
   </data>
   <data name="menuItem_validateGameFiles" xml:space="preserve">
-    <value>Oyunun içerik dosyalarını doğrula</value>
+    <value>Validate game files</value>
   </data>
   <data name="menuItem_viewOnDisk" xml:space="preserve">
-    <value>Dosya gezgininde görüntüle</value>
+    <value>View on Disk</value>
   </data>
   <data name="menuItem_viewOnStore" xml:space="preserve">
-    <value>Mağazada görüntüle</value>
+    <value>View on Store</value>
   </data>
   <data name="menuItem_viewOnStoreWithSteam" xml:space="preserve">
-    <value>Steam istemcisi ile mağazada görüntüle</value>
+    <value>View on Store (Steam Client)</value>
   </data>
   <data name="messageTitle_sureToRemoveGame" xml:space="preserve">
-    <value>Bu işlemi yapmak istediğinize emin misiniz?</value>
+    <value>Are you sure?</value>
   </data>
   <data name="message_appRemovedAsRequested" xml:space="preserve">
-    <value>{0} adlı oyunun tüm dosyaları istendiği üzere silindi.</value>
+    <value>All files for {0} successfully removed as requested.</value>
   </data>
   <data name="message_sureToRemoveGame" xml:space="preserve">
-    <value>{0} adlı oyunu silmek istediğinize emin misiniz?{1}{1}BU İŞLEM GERİ ALINAMAZ!</value>
+    <value>Do you really want to remove {0}?{1}{1}This process can not be reversed, YOU HAVE BEEN WARNED!</value>
     <comment>{0} = Game.appName</comment>
   </data>
 </root>

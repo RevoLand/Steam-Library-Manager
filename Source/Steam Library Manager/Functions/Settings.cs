@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+
 namespace Steam_Library_Manager.Functions
 {
     class Settings
@@ -16,6 +17,8 @@ namespace Steam_Library_Manager.Functions
 
                 // Update archive size calculation method selectbox
                 Definitions.Accessors.MainForm.SLM_archiveSizeCalcMethod.SelectedIndex = (!Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed")) ? 1 : 0;
+
+                Definitions.Accessors.MainForm.comboBox_moveGameMethod.SelectedIndex = (Properties.Settings.Default.methodForMovingGame == "forEach") ? 1 : 0;
 
                 // Update sort games method by saved one
                 Definitions.Accessors.MainForm.SLM_SortGamesBy.SelectedItem = Properties.Settings.Default.SortGamesBy;

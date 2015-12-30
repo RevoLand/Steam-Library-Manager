@@ -2,53 +2,45 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using System.Resources;
 using Steam_Library_Manager.Languages.Forms;
+using System.Reflection;
 
 namespace Steam_Library_Manager
 {
 
     public partial class MainForm : Form
     {
+
         public MainForm()
         {
-            try
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+
+            InitializeComponent();
+            initializeForm();
+        }
+
+        private void initializeForm()
+        {
+
+            // Set our accessor
+            Definitions.Accessors.MainForm = this;
+
+            // If Steam installation path is not set by user
+            if (string.IsNullOrEmpty(Properties.Settings.Default.SteamInstallationPath) && !Directory.Exists(Properties.Settings.Default.SteamInstallationPath))
             {
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.defaultLanguage))
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage, true);
-
-                InitializeComponent();
-
-                // Set our accessor
-                Definitions.Accessors.MainForm = this;
-
-                // If Steam installation path is not set by user
-                if (string.IsNullOrEmpty(Properties.Settings.Default.SteamInstallationPath))
-                {
-                    // Read Steam path from Registry
-                    Properties.Settings.Default.SteamInstallationPath = Microsoft.Win32.Registry.GetValue(Definitions.Steam.RegistryKeyPath, "SteamPath", "").ToString();
-                }
-
-                // Update main form from settings
-                Functions.Settings.UpdateMainForm();
-
-                // Select game & library list as active tab
-                tabControl1.SelectedTab = tab_InstalledGames;
-
-                // Set form icon from resources
-                Icon = Properties.Resources.steam_icon;
-
-                // If allowed by user, check for updates
-                if (Properties.Settings.Default.CheckForUpdatesAtStartup)
-                    Functions.Updater.CheckForUpdates();
+                // Read Steam path from Registry
+                Properties.Settings.Default.SteamInstallationPath = Microsoft.Win32.Registry.GetValue(Definitions.Steam.RegistryKeyPath, "SteamPath", "").ToString().Replace('/', Path.DirectorySeparatorChar);
             }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile(mainForm.form_MainForm, ex.ToString());
-            }
+
+            // Update main form from settings
+            Functions.Settings.UpdateMainForm();
+
+            // Set form icon from resources
+            Icon = Properties.Resources.steam_icon;
+
+            // If allowed by user, check for updates
+            if (Properties.Settings.Default.CheckForUpdatesAtStartup)
+                Functions.Updater.CheckForUpdates();
         }
 
         public static void SafeInvoke(Control control, Action handler)
@@ -245,7 +237,21 @@ namespace Steam_Library_Manager
 
             Properties.Settings.Default.defaultLanguage = comboBox_defaultLanguage.SelectedItem.ToString();
 
-            MessageBox.Show(mainForm.message_restartToChangeLanguage);
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+
+            Controls.Clear();
+            InitializeComponent();
+            initializeForm();
+
+            Functions.Settings.Save();
+        }
+
+        private void comboBox_moveGameMethod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox_moveGameMethod.SelectedIndex == ((Properties.Settings.Default.methodForMovingGame == "forEach") ? 1 : 0))
+                return;
+
+            Properties.Settings.Default.methodForMovingGame = (comboBox_moveGameMethod.SelectedIndex == 1) ? "forEach" : "using";
 
             Functions.Settings.Save();
         }

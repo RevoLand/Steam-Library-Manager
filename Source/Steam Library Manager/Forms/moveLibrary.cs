@@ -13,6 +13,8 @@ namespace Steam_Library_Manager.Forms
 
         public moveLibrary(Definitions.List.LibraryList Library)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+
             InitializeComponent();
 
             // Set our form icon
@@ -68,14 +70,14 @@ namespace Steam_Library_Manager.Forms
                 if (Library != null)
                 {
                     label_gamesInTargetLibrary.Text = Library.GameCount.ToString();
-                    label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.fullPath));
+                    label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.getAvailableFreeSpace(Library.fullPath));
 
                     groupBox_targetLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_targetLibraryText, Library.fullPath);
                 }
                 else
                 {
                     label_gamesInTargetLibrary.Text = "0";
-                    label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(newLibraryPath));
+                    label_availableSpaceAtTargetLibrary.Text = Functions.FileSystem.FormatBytes(Functions.FileSystem.getAvailableFreeSpace(newLibraryPath));
 
                     groupBox_targetLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_targetLibraryText, newLibraryPath);
                 }

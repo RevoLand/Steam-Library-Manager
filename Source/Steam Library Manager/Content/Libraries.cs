@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Content
             libraryName.AutoSize = true;
 
             // Set label text, currently it is directory path + game count
-            libraryName.Text = string.Format(Languages.SteamLibrary.label_libraryName, Library.fullPath, Library.GameCount, Functions.FileSystem.FormatBytes(Functions.FileSystem.GetFreeSpace(Library.fullPath)));
+            libraryName.Text = string.Format(Languages.SteamLibrary.label_libraryName, Library.fullPath, Library.GameCount, Functions.FileSystem.FormatBytes(Functions.FileSystem.getAvailableFreeSpace(Library.fullPath)));
 
             // Show our label in bottom center of our pictureBox
             libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Content
                     case "deleteLibrarySLM":
                         foreach (Definitions.List.GamesList Game in Definitions.List.Game.Where(x => x.Library == Library))
                         {
-                            Functions.Games gameFunctions = new Functions.Games();
+                            Functions.FileSystem.Game gameFunctions = new Functions.FileSystem.Game();
 
                             if (!await gameFunctions.deleteGameFiles(Game))
                             {
@@ -190,7 +190,7 @@ namespace Steam_Library_Manager.Content
                 Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
 
                 // If we are selecting the same library do nothing, which could be clicked by mistake and result in extra waiting time based on settings situation
-                if (Definitions.SLM.LatestSelectedLibrary == Library && Definitions.SLM.LatestSelectedLibrary.GameCount == Library.GameCount) return;
+                if (Definitions.SLM.LatestSelectedLibrary == Library && Definitions.SLM.LatestSelectedLibrary.GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
 
                 // Update latest selected library
                 Definitions.SLM.LatestSelectedLibrary = Library;
