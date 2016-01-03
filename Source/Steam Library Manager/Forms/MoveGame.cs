@@ -108,7 +108,7 @@ namespace Steam_Library_Manager.Forms
             else
             {
                 processCancelation.Cancel();
-
+                processCancelation = new CancellationTokenSource();
                 loadForm();
             }
         }

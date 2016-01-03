@@ -1,1 +1,1 @@
-1.2.0.0|New features and improvements
+1.2.0.1|Small fixes

@@ -79,19 +79,19 @@
             // 
             // tabControl1
             // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tab_InstalledGames);
             this.tabControl1.Controls.Add(this.tab_Settings);
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
             // tab_InstalledGames
             // 
-            resources.ApplyResources(this.tab_InstalledGames, "tab_InstalledGames");
             this.tab_InstalledGames.Controls.Add(this.label_searchInLibrary);
             this.tab_InstalledGames.Controls.Add(this.textBox_searchInGames);
             this.tab_InstalledGames.Controls.Add(this.panel_LibraryList);
             this.tab_InstalledGames.Controls.Add(this.panel_GameList);
+            resources.ApplyResources(this.tab_InstalledGames, "tab_InstalledGames");
             this.tab_InstalledGames.Name = "tab_InstalledGames";
             this.tab_InstalledGames.UseVisualStyleBackColor = true;
             // 
@@ -118,16 +118,15 @@
             // 
             // tab_Settings
             // 
-            resources.ApplyResources(this.tab_Settings, "tab_Settings");
             this.tab_Settings.Controls.Add(this.groupBox_SLM);
             this.tab_Settings.Controls.Add(this.groupBox_Steam);
             this.tab_Settings.Controls.Add(this.groupBox_Version);
+            resources.ApplyResources(this.tab_Settings, "tab_Settings");
             this.tab_Settings.Name = "tab_Settings";
             this.tab_Settings.UseVisualStyleBackColor = true;
             // 
             // groupBox_SLM
             // 
-            resources.ApplyResources(this.groupBox_SLM, "groupBox_SLM");
             this.groupBox_SLM.Controls.Add(this.comboBox_moveGameMethod);
             this.groupBox_SLM.Controls.Add(this.label9);
             this.groupBox_SLM.Controls.Add(this.comboBox_defaultLanguage);
@@ -142,17 +141,18 @@
             this.groupBox_SLM.Controls.Add(this.label3);
             this.groupBox_SLM.Controls.Add(this.SLM_sizeCalculationMethod);
             this.groupBox_SLM.Controls.Add(this.label2);
+            resources.ApplyResources(this.groupBox_SLM, "groupBox_SLM");
             this.groupBox_SLM.Name = "groupBox_SLM";
             this.groupBox_SLM.TabStop = false;
             // 
             // comboBox_moveGameMethod
             // 
-            resources.ApplyResources(this.comboBox_moveGameMethod, "comboBox_moveGameMethod");
             this.comboBox_moveGameMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_moveGameMethod.FormattingEnabled = true;
             this.comboBox_moveGameMethod.Items.AddRange(new object[] {
             resources.GetString("comboBox_moveGameMethod.Items"),
             resources.GetString("comboBox_moveGameMethod.Items1")});
+            resources.ApplyResources(this.comboBox_moveGameMethod, "comboBox_moveGameMethod");
             this.comboBox_moveGameMethod.Name = "comboBox_moveGameMethod";
             this.comboBox_moveGameMethod.SelectedIndexChanged += new System.EventHandler(this.comboBox_moveGameMethod_SelectedIndexChanged);
             // 
@@ -163,12 +163,12 @@
             // 
             // comboBox_defaultLanguage
             // 
-            resources.ApplyResources(this.comboBox_defaultLanguage, "comboBox_defaultLanguage");
             this.comboBox_defaultLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_defaultLanguage.FormattingEnabled = true;
             this.comboBox_defaultLanguage.Items.AddRange(new object[] {
             resources.GetString("comboBox_defaultLanguage.Items"),
             resources.GetString("comboBox_defaultLanguage.Items1")});
+            resources.ApplyResources(this.comboBox_defaultLanguage, "comboBox_defaultLanguage");
             this.comboBox_defaultLanguage.Name = "comboBox_defaultLanguage";
             this.comboBox_defaultLanguage.SelectedIndexChanged += new System.EventHandler(this.comboBox_defaultLanguage_SelectedIndexChanged);
             // 
@@ -202,8 +202,8 @@
             // 
             // SLM_SortGamesBy
             // 
-            resources.ApplyResources(this.SLM_SortGamesBy, "SLM_SortGamesBy");
             this.SLM_SortGamesBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.SLM_SortGamesBy, "SLM_SortGamesBy");
             this.SLM_SortGamesBy.Items.AddRange(new object[] {
             resources.GetString("SLM_SortGamesBy.Items"),
             resources.GetString("SLM_SortGamesBy.Items1"),
@@ -220,8 +220,8 @@
             // 
             // SLM_archiveSizeCalcMethod
             // 
-            resources.ApplyResources(this.SLM_archiveSizeCalcMethod, "SLM_archiveSizeCalcMethod");
             this.SLM_archiveSizeCalcMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.SLM_archiveSizeCalcMethod, "SLM_archiveSizeCalcMethod");
             this.SLM_archiveSizeCalcMethod.Items.AddRange(new object[] {
             resources.GetString("SLM_archiveSizeCalcMethod.Items"),
             resources.GetString("SLM_archiveSizeCalcMethod.Items1")});
@@ -235,8 +235,8 @@
             // 
             // SLM_sizeCalculationMethod
             // 
-            resources.ApplyResources(this.SLM_sizeCalculationMethod, "SLM_sizeCalculationMethod");
             this.SLM_sizeCalculationMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.SLM_sizeCalculationMethod, "SLM_sizeCalculationMethod");
             this.SLM_sizeCalculationMethod.Items.AddRange(new object[] {
             resources.GetString("SLM_sizeCalculationMethod.Items"),
             resources.GetString("SLM_sizeCalculationMethod.Items1")});
@@ -250,10 +250,10 @@
             // 
             // groupBox_Steam
             // 
-            resources.ApplyResources(this.groupBox_Steam, "groupBox_Steam");
             this.groupBox_Steam.Controls.Add(this.button_SelectSteamPath);
             this.groupBox_Steam.Controls.Add(this.linkLabel_SteamPath);
             this.groupBox_Steam.Controls.Add(this.label1);
+            resources.ApplyResources(this.groupBox_Steam, "groupBox_Steam");
             this.groupBox_Steam.Name = "groupBox_Steam";
             this.groupBox_Steam.TabStop = false;
             // 
@@ -277,7 +277,6 @@
             // 
             // groupBox_Version
             // 
-            resources.ApplyResources(this.groupBox_Version, "groupBox_Version");
             this.groupBox_Version.Controls.Add(this.label_versionResult);
             this.groupBox_Version.Controls.Add(this.checkbox_CheckForUpdatesAtStartup);
             this.groupBox_Version.Controls.Add(this.button_CheckForUpdates);
@@ -285,6 +284,7 @@
             this.groupBox_Version.Controls.Add(this.label7);
             this.groupBox_Version.Controls.Add(this.label_CurrentVersion);
             this.groupBox_Version.Controls.Add(this.label4);
+            resources.ApplyResources(this.groupBox_Version, "groupBox_Version");
             this.groupBox_Version.Name = "groupBox_Version";
             this.groupBox_Version.TabStop = false;
             // 
@@ -334,7 +334,6 @@
             // 
             // folderBrowser_SelectNewLibraryPath
             // 
-            resources.ApplyResources(this.folderBrowser_SelectNewLibraryPath, "folderBrowser_SelectNewLibraryPath");
             this.folderBrowser_SelectNewLibraryPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
             // button_RefreshLibraries
