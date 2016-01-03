@@ -1,0 +1,127 @@
+/*		Tablet Layout: 768px.
+		Gutters: 24px.
+		Outer margins: 28px.
+		Inherits styles from: Default Layout.
+-----------------------------------------------------------------
+cols    1     2      3      4      5      6      7      8
+px      68    160    252    344    436    528    620    712    */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  header {
+    position: relative;
+  }
+  .menu .navbar-default .navbar-nav > li > a {
+    padding: 5px 7px;
+  }
+  #banner .block .download-btn li {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  #banner .block .download-btn li a {
+    display: block;
+  }
+  #banner {
+    padding: 40px 0;
+  }
+  #banner h1 {
+    font-size: 40px;
+  }
+  #banner .block img {
+    padding-top: 80px;
+  }
+  #banner .block > p {
+    margin-bottom: 20px;
+  }
+  #service .block {
+    margin-bottom: 40px;
+  }
+  #service .service-wrapper {
+    padding: 80px 0;
+  }
+  #feature {
+    padding: 30px 0;
+  }
+  #feature .title {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+  #feature .block img {
+    padding-top: 40px;
+  }
+  #feature .feature-item {
+    margin-top: 10px;
+  }
+  #utility .block h2 {
+    padding-top: 15px;
+  }
+  #utility-2 .block {
+    padding-top: 0;
+  }
+  #subscribe .form-inline .form-group input {
+    width: 100%;
+  }
+  footer .footer-logo {
+    display: inline-block;
+  }
+}
+/*		Mobile Layout: 320px.
+		Gutters: 24px.
+		Outer margins: 34px.
+		Inherits styles from: Default Layout.
+---------------------------------------------
+cols    1     2      3
+px      68    160    252    */
+@media only screen and (max-width: 767px) {
+  header {
+    position: relative;
+  }
+  .footer-logo img {
+    width: 100px;
+  }
+  #subscribe .form-inline .form-group input {
+    width: 290px;
+  }
+  #feature {
+    padding: 30px 0;
+  }
+  #banner .block .download-btn li {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  #banner .block .download-btn li a {
+    display: block;
+  }
+  #banner {
+    padding: 40px 0;
+  }
+  #banner h1 {
+    font-size: 40px;
+  }
+  #service .service-wrapper {
+    padding: 60px 0;
+  }
+  #service .block {
+    margin-bottom: 20px;
+  }
+  #utility .block h2,
+  #utility-2 .block h2,
+  #feature .title {
+    text-align: center;
+  }
+  #subscribe .form-inline .form-group input {
+    width: 100%;
+  }
+  footer .footer-logo {
+    display: inline-block;
+  }
+}
+/*		Wide Mobile Layout: 480px.
+		Gutters: 24px.
+		Outer margins: 22px.
+		Inherits styles from: Default Layout, Mobile Layout.
+------------------------------------------------------------
+cols    1     2      3      4      5
+px      68    160    252    344    436    */
+/*	Retina media query.
+	Overrides styles for devices with a 
+	device-pixel-ratio of 2+, such as iPhone 4.
+-----------------------------------------------    */
