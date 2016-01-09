@@ -14,7 +14,7 @@
         <img src="https://img.shields.io/github/issues/RevoLand/Steam-Library-Manager.svg?style=flat-square" alt="Sorunlar">
     </a>
     <br /><br />
-    <a href="../../">English</a> | <b>Türkçe</b>
+    <a href="https://github.com/RevoLand/Steam-Library-Manager">English</a> | <b>Türkçe</b>
 </p>
 
 **SLM** *(Steam Library Manager)* çoklu kütüphane desteği ile Steam uygulamalarını **yedekleme** / **yedeği geri yükleme** / **taşıma** işlemlerini en kolay bir şekilde yapabilmeyi sağlamak amacıyla tasarlandı.
