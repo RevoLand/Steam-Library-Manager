@@ -150,7 +150,7 @@
             this.combobox_libraryList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combobox_libraryList.FormattingEnabled = true;
             this.combobox_libraryList.Name = "combobox_libraryList";
-            this.combobox_libraryList.SelectedIndexChanged += new System.EventHandler(this.combobox_libraryList_SelectedIndexChanged);
+            this.combobox_libraryList.SelectionChangeCommitted += new System.EventHandler(this.combobox_libraryList_SelectionChangeCommitted);
             // 
             // button_moveLibrary
             // 

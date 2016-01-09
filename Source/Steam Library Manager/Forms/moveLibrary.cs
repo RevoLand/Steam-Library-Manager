@@ -7,14 +7,12 @@ namespace Steam_Library_Manager.Forms
 {
     partial class moveLibrary : Form
     {
-        Definitions.List.LibraryList libraryToMove;
+        Definitions.List.Library libraryToMove;
         string newLibraryPath;
         bool backupLibrary;
 
-        public moveLibrary(Definitions.List.LibraryList Library)
+        public moveLibrary(Definitions.List.Library Library)
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
-
             InitializeComponent();
 
             // Set our form icon
@@ -23,19 +21,21 @@ namespace Steam_Library_Manager.Forms
             libraryToMove = Library;
 
             Text = string.Format(Languages.Forms.moveLibrary.form_Title, libraryToMove.fullPath);
+
+            updateForm(Library);
         }
 
         private async void moveLibrary_Load(object sender, EventArgs e)
         {
             try
             {
-                Func<Definitions.List.GamesList, object> Sort = Functions.Settings.getSortingMethod();
+                Func<Definitions.List.Game, object> Sort = Functions.Settings.getSortingMethod();
                 long neededSize = 0;
 
-                foreach (Definitions.List.GamesList Game in Definitions.List.Game.Where(x => x.Library == libraryToMove).OrderBy(Sort))
+                foreach (Definitions.List.Game Game in Definitions.List.Games.Where(x => x.Library == libraryToMove).OrderBy(Sort))
                 {
                     // Define a new pictureBox for game
-                    Framework.PictureBoxWithCaching gameDetailBox = await Content.Games.generateGameBox(Game);
+                    Framework.PictureBoxWithCaching gameDetailBox = await Content.Games.generateGameBox(Game, 5);
 
                     // Set game image size
                     gameDetailBox.Size = new System.Drawing.Size(Properties.Settings.Default.GamePictureBoxSize.Width / 2, Properties.Settings.Default.GamePictureBoxSize.Height / 2);
@@ -47,7 +47,7 @@ namespace Steam_Library_Manager.Forms
                     neededSize += Game.sizeOnDisk;
                 }
 
-                combobox_libraryList.DataSource = Definitions.List.Library.FindAll(x => x != libraryToMove);
+                combobox_libraryList.DataSource = Definitions.List.Libraries.FindAll(x => x != libraryToMove);
                 combobox_libraryList.DisplayMember = "fullPath";
 
                 groupBox_selectedLibrary.Text = string.Format(Languages.Forms.moveLibrary.groupBox_selectedLibraryText, libraryToMove.fullPath);
@@ -57,13 +57,8 @@ namespace Steam_Library_Manager.Forms
             catch { }
         }
 
-        private void combobox_libraryList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (combobox_libraryList.SelectedItem != null)
-                updateForm((combobox_libraryList.SelectedItem as Definitions.List.LibraryList));
-        }
 
-        void updateForm(Definitions.List.LibraryList Library)
+        void updateForm(Definitions.List.Library Library)
         {
             try
             {
@@ -128,11 +123,11 @@ namespace Steam_Library_Manager.Forms
             if (libraryToMove.Main)
                 checkbox_removeOldFiles.Checked = false;
 
-            move((string.IsNullOrEmpty(newLibraryPath)) ? (combobox_libraryList.SelectedItem as Definitions.List.LibraryList) : null, newLibraryPath, checkbox_removeOldFiles.Checked, backupLibrary);
+            move((string.IsNullOrEmpty(newLibraryPath)) ? (combobox_libraryList.SelectedItem as Definitions.List.Library) : null, newLibraryPath, checkbox_removeOldFiles.Checked, backupLibrary);
         }
 
 
-        async void move(Definitions.List.LibraryList targetLibrary, string newLibraryPath, bool removeOldLibrary, bool backupLibrary)
+        async void move(Definitions.List.Library targetLibrary, string newLibraryPath, bool removeOldLibrary, bool backupLibrary)
         {
             int movedFiles = 0;
             int totalFilesToMove = Directory.GetFiles(libraryToMove.steamAppsPath, "*", SearchOption.AllDirectories).Length;
@@ -194,6 +189,12 @@ namespace Steam_Library_Manager.Forms
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void combobox_libraryList_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (combobox_libraryList.SelectedItem != null)
+                updateForm((combobox_libraryList.SelectedItem as Definitions.List.Library));
         }
     }
 }

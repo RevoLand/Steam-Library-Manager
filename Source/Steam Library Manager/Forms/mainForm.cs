@@ -12,7 +12,9 @@ namespace Steam_Library_Manager
 
         public MainForm()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+            Functions.Localization.updateLanguges();
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = Definitions.SLM.currentLanguage.culture;
 
             InitializeComponent();
             initializeForm();
@@ -20,9 +22,12 @@ namespace Steam_Library_Manager
 
         private void initializeForm()
         {
-
             // Set our accessor
             Definitions.Accessors.MainForm = this;
+
+            comboBox_defaultLanguage.DataSource = Definitions.List.Languages;
+            comboBox_defaultLanguage.DisplayMember = "displayName";
+            comboBox_defaultLanguage.ValueMember = "shortName";
 
             // If Steam installation path is not set by user
             if (string.IsNullOrEmpty(Properties.Settings.Default.SteamInstallationPath) && !Directory.Exists(Properties.Settings.Default.SteamInstallationPath))
@@ -83,24 +88,6 @@ namespace Steam_Library_Manager
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save user settings
-            Functions.Settings.Save();
-        }
-
-        private void SLM_sizeCalculationMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Update setting value
-            Properties.Settings.Default.GameSizeCalculationMethod = (SLM_sizeCalculationMethod.SelectedIndex == 0) ? "ACF" : "Enum";
-
-            // Save settings to file
-            Functions.Settings.Save();
-        }
-
-        private void SLM_archiveSizeCalcMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Update setting value
-            Properties.Settings.Default.ArchiveSizeCalculationMethod = (SLM_archiveSizeCalcMethod.SelectedIndex == 0) ? "Uncompressed" : "Archive";
-
-            // Save settings to file
             Functions.Settings.Save();
         }
 
@@ -193,17 +180,17 @@ namespace Steam_Library_Manager
 
             if (Definitions.Accessors.MainForm.panel_GameList.Tag != null)
                 // Update main form with new settings
-                Functions.Games.UpdateMainForm(null, null, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList));
+                Functions.Games.UpdateMainForm(null, null, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library));
         }
 
         private void textBox_searchInGames_KeyUp(object sender, KeyEventArgs e)
         {
             try
             {
-                if (Definitions.Accessors.MainForm.panel_GameList.Tag == null || (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList).GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
+                if (Definitions.Accessors.MainForm.panel_GameList.Tag == null || (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library).GameCount == panel_GameList.Controls.Count && string.IsNullOrEmpty(textBox_searchInGames.Text))
                     return;
 
-                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList));
+                Functions.Games.UpdateMainForm(null, textBox_searchInGames.Text, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library));
             }
             catch (Exception ex)
             {
@@ -230,13 +217,44 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void comboBox_defaultLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        private void SLM_sizeCalculationMethod_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.defaultLanguage == comboBox_defaultLanguage.SelectedItem.ToString()) return;
+            // Update setting value
+            Properties.Settings.Default.GameSizeCalculationMethod = (SLM_sizeCalculationMethod.SelectedIndex == 0) ? "ACF" : "Enum";
 
-            Properties.Settings.Default.defaultLanguage = comboBox_defaultLanguage.SelectedItem.ToString();
+            // Save settings to file
+            Functions.Settings.Save();
+        }
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
+        private void SLM_archiveSizeCalcMethod_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            // Update setting value
+            Properties.Settings.Default.ArchiveSizeCalculationMethod = (SLM_archiveSizeCalcMethod.SelectedIndex == 0) ? "Uncompressed" : "Archive";
+
+            // Save settings to file
+            Functions.Settings.Save();
+        }
+
+        private void SLM_SortGamesBy_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            // Update value in memory
+            Properties.Settings.Default.SortGamesBy = SLM_SortGamesBy.SelectedItem.ToString();
+
+            // Save settings to file
+            Functions.Settings.Save();
+
+            if (Definitions.Accessors.MainForm.panel_GameList.Tag != null)
+                // Update main form with new settings
+                Functions.Games.UpdateMainForm(null, null, (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library));
+        }
+
+        private void comboBox_defaultLanguage_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            Definitions.List.Language selectedLanguage = comboBox_defaultLanguage.SelectedItem as Definitions.List.Language;
+
+            if (Definitions.SLM.currentLanguage.shortName == selectedLanguage.shortName) return;
+
+            Functions.Localization.updateCurrentLanguage(selectedLanguage);
 
             Controls.Clear();
             InitializeComponent();
@@ -245,12 +263,12 @@ namespace Steam_Library_Manager
             Functions.Settings.Save();
         }
 
-        private void comboBox_moveGameMethod_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox_moveGameMethod_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (comboBox_moveGameMethod.SelectedIndex == ((Properties.Settings.Default.methodForMovingGame == "forEach") ? 1 : 0))
                 return;
 
-            Properties.Settings.Default.methodForMovingGame = (comboBox_moveGameMethod.SelectedIndex == 1) ? "forEach" : "using";
+            Properties.Settings.Default.methodForMovingGame = (comboBox_moveGameMethod.SelectedIndex == 1) ? "forEach" : "newMethod";
 
             Functions.Settings.Save();
         }

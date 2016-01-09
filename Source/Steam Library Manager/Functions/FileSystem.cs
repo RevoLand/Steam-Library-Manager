@@ -13,7 +13,7 @@ namespace Steam_Library_Manager.Functions
     {
         public class Game
         {
-            public static int GetGameCountFromLibrary(Definitions.List.LibraryList Library)
+            public static int GetGameCountFromLibrary(Definitions.List.Library Library)
             {
                 try
                 {
@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
                 catch { return 0; }
             }
 
-            public async Task<int> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate, CancellationToken token)
+            public async Task<int> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, bool Validate, CancellationToken token)
             {
                 List<string> movedFiles = new List<string>();
                 try
@@ -101,7 +101,7 @@ namespace Steam_Library_Manager.Functions
                 return 1;
             }
 
-            public async Task<int> copyGameFilesNew(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary, bool Validate, CancellationToken token)
+            public async Task<int> copyGameFilesNew(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, bool Validate, CancellationToken token)
             {
                 List<string> movedFiles = new List<string>();
                 try
@@ -188,7 +188,7 @@ namespace Steam_Library_Manager.Functions
                 return 1;
             }
 
-            public async Task<bool> deleteGameFiles(Definitions.List.GamesList Game, List<string> gameFiles = null)
+            public async Task<bool> deleteGameFiles(Definitions.List.Game Game, List<string> gameFiles = null)
             {
                 try
                 {
@@ -241,7 +241,7 @@ namespace Steam_Library_Manager.Functions
                 return true;
             }
 
-            public static async void removeGivenFiles(List<string> fileList, Definitions.List.GamesList Game = null, Definitions.List.LibraryList targetLibrary = null, bool removeAcfFile = true)
+            public static async void removeGivenFiles(List<string> fileList, Definitions.List.Game Game = null, Definitions.List.Library targetLibrary = null, bool removeAcfFile = true)
             {
                 try
                 {
@@ -269,7 +269,7 @@ namespace Steam_Library_Manager.Functions
                 catch { }
             }
 
-            public async Task<List<string>> getFileList(Definitions.List.GamesList Game, bool includeDownloads = true, bool includeWorkshop = true)
+            public async Task<List<string>> getFileList(Definitions.List.Game Game, bool includeDownloads = true, bool includeWorkshop = true)
             {
                 List<string> FileList = new List<string>();
 
@@ -292,13 +292,13 @@ namespace Steam_Library_Manager.Functions
                 return FileList;
             }
 
-            async Task<IEnumerable<string>> getCommonFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories).ToList());
+            async Task<IEnumerable<string>> getCommonFiles(Definitions.List.Game Game) => await Task.Run(() => Directory.EnumerateFiles(Game.commonPath, "*", SearchOption.AllDirectories).ToList());
 
-            async Task<IEnumerable<string>> getDownloadFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories).ToList());
+            async Task<IEnumerable<string>> getDownloadFiles(Definitions.List.Game Game) => await Task.Run(() => Directory.EnumerateFiles(Game.downloadPath, "*", SearchOption.AllDirectories).ToList());
 
-            async Task<IEnumerable<string>> getPatchFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.Library.downloadPath, $"*{Game.appID}*.patch", SearchOption.TopDirectoryOnly).ToList());
+            async Task<IEnumerable<string>> getPatchFiles(Definitions.List.Game Game) => await Task.Run(() => Directory.EnumerateFiles(Game.Library.downloadPath, $"*{Game.appID}*.patch", SearchOption.TopDirectoryOnly).ToList());
 
-            async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.GamesList Game) => await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
+            async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.Game Game) => await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
 
             public async Task<bool> copyGameArchive(Forms.moveGame currentForm, string currentZipNameNpath, string newZipNameNpath)
             {
@@ -325,7 +325,7 @@ namespace Steam_Library_Manager.Functions
                 return true;
             }
 
-            public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
+            public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
             {
                 string newFileName;
                 try
@@ -373,7 +373,7 @@ namespace Steam_Library_Manager.Functions
                 return true;
             }
 
-            public async Task<bool> decompressArchive(Forms.moveGame currentForm, string currentZipNameNpath, Definitions.List.GamesList Game, Definitions.List.LibraryList targetLibrary)
+            public async Task<bool> decompressArchive(Forms.moveGame currentForm, string currentZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
             {
                 try
                 {
@@ -466,7 +466,7 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public async static void deleteOldLibrary(Definitions.List.LibraryList Library)
+        public async static void deleteOldLibrary(Definitions.List.Library Library)
         {
             try
             {

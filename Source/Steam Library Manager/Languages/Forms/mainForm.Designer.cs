@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Languages.Forms {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class mainForm {
+    internal class mainForm {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Steam_Library_Manager.Languages.Forms.mainForm", typeof(mainForm).Assembly);
@@ -51,7 +51,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         /// <summary>
         ///   Looks up a localized string similar to Select Steam.exe from installation path.
         /// </summary>
-        public static string fileDialog_selectSteamPath_Title {
+        internal static string fileDialog_selectSteamPath_Title {
             get {
                 return ResourceManager.GetString("fileDialog_selectSteamPath_Title", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         /// <summary>
         ///   Looks up a localized string similar to Main Form.
         /// </summary>
-        public static string form_MainForm {
+        internal static string form_MainForm {
             get {
                 return ResourceManager.GetString("form_MainForm", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         /// <summary>
         ///   Looks up a localized string similar to Library exists in the selected path! Are you trying to bug yourself?!.
         /// </summary>
-        public static string message_libraryExistsAtSelectedPath {
+        internal static string message_libraryExistsAtSelectedPath {
             get {
                 return ResourceManager.GetString("message_libraryExistsAtSelectedPath", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         /// <summary>
         ///   Looks up a localized string similar to Libraries can not be created in root.
         /// </summary>
-        public static string message_noLibraryInDiskRoot {
+        internal static string message_noLibraryInDiskRoot {
             get {
                 return ResourceManager.GetString("message_noLibraryInDiskRoot", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Languages.Forms {
         /// <summary>
         ///   Looks up a localized string similar to You have to restart SLM to get new language applied.
         /// </summary>
-        public static string message_restartToChangeLanguage {
+        internal static string message_restartToChangeLanguage {
             get {
                 return ResourceManager.GetString("message_restartToChangeLanguage", resourceCulture);
             }

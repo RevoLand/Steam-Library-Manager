@@ -10,12 +10,12 @@ namespace Steam_Library_Manager.Functions
 {
     class Games
     {
-        public static async void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.LibraryList Library, long sizeOnDisk, bool isCompressed)
+        public static async void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk, bool isCompressed)
         {
             try
             {
                 // Make a new definition for game
-                Definitions.List.GamesList Game = new Definitions.List.GamesList();
+                Definitions.List.Game Game = new Definitions.List.Game();
 
                 // Set game appID
                 Game.appID = appID;
@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Functions
                     Game.sizeOnDisk = sizeOnDisk;
 
                 // Add our game details to global list
-                Definitions.List.Game.Add(Game);
+                Definitions.List.Games.Add(Game);
             }
             catch (Exception ex)
             {
@@ -108,17 +108,17 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void UpdateGameList(Definitions.List.LibraryList Library)
+        public static async void UpdateGameList(Definitions.List.Library Library)
         {
             try
             {
                 // If our list is not empty
-                if (Definitions.List.Game.Count != 0)
+                if (Definitions.List.Games.Count != 0)
                 {
                     if (Library == null)
-                        Definitions.List.Game.Clear();
+                        Definitions.List.Games.Clear();
                     else
-                        Definitions.List.Game.RemoveAll(x => x.Library == Library);
+                        Definitions.List.Games.RemoveAll(x => x.Library == Library);
                 }
 
                 if (!Directory.Exists(Library.steamAppsPath))
@@ -187,7 +187,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void UpdateMainForm(Func<Definitions.List.GamesList, object> Sort, string Search, Definitions.List.LibraryList Library)
+        public static async void UpdateMainForm(Func<Definitions.List.Game, object> Sort, string Search, Definitions.List.Library Library)
         {
             try
             {
@@ -199,7 +199,7 @@ namespace Steam_Library_Manager.Functions
                     Definitions.Accessors.MainForm.panel_GameList.Controls.Clear();
 
                 // Do a loop for each game in library
-                foreach (Definitions.List.GamesList Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Game.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Game.Where(x => x.Library == Library).Where(
+                foreach (Definitions.List.Game Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Games.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Games.Where(x => x.Library == Library).Where(
                     y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                     || y.appID.ToString().Contains(Search) // Search by app ID
                     ).OrderBy(Sort)
@@ -207,7 +207,7 @@ namespace Steam_Library_Manager.Functions
                 {
 
                     // Add our new game pictureBox to panel
-                    Definitions.Accessors.MainForm.panel_GameList.Controls.Add(await Content.Games.generateGameBox(Game));
+                    Definitions.Accessors.MainForm.panel_GameList.Controls.Add(await Content.Games.generateGameBox(Game, 20));
                 }
             }
             catch (Exception ex)

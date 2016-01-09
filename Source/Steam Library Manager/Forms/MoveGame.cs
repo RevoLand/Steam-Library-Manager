@@ -11,18 +11,16 @@ namespace Steam_Library_Manager.Forms
     partial class moveGame : Form
     {
         // Define our game from LatestSelectedGame
-        Definitions.List.GamesList Game;
+        Definitions.List.Game Game;
 
         // Define our library from LatestDropLibrary
-        Definitions.List.LibraryList Library;
+        Definitions.List.Library Library;
 
         CancellationTokenSource processCancelation = new CancellationTokenSource();
         bool isWorkingCurrently = false;
 
-        public moveGame(Definitions.List.GamesList gameToMove, Definitions.List.LibraryList libraryToMove)
+        public moveGame(Definitions.List.Game gameToMove, Definitions.List.Library libraryToMove)
         {
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Properties.Settings.Default.defaultLanguage);
-
             InitializeComponent();
 
             // Set our form icon

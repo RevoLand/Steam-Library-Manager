@@ -36,7 +36,7 @@
       <Value Profile="(Default)">en</Value>
     </Setting>
     <Setting Name="methodForMovingGame" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">forEach</Value>
+      <Value Profile="(Default)">newMethod</Value>
     </Setting>
   </Settings>
 </SettingsFile>

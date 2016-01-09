@@ -233,8 +233,8 @@
   <data name="button_newLibraryButton.Text" xml:space="preserve">
     <value>New Library</value>
   </data>
-  <data name="label_neededSpace.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;folderBrowser_selectNewLibraryPath.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -277,9 +277,6 @@
   </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 40</value>
@@ -412,6 +409,9 @@
   </data>
   <data name="label_neededSpace.Location" type="System.Drawing.Point, System.Drawing">
     <value>164, 27</value>
+  </data>
+  <data name="label_neededSpace.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;combobox_libraryList.ZOrder" xml:space="preserve">
     <value>5</value>

@@ -33,14 +33,14 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Accessors.MainForm.label_CurrentVersion.Text = Definitions.Updater.CurrentVersion.ToString();
 
                 // Default text editor
-                if (string.IsNullOrEmpty(Properties.Settings.Default.DefaultTextEditor) || Properties.Settings.Default.DefaultTextEditor.Contains("%windir%"))
+                if (string.IsNullOrEmpty(Properties.Settings.Default.DefaultTextEditor) || Properties.Settings.Default.DefaultTextEditor.Contains("%windir%\\notepad.exe"))
                     Properties.Settings.Default.DefaultTextEditor = System.IO.Path.Combine(Environment.SystemDirectory, "notepad.exe");
 
                 // default text editor
                 Definitions.Accessors.MainForm.SLM_defaultTextEditor.Text = Properties.Settings.Default.DefaultTextEditor;
 
                 // default language
-                Definitions.Accessors.MainForm.comboBox_defaultLanguage.SelectedItem = Properties.Settings.Default.defaultLanguage;
+                Definitions.Accessors.MainForm.comboBox_defaultLanguage.SelectedItem = Localization.getLanguageFromShortName(Properties.Settings.Default.defaultLanguage);
 
                 // vdf path
                 Definitions.Steam.vdfFilePath = System.IO.Path.Combine(Properties.Settings.Default.SteamInstallationPath, "config", "config.vdf");
@@ -61,20 +61,20 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-				// Define a new string collection to update backup library settings
+                // Define a new string collection to update backup library settings
                 System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                 // foreach defined library in library list
-                foreach (Definitions.List.LibraryList Library in Definitions.List.Library.Where(x => x.Backup))
+                foreach (Definitions.List.Library Library in Definitions.List.Libraries.Where(x => x.Backup))
                 {
                     // then add this library path to new defined string collection
                     BackupDirs.Add(Library.fullPath);
                 }
 
-				// change our current backup directories setting with new defined string collection
+                // change our current backup directories setting with new defined string collection
                 Properties.Settings.Default.BackupDirectories = BackupDirs;
 
-				// Save the settings to file
+                // Save the settings to file
                 Save();
             }
             catch (Exception ex)
@@ -92,9 +92,9 @@ namespace Steam_Library_Manager.Functions
             Properties.Settings.Default.Save();
         }
 
-        public static Func<Definitions.List.GamesList, object> getSortingMethod()
+        public static Func<Definitions.List.Game, object> getSortingMethod()
         {
-            Func<Definitions.List.GamesList, object> Sort;
+            Func<Definitions.List.Game, object> Sort;
 
             // Define our sorting method
             switch (Properties.Settings.Default.SortGamesBy)
@@ -113,6 +113,5 @@ namespace Steam_Library_Manager.Functions
 
             return Sort;
         }
-
     }
 }

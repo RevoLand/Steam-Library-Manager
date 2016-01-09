@@ -4,5 +4,6 @@
     class SLM
     {
         public static string Spacer = "-";
+        public static List.Language currentLanguage;
     }
 }

@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class rightClickMenu {
+    internal class rightClickMenu {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Steam_Library_Manager.Languages.Forms.Libraries.rightClickMenu", typeof(rightClickMenu).Assembly);
@@ -51,7 +51,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Libraries.
         /// </summary>
-        public static string Libraries {
+        internal static string Libraries {
             get {
                 return ResourceManager.GetString("Libraries", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Delete games in library.
         /// </summary>
-        public static string menuItem_deleteGamesInLibrary {
+        internal static string menuItem_deleteGamesInLibrary {
             get {
                 return ResourceManager.GetString("menuItem_deleteGamesInLibrary", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Delete library.
         /// </summary>
-        public static string menuItem_deleteLibrary {
+        internal static string menuItem_deleteLibrary {
             get {
                 return ResourceManager.GetString("menuItem_deleteLibrary", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Move library.
         /// </summary>
-        public static string menuItem_moveLibrary {
+        internal static string menuItem_moveLibrary {
             get {
                 return ResourceManager.GetString("menuItem_moveLibrary", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Open library in file explorer.
         /// </summary>
-        public static string menuItem_openLibraryInExplorer {
+        internal static string menuItem_openLibraryInExplorer {
             get {
                 return ResourceManager.GetString("menuItem_openLibraryInExplorer", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Refresh games in library.
         /// </summary>
-        public static string menuItem_refreshGameList {
+        internal static string menuItem_refreshGameList {
             get {
                 return ResourceManager.GetString("menuItem_refreshGameList", resourceCulture);
             }
@@ -117,16 +117,16 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Remove from list.
         /// </summary>
-        public static string menuITem_removeBackupLibraryFromList {
+        internal static string menuItem_removeBackupLibraryFromList {
             get {
-                return ResourceManager.GetString("menuITem_removeBackupLibraryFromList", resourceCulture);
+                return ResourceManager.GetString("menuItem_removeBackupLibraryFromList", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Done!{1}All games in Library ({0}) deleted..
         /// </summary>
-        public static string message_allGamesSuccesfullyDeleted {
+        internal static string message_allGamesSuccesfullyDeleted {
             get {
                 return ResourceManager.GetString("message_allGamesSuccesfullyDeleted", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Move games in library before deleting?.
         /// </summary>
-        public static string message_moveGamesInLibraryBeforeDelete {
+        internal static string message_moveGamesInLibraryBeforeDelete {
             get {
                 return ResourceManager.GetString("message_moveGamesInLibraryBeforeDelete", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to An error happened while removing games from library {0}.
         /// </summary>
-        public static string message_unknownErrorWhileDeletingGames {
+        internal static string message_unknownErrorWhileDeletingGames {
             get {
                 return ResourceManager.GetString("message_unknownErrorWhileDeletingGames", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Steam_Library_Manager.Languages.Forms.Libraries {
         /// <summary>
         ///   Looks up a localized string similar to Move games.
         /// </summary>
-        public static string messageTitle_moveGamesInLibraryBeforeDelete {
+        internal static string messageTitle_moveGamesInLibraryBeforeDelete {
             get {
                 return ResourceManager.GetString("messageTitle_moveGamesInLibraryBeforeDelete", resourceCulture);
             }

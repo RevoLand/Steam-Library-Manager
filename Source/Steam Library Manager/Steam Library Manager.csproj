@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
+    <Compile Include="Functions\Localization.cs" />
     <Compile Include="Functions\Log.cs" />
     <Compile Include="Functions\Settings.cs" />
     <Compile Include="Functions\SteamLibrary.cs" />
@@ -137,11 +138,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>mainForm.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Languages\Forms\mainForm.tr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>mainForm.tr.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\Forms\moveGame.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -207,21 +203,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\FileSystem.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\Games\rightClickMenu.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Forms\Games\rightClickMenu.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\Libraries\rightClickMenu.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>rightClickMenu.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Forms\Libraries\rightClickMenu.tr.resx" />
-    <EmbeddedResource Include="Languages\Forms\mainForm.tr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>mainForm.tr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Forms\mainForm.tr.resx" />
     <EmbeddedResource Include="Languages\Forms\mainForm.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>mainForm.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Forms\moveGame.resx">
@@ -294,7 +287,12 @@
     <EmbeddedResource Include="Resources\compressedLibraryIcon.png" />
     <EmbeddedResource Include="Resources\steam-icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,1 +1,1 @@
-1.2.0.1|Small fixes
+1.2.1|Localization improvements

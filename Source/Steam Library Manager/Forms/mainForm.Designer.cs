@@ -154,7 +154,7 @@
             resources.GetString("comboBox_moveGameMethod.Items1")});
             resources.ApplyResources(this.comboBox_moveGameMethod, "comboBox_moveGameMethod");
             this.comboBox_moveGameMethod.Name = "comboBox_moveGameMethod";
-            this.comboBox_moveGameMethod.SelectedIndexChanged += new System.EventHandler(this.comboBox_moveGameMethod_SelectedIndexChanged);
+            this.comboBox_moveGameMethod.SelectionChangeCommitted += new System.EventHandler(this.comboBox_moveGameMethod_SelectionChangeCommitted);
             // 
             // label9
             // 
@@ -163,14 +163,12 @@
             // 
             // comboBox_defaultLanguage
             // 
+            this.comboBox_defaultLanguage.DisplayMember = "displayName";
             this.comboBox_defaultLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_defaultLanguage.FormattingEnabled = true;
-            this.comboBox_defaultLanguage.Items.AddRange(new object[] {
-            resources.GetString("comboBox_defaultLanguage.Items"),
-            resources.GetString("comboBox_defaultLanguage.Items1")});
             resources.ApplyResources(this.comboBox_defaultLanguage, "comboBox_defaultLanguage");
             this.comboBox_defaultLanguage.Name = "comboBox_defaultLanguage";
-            this.comboBox_defaultLanguage.SelectedIndexChanged += new System.EventHandler(this.comboBox_defaultLanguage_SelectedIndexChanged);
+            this.comboBox_defaultLanguage.ValueMember = "shortName";
+            this.comboBox_defaultLanguage.SelectionChangeCommitted += new System.EventHandler(this.comboBox_defaultLanguage_SelectionChangeCommitted);
             // 
             // label8
             // 
@@ -209,7 +207,7 @@
             resources.GetString("SLM_SortGamesBy.Items1"),
             resources.GetString("SLM_SortGamesBy.Items2")});
             this.SLM_SortGamesBy.Name = "SLM_SortGamesBy";
-            this.SLM_SortGamesBy.SelectedIndexChanged += new System.EventHandler(this.SLM_SortGamesBy_SelectedIndexChanged);
+            this.SLM_SortGamesBy.SelectionChangeCommitted += new System.EventHandler(this.SLM_SortGamesBy_SelectionChangeCommitted);
             // 
             // checkbox_LogErrorsToFile
             // 
@@ -226,7 +224,7 @@
             resources.GetString("SLM_archiveSizeCalcMethod.Items"),
             resources.GetString("SLM_archiveSizeCalcMethod.Items1")});
             this.SLM_archiveSizeCalcMethod.Name = "SLM_archiveSizeCalcMethod";
-            this.SLM_archiveSizeCalcMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectedIndexChanged);
+            this.SLM_archiveSizeCalcMethod.SelectionChangeCommitted += new System.EventHandler(this.SLM_archiveSizeCalcMethod_SelectionChangeCommitted);
             // 
             // label3
             // 
@@ -241,7 +239,7 @@
             resources.GetString("SLM_sizeCalculationMethod.Items"),
             resources.GetString("SLM_sizeCalculationMethod.Items1")});
             this.SLM_sizeCalculationMethod.Name = "SLM_sizeCalculationMethod";
-            this.SLM_sizeCalculationMethod.SelectedIndexChanged += new System.EventHandler(this.SLM_sizeCalculationMethod_SelectedIndexChanged);
+            this.SLM_sizeCalculationMethod.SelectionChangeCommitted += new System.EventHandler(this.SLM_sizeCalculationMethod_SelectionChangeCommitted);
             // 
             // label2
             // 

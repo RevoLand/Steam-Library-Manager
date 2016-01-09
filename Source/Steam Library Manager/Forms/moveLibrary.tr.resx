@@ -151,9 +151,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Kütüphanedeki Oyun Sayısı:</value>
   </data>
-  <data name="groupBox_targetLibrary.Text" xml:space="preserve">
-    <value>Hedef Kütüphane Bilgileri</value>
-  </data>
   <data name="button_newLibraryButton.Text" xml:space="preserve">
     <value>Oluştur</value>
   </data>
@@ -168,6 +165,9 @@
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Kütüphanedeki Oyun Sayısı:</value>
+  </data>
+  <data name="groupBox_targetLibrary.Text" xml:space="preserve">
+    <value>Hedef Kütüphane Bilgileri</value>
   </data>
   <data name="button_moveLibrary.Text" xml:space="preserve">
     <value>Taşı</value>

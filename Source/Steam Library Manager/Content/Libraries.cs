@@ -6,7 +6,7 @@ namespace Steam_Library_Manager.Content
 {
     class Libraries
     {
-        public static PictureBox generateLibraryBox(Definitions.List.LibraryList Library)
+        public static PictureBox generateLibraryBox(Definitions.List.Library Library)
         {
             PictureBox libraryDetailBox = new PictureBox();
 
@@ -62,7 +62,7 @@ namespace Steam_Library_Manager.Content
             return libraryDetailBox;
         }
 
-        public static ContextMenuStrip generateRightClickMenu(Definitions.List.LibraryList Library)
+        public static ContextMenuStrip generateRightClickMenu(Definitions.List.Library Library)
         {
             // Create a new right click menu (aka context menu)
             ContextMenuStrip menu = new ContextMenuStrip();
@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Content
                 menu.Items.Add(Definitions.SLM.Spacer);
 
                 // Remove the library from slm (only from list)
-                menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuITem_removeBackupLibraryFromList).Name = "RemoveFromList";
+                menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_removeBackupLibraryFromList).Name = "RemoveFromList";
             }
 
             return menu;
@@ -110,7 +110,7 @@ namespace Steam_Library_Manager.Content
             try
             {
                 // Define our game from the Tag we given to Context menu
-                Definitions.List.LibraryList Library = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl.Tag as Definitions.List.LibraryList;
+                Definitions.List.Library Library = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl.Tag as Definitions.List.Library;
 
                 // switch based on name we set earlier with context menu
                 switch ((sender as ToolStripMenuItem).Name)
@@ -131,7 +131,7 @@ namespace Steam_Library_Manager.Content
                             Functions.SteamLibrary.removeLibrary(Library, true);
                         break;
                     case "deleteLibrarySLM":
-                        foreach (Definitions.List.GamesList Game in Definitions.List.Game.Where(x => x.Library == Library))
+                        foreach (Definitions.List.Game Game in Definitions.List.Games.Where(x => x.Library == Library))
                         {
                             Functions.FileSystem.Game gameFunctions = new Functions.FileSystem.Game();
 
@@ -158,7 +158,7 @@ namespace Steam_Library_Manager.Content
                         if (Library.Backup)
                         {
                             // Remove the library from our list
-                            Definitions.List.Library.Remove(Library);
+                            Definitions.List.Libraries.Remove(Library);
 
                             // Update backup dir settings
                             Functions.Settings.updateBackupDirs();
@@ -187,10 +187,10 @@ namespace Steam_Library_Manager.Content
                 if (e.Button != MouseButtons.Left) return;
 
                 // Define our library details from .Tag attribute which we set earlier
-                Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
+                Definitions.List.Library Library = (sender as PictureBox).Tag as Definitions.List.Library;
 
                 // If we are selecting the same library do nothing, which could be clicked by mistake and result in extra waiting time based on settings situation
-                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library && (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.LibraryList).GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
+                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library && (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library).GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
 
                 Definitions.Accessors.MainForm.panel_GameList.Tag = Library;
 
@@ -215,10 +215,10 @@ namespace Steam_Library_Manager.Content
             try
             {
                 // Define our library details
-                Definitions.List.LibraryList Library = (sender as PictureBox).Tag as Definitions.List.LibraryList;
+                Definitions.List.Library Library = (sender as PictureBox).Tag as Definitions.List.Library;
 
                 // Define our game details
-                Definitions.List.GamesList Game = (e.Data.GetData("Steam_Library_Manager.Framework.PictureBoxWithCaching") as Framework.PictureBoxWithCaching).Tag as Definitions.List.GamesList;
+                Definitions.List.Game Game = (e.Data.GetData("Steam_Library_Manager.Framework.PictureBoxWithCaching") as Framework.PictureBoxWithCaching).Tag as Definitions.List.Game;
 
                 // If we dropped game to the library which is already on it then do nothing
                 if (Game.Library == Library) return;

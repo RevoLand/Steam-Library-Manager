@@ -135,7 +135,7 @@
   <data name="menuItem_refreshGameList" xml:space="preserve">
     <value>Kütüphaneyi güncelle</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
+  <data name="menuItem_removeBackupLibraryFromList" xml:space="preserve">
     <value>Listeden kaldır</value>
   </data>
   <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">

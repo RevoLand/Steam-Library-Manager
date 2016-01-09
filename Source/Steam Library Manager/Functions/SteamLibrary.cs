@@ -7,7 +7,7 @@ namespace Steam_Library_Manager.Functions
 {
     class SteamLibrary
     {
-        public static void updateLibraryDetails(Definitions.List.LibraryList Library, string newLibraryPath)
+        public static void updateLibraryDetails(Definitions.List.Library Library, string newLibraryPath)
         {
             try
             {
@@ -26,14 +26,14 @@ namespace Steam_Library_Manager.Functions
             catch { }
         }
 
-        public static void removeLibrary(Definitions.List.LibraryList Library, bool deleteFiles)
+        public static void removeLibrary(Definitions.List.Library Library, bool deleteFiles)
         {
             try
             {
                 if (deleteFiles)
                     FileSystem.deleteOldLibrary(Library);
 
-                Definitions.List.Library.Remove(Library);
+                Definitions.List.Libraries.Remove(Library);
 
                 if (Library.Backup)
                     Settings.updateBackupDirs();
@@ -97,7 +97,7 @@ namespace Steam_Library_Manager.Functions
                         Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
 
                         // Add our new library to vdf file so steam will know we have a new library
-                        Key.Children[0].Children[0].Children[0].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Library.FindAll(x => !x.Backup).Count), newLibraryPath));
+                        Key.Children[0].Children[0].Children[0].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.FindAll(x => !x.Backup).Count), newLibraryPath));
 
                         // Save vdf file
                         Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
@@ -139,7 +139,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Definitions.List.LibraryList Library = new Definitions.List.LibraryList();
+                Definitions.List.Library Library = new Definitions.List.Library();
 
                 // Define if library is main library
                 Library.Main = mainLibrary;
@@ -166,7 +166,7 @@ namespace Steam_Library_Manager.Functions
                 Library.GameCount = FileSystem.Game.GetGameCountFromLibrary(Library);
 
                 // And add collected informations to our global list
-                Definitions.List.Library.Add(Library);
+                Definitions.List.Libraries.Add(Library);
 
                 await Task.Run(() => Games.UpdateGameList(Library));
             }
@@ -179,9 +179,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // If we already have definitions in our list
-                if (Definitions.List.Library.Count != 0)
+                if (Definitions.List.Libraries.Count != 0)
                     // Clear them so they don't conflict
-                    Definitions.List.Library.Clear();
+                    Definitions.List.Libraries.Clear();
 
                 // If Steam.exe not exists in the path we set, then return
                 if (File.Exists(Path.Combine(Properties.Settings.Default.SteamInstallationPath, "Steam.exe")))
@@ -273,7 +273,7 @@ namespace Steam_Library_Manager.Functions
                     MainForm.SafeInvoke(Definitions.Accessors.MainForm.panel_LibraryList, () => Definitions.Accessors.MainForm.panel_LibraryList.Controls.Clear());
 
                 // Do the loop for each Library in our library list
-                foreach (Definitions.List.LibraryList Library in Definitions.List.Library)
+                foreach (Definitions.List.Library Library in Definitions.List.Libraries)
                 {
                     // Define a new pictureBox
                     PictureBox libraryDetailBox = Content.Libraries.generateLibraryBox(Library);
@@ -292,7 +292,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.List.Library.FindAll(x => x.fullPath == NewLibraryPath).Count > 0)
+                if (Definitions.List.Libraries.FindAll(x => x.fullPath == NewLibraryPath).Count > 0)
                     return true;
 
                 // else, return false which means library is not exists

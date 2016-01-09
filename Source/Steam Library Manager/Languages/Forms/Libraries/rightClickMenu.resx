@@ -135,7 +135,7 @@
   <data name="menuItem_refreshGameList" xml:space="preserve">
     <value>Refresh games in library</value>
   </data>
-  <data name="menuITem_removeBackupLibraryFromList" xml:space="preserve">
+  <data name="menuItem_removeBackupLibraryFromList" xml:space="preserve">
     <value>Remove from list</value>
   </data>
   <data name="messageTitle_moveGamesInLibraryBeforeDelete" xml:space="preserve">

@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Content
 {
     class Games
     {
-        public static async Task<Framework.PictureBoxWithCaching> generateGameBox(Definitions.List.GamesList Game)
+        public static async Task<Framework.PictureBoxWithCaching> generateGameBox(Definitions.List.Game Game, int margin)
         {
             // Define a new pictureBox for game
             Framework.PictureBoxWithCaching gameDetailBox = new Framework.PictureBoxWithCaching();
@@ -27,7 +27,7 @@ namespace Steam_Library_Manager.Content
             gameDetailBox.ErrorImage = Properties.Resources.no_image_available;
 
             // Space between pictureBoxes for better looking
-            gameDetailBox.Margin = new Padding(20);
+            gameDetailBox.Margin = new Padding(margin);
 
             // Set our game details as Tag to pictureBox
             gameDetailBox.Tag = Game;
@@ -72,7 +72,7 @@ namespace Steam_Library_Manager.Content
             }
         }
 
-        public static ContextMenuStrip generateRightClickMenu(Definitions.List.GamesList Game)
+        public static ContextMenuStrip generateRightClickMenu(Definitions.List.Game Game)
         {
             // Create a new right click menu (context menu)
             ContextMenuStrip menu = new ContextMenuStrip();
@@ -144,7 +144,7 @@ namespace Steam_Library_Manager.Content
             try
             {
                 // Define our game from the Tag we given to Context menu
-                Definitions.List.GamesList Game = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl.Tag as Definitions.List.GamesList;
+                Definitions.List.Game Game = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl.Tag as Definitions.List.Game;
 
                 // switch based on name we set earlier with context menu
                 switch ((sender as ToolStripMenuItem).Name)

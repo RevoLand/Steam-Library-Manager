@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class rightClickMenu {
+    internal class rightClickMenu {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Steam_Library_Manager.Languages.Forms.Games.rightClickMenu", typeof(rightClickMenu).Assembly);
@@ -51,7 +51,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Games.
         /// </summary>
-        public static string Games {
+        internal static string Games {
             get {
                 return ResourceManager.GetString("Games", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Backup using Steam.
         /// </summary>
-        public static string menuItem_backupUsingSteam {
+        internal static string menuItem_backupUsingSteam {
             get {
                 return ResourceManager.GetString("menuItem_backupUsingSteam", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Check System Requirements.
         /// </summary>
-        public static string menuItem_checkSysRequirements {
+        internal static string menuItem_checkSysRequirements {
             get {
                 return ResourceManager.GetString("menuItem_checkSysRequirements", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Defrag game files.
         /// </summary>
-        public static string menuItem_defrag {
+        internal static string menuItem_defrag {
             get {
                 return ResourceManager.GetString("menuItem_defrag", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to {0} (ID: {1}).
         /// </summary>
-        public static string menuItem_gameNameWithAppID {
+        internal static string menuItem_gameNameWithAppID {
             get {
                 return ResourceManager.GetString("menuItem_gameNameWithAppID", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Game Size on Disk: {0}.
         /// </summary>
-        public static string menuItem_gameSizeOnDisk {
+        internal static string menuItem_gameSizeOnDisk {
             get {
                 return ResourceManager.GetString("menuItem_gameSizeOnDisk", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Open ACF file.
         /// </summary>
-        public static string menuItem_openAcfFile {
+        internal static string menuItem_openAcfFile {
             get {
                 return ResourceManager.GetString("menuItem_openAcfFile", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Play.
         /// </summary>
-        public static string menuItem_play {
+        internal static string menuItem_play {
             get {
                 return ResourceManager.GetString("menuItem_play", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Uninstall.
         /// </summary>
-        public static string menuItem_uninstall {
+        internal static string menuItem_uninstall {
             get {
                 return ResourceManager.GetString("menuItem_uninstall", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Remove game files using SLM.
         /// </summary>
-        public static string menuItem_uninstallWithSLM {
+        internal static string menuItem_uninstallWithSLM {
             get {
                 return ResourceManager.GetString("menuItem_uninstallWithSLM", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Validate game files.
         /// </summary>
-        public static string menuItem_validateGameFiles {
+        internal static string menuItem_validateGameFiles {
             get {
                 return ResourceManager.GetString("menuItem_validateGameFiles", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to View on Disk.
         /// </summary>
-        public static string menuItem_viewOnDisk {
+        internal static string menuItem_viewOnDisk {
             get {
                 return ResourceManager.GetString("menuItem_viewOnDisk", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to View on Store.
         /// </summary>
-        public static string menuItem_viewOnStore {
+        internal static string menuItem_viewOnStore {
             get {
                 return ResourceManager.GetString("menuItem_viewOnStore", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to View on Store (Steam Client).
         /// </summary>
-        public static string menuItem_viewOnStoreWithSteam {
+        internal static string menuItem_viewOnStoreWithSteam {
             get {
                 return ResourceManager.GetString("menuItem_viewOnStoreWithSteam", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to All files for {0} successfully removed as requested..
         /// </summary>
-        public static string message_appRemovedAsRequested {
+        internal static string message_appRemovedAsRequested {
             get {
                 return ResourceManager.GetString("message_appRemovedAsRequested", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Do you really want to remove {0}?{1}{1}This process can not be reversed, YOU HAVE BEEN WARNED!.
         /// </summary>
-        public static string message_sureToRemoveGame {
+        internal static string message_sureToRemoveGame {
             get {
                 return ResourceManager.GetString("message_sureToRemoveGame", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace Steam_Library_Manager.Languages.Forms.Games {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure?.
         /// </summary>
-        public static string messageTitle_sureToRemoveGame {
+        internal static string messageTitle_sureToRemoveGame {
             get {
                 return ResourceManager.GetString("messageTitle_sureToRemoveGame", resourceCulture);
             }
