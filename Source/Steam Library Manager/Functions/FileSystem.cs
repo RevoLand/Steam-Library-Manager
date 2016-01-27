@@ -128,7 +128,7 @@ namespace Steam_Library_Manager.Functions
                             return -1;
                         }
 
-                        using (FileStream currentFileContent = new FileStream(currentFile, FileMode.Open, FileAccess.Read))
+                        using (FileStream currentFileContent = File.Open(currentFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
                             string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
 
@@ -138,15 +138,16 @@ namespace Steam_Library_Manager.Functions
                             if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
                                 Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
 
-                            using (FileStream newFileContent = new FileStream(newFileName, FileMode.CreateNew, FileAccess.Write))
+                            using (FileStream newFileContent = new FileStream(newFileName, FileMode.Create, FileAccess.Write))
                             {
-
                                 while ((currentBlockSize = await currentFileContent.ReadAsync(buffer, 0, buffer.Length)) > 0)
                                 {
+                                    await newFileContent.WriteAsync(buffer, 0, currentBlockSize);
+
                                     movenSize += currentBlockSize;
                                     currentForm.label_movedFileSize.Text = string.Format(Languages.Games.label_movedFileSize, FormatBytes(movenSize), FormatBytes(totalSize), FormatBytes(totalSize - movenSize));
                                 }
-
+                                
                                 // Perform step on progress bar
                                 currentForm.progressBar_CopyStatus.PerformStep();
 
@@ -432,7 +433,7 @@ namespace Steam_Library_Manager.Functions
             using (var MD5 = System.Security.Cryptography.MD5.Create())
             {
                 // Compute md5 hash of given file and return the hash value
-                return MD5.ComputeHash(File.OpenRead(filePath));
+                return MD5.ComputeHash(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             }
         }
 

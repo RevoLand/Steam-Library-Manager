@@ -1,1 +1,1 @@
-1.2.1|Localization improvements
+1.2.2|Important fix for newMethod
