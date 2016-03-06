@@ -227,7 +227,7 @@ namespace Steam_Library_Manager.Forms
             logToForm(string.Format(Languages.Forms.moveGame.logMessage_timeElapsed, timeElapsed.Elapsed));
 
             // Update game libraries
-            Functions.SteamLibrary.updateLibraryList();
+            //Functions.SteamLibrary.updateLibraryList();
         }
 
         void logToForm(string Text)

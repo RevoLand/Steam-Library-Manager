@@ -165,8 +165,8 @@ namespace Steam_Library_Manager.Functions
 
                                 await Task.Run(() => AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true));
 
-                                // we found what we are looking for, return
-                                return;
+                                // we found what we are looking for, continue the loop
+                                continue;
                             }
                         }
                     }

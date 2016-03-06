@@ -1,1 +1,1 @@
-1.2.2|Important fix for newMethod
+1.2.2.1|Fix for compressed games not being detected
