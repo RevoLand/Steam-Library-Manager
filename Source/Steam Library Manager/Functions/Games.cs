@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Windows.Forms;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
     class Games
     {
+
         public static async void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk, bool isCompressed)
         {
             try
@@ -26,14 +27,16 @@ namespace Steam_Library_Manager.Functions
                 // Set game name
                 Game.appName = appName;
 
+                Game.gameHeaderImage = $"http://cdn.akamai.steamstatic.com/steam/apps/{appID}/header.jpg";
+
                 // Set acf name, appmanifest_107410.acf as example
-                Game.acfName = string.Format("appmanifest_{0}.acf", appID);
+                Game.acfName = $"appmanifest_{appID}.acf";
 
                 // Set game acf path
                 Game.acfPath = acfPath;
 
                 // Set workshop acf name
-                Game.workShopAcfName = string.Format("appworkshop_{0}.acf", appID);
+                Game.workShopAcfName = $"appworkshop_{appID}.acf";
 
                 if (!string.IsNullOrEmpty(Library.workshopPath))
                     // Set path for acf file
@@ -61,10 +64,10 @@ namespace Steam_Library_Manager.Functions
                 if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath) && !Game.Compressed)
                     return; // Do not add pre-loads to list
 
-                FileSystem.Game gameFunctions = new FileSystem.Game();
+                fileSystem.Game gameFunctions = new fileSystem.Game();
 
                 // If SizeOnDisk value from .ACF file is not equals to 0
-                if (Properties.Settings.Default.GameSizeCalculationMethod != "ACF" && !isCompressed)
+                if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF" && !isCompressed)
                 {
                     List<string> gameFiles = await gameFunctions.getFileList(Game);
 
@@ -76,7 +79,7 @@ namespace Steam_Library_Manager.Functions
                 else if (isCompressed)
                 {
                     // If user want us to get archive size from real uncompressed size
-                    if (Properties.Settings.Default.ArchiveSizeCalculationMethod.StartsWith("Uncompressed"))
+                    if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
                     {
                         // Open archive to read
                         using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip")))
@@ -92,15 +95,21 @@ namespace Steam_Library_Manager.Functions
                     else
                     {
                         // And set archive size as game size
-                        Game.sizeOnDisk = FileSystem.getFileSize(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
+                        Game.sizeOnDisk = fileSystem.getFileSize(Path.Combine(Game.Library.steamAppsPath, Game.appID + ".zip"));
                     }
                 }
                 else
                     // Else set game size to size in acf
                     Game.sizeOnDisk = sizeOnDisk;
 
+                Game.contextMenu = Content.Games.generateRightClickMenu(Game);
                 // Add our game details to global list
-                Definitions.List.Games.Add(Game);
+                Application.Current.Dispatcher.Invoke(
+                System.Windows.Threading.DispatcherPriority.Normal,
+                (Action)delegate ()
+                {
+                    Definitions.List.Games.Add(Game);
+                });
             }
             catch (Exception ex)
             {
@@ -108,19 +117,10 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void UpdateGameList(Definitions.List.Library Library)
+        public static void UpdateGameList(Definitions.List.Library Library)
         {
             try
             {
-                // If our list is not empty
-                if (Definitions.List.Games.Count != 0)
-                {
-                    if (Library == null)
-                        Definitions.List.Games.Clear();
-                    else
-                        Definitions.List.Games.RemoveAll(x => x.Library == Library);
-                }
-
                 if (!Directory.Exists(Library.steamAppsPath))
                     return;
 
@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Functions
                     if (Key.Children.Count == 0)
                         continue;
 
-                    await Task.Run(() => AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false));
+                    AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 }
 
                 // If library is backup library
@@ -161,63 +161,46 @@ namespace Steam_Library_Manager.Functions
 
                                 // If acf file has no children, skip this archive
                                 if (Key.Children.Count == 0)
-                                    return;
+                                    continue;
 
-                                await Task.Run(() => AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true));
+                                AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
 
                                 // we found what we are looking for, continue the loop
                                 continue;
                             }
+
+                            compressedArchive.Dispose();
                         }
                     }
                 }
 
-                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library)
+                if (Definitions.SLM.selectedLibrary == Library)
                     UpdateMainForm(null, null, Library);
             }
             catch (Exception ex)
             {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log
-                    Log.ErrorsToFile(Languages.Games.source_updateGameList, ex.ToString());
-
-                // Show a messagebox to user
-                MessageBox.Show(string.Format(Languages.Games.messageError_unknownErrorWhileUpdatingGames, ex, Environment.NewLine));
+                MessageBox.Show(ex.ToString());
             }
         }
 
-        public static async void UpdateMainForm(Func<Definitions.List.Game, object> Sort, string Search, Definitions.List.Library Library)
+        public static void UpdateMainForm(Func<Definitions.List.Game, object> Sort, string Search, Definitions.List.Library Library)
         {
             try
             {
-                Sort = Settings.getSortingMethod();
+                Sort = SLM.Settings.getSortingMethod();
 
-                // If our panel for game list not empty
-                if (Definitions.Accessors.MainForm.panel_GameList.Controls.Count != 0)
-                    // Then clean panel
-                    Definitions.Accessors.MainForm.panel_GameList.Controls.Clear();
-
-                // Do a loop for each game in library
-                foreach (Definitions.List.Game Game in ((string.IsNullOrEmpty(Search)) ? Definitions.List.Games.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Games.Where(x => x.Library == Library).Where(
+                MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Definitions.List.Games.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Games.Where(x => x.Library == Library).Where(
                     y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                     || y.appID.ToString().Contains(Search) // Search by app ID
                     ).OrderBy(Sort)
-                    ))
-                {
-
-                    // Add our new game pictureBox to panel
-                    Definitions.Accessors.MainForm.panel_GameList.Controls.Add(await Content.Games.generateGameBox(Game, 20));
-                }
+                    );
             }
             catch (Exception ex)
             {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Log.ErrorsToFile(Languages.Games.source_Games, ex.ToString());
+                MessageBox.Show(ex.ToString());
             }
         }
+
 
     }
 }

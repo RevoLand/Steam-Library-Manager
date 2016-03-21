@@ -2,41 +2,35 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Steam_Library_Manager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SteamInstallationPath" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="steamInstallationPath" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GameSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ACF</Value>
-    </Setting>
-    <Setting Name="BackupDirectories" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="backupDirectories" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ArchiveSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Uncompressed</Value>
-    </Setting>
-    <Setting Name="LogErrorsToFile" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="CheckForUpdatesAtStartup" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="SortGamesBy" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="defaultGameSortingMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">appName</Value>
     </Setting>
-    <Setting Name="GamePictureBoxSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Drawing.Size" Scope="User">
-      <Value Profile="(Default)">230, 107</Value>
+    <Setting Name="gameSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ACF</Value>
     </Setting>
-    <Setting Name="DefaultTextEditor" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">%windir%\notepad.exe</Value>
+    <Setting Name="archiveSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Uncompressed</Value>
     </Setting>
-    <Setting Name="libraryPictureSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Drawing.Size" Scope="User">
-      <Value Profile="(Default)">195, 155</Value>
+    <Setting Name="Top" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="defaultLanguage" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">en</Value>
+    <Setting Name="Left" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="methodForMovingGame" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">newMethod</Value>
+    <Setting Name="Height" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Width" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Maximised" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

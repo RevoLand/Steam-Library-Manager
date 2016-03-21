@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using FontAwesome.WPF;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace Steam_Library_Manager.Definitions
 {
     // Our Library and Game definitions exists there
-    class List
+    public class List
     {
         // Make a new list for Library details
-        public static List<Library> Libraries = new List<Library>();
+        public static ObservableCollection<Library> Libraries = new ObservableCollection<Library>();
 
-        // Make a new list for Game details
-        public static List<Game> Games = new List<Game>();
+        public static ObservableCollection<Game> Games = new ObservableCollection<Game>();
 
         public static List<Language> Languages = new List<Language>();
+
+        public static List<rightClickMenuItem> rightClickMenuItems = new List<rightClickMenuItem>();
 
         // Library details we are using, contains things like library path, game count etc.
         public class Library
@@ -20,18 +23,21 @@ namespace Steam_Library_Manager.Definitions
             public bool Main, Backup;
             public int GameCount;
             public string steamAppsPath, commonPath, downloadPath, workshopPath;
-
+            public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public string fullPath { get; set; }
         }
 
         // Game details we are using, contains things like appID, installationPath etc.
         public class Game
         {
-            public int appID;
-            public Library Library;
-            public string appName, installationPath, acfName, acfPath, commonPath, downloadPath, workShopPath, workShopAcfName, workShopAcfPath;
-            public long sizeOnDisk;
-            public bool Compressed;
+            public int appID { get; set; }
+            public Library Library { get; set; }
+            public string appName { get; set; }
+            public string gameHeaderImage { get; set; }
+            public string installationPath, acfName, acfPath, commonPath, downloadPath, workShopPath, workShopAcfName, workShopAcfPath;
+            public long sizeOnDisk { get; set; }
+            public System.Windows.Controls.ContextMenu contextMenu { get; set; }
+            public bool Compressed { get; set; }
         }
 
         public class Language
@@ -42,6 +48,17 @@ namespace Steam_Library_Manager.Definitions
             public CultureInfo culture;
             public string externalFileName;
             public bool isDefault, requiresExternalFile;
+        }
+
+        public class rightClickMenuItem
+        {
+            public int order;
+            public string DisplayText, Action;
+            public FontAwesomeIcon icon = FontAwesomeIcon.None;
+            public System.Windows.Media.Brush iconColor = System.Windows.Media.Brushes.Black;
+            public bool IsSeperator, IsEnabled = true, ShownToBackup;
+            public Library Library;
+            public Game Game;
         }
 
     }

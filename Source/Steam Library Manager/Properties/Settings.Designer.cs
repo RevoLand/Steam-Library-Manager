@@ -13,7 +13,7 @@ namespace Steam_Library_Manager.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -28,26 +28,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SteamInstallationPath {
+        public string steamInstallationPath {
             get {
-                return ((string)(this["SteamInstallationPath"]));
+                return ((string)(this["steamInstallationPath"]));
             }
             set {
-                this["SteamInstallationPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ACF")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string GameSizeCalculationMethod {
-            get {
-                return ((string)(this["GameSizeCalculationMethod"]));
-            }
-            set {
-                this["GameSizeCalculationMethod"] = value;
+                this["steamInstallationPath"] = value;
             }
         }
         
@@ -55,54 +41,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Collections.Specialized.StringCollection BackupDirectories {
+        public global::System.Collections.Specialized.StringCollection backupDirectories {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["BackupDirectories"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["backupDirectories"]));
             }
             set {
-                this["BackupDirectories"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Uncompressed")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string ArchiveSizeCalculationMethod {
-            get {
-                return ((string)(this["ArchiveSizeCalculationMethod"]));
-            }
-            set {
-                this["ArchiveSizeCalculationMethod"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool LogErrorsToFile {
-            get {
-                return ((bool)(this["LogErrorsToFile"]));
-            }
-            set {
-                this["LogErrorsToFile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool CheckForUpdatesAtStartup {
-            get {
-                return ((bool)(this["CheckForUpdatesAtStartup"]));
-            }
-            set {
-                this["CheckForUpdatesAtStartup"] = value;
+                this["backupDirectories"] = value;
             }
         }
         
@@ -111,82 +55,110 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("appName")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SortGamesBy {
+        public string defaultGameSortingMethod {
             get {
-                return ((string)(this["SortGamesBy"]));
+                return ((string)(this["defaultGameSortingMethod"]));
             }
             set {
-                this["SortGamesBy"] = value;
+                this["defaultGameSortingMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("230, 107")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ACF")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Drawing.Size GamePictureBoxSize {
+        public string gameSizeCalculationMethod {
             get {
-                return ((global::System.Drawing.Size)(this["GamePictureBoxSize"]));
+                return ((string)(this["gameSizeCalculationMethod"]));
             }
             set {
-                this["GamePictureBoxSize"] = value;
+                this["gameSizeCalculationMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("%windir%\\notepad.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Uncompressed")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string DefaultTextEditor {
+        public string archiveSizeCalculationMethod {
             get {
-                return ((string)(this["DefaultTextEditor"]));
+                return ((string)(this["archiveSizeCalculationMethod"]));
             }
             set {
-                this["DefaultTextEditor"] = value;
+                this["archiveSizeCalculationMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("195, 155")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Drawing.Size libraryPictureSize {
+        public double Top {
             get {
-                return ((global::System.Drawing.Size)(this["libraryPictureSize"]));
+                return ((double)(this["Top"]));
             }
             set {
-                this["libraryPictureSize"] = value;
+                this["Top"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string defaultLanguage {
+        public double Left {
             get {
-                return ((string)(this["defaultLanguage"]));
+                return ((double)(this["Left"]));
             }
             set {
-                this["defaultLanguage"] = value;
+                this["Left"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("newMethod")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string methodForMovingGame {
+        public double Height {
             get {
-                return ((string)(this["methodForMovingGame"]));
+                return ((double)(this["Height"]));
             }
             set {
-                this["methodForMovingGame"] = value;
+                this["Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public double Width {
+            get {
+                return ((double)(this["Width"]));
+            }
+            set {
+                this["Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool Maximised {
+            get {
+                return ((bool)(this["Maximised"]));
+            }
+            set {
+                this["Maximised"] = value;
             }
         }
     }

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    class FileSystem
+    class fileSystem
     {
+
         public class Game
         {
             public static int GetGameCountFromLibrary(Definitions.List.Library Library)
@@ -34,6 +33,7 @@ namespace Steam_Library_Manager.Functions
                 catch { return 0; }
             }
 
+            /*
             public async Task<int> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, bool Validate, CancellationToken token)
             {
                 List<string> movedFiles = new List<string>();
@@ -147,7 +147,7 @@ namespace Steam_Library_Manager.Functions
                                     movenSize += currentBlockSize;
                                     currentForm.label_movedFileSize.Text = string.Format(Languages.Games.label_movedFileSize, FormatBytes(movenSize), FormatBytes(totalSize), FormatBytes(totalSize - movenSize));
                                 }
-                                
+
                                 // Perform step on progress bar
                                 currentForm.progressBar_CopyStatus.PerformStep();
 
@@ -189,6 +189,7 @@ namespace Steam_Library_Manager.Functions
                 return 1;
             }
 
+            */
             public async Task<bool> deleteGameFiles(Definitions.List.Game Game, List<string> gameFiles = null)
             {
                 try
@@ -301,6 +302,7 @@ namespace Steam_Library_Manager.Functions
 
             async Task<IEnumerable<string>> getWorkshopFiles(Definitions.List.Game Game) => await Task.Run(() => Directory.EnumerateFiles(Game.workShopPath, "*", SearchOption.AllDirectories).ToList());
 
+            /*
             public async Task<bool> copyGameArchive(Forms.moveGame currentForm, string currentZipNameNpath, string newZipNameNpath)
             {
                 try
@@ -325,7 +327,9 @@ namespace Steam_Library_Manager.Functions
 
                 return true;
             }
+            */
 
+            /*
             public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
             {
                 string newFileName;
@@ -400,6 +404,8 @@ namespace Steam_Library_Manager.Functions
 
                 return true;
             }
+
+            */
         }
 
         // Get directory size from path, with or without sub directories
@@ -479,7 +485,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString());
             }
         }
     }

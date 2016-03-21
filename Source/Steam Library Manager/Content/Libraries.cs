@@ -1,233 +1,189 @@
-﻿using System;
+﻿using FontAwesome.WPF;
 using System.Linq;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Content
 {
     class Libraries
     {
-        public static PictureBox generateLibraryBox(Definitions.List.Library Library)
+
+        public static ContextMenu generateRightClickMenu(Definitions.List.Library Library)
         {
-            PictureBox libraryDetailBox = new PictureBox();
+            generateRightClickMenuItems(Library);
 
-            // Set our image for picturebox
-            libraryDetailBox.Image = Properties.Resources.libraryIcon;
-
-            // Set our picturebox size
-            libraryDetailBox.Size = Properties.Settings.Default.libraryPictureSize;
-
-            // Center our image, we are using an image smaller than our pictureBox size and centering image so our library name label will read easily
-            libraryDetailBox.SizeMode = PictureBoxSizeMode.CenterImage;
-
-            // Define our Library as Tag of pictureBox so we can easily get details of this library (pictureBox) in future 
-            libraryDetailBox.Tag = Library;
-
-            // Set events for library name click
-            libraryDetailBox.MouseClick += libraryDetailBox_OnSelect;
-
-            // Allow drops to our pictureBox
-            ((Control)libraryDetailBox).AllowDrop = true;
-
-            // Definition of DragEnter event
-            libraryDetailBox.DragEnter += libraryDetailBox_DragEnter;
-
-            // Definition of DragDrop event
-            libraryDetailBox.DragDrop += libraryDetailBox_DragDrop;
-
-            // Create a new Label to show on pictureBox as Library name
-            Label libraryName = new Label();
-
-            // Set our label size
-            libraryName.AutoSize = true;
-
-            // Set label text, currently it is directory path + game count
-            libraryName.Text = string.Format(Languages.SteamLibrary.label_libraryName, Library.fullPath, Library.GameCount, Functions.FileSystem.FormatBytes(Functions.FileSystem.getAvailableFreeSpace(Library.fullPath)));
-
-            // Show our label in bottom center of our pictureBox
-            libraryName.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-
-            // Set our label background color to transparent, actually we may try using a color in future
-            libraryName.BackColor = System.Drawing.Color.Transparent;
-
-            // Set our font to Segoe UI Semilight for better looking, all suggestions are welcome
-            libraryName.Font = new System.Drawing.Font("Segoe UI Semilight", 8);
-            libraryName.Top = Properties.Settings.Default.libraryPictureSize.Height - 15;
-
-            // Add our label to pictureBox
-            libraryDetailBox.Controls.Add(libraryName);
-
-            // Add our right click (context) menu to pictureBox
-            libraryDetailBox.ContextMenuStrip = generateRightClickMenu(Library);
-
-            return libraryDetailBox;
-        }
-
-        public static ContextMenuStrip generateRightClickMenu(Definitions.List.Library Library)
-        {
             // Create a new right click menu (aka context menu)
-            ContextMenuStrip menu = new ContextMenuStrip();
+            ContextMenu cMenu = new ContextMenu();
+            cMenu.Tag = Library;
 
-            EventHandler clickHandler = new EventHandler(libraryDetailBox_ContextMenuAction);
-
-            // Add an item which will show our library directory and make it disabled
-            menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_openLibraryInExplorer, null, clickHandler).Name = "Disk";
-
-            // spacer
-            menu.Items.Add(Definitions.SLM.Spacer);
-
-            // Move library
-            menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_moveLibrary, null, clickHandler).Name = "moveLibrary";
-
-            // spacer
-            menu.Items.Add(Definitions.SLM.Spacer);
-
-            // Refresh games in library
-            menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_refreshGameList, null, clickHandler).Name = "RefreshGameList";
-
-            // spacer
-            menu.Items.Add(Definitions.SLM.Spacer);
-
-            // Delete library
-            menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_deleteLibrary, null, clickHandler).Name = "deleteLibrary";
-
-            // Delete games in library
-            menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_deleteGamesInLibrary, null, clickHandler).Name = "deleteLibrarySLM";
-
-            if (Library.Backup)
+            foreach (Definitions.List.rightClickMenuItem Item in Definitions.List.rightClickMenuItems.Where(x => x.Library == Library).OrderBy(x => x.order))
             {
-                // Spacer
-                menu.Items.Add(Definitions.SLM.Spacer);
+                if (Item.ShownToBackup && !Library.Backup) continue;
 
-                // Remove the library from slm (only from list)
-                menu.Items.Add(Languages.Forms.Libraries.rightClickMenu.menuItem_removeBackupLibraryFromList).Name = "RemoveFromList";
-            }
+                MenuItem newMenuItem = new MenuItem();
 
-            return menu;
-        }
-
-        static async void libraryDetailBox_ContextMenuAction(object sender, EventArgs e)
-        {
-            try
-            {
-                // Define our game from the Tag we given to Context menu
-                Definitions.List.Library Library = ((sender as ToolStripMenuItem).Owner as ContextMenuStrip).SourceControl.Tag as Definitions.List.Library;
-
-                // switch based on name we set earlier with context menu
-                switch ((sender as ToolStripMenuItem).Name)
+                if (Item.IsSeperator)
+                    cMenu.Items.Add(new Separator());
+                else
                 {
-                    // Opens game installation path in explorer
-                    case "Disk":
-                        System.Diagnostics.Process.Start(Library.steamAppsPath);
-                        break;
-                    case "RefreshGameList":
-                        Functions.Games.UpdateGameList(Library);
-                        break;
-                    case "deleteLibrary":
-                        DialogResult moveGamesBeforeDeletion = MessageBox.Show(Languages.Forms.Libraries.rightClickMenu.message_moveGamesInLibraryBeforeDelete, Languages.Forms.Libraries.rightClickMenu.messageTitle_moveGamesInLibraryBeforeDelete, MessageBoxButtons.YesNoCancel);
+                    newMenuItem.Click += menuItem_Click;
 
-                        if (moveGamesBeforeDeletion == DialogResult.Yes)
-                            new Forms.moveLibrary(Library).Show();
-                        else if (moveGamesBeforeDeletion == DialogResult.No)
-                            Functions.SteamLibrary.removeLibrary(Library, true);
-                        break;
-                    case "deleteLibrarySLM":
-                        foreach (Definitions.List.Game Game in Definitions.List.Games.Where(x => x.Library == Library))
-                        {
-                            Functions.FileSystem.Game gameFunctions = new Functions.FileSystem.Game();
+                    newMenuItem.Header = Item.DisplayText;
+                    newMenuItem.Name = Item.Action;
+                    newMenuItem.IsEnabled = Item.IsEnabled;
 
-                            if (!await gameFunctions.deleteGameFiles(Game))
-                            {
-                                MessageBox.Show(string.Format(Languages.Forms.Libraries.rightClickMenu.message_unknownErrorWhileDeletingGames, Library.fullPath));
+                    if (Item.icon != FontAwesomeIcon.None)
+                        newMenuItem.Icon = Functions.fAwesome.getAwesomeIcon(Item.icon, Item.iconColor);
 
-                                return;
-                            }
-                        }
-
-                        Functions.SteamLibrary.updateLibraryList();
-                        Functions.SteamLibrary.updateMainForm();
-                        Functions.Games.UpdateGameList(Library);
-
-                        MessageBox.Show(string.Format(Languages.Forms.Libraries.rightClickMenu.message_allGamesSuccesfullyDeleted, Library.fullPath, Environment.NewLine));
-                        break;
-                    case "moveLibrary":
-                        new Forms.moveLibrary(Library).Show();
-                        break;
-
-                    // Removes a backup library from list
-                    case "RemoveFromList":
-                        if (Library.Backup)
-                        {
-                            // Remove the library from our list
-                            Definitions.List.Libraries.Remove(Library);
-
-                            // Update backup dir settings
-                            Functions.Settings.updateBackupDirs();
-
-                            // Update main form with new settings
-                            Functions.SteamLibrary.updateMainForm();
-                        }
-                        break;
+                    cMenu.Items.Add(newMenuItem);
                 }
-
             }
-            catch (Exception ex)
-            {
-                // If user want us to log errors to file
-                if (Properties.Settings.Default.LogErrorsToFile)
-                    // Log errors to DirectoryRemoval.txt
-                    Functions.Log.ErrorsToFile(Languages.Forms.Libraries.rightClickMenu.Libraries, ex.ToString());
-            }
+            return cMenu;
         }
 
-        static void libraryDetailBox_OnSelect(object sender, MouseEventArgs e)
+        private static async void menuItem_Click(object sender, RoutedEventArgs e)
         {
-            try
+            // Define our game from the Tag we given to Context menu
+            Definitions.List.Library Library = ((sender as MenuItem).Parent as ContextMenu).Tag as Definitions.List.Library;
+
+            // switch based on name we set earlier with context menu
+            switch ((sender as MenuItem).Name)
             {
-                // If user not clicked with left button return (so right-click menu will stay without a problem)
-                if (e.Button != MouseButtons.Left) return;
+                // Opens game installation path in explorer
+                case "Disk":
+                    if (System.IO.Directory.Exists(Library.steamAppsPath))
+                        System.Diagnostics.Process.Start(Library.steamAppsPath);
+                    break;
+                case "RefreshGameList":
+                    Functions.Games.UpdateGameList(Library);
+                    break;
+                case "deleteLibrary":
 
-                // Define our library details from .Tag attribute which we set earlier
-                Definitions.List.Library Library = (sender as PictureBox).Tag as Definitions.List.Library;
+                    MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Move games in Library before deleting the library?", "Move games first?", MessageBoxButton.YesNoCancel);
 
-                // If we are selecting the same library do nothing, which could be clicked by mistake and result in extra waiting time based on settings situation
-                if (Definitions.Accessors.MainForm.panel_GameList.Tag == Library && (Definitions.Accessors.MainForm.panel_GameList.Tag as Definitions.List.Library).GameCount == Library.GameCount && Definitions.Accessors.MainForm.panel_GameList.Controls.Count == Library.GameCount) return;
+                    if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
+                        //new Forms.moveLibrary(Library).Show();
+                        MessageBox.Show("Not implemented");
+                    else if (moveGamesBeforeDeletion == MessageBoxResult.No)
+                        Functions.Library.removeLibrary(Library, true);
 
-                Definitions.Accessors.MainForm.panel_GameList.Tag = Library;
+                    break;
+                case "deleteLibrarySLM":
 
-                // Update games list from current selection
-                Functions.Games.UpdateMainForm(null, null, Library);
+                    foreach (Definitions.List.Game Game in Definitions.List.Games.Where(x => x.Library == Library))
+                    {
+                        Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
+
+                        if (!await gameFunctions.deleteGameFiles(Game))
+                        {
+                            MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", Library.fullPath));
+
+                            return;
+                        }
+                    }
+
+                    Functions.Library.generateLibraryList();
+                    Functions.Library.updateMainForm();
+                    //Functions.Games.UpdateGameList(Library);
+
+                    MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", Library.fullPath));
+
+                    break;
+                case "moveLibrary":
+                    //new Forms.moveLibrary(Library).Show();
+                    break;
+
+                // Removes a backup library from list
+                case "RemoveFromList":
+                    if (Library.Backup)
+                    {
+                        // Remove the library from our list
+                        Definitions.List.Libraries.Remove(Library);
+
+                        // Update backup dir settings
+                        //Functions.Settings.updateBackupDirs();
+
+                        // Update main form with new settings
+                        Functions.Library.generateLibraryList();
+                    }
+                    break;
             }
-            catch { }
         }
 
-        static void libraryDetailBox_DragEnter(object sender, DragEventArgs e)
+
+        public static void generateRightClickMenuItems(Definitions.List.Library Library)
         {
-            try
+            if (Definitions.List.rightClickMenuItems == null)
+                Definitions.List.rightClickMenuItems = new System.Collections.Generic.List<Definitions.List.rightClickMenuItem>();
+
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
             {
-                // Sets visual effect, if we do not set it we will not be able to drop games to library
-                e.Effect = DragDropEffects.Move;
-            }
-            catch { }
-        }
+                order = 1,
+                DisplayText = $"Open library in explorer ({Library.fullPath})",
+                Action = "Disk",
+                icon = FontAwesomeIcon.FolderOpen,
+                Library = Library
+            });
 
-        static void libraryDetailBox_DragDrop(object sender, DragEventArgs e)
-        {
-            try
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
             {
-                // Define our library details
-                Definitions.List.Library Library = (sender as PictureBox).Tag as Definitions.List.Library;
+                order = 2,
+                IsSeperator = true,
+                Library = Library
+            });
 
-                // Define our game details
-                Definitions.List.Game Game = (e.Data.GetData("Steam_Library_Manager.Framework.PictureBoxWithCaching") as Framework.PictureBoxWithCaching).Tag as Definitions.List.Game;
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 3,
+                DisplayText = "Move library",
+                Action = "moveLibrary",
+                icon = FontAwesomeIcon.Paste,
+                Library = Library
+            });
 
-                // If we dropped game to the library which is already on it then do nothing
-                if (Game.Library == Library) return;
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 4,
+                DisplayText = "Refresh game list in library",
+                Action = "RefreshGameList",
+                icon = FontAwesomeIcon.Refresh,
+                Library = Library
+            });
 
-                // Create a new instance of MoveGame form
-                new Forms.moveGame(Game, Library).Show();
-            }
-            catch { }
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 5,
+                IsSeperator = true,
+                Library = Library
+            });
+
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 6,
+                DisplayText = "Delete library",
+                Action = "deleteLibrary",
+                icon = FontAwesomeIcon.Trash,
+                Library = Library
+            });
+
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 7,
+                DisplayText = "Delete games in library",
+                Action = "deleteLibrarySLM",
+                icon = FontAwesomeIcon.TrashOutline,
+                Library = Library
+            });
+
+            Definitions.List.rightClickMenuItems.Add(new Definitions.List.rightClickMenuItem
+            {
+                order = 8,
+                DisplayText = "Remove from list",
+                Action = "RemoveFromList",
+                icon = FontAwesomeIcon.Minus,
+                ShownToBackup = true,
+                Library = Library
+            });
         }
-
     }
 }

@@ -1,0 +1,55 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Steam_Library_Manager"
+        xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:Definitions="clr-namespace:Steam_Library_Manager.Definitions" xmlns:settings="clr-namespace:Steam_Library_Manager.Framework" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
+        mc:Ignorable="d"
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="1002" MinHeight="659" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" Visibility="Visible" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,41,2,2">
+        <TabControl x:Name="tabControl" Margin="10,0,10,10">
+            <TabItem Header="Manage your Library" IsSelected="True">
+                <Grid Background="#FFE5E5E5" ClipToBounds="True">
+                    <ScrollViewer MaxWidth="165" Margin="10,10,0,10" VerticalScrollBarVisibility="Hidden" Focusable="False" HorizontalAlignment="Left" Width="165">
+                        <ItemsControl Name="libraryPanel" Focusable="False" IsTabStop="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type sys:String}">
+                                    <Grid Tag="{Binding}" ContextMenu="{Binding contextMenu}" MouseDown="Grid_MouseDown" DragEnter="Grid_DragEnter" Drop="Grid_Drop" AllowDrop="True" Cursor="Hand">
+                                        <Image Source="/Steam Library Manager;component/Resources/libraryIcon.png" Width="128px" Height="100px"  Margin="20" />
+                                        <TextBlock Background="White" Text="{Binding fullPath}" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-5" TextWrapping="Wrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <ScrollViewer Margin="180,10,10,10" VerticalScrollBarVisibility="Auto" Focusable="False">
+                        <ItemsControl Name="gamePanel" Focusable="False" IsTabStop="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type sys:String}">
+                                    <Grid MouseDown="gameImage_MouseDown" Tag="{Binding}" ContextMenu="{Binding contextMenu}">
+                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" ImageUrl="{Binding gameHeaderImage}" Width="230px" Height="107px"  Margin="10px" />
+                                        <TextBlock TextAlignment="Center" Text="{Binding appName}" VerticalAlignment="Bottom" Margin="0,0,0,-10" TextWrapping="Wrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SLM Settings">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
