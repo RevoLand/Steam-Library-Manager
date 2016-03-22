@@ -102,6 +102,8 @@ namespace Steam_Library_Manager.Functions
                     // Else set game size to size in acf
                     Game.sizeOnDisk = sizeOnDisk;
 
+                Game.prettyGameSize = fileSystem.FormatBytes(Game.sizeOnDisk);
+
                 Game.contextMenu = Content.Games.generateRightClickMenu(Game);
                 // Add our game details to global list
                 Application.Current.Dispatcher.Invoke(

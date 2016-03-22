@@ -473,6 +473,19 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
+        public static long getUsedSpace(string TargetFolder)
+        {
+            try
+            {
+                // Define a drive info
+                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
+
+                // And return available free space from defined drive info
+                return Disk.TotalSize;
+            }
+            catch { return 0; }
+        }
+
         public async static void deleteOldLibrary(Definitions.List.Library Library)
         {
             try

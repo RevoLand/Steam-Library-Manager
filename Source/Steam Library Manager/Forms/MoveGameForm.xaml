@@ -14,8 +14,8 @@
         <Label x:Name="gameLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,239,0,390" VerticalAlignment="Center" Height="30"/>
         <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,269,0,360" VerticalAlignment="Center" Height="30"/>
         <Label x:Name="targetLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,299,0,330" VerticalAlignment="Center" Height="30"/>
-        <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,340,207,295" Height="24"/>
-        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="125,340,92,295" Height="24"/>
+        <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,340,202,295" Height="24"/>
+        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="130,340,92,295" Height="24"/>
         <CheckBox x:Name="validate" Content="Validate" HorizontalContentAlignment="Stretch" Margin="240,340,10,295" Height="24"/>
         <TextBox x:Name="textBox" Margin="10,0,10,10" TextWrapping="Wrap" AcceptsReturn="True" Text="TextBox" AllowDrop="False" Height="190" VerticalAlignment="Bottom"/>
         <Button x:Name="button" Content="Button" Margin="10,0,10,205" Height="42" VerticalAlignment="Bottom"/>

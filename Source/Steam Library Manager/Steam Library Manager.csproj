@@ -162,7 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\compressedLibraryIcon.png" />
-    <Resource Include="Resources\libraryIcon.png" />
     <Resource Include="Resources\no_image_available.gif" />
     <Resource Include="Resources\steam-icon.ico" />
   </ItemGroup>

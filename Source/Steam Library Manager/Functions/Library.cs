@@ -167,6 +167,12 @@ namespace Steam_Library_Manager.Functions
 
                 Library.contextMenu = Content.Libraries.generateRightClickMenu(Library);
 
+                Library.freeSpace = fileSystem.getAvailableFreeSpace(libraryPath);
+
+                Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
+
+                Library.freeSpacePerc = 100 - (int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(libraryPath));
+
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
@@ -253,18 +259,6 @@ namespace Steam_Library_Manager.Functions
                     // Save backup dirs
                     //Settings.updateBackupDirs();
                 }
-
-                // Temp
-                addNewLibrary(@"F:\SteamBackup2", false, true);
-                addNewLibrary(@"F:\SteamBackup3", false, true);
-                addNewLibrary(@"F:\SteamBackup4", false, true);
-                addNewLibrary(@"F:\SteamBackup5", false, true);
-                addNewLibrary(@"F:\SteamBackup6", false, true);
-                addNewLibrary(@"F:\SteamBackup7", false, true);
-                addNewLibrary(@"F:\SteamBackup7\SOMELONGNAME\TESTINGIT", false, true);
-                addNewLibrary(@"F:\SteamBackup8", false, true);
-                addNewLibrary(@"F:\SteamBackup9", false, true);
-                addNewLibrary(@"F:\SteamBackup10", false, true);
 
                 // Update Libraries visually
                 updateMainForm();

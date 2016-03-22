@@ -21,10 +21,13 @@ namespace Steam_Library_Manager.Definitions
         public class Library
         {
             public bool Main, Backup;
-            public int GameCount;
+            public int GameCount { get; set; }
             public string steamAppsPath, commonPath, downloadPath, workshopPath;
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public string fullPath { get; set; }
+            public string prettyFreeSpace { get; set; }
+            public int freeSpacePerc { get; set; }
+            public long freeSpace;
         }
 
         // Game details we are using, contains things like appID, installationPath etc.
@@ -34,6 +37,7 @@ namespace Steam_Library_Manager.Definitions
             public Library Library { get; set; }
             public string appName { get; set; }
             public string gameHeaderImage { get; set; }
+            public string prettyGameSize { get; set; }
             public string installationPath, acfName, acfPath, commonPath, downloadPath, workShopPath, workShopAcfName, workShopAcfPath;
             public long sizeOnDisk { get; set; }
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }

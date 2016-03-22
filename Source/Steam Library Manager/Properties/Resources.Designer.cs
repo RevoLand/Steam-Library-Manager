@@ -83,16 +83,6 @@ namespace Steam_Library_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap libraryIcon {
-            get {
-                object obj = ResourceManager.GetObject("libraryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap no_image_available {
             get {
                 object obj = ResourceManager.GetObject("no_image_available", resourceCulture);
