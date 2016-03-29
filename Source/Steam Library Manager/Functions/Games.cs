@@ -45,7 +45,6 @@ namespace Steam_Library_Manager.Functions
                 // Set installation path
                 Game.installationPath = installationPath;
 
-                // Set game library
                 Game.Library = Library;
 
                 // If game has a folder in "common" dir, define it as exactInstallPath
@@ -69,12 +68,12 @@ namespace Steam_Library_Manager.Functions
                 // If SizeOnDisk value from .ACF file is not equals to 0
                 if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF" && !isCompressed)
                 {
-                    List<string> gameFiles = await gameFunctions.getFileList(Game);
+                    List<FileSystemInfo> gameFiles = await gameFunctions.getFileList(Game);
 
-                    foreach (string file in gameFiles)
+                    Parallel.ForEach(gameFiles, file =>
                     {
-                        Game.sizeOnDisk += await Task.Run(() => new FileInfo(file).Length);
-                    }
+                        Game.sizeOnDisk += (file as FileInfo).Length;
+                    });
                 }
                 else if (isCompressed)
                 {
@@ -104,14 +103,13 @@ namespace Steam_Library_Manager.Functions
 
                 Game.prettyGameSize = fileSystem.FormatBytes(Game.sizeOnDisk);
 
-                Game.contextMenu = Content.Games.generateRightClickMenu(Game);
-                // Add our game details to global list
-                Application.Current.Dispatcher.Invoke(
-                System.Windows.Threading.DispatcherPriority.Normal,
-                (Action)delegate ()
+                Application.Current.Dispatcher.Invoke((Action)delegate
                 {
-                    Definitions.List.Games.Add(Game);
+                    Game.contextMenu = Content.Games.generateRightClickMenu(Game);
                 });
+                // Add our game details to global list
+                Library.Games.Add(Game);
+
             }
             catch (Exception ex)
             {
@@ -191,7 +189,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Sort = SLM.Settings.getSortingMethod();
 
-                MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Definitions.List.Games.Where(x => x.Library == Library).OrderBy(Sort) : Definitions.List.Games.Where(x => x.Library == Library).Where(
+                MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.Where(x => x.Library == Library).OrderBy(Sort) : Library.Games.Where(x => x.Library == Library).Where(
                     y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                     || y.appID.ToString().Contains(Search) // Search by app ID
                     ).OrderBy(Sort)
@@ -202,7 +200,6 @@ namespace Steam_Library_Manager.Functions
                 MessageBox.Show(ex.ToString());
             }
         }
-
 
     }
 }

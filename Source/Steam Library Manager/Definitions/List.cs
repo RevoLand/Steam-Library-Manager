@@ -11,8 +11,6 @@ namespace Steam_Library_Manager.Definitions
         // Make a new list for Library details
         public static ObservableCollection<Library> Libraries = new ObservableCollection<Library>();
 
-        public static ObservableCollection<Game> Games = new ObservableCollection<Game>();
-
         public static List<Language> Languages = new List<Language>();
 
         public static List<rightClickMenuItem> rightClickMenuItems = new List<rightClickMenuItem>();
@@ -27,14 +25,14 @@ namespace Steam_Library_Manager.Definitions
             public string fullPath { get; set; }
             public string prettyFreeSpace { get; set; }
             public int freeSpacePerc { get; set; }
-            public long freeSpace;
+            public long freeSpace { get; set; }
+            public ObservableCollection<Game> Games = new ObservableCollection<Game>();
         }
 
         // Game details we are using, contains things like appID, installationPath etc.
         public class Game
         {
             public int appID { get; set; }
-            public Library Library { get; set; }
             public string appName { get; set; }
             public string gameHeaderImage { get; set; }
             public string prettyGameSize { get; set; }
@@ -42,6 +40,7 @@ namespace Steam_Library_Manager.Definitions
             public long sizeOnDisk { get; set; }
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public bool Compressed { get; set; }
+            public Library Library;
         }
 
         public class Language

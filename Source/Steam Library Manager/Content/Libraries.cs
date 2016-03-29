@@ -54,9 +54,6 @@ namespace Steam_Library_Manager.Content
                     if (System.IO.Directory.Exists(Library.steamAppsPath))
                         System.Diagnostics.Process.Start(Library.steamAppsPath);
                     break;
-                case "RefreshGameList":
-                    Functions.Games.UpdateGameList(Library);
-                    break;
                 case "deleteLibrary":
 
                     MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Move games in Library before deleting the library?", "Move games first?", MessageBoxButton.YesNoCancel);
@@ -70,7 +67,7 @@ namespace Steam_Library_Manager.Content
                     break;
                 case "deleteLibrarySLM":
 
-                    foreach (Definitions.List.Game Game in Definitions.List.Games.Where(x => x.Library == Library))
+                    foreach (Definitions.List.Game Game in Library.Games)
                     {
                         Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
 
@@ -80,11 +77,9 @@ namespace Steam_Library_Manager.Content
 
                             return;
                         }
-                    }
 
-                    Functions.Library.generateLibraryList();
-                    Functions.Library.updateMainForm();
-                    //Functions.Games.UpdateGameList(Library);
+                        Library.Games.Remove(Game);
+                    }
 
                     MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", Library.fullPath));
 
@@ -100,11 +95,7 @@ namespace Steam_Library_Manager.Content
                         // Remove the library from our list
                         Definitions.List.Libraries.Remove(Library);
 
-                        // Update backup dir settings
-                        //Functions.Settings.updateBackupDirs();
-
-                        // Update main form with new settings
-                        Functions.Library.generateLibraryList();
+                        MainWindow.Accessor.gamePanel.ItemsSource = null;
                     }
                     break;
             }

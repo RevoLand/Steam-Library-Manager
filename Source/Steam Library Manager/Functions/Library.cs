@@ -44,30 +44,17 @@ namespace Steam_Library_Manager.Functions
 
                         // Show a messagebox to user about process
                         MessageBox.Show("new library created");
-
-                        // Update game libraries
-                        generateLibraryList();
                     }
                     else
                         // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
                         MessageBox.Show("failed to create new library");
                 }
-                else
-                {
-                    // If backup directories in settings not set
-                    if (Properties.Settings.Default.backupDirectories == null)
-                        // make a new definition
-                        Properties.Settings.Default.backupDirectories = new System.Collections.Specialized.StringCollection();
 
-                    // Add our newest backup library to settings
-                    Properties.Settings.Default.backupDirectories.Add(newLibraryPath);
+                // Add library to list
+                addNewLibrary(newLibraryPath, false, Backup);
 
-                    // Update game libraries
-                    generateLibraryList();
-
-                    // Save our settings
-                    //Settings.Save();
-                }
+                // Save our settings
+                SLM.Settings.saveSettings();
             }
             catch (Exception ex)
             {
@@ -126,8 +113,6 @@ namespace Steam_Library_Manager.Functions
                     // Update libraryFolders.vdf file with changes
                     Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
                 }
-
-                updateMainForm();
             }
             catch (Exception ex)
             {
@@ -162,23 +147,34 @@ namespace Steam_Library_Manager.Functions
                 // Define workshop folder path
                 Library.workshopPath = Path.Combine(Library.steamAppsPath, "workshop");
 
-                // Count how many games we have installed in our library
-                Library.GameCount = fileSystem.Game.GetGameCountFromLibrary(Library);
-
                 Library.contextMenu = Content.Libraries.generateRightClickMenu(Library);
-
-                Library.freeSpace = fileSystem.getAvailableFreeSpace(libraryPath);
-
-                Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
-
-                Library.freeSpacePerc = 100 - (int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(libraryPath));
 
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
+                updateLibraryVisual(Library);
+
                 Games.UpdateGameList(Library);
             }
             catch { }
+        }
+
+        public static void updateLibraryVisual(Definitions.List.Library Library)
+        {
+            // Count how many games we have installed in our library
+            Library.GameCount = fileSystem.Game.GetGameCountFromLibrary(Library);
+
+            Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
+
+            Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
+
+            Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
+
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                MainWindow.Accessor.libraryPanel.ItemsSource = null;
+                MainWindow.Accessor.libraryPanel.ItemsSource = Definitions.List.Libraries;
+            });
         }
 
         public static void generateLibraryList()
@@ -255,13 +251,7 @@ namespace Steam_Library_Manager.Functions
                         else
                             addNewLibrary(backupDirectory, false, true);
                     }
-
-                    // Save backup dirs
-                    //Settings.updateBackupDirs();
                 }
-
-                // Update Libraries visually
-                updateMainForm();
             }
             catch (Exception ex)
             {
@@ -269,28 +259,27 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void updateMainForm()
+        public static bool libraryExists(string NewLibraryPath)
         {
             try
             {
-                /*
-                // If our panel for library listing is not empty
-                if (MainWindow.Accessor.libraryPanel.Children.Count > 0)
-                    // Clear the panel
-                    MainWindow.Accessor.libraryPanel.Children.Clear();
+                NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
-                // Do the loop for each Library in our library list
-                foreach (Definitions.List.Library Library in Definitions.List.Libraries)
-                {
-                    MainWindow.Accessor.libraryPanel.Children.Add(Content.Libraries.generateLibraryBox(Library));
-                }
-                */
+                if (Definitions.List.Libraries.Where(x => x.fullPath.ToLowerInvariant() == NewLibraryPath ||
+                x.commonPath.ToLowerInvariant() == NewLibraryPath ||
+                x.downloadPath.ToLowerInvariant() == NewLibraryPath ||
+                x.workshopPath.ToLowerInvariant() == NewLibraryPath ||
+                x.steamAppsPath.ToLowerInvariant() == NewLibraryPath).Count() > 0)
+                    return true;
 
-                //MainWindow.Accessor.libraryPanel.ItemsSource = Definitions.List.Libraries;
+                // else, return false which means library is not exists
+                return false;
             }
+            // In any error return true to prevent possible bugs
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                return true;
             }
         }
 

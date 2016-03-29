@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Content
             return cMenu;
         }
 
-        private static void NewMenuItem_Click(object sender, RoutedEventArgs e)
+        private static async void NewMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Definitions.List.Game Game = ((((sender as MenuItem).Parent as ContextMenu).Parent as System.Windows.Controls.Primitives.Popup).PlacementTarget as Grid).Tag as Definitions.List.Game;
 
@@ -54,6 +54,16 @@ namespace Steam_Library_Manager.Content
                     break;
                 case "acfFile":
                     System.Diagnostics.Process.Start(Game.acfPath);
+                    break;
+                case "deleteGameFilesSLM":
+
+                    Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
+                    await gameFunctions.deleteGameFiles(Game);
+                    Game.Library.Games.Remove(Game);
+
+                    Functions.Library.updateLibraryVisual(Game.Library);
+
+                    Functions.Games.UpdateMainForm(null, null, Game.Library);
                     break;
             }
         }
@@ -72,13 +82,13 @@ namespace Steam_Library_Manager.Content
 
             rightClickMenu.Add(new Definitions.List.rightClickMenuItem
             {
-                order = 1,
+                order = 2,
                 IsSeperator = true
             });
 
             rightClickMenu.Add(new Definitions.List.rightClickMenuItem
             {
-                order = 1,
+                order = 3,
                 DisplayText = $"{Game.appName} ({Game.appID})",
                 Action = "Disk",
                 icon = FontAwesomeIcon.FolderOpen
@@ -86,32 +96,10 @@ namespace Steam_Library_Manager.Content
 
             rightClickMenu.Add(new Definitions.List.rightClickMenuItem
             {
-                order = 2,
+                order = 4,
                 DisplayText = $"Size on disk: {Functions.fileSystem.FormatBytes(Game.sizeOnDisk)}",
                 Action = "Disk",
                 icon = FontAwesomeIcon.HddOutline
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 3,
-                IsSeperator = true
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 3,
-                DisplayText = "Move library",
-                Action = "moveLibrary",
-                icon = FontAwesomeIcon.Paste
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 4,
-                DisplayText = "Refresh game list in library",
-                Action = "RefreshGameList",
-                icon = FontAwesomeIcon.Refresh
             });
 
             rightClickMenu.Add(new Definitions.List.rightClickMenuItem
@@ -123,26 +111,9 @@ namespace Steam_Library_Manager.Content
             rightClickMenu.Add(new Definitions.List.rightClickMenuItem
             {
                 order = 6,
-                DisplayText = "Delete library",
-                Action = "deleteLibrary",
+                DisplayText = "Delete Game files (SLM)",
+                Action = "deleteGameFilesSLM",
                 icon = FontAwesomeIcon.Trash
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 7,
-                DisplayText = "Delete games in library",
-                Action = "deleteLibrarySLM",
-                icon = FontAwesomeIcon.TrashOutline
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 8,
-                DisplayText = "Remove from list",
-                Action = "RemoveFromList",
-                icon = FontAwesomeIcon.Minus,
-                ShownToBackup = true
             });
 
             return rightClickMenu;

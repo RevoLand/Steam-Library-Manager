@@ -32,5 +32,8 @@
     <Setting Name="Maximised" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ParallelAfterSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">20000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

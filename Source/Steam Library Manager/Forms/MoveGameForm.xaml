@@ -6,18 +6,25 @@
         xmlns:local="clr-namespace:Steam_Library_Manager.Forms"
         xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
         mc:Ignorable="d"
-        Title="Move Game" MinWidth="350" MinHeight="700" Width="350" Height="700" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
-    <Grid Margin="10,5,5,5">
-        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,0,10,619" TextWrapping="Wrap">Placeholder: Game Title</TextBlock>
-        <cachedImage:Image MaxWidth="460" MaxHeight="215" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" VerticalAlignment="Top" Margin="10,40,10,0" />
-        <Label x:Name="label" Content="Game Library:" HorizontalContentAlignment="Center" Margin="0,209,0,420" VerticalAlignment="Center" Height="30"/>
-        <Label x:Name="gameLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,239,0,390" VerticalAlignment="Center" Height="30"/>
-        <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,269,0,360" VerticalAlignment="Center" Height="30"/>
-        <Label x:Name="targetLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,299,0,330" VerticalAlignment="Center" Height="30"/>
-        <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,340,202,295" Height="24"/>
-        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="130,340,92,295" Height="24"/>
-        <CheckBox x:Name="validate" Content="Validate" HorizontalContentAlignment="Stretch" Margin="240,340,10,295" Height="24"/>
-        <TextBox x:Name="textBox" Margin="10,0,10,10" TextWrapping="Wrap" AcceptsReturn="True" Text="TextBox" AllowDrop="False" Height="190" VerticalAlignment="Bottom"/>
-        <Button x:Name="button" Content="Button" Margin="10,0,10,205" Height="42" VerticalAlignment="Bottom"/>
+        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" IsTabStop="False" WindowStyle="ThreeDBorderWindow">
+    <Grid Margin="10">
+        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40">Placeholder: Game Title</TextBlock>
+        <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" VerticalAlignment="Top" Margin="10,55,5,0" />
+
+        <Label x:Name="label" Content="Game Library:" HorizontalContentAlignment="Center" Margin="0,175,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="gameLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,237,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="targetLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
+
+        <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,299,177,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="145,299,78,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="validate" Content="Validate" HorizontalContentAlignment="Stretch" Margin="234,299,10,0" VerticalAlignment="Top"/>
+
+        <Button x:Name="button" Content="Button" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="button_Click"/>
+        <TextBox x:Name="textBox" AcceptsReturn="True" TextWrapping="Wrap" Margin="10,369,10,60" AllowDrop="False" IsTabStop="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+
+
+        <ProgressBar x:Name="progressReport" Margin="10,0,10,25" Height="30" VerticalAlignment="Bottom"/>
+        <Label x:Name="progressReportLabel" Margin="0,0,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -51,7 +52,7 @@ namespace Steam_Library_Manager
             Functions.SLM.onClosing();
         }
 
-        private void gameImage_MouseDown(object sender, MouseButtonEventArgs e)
+        private void gameGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If clicked button is left (so it will not conflict with context menu)
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
@@ -64,7 +65,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void libraryGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If clicked button is left (so it will not conflict with context menu)
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
@@ -79,7 +80,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void Grid_Drop(object sender, DragEventArgs e)
+        private void libraryGrid_Drop(object sender, DragEventArgs e)
         {
             Definitions.List.Library Library = (sender as Grid).Tag as Definitions.List.Library;
 
@@ -88,12 +89,37 @@ namespace Steam_Library_Manager
             if (Game == null || Library == null || Library == Game.Library)
                 return;
 
-            new Forms.MoveGameForm(Game, Library).ShowDialog();
+            new Forms.MoveGameForm(Game, Library).Show();
         }
 
-        private void Grid_DragEnter(object sender, DragEventArgs e)
+        private void libraryGrid_DragEnter(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.Move;
+        }
+
+        private void libraryPanel_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            if (droppedItems == null) return;
+
+            foreach (string droppedItem in droppedItems)
+            {
+                FileInfo details = new FileInfo(droppedItem);
+
+                if (details.Attributes.HasFlag(FileAttributes.Directory))
+                {
+                    if (!Functions.Library.libraryExists(droppedItem))
+                    {
+                        if (Directory.GetDirectoryRoot(droppedItem) != droppedItem)
+                            Functions.Library.createNewLibrary(details.FullName, true);
+                        else
+                            MessageBox.Show("Libraries can not be created at root");
+                    }
+                    else
+                        MessageBox.Show("Library exists");
+                }
+            }
         }
     }
 }

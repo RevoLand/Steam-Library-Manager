@@ -161,5 +161,19 @@ namespace Steam_Library_Manager.Properties {
                 this["Maximised"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20000000")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public long ParallelAfterSize {
+            get {
+                return ((long)(this["ParallelAfterSize"]));
+            }
+            set {
+                this["ParallelAfterSize"] = value;
+            }
+        }
     }
 }

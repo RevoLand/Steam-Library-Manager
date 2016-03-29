@@ -6,16 +6,15 @@
         xmlns:local="clr-namespace:Steam_Library_Manager"
         xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:Definitions="clr-namespace:Steam_Library_Manager.Definitions" xmlns:settings="clr-namespace:Steam_Library_Manager.Framework" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
         mc:Ignorable="d"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="650" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" Visibility="Visible" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStartupLocation="CenterScreen">
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="650" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" Visibility="Visible" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStartupLocation="CenterOwner">
     <Grid Margin="0,41,2,2">
         <TabControl x:Name="tabControl" Margin="10,0,10,10">
             <TabItem Header="Manage your Library" IsSelected="True">
                 <Grid Background="#FFE5E5E5">
-
-                    <ListView Name="libraryPanel" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListView AllowDrop="True" Drop="libraryPanel_Drop" Name="libraryPanel" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" ContextMenu="{Binding contextMenu}" MouseDown="Grid_MouseDown" DragEnter="Grid_DragEnter" Drop="Grid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
+                                <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" ContextMenu="{Binding contextMenu}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
                                     <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" Padding="0" FontWeight="Bold" />
                                     <TextBlock Text="{Binding GameCount, StringFormat='Games: {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
                                     <TextBlock Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0, 0, 0, 12" />
@@ -28,7 +27,7 @@
                     <ListView Margin="215,10,10,10" Name="gamePanel" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Transparent" MouseDown="gameImage_MouseDown" Tag="{Binding}" ContextMenu="{Binding contextMenu}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ContextMenu="{Binding contextMenu}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" Width="230px" Height="107px" Margin="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
                                     <TextBlock Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
                                     <TextBlock Text="{Binding prettyGameSize}" VerticalAlignment="Bottom"  Padding="240,0,0,5" HorizontalAlignment="Left" />
