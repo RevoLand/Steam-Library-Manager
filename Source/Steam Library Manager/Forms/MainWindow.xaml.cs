@@ -89,7 +89,10 @@ namespace Steam_Library_Manager
             if (Game == null || Library == null || Library == Game.Library)
                 return;
 
-            new Forms.MoveGameForm(Game, Library).Show();
+            if (Game.SteamBackup)
+                System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.installationPath}\"");
+            else
+                new Forms.MoveGameForm(Game, Library).Show();
         }
 
         private void libraryGrid_DragEnter(object sender, DragEventArgs e)

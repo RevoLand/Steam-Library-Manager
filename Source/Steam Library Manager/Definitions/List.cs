@@ -40,6 +40,7 @@ namespace Steam_Library_Manager.Definitions
             public long sizeOnDisk { get; set; }
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public bool Compressed { get; set; }
+            public bool SteamBackup { get; set; }
             public Library Library;
         }
 

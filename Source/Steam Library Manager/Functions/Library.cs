@@ -152,9 +152,9 @@ namespace Steam_Library_Manager.Functions
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
-                updateLibraryVisual(Library);
-
                 Games.UpdateGameList(Library);
+
+                updateLibraryVisual(Library);
             }
             catch { }
         }
@@ -162,7 +162,7 @@ namespace Steam_Library_Manager.Functions
         public static void updateLibraryVisual(Definitions.List.Library Library)
         {
             // Count how many games we have installed in our library
-            Library.GameCount = fileSystem.Game.GetGameCountFromLibrary(Library);
+            Library.GameCount = Library.Games.Count;
 
             Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
 

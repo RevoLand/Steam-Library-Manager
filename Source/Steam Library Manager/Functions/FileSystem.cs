@@ -14,27 +14,6 @@ namespace Steam_Library_Manager.Functions
 
         public class Game
         {
-            public static int GetGameCountFromLibrary(Definitions.List.Library Library)
-            {
-                try
-                {
-                    // Define an int for total game count
-                    int gameCount = 0;
-
-                    // Get *.acf file count from library path
-                    gameCount += Directory.GetFiles(Library.steamAppsPath, "*.acf", SearchOption.TopDirectoryOnly).Length;
-
-                    // If library is a backup library
-                    if (Library.Backup)
-                        // Also get *.zip file count from backup library path
-                        gameCount += Directory.GetFiles(Library.steamAppsPath, "*.zip", SearchOption.TopDirectoryOnly).Length;
-
-                    // return total game count we have found
-                    return gameCount;
-                }
-                catch { return 0; }
-            }
-
             public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
             {
                 ConcurrentBag<string> movedFiles = new ConcurrentBag<string>();
@@ -342,13 +321,10 @@ namespace Steam_Library_Manager.Functions
                 // Define a "long" for directory size
                 long directorySize = 0;
 
-                // For each file in the given directory
-                foreach (string currentFile in Directory.EnumerateFiles(directoryPath, "*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                Parallel.ForEach(new DirectoryInfo(directoryPath).GetFileSystemInfos("*", SearchOption.AllDirectories), currentFile =>
                 {
-                    FileInfo file = new FileInfo(currentFile);
-                    // add current file size to directory size
-                    directorySize += file.Length;
-                }
+                    Interlocked.Add(ref directorySize, (currentFile as FileInfo).Length);
+                });
 
                 // and return directory size
                 return directorySize;
