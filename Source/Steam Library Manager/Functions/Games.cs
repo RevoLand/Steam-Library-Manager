@@ -43,6 +43,8 @@ namespace Steam_Library_Manager.Functions
                     Game.workShopAcfPath = Path.Combine(Library.workshopPath, Game.workShopAcfName);
 
                 // Set installation path
+                DirectoryInfo testOldInstallations = new DirectoryInfo(installationPath);
+                installationPath = (testOldInstallations.Exists) ? testOldInstallations.Name : installationPath;
                 Game.installationPath = installationPath;
 
                 Game.Library = Library;

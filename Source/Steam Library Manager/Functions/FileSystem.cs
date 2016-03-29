@@ -35,75 +35,6 @@ namespace Steam_Library_Manager.Functions
                 catch { return 0; }
             }
 
-            /*
-            public async Task<int> copyGameFiles(Forms.moveGame currentForm, List<string> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, bool Validate, CancellationToken token)
-            {
-                List<string> movedFiles = new List<string>();
-                try
-                {
-                    foreach (string currentFile in gameFiles)
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            DialogResult askUserToRemoveMovedFiles = MessageBox.Show(Languages.Games.message_canceledProcess, Languages.Games.messageTitle_canceledProcess, MessageBoxButtons.YesNo);
-
-                            if (askUserToRemoveMovedFiles == DialogResult.Yes)
-                            {
-                                FileSystem.Game.removeGivenFiles(movedFiles, Game, targetLibrary);
-                                currentForm.logToFormAsync(Languages.Games.message_filesRemoved);
-                            }
-
-                            return -1;
-                        }
-
-                        string newFileName = currentFile.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
-
-                        if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
-                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-
-                        // Copy the file to target library asynchronously
-                        await Task.Run(() => File.Copy(currentFile, newFileName, true));
-
-                        // Perform step on progress bar
-                        currentForm.progressBar_CopyStatus.PerformStep();
-
-                        // Log to textbox
-                        currentForm.logToFormAsync(string.Format(Languages.Games.message_processStatus, gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
-
-                        // add moved file path to list 
-                        movedFiles.Add(newFileName);
-
-                        if (Validate)
-                        {
-                            // Compare the hashes, if any of them not equals
-                            if (BitConverter.ToString(GetFileMD5(currentFile)) != BitConverter.ToString(GetFileMD5(newFileName)))
-                            {
-                                // Log it
-                                currentForm.logToFormAsync(string.Format(Languages.Games.messageError_fileNotVerified, gameFiles.IndexOf(currentFile) + 1, gameFiles.Count, newFileName));
-
-                                // and cancel the process
-                                return 0;
-                            }
-                        }
-                    }
-
-                    // Copy .ACF file
-                    await Task.Run(() => File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath, Game.acfName), true));
-
-                    if (File.Exists(Game.workShopAcfName))
-                        await Task.Run(() => File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath), true));
-                }
-                catch (Exception ex)
-                {
-                    currentForm.logToFormAsync(ex.ToString());
-
-                    return 0;
-                }
-
-                return 1;
-            }
-            */
-
             public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
             {
                 ConcurrentBag<string> movedFiles = new ConcurrentBag<string>();
@@ -121,7 +52,6 @@ namespace Steam_Library_Manager.Functions
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), new ParallelOptions { MaxDegreeOfParallelism = 1 }, currentFile =>
                     {
                         Interlocked.Increment(ref fileIndex);
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
 
                         string newFileName = currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
 
@@ -132,9 +62,12 @@ namespace Steam_Library_Manager.Functions
 
                         movedFiles.Add(newFileName);
 
+                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+
                         Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
                         {
                             currentForm.textBox.AppendText(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFileName));
+                            currentForm.textBox.ScrollToEnd();
                             currentForm.progressReportLabel.Content = $"{FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                             currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                         });
@@ -143,7 +76,6 @@ namespace Steam_Library_Manager.Functions
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), currentFile =>
                     {
                         Interlocked.Increment(ref fileIndex);
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
 
                         string newFileName = currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
 
@@ -154,9 +86,12 @@ namespace Steam_Library_Manager.Functions
 
                         movedFiles.Add(newFileName);
 
+                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+
                         Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
                         {
                             currentForm.textBox.AppendText(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFileName));
+                            currentForm.textBox.ScrollToEnd();
                             currentForm.progressReportLabel.Content = $"{FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                             currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                         });
