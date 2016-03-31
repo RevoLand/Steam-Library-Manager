@@ -69,3 +69,7 @@ Contact
 **Steam:** https://steamcommunity.com/id/RevoLand/
 <br />
 **Skype:** revolutionland
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/RevoLand/steam-library-manager/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
