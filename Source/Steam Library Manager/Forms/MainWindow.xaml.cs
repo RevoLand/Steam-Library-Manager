@@ -24,6 +24,8 @@ namespace Steam_Library_Manager
 
         private void mainForm_Loaded(object sender, RoutedEventArgs e)
         {
+            Focus();
+
             if (Properties.Settings.Default.Maximised)
                 WindowState = WindowState.Maximized;
 
@@ -50,6 +52,8 @@ namespace Steam_Library_Manager
             }
 
             Functions.SLM.onClosing();
+
+            Application.Current.Shutdown();
         }
 
         private void gameGrid_MouseDown(object sender, MouseButtonEventArgs e)

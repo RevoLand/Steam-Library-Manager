@@ -67,7 +67,7 @@ namespace Steam_Library_Manager.Content
                     break;
                 case "deleteLibrarySLM":
 
-                    foreach (Definitions.List.Game Game in Library.Games)
+                    foreach (Definitions.List.Game Game in Library.Games.ToList())
                     {
                         Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
 
@@ -81,6 +81,7 @@ namespace Steam_Library_Manager.Content
                         Library.Games.Remove(Game);
                     }
 
+                    Functions.Library.updateLibraryVisual(Library);
                     MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", Library.fullPath));
 
                     break;

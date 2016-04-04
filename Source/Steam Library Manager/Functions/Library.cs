@@ -90,8 +90,11 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.Libraries.Remove(Library);
 
-                if (Library.Backup) { }
-                //Settings.updateBackupDirs();
+                if (Library.Backup)
+                {
+                    SLM.Settings.updateBackupDirs();
+                    SLM.Settings.saveSettings();
+                }
                 else
                 {
                     // Make a KeyValue reader
@@ -156,25 +159,23 @@ namespace Steam_Library_Manager.Functions
 
                 updateLibraryVisual(Library);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         public static void updateLibraryVisual(Definitions.List.Library Library)
         {
-            // Count how many games we have installed in our library
             Library.GameCount = Library.Games.Count;
-
             Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
-
             Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
-
             Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
 
-            Application.Current.Dispatcher.Invoke((Action)delegate
+            Application.Current.Dispatcher.Invoke(delegate
             {
-                MainWindow.Accessor.libraryPanel.ItemsSource = null;
-                MainWindow.Accessor.libraryPanel.ItemsSource = Definitions.List.Libraries;
-            });
+                MainWindow.Accessor.libraryPanel.Items.Refresh();
+            }, System.Windows.Threading.DispatcherPriority.Normal);
         }
 
         public static void generateLibraryList()

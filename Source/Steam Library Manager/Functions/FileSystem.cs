@@ -14,64 +14,72 @@ namespace Steam_Library_Manager.Functions
 
         public class Game
         {
-            public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
+            public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, CancellationTokenSource cancellationToken)
             {
                 ConcurrentBag<string> movedFiles = new ConcurrentBag<string>();
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 sw.Start();
+
                 try
                 {
                     int fileIndex = 0;
                     long totalSize = 0, movenSize = 0;
-                    Parallel.ForEach(gameFiles, file =>
+                    ParallelOptions options = new ParallelOptions();
+                    options.CancellationToken = cancellationToken.Token;
+
+                    Parallel.ForEach(gameFiles, options, file =>
                     {
                         Interlocked.Add(ref totalSize, (file as FileInfo).Length);
                     });
 
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), new ParallelOptions { MaxDegreeOfParallelism = 1 }, currentFile =>
+                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
                     {
-                        Interlocked.Increment(ref fileIndex);
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath));
 
-                        string newFileName = currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
-
-                        if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
-                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-
-                        (currentFile as FileInfo).CopyTo(newFileName, true);
-
-                        movedFiles.Add(newFileName);
-
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
-
-                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
+                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
-                            currentForm.textBox.AppendText(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFileName));
-                            currentForm.textBox.ScrollToEnd();
-                            currentForm.progressReportLabel.Content = $"{FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
+                            if (!newFile.Directory.Exists)
+                                newFile.Directory.Create();
+
+                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                        }
+
+                        Interlocked.Increment(ref fileIndex);
+                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+                        movedFiles.Add(newFile.FullName);
+
+                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
+                        {
+                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+
+                            currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                             currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                         });
                     });
 
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), currentFile =>
+                    options.MaxDegreeOfParallelism = 1;
+
+                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
                     {
-                        Interlocked.Increment(ref fileIndex);
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath));
 
-                        string newFileName = currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
-
-                        if (!Directory.Exists(Path.GetDirectoryName(newFileName)))
-                            Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
-
-                        (currentFile as FileInfo).CopyTo(newFileName, true);
-
-                        movedFiles.Add(newFileName);
-
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
-
-                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
+                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
-                            currentForm.textBox.AppendText(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFileName));
-                            currentForm.textBox.ScrollToEnd();
-                            currentForm.progressReportLabel.Content = $"{FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
+                            if (!newFile.Directory.Exists)
+                                newFile.Directory.Create();
+
+                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                        }
+
+                        Interlocked.Increment(ref fileIndex);
+                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+                        movedFiles.Add(newFile.FullName);
+
+                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
+                        {
+                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+
+                            currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                             currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                         });
                     });
@@ -85,8 +93,14 @@ namespace Steam_Library_Manager.Functions
                     sw.Stop();
                     Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
                     {
-                        currentForm.textBox.AppendText($"Time elapsed: {sw.Elapsed}");
+                        currentForm.formLogs.Add($"Time elapsed: {sw.Elapsed}");
+                        currentForm.button.Content = "Close";
                     });
+                }
+                catch (OperationCanceledException)
+                {
+                    fileSystem.Game.removeGivenFiles(movedFiles);
+                    MessageBox.Show("Cancelled by user");
                 }
                 catch (Exception ex)
                 {
@@ -104,6 +118,11 @@ namespace Steam_Library_Manager.Functions
 
                         if (File.Exists(currentZipNameNpath))
                             await Task.Run(() => File.Delete(currentZipNameNpath));
+                    }
+                    else if(Game.SteamBackup)
+                    {
+                        if (Directory.Exists(Game.installationPath))
+                            Directory.Delete(Game.installationPath, true);
                     }
                     else
                     {
@@ -148,15 +167,17 @@ namespace Steam_Library_Manager.Functions
                 return true;
             }
 
-            public static async void removeGivenFiles(List<string> fileList, Definitions.List.Game Game = null, Definitions.List.Library targetLibrary = null, bool removeAcfFile = true)
+            public static void removeGivenFiles(ConcurrentBag<string> fileList, Definitions.List.Game Game = null, Definitions.List.Library targetLibrary = null, bool removeAcfFile = true)
             {
                 try
                 {
-                    foreach (string currentFile in fileList)
+                    Parallel.ForEach(fileList, currentFile =>
                     {
-                        if (File.Exists(currentFile))
-                            await Task.Run(() => File.Delete(currentFile));
-                    }
+                        FileInfo file = new FileInfo(currentFile);
+
+                        if (file.Exists)
+                            file.Delete();
+                    });
 
                     if (Game != null && targetLibrary != null)
                     {

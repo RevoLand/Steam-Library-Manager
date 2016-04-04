@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace Steam_Library_Manager.Forms
@@ -6,6 +8,8 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for MoveGameForm.xaml
     /// </summary>
+    /// 
+
     public partial class MoveGameForm : Window
     {
         // Define our game from LatestSelectedGame
@@ -15,7 +19,10 @@ namespace Steam_Library_Manager.Forms
         Definitions.List.Library Library;
 
         // Define cancellation token
-        System.Threading.CancellationToken cancellationToken = new System.Threading.CancellationToken();
+        System.Threading.CancellationTokenSource cancellationToken;
+
+        // Define task
+        System.Threading.Tasks.Task task;
 
         public MoveGameForm(Definitions.List.Game gameToMove, Definitions.List.Library libraryToMove)
         {
@@ -23,6 +30,22 @@ namespace Steam_Library_Manager.Forms
 
             Game = gameToMove;
             Library = libraryToMove;
+
+            textBox.ItemsSource = formLogs;
+        }
+
+        private ObservableCollection<string> formlogs = new ObservableCollection<string>();
+
+        public ObservableCollection<string> formLogs
+        {
+            get { return formlogs; }
+            set
+            {
+                if (value != formlogs)
+                {
+                    formlogs = value;
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -33,22 +56,44 @@ namespace Steam_Library_Manager.Forms
 
             gameLibrary.Content = Game.Library.fullPath;
             targetLibrary.Content = Library.fullPath;
-
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            button.IsEnabled = false;
-            Functions.fileSystem.Game Games = new Functions.fileSystem.Game();
-            new System.Threading.Tasks.TaskFactory(cancellationToken).StartNew(async () =>
+            if (task == null || task.Status == System.Threading.Tasks.TaskStatus.Canceled)
             {
-                List<System.IO.FileSystemInfo> fileList = await Games.getFileList(Game);
-                Games.copyGameFiles(this, fileList, Game, Library);
+                button.Content = "Cancel";
+                cancellationToken = new System.Threading.CancellationTokenSource();
 
-                Functions.Games.AddNewGame(Game.acfPath.Replace(Game.Library.steamAppsPath, Library.steamAppsPath), Game.appID, Game.appName, Game.installationPath, Library, Game.sizeOnDisk, false);
-                Functions.Library.updateLibraryVisual(Library);
-            });
+                Functions.fileSystem.Game Games = new Functions.fileSystem.Game();
+                task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(async () =>
+                {
+                    List<System.IO.FileSystemInfo> fileList = await Games.getFileList(Game);
+                    Games.copyGameFiles(this, fileList, Game, Library, cancellationToken);
+
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        // If game is not exists in the target library
+                        if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
+                        {
+                            // Add game to new library
+                            Functions.Games.AddNewGame(Game.acfPath.Replace(Game.Library.steamAppsPath, Library.steamAppsPath), Game.appID, Game.appName, Game.installationPath, Library, Game.sizeOnDisk, false);
+
+                            // Update library details
+                            Functions.Library.updateLibraryVisual(Library);
+                        }
+                    }
+                });
+            }
+            else if (button.Content.ToString() != "Close")
+            {
+                button.Content = "Copy";
+                cancellationToken.Cancel();
+            }
+            else
+            {
+                Close();
+            }
         }
-
     }
 }

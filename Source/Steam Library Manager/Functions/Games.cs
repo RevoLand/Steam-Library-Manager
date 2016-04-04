@@ -148,28 +148,28 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!Directory.Exists(Library.steamAppsPath))
-                    return;
+                    Directory.CreateDirectory(Library.steamAppsPath);
 
-                // Foreach *.acf file found in library
-                foreach (string game in Directory.EnumerateFiles(Library.steamAppsPath, "*.acf", SearchOption.TopDirectoryOnly))
-                {
-                    // Define a new value and call KeyValue
-                    Framework.KeyValue Key = new Framework.KeyValue();
+                    // Foreach *.acf file found in library
+                    foreach (string game in Directory.EnumerateFiles(Library.steamAppsPath, "*.acf", SearchOption.TopDirectoryOnly))
+                    {
+                        // Define a new value and call KeyValue
+                        Framework.KeyValue Key = new Framework.KeyValue();
 
-                    // Read the *.acf file as text
-                    Key.ReadFileAsText(game);
+                        // Read the *.acf file as text
+                        Key.ReadFileAsText(game);
 
-                    // If key doesn't contains a child (value in acf file)
-                    if (Key.Children.Count == 0)
-                        continue;
+                        // If key doesn't contains a child (value in acf file)
+                        if (Key.Children.Count == 0)
+                            continue;
 
-                    AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
-                }
+                        AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                    }
 
                 // If library is backup library
                 if (Library.Backup)
                 {
-                    Parallel.ForEach(Directory.EnumerateFiles(Library.fullPath, "sku.sis", SearchOption.AllDirectories), skuFile =>
+                    foreach (string skuFile in Directory.EnumerateFiles(Library.fullPath, "sku.sis", SearchOption.AllDirectories))
                     {
                         Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -179,7 +179,7 @@ namespace Steam_Library_Manager.Functions
                         {
                             AddSteamBackup(skuFile, Convert.ToInt32(app.Value), Key["name"].Value, Path.GetDirectoryName(skuFile), Library, fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true));
                         });
-                    });
+                    }
 
 
                     // Do a loop for each *.zip file in library
@@ -203,9 +203,6 @@ namespace Steam_Library_Manager.Functions
                                     continue;
 
                                 AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
-
-                                // we found what we are looking for, continue the loop
-                                continue;
                             }
 
                             compressedArchive.Dispose();
