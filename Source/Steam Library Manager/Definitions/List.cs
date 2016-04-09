@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -18,9 +19,10 @@ namespace Steam_Library_Manager.Definitions
         // Library details we are using, contains things like library path, game count etc.
         public class Library
         {
-            public bool Main, Backup;
+            public bool Main { get; set; }
+            public bool Backup { get; set; }
             public int GameCount { get; set; }
-            public string steamAppsPath, commonPath, downloadPath, workshopPath;
+            public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public string fullPath { get; set; }
             public string prettyFreeSpace { get; set; }
@@ -41,7 +43,7 @@ namespace Steam_Library_Manager.Definitions
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public bool Compressed { get; set; }
             public bool SteamBackup { get; set; }
-            public Library Library;
+            public Library Library { get; set; }
         }
 
         public class Language

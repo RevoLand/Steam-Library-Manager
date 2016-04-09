@@ -24,12 +24,39 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView Margin="215,10,10,10" SelectionMode="Extended"  Name="gamePanel" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,10" SelectionMode="Single"  Name="gamePanel" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ContextMenu="{Binding contextMenu}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" Width="230px" Height="107px" Margin="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
+                                    <TextBlock x:Name="gameName" Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
+                                    <TextBlock VerticalAlignment="Bottom"  Padding="240,0,0,20" HorizontalAlignment="Left">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding Library.Backup}" Value="true" />
+                                                            <Condition Binding="{Binding SteamBackup}" Value="false" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Text" Value="SLM backup" />
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding SteamBackup}" Value="true" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Text" Value="Steam backup" />
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding Compressed}" Value="true" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Text" Value="Compressed backup" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <TextBlock Text="{Binding prettyGameSize}" VerticalAlignment="Bottom"  Padding="240,0,0,5" HorizontalAlignment="Left" />
                                     <TextBlock Text="{Binding appID}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0" Padding="0,0,5,0"  />
                                 </Grid>

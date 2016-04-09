@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -60,14 +61,20 @@ namespace Steam_Library_Manager.Forms
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            bool removeOldGame = removeOldFiles.IsChecked.Value;
+
             if (task == null || task.Status == System.Threading.Tasks.TaskStatus.Canceled)
             {
+                formLogs.Clear();
                 button.Content = "Cancel";
+
                 cancellationToken = new System.Threading.CancellationTokenSource();
 
                 Functions.fileSystem.Game Games = new Functions.fileSystem.Game();
                 task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(async () =>
                 {
+                    try
+                    {
                     List<System.IO.FileSystemInfo> fileList = await Games.getFileList(Game);
                     Games.copyGameFiles(this, fileList, Game, Library, cancellationToken);
 
@@ -77,11 +84,20 @@ namespace Steam_Library_Manager.Forms
                         if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
                         {
                             // Add game to new library
-                            Functions.Games.AddNewGame(Game.acfPath.Replace(Game.Library.steamAppsPath, Library.steamAppsPath), Game.appID, Game.appName, Game.installationPath, Library, Game.sizeOnDisk, false);
+                            Functions.Games.AddNewGame(Game.acfPath.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath, Library, Game.sizeOnDisk, false);
 
                             // Update library details
                             Functions.Library.updateLibraryVisual(Library);
                         }
+
+                        if (removeOldGame)
+                            await Games.deleteGameFiles(Game, fileList);
+                    }
+
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
                     }
                 });
             }

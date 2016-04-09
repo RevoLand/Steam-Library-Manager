@@ -59,11 +59,7 @@ namespace Steam_Library_Manager.Content
 
                     Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
                     await gameFunctions.deleteGameFiles(Game);
-                    Game.Library.Games.Remove(Game);
 
-                    Functions.Library.updateLibraryVisual(Game.Library);
-
-                    Functions.Games.UpdateMainForm(null, null, Game.Library);
                     break;
             }
         }

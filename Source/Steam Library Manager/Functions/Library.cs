@@ -139,16 +139,16 @@ namespace Steam_Library_Manager.Functions
                 Library.fullPath = libraryPath;
 
                 // Define our library path to SteamApps
-                Library.steamAppsPath = Path.Combine(libraryPath, "SteamApps");
+                Library.steamAppsPath = new DirectoryInfo(Path.Combine(libraryPath, "SteamApps"));
 
                 // Define common folder path for future use
-                Library.commonPath = Path.Combine(Library.steamAppsPath, "common");
+                Library.commonPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "common"));
 
                 // Define download folder path
-                Library.downloadPath = Path.Combine(Library.steamAppsPath, "downloading");
+                Library.downloadPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "downloading"));
 
                 // Define workshop folder path
-                Library.workshopPath = Path.Combine(Library.steamAppsPath, "workshop");
+                Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
                 Library.contextMenu = Content.Libraries.generateRightClickMenu(Library);
 
@@ -267,10 +267,10 @@ namespace Steam_Library_Manager.Functions
                 NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
                 if (Definitions.List.Libraries.Where(x => x.fullPath.ToLowerInvariant() == NewLibraryPath ||
-                x.commonPath.ToLowerInvariant() == NewLibraryPath ||
-                x.downloadPath.ToLowerInvariant() == NewLibraryPath ||
-                x.workshopPath.ToLowerInvariant() == NewLibraryPath ||
-                x.steamAppsPath.ToLowerInvariant() == NewLibraryPath).Count() > 0)
+                x.commonPath.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.downloadPath.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.workshopPath.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.steamAppsPath.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
                     return true;
 
                 // else, return false which means library is not exists

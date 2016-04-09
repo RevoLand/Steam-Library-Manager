@@ -51,8 +51,8 @@ namespace Steam_Library_Manager.Content
             {
                 // Opens game installation path in explorer
                 case "Disk":
-                    if (System.IO.Directory.Exists(Library.steamAppsPath))
-                        System.Diagnostics.Process.Start(Library.steamAppsPath);
+                    if (Library.steamAppsPath.Exists)
+                        System.Diagnostics.Process.Start(Library.steamAppsPath.FullName);
                     break;
                 case "deleteLibrary":
 
@@ -77,8 +77,6 @@ namespace Steam_Library_Manager.Content
 
                             return;
                         }
-
-                        Library.Games.Remove(Game);
                     }
 
                     Functions.Library.updateLibraryVisual(Library);

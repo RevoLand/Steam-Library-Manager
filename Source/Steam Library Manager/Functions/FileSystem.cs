@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
 
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Functions
 
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -85,10 +85,10 @@ namespace Steam_Library_Manager.Functions
                     });
 
                     // Copy .ACF file
-                    File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath, Game.acfName), true);
+                    File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath.FullName, Game.acfName), true);
 
                     if (File.Exists(Game.workShopAcfName))
-                        File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath), true);
+                        File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), true);
 
                     sw.Stop();
                     Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
@@ -99,8 +99,10 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (OperationCanceledException)
                 {
-                    fileSystem.Game.removeGivenFiles(movedFiles);
-                    MessageBox.Show("Cancelled by user");
+                    MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
+
+                    if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
+                        removeGivenFiles(movedFiles);
                 }
                 catch (Exception ex)
                 {
@@ -114,12 +116,12 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (Game.Compressed)
                     {
-                        string currentZipNameNpath = Path.Combine(Game.Library.steamAppsPath, $"{Game.appID}.zip");
+                        string currentZipNameNpath = Path.Combine(Game.Library.steamAppsPath.FullName, $"{Game.appID}.zip");
 
                         if (File.Exists(currentZipNameNpath))
-                            await Task.Run(() => File.Delete(currentZipNameNpath));
+                            File.Delete(currentZipNameNpath);
                     }
-                    else if(Game.SteamBackup)
+                    else if (Game.SteamBackup)
                     {
                         if (Directory.Exists(Game.installationPath))
                             Directory.Delete(Game.installationPath, true);
@@ -156,6 +158,10 @@ namespace Steam_Library_Manager.Functions
                         if (File.Exists(Game.workShopAcfPath))
                             File.Delete(Game.workShopAcfPath);
                     }
+
+                    Game.Library.Games.Remove(Game);
+                    Library.updateLibraryVisual(Game.Library);
+                    Games.UpdateMainForm(null, null, Game.Library);
                 }
                 catch (Exception ex)
                 {
@@ -181,14 +187,14 @@ namespace Steam_Library_Manager.Functions
 
                     if (Game != null && targetLibrary != null)
                     {
-                        string combinedInstallationPath = Path.Combine(targetLibrary.commonPath, Game.installationPath);
+                        string combinedInstallationPath = Path.Combine(targetLibrary.commonPath.FullName, Game.installationPath);
 
                         if (Directory.Exists(combinedInstallationPath))
                             Directory.Delete(combinedInstallationPath, true);
 
                         if (removeAcfFile)
                         {
-                            string acfPath = Game.acfPath.Replace(Game.Library.steamAppsPath, targetLibrary.steamAppsPath);
+                            string acfPath = Game.acfPath.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName);
                             if (File.Exists(acfPath))
                                 File.Delete(acfPath);
                         }
@@ -224,7 +230,7 @@ namespace Steam_Library_Manager.Functions
 
             async Task<List<FileSystemInfo>> getDownloadFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.downloadPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
 
-            async Task<List<FileSystemInfo>> getPatchFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.Library.downloadPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
+            async Task<List<FileSystemInfo>> getPatchFiles(Definitions.List.Game Game) => await Task.Run(() => Game.Library.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
 
             async Task<List<FileSystemInfo>> getWorkshopFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.workShopPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
 
@@ -409,15 +415,12 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public async static void deleteOldLibrary(Definitions.List.Library Library)
+        public static void deleteOldLibrary(Definitions.List.Library Library)
         {
             try
             {
-                await Task.Run(() =>
-                {
-                    if (Directory.Exists(Library.steamAppsPath))
-                        Directory.Delete(Library.steamAppsPath, true);
-                });
+                if (Library.steamAppsPath.Exists)
+                    Library.steamAppsPath.Delete(true);
             }
             catch (Exception ex)
             {
