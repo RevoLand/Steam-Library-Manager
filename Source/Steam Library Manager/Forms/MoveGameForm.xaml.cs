@@ -82,10 +82,10 @@ namespace Steam_Library_Manager.Forms
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             // If game is not exists in the target library
-                            if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
+                            if (Library.Games.Count(x => x.acfName == Game.acfName && x.Compressed == compressGame) == 0)
                             {
                                 // Add game to new library
-                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.FullName, Library, Game.sizeOnDisk, false);
+                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, false);
 
                                 // Update library details
                                 Functions.Library.updateLibraryVisual(Library);
