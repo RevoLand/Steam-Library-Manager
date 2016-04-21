@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,10 +12,9 @@ namespace Steam_Library_Manager.Functions
 {
     class fileSystem
     {
-
         public class Game
         {
-            public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, CancellationTokenSource cancellationToken)
+            public void copyGameFiles(Forms.MoveGameForm currentForm, List<FileSystemInfo> gameFiles, Definitions.List.Game Game, Definitions.List.Library targetLibrary, CancellationTokenSource cancellationToken, bool compressGame = false)
             {
                 ConcurrentBag<string> movedFiles = new ConcurrentBag<string>();
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -32,63 +32,99 @@ namespace Steam_Library_Manager.Functions
                         Interlocked.Add(ref totalSize, (file as FileInfo).Length);
                     });
 
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
+                    if (!Game.Compressed && compressGame)
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                        FileInfo compressedArchive = new FileInfo(Game.compressedName.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                        if (compressedArchive.Exists)
+                            compressedArchive.Delete();
+
+                        using (ZipArchive compressed = ZipFile.Open(compressedArchive.FullName, ZipArchiveMode.Create))
                         {
-                            if (!newFile.Directory.Exists)
-                                newFile.Directory.Create();
+                            foreach(FileSystemInfo currentFile in gameFiles)
+                            {
+                                string newFileName = currentFile.FullName.Substring(Game.Library.steamAppsPath.FullName.Length + 1);
 
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                                compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
+                            }
+
+                            compressed.CreateEntryFromFile(Game.acfPath.FullName, Game.acfName);
                         }
-
-                        Interlocked.Increment(ref fileIndex);
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
-                        movedFiles.Add(newFile.FullName);
-
-                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
-                        {
-                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
-
-                            currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
-                            currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
-                        });
-                    });
-
-                    options.MaxDegreeOfParallelism = 1;
-
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
+                    }
+                    else if (Game.Compressed && !compressGame)
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                        foreach(ZipArchiveEntry currentFile in ZipFile.OpenRead(Game.compressedName.FullName).Entries)
+                        { 
+                            FileInfo fileName = new FileInfo(Path.Combine(targetLibrary.steamAppsPath.FullName, currentFile.FullName));
+                            if (!fileName.Directory.Exists)
+                                fileName.Directory.Create();
 
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
-                        {
-                            if (!newFile.Directory.Exists)
-                                newFile.Directory.Create();
-
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                            currentFile.ExtractToFile(fileName.FullName, true);
                         }
-
-                        Interlocked.Increment(ref fileIndex);
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
-                        movedFiles.Add(newFile.FullName);
-
-                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
+                    }
+                    else
+                    {
+                        Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
                         {
-                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+                            FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
-                            currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
-                            currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
+                            if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                            {
+                                if (!newFile.Directory.Exists)
+                                    newFile.Directory.Create();
+
+                                (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                            }
+
+                            Interlocked.Increment(ref fileIndex);
+                            Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+                            movedFiles.Add(newFile.FullName);
+
+                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
+                            {
+                                currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+
+                                currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
+                                currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
+                            });
                         });
-                    });
 
-                    // Copy .ACF file
-                    File.Copy(Game.acfPath, Path.Combine(targetLibrary.steamAppsPath.FullName, Game.acfName), true);
+                        options.MaxDegreeOfParallelism = 1;
 
-                    if (File.Exists(Game.workShopAcfName))
-                        File.Copy(Game.workShopAcfName, Game.workShopAcfName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), true);
+                        Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
+                        {
+                            FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+
+                            if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                            {
+                                if (!newFile.Directory.Exists)
+                                    newFile.Directory.Create();
+
+                                (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                            }
+
+                            Interlocked.Increment(ref fileIndex);
+                            Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
+                            movedFiles.Add(newFile.FullName);
+
+                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
+                            {
+                                currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+
+                                currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
+                                currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
+                            });
+                        });
+
+                        if (!Game.Compressed)
+                        {
+                            // Copy .ACF file
+                            Game.acfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, Game.acfName), true);
+
+                            if (Game.workShopAcfPath.Exists)
+                                Game.workShopAcfPath.CopyTo(Game.workShopAcfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), true);
+                        }
+                    }
 
                     sw.Stop();
                     Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
@@ -110,26 +146,23 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public async Task<bool> deleteGameFiles(Definitions.List.Game Game, List<FileSystemInfo> gameFiles = null)
+            public bool deleteGameFiles(Definitions.List.Game Game, List<FileSystemInfo> gameFiles = null)
             {
                 try
                 {
                     if (Game.Compressed)
                     {
-                        string currentZipNameNpath = Path.Combine(Game.Library.steamAppsPath.FullName, $"{Game.appID}.zip");
-
-                        if (File.Exists(currentZipNameNpath))
-                            File.Delete(currentZipNameNpath);
+                        Game.compressedName.Delete();
                     }
                     else if (Game.SteamBackup)
                     {
-                        if (Directory.Exists(Game.installationPath))
-                            Directory.Delete(Game.installationPath, true);
+                        if (Game.installationPath.Exists)
+                            Game.installationPath.Delete(true);
                     }
                     else
                     {
                         if (gameFiles == null || gameFiles.Count == 0)
-                            gameFiles = await getFileList(Game);
+                            gameFiles = getFileList(Game);
 
                         Parallel.ForEach(gameFiles, currentFile =>
                         {
@@ -139,24 +172,24 @@ namespace Steam_Library_Manager.Functions
                         );
 
                         // common folder, if exists
-                        if (Directory.Exists(Game.commonPath))
-                            await Task.Run(() => Directory.Delete(Game.commonPath, true));
+                        if (Game.commonPath.Exists)
+                            Game.commonPath.Delete(true);
 
                         // downloading folder, if exists
-                        if (Directory.Exists(Game.downloadPath))
-                            await Task.Run(() => Directory.Delete(Game.downloadPath, true));
+                        if (Game.downloadPath.Exists)
+                            Game.downloadPath.Delete(true);
 
                         // workshop folder, if exists
-                        if (Directory.Exists(Game.workShopPath))
-                            await Task.Run(() => Directory.Delete(Game.workShopPath, true));
+                        if (Game.workShopPath.Exists)
+                           Game.workShopPath.Delete(true);
 
                         // game .acf file
-                        if (File.Exists(Game.acfPath))
-                            File.Delete(Game.acfPath);
+                        if (Game.acfPath.Exists)
+                            Game.acfPath.Delete();
 
                         // workshop .acf file
-                        if (File.Exists(Game.workShopAcfPath))
-                            File.Delete(Game.workShopAcfPath);
+                        if (Game.workShopAcfPath.Exists)
+                            Game.workShopAcfPath.Delete();
                     }
 
                     Game.Library.Games.Remove(Game);
@@ -187,14 +220,14 @@ namespace Steam_Library_Manager.Functions
 
                     if (Game != null && targetLibrary != null)
                     {
-                        string combinedInstallationPath = Path.Combine(targetLibrary.commonPath.FullName, Game.installationPath);
+                        string combinedInstallationPath = Path.Combine(targetLibrary.commonPath.FullName, Game.installationPath.FullName);
 
                         if (Directory.Exists(combinedInstallationPath))
                             Directory.Delete(combinedInstallationPath, true);
 
                         if (removeAcfFile)
                         {
-                            string acfPath = Game.acfPath.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName);
+                            string acfPath = Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName);
                             if (File.Exists(acfPath))
                                 File.Delete(acfPath);
                         }
@@ -203,63 +236,42 @@ namespace Steam_Library_Manager.Functions
                 catch { }
             }
 
-            public async Task<List<FileSystemInfo>> getFileList(Definitions.List.Game Game, bool includeDownloads = true, bool includeWorkshop = true)
+            public List<FileSystemInfo> getFileList(Definitions.List.Game Game, bool includeDownloads = true, bool includeWorkshop = true)
             {
                 List<FileSystemInfo> FileList = new List<FileSystemInfo>();
 
-                if (!string.IsNullOrEmpty(Game.commonPath) && Directory.Exists(Game.commonPath))
+                if (Game.Compressed)
                 {
-                    FileList.AddRange(await getCommonFiles(Game));
+                    FileList.Add(Game.compressedName);
                 }
-
-                if (includeDownloads && !string.IsNullOrEmpty(Game.downloadPath) && Directory.Exists(Game.downloadPath))
+                else
                 {
-                    FileList.AddRange(await getDownloadFiles(Game));
-                    FileList.AddRange(await getPatchFiles(Game));
-                }
+                    if (Game.commonPath.Exists)
+                    {
+                        FileList.AddRange(getCommonFiles(Game));
+                    }
 
-                if (includeWorkshop && !string.IsNullOrEmpty(Game.workShopAcfPath) && Directory.Exists(Game.workShopPath))
-                {
-                    FileList.AddRange(await getWorkshopFiles(Game));
-                }
+                    if (includeDownloads && Game.downloadPath.Exists)
+                    {
+                        FileList.AddRange(getDownloadFiles(Game));
+                        FileList.AddRange(getPatchFiles(Game));
+                    }
 
+                    if (includeWorkshop && Game.workShopPath.Exists)
+                    {
+                        FileList.AddRange(getWorkshopFiles(Game));
+                    }
+                }
                 return FileList;
             }
 
-            async Task<List<FileSystemInfo>> getCommonFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.commonPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
+            List<FileSystemInfo> getCommonFiles(Definitions.List.Game Game) => Game.commonPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
 
-            async Task<List<FileSystemInfo>> getDownloadFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.downloadPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
+            List<FileSystemInfo> getDownloadFiles(Definitions.List.Game Game) => Game.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
 
-            async Task<List<FileSystemInfo>> getPatchFiles(Definitions.List.Game Game) => await Task.Run(() => Game.Library.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
+            List<FileSystemInfo> getPatchFiles(Definitions.List.Game Game) => Game.Library.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
 
-            async Task<List<FileSystemInfo>> getWorkshopFiles(Definitions.List.Game Game) => await Task.Run(() => new DirectoryInfo(Game.workShopPath).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList());
-
-            /*
-            public async Task<bool> copyGameArchive(Forms.moveGame currentForm, string currentZipNameNpath, string newZipNameNpath)
-            {
-                try
-                {
-                    // If archive already exists in the target library
-                    if (File.Exists(newZipNameNpath))
-                    {
-                        // And file size doesn't equals
-                        if (FileSystem.getFileSize(currentZipNameNpath) != FileSystem.getFileSize(newZipNameNpath))
-                            // Remove the compressed archive
-                            await Task.Run(() => File.Delete(newZipNameNpath));
-                    }
-                    else
-                        await Task.Run(() => File.Copy(currentZipNameNpath, newZipNameNpath));
-                }
-                catch (Exception ex)
-                {
-                    currentForm.logToFormAsync(ex.ToString());
-
-                    return false;
-                }
-
-                return true;
-            }
-            */
+            List<FileSystemInfo> getWorkshopFiles(Definitions.List.Game Game) => Game.workShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
 
             /*
             public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)

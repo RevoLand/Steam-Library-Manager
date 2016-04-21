@@ -38,7 +38,9 @@ namespace Steam_Library_Manager.Definitions
             public string appName { get; set; }
             public string gameHeaderImage { get; set; }
             public string prettyGameSize { get; set; }
-            public string installationPath, acfName, acfPath, commonPath, downloadPath, workShopPath, workShopAcfName, workShopAcfPath;
+            public DirectoryInfo installationPath, commonPath, downloadPath, workShopPath;
+            public FileInfo acfPath, workShopAcfPath, compressedName;
+            public string acfName, workShopAcfName;
             public long sizeOnDisk { get; set; }
             public System.Windows.Controls.ContextMenu contextMenu { get; set; }
             public bool Compressed { get; set; }

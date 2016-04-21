@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Content
             return cMenu;
         }
 
-        private static async void NewMenuItem_Click(object sender, RoutedEventArgs e)
+        private static void NewMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Definitions.List.Game Game = ((((sender as MenuItem).Parent as ContextMenu).Parent as System.Windows.Controls.Primitives.Popup).PlacementTarget as Grid).Tag as Definitions.List.Game;
 
@@ -50,15 +50,15 @@ namespace Steam_Library_Manager.Content
                     System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
                     break;
                 case "Disk":
-                    System.Diagnostics.Process.Start(Game.commonPath);
+                    System.Diagnostics.Process.Start(Game.commonPath.FullName);
                     break;
                 case "acfFile":
-                    System.Diagnostics.Process.Start(Game.acfPath);
+                    System.Diagnostics.Process.Start(Game.acfPath.FullName);
                     break;
                 case "deleteGameFilesSLM":
 
                     Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
-                    await gameFunctions.deleteGameFiles(Game);
+                    gameFunctions.deleteGameFiles(Game);
 
                     break;
             }

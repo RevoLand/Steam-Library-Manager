@@ -9,8 +9,7 @@ namespace Steam_Library_Manager.Framework
             Initialize();
         }
 
-        public SettingBindingExtension(string path)
-            : base(path)
+        public SettingBindingExtension(string path) : base(path)
         {
             Initialize();
         }

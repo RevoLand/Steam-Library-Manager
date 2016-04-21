@@ -11,7 +11,7 @@ namespace Steam_Library_Manager.Functions
     class Games
     {
 
-        public static async void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk, bool isCompressed, bool isSteamBackup = false)
+        public static void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk, bool isCompressed, bool isSteamBackup = false)
         {
             try
             {
@@ -20,9 +20,6 @@ namespace Steam_Library_Manager.Functions
 
                 // Set game appID
                 Game.appID = appID;
-
-                // Define it is an archive
-                Game.Compressed = isCompressed;
 
                 // Set game name
                 Game.appName = appName;
@@ -33,36 +30,32 @@ namespace Steam_Library_Manager.Functions
                 Game.acfName = $"appmanifest_{appID}.acf";
 
                 // Set game acf path
-                Game.acfPath = acfPath;
+                Game.acfPath = new FileInfo(acfPath);
 
                 // Set workshop acf name
                 Game.workShopAcfName = $"appworkshop_{appID}.acf";
 
-                if (Library.workshopPath.Exists)
-                    // Set path for acf file
-                    Game.workShopAcfPath = Path.Combine(Library.workshopPath.FullName, Game.workShopAcfName);
+                Game.workShopAcfPath = new FileInfo(Path.Combine(Library.workshopPath.FullName, Game.workShopAcfName));
 
                 // Set installation path
                 DirectoryInfo testOldInstallations = new DirectoryInfo(installationPath);
-                installationPath = (testOldInstallations.Exists) ? testOldInstallations.Name : installationPath;
-                Game.installationPath = installationPath;
+
+                Game.installationPath = (testOldInstallations.Exists) ? testOldInstallations : new DirectoryInfo(installationPath);
 
                 Game.Library = Library;
 
-                // If game has a folder in "common" dir, define it as exactInstallPath
-                if (Directory.Exists(Path.Combine(Library.commonPath.FullName, installationPath)))
-                    Game.commonPath = Path.Combine(Library.commonPath.FullName, installationPath) + Path.DirectorySeparatorChar.ToString();
+                // Define it is an archive
+                Game.Compressed = isCompressed;
 
-                // If game has a folder in "downloading" dir, define it as downloadPath
-                if (Directory.Exists(Path.Combine(Library.downloadPath.FullName, installationPath)))
-                    Game.downloadPath = Path.Combine(Library.downloadPath.FullName, installationPath) + Path.DirectorySeparatorChar.ToString();
+                Game.compressedName = new FileInfo(Path.Combine(Game.Library.steamAppsPath.FullName, Game.appID + ".zip"));
 
-                // If game has a folder in "workshop" dir, define it as workShopPath
-                if (Directory.Exists(Path.Combine(Library.workshopPath.FullName, "content", appID.ToString())))
-                    Game.workShopPath = Path.Combine(Library.workshopPath.FullName, "content", appID.ToString()) + Path.DirectorySeparatorChar.ToString();
+
+                Game.commonPath = new DirectoryInfo(Path.Combine(Library.commonPath.FullName, installationPath));
+                Game.downloadPath = new DirectoryInfo(Path.Combine(Library.downloadPath.FullName, installationPath));
+                Game.workShopPath = new DirectoryInfo(Path.Combine(Library.workshopPath.FullName, "content", appID.ToString()));
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                if (string.IsNullOrEmpty(Game.commonPath) && string.IsNullOrEmpty(Game.downloadPath) && !Game.Compressed)
+                if (!Game.commonPath.Exists && !Game.downloadPath.Exists && !Game.Compressed)
                     return; // Do not add pre-loads to list
 
                 fileSystem.Game gameFunctions = new fileSystem.Game();
@@ -70,7 +63,7 @@ namespace Steam_Library_Manager.Functions
                 // If SizeOnDisk value from .ACF file is not equals to 0
                 if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF" && !isCompressed)
                 {
-                    List<FileSystemInfo> gameFiles = await gameFunctions.getFileList(Game);
+                    List<FileSystemInfo> gameFiles = gameFunctions.getFileList(Game);
 
                     Parallel.ForEach(gameFiles, file =>
                     {
@@ -83,7 +76,7 @@ namespace Steam_Library_Manager.Functions
                     if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
                     {
                         // Open archive to read
-                        using (ZipArchive zip = ZipFile.OpenRead(Path.Combine(Game.Library.steamAppsPath.FullName, Game.appID + ".zip")))
+                        using (ZipArchive zip = ZipFile.OpenRead(Game.compressedName.FullName))
                         {
                             // For each file in archive
                             foreach (ZipArchiveEntry entry in zip.Entries)
@@ -129,7 +122,7 @@ namespace Steam_Library_Manager.Functions
 
             Game.appID = appID;
 
-            Game.installationPath = installationPath;
+            Game.installationPath = new DirectoryInfo(installationPath);
 
             Game.gameHeaderImage = $"http://cdn.akamai.steamstatic.com/steam/apps/{appID}/header.jpg";
 
@@ -158,21 +151,47 @@ namespace Steam_Library_Manager.Functions
                 if (!Library.steamAppsPath.Exists)
                     Library.steamAppsPath.Create();
 
-                    // Foreach *.acf file found in library
-                    foreach (string game in Directory.EnumerateFiles(Library.steamAppsPath.FullName, "*.acf", SearchOption.TopDirectoryOnly))
+                // Foreach *.acf file found in library
+                foreach (string game in Directory.EnumerateFiles(Library.steamAppsPath.FullName, "*.acf", SearchOption.TopDirectoryOnly))
+                {
+                    // Define a new value and call KeyValue
+                    Framework.KeyValue Key = new Framework.KeyValue();
+
+                    // Read the *.acf file as text
+                    Key.ReadFileAsText(game);
+
+                    // If key doesn't contains a child (value in acf file)
+                    if (Key.Children.Count == 0)
+                        continue;
+
+                    AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                }
+
+
+                // Do a loop for each *.zip file in library
+                foreach (string gameArchive in Directory.EnumerateFiles(Library.steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly))
+                {
+                    // Open archive for read
+                    using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
                     {
-                        // Define a new value and call KeyValue
-                        Framework.KeyValue Key = new Framework.KeyValue();
+                        // For each file in opened archive
+                        foreach (ZipArchiveEntry file in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
+                        {
+                            // If it contains
+                            // Define a KeyValue reader
+                            Framework.KeyValue Key = new Framework.KeyValue();
 
-                        // Read the *.acf file as text
-                        Key.ReadFileAsText(game);
+                            // Open .acf file from archive as text
+                            Key.ReadAsText(file.Open());
 
-                        // If key doesn't contains a child (value in acf file)
-                        if (Key.Children.Count == 0)
-                            continue;
+                            // If acf file has no children, skip this archive
+                            if (Key.Children.Count == 0)
+                                continue;
 
-                        AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                            AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
+                        }
                     }
+                }
 
                 // If library is backup library
                 if (Library.Backup)
@@ -192,34 +211,6 @@ namespace Steam_Library_Manager.Functions
 
                             if (name.Count() > 1)
                                 i++;
-                        }
-                    }
-
-
-                    // Do a loop for each *.zip file in library
-                    foreach (string gameArchive in Directory.EnumerateFiles(Library.steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly))
-                    {
-                        // Open archive for read
-                        using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
-                        {
-                            // For each file in opened archive
-                            foreach (ZipArchiveEntry file in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
-                            {
-                                // If it contains
-                                // Define a KeyValue reader
-                                Framework.KeyValue Key = new Framework.KeyValue();
-
-                                // Open .acf file from archive as text
-                                Key.ReadAsText(file.Open());
-
-                                // If acf file has no children, skip this archive
-                                if (Key.Children.Count == 0)
-                                    continue;
-
-                                AddNewGame(file.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
-                            }
-
-                            compressedArchive.Dispose();
                         }
                     }
                 }

@@ -187,18 +187,20 @@ namespace Steam_Library_Manager.Functions
                     // Clear them so they don't conflict
                     Definitions.List.Libraries.Clear();
 
-                // If Steam.exe not exists in the path we set, then return
                 if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
                     addNewLibrary(Properties.Settings.Default.steamInstallationPath, true, false);
 
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
 
-                // If LibraryFolders.vdf exists
+                // If config.vdf exists
                 if (File.Exists(Definitions.Steam.vdfFilePath))
                 {
                     // Read our vdf file as text
                     Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
+
+                    // Set user id from config file
+                    Definitions.SLM.userSteamID64 = Key.Children[0].Children[0].Children[0].Children.Find(x => x.Name == "Accounts").Children[0].Children[0].Value;
 
                     foreach (Framework.KeyValue key in Key.Children[0].Children[0].Children[0].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                     {

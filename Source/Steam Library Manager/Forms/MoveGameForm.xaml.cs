@@ -62,6 +62,7 @@ namespace Steam_Library_Manager.Forms
         private void button_Click(object sender, RoutedEventArgs e)
         {
             bool removeOldGame = removeOldFiles.IsChecked.Value;
+            bool compressGame = compress.IsChecked.Value;
 
             if (task == null || task.Status == System.Threading.Tasks.TaskStatus.Canceled)
             {
@@ -71,31 +72,31 @@ namespace Steam_Library_Manager.Forms
                 cancellationToken = new System.Threading.CancellationTokenSource();
 
                 Functions.fileSystem.Game Games = new Functions.fileSystem.Game();
-                task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(async () =>
+                task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(() =>
                 {
                     try
                     {
-                    List<System.IO.FileSystemInfo> fileList = await Games.getFileList(Game);
-                    Games.copyGameFiles(this, fileList, Game, Library, cancellationToken);
+                        List<System.IO.FileSystemInfo> fileList = Games.getFileList(Game);
+                        Games.copyGameFiles(this, fileList, Game, Library, cancellationToken, compressGame);
 
-                    if (!cancellationToken.IsCancellationRequested)
-                    {
-                        // If game is not exists in the target library
-                        if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
+                        if (!cancellationToken.IsCancellationRequested)
                         {
-                            // Add game to new library
-                            Functions.Games.AddNewGame(Game.acfPath.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath, Library, Game.sizeOnDisk, false);
+                            // If game is not exists in the target library
+                            if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
+                            {
+                                // Add game to new library
+                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.FullName, Library, Game.sizeOnDisk, false);
 
-                            // Update library details
-                            Functions.Library.updateLibraryVisual(Library);
+                                // Update library details
+                                Functions.Library.updateLibraryVisual(Library);
+                            }
+
+                            if (removeOldGame)
+                                Games.deleteGameFiles(Game, fileList);
                         }
 
-                        if (removeOldGame)
-                            await Games.deleteGameFiles(Game, fileList);
                     }
-
-                    }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }

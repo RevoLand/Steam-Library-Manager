@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Content
             return cMenu;
         }
 
-        private static async void menuItem_Click(object sender, RoutedEventArgs e)
+        private static void menuItem_Click(object sender, RoutedEventArgs e)
         {
             // Define our game from the Tag we given to Context menu
             Definitions.List.Library Library = ((sender as MenuItem).Parent as ContextMenu).Tag as Definitions.List.Library;
@@ -71,7 +71,7 @@ namespace Steam_Library_Manager.Content
                     {
                         Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
 
-                        if (!await gameFunctions.deleteGameFiles(Game))
+                        if (!gameFunctions.deleteGameFiles(Game))
                         {
                             MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", Library.fullPath));
 
