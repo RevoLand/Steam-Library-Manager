@@ -16,7 +16,27 @@
                             <DataTemplate>
                                 <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" ContextMenu="{Binding contextMenu}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
                                     <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" Padding="0" FontWeight="Bold" />
-                                    <TextBlock Text="{Binding GameCount, StringFormat='Games: {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
+                                    <TextBlock VerticalAlignment="Bottom"  Padding="0,0,0,27" HorizontalAlignment="Left">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding Backup}" Value="false" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Text" Value="Steam Library" />
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding Backup}" Value="true" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Text" Value="Backup Library" />
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding GameCount, StringFormat='Game(s): {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
                                     <TextBlock Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0, 0, 0, 12" />
                                     <ProgressBar Value="{Binding freeSpacePerc}" Height="10" IsTabStop="False" VerticalAlignment="Bottom" />
                                 </Grid>

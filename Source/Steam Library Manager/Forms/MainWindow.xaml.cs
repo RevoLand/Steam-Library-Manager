@@ -80,7 +80,8 @@ namespace Steam_Library_Manager
                 Definitions.SLM.selectedLibrary = Library;
 
                 // Update games list from current selection
-                Functions.Games.UpdateMainForm(null, null, Library);
+                //Functions.Games.UpdateMainForm(null, null, Library);
+                gamePanel.ItemsSource = Library.Games;
             }
         }
 

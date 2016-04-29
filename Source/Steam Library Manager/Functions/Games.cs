@@ -101,10 +101,10 @@ namespace Steam_Library_Manager.Functions
                 Application.Current.Dispatcher.Invoke(delegate
                 {
                     Game.contextMenu = Content.Games.generateRightClickMenu(Game);
-                }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                // Add our game details to global list
-                Library.Games.Add(Game);
+                    // Add our game details to global list
+                    Library.Games.Add(Game);
+                }, System.Windows.Threading.DispatcherPriority.Normal);
 
             }
             catch (Exception ex)
@@ -205,9 +205,10 @@ namespace Steam_Library_Manager.Functions
                         string[] name = System.Text.RegularExpressions.Regex.Split(Key["name"].Value, " and ");
 
                         int i = 0;
+                        long gameSize = fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
                         foreach (Framework.KeyValue app in Key["apps"].Children)
                         {
-                            AddSteamBackup(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), Library, fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true));
+                            AddSteamBackup(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), Library, gameSize);
 
                             if (name.Count() > 1)
                                 i++;
@@ -215,8 +216,8 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
 
-                if (Definitions.SLM.selectedLibrary == Library)
-                    UpdateMainForm(null, null, Library);
+                //if (Definitions.SLM.selectedLibrary == Library)
+                    //UpdateMainForm(null, null, Library);
             }
             catch (Exception ex)
             {
@@ -238,6 +239,7 @@ namespace Steam_Library_Manager.Functions
                         ).OrderBy(Sort)
                         );
                 }, System.Windows.Threading.DispatcherPriority.Normal);
+
             }
             catch (Exception ex)
             {

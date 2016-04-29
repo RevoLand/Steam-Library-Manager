@@ -25,7 +25,7 @@
         <ListView x:Name="textBox" Margin="10,369,10,60" AllowDrop="False" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" />
+                    <TextBlock MaxHeight="16" Text="{Binding}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

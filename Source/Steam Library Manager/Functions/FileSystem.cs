@@ -119,10 +119,18 @@ namespace Steam_Library_Manager.Functions
                         if (!Game.Compressed)
                         {
                             // Copy .ACF file
-                            Game.acfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, Game.acfName), true);
+                            if (Game.acfPath.Exists)
+                                Game.acfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, Game.acfName), true);
 
                             if (Game.workShopAcfPath.Exists)
-                                Game.workShopAcfPath.CopyTo(Game.workShopAcfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), true);
+                            {
+                                FileInfo newACFPath = new FileInfo(Game.workShopAcfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+
+                                if (!newACFPath.Directory.Exists)
+                                    newACFPath.Directory.Create();
+
+                                Game.workShopAcfPath.CopyTo(newACFPath.FullName, true);
+                            }
                         }
                     }
 
@@ -192,9 +200,12 @@ namespace Steam_Library_Manager.Functions
                             Game.workShopAcfPath.Delete();
                     }
 
-                    Game.Library.Games.Remove(Game);
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        Game.Library.Games.Remove(Game);
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
                     Library.updateLibraryVisual(Game.Library);
-                    Games.UpdateMainForm(null, null, Game.Library);
+                    //Games.UpdateMainForm(null, null, Game.Library);
                 }
                 catch (Exception ex)
                 {
@@ -272,84 +283,6 @@ namespace Steam_Library_Manager.Functions
             List<FileSystemInfo> getPatchFiles(Definitions.List.Game Game) => Game.Library.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
 
             List<FileSystemInfo> getWorkshopFiles(Definitions.List.Game Game) => Game.workShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
-
-            /*
-            public async Task<bool> compressGameFiles(Forms.moveGame currentForm, List<string> gameFiles, string newZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
-            {
-                string newFileName;
-                try
-                {
-                    if (Directory.Exists(Path.GetDirectoryName(newZipNameNpath)))
-                    {
-                        // If compressed archive already exists
-                        if (File.Exists(newZipNameNpath))
-                            // Remove the compressed archive
-                            File.Delete(newZipNameNpath);
-                    }
-                    else
-                        Directory.CreateDirectory(Path.GetDirectoryName(newZipNameNpath));
-
-                    // Create a new compressed archive at target library
-                    using (ZipArchive gameBackup = ZipFile.Open(newZipNameNpath, ZipArchiveMode.Create))
-                    {
-                        // For each file in common folder of game
-                        foreach (string currentFile in gameFiles)
-                        {
-                            // Define a string for better looking
-                            newFileName = currentFile.Substring(Game.Library.steamAppsPath.Length + 1);
-
-                            // Add file to archive
-                            await Task.Run(() => gameBackup.CreateEntryFromFile(currentFile, newFileName, CompressionLevel.Optimal));
-
-                            // Perform step on progressBar
-                            currentForm.progressBar_CopyStatus.PerformStep();
-
-                            // Log details about process
-                            currentForm.logToFormAsync(string.Format(Languages.Games.message_compressStatus, gameFiles.IndexOf(currentFile), gameFiles.Count, newFileName));
-                        }
-
-                        // Add .ACF file to archive
-                        await Task.Run(() => gameBackup.CreateEntryFromFile(Game.acfPath, Game.acfName, CompressionLevel.Optimal));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    currentForm.logToFormAsync(ex.ToString());
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            public async Task<bool> decompressArchive(Forms.moveGame currentForm, string currentZipNameNpath, Definitions.List.Game Game, Definitions.List.Library targetLibrary)
-            {
-                try
-                {
-                    string newCommonPath = Path.Combine(targetLibrary.commonPath, Game.installationPath);
-                    // If directory exists at target game path
-                    if (Directory.Exists(newCommonPath))
-                    {
-                        // Remove the directory
-                        await Task.Run(() => Directory.Delete(newCommonPath, true));
-
-                        if (File.Exists(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)))
-                            await Task.Run(() => File.Delete(Path.Combine(targetLibrary.steamAppsPath, Game.acfName)));
-                    }
-
-                    await Task.Run(() => ZipFile.ExtractToDirectory(currentZipNameNpath, targetLibrary.steamAppsPath));
-                }
-                catch (Exception ex)
-                {
-                    currentForm.logToFormAsync(ex.ToString());
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            */
         }
 
         // Get directory size from path, with or without sub directories
