@@ -100,8 +100,7 @@ namespace Steam_Library_Manager.Functions
 
                 Application.Current.Dispatcher.Invoke(delegate
                 {
-                    Game.contextMenu = Content.Games.generateRightClickMenu(Game);
-
+                    Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
                     // Add our game details to global list
                     Library.Games.Add(Game);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
@@ -136,10 +135,7 @@ namespace Steam_Library_Manager.Functions
 
             Game.prettyGameSize = fileSystem.FormatBytes(Game.sizeOnDisk);
 
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                Game.contextMenu = Content.Games.generateRightClickMenu(Game);
-            }, System.Windows.Threading.DispatcherPriority.Normal);
+            Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
 
             Library.Games.Add(Game);
         }
@@ -215,30 +211,6 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
                 }
-
-                //if (Definitions.SLM.selectedLibrary == Library)
-                    //UpdateMainForm(null, null, Library);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        public static void UpdateMainForm(Func<Definitions.List.Game, object> Sort, string Search, Definitions.List.Library Library)
-        {
-            try
-            {
-                Sort = SLM.Settings.getSortingMethod();
-
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.Where(x => x.Library == Library).OrderBy(Sort) : Library.Games.Where(x => x.Library == Library).Where(
-                        y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
-                        || y.appID.ToString().Contains(Search) // Search by app ID
-                        ).OrderBy(Sort)
-                        );
-                }, System.Windows.Threading.DispatcherPriority.Normal);
 
             }
             catch (Exception ex)

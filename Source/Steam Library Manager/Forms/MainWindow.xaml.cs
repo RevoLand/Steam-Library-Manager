@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -78,9 +79,8 @@ namespace Steam_Library_Manager
                 Definitions.List.Library Library = (sender as Grid).Tag as Definitions.List.Library;
 
                 Definitions.SLM.selectedLibrary = Library;
-
                 // Update games list from current selection
-                //Functions.Games.UpdateMainForm(null, null, Library);
+
                 gamePanel.ItemsSource = Library.Games;
             }
         }
@@ -127,6 +127,89 @@ namespace Steam_Library_Manager
                     else
                         MessageBox.Show("Library exists");
                 }
+            }
+        }
+
+
+        private void libraryContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Define our game from the Tag we given to Context menu
+            Definitions.List.Library Library = (sender as MenuItem).Tag as Definitions.List.Library;
+
+            // switch based on name we set earlier with context menu
+            switch ((sender as MenuItem).Name)
+            {
+                // Opens game installation path in explorer
+                case "Disk":
+                    if (Library.steamAppsPath.Exists)
+                        System.Diagnostics.Process.Start(Library.steamAppsPath.FullName);
+                    break;
+                case "deleteLibrary":
+
+                    MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Move games in Library before deleting the library?", "Move games first?", MessageBoxButton.YesNoCancel);
+
+                    if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
+                        //new Forms.moveLibrary(Library).Show();
+                        MessageBox.Show("Function not implemented, process cancelled");
+                    else if (moveGamesBeforeDeletion == MessageBoxResult.No)
+                        Functions.Library.removeLibrary(Library, true);
+
+                    break;
+                case "deleteLibrarySLM":
+
+                    foreach (Definitions.List.Game Game in Library.Games.ToList())
+                    {
+                        Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
+
+                        if (!gameFunctions.deleteGameFiles(Game))
+                        {
+                            MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", Library.fullPath));
+
+                            return;
+                        }
+                    }
+
+                    Functions.Library.updateLibraryVisual(Library);
+
+                    MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", Library.fullPath));
+                    break;
+                case "moveLibrary":
+                    //new Forms.moveLibrary(Library).Show();
+                    break;
+
+                // Removes a backup library from list
+                case "RemoveFromList":
+                    if (Library.Backup)
+                    {
+                        // Remove the library from our list
+                        Definitions.List.Libraries.Remove(Library);
+
+                        MainWindow.Accessor.gamePanel.ItemsSource = null;
+                    }
+                    break;
+            }
+        }
+
+        private void gameContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Definitions.List.Game Game = (sender as MenuItem).Tag as Definitions.List.Game;
+
+            switch ((sender as MenuItem).Name)
+            {
+                default:
+                    System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
+                    break;
+                case "Disk":
+                    System.Diagnostics.Process.Start(Game.commonPath.FullName);
+                    break;
+                case "acfFile":
+                    System.Diagnostics.Process.Start(Game.acfPath.FullName);
+                    break;
+                case "deleteGameFilesSLM":
+
+                    Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
+                    gameFunctions.deleteGameFiles(Game);
+                    break;
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using FontAwesome.WPF;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,108 +7,44 @@ namespace Steam_Library_Manager.Content
 {
     class Games
     {
-        public static ContextMenu generateRightClickMenu(Definitions.List.Game Game)
+        public static ObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Game Game)
         {
-            List<Definitions.List.rightClickMenuItem> rightClickMenu = generateRightClickMenuItems(Game);
+            ObservableCollection<FrameworkElement> rightClickMenu = new ObservableCollection<FrameworkElement>();
 
-            ContextMenu cMenu = new ContextMenu();
-            cMenu.Tag = Game;
-
-            foreach (Definitions.List.rightClickMenuItem Item in rightClickMenu.OrderBy(x => x.order))
+            rightClickMenu.Add(new MenuItem
             {
-                if (Item.ShownToBackup && !Game.Library.Backup) continue;
-
-                MenuItem newMenuItem = new MenuItem();
-
-                if (Item.IsSeperator)
-                    cMenu.Items.Add(new Separator());
-                else
-                {
-                    newMenuItem.Click += NewMenuItem_Click;
-
-                    newMenuItem.Header = Item.DisplayText;
-                    newMenuItem.Name = Item.Action;
-                    newMenuItem.IsEnabled = Item.IsEnabled;
-
-                    if (Item.icon != FontAwesomeIcon.None)
-                        newMenuItem.Icon = Functions.fAwesome.getAwesomeIcon(Item.icon, Item.iconColor);
-
-                    cMenu.Items.Add(newMenuItem);
-                }
-            }
-            return cMenu;
-        }
-
-        private static void NewMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            Definitions.List.Game Game = ((((sender as MenuItem).Parent as ContextMenu).Parent as System.Windows.Controls.Primitives.Popup).PlacementTarget as Grid).Tag as Definitions.List.Game;
-
-            switch ((sender as MenuItem).Name)
-            {
-                default:
-                    System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
-                    break;
-                case "Disk":
-                    System.Diagnostics.Process.Start(Game.commonPath.FullName);
-                    break;
-                case "acfFile":
-                    System.Diagnostics.Process.Start(Game.acfPath.FullName);
-                    break;
-                case "deleteGameFilesSLM":
-
-                    Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
-                    gameFunctions.deleteGameFiles(Game);
-
-                    break;
-            }
-        }
-
-        public static List<Definitions.List.rightClickMenuItem> generateRightClickMenuItems(Definitions.List.Game Game)
-        {
-            List<Definitions.List.rightClickMenuItem> rightClickMenu = new List<Definitions.List.rightClickMenuItem>();
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 1,
-                DisplayText = "Play",
-                Action = "run",
-                icon = FontAwesomeIcon.Play
+                Header = "Play",
+                Name = "run",
+                Tag = Game,
+                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Play, System.Windows.Media.Brushes.Black)
             });
 
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
+            rightClickMenu.Add(new Separator());
+
+            rightClickMenu.Add(new MenuItem
             {
-                order = 2,
-                IsSeperator = true
+                Header = $"{Game.appName} ({Game.appID})",
+                Name = "Disk",
+                Tag = Game,
+                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.FolderOpen, System.Windows.Media.Brushes.Black)
             });
 
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
+            rightClickMenu.Add(new MenuItem
             {
-                order = 3,
-                DisplayText = $"{Game.appName} ({Game.appID})",
-                Action = "Disk",
-                icon = FontAwesomeIcon.FolderOpen
+                Header = $"Size on disk: {Functions.fileSystem.FormatBytes(Game.sizeOnDisk)}",
+                Name = "Disk",
+                Tag = Game,
+                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.HddOutline, System.Windows.Media.Brushes.Black)
             });
 
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 4,
-                DisplayText = $"Size on disk: {Functions.fileSystem.FormatBytes(Game.sizeOnDisk)}",
-                Action = "Disk",
-                icon = FontAwesomeIcon.HddOutline
-            });
+            rightClickMenu.Add(new Separator());
 
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
+            rightClickMenu.Add(new MenuItem
             {
-                order = 5,
-                IsSeperator = true
-            });
-
-            rightClickMenu.Add(new Definitions.List.rightClickMenuItem
-            {
-                order = 6,
-                DisplayText = "Delete Game files (SLM)",
-                Action = "deleteGameFilesSLM",
-                icon = FontAwesomeIcon.Trash
+                Header = "Delete Game files (SLM)",
+                Name = "deleteGameFilesSLM",
+                Tag = Game,
+                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Trash, System.Windows.Media.Brushes.Black)
             });
 
             return rightClickMenu;

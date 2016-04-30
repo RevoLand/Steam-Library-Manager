@@ -150,7 +150,7 @@ namespace Steam_Library_Manager.Functions
                 // Define workshop folder path
                 Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
-                Library.contextMenu = Content.Libraries.generateRightClickMenu(Library);
+                Library.contextMenu = Content.Libraries.generateRightClickMenuItems(Library);
 
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);

@@ -14,9 +14,19 @@
                     <ListView AllowDrop="True" Drop="libraryPanel_Drop" Name="libraryPanel" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" ContextMenu="{Binding contextMenu}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
+                                <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenu}" >
+                                            <ContextMenu.ItemContainerStyle>
+                                                <Style>
+                                                    <EventSetter Event="MenuItem.Click" Handler="libraryContextMenuItem_Click" />
+                                                </Style>
+                                            </ContextMenu.ItemContainerStyle>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    
                                     <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" Padding="0" FontWeight="Bold" />
-                                    <TextBlock VerticalAlignment="Bottom"  Padding="0,0,0,27" HorizontalAlignment="Left">
+                                    <TextBlock VerticalAlignment="Bottom"  Padding="0,0,0,30" HorizontalAlignment="Left">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -47,9 +57,19 @@
                     <ListView IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,10" SelectionMode="Single"  Name="gamePanel" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ContextMenu="{Binding contextMenu}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenu}" >
+                                            <ContextMenu.ItemContainerStyle>
+                                                <Style>
+                                                    <EventSetter Event="MenuItem.Click" Handler="gameContextMenuItem_Click" />
+                                                </Style>
+                                            </ContextMenu.ItemContainerStyle>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    
                                     <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" Width="230px" Height="107px" Margin="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-                                    <TextBlock x:Name="gameName" Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
+                                    <TextBlock x:Name="appName" Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
                                     <TextBlock VerticalAlignment="Bottom"  Padding="240,0,0,20" HorizontalAlignment="Left">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
