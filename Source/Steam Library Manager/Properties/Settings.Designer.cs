@@ -175,5 +175,38 @@ namespace Steam_Library_Manager.Properties {
                 this["ParallelAfterSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Play;run;Play;Black|separator|{0} ({1});Disk;FolderOpen;Black|Size on disk: {2};D" +
+            "isk;HddOutline;Black|separator|Delete game files (SLM);deleteGameFilesSLM;Trash;" +
+            "Black")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string gameContextMenu {
+            get {
+                return ((string)(this["gameContextMenu"]));
+            }
+            set {
+                this["gameContextMenu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Open library in explorer ({0});Disk;FolderOpen;Black|separator|Move library;moveL" +
+            "ibrary;Paste;Black|separator|Delete library;deleteLibrary;Trash;Black|Delete gam" +
+            "es in library;deleteLibrarySLM;TrashOutline;Black|Remove from list;RemoveFromLis" +
+            "t;Minus;Black")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string libraryContextMenu {
+            get {
+                return ((string)(this["libraryContextMenu"]));
+            }
+            set {
+                this["libraryContextMenu"] = value;
+            }
+        }
     }
 }

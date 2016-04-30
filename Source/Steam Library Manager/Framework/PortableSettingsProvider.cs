@@ -16,7 +16,7 @@ namespace Steam_Library_Manager.Framework
       private const string _className = "PortableSettingsProvider";
       private XmlDocument _xmlDocument;
 
-        private string _filePath => Path.Combine(Path.GetDirectoryName(Definitions.Directories.SLM.CurrentDirectory), string.Format("{0}.config", ApplicationName));
+        private string _filePath => Path.Combine(Path.GetDirectoryName(Definitions.Directories.SLM.CurrentDirectory), string.Format("{0}.settings", ApplicationName));
 
         private XmlNode _localSettingsNode
       {

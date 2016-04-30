@@ -1,7 +1,9 @@
 ﻿using FontAwesome.WPF;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager.Content
 {
@@ -10,44 +12,52 @@ namespace Steam_Library_Manager.Content
         public static ObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Game Game)
         {
             ObservableCollection<FrameworkElement> rightClickMenu = new ObservableCollection<FrameworkElement>();
-
-            rightClickMenu.Add(new MenuItem
+            try
             {
-                Header = "Play",
-                Name = "run",
-                Tag = Game,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Play, System.Windows.Media.Brushes.Black)
-            });
+                string[] menuItems = Properties.Settings.Default.gameContextMenu.Split('|');
 
-            rightClickMenu.Add(new Separator());
+                foreach (string menuItem in menuItems)
+                {
+                    if (menuItem.Equals("separator", System.StringComparison.InvariantCultureIgnoreCase))
+                        rightClickMenu.Add(new Separator());
+                    else
+                    {
+                        string[] Item = menuItem.Split(';');
 
-            rightClickMenu.Add(new MenuItem
+                        if (Item.Length <= 2) continue;
+                        else
+                        {
+                            string header = Item[0];
+                            string action = Item[1];
+                            FontAwesomeIcon icon = FontAwesomeIcon.None;
+                            BrushConverter bc = new BrushConverter();
+                            Brush iconColor = (Brush)bc.ConvertFromInvariantString("black");
+
+                            if (Item.Length > 2)
+                                Enum.TryParse(Item[2], out icon);
+
+                            if (Item.Length > 3)
+                                iconColor = (Brush)bc.ConvertFromInvariantString(Item[3]);
+
+                            rightClickMenu.Add(new MenuItem
+                            {
+                                Header = string.Format(header, Game.appName, Game.appID, Functions.fileSystem.FormatBytes(Game.sizeOnDisk)),
+                                Name = action,
+                                Icon = Functions.fAwesome.getAwesomeIcon(icon, iconColor),
+                                Tag = Game
+                            });
+                        }
+                    }
+                }
+
+                return rightClickMenu;
+            }
+            catch (FormatException ex)
             {
-                Header = $"{Game.appName} ({Game.appID})",
-                Name = "Disk",
-                Tag = Game,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.FolderOpen, System.Windows.Media.Brushes.Black)
-            });
+                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
 
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = $"Size on disk: {Functions.fileSystem.FormatBytes(Game.sizeOnDisk)}",
-                Name = "Disk",
-                Tag = Game,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.HddOutline, System.Windows.Media.Brushes.Black)
-            });
-
-            rightClickMenu.Add(new Separator());
-
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = "Delete Game files (SLM)",
-                Name = "deleteGameFilesSLM",
-                Tag = Game,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Trash, System.Windows.Media.Brushes.Black)
-            });
-
-            return rightClickMenu;
+                return rightClickMenu;
+            }
         }
     }
 }

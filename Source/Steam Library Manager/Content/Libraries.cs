@@ -1,7 +1,9 @@
 ﻿using FontAwesome.WPF;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager.Content
 {
@@ -11,62 +13,52 @@ namespace Steam_Library_Manager.Content
         public static ObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Library Library)
         {
             ObservableCollection<FrameworkElement> rightClickMenu = new ObservableCollection<FrameworkElement>();
-
-            rightClickMenu.Add(new MenuItem
+            try
             {
-                Header = $"Open library in explorer ({Library.fullPath})",
-                Name = "Disk",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.FolderOpen, System.Windows.Media.Brushes.Black),
-            });
+                string[] menuItems = Properties.Settings.Default.libraryContextMenu.Split('|');
 
-            // Separator
-            rightClickMenu.Add(new Separator());
+                foreach (string menuItem in menuItems)
+                {
+                    if (menuItem.Equals("separator", System.StringComparison.InvariantCultureIgnoreCase))
+                        rightClickMenu.Add(new Separator());
+                    else
+                    {
+                        string[] Item = menuItem.Split(';');
 
-            rightClickMenu.Add(new MenuItem
+                        if (Item.Length <= 2) continue;
+                        else
+                        {
+                            string header = Item[0];
+                            string action = Item[1];
+                            FontAwesomeIcon icon = FontAwesomeIcon.None;
+                            BrushConverter bc = new BrushConverter();
+                            Brush iconColor = (Brush)bc.ConvertFromInvariantString("black");
+
+                            if (Item.Length > 2)
+                                Enum.TryParse(Item[2], out icon);
+
+                            if (Item.Length > 3)
+                                iconColor = (Brush)bc.ConvertFromInvariantString(Item[3]);
+
+                            rightClickMenu.Add(new MenuItem
+                            {
+                                Header = string.Format(header, Library.fullPath),
+                                Name = action,
+                                Icon = Functions.fAwesome.getAwesomeIcon(icon, iconColor),
+                                Tag = Library
+                            });
+                        }
+                    }
+                }
+
+                return rightClickMenu;
+            }
+            catch (FormatException)
             {
-                Header = "Move library",
-                Name = "moveLibrary",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Paste, System.Windows.Media.Brushes.Black),
-            });
+                MessageBox.Show("An error happened while parsing context menu, most likely happened duo typo on color name.");
 
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = "Refresh game list in library",
-                Name = "RefreshGameList",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Refresh, System.Windows.Media.Brushes.Black),
-            });
-
-            // Separator
-            rightClickMenu.Add(new Separator());
-
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = "Delete library",
-                Name = "deleteLibrary",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Trash, System.Windows.Media.Brushes.Black),
-            });
-
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = "Delete games in library",
-                Name = "deleteLibrarySLM",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.TrashOutline, System.Windows.Media.Brushes.Black),
-            });
-
-            rightClickMenu.Add(new MenuItem
-            {
-                Header = "Remove from list",
-                Name = "RemoveFromList",
-                Tag = Library,
-                Icon = Functions.fAwesome.getAwesomeIcon(FontAwesomeIcon.Minus, System.Windows.Media.Brushes.Black),
-            });
-
-            return rightClickMenu;
+                return rightClickMenu;
+            }
         }
     }
 }
