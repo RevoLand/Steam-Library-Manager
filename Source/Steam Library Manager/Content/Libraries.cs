@@ -1,6 +1,5 @@
 ﻿using FontAwesome.WPF;
 using System;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,16 +9,16 @@ namespace Steam_Library_Manager.Content
     class Libraries
     {
 
-        public static ObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Library Library)
+        public static Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Library Library)
         {
-            ObservableCollection<FrameworkElement> rightClickMenu = new ObservableCollection<FrameworkElement>();
+            Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
                 string[] menuItems = Properties.Settings.Default.libraryContextMenu.Split('|');
 
                 foreach (string menuItem in menuItems)
                 {
-                    if (menuItem.Equals("separator", System.StringComparison.InvariantCultureIgnoreCase))
+                    if (menuItem.Equals("separator", StringComparison.InvariantCultureIgnoreCase))
                         rightClickMenu.Add(new Separator());
                     else
                     {

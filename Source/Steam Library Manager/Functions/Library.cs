@@ -29,7 +29,6 @@ namespace Steam_Library_Manager.Functions
                     // If Steam.dll moved succesfully
                     if (File.Exists(newSteamDLLPath)) // in case of permissions denied
                     {
-
                         // Call KeyValue in act
                         Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -224,31 +223,28 @@ namespace Steam_Library_Manager.Functions
                             // If user wants to update
                             if (askUserToUpdatePath == MessageBoxResult.Yes)
                             {
-                                /*
                                 // Show another dialog to select new path
-                                MessageBoxResult newBackupDirectoryPath = MainWindow.Accessor.folderBrowser_SelectNewLibraryPath.ShowDialog();
+                                System.Windows.Forms.FolderBrowserDialog newBackupDirectoryPath = new System.Windows.Forms.FolderBrowserDialog();
 
                                 // If new path selected from dialog
-                                if (newBackupDirectoryPath == DialogResult.OK)
+                                if (newBackupDirectoryPath.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                                 {
                                     // define selected path to variable
-                                    string newLibraryPath = Definitions.Accessors.MainForm.folderBrowser_SelectNewLibraryPath.SelectedPath;
+                                    string newLibraryPath = newBackupDirectoryPath.SelectedPath;
 
                                     // Check if the selected path is exists
                                     if (!libraryExists(newLibraryPath))
                                     {
                                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                                         if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
-                                            await Task.Run(() => addNewLibrary(newLibraryPath, false, true));
+                                            addNewLibrary(newLibraryPath, false, true);
                                         else
                                             // Else show an error message to user
-                                            MessageBox.Show(Languages.SteamLibrary.messageError_noLibraryInRoot);
+                                            MessageBox.Show("Libraries can not be created at root");
                                     }
                                     else
-                                        // If selected path exists as library then show an error to user
-                                        MessageBox.Show(Languages.SteamLibrary.messageError_libraryExists);
+                                        MessageBox.Show("Library exists");
                                 }
-                                */
                             }
                         }
                         else

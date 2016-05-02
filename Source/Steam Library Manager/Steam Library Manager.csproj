@@ -67,6 +67,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +92,7 @@
     <Compile Include="Forms\MoveGameForm.xaml.cs">
       <DependentUpon>MoveGameForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Attributes.cs" />
@@ -157,7 +159,6 @@
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\compressedLibraryIcon.png" />
     <Resource Include="Resources\no_image_available.gif" />

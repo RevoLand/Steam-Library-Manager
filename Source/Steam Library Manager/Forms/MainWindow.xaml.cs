@@ -79,9 +79,9 @@ namespace Steam_Library_Manager
                 Definitions.List.Library Library = (sender as Grid).Tag as Definitions.List.Library;
 
                 Definitions.SLM.selectedLibrary = Library;
-                // Update games list from current selection
 
-                gamePanel.ItemsSource = Library.Games;
+                // Update games list from current selection
+                Functions.Games.UpdateMainForm(Library);
             }
         }
 
@@ -129,7 +129,6 @@ namespace Steam_Library_Manager
                 }
             }
         }
-
 
         private void libraryContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -211,6 +210,24 @@ namespace Steam_Library_Manager
                     gameFunctions.deleteGameFiles(Game);
                     break;
             }
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Definitions.SLM.selectedLibrary != null)
+                Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
+        }
+
+        private void searchText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (searchText.Text == "Search in Library (by app Name or app ID)")
+                searchText.Text = "";
+        }
+
+        private void searchText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(searchText.Text))
+                searchText.Text = "Search in Library (by app Name or app ID)";
         }
     }
 }

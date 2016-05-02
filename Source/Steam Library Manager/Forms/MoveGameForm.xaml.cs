@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
@@ -25,6 +24,8 @@ namespace Steam_Library_Manager.Forms
         // Define task
         System.Threading.Tasks.Task task;
 
+        public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
+
         public MoveGameForm(Definitions.List.Game gameToMove, Definitions.List.Library libraryToMove)
         {
             InitializeComponent();
@@ -33,20 +34,6 @@ namespace Steam_Library_Manager.Forms
             Library = libraryToMove;
 
             textBox.ItemsSource = formLogs;
-        }
-
-        private ObservableCollection<string> formlogs = new ObservableCollection<string>();
-
-        public ObservableCollection<string> formLogs
-        {
-            get { return formlogs; }
-            set
-            {
-                if (value != formlogs)
-                {
-                    formlogs = value;
-                }
-            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -82,17 +69,20 @@ namespace Steam_Library_Manager.Forms
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             // If game is not exists in the target library
-                            if (Library.Games.Count(x => x.acfName == Game.acfName && x.Compressed == compressGame) == 0)
+                            if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
                             {
                                 // Add game to new library
-                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, false);
+                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, compressGame);
 
                                 // Update library details
                                 Functions.Library.updateLibraryVisual(Library);
                             }
 
                             if (removeOldGame)
+                            {
                                 Games.deleteGameFiles(Game, fileList);
+                                Functions.Games.UpdateMainForm(Game.Library);
+                            }
                         }
 
                     }

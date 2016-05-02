@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 
@@ -9,7 +8,7 @@ namespace Steam_Library_Manager.Definitions
     public class List
     {
         // Make a new list for Library details
-        public static ObservableCollection<Library> Libraries = new ObservableCollection<Library>();
+        public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
 
         public static List<Language> Languages = new List<Language>();
 
@@ -20,12 +19,12 @@ namespace Steam_Library_Manager.Definitions
             public bool Backup { get; set; }
             public int GameCount { get; set; }
             public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
-            public ObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
+            public Framework.AsyncObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
             public string fullPath { get; set; }
             public string prettyFreeSpace { get; set; }
             public int freeSpacePerc { get; set; }
             public long freeSpace { get; set; }
-            public ObservableCollection<Game> Games = new ObservableCollection<Game>();
+            public Framework.AsyncObservableCollection<Game> Games = new Framework.AsyncObservableCollection<Game>();
         }
 
         // Game details we are using, contains things like appID, installationPath etc.
@@ -39,7 +38,7 @@ namespace Steam_Library_Manager.Definitions
             public FileInfo acfPath, workShopAcfPath, compressedName;
             public string acfName, workShopAcfName;
             public long sizeOnDisk { get; set; }
-            public ObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
+            public Framework.AsyncObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
             public bool Compressed { get; set; }
             public bool SteamBackup { get; set; }
             public Library Library { get; set; }

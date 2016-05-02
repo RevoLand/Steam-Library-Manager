@@ -43,9 +43,13 @@ namespace Steam_Library_Manager.Functions
                         {
                             foreach(FileSystemInfo currentFile in gameFiles)
                             {
+                                fileIndex++;
+
                                 string newFileName = currentFile.FullName.Substring(Game.Library.steamAppsPath.FullName.Length + 1);
 
                                 compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
+
+                                currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFileName));
                             }
 
                             compressed.CreateEntryFromFile(Game.acfPath.FullName, Game.acfName);
@@ -54,12 +58,16 @@ namespace Steam_Library_Manager.Functions
                     else if (Game.Compressed && !compressGame)
                     {
                         foreach(ZipArchiveEntry currentFile in ZipFile.OpenRead(Game.compressedName.FullName).Entries)
-                        { 
+                        {
+                            fileIndex++;
+
                             FileInfo fileName = new FileInfo(Path.Combine(targetLibrary.steamAppsPath.FullName, currentFile.FullName));
                             if (!fileName.Directory.Exists)
                                 fileName.Directory.Create();
 
                             currentFile.ExtractToFile(fileName.FullName, true);
+
+                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, fileName.FullName));
                         }
                     }
                     else
@@ -80,10 +88,10 @@ namespace Steam_Library_Manager.Functions
                             Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
                             movedFiles.Add(newFile.FullName);
 
-                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
-                            {
-                                currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
 
+                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
+                            {
                                 currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                                 currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                             });
@@ -107,10 +115,10 @@ namespace Steam_Library_Manager.Functions
                             Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
                             movedFiles.Add(newFile.FullName);
 
-                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (System.Action)delegate
-                            {
-                                currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
+                            currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
 
+                            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
+                            {
                                 currentForm.progressReportLabel.Content = $"{fileSystem.FormatBytes(totalSize - movenSize)} left - {FormatBytes(movenSize)} / {FormatBytes(totalSize)}";
                                 currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
                             });
@@ -135,9 +143,9 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     sw.Stop();
+                    currentForm.formLogs.Add($"Time elapsed: {sw.Elapsed}");
                     Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
                     {
-                        currentForm.formLogs.Add($"Time elapsed: {sw.Elapsed}");
                         currentForm.button.Content = "Close";
                     });
                 }
@@ -293,16 +301,19 @@ namespace Steam_Library_Manager.Functions
                 // Define a "long" for directory size
                 long directorySize = 0;
 
-                Parallel.ForEach(new DirectoryInfo(directoryPath).GetFileSystemInfos("*", SearchOption.AllDirectories), currentFile =>
+                foreach (FileInfo currentFile in new DirectoryInfo(directoryPath).GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
-                    Interlocked.Add(ref directorySize, (currentFile as FileInfo).Length);
-                });
-
+                    directorySize += currentFile.Length;
+                }
                 // and return directory size
                 return directorySize;
             }
             // on error, return 0
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return 0;
+            }
         }
 
         public static long getFileSize(string filePath) => new FileInfo(filePath).Length;

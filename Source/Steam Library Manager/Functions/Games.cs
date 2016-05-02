@@ -101,10 +101,10 @@ namespace Steam_Library_Manager.Functions
                 Application.Current.Dispatcher.Invoke(delegate
                 {
                     Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
-                    // Add our game details to global list
-                    Library.Games.Add(Game);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
 
+                // Add our game details to global list
+                Library.Games.Add(Game);
             }
             catch (Exception ex)
             {
@@ -135,7 +135,10 @@ namespace Steam_Library_Manager.Functions
 
             Game.prettyGameSize = fileSystem.FormatBytes(Game.sizeOnDisk);
 
-            Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
+            }, System.Windows.Threading.DispatcherPriority.Normal);
 
             Library.Games.Add(Game);
         }
@@ -192,7 +195,7 @@ namespace Steam_Library_Manager.Functions
                 // If library is backup library
                 if (Library.Backup)
                 {
-                    foreach (string skuFile in Directory.EnumerateFiles(Library.fullPath, "*.sis", SearchOption.AllDirectories))
+                    Parallel.ForEach(Directory.EnumerateFiles(Library.fullPath, "*.sis", SearchOption.AllDirectories), skuFile =>
                     {
                         Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -209,8 +212,30 @@ namespace Steam_Library_Manager.Functions
                             if (name.Count() > 1)
                                 i++;
                         }
-                    }
+                    });
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        public static void UpdateMainForm(Definitions.List.Library Library, string Search = null)
+        {
+            try
+            {
+                Func<Definitions.List.Game, object> Sort = SLM.Settings.getSortingMethod();
+
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.Where(x => x.Library == Library).OrderBy(Sort) : Library.Games.Where(x => x.Library == Library).Where(
+                        y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                        || y.appID.ToString().Contains(Search) // Search by app ID
+                        ).OrderBy(Sort)
+                        );
+                }, System.Windows.Threading.DispatcherPriority.Normal);
 
             }
             catch (Exception ex)
