@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Framework.CachedImage
@@ -23,9 +20,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
         static FileCache()
         {
             // default cache directory - can be changed if needed from App.xaml
-            AppCacheDirectory = string.Format("{0}\\{1}\\Cache\\",
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Process.GetCurrentProcess().ProcessName);
+            AppCacheDirectory = Path.Combine(Definitions.Directories.SLM.CurrentDirectory, "Cache");
             AppCacheMode = CacheMode.Dedicated;
         }
 
@@ -41,24 +36,17 @@ namespace Steam_Library_Manager.Framework.CachedImage
         /// </summary>
         public static CacheMode AppCacheMode { get; set; }
 
-        public static async Task<MemoryStream> HitAsync(string url)
+        public static async Task<MemoryStream> HitAsync(Uri url)
         {
             if (!Directory.Exists(AppCacheDirectory))
             {
                 Directory.CreateDirectory(AppCacheDirectory);
             }
-            var uri = new Uri(url);
-            var fileNameBuilder = new StringBuilder();
-            using (var sha1 = new SHA1Managed())
-            {
-                var canonicalUrl = uri.ToString();
-                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(canonicalUrl));
-                fileNameBuilder.Append(BitConverter.ToString(hash).Replace("-", "").ToLower());
-                if (Path.HasExtension(canonicalUrl))
-                    fileNameBuilder.Append(Path.GetExtension(canonicalUrl));
-            }
 
-            var fileName = fileNameBuilder.ToString();
+            var uri = url;
+
+            // /steam/apps/107410/header.jpg
+            var fileName = uri.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "");
             var localFile = string.Format("{0}\\{1}", AppCacheDirectory, fileName);
             var memoryStream = new MemoryStream();
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Cache;
+using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -32,47 +32,37 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         private static async void ImageUrlPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var url = e.NewValue as string;
-
-            if (string.IsNullOrEmpty(url))
-                return;
+            var url = new Uri(e.NewValue as string);
 
             var cachedImage = (Image)obj;
             var bitmapImage = new BitmapImage();
-
-            switch (FileCache.AppCacheMode)
+            try
             {
-                case FileCache.CacheMode.WinINet:
-                    bitmapImage.BeginInit();
-                    bitmapImage.CreateOptions = cachedImage.CreateOptions;
-                    bitmapImage.UriSource = new Uri(url);
-                    // Enable IE-like cache policy.
-                    bitmapImage.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
-                    bitmapImage.EndInit();
-                    cachedImage.Source = bitmapImage;
-                    break;
 
-                case FileCache.CacheMode.Dedicated:
-                    try
-                    {
-                        var memoryStream = await FileCache.HitAsync(url);
-                        if (memoryStream == null)
-                            return;
+                bitmapImage.BeginInit();
+                bitmapImage.CreateOptions = cachedImage.CreateOptions;
 
-                        bitmapImage.BeginInit();
-                        bitmapImage.CreateOptions = cachedImage.CreateOptions;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                        cachedImage.Source = bitmapImage;
-                    }
-                    catch (Exception)
-                    {
-                        // ignored, in case the downloaded file is a broken or not an image.
-                    }
-                    break;
+                string gameID = url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "").Replace(".jpg", "");
 
-                default:
-                    throw new ArgumentOutOfRangeException();
+                if (File.Exists(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".jpg")))
+                    bitmapImage.StreamSource = new FileStream(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".jpg"), FileMode.Open, FileAccess.Read);
+                else if (File.Exists(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".png")))
+                    bitmapImage.StreamSource = new FileStream(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".png"), FileMode.Open, FileAccess.Read);
+                else
+                {
+                    var memoryStream = await FileCache.HitAsync(url);
+                    if (memoryStream == null)
+                        return;
+
+                    bitmapImage.StreamSource = memoryStream;
+                }
+
+                bitmapImage.EndInit();
+                cachedImage.Source = bitmapImage;
+            }
+            catch (Exception)
+            {
+                // ignored, in case the downloaded file is a broken or not an image.
             }
         }
 

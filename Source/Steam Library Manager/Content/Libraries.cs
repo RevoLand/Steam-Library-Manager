@@ -22,34 +22,44 @@ namespace Steam_Library_Manager.Content
                         rightClickMenu.Add(new Separator());
                     else
                     {
+                        MenuItem slmItem = new MenuItem();
+
+                        slmItem.Tag = Library;
+
                         string[] Item = menuItem.Split(';');
 
-                        if (Item.Length <= 2) continue;
-                        else
+                        foreach (string hardtonamethings in Item)
                         {
-                            string header = Item[0];
-                            string action = Item[1];
+                            string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
                             FontAwesomeIcon icon = FontAwesomeIcon.None;
-                            BrushConverter bc = new BrushConverter();
-                            Brush iconColor = (Brush)bc.ConvertFromInvariantString("black");
+                            Brush iconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
-                            if (Item.Length > 2)
-                                Enum.TryParse(Item[2], out icon);
-
-                            if (Item.Length > 3)
-                                iconColor = (Brush)bc.ConvertFromInvariantString(Item[3]);
-
-                            rightClickMenu.Add(new MenuItem
+                            switch (itemDetails[0].ToLowerInvariant())
                             {
-                                Header = string.Format(header, Library.fullPath),
-                                Name = action,
-                                Icon = Functions.fAwesome.getAwesomeIcon(icon, iconColor),
-                                Tag = Library
-                            });
+                                case "text":
+                                    slmItem.Header = string.Format(itemDetails[1], Library.fullPath);
+                                    break;
+                                case "action":
+                                    slmItem.Name = itemDetails[1];
+                                    break;
+                                case "iconcolor":
+                                    iconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
+                                    break;
+                                case "icon":
+                                    Enum.TryParse(itemDetails[1], out icon);
+                                    slmItem.Icon = Functions.fAwesome.getAwesomeIcon(icon, iconColor);
+                                    break;
+                                case "backup":
+                                    if (bool.Parse(itemDetails[1]) != Library.Backup)
+                                        slmItem.IsEnabled = false;
+                                    break;
+                            }
                         }
+
+                        if (slmItem.IsEnabled)
+                            rightClickMenu.Add(slmItem);
                     }
                 }
-
                 return rightClickMenu;
             }
             catch (FormatException)

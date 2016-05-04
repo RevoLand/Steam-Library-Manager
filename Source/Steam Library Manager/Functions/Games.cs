@@ -15,6 +15,9 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                if (Library.Games.ToList().Count(x => x.appID == appID && x.SteamBackup == true) > 0)
+                    return;
+
                 // Make a new definition for game
                 Definitions.List.Game Game = new Definitions.List.Game();
 
@@ -40,12 +43,14 @@ namespace Steam_Library_Manager.Functions
                 // Set installation path
                 DirectoryInfo testOldInstallations = new DirectoryInfo(installationPath);
 
-                Game.installationPath = (testOldInstallations.Exists) ? testOldInstallations : new DirectoryInfo(installationPath);
+                Game.installationPath = (testOldInstallations.Exists && !isSteamBackup) ? testOldInstallations : new DirectoryInfo(installationPath);
 
                 Game.Library = Library;
 
                 // Define it is an archive
                 Game.Compressed = isCompressed;
+
+                Game.SteamBackup = isSteamBackup;
 
                 Game.compressedName = new FileInfo(Path.Combine(Game.Library.steamAppsPath.FullName, Game.appID + ".zip"));
 
@@ -112,37 +117,6 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void AddSteamBackup(string sisPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk)
-        {
-            if (Library.Games.ToList().Count(x => x.appID == appID && x.SteamBackup == true) > 0)
-                return;
-
-            Definitions.List.Game Game = new Definitions.List.Game();
-
-            Game.appID = appID;
-
-            Game.installationPath = new DirectoryInfo(installationPath);
-
-            Game.gameHeaderImage = $"http://cdn.akamai.steamstatic.com/steam/apps/{appID}/header.jpg";
-
-            Game.appName = appName;
-
-            Game.SteamBackup = true;
-
-            Game.Library = Library;
-
-            Game.sizeOnDisk = sizeOnDisk;
-
-            Game.prettyGameSize = fileSystem.FormatBytes(Game.sizeOnDisk);
-
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
-            }, System.Windows.Threading.DispatcherPriority.Normal);
-
-            Library.Games.Add(Game);
-        }
-
         public static void UpdateGameList(Definitions.List.Library Library)
         {
             try
@@ -195,7 +169,7 @@ namespace Steam_Library_Manager.Functions
                 // If library is backup library
                 if (Library.Backup)
                 {
-                    Parallel.ForEach(Directory.EnumerateFiles(Library.fullPath, "*.sis", SearchOption.AllDirectories), skuFile =>
+                    foreach (string skuFile in Directory.EnumerateFiles(Library.fullPath, "*.sis", SearchOption.AllDirectories))
                     {
                         Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -207,12 +181,12 @@ namespace Steam_Library_Manager.Functions
                         long gameSize = fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
                         foreach (Framework.KeyValue app in Key["apps"].Children)
                         {
-                            AddSteamBackup(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), Library, gameSize);
+                            AddNewGame(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), Library, gameSize, false, true);
 
                             if (name.Count() > 1)
                                 i++;
                         }
-                    });
+                    }
                 }
 
             }
