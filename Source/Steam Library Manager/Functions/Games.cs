@@ -11,15 +11,15 @@ namespace Steam_Library_Manager.Functions
     class Games
     {
 
-        public static void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.List.Library Library, long sizeOnDisk, bool isCompressed, bool isSteamBackup = false)
+        public static void AddNewGame(string acfPath, int appID, string appName, string installationPath, Definitions.Library Library, long sizeOnDisk, bool isCompressed, bool isSteamBackup = false)
         {
             try
             {
-                if (Library.Games.ToList().Count(x => x.appID == appID && x.SteamBackup == true) > 0)
+                if (Library.Games.ToList().Count(x => x.appID == appID && x.IsSteamBackup == true) > 0)
                     return;
 
                 // Make a new definition for game
-                Definitions.List.Game Game = new Definitions.List.Game();
+                Definitions.Game Game = new Definitions.Game();
 
                 // Set game appID
                 Game.appID = appID;
@@ -33,7 +33,7 @@ namespace Steam_Library_Manager.Functions
                 Game.acfName = $"appmanifest_{appID}.acf";
 
                 // Set game acf path
-                Game.acfPath = new FileInfo(acfPath);
+                Game.fullAcfPath = new FileInfo(acfPath);
 
                 // Set workshop acf name
                 Game.workShopAcfName = $"appworkshop_{appID}.acf";
@@ -45,22 +45,21 @@ namespace Steam_Library_Manager.Functions
 
                 Game.installationPath = (testOldInstallations.Exists && !isSteamBackup) ? testOldInstallations : new DirectoryInfo(installationPath);
 
-                Game.Library = Library;
+                Game.installedLibrary = Library;
 
                 // Define it is an archive
-                Game.Compressed = isCompressed;
+                Game.IsCompressed = isCompressed;
 
-                Game.SteamBackup = isSteamBackup;
+                Game.IsSteamBackup = isSteamBackup;
 
-                Game.compressedName = new FileInfo(Path.Combine(Game.Library.steamAppsPath.FullName, Game.appID + ".zip"));
-
+                Game.compressedName = new FileInfo(Path.Combine(Game.installedLibrary.steamAppsPath.FullName, Game.appID + ".zip"));
 
                 Game.commonPath = new DirectoryInfo(Path.Combine(Library.commonPath.FullName, installationPath));
                 Game.downloadPath = new DirectoryInfo(Path.Combine(Library.downloadPath.FullName, installationPath));
                 Game.workShopPath = new DirectoryInfo(Path.Combine(Library.workshopPath.FullName, "content", appID.ToString()));
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                if (!Game.commonPath.Exists && !Game.downloadPath.Exists && !Game.Compressed)
+                if (!Game.commonPath.Exists && !Game.downloadPath.Exists && !Game.IsCompressed)
                     return; // Do not add pre-loads to list
 
                 fileSystem.Game gameFunctions = new fileSystem.Game();
@@ -68,7 +67,7 @@ namespace Steam_Library_Manager.Functions
                 // If SizeOnDisk value from .ACF file is not equals to 0
                 if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF" && !isCompressed)
                 {
-                    List<FileSystemInfo> gameFiles = gameFunctions.getFileList(Game);
+                    List<FileSystemInfo> gameFiles = Game.getFileList();
 
                     Parallel.ForEach(gameFiles, file =>
                     {
@@ -94,7 +93,7 @@ namespace Steam_Library_Manager.Functions
                     else
                     {
                         // And set archive size as game size
-                        Game.sizeOnDisk = fileSystem.getFileSize(Path.Combine(Game.Library.steamAppsPath.FullName, Game.appID + ".zip"));
+                        Game.sizeOnDisk = fileSystem.getFileSize(Path.Combine(Game.installedLibrary.steamAppsPath.FullName, Game.appID + ".zip"));
                     }
                 }
                 else
@@ -105,7 +104,7 @@ namespace Steam_Library_Manager.Functions
 
                 Application.Current.Dispatcher.Invoke(delegate
                 {
-                    Game.contextMenu = Content.Games.generateRightClickMenuItems(Game);
+                    Game.contextMenuItems = Content.Games.generateRightClickMenuItems(Game);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 // Add our game details to global list
@@ -117,7 +116,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateGameList(Definitions.List.Library Library)
+        public static void UpdateGameList(Definitions.Library Library)
         {
             try
             {
@@ -139,7 +138,6 @@ namespace Steam_Library_Manager.Functions
 
                     AddNewGame(game, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, Library, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 }
-
 
                 // Do a loop for each *.zip file in library
                 foreach (string gameArchive in Directory.EnumerateFiles(Library.steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly))
@@ -196,20 +194,27 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateMainForm(Definitions.List.Library Library, string Search = null)
+        public static void UpdateMainForm(Definitions.Library Library, string Search = null)
         {
             try
             {
-                Func<Definitions.List.Game, object> Sort = SLM.Settings.getSortingMethod();
+                Func<Definitions.Game, object> Sort = SLM.Settings.getSortingMethod();
 
-                Application.Current.Dispatcher.Invoke(delegate
+                if (MainWindow.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {
-                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.Where(x => x.Library == Library).OrderBy(Sort) : Library.Games.Where(x => x.Library == Library).Where(
+                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.OrderBy(Sort) : Library.Games.Where(
                         y => y.appName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                         || y.appID.ToString().Contains(Search) // Search by app ID
                         ).OrderBy(Sort)
                         );
-                }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
+                else
+                {
+                    MainWindow.Accessor.gamePanel.Dispatcher.Invoke(delegate
+                    {
+                        UpdateMainForm(Library, Search);
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
 
             }
             catch (Exception ex)

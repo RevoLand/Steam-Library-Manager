@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void updateLibraryPath(Definitions.List.Library selectedLibrary, string newLibraryPath)
+        public static void updateLibraryPath(Definitions.Library selectedLibrary, string newLibraryPath)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Steam_Library_Manager.Functions
             catch { }
         }
 
-        public static void removeLibrary(Definitions.List.Library Library, bool deleteFiles)
+        public static void removeLibrary(Definitions.Library Library, bool deleteFiles)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Definitions.List.Library Library = new Definitions.List.Library();
+                Definitions.Library Library = new Definitions.Library();
 
                 // Define if library is main library
                 Library.Main = mainLibrary;
@@ -164,17 +164,24 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void updateLibraryVisual(Definitions.List.Library Library)
+        public static void updateLibraryVisual(Definitions.Library Library)
         {
             Library.GameCount = Library.Games.Count;
             Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
             Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
             Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
 
-            Application.Current.Dispatcher.Invoke(delegate
+            if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
             {
                 MainWindow.Accessor.libraryPanel.Items.Refresh();
-            }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
+            else
+            {
+                MainWindow.Accessor.libraryPanel.Dispatcher.Invoke(delegate
+                {
+                    MainWindow.Accessor.libraryPanel.Items.Refresh();
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
         }
 
         public static void generateLibraryList()

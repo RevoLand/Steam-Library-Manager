@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -10,38 +10,20 @@ namespace Steam_Library_Manager.Definitions
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
 
+        public static Framework.AsyncObservableCollection<contextMenu> contextMenuItems = new Framework.AsyncObservableCollection<contextMenu>();
+
         public static List<Language> Languages = new List<Language>();
 
-        // Library details we are using, contains things like library path, game count etc.
-        public class Library
+        public class contextMenu
         {
-            public bool Main { get; set; }
-            public bool Backup { get; set; }
-            public int GameCount { get; set; }
-            public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
-            public Framework.AsyncObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
-            public string fullPath { get; set; }
-            public string prettyFreeSpace { get; set; }
-            public int freeSpacePerc { get; set; }
-            public long freeSpace { get; set; }
-            public Framework.AsyncObservableCollection<Game> Games = new Framework.AsyncObservableCollection<Game>();
-        }
-
-        // Game details we are using, contains things like appID, installationPath etc.
-        public class Game
-        {
-            public int appID { get; set; }
-            public string appName { get; set; }
-            public string gameHeaderImage { get; set; }
-            public string prettyGameSize { get; set; }
-            public DirectoryInfo installationPath, commonPath, downloadPath, workShopPath;
-            public FileInfo acfPath, workShopAcfPath, compressedName;
-            public string acfName, workShopAcfName;
-            public long sizeOnDisk { get; set; }
-            public Framework.AsyncObservableCollection<System.Windows.FrameworkElement> contextMenu { get; set; }
-            public bool Compressed { get; set; }
-            public bool SteamBackup { get; set; }
-            public Library Library { get; set; }
+            public bool IsVisible { get; set; } = true;
+            public string Header { get; set; }
+            public string Action { get; set; }
+            public FontAwesome.WPF.FontAwesomeIcon Icon { get; set; } = FontAwesome.WPF.FontAwesomeIcon.None;
+            public Brush IconColor { get; set; }
+            public bool shownToBackup { get; set; }
+            public bool shownToCompressed { get; set; }
+            public bool IsSeparator { get; set; }
         }
 
         public class Language

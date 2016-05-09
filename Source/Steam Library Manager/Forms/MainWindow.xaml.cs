@@ -21,6 +21,7 @@ namespace Steam_Library_Manager
             Accessor = this;
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
+            GameContextMenuItems.ItemsSource = Definitions.List.contextMenuItems;
         }
 
         private void mainForm_Loaded(object sender, RoutedEventArgs e)
@@ -76,25 +77,25 @@ namespace Steam_Library_Manager
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
             {
                 // Define our library details from .Tag attribute which we set earlier
-                Definitions.List.Library Library = (sender as Grid).Tag as Definitions.List.Library;
+                Definitions.Library Library = (sender as Grid).Tag as Definitions.Library;
 
                 Definitions.SLM.selectedLibrary = Library;
 
                 // Update games list from current selection
-                Functions.Games.UpdateMainForm(Library);
+                Functions.Games.UpdateMainForm(Library, (Properties.Settings.Default.includeSearchResults && searchText.Text != "Search in Library (by app Name or app ID)") ? searchText.Text : null );
             }
         }
 
         private void libraryGrid_Drop(object sender, DragEventArgs e)
         {
-            Definitions.List.Library Library = (sender as Grid).Tag as Definitions.List.Library;
+            Definitions.Library Library = (sender as Grid).Tag as Definitions.Library;
 
-            Definitions.List.Game Game = e.Data.GetData(typeof(Definitions.List.Game)) as Definitions.List.Game;
+            Definitions.Game Game = e.Data.GetData(typeof(Definitions.Game)) as Definitions.Game;
 
-            if (Game == null || Library == null || Library == Game.Library)
+            if (Game == null || Library == null || Library == Game.installedLibrary)
                 return;
 
-            if (Game.SteamBackup)
+            if (Game.IsSteamBackup)
                 System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.installationPath}\"");
             else
                 new Forms.MoveGameForm(Game, Library).Show();
@@ -133,7 +134,7 @@ namespace Steam_Library_Manager
         private void libraryContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             // Define our game from the Tag we given to Context menu
-            Definitions.List.Library Library = (sender as MenuItem).Tag as Definitions.List.Library;
+            Definitions.Library Library = (sender as MenuItem).Tag as Definitions.Library;
 
             // switch based on name we set earlier with context menu
             switch ((sender as MenuItem).Name)
@@ -156,16 +157,18 @@ namespace Steam_Library_Manager
                     break;
                 case "deleteLibrarySLM":
 
-                    foreach (Definitions.List.Game Game in Library.Games.ToList())
+                    foreach (Definitions.Game Game in Library.Games.ToList())
                     {
                         Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
 
-                        if (!gameFunctions.deleteGameFiles(Game))
+                        if (!Game.deleteFiles())
                         {
                             MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", Library.fullPath));
 
                             return;
                         }
+                        else
+                            Game.RemoveFromLibrary();
                     }
 
                     Functions.Library.updateLibraryVisual(Library);
@@ -191,25 +194,7 @@ namespace Steam_Library_Manager
 
         private void gameContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Definitions.List.Game Game = (sender as MenuItem).Tag as Definitions.List.Game;
-
-            switch ((sender as MenuItem).Name)
-            {
-                default:
-                    System.Diagnostics.Process.Start(string.Format("steam://{0}/{1}", (sender as MenuItem).Name, Game.appID));
-                    break;
-                case "Disk":
-                    System.Diagnostics.Process.Start(Game.commonPath.FullName);
-                    break;
-                case "acfFile":
-                    System.Diagnostics.Process.Start(Game.acfPath.FullName);
-                    break;
-                case "deleteGameFilesSLM":
-
-                    Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
-                    gameFunctions.deleteGameFiles(Game);
-                    break;
-            }
+            Steam_Library_Manager.Content.Games.parseAction((Definitions.Game)(sender as MenuItem).DataContext, (string)(sender as MenuItem).Tag);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)

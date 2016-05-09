@@ -59,7 +59,7 @@
                             <DataTemplate>
                                 <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <Grid.ContextMenu>
-                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenu}">
+                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenuItems}">
                                             <ContextMenu.ItemContainerStyle>
                                                 <Style>
                                                     <EventSetter Event="MenuItem.Click" Handler="gameContextMenuItem_Click" />
@@ -107,7 +107,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="SLM Settings">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="GameContextMenuItems" Margin="10,10,10,0" Height="250" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" CanUserReorderColumns="False" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

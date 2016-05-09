@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FontAwesome.WPF;
+using System;
 using System.Linq;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -7,9 +9,9 @@ namespace Steam_Library_Manager.Functions
     {
         public class Settings
         {
-            public static Func<Definitions.List.Game, object> getSortingMethod()
+            public static Func<Definitions.Game, object> getSortingMethod()
             {
-                Func<Definitions.List.Game, object> Sort;
+                Func<Definitions.Game, object> Sort;
 
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
@@ -28,6 +30,101 @@ namespace Steam_Library_Manager.Functions
                 return Sort;
             }
 
+            public static void parseGameContextMenuItems()
+            {
+                string[] menuItems = Properties.Settings.Default.gameContextMenu.Split('|');
+
+                foreach (string menuItem in menuItems)
+                {
+                    if (string.IsNullOrEmpty(menuItem))
+                        continue;
+
+                    Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
+
+                    if (menuItem.Equals("separator", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        cItem.IsSeparator = true;
+                        Definitions.List.contextMenuItems.Add(cItem);
+                    }
+                    else
+                    {
+                        string[] Item = menuItem.Split(';');
+
+                        foreach (string hardtonamethings in Item)
+                        {
+                            string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
+                            FontAwesomeIcon icon = FontAwesomeIcon.None;
+
+                            cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
+
+                            switch (itemDetails[0].ToLowerInvariant())
+                            {
+                                case "text":
+                                    cItem.Header = itemDetails[1];
+                                    break;
+                                case "action":
+                                    cItem.Action = itemDetails[1];
+                                    break;
+                                case "iconcolor":
+                                    cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
+                                    break;
+                                case "icon":
+                                    Enum.TryParse(itemDetails[1], true, out icon);
+                                    cItem.Icon = icon;
+                                    break;
+                                case "backup":
+                                    cItem.shownToBackup = bool.Parse(itemDetails[1]);
+                                    break;
+                                case "compressed":
+                                    cItem.shownToCompressed = bool.Parse(itemDetails[1]);
+                                    break;
+                                case "visible":
+                                    cItem.IsVisible = bool.Parse(itemDetails[1]);
+                                    break;
+                            }
+                        }
+
+                        Definitions.List.contextMenuItems.Add(cItem);
+                    }
+                }
+            }
+
+            public static void saveGameContextMenuItems()
+            {
+                string gameContextMenu = "";
+                foreach (Definitions.List.contextMenu cItem in Definitions.List.contextMenuItems)
+                {
+                    if (cItem.IsSeparator)
+                        gameContextMenu += "separator|";
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(cItem.Header))
+                            gameContextMenu += $"text={cItem.Header}";
+
+                        if (!string.IsNullOrEmpty(cItem.Action))
+                            gameContextMenu += $";action={cItem.Action}";
+
+                        if (!string.IsNullOrEmpty(cItem.Icon.ToString()))
+                            gameContextMenu += $";icon={cItem.Icon}";
+
+                        if (cItem.IconColor != null)
+                            gameContextMenu += $";iconcolor={cItem.IconColor}";
+
+                        if (cItem.shownToBackup)
+                            gameContextMenu += ";backup=true";
+
+                        if (cItem.shownToCompressed)
+                            gameContextMenu += ";compressed=true";
+
+                        gameContextMenu += $";visible={cItem.IsVisible}";
+
+                        gameContextMenu += "|";
+                    }
+                }
+
+                Properties.Settings.Default.gameContextMenu = gameContextMenu;
+            }
+
             public static void updateBackupDirs()
             {
                 try
@@ -36,7 +133,7 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (Definitions.List.Library Library in Definitions.List.Libraries.Where(x => x.Backup))
+                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Backup))
                     {
                         // then add this library path to new defined string collection
                         BackupDirs.Add(Library.fullPath);
@@ -53,6 +150,8 @@ namespace Steam_Library_Manager.Functions
 
             public static void saveSettings()
             {
+                saveGameContextMenuItems();
+
                 Properties.Settings.Default.Save();
             }
         }
@@ -60,6 +159,8 @@ namespace Steam_Library_Manager.Functions
         public static void onLoaded()
         {
             Steam.updateSteamInstallationPath();
+
+            Settings.parseGameContextMenuItems();
 
             Library.generateLibraryList();
         }

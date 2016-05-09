@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Content
     class Libraries
     {
 
-        public static Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.List.Library Library)
+        public static Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems(Definitions.Library Library)
         {
             Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
@@ -46,7 +46,7 @@ namespace Steam_Library_Manager.Content
                                     iconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
                                     break;
                                 case "icon":
-                                    Enum.TryParse(itemDetails[1], out icon);
+                                    Enum.TryParse(itemDetails[1], true, out icon);
                                     slmItem.Icon = Functions.fAwesome.getAwesomeIcon(icon, iconColor);
                                     break;
                                 case "backup":

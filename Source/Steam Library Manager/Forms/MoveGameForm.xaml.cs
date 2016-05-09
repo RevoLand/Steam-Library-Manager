@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -13,10 +12,10 @@ namespace Steam_Library_Manager.Forms
     public partial class MoveGameForm : Window
     {
         // Define our game from LatestSelectedGame
-        Definitions.List.Game Game;
+        Definitions.Game Game;
 
         // Define our library from LatestDropLibrary
-        Definitions.List.Library Library;
+        Definitions.Library Library;
 
         // Define cancellation token
         System.Threading.CancellationTokenSource cancellationToken;
@@ -26,7 +25,7 @@ namespace Steam_Library_Manager.Forms
 
         public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
 
-        public MoveGameForm(Definitions.List.Game gameToMove, Definitions.List.Library libraryToMove)
+        public MoveGameForm(Definitions.Game gameToMove, Definitions.Library libraryToMove)
         {
             InitializeComponent();
 
@@ -42,8 +41,37 @@ namespace Steam_Library_Manager.Forms
 
             gameHeaderImage.ImageUrl = Game.gameHeaderImage;
 
-            gameLibrary.Content = Game.Library.fullPath;
+            gameLibrary.Content = Game.installedLibrary.fullPath;
             targetLibrary.Content = Library.fullPath;
+        }
+
+        public void reportFileMovement(string movenFileName, int movenFileCount, int totalFileCount, long movenFileSize, long totalFileSize)
+        {
+            formLogs.Add(string.Format("[{0}/{1}] {2}\n", movenFileCount, totalFileCount, movenFileName));
+
+            if (progressReportLabel.Dispatcher.CheckAccess())
+            {
+                progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalFileSize - movenFileSize)} left - {Functions.fileSystem.FormatBytes(movenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
+            }
+            else
+            {
+                progressReportLabel.Dispatcher.Invoke(delegate
+                {
+                    progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalFileSize - movenFileSize)} left - {Functions.fileSystem.FormatBytes(movenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
+
+            if (progressReport.Dispatcher.CheckAccess())
+            {
+                progressReport.Value = ((int)Math.Round((double)(100 * movenFileSize) / totalFileSize));
+            }
+            else
+            {
+                progressReport.Dispatcher.Invoke(delegate
+                {
+                    progressReport.Value = ((int)Math.Round((double)(100 * movenFileSize) / totalFileSize));
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -63,8 +91,8 @@ namespace Steam_Library_Manager.Forms
                 {
                     try
                     {
-                        List<System.IO.FileSystemInfo> fileList = Games.getFileList(Game);
-                        Games.copyGameFiles(this, fileList, Game, Library, cancellationToken, compressGame);
+                        Game.copyGameFiles(this, Library, cancellationToken, compressGame);
+                        //Games.copyGameFiles(this, fileList, Game, Library, cancellationToken, compressGame);
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
@@ -72,7 +100,7 @@ namespace Steam_Library_Manager.Forms
                             if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
                             {
                                 // Add game to new library
-                                Functions.Games.AddNewGame(Game.acfPath.FullName.Replace(Game.Library.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, compressGame);
+                                Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, compressGame);
 
                                 // Update library details
                                 Functions.Library.updateLibraryVisual(Library);
@@ -80,8 +108,13 @@ namespace Steam_Library_Manager.Forms
 
                             if (removeOldGame)
                             {
-                                Games.deleteGameFiles(Game, fileList);
-                                Functions.Games.UpdateMainForm(Game.Library);
+                                if (Game.deleteFiles())
+                                {
+                                    if (Definitions.SLM.selectedLibrary == Game.installedLibrary)
+                                        Functions.Games.UpdateMainForm(Game.installedLibrary);
+
+                                    Game.RemoveFromLibrary();
+                                }
                             }
                         }
 

@@ -179,7 +179,7 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"text=Play;action=run;icon=Play;iconcolor=black|separator|text={0} ({1});action=Disk;icon=FolderOpen;iconcolor=black|text=Size on disk: {2};action=Disk;icon=HddOutline;iconcolor=black|separator|text=Delete game files (SLM);action=deleteGameFilesSLM;icon=Trash;iconcolor=black")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"text=Play;action=steam://run/{0};icon=play;iconcolor=black|separator|text=Game Hub;action=steam://url/GameHub/{0};icon=Book;|text=Workshop;action=steam://url/SteamWorkshopPage/{0};icon=Cog;backup=false;compressed=false|text=Subscribed Workshop Items;action=http://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated;icon=Cogs;backup=false;compressed=false|separator|text={0} ({1});action=Disk;icon=FolderOpen;iconcolor=black|text=Size on disk: {2};action=Disk;icon=HddOutline;iconcolor=black|separator|text=Delete game files (SLM);action=deleteGameFilesSLM;icon=Trash;iconcolor=black")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string gameContextMenu {
             get {
@@ -201,6 +201,20 @@ namespace Steam_Library_Manager.Properties {
             }
             set {
                 this["libraryContextMenu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool includeSearchResults {
+            get {
+                return ((bool)(this["includeSearchResults"]));
+            }
+            set {
+                this["includeSearchResults"] = value;
             }
         }
     }
