@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Steam_Library_Manager.Functions
@@ -61,68 +62,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void updateLibraryPath(Definitions.Library selectedLibrary, string newLibraryPath)
-        {
-            try
-            {
-                // Make a KeyValue reader
-                Framework.KeyValue Key = new Framework.KeyValue();
-
-                // Read vdf file
-                Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
-
-                // Change old library path with new one
-                Key.Children[0].Children[0].Children[0].Children.Find(key => key.Value.Contains(selectedLibrary.fullPath)).Value = newLibraryPath;
-
-                // Update libraryFolders.vdf file with changes
-                Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
-            }
-            catch { }
-        }
-
-        public static void removeLibrary(Definitions.Library Library, bool deleteFiles)
-        {
-            try
-            {
-                if (deleteFiles)
-                    fileSystem.deleteOldLibrary(Library);
-
-                Definitions.List.Libraries.Remove(Library);
-
-                if (Library.Backup)
-                {
-                    SLM.Settings.updateBackupDirs();
-                    SLM.Settings.saveSettings();
-                }
-                else
-                {
-                    // Make a KeyValue reader
-                    Framework.KeyValue Key = new Framework.KeyValue();
-
-                    // Read vdf file
-                    Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
-
-                    // Remove old library
-                    Key.Children[0].Children[0].Children[0].Children.RemoveAll(x => x.Value == Library.fullPath);
-
-                    int i = 1;
-                    foreach (Framework.KeyValue key in Key.Children[0].Children[0].Children[0].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
-                    {
-                        key.Name = string.Format("BaseInstallFolder_{0}", i);
-                        i++;
-                    }
-
-                    // Update libraryFolders.vdf file with changes
-                    Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        public static void addNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
+        public static async void addNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
         {
             try
             {
@@ -149,38 +89,20 @@ namespace Steam_Library_Manager.Functions
                 // Define workshop folder path
                 Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
-                Library.contextMenu = Content.Libraries.generateRightClickMenuItems(Library);
+                Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
+                Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
+                Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
+
+                Library.contextMenu = Library.generateRightClickMenuItems();
 
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
-                Games.UpdateGameList(Library);
-
-                updateLibraryVisual(Library);
+                await Task.Run(() => Games.UpdateGameList(Library));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            }
-        }
-
-        public static void updateLibraryVisual(Definitions.Library Library)
-        {
-            Library.GameCount = Library.Games.Count;
-            Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
-            Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
-            Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
-
-            if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
-            {
-                MainWindow.Accessor.libraryPanel.Items.Refresh();
-            }
-            else
-            {
-                MainWindow.Accessor.libraryPanel.Dispatcher.Invoke(delegate
-                {
-                    MainWindow.Accessor.libraryPanel.Items.Refresh();
-                }, System.Windows.Threading.DispatcherPriority.Normal);
             }
         }
 

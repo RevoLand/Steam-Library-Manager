@@ -104,7 +104,7 @@ namespace Steam_Library_Manager.Functions
 
                 Application.Current.Dispatcher.Invoke(delegate
                 {
-                    Game.contextMenuItems = Content.Games.generateRightClickMenuItems(Game);
+                    Game.contextMenuItems = Game.generateRightClickMenuItems();
                 }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 // Add our game details to global list
@@ -186,7 +186,6 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {

@@ -46,7 +46,7 @@
                                             </Style>
                                         </TextBlock.Style>
                                     </TextBlock>
-                                    <TextBlock Text="{Binding GameCount, StringFormat='Game(s): {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
+                                    <TextBlock Text="{Binding Games.Count, StringFormat='Game(s): {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
                                     <TextBlock Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0, 0, 0, 12" />
                                     <ProgressBar Value="{Binding freeSpacePerc}" Height="10" IsTabStop="False" VerticalAlignment="Bottom" />
                                 </Grid>
@@ -76,20 +76,20 @@
                                                 <Style.Triggers>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Library.Backup}" Value="true" />
-                                                            <Condition Binding="{Binding SteamBackup}" Value="false" />
+                                                            <Condition Binding="{Binding installedLibrary.Backup}" Value="true" />
+                                                            <Condition Binding="{Binding IsSteamBackup}" Value="false" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Text" Value="SLM backup" />
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding SteamBackup}" Value="true" />
+                                                            <Condition Binding="{Binding IsSteamBackup}" Value="true" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Text" Value="Steam backup" />
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Compressed}" Value="true" />
+                                                            <Condition Binding="{Binding IsCompressed}" Value="true" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Text" Value="Compressed backup" />
                                                     </MultiDataTrigger>
@@ -108,7 +108,22 @@
             </TabItem>
             <TabItem Header="SLM Settings">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="GameContextMenuItems" Margin="10,10,10,0" Height="250" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="True" CanUserSortColumns="False" CanUserReorderColumns="False" />
+                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,215" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom" >
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="libraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
+                                <MenuItem Click="libraryDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                    <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Click="gameDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
+                                <MenuItem Click="gameDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>

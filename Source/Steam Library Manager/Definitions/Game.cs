@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -23,7 +24,65 @@ namespace Steam_Library_Manager.Definitions
         public Framework.AsyncObservableCollection<FrameworkElement> contextMenuItems { get; set; }
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
-        public Library installedLibrary;
+        public Library installedLibrary { get; set; }
+
+        public Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems()
+        {
+            Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+            try
+            {
+                foreach (List.contextMenu cItem in List.gameContextMenuItems.Where(x => x.IsVisible))
+                {
+                    if ((cItem.shownToBackup && !installedLibrary.Backup) || (cItem.shownToCompressed && !IsCompressed))
+                        continue;
+
+                    if (cItem.IsSeparator)
+                        rightClickMenu.Add(new Separator());
+                    else
+                    {
+                        MenuItem slmItem = new MenuItem();
+
+                        slmItem.Tag = this;
+                        slmItem.Header = string.Format(cItem.Header, appName, appID, Functions.fileSystem.FormatBytes(sizeOnDisk));
+                        slmItem.Tag = cItem.Action;
+                        slmItem.Icon = Functions.fAwesome.getAwesomeIcon(cItem.Icon, cItem.IconColor);
+
+                        rightClickMenu.Add(slmItem);
+                    }
+                }
+
+                return rightClickMenu;
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+
+                return rightClickMenu;
+            }
+        }
+
+        public void parseMenuItemAction(string Action)
+        {
+            switch (Action.ToLowerInvariant())
+            {
+                default:
+                    System.Diagnostics.Process.Start(string.Format(Action, appID, Definitions.SLM.userSteamID64));
+                    break;
+                case "disk":
+                    if (commonPath.Exists)
+                        System.Diagnostics.Process.Start(commonPath.FullName);
+                    break;
+                case "acffile":
+                    System.Diagnostics.Process.Start(fullAcfPath.FullName);
+                    break;
+                case "deletegamefilesslm":
+
+                    deleteFiles();
+                    RemoveFromLibrary();
+
+                    break;
+            }
+        }
 
         public List<FileSystemInfo> getFileList(bool includeDownloads = true, bool includeWorkshop = true)
         {
@@ -163,35 +222,6 @@ namespace Steam_Library_Manager.Definitions
                         currentForm.reportFileMovement(newFile.FullName, totalMovenFileCount, gameFiles.Count, movenFileSize, totalFileSize);
                     });
 
-                    /*
-                    options.MaxDegreeOfParallelism = 1;
-
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), options, currentFile =>
-                    {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Game.Library.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
-
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
-                        {
-                            if (!newFile.Directory.Exists)
-                                newFile.Directory.Create();
-
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
-                        }
-
-                        Interlocked.Increment(ref fileIndex);
-                        Interlocked.Add(ref movenSize, (currentFile as FileInfo).Length);
-                        movedFiles.Add(newFile.FullName);
-
-                        currentForm.formLogs.Add(string.Format("[{0}/{1}] {2}\n", fileIndex, gameFiles.Count, newFile.FullName));
-
-                        Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
-                        {
-                            currentForm.progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalSize - movenSize)} left - {Functions.fileSystem.FormatBytes(movenSize)} / {Functions.fileSystem.FormatBytes(totalSize)}";
-                            currentForm.progressReport.Value = ((int)Math.Round((double)(100 * movenSize) / totalSize));
-                        });
-                    });
-                    */
-
                     if (!IsCompressed)
                     {
                         // Copy .ACF file
@@ -294,9 +324,9 @@ namespace Steam_Library_Manager.Definitions
         {
             installedLibrary.Games.Remove(this);
 
-            Functions.Library.updateLibraryVisual(installedLibrary);
+            installedLibrary.updateLibraryVisual();
 
-            if (Definitions.SLM.selectedLibrary == installedLibrary)
+            if (SLM.selectedLibrary == installedLibrary)
                 Functions.Games.UpdateMainForm(installedLibrary);
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +20,8 @@ namespace Steam_Library_Manager
             Accessor = this;
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
-            GameContextMenuItems.ItemsSource = Definitions.List.contextMenuItems;
+            libraryContextMenuItems.ItemsSource = Definitions.List.libraryContextMenuItems;
+            gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
         }
 
         private void mainForm_Loaded(object sender, RoutedEventArgs e)
@@ -133,68 +133,12 @@ namespace Steam_Library_Manager
 
         private void libraryContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // Define our game from the Tag we given to Context menu
-            Definitions.Library Library = (sender as MenuItem).Tag as Definitions.Library;
-
-            // switch based on name we set earlier with context menu
-            switch ((sender as MenuItem).Name)
-            {
-                // Opens game installation path in explorer
-                case "Disk":
-                    if (Library.steamAppsPath.Exists)
-                        System.Diagnostics.Process.Start(Library.steamAppsPath.FullName);
-                    break;
-                case "deleteLibrary":
-
-                    MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Move games in Library before deleting the library?", "Move games first?", MessageBoxButton.YesNoCancel);
-
-                    if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
-                        //new Forms.moveLibrary(Library).Show();
-                        MessageBox.Show("Function not implemented, process cancelled");
-                    else if (moveGamesBeforeDeletion == MessageBoxResult.No)
-                        Functions.Library.removeLibrary(Library, true);
-
-                    break;
-                case "deleteLibrarySLM":
-
-                    foreach (Definitions.Game Game in Library.Games.ToList())
-                    {
-                        Functions.fileSystem.Game gameFunctions = new Functions.fileSystem.Game();
-
-                        if (!Game.deleteFiles())
-                        {
-                            MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", Library.fullPath));
-
-                            return;
-                        }
-                        else
-                            Game.RemoveFromLibrary();
-                    }
-
-                    Functions.Library.updateLibraryVisual(Library);
-
-                    MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", Library.fullPath));
-                    break;
-                case "moveLibrary":
-                    //new Forms.moveLibrary(Library).Show();
-                    break;
-
-                // Removes a backup library from list
-                case "RemoveFromList":
-                    if (Library.Backup)
-                    {
-                        // Remove the library from our list
-                        Definitions.List.Libraries.Remove(Library);
-
-                        MainWindow.Accessor.gamePanel.ItemsSource = null;
-                    }
-                    break;
-            }
+            ((Definitions.Library)(sender as MenuItem).DataContext).parseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
         private void gameContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Steam_Library_Manager.Content.Games.parseAction((Definitions.Game)(sender as MenuItem).DataContext, (string)(sender as MenuItem).Tag);
+            ((Definitions.Game)(sender as MenuItem).DataContext).parseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -213,6 +157,56 @@ namespace Steam_Library_Manager
         {
             if (string.IsNullOrEmpty(searchText.Text))
                 searchText.Text = "Search in Library (by app Name or app ID)";
+        }
+
+        private void libraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = libraryContextMenuItems.SelectedIndex;
+
+            if (selectedIndex == -1 || selectedIndex >= Definitions.List.libraryContextMenuItems.Count)
+                return;
+
+            switch(((MenuItem)sender).Tag.ToString())
+            {
+                case "moveUp":
+                    if (selectedIndex < 1)
+                        return;
+
+                    Definitions.List.libraryContextMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    break;
+
+                case "moveDown":
+                    if (selectedIndex == Definitions.List.libraryContextMenuItems.Count - 1)
+                        return;
+
+                    Definitions.List.libraryContextMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    break;
+            }
+        }
+
+        private void gameDataGridMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = gameContextMenuItems.SelectedIndex;
+
+            if (selectedIndex == -1 || selectedIndex >= Definitions.List.gameContextMenuItems.Count)
+                return;
+
+            switch (((MenuItem)sender).Tag.ToString())
+            {
+                case "moveUp":
+                    if (selectedIndex < 1)
+                        return;
+
+                    Definitions.List.gameContextMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    break;
+
+                case "moveDown":
+                    if (selectedIndex == Definitions.List.gameContextMenuItems.Count - 1)
+                        return;
+
+                    Definitions.List.gameContextMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    break;
+            }
         }
     }
 }

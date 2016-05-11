@@ -103,7 +103,7 @@ namespace Steam_Library_Manager.Forms
                                 Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, compressGame);
 
                                 // Update library details
-                                Functions.Library.updateLibraryVisual(Library);
+                                Library.updateLibraryVisual();
                             }
 
                             if (removeOldGame)

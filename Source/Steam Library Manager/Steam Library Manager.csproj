@@ -87,8 +87,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Content\Games.cs" />
-    <Compile Include="Content\Libraries.cs" />
     <Compile Include="Definitions\Game.cs" />
     <Compile Include="Definitions\Library.cs" />
     <Compile Include="Forms\MoveGameForm.xaml.cs">
