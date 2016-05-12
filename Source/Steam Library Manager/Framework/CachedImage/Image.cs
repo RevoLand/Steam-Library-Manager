@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -38,25 +37,13 @@ namespace Steam_Library_Manager.Framework.CachedImage
             var bitmapImage = new BitmapImage();
             try
             {
+                var memoryStream = await FileCache.HitAsync(url);
+                if (memoryStream == null)
+                    return;
 
                 bitmapImage.BeginInit();
                 bitmapImage.CreateOptions = cachedImage.CreateOptions;
-
-                string gameID = url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "").Replace(".jpg", "");
-
-                if (File.Exists(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".jpg")))
-                    bitmapImage.StreamSource = new FileStream(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".jpg"), FileMode.Open, FileAccess.Read);
-                else if (File.Exists(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".png")))
-                    bitmapImage.StreamSource = new FileStream(Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, gameID + ".png"), FileMode.Open, FileAccess.Read);
-                else
-                {
-                    var memoryStream = await FileCache.HitAsync(url);
-                    if (memoryStream == null)
-                        return;
-
-                    bitmapImage.StreamSource = memoryStream;
-                }
-
+                bitmapImage.StreamSource = memoryStream;
                 bitmapImage.EndInit();
                 cachedImage.Source = bitmapImage;
             }

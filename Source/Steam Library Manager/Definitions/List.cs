@@ -17,14 +17,22 @@ namespace Steam_Library_Manager.Definitions
 
         public class contextMenu
         {
-            public bool IsVisible { get; set; } = true;
+            public bool IsActive { get; set; } = true;
             public string Header { get; set; }
             public string Action { get; set; }
             public FontAwesome.WPF.FontAwesomeIcon Icon { get; set; } = FontAwesome.WPF.FontAwesomeIcon.None;
             public Brush IconColor { get; set; }
-            public bool shownToBackup { get; set; }
-            public bool shownToCompressed { get; set; }
+            public menuVisibility showToNormal { get; set; } = menuVisibility.Visible;
+            public menuVisibility showToSLMBackup { get; set; } = menuVisibility.Visible;
+            public menuVisibility showToSteamBackup { get; set; } = menuVisibility.Visible;
+            public menuVisibility showToCompressed { get; set; } = menuVisibility.Visible;
             public bool IsSeparator { get; set; }
+        }
+
+        public enum menuVisibility
+        {
+            NotVisible,
+            Visible
         }
 
         public class Language

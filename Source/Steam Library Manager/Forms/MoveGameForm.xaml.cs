@@ -86,13 +86,11 @@ namespace Steam_Library_Manager.Forms
 
                 cancellationToken = new System.Threading.CancellationTokenSource();
 
-                Functions.fileSystem.Game Games = new Functions.fileSystem.Game();
                 task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(() =>
                 {
                     try
                     {
                         Game.copyGameFiles(this, Library, cancellationToken, compressGame);
-                        //Games.copyGameFiles(this, fileList, Game, Library, cancellationToken, compressGame);
 
                         if (!cancellationToken.IsCancellationRequested)
                         {

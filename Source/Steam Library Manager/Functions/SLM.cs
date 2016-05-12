@@ -52,8 +52,6 @@ namespace Steam_Library_Manager.Functions
                         foreach (string hardtonamethings in Item)
                         {
                             string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
-                            FontAwesomeIcon icon = FontAwesomeIcon.None;
-
                             cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
                             switch (itemDetails[0].ToLowerInvariant())
@@ -68,14 +66,16 @@ namespace Steam_Library_Manager.Functions
                                     cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
                                     break;
                                 case "icon":
-                                    Enum.TryParse(itemDetails[1], true, out icon);
-                                    cItem.Icon = icon;
+                                    cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                     break;
-                                case "backup":
-                                    cItem.shownToBackup = bool.Parse(itemDetails[1]);
+                                case "showToNormal":
+                                    cItem.showToNormal = (Definitions.List.menuVisibility) Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
                                     break;
-                                case "visible":
-                                    cItem.IsVisible = bool.Parse(itemDetails[1]);
+                                case "showToSLMBackup":
+                                    cItem.showToSLMBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    break;
+                                case "active":
+                                    cItem.IsActive = bool.Parse(itemDetails[1]);
                                     break;
                             }
                         }
@@ -106,10 +106,12 @@ namespace Steam_Library_Manager.Functions
                         if (cItem.IconColor != null)
                             libraryContextMenu += $";iconcolor={cItem.IconColor}";
 
-                        if (cItem.shownToBackup)
-                            libraryContextMenu += ";backup=true";
 
-                        libraryContextMenu += $";visible={cItem.IsVisible}";
+                        libraryContextMenu += $";showToNormal={cItem.showToNormal}";
+
+                        libraryContextMenu += $";showToSLMBackup={cItem.showToSLMBackup}";
+
+                        libraryContextMenu += $";active={cItem.IsActive}";
 
                         libraryContextMenu += "|";
                     }
@@ -141,7 +143,6 @@ namespace Steam_Library_Manager.Functions
                         foreach (string hardtonamethings in Item)
                         {
                             string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
-                            FontAwesomeIcon icon = FontAwesomeIcon.None;
 
                             cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
@@ -157,17 +158,22 @@ namespace Steam_Library_Manager.Functions
                                     cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
                                     break;
                                 case "icon":
-                                    Enum.TryParse(itemDetails[1], true, out icon);
-                                    cItem.Icon = icon;
+                                    cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                     break;
-                                case "backup":
-                                    cItem.shownToBackup = bool.Parse(itemDetails[1]);
+                                case "showToNormal":
+                                    cItem.showToNormal = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
                                     break;
-                                case "compressed":
-                                    cItem.shownToCompressed = bool.Parse(itemDetails[1]);
+                                case "showToSLMBackup":
+                                    cItem.showToSLMBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
                                     break;
-                                case "visible":
-                                    cItem.IsVisible = bool.Parse(itemDetails[1]);
+                                case "showToSteamBackup":
+                                    cItem.showToSteamBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    break;
+                                case "showToCompressed":
+                                    cItem.showToCompressed = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    break;
+                                case "active":
+                                    cItem.IsActive = bool.Parse(itemDetails[1]);
                                     break;
                             }
                         }
@@ -192,19 +198,17 @@ namespace Steam_Library_Manager.Functions
                         if (!string.IsNullOrEmpty(cItem.Action))
                             gameContextMenu += $";action={cItem.Action}";
 
-                        if (!string.IsNullOrEmpty(cItem.Icon.ToString()))
-                            gameContextMenu += $";icon={cItem.Icon}";
+                        gameContextMenu += $";icon={cItem.Icon}";
 
                         if (cItem.IconColor != null)
                             gameContextMenu += $";iconcolor={cItem.IconColor}";
 
-                        if (cItem.shownToBackup)
-                            gameContextMenu += ";backup=true";
+                        gameContextMenu += $";showToNormal={cItem.showToNormal}";
+                        gameContextMenu += $";showToSLMBackup={cItem.showToSLMBackup}";
+                        gameContextMenu += $";showToSteamBackup={cItem.showToSteamBackup}";
+                        gameContextMenu += $";showToCompressed={cItem.showToCompressed}";
 
-                        if (cItem.shownToCompressed)
-                            gameContextMenu += ";compressed=true";
-
-                        gameContextMenu += $";visible={cItem.IsVisible}";
+                        gameContextMenu += $";active={cItem.IsActive}";
 
                         gameContextMenu += "|";
                     }

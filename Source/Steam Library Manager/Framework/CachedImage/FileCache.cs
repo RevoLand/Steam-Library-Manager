@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
+// https://github.com/floydpink/CachedImage
+
 namespace Steam_Library_Manager.Framework.CachedImage
 {
     public static class FileCache
@@ -20,7 +22,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
         static FileCache()
         {
             // default cache directory - can be changed if needed from App.xaml
-            AppCacheDirectory = Path.Combine(Definitions.Directories.SLM.CurrentDirectory, "Cache");
+            AppCacheDirectory = Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, "HeaderImages");
             AppCacheMode = CacheMode.Dedicated;
         }
 

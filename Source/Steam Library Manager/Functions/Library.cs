@@ -98,7 +98,7 @@ namespace Steam_Library_Manager.Functions
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
-                await Task.Run(() => Games.UpdateGameList(Library));
+                await Task.Run(() => Library.UpdateGameList());
             }
             catch (Exception ex)
             {

@@ -17,8 +17,7 @@
         <Label x:Name="targetLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
 
         <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,299,177,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="145,299,78,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="validate" Content="Validate" HorizontalContentAlignment="Stretch" Margin="234,299,10,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="213,299,10,0" VerticalAlignment="Top"/>
 
         <Button x:Name="button" Content="Copy" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="button_Click"/>
         
