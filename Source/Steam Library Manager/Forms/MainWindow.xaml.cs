@@ -20,13 +20,13 @@ namespace Steam_Library_Manager
             Accessor = this;
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
+
             libraryContextMenuItems.ItemsSource = Definitions.List.libraryContextMenuItems;
             gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
         }
 
         private void mainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            Focus();
 
             if (Properties.Settings.Default.Maximised)
                 WindowState = WindowState.Maximized;
@@ -207,6 +207,15 @@ namespace Steam_Library_Manager
                     Definitions.List.gameContextMenuItems.Move(selectedIndex, selectedIndex + 1);
                     break;
             }
+        }
+
+        private void donateButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(Definitions.SLM.paypalDonationURL);
+            }
+            catch { }
         }
     }
 }

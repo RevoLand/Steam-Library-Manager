@@ -9,10 +9,8 @@ namespace Steam_Library_Manager.Definitions
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
-
         public static Framework.AsyncObservableCollection<contextMenu> libraryContextMenuItems = new Framework.AsyncObservableCollection<contextMenu>();
         public static Framework.AsyncObservableCollection<contextMenu> gameContextMenuItems = new Framework.AsyncObservableCollection<contextMenu>();
-
         public static List<Language> Languages = new List<Language>();
 
         public class contextMenu

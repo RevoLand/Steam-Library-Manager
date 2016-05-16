@@ -201,7 +201,6 @@ namespace Steam_Library_Manager.Definitions
             prettyFreeSpace = Functions.fileSystem.FormatBytes(freeSpace);
             freeSpacePerc = 100 - ((int)Math.Round((double)(100 * freeSpace) / Functions.fileSystem.getUsedSpace(fullPath)));
 
-            
             if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
             {
                 MainWindow.Accessor.libraryPanel.Items.Refresh();

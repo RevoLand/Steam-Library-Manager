@@ -5,16 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Steam_Library_Manager"
         xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:Definitions="clr-namespace:Steam_Library_Manager.Definitions" xmlns:settings="clr-namespace:Steam_Library_Manager.Framework" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
-        mc:Ignorable="d"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing">
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="0,41,2,2">
-        <TabControl x:Name="tabControl" Margin="10,0,10,10">
-            <TabItem Header="Manage your Library" IsSelected="True">
-                <Grid Background="#FFE5E5E5">
-                    <ListView AllowDrop="True" Drop="libraryPanel_Drop" Name="libraryPanel" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+        <TabControl x:Name="tabControl" Margin="10,0,10,10" BorderBrush="Black" Background="White">
+            <TabItem Header="Library" IsSelected="True" Padding="20, 10">
+                <Grid>
+                    <ListView Name="libraryPanel" AllowDrop="True" Drop="libraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="100" Width="Auto" Background="Transparent" Tag="{Binding}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand" Margin="0,0,0,10">
+                                <Grid Height="110" Width="Auto" Background="Transparent" Tag="{Binding}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand">
                                     <Grid.ContextMenu>
                                         <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenu}" >
                                             <ContextMenu.ItemContainerStyle>
@@ -25,39 +24,45 @@
                                         </ContextMenu>
                                     </Grid.ContextMenu>
 
-                                    <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" Padding="0" FontWeight="Bold" />
-                                    <TextBlock VerticalAlignment="Bottom"  Padding="0,0,0,30" HorizontalAlignment="Left">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Backup}" Value="false" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Text" Value="Steam Library" />
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Backup}" Value="true" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Text" Value="Backup Library" />
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding Games.Count, StringFormat='Game(s): {0}'}" VerticalAlignment="Bottom" Padding="0, 0, 0, 12" />
-                                    <TextBlock Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0, 0, 0, 12" />
-                                    <ProgressBar Value="{Binding freeSpacePerc}" Height="10" IsTabStop="False" VerticalAlignment="Bottom" />
+                                    <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontWeight="Bold" />
+
+                                    <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
+                                        <TextBlock>
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding Backup}" Value="false" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Text" Value="Steam Library" />
+                                                        </MultiDataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding Backup}" Value="true" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Text" Value="Backup Library" />
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Games.Count, StringFormat='Game(s): {0}'}" HorizontalAlignment="Right" />
+                                    </Grid>
+
+                                    <Grid Height="18" Margin="0, 0, 0, 8" VerticalAlignment="Bottom">
+                                        <ProgressBar Height="18" Value="{Binding freeSpacePerc}" VerticalAlignment="Bottom" IsIndeterminate="False" />
+                                        <TextBlock Height="18" Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" HorizontalAlignment="Center" />
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,40" SelectionMode="Single"  Name="gamePanel" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView Name="gamePanel" IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Transparent" MouseDown="gameGrid_MouseDown" Tag="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <Grid Tag="{Binding}" Background="Transparent" MouseDown="gameGrid_MouseDown" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <Grid.ContextMenu>
                                         <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenuItems}">
                                             <ContextMenu.ItemContainerStyle>
@@ -67,46 +72,52 @@
                                             </ContextMenu.ItemContainerStyle>
                                         </ContextMenu>
                                     </Grid.ContextMenu>
-
-                                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" Width="230px" Height="107px" Margin="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-                                    <TextBlock x:Name="appName" Text="{Binding appName}"  VerticalAlignment="Top" Padding="240,5,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" />
-                                    <TextBlock VerticalAlignment="Bottom"  Padding="240,0,0,20" HorizontalAlignment="Left">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding installedLibrary.Backup}" Value="true" />
-                                                            <Condition Binding="{Binding IsSteamBackup}" Value="false" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Text" Value="SLM backup" />
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsSteamBackup}" Value="true" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Text" Value="Steam backup" />
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsCompressed}" Value="true" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Text" Value="Compressed backup" />
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock Text="{Binding prettyGameSize}" VerticalAlignment="Bottom"  Padding="240,0,0,5" HorizontalAlignment="Left" />
-                                    <TextBlock Text="{Binding appID}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0" Padding="0,0,5,0"  />
+                                    <Grid Width="230px" Height="107px" Margin="5" HorizontalAlignment="Left">
+                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" />
+                                    </Grid>
+                                    <Grid>
+                                        <TextBlock x:Name="appName" Text="{Binding appName}" Padding="240,5,0,0" TextWrapping="Wrap" />
+                                        <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
+                                            <TextBlock Name="gameTypeText" Padding="0,-15,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding installedLibrary.Backup}" Value="true" />
+                                                                    <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Text" Value="SLM backup" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsSteamBackup}" Value="true" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Text" Value="Steam backup" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsCompressed}" Value="true" />
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Text" Value="Compressed backup" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding prettyGameSize}" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding appID}" HorizontalAlignment="Right" />
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+
                     <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Text="Search in Library (by app Name or app ID)" Height="25" VerticalAlignment="Bottom" TextChanged="textBox_TextChanged" GotFocus="searchText_GotFocus" LostFocus="searchText_LostFocus"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="SLM Settings">
+            <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,215" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom" >
                         <DataGrid.ContextMenu>
@@ -124,6 +135,24 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="About" Padding="20, 10">
+                <Grid Background="#FFE5E5E5">
+                    <Grid Margin="10,10,10,145">
+                        <TextBlock x:Name="textBlock" TextWrapping="WrapWithOverflow">
+                            SLM (Steam Library Manager) is a tool designed to backup / restore / move installed Steam applications in ease of use with multi library support.
+                            <LineBreak /><LineBreak />
+                            SLM is a community driven project, please do not hesitate to contact me for any suggestions or questions.
+                        </TextBlock>
+                    </Grid>
+                    <Grid Margin="10,0,10,10" Height="130" VerticalAlignment="Bottom">
+                        <TextBlock x:Name="textBlock1" Margin="10,0,10,46" TextWrapping="Wrap" Height="52" VerticalAlignment="Bottom">
+                            If you appreciate what i am doing with SLM you can show your support by donating to me! (Optional, forever!)
+                        </TextBlock>
+                        <Image x:Name="donateButton" Margin="10,0,10,10" Source="/Steam Library Manager;component/Resources/donate.gif" Stretch="None" Height="31" VerticalAlignment="Bottom" MouseDown="donateButton_MouseDown"/>
+                    </Grid>
+
                 </Grid>
             </TabItem>
         </TabControl>

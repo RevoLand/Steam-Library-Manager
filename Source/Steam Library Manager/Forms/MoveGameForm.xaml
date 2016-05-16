@@ -6,15 +6,15 @@
         xmlns:local="clr-namespace:Steam_Library_Manager.Forms"
         xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
         mc:Ignorable="d" 
-        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" IsTabStop="False" WindowStyle="ThreeDBorderWindow" ShowActivated="False">
+        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" IsTabStop="False" WindowStyle="ThreeDBorderWindow" ShowActivated="False" Closing="moveGameForm_Closing">
     <Grid Margin="10">
         <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40">Placeholder: Game Title</TextBlock>
         <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" VerticalAlignment="Top" Margin="10,55,5,0" />
 
         <Label x:Name="label" Content="Game Library:" HorizontalContentAlignment="Center" Margin="0,175,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="gameLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="gameLibraryText" Content="X" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
         <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,237,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="targetLibrary" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="targetLibraryText" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
 
         <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,299,177,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="213,299,10,0" VerticalAlignment="Top"/>

@@ -15,13 +15,13 @@ namespace Steam_Library_Manager.Forms
         Definitions.Game Game;
 
         // Define our library from LatestDropLibrary
-        Definitions.Library Library;
+        Definitions.Library targetLibrary;
 
         // Define cancellation token
         System.Threading.CancellationTokenSource cancellationToken;
 
         // Define task
-        System.Threading.Tasks.Task task;
+        System.Threading.Tasks.Task currentTask;
 
         public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
 
@@ -30,7 +30,7 @@ namespace Steam_Library_Manager.Forms
             InitializeComponent();
 
             Game = gameToMove;
-            Library = libraryToMove;
+            targetLibrary = libraryToMove;
 
             textBox.ItemsSource = formLogs;
         }
@@ -41,8 +41,8 @@ namespace Steam_Library_Manager.Forms
 
             gameHeaderImage.ImageUrl = Game.gameHeaderImage;
 
-            gameLibrary.Content = Game.installedLibrary.fullPath;
-            targetLibrary.Content = Library.fullPath;
+            gameLibraryText.Content = Game.installedLibrary.fullPath;
+            targetLibraryText.Content = targetLibrary.fullPath;
         }
 
         public void reportFileMovement(string movenFileName, int movenFileCount, int totalFileCount, long movenFileSize, long totalFileSize)
@@ -79,29 +79,29 @@ namespace Steam_Library_Manager.Forms
             bool removeOldGame = removeOldFiles.IsChecked.Value;
             bool compressGame = compress.IsChecked.Value;
 
-            if (task == null || task.Status == System.Threading.Tasks.TaskStatus.Canceled)
+            if (currentTask == null || currentTask.Status == System.Threading.Tasks.TaskStatus.Canceled)
             {
                 formLogs.Clear();
                 button.Content = "Cancel";
 
                 cancellationToken = new System.Threading.CancellationTokenSource();
 
-                task = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(() =>
+                currentTask = new System.Threading.Tasks.TaskFactory(cancellationToken.Token).StartNew(() =>
                 {
                     try
                     {
-                        Game.copyGameFiles(this, Library, cancellationToken, compressGame);
+                        Game.copyGameFiles(this, targetLibrary, cancellationToken, compressGame);
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             // If game is not exists in the target library
-                            if (Library.Games.Count(x => x.acfName == Game.acfName) == 0)
+                            if (targetLibrary.Games.Count(x => x.acfName == Game.acfName) == 0)
                             {
                                 // Add game to new library
-                                Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, Library.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, Library, Game.sizeOnDisk, compressGame);
+                                Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, targetLibrary, Game.sizeOnDisk, compressGame);
 
                                 // Update library details
-                                Library.updateLibraryVisual();
+                                targetLibrary.updateLibraryVisual();
                             }
 
                             if (removeOldGame)
@@ -132,6 +132,12 @@ namespace Steam_Library_Manager.Forms
             {
                 Close();
             }
+        }
+
+        private void moveGameForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (cancellationToken != null && cancellationToken.Token.CanBeCanceled)
+                cancellationToken.Cancel();
         }
     }
 }
