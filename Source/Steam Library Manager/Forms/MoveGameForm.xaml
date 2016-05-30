@@ -6,21 +6,40 @@
         xmlns:local="clr-namespace:Steam_Library_Manager.Forms"
         xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
         mc:Ignorable="d" 
-        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" IsTabStop="False" WindowStyle="ThreeDBorderWindow" ShowActivated="False" Closing="moveGameForm_Closing">
+        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="moveGameForm_Loaded" IsTabStop="False" WindowStyle="ThreeDBorderWindow" Closing="moveGameForm_Closing" SourceInitialized="moveGameForm_SourceInitialized">
     <Grid Margin="10">
-        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40">Placeholder: Game Title</TextBlock>
-        <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" VerticalAlignment="Top" Margin="10,55,5,0" />
+        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Text="{Binding appName}"></TextBlock>
+        <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" ImageUrl="{Binding gameHeaderImage}"  VerticalAlignment="Top" Margin="10,55,5,0" />
 
         <Label x:Name="label" Content="Game Library:" HorizontalContentAlignment="Center" Margin="0,175,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="gameLibraryText" Content="X" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="gameLibraryText" Content="{Binding installedLibrary.fullPath}" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
         <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,237,0,0" VerticalAlignment="Top"/>
         <Label x:Name="targetLibraryText" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
 
-        <CheckBox x:Name="removeOldFiles" Content="Remove old files" HorizontalContentAlignment="Stretch" Margin="10,299,177,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="compress" Content="Compress" HorizontalContentAlignment="Stretch" Margin="213,299,10,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="removeOldFiles" Content="Remove old game files" HorizontalContentAlignment="Stretch" Margin="10,299,153,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="compress" HorizontalContentAlignment="Stretch" Margin="0,299,10,0" HorizontalAlignment="Right" Width="100" VerticalAlignment="Top">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsCompressed}" Value="false" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Content" Value="Compress" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsCompressed}" Value="true" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Content" Value="De-compress" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
 
         <Button x:Name="button" Content="Copy" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="button_Click"/>
-        
+
         <ListView x:Name="textBox" Margin="10,369,10,60" AllowDrop="False" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -29,7 +48,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ProgressBar x:Name="progressReport" Margin="10,0,10,25" Height="30" VerticalAlignment="Bottom"/>
+        <ProgressBar x:Name="progressReport" Margin="10,0,10,25" Height="30" VerticalAlignment="Bottom" />
         <Label x:Name="progressReportLabel" Margin="0,0,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
     </Grid>
 </Window>

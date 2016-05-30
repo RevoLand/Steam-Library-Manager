@@ -12,7 +12,7 @@ namespace Steam_Library_Manager.Forms
     public partial class MoveGameForm : Window
     {
         // Define our game from LatestSelectedGame
-        Definitions.Game Game;
+        Definitions.Game Game { get; set; }
 
         // Define our library from LatestDropLibrary
         Definitions.Library targetLibrary;
@@ -35,14 +35,24 @@ namespace Steam_Library_Manager.Forms
             textBox.ItemsSource = formLogs;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void moveGameForm_Loaded(object sender, RoutedEventArgs e)
         {
-            gameHeaderLabel.Text = Game.appName;
+            DataContext = Game;
 
-            gameHeaderImage.ImageUrl = Game.gameHeaderImage;
-
-            gameLibraryText.Content = Game.installedLibrary.fullPath;
             targetLibraryText.Content = targetLibrary.fullPath;
+        }
+
+        private void moveGameForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.moveGameFormPlacement = Framework.WindowPlacement.GetPlacement(this);
+
+            if (cancellationToken != null && cancellationToken.Token.CanBeCanceled)
+                cancellationToken.Cancel();
+        }
+
+        private void moveGameForm_SourceInitialized(object sender, EventArgs e)
+        {
+            Framework.WindowPlacement.SetPlacement(this, Properties.Settings.Default.moveGameFormPlacement);
         }
 
         public void reportFileMovement(string movenFileName, int movenFileCount, int totalFileCount, long movenFileSize, long totalFileSize)
@@ -72,6 +82,19 @@ namespace Steam_Library_Manager.Forms
                     progressReport.Value = ((int)Math.Round((double)(100 * movenFileSize) / totalFileSize));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
+
+            if (textBox.Dispatcher.CheckAccess())
+            {
+                textBox.ScrollIntoView(textBox.Items[textBox.Items.Count - 1]);
+            }
+            else
+            {
+                textBox.Dispatcher.Invoke(delegate
+                {
+                    textBox.ScrollIntoView(textBox.Items[textBox.Items.Count - 1]);
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
+
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -95,7 +118,7 @@ namespace Steam_Library_Manager.Forms
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             // If game is not exists in the target library
-                            if (targetLibrary.Games.Count(x => x.acfName == Game.acfName) == 0)
+                            if (targetLibrary.Games.Count(x => x.acfName == Game.acfName && compressGame != x.IsCompressed) == 0)
                             {
                                 // Add game to new library
                                 Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, targetLibrary, Game.sizeOnDisk, compressGame);
@@ -132,12 +155,6 @@ namespace Steam_Library_Manager.Forms
             {
                 Close();
             }
-        }
-
-        private void moveGameForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (cancellationToken != null && cancellationToken.Token.CanBeCanceled)
-                cancellationToken.Cancel();
         }
     }
 }

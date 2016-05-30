@@ -27,35 +27,21 @@ namespace Steam_Library_Manager
 
         private void mainForm_Loaded(object sender, RoutedEventArgs e)
         {
-
-            if (Properties.Settings.Default.Maximised)
-                WindowState = WindowState.Maximized;
-
             Functions.SLM.onLoaded();
         }
 
         private void mainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
-            {
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximised = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Top = Top;
-                Properties.Settings.Default.Left = Left;
-                Properties.Settings.Default.Height = Height;
-                Properties.Settings.Default.Width = Width;
-                Properties.Settings.Default.Maximised = false;
-            }
+            Properties.Settings.Default.MainWindowPlacement = Framework.WindowPlacement.GetPlacement(this);
 
             Functions.SLM.onClosing();
 
             Application.Current.Shutdown();
+        }
+
+        private void mainForm_SourceInitialized(object sender, System.EventArgs e)
+        {
+            Framework.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
         }
 
         private void gameGrid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -92,7 +78,7 @@ namespace Steam_Library_Manager
 
             Definitions.Game Game = e.Data.GetData(typeof(Definitions.Game)) as Definitions.Game;
 
-            if (Game == null || Library == null || Library == Game.installedLibrary)
+            if (Game == null || Library == null)
                 return;
 
             if (Game.IsSteamBackup)
@@ -186,6 +172,7 @@ namespace Steam_Library_Manager
 
         private void gameDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
+
             int selectedIndex = gameContextMenuItems.SelectedIndex;
 
             if (selectedIndex == -1 || selectedIndex >= Definitions.List.gameContextMenuItems.Count)

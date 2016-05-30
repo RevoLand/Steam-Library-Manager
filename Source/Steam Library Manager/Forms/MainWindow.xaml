@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Steam_Library_Manager"
-        xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:Definitions="clr-namespace:Steam_Library_Manager.Definitions" xmlns:settings="clr-namespace:Steam_Library_Manager.Framework" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Height="{settings:SettingBinding Path=Height}" Width="{settings:SettingBinding Path=Width}" Top="{settings:SettingBinding Path=Top}" Left="{settings:SettingBinding Path=Left}" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStyle="ThreeDBorderWindow">
+        xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" xmlns:slm="clr-namespace:Steam_Library_Manager" x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Width="800" Height="670" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="mainForm_SourceInitialized">
     <Grid Margin="0,41,2,2">
         <TabControl x:Name="tabControl" Margin="10,0,10,10" BorderBrush="Black" Background="White">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
-                    <ListView Name="libraryPanel" AllowDrop="True" Drop="libraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="libraryPanel" AllowDrop="True" Drop="libraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Height="110" Width="Auto" Background="Transparent" Tag="{Binding}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand">
@@ -27,9 +27,9 @@
                                     <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontWeight="Bold" />
 
                                     <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
-                                        <TextBlock>
+                                        <TextBlock x:Name="libraryType">
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
+                                                <Style TargetType="{x:Type TextBlock}">
                                                     <Style.Triggers>
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
@@ -47,19 +47,19 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Games.Count, StringFormat='Game(s): {0}'}" HorizontalAlignment="Right" />
+                                        <TextBlock Text="{Binding Games.Count, StringFormat=Game(s): \{0\}}" HorizontalAlignment="Right" />
                                     </Grid>
 
                                     <Grid Height="18" Margin="0, 0, 0, 8" VerticalAlignment="Bottom">
-                                        <ProgressBar Height="18" Value="{Binding freeSpacePerc}" VerticalAlignment="Bottom" IsIndeterminate="False" />
-                                        <TextBlock Height="18" Text="{Binding prettyFreeSpace, StringFormat='Available: {0}'}" HorizontalAlignment="Center" />
+                                        <ProgressBar Height="18" Value="{Binding freeSpacePerc}" VerticalAlignment="Stretch" IsIndeterminate="False" />
+                                        <TextBlock Height="18" Text="{Binding prettyFreeSpace, StringFormat=Available: \{0\}}" HorizontalAlignment="Center" FontWeight="Normal" />
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView Name="gamePanel" IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="gamePanel" IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Tag="{Binding}" Background="Transparent" MouseDown="gameGrid_MouseDown" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -78,9 +78,9 @@
                                     <Grid>
                                         <TextBlock x:Name="appName" Text="{Binding appName}" Padding="240,5,0,0" TextWrapping="Wrap" />
                                         <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
-                                            <TextBlock Name="gameTypeText" Padding="0,-15,0,0">
+                                            <TextBlock x:Name="gameTypeText" Padding="0,-15,0,0">
                                                 <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
+                                                    <Style TargetType="{x:Type TextBlock}">
                                                         <Style.Triggers>
                                                             <MultiDataTrigger>
                                                                 <MultiDataTrigger.Conditions>
@@ -118,8 +118,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,215" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom" >
+                <Grid Background="White">
+
+                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,215" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Click="libraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
@@ -127,6 +128,7 @@
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
+
                     <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="200" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -140,16 +142,10 @@
             <TabItem Header="About" Padding="20, 10">
                 <Grid Background="#FFE5E5E5">
                     <Grid Margin="10,10,10,145">
-                        <TextBlock x:Name="textBlock" TextWrapping="WrapWithOverflow">
-                            SLM (Steam Library Manager) is a tool designed to backup / restore / move installed Steam applications in ease of use with multi library support.
-                            <LineBreak /><LineBreak />
-                            SLM is a community driven project, please do not hesitate to contact me for any suggestions or questions.
-                        </TextBlock>
+                        <TextBlock x:Name="textBlock" TextWrapping="WrapWithOverflow"><Run Text="SLM (Steam Library Manager) is a tool designed to backup / restore / move installed Steam applications in ease of use with multi library support."/><LineBreak /><LineBreak /><Run Text="SLM is a community driven project, please do not hesitate to contact me for any suggestions or questions."/></TextBlock>
                     </Grid>
                     <Grid Margin="10,0,10,10" Height="130" VerticalAlignment="Bottom">
-                        <TextBlock x:Name="textBlock1" Margin="10,0,10,46" TextWrapping="Wrap" Height="52" VerticalAlignment="Bottom">
-                            If you appreciate what i am doing with SLM you can show your support by donating to me! (Optional, forever!)
-                        </TextBlock>
+                        <TextBlock x:Name="textBlock1" Margin="10,0,10,46" TextWrapping="Wrap" Height="52" VerticalAlignment="Bottom"><Run Text="If you appreciate what i am doing with SLM you can show your support by donating to me! (Optional, forever!)"/></TextBlock>
                         <Image x:Name="donateButton" Margin="10,0,10,10" Source="/Steam Library Manager;component/Resources/donate.gif" Stretch="None" Height="31" VerticalAlignment="Bottom" MouseDown="donateButton_MouseDown"/>
                     </Grid>
 

@@ -14,9 +14,6 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Library.Games.ToList().Count(x => x.appID == appID && x.IsSteamBackup == true) > 0)
-                    return;
-
                 // Make a new definition for game
                 Definitions.Game Game = new Definitions.Game();
 
@@ -42,7 +39,7 @@ namespace Steam_Library_Manager.Functions
                 // Set installation path
                 DirectoryInfo testOldInstallations = new DirectoryInfo(installationPath);
 
-                Game.installationPath = (testOldInstallations.Exists && !isSteamBackup) ? testOldInstallations : new DirectoryInfo(installationPath);
+                Game.installationPath = (testOldInstallations.Exists && !isCompressed && !isSteamBackup) ? testOldInstallations : new DirectoryInfo(installationPath);
 
                 Game.installedLibrary = Library;
 

@@ -8,20 +8,31 @@ namespace Steam_Library_Manager.Functions
 {
     class fileSystem
     {
-        public static void removeGivenFiles(ConcurrentBag<string> fileList)
+        public static void removeGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
+        {
+            try
             {
-                try
+                Parallel.ForEach(fileList, currentFile =>
                 {
-                    Parallel.ForEach(fileList, currentFile =>
-                    {
-                        FileInfo file = new FileInfo(currentFile);
+                    FileInfo file = new FileInfo(currentFile);
 
-                        if (file.Exists)
-                            file.Delete();
+                    if (file.Exists)
+                        file.Delete();
+                });
+
+                if (directoryList != null)
+                {
+                    Parallel.ForEach(directoryList, currentDirectory =>
+                    {
+                        DirectoryInfo directory = new DirectoryInfo(currentDirectory);
+
+                        if (directory.Exists)
+                            directory.Delete();
                     });
                 }
-                catch { }
             }
+            catch { }
+        }
 
         // Get directory size from path, with or without sub directories
         public static long GetDirectorySize(string directoryPath, bool includeSub)

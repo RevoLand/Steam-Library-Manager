@@ -21,8 +21,6 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         static FileCache()
         {
-            // default cache directory - can be changed if needed from App.xaml
-            AppCacheDirectory = Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, "HeaderImages");
             AppCacheMode = CacheMode.Dedicated;
         }
 
@@ -40,6 +38,8 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         public static async Task<MemoryStream> HitAsync(Uri url)
         {
+            AppCacheDirectory = Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, "HeaderImages");
+
             if (!Directory.Exists(AppCacheDirectory))
             {
                 Directory.CreateDirectory(AppCacheDirectory);

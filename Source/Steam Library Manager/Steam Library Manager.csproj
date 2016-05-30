@@ -109,6 +109,7 @@
     <Compile Include="Framework\FontAwesome.WPF\ISpinable.cs" />
     <Compile Include="Framework\PortableSettingsProvider.cs" />
     <Compile Include="Framework\SettingBindingExtension.cs" />
+    <Compile Include="Framework\WindowPlacement.cs" />
     <Compile Include="Functions\fAwesome.cs" />
     <Compile Include="Functions\fileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
@@ -120,6 +121,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Page Include="Forms\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

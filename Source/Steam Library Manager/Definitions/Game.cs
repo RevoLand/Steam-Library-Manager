@@ -33,13 +33,13 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (List.contextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (IsSteamBackup && cItem.showToSteamBackup == List.menuVisibility.NotVisible)
+                    if (IsSteamBackup && cItem.showToSteamBackup == SLM.Settings.menuVisibility.NotVisible)
                         continue;
-                    else if (installedLibrary.Backup && cItem.showToSLMBackup == List.menuVisibility.NotVisible)
+                    else if (installedLibrary.Backup && cItem.showToSLMBackup == SLM.Settings.menuVisibility.NotVisible)
                         continue;
-                    else if (IsCompressed && cItem.showToCompressed == List.menuVisibility.NotVisible)
+                    else if (IsCompressed && cItem.showToCompressed == SLM.Settings.menuVisibility.NotVisible)
                         continue;
-                    else if (cItem.showToNormal == List.menuVisibility.NotVisible)
+                    else if (cItem.showToNormal == SLM.Settings.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)
@@ -129,7 +129,8 @@ namespace Steam_Library_Manager.Definitions
 
         public void copyGameFiles(Forms.MoveGameForm currentForm, Library targetLibrary, CancellationTokenSource cancellationToken, bool compressGame = false)
         {
-            ConcurrentBag<string> movedFiles = new ConcurrentBag<string>();
+            ConcurrentBag<string> copiedFiles = new ConcurrentBag<string>();
+            ConcurrentBag<string> createdDirectories = new ConcurrentBag<string>();
             List<FileSystemInfo> gameFiles = getFileList();
             System.Diagnostics.Stopwatch timeElapsed = new System.Diagnostics.Stopwatch();
             timeElapsed.Start();
@@ -157,7 +158,7 @@ namespace Steam_Library_Manager.Definitions
 
                     using (ZipArchive compressed = ZipFile.Open(compressedArchive.FullName, ZipArchiveMode.Create))
                     {
-                        movedFiles.Add(compressedArchive.FullName);
+                        copiedFiles.Add(compressedArchive.FullName);
 
                         foreach (FileSystemInfo currentFile in gameFiles)
                         {
@@ -185,10 +186,15 @@ namespace Steam_Library_Manager.Definitions
                         movenFileSize += currentFile.Length;
 
                         FileInfo newFile = new FileInfo(Path.Combine(installedLibrary.steamAppsPath.FullName, currentFile.FullName));
+
                         if (!newFile.Directory.Exists)
+                        {
                             newFile.Directory.Create();
+                            createdDirectories.Add(newFile.Directory.FullName);
+                        }
 
                         currentFile.ExtractToFile(newFile.FullName, true);
+                        copiedFiles.Add(newFile.FullName);
 
                         currentForm.reportFileMovement(newFile.FullName, totalMovenFileCount, gameFiles.Count, movenFileSize, totalFileSize);
 
@@ -205,14 +211,17 @@ namespace Steam_Library_Manager.Definitions
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
                             if (!newFile.Directory.Exists)
+                            {
                                 newFile.Directory.Create();
+                                createdDirectories.Add(newFile.Directory.FullName);
+                            }
 
                             (currentFile as FileInfo).CopyTo(newFile.FullName, true);
                         }
 
                         Interlocked.Increment(ref totalMovenFileCount);
                         Interlocked.Add(ref movenFileSize, (currentFile as FileInfo).Length);
-                        movedFiles.Add(newFile.FullName);
+                        copiedFiles.Add(newFile.FullName);
 
                         currentForm.reportFileMovement(newFile.FullName, totalMovenFileCount, gameFiles.Count, movenFileSize, totalFileSize);
                     });
@@ -226,14 +235,17 @@ namespace Steam_Library_Manager.Definitions
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
                             if (!newFile.Directory.Exists)
+                            {
                                 newFile.Directory.Create();
+                                createdDirectories.Add(newFile.Directory.FullName);
+                            }
 
                             (currentFile as FileInfo).CopyTo(newFile.FullName, true);
                         }
 
                         Interlocked.Increment(ref totalMovenFileCount);
                         Interlocked.Add(ref movenFileSize, (currentFile as FileInfo).Length);
-                        movedFiles.Add(newFile.FullName);
+                        copiedFiles.Add(newFile.FullName);
 
                         currentForm.reportFileMovement(newFile.FullName, totalMovenFileCount, gameFiles.Count, movenFileSize, totalFileSize);
                     });
@@ -249,7 +261,10 @@ namespace Steam_Library_Manager.Definitions
                             FileInfo newACFPath = new FileInfo(workShopAcfPath.FullName.Replace(installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                             if (!newACFPath.Directory.Exists)
+                            {
                                 newACFPath.Directory.Create();
+                                createdDirectories.Add(newACFPath.Directory.FullName);
+                            }
 
                             workShopAcfPath.CopyTo(newACFPath.FullName, true);
                         }
@@ -268,7 +283,7 @@ namespace Steam_Library_Manager.Definitions
                 MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
-                    Functions.fileSystem.removeGivenFiles(movedFiles);
+                    Functions.fileSystem.removeGivenFiles(copiedFiles, createdDirectories);
 
                 currentForm.formLogs.Add($"Operation cancelled by user. Time Elapsed: {timeElapsed.Elapsed}");
             }
@@ -278,7 +293,7 @@ namespace Steam_Library_Manager.Definitions
                 MessageBoxResult moveGamesBeforeDeletion = MessageBox.Show("An error happened while moving game files. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (moveGamesBeforeDeletion == MessageBoxResult.Yes)
-                    Functions.fileSystem.removeGivenFiles(movedFiles);
+                    Functions.fileSystem.removeGivenFiles(copiedFiles, createdDirectories);
 
                 currentForm.formLogs.Add($"An error happened while moving game files. Time Elapsed: {timeElapsed.Elapsed}");
             }

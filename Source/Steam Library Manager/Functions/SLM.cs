@@ -1,6 +1,7 @@
 ﻿using FontAwesome.WPF;
 using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Steam_Library_Manager.Functions
@@ -40,48 +41,43 @@ namespace Steam_Library_Manager.Functions
                         continue;
 
                     Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
-                    if (menuItem.Equals("separator", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        cItem.IsSeparator = true;
-                        Definitions.List.libraryContextMenuItems.Add(cItem);
-                    }
-                    else
-                    {
-                        string[] Item = menuItem.Split(';');
+                    string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        foreach (string hardtonamethings in Item)
+                    foreach (string hardtonamethings in Item)
+                    {
+                        string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
+                        cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
+
+                        switch (itemDetails[0].ToLowerInvariant())
                         {
-                            string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
-                            cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
-
-                            switch (itemDetails[0].ToLowerInvariant())
-                            {
-                                case "text":
-                                    cItem.Header = itemDetails[1];
-                                    break;
-                                case "action":
-                                    cItem.Action = itemDetails[1];
-                                    break;
-                                case "iconcolor":
-                                    cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
-                                    break;
-                                case "icon":
-                                    cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
-                                    break;
-                                case "showToNormal":
-                                    cItem.showToNormal = (Definitions.List.menuVisibility) Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
-                                    break;
-                                case "showToSLMBackup":
-                                    cItem.showToSLMBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
-                                    break;
-                                case "active":
-                                    cItem.IsActive = bool.Parse(itemDetails[1]);
-                                    break;
-                            }
+                            case "text":
+                                cItem.Header = itemDetails[1];
+                                break;
+                            case "action":
+                                cItem.Action = itemDetails[1];
+                                break;
+                            case "iconcolor":
+                                cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
+                                break;
+                            case "icon":
+                                cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
+                                break;
+                            case "showtonormal":
+                                cItem.showToNormal = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                break;
+                            case "showtoslmbackup":
+                                cItem.showToSLMBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                break;
+                            case "active":
+                                cItem.IsActive = bool.Parse(itemDetails[1]);
+                                break;
+                            case "separator":
+                                cItem.IsSeparator = bool.Parse(itemDetails[1]);
+                                break;
                         }
-
-                        Definitions.List.libraryContextMenuItems.Add(cItem);
                     }
+
+                    Definitions.List.libraryContextMenuItems.Add(cItem);
                 }
             }
 
@@ -90,31 +86,28 @@ namespace Steam_Library_Manager.Functions
                 string libraryContextMenu = "";
                 foreach (Definitions.List.contextMenu cItem in Definitions.List.libraryContextMenuItems)
                 {
-                    if (cItem.IsSeparator)
-                        libraryContextMenu += "separator|";
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(cItem.Header))
-                            libraryContextMenu += $"text={cItem.Header}";
+                    if (!string.IsNullOrEmpty(cItem.Header))
+                        libraryContextMenu += $"text={cItem.Header}";
 
-                        if (!string.IsNullOrEmpty(cItem.Action))
-                            libraryContextMenu += $";action={cItem.Action}";
+                    if (!string.IsNullOrEmpty(cItem.Action))
+                        libraryContextMenu += $";;action={cItem.Action}";
 
-                        if (!string.IsNullOrEmpty(cItem.Icon.ToString()))
-                            libraryContextMenu += $";icon={cItem.Icon}";
+                    if (!string.IsNullOrEmpty(cItem.Icon.ToString()))
+                        libraryContextMenu += $";;icon={cItem.Icon}";
 
-                        if (cItem.IconColor != null)
-                            libraryContextMenu += $";iconcolor={cItem.IconColor}";
+                    if (cItem.IconColor != null)
+                        libraryContextMenu += $";;iconcolor={cItem.IconColor}";
 
 
-                        libraryContextMenu += $";showToNormal={cItem.showToNormal}";
+                    libraryContextMenu += $";;showToNormal={cItem.showToNormal}";
 
-                        libraryContextMenu += $";showToSLMBackup={cItem.showToSLMBackup}";
+                    libraryContextMenu += $";;showToSLMBackup={cItem.showToSLMBackup}";
 
-                        libraryContextMenu += $";active={cItem.IsActive}";
+                    libraryContextMenu += $";;separator={cItem.IsSeparator}";
 
-                        libraryContextMenu += "|";
-                    }
+                    libraryContextMenu += $";;active={cItem.IsActive}";
+
+                    libraryContextMenu += "|";
                 }
 
                 Properties.Settings.Default.libraryContextMenu = libraryContextMenu;
@@ -122,23 +115,17 @@ namespace Steam_Library_Manager.Functions
 
             public static void parseGameContextMenuItems()
             {
-                string[] menuItems = Properties.Settings.Default.gameContextMenu.Split('|');
-
-                foreach (string menuItem in menuItems)
+                try
                 {
-                    if (string.IsNullOrEmpty(menuItem))
-                        continue;
+                    string[] menuItems = Properties.Settings.Default.gameContextMenu.Split('|');
 
-                    Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
+                    foreach (string menuItem in menuItems)
+                    {
+                        if (string.IsNullOrEmpty(menuItem))
+                            continue;
 
-                    if (menuItem.Equals("separator", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        cItem.IsSeparator = true;
-                        Definitions.List.gameContextMenuItems.Add(cItem);
-                    }
-                    else
-                    {
-                        string[] Item = menuItem.Split(';');
+                        Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
+                        string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
                         foreach (string hardtonamethings in Item)
                         {
@@ -161,25 +148,32 @@ namespace Steam_Library_Manager.Functions
                                     cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                     break;
                                 case "showToNormal":
-                                    cItem.showToNormal = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    cItem.showToNormal = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSLMBackup":
-                                    cItem.showToSLMBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    cItem.showToSLMBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSteamBackup":
-                                    cItem.showToSteamBackup = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    cItem.showToSteamBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToCompressed":
-                                    cItem.showToCompressed = (Definitions.List.menuVisibility)Enum.Parse(typeof(Definitions.List.menuVisibility), itemDetails[1], true);
+                                    cItem.showToCompressed = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "active":
                                     cItem.IsActive = bool.Parse(itemDetails[1]);
+                                    break;
+                                case "separator":
+                                    cItem.IsSeparator = bool.Parse(itemDetails[1]);
                                     break;
                             }
                         }
 
                         Definitions.List.gameContextMenuItems.Add(cItem);
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
                 }
             }
 
@@ -188,30 +182,26 @@ namespace Steam_Library_Manager.Functions
                 string gameContextMenu = "";
                 foreach (Definitions.List.contextMenu cItem in Definitions.List.gameContextMenuItems)
                 {
-                    if (cItem.IsSeparator)
-                        gameContextMenu += "separator|";
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(cItem.Header))
-                            gameContextMenu += $"text={cItem.Header}";
+                    if (!string.IsNullOrEmpty(cItem.Header))
+                        gameContextMenu += $"text={cItem.Header}";
 
-                        if (!string.IsNullOrEmpty(cItem.Action))
-                            gameContextMenu += $";action={cItem.Action}";
+                    if (!string.IsNullOrEmpty(cItem.Action))
+                        gameContextMenu += $";;action={cItem.Action}";
 
-                        gameContextMenu += $";icon={cItem.Icon}";
+                    gameContextMenu += $";;icon={cItem.Icon}";
 
-                        if (cItem.IconColor != null)
-                            gameContextMenu += $";iconcolor={cItem.IconColor}";
+                    if (cItem.IconColor != null)
+                        gameContextMenu += $";;iconcolor={cItem.IconColor}";
 
-                        gameContextMenu += $";showToNormal={cItem.showToNormal}";
-                        gameContextMenu += $";showToSLMBackup={cItem.showToSLMBackup}";
-                        gameContextMenu += $";showToSteamBackup={cItem.showToSteamBackup}";
-                        gameContextMenu += $";showToCompressed={cItem.showToCompressed}";
+                    gameContextMenu += $";;showToNormal={cItem.showToNormal}";
+                    gameContextMenu += $";;showToSLMBackup={cItem.showToSLMBackup}";
+                    gameContextMenu += $";;showToSteamBackup={cItem.showToSteamBackup}";
+                    gameContextMenu += $";;showToCompressed={cItem.showToCompressed}";
 
-                        gameContextMenu += $";active={cItem.IsActive}";
+                    gameContextMenu += $";;active={cItem.IsActive}";
+                    gameContextMenu += $";;separator={cItem.IsSeparator}";
 
-                        gameContextMenu += "|";
-                    }
+                    gameContextMenu += "|";
                 }
 
                 Properties.Settings.Default.gameContextMenu = gameContextMenu;
@@ -244,8 +234,6 @@ namespace Steam_Library_Manager.Functions
             {
                 saveLibraryContextMenuItems();
                 saveGameContextMenuItems();
-
-                Properties.Settings.Default.Save();
             }
         }
 

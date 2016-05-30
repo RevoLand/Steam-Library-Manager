@@ -88,6 +88,9 @@ namespace Steam_Library_Manager.Definitions
                         long gameSize = Functions.fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
                         foreach (Framework.KeyValue app in Key["apps"].Children)
                         {
+                            if (Games.Count(x => x.appID == Convert.ToInt32(app.Value)) > 0)
+                                continue;
+
                             Functions.Games.AddNewGame(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, false, true);
 
                             if (name.Count() > 1)
@@ -109,9 +112,9 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (List.contextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (Backup && cItem.showToSLMBackup == List.menuVisibility.NotVisible)
+                    if (Backup && cItem.showToSLMBackup == SLM.Settings.menuVisibility.NotVisible)
                         continue;
-                    else if (cItem.showToNormal == List.menuVisibility.NotVisible)
+                    else if (!Backup && cItem.showToNormal == SLM.Settings.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)
