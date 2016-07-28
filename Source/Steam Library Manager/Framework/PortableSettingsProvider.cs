@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Configuration;
-using System.Windows.Forms;
 using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
@@ -17,8 +16,7 @@ namespace Steam_Library_Manager.Framework
       private const string _className = "PortableSettingsProvider";
       private XmlDocument _xmlDocument;
 
-        private string _filePath => Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),
-     string.Format("{0}.settings", ApplicationName));
+        private string _filePath => Path.Combine(Path.GetDirectoryName(Definitions.Directories.SLM.CurrentDirectory), string.Format("{0}.settings", ApplicationName));
 
         private XmlNode _localSettingsNode
       {
@@ -69,7 +67,7 @@ namespace Steam_Library_Manager.Framework
 
       public override string ApplicationName
       {
-         get { return Path.GetFileNameWithoutExtension(Application.ExecutablePath); }
+         get { return "SLM"; }
          set { }
       }
 

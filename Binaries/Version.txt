@@ -1,1 +1,1 @@
-1.2.2.1|Fix for compressed games not being detected
+1.3.0.0|Complete overhaul as wpf

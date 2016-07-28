@@ -13,7 +13,7 @@ namespace Steam_Library_Manager.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -28,26 +28,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SteamInstallationPath {
+        public string steamInstallationPath {
             get {
-                return ((string)(this["SteamInstallationPath"]));
+                return ((string)(this["steamInstallationPath"]));
             }
             set {
-                this["SteamInstallationPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ACF")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string GameSizeCalculationMethod {
-            get {
-                return ((string)(this["GameSizeCalculationMethod"]));
-            }
-            set {
-                this["GameSizeCalculationMethod"] = value;
+                this["steamInstallationPath"] = value;
             }
         }
         
@@ -55,54 +41,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Collections.Specialized.StringCollection BackupDirectories {
+        public global::System.Collections.Specialized.StringCollection backupDirectories {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["BackupDirectories"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["backupDirectories"]));
             }
             set {
-                this["BackupDirectories"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Uncompressed")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string ArchiveSizeCalculationMethod {
-            get {
-                return ((string)(this["ArchiveSizeCalculationMethod"]));
-            }
-            set {
-                this["ArchiveSizeCalculationMethod"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool LogErrorsToFile {
-            get {
-                return ((bool)(this["LogErrorsToFile"]));
-            }
-            set {
-                this["LogErrorsToFile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool CheckForUpdatesAtStartup {
-            get {
-                return ((bool)(this["CheckForUpdatesAtStartup"]));
-            }
-            set {
-                this["CheckForUpdatesAtStartup"] = value;
+                this["backupDirectories"] = value;
             }
         }
         
@@ -111,82 +55,149 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("appName")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string SortGamesBy {
+        public string defaultGameSortingMethod {
             get {
-                return ((string)(this["SortGamesBy"]));
+                return ((string)(this["defaultGameSortingMethod"]));
             }
             set {
-                this["SortGamesBy"] = value;
+                this["defaultGameSortingMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("230, 107")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ACF")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Drawing.Size GamePictureBoxSize {
+        public string gameSizeCalculationMethod {
             get {
-                return ((global::System.Drawing.Size)(this["GamePictureBoxSize"]));
+                return ((string)(this["gameSizeCalculationMethod"]));
             }
             set {
-                this["GamePictureBoxSize"] = value;
+                this["gameSizeCalculationMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("%windir%\\notepad.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Uncompressed")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string DefaultTextEditor {
+        public string archiveSizeCalculationMethod {
             get {
-                return ((string)(this["DefaultTextEditor"]));
+                return ((string)(this["archiveSizeCalculationMethod"]));
             }
             set {
-                this["DefaultTextEditor"] = value;
+                this["archiveSizeCalculationMethod"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("195, 155")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20000000")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Drawing.Size libraryPictureSize {
+        public long ParallelAfterSize {
             get {
-                return ((global::System.Drawing.Size)(this["libraryPictureSize"]));
+                return ((long)(this["ParallelAfterSize"]));
             }
             set {
-                this["libraryPictureSize"] = value;
+                this["ParallelAfterSize"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        [global::System.Configuration.DefaultSettingValueAttribute("text=Play;;action=steam://run/{0};;icon=Play;;iconcolor=#FF000000;;showToNormal=V" +
+            "isible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Vis" +
+            "ible;;active=True;;separator=False|;;icon=None;;iconcolor=#FF000000;;showToNorma" +
+            "l=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=" +
+            "Visible;;active=True;;separator=True|text={0} ({1});;action=Disk;;icon=FolderOpe" +
+            "n;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSte" +
+            "amBackup=Visible;;showToCompressed=Visible;;active=True;;separator=False|text=Ga" +
+            "me Hub;;action=steam://url/GameHub/{0};;icon=Book;;iconcolor=#FF000000;;showToNo" +
+            "rmal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompress" +
+            "ed=Visible;;active=True;;separator=False|;;icon=None;;iconcolor=#FF000000;;showT" +
+            "oNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompr" +
+            "essed=Visible;;active=True;;separator=True|text=Workshop;;action=steam://url/Ste" +
+            "amWorkshopPage/{0};;icon=Cog;;iconcolor=#FF000000;;showToNormal=Visible;;showToS" +
+            "LMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=Tr" +
+            "ue;;separator=False|text=Subscribed Workshop Items;;action=http://steamcommunity" +
+            ".com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortme" +
+            "thod=lastupdated;;icon=Cogs;;iconcolor=#FF000000;;showToNormal=Visible;;showToSL" +
+            "MBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=Tru" +
+            "e;;separator=False|text=Size on disk: {2};;action=Disk;;icon=HddOutline;;iconcol" +
+            "or=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=V" +
+            "isible;;showToCompressed=Visible;;active=True;;separator=False|;;icon=None;;icon" +
+            "color=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBacku" +
+            "p=Visible;;showToCompressed=Visible;;active=True;;separator=True|text=Delete gam" +
+            "e files (SLM);;action=deleteGameFilesSLM;;icon=Trash;;iconcolor=#FF000000;;showT" +
+            "oNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompr" +
+            "essed=Visible;;active=True;;separator=False|")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string defaultLanguage {
+        public string gameContextMenu {
             get {
-                return ((string)(this["defaultLanguage"]));
+                return ((string)(this["gameContextMenu"]));
             }
             set {
-                this["defaultLanguage"] = value;
+                this["gameContextMenu"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("newMethod")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"text=Open library in explorer ({0});;action=Disk;;icon=FolderOpen;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;separator=False;;active=True|;;icon=None;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;separator=True;;active=True|text=Move library;;action=moveLibrary;;icon=Paste;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;separator=False;;active=True|text=Delete library;;action=deleteLibrary;;icon=Trash;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;separator=False;;active=True|text=Delete games in library;;action=deleteLibrarySLM;;icon=TrashOutline;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;separator=False;;active=True|;;icon=None;;iconcolor=#FF000000;;showToNormal=NotVisible;;showToSLMBackup=Visible;;separator=True;;active=True|text=Remove from list;;action=RemoveFromList;;icon=Minus;;iconcolor=#FF000000;;showToNormal=NotVisible;;showToSLMBackup=Visible;;separator=False;;active=True|")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string methodForMovingGame {
+        public string libraryContextMenu {
             get {
-                return ((string)(this["methodForMovingGame"]));
+                return ((string)(this["libraryContextMenu"]));
             }
             set {
-                this["methodForMovingGame"] = value;
+                this["libraryContextMenu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool includeSearchResults {
+            get {
+                return ((bool)(this["includeSearchResults"]));
+            }
+            set {
+                this["includeSearchResults"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;&lt;WINDOWPLACEMENT xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""&gt;&lt;length&gt;44&lt;/length&gt;&lt;flags&gt;0&lt;/flags&gt;&lt;showCmd&gt;1&lt;/showCmd&gt;&lt;minPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/minPosition&gt;&lt;maxPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/maxPosition&gt;&lt;normalPosition&gt;&lt;Left&gt;253&lt;/Left&gt;&lt;Top&gt;198&lt;/Top&gt;&lt;Right&gt;1053&lt;/Right&gt;&lt;Bottom&gt;868&lt;/Bottom&gt;&lt;/normalPosition&gt;&lt;/WINDOWPLACEMENT&gt;")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string MainWindowPlacement {
+            get {
+                return ((string)(this["MainWindowPlacement"]));
+            }
+            set {
+                this["MainWindowPlacement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;&lt;WINDOWPLACEMENT xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""&gt;&lt;length&gt;44&lt;/length&gt;&lt;flags&gt;0&lt;/flags&gt;&lt;showCmd&gt;1&lt;/showCmd&gt;&lt;minPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/minPosition&gt;&lt;maxPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/maxPosition&gt;&lt;normalPosition&gt;&lt;Left&gt;1096&lt;/Left&gt;&lt;Top&gt;130&lt;/Top&gt;&lt;Right&gt;1446&lt;/Right&gt;&lt;Bottom&gt;790&lt;/Bottom&gt;&lt;/normalPosition&gt;&lt;/WINDOWPLACEMENT&gt;")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string moveGameFormPlacement {
+            get {
+                return ((string)(this["moveGameFormPlacement"]));
+            }
+            set {
+                this["moveGameFormPlacement"] = value;
             }
         }
     }
