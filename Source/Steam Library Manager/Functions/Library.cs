@@ -147,7 +147,7 @@ namespace Steam_Library_Manager.Functions
                         if (!Directory.Exists(backupDirectory))
                         {
                             // Make a new dialog and ask user to update library path
-                            MessageBoxResult askUserToUpdatePath = MessageBox.Show("Backup library couldn't found, would you like to update?", "Not found", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            MessageBoxResult askUserToUpdatePath = MessageBox.Show("Backup library couldn't be found, would you like to select a new path?", $"Backup library ({backupDirectory}) couldn't be found!", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                             // If user wants to update
                             if (askUserToUpdatePath == MessageBoxResult.Yes)

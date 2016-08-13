@@ -107,7 +107,17 @@ namespace Steam_Library_Manager
                     if (!Functions.Library.libraryExists(droppedItem))
                     {
                         if (Directory.GetDirectoryRoot(droppedItem) != droppedItem)
-                            Functions.Library.createNewLibrary(details.FullName, true);
+                        {
+                            bool isNewLibraryForBackup = false;
+                            MessageBoxResult selectedLibraryType = MessageBox.Show("Is this selected folder going to be used for backups?", "SLM library or Steam library?", MessageBoxButton.YesNoCancel);
+
+                            if (selectedLibraryType == MessageBoxResult.Cancel)
+                                return;
+                            else if (selectedLibraryType == MessageBoxResult.Yes)
+                                isNewLibraryForBackup = true;
+
+                            Functions.Library.createNewLibrary(details.FullName, isNewLibraryForBackup);
+                        }
                         else
                             MessageBox.Show("Libraries can not be created at root");
                     }
@@ -203,6 +213,45 @@ namespace Steam_Library_Manager
                 System.Diagnostics.Process.Start(Definitions.SLM.paypalDonationURL);
             }
             catch { }
+        }
+
+        private void gameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                Properties.Settings.Default.defaultGameSortingMethod = gameSortingMethod.SelectedItem.ToString();
+            }
+            catch { }
+        }
+
+        private void gameSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                Properties.Settings.Default.gameSizeCalculationMethod = gameSizeCalcMethod.SelectedItem.ToString();
+            }
+            catch { }
+        }
+
+        private void archiveSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                Properties.Settings.Default.archiveSizeCalculationMethod = archiveSizeCalcMethod.SelectedItem.ToString();
+            }
+            catch { }
+        }
+
+        private void checkForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Functions.Updater.CheckForUpdates();
+            }
+            catch
+            {
+
+            }
         }
     }
 }

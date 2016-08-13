@@ -102,7 +102,7 @@ namespace Steam_Library_Manager.Forms
             bool removeOldGame = removeOldFiles.IsChecked.Value;
             bool compressGame = compress.IsChecked.Value;
 
-            if (currentTask == null || currentTask.Status == System.Threading.Tasks.TaskStatus.Canceled)
+            if (currentTask == null)
             {
                 formLogs.Clear();
                 button.Content = "Cancel";
@@ -150,6 +150,7 @@ namespace Steam_Library_Manager.Forms
             {
                 button.Content = "Copy";
                 cancellationToken.Cancel();
+                currentTask = null;
             }
             else
             {

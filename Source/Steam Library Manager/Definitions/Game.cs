@@ -33,13 +33,13 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (List.contextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (IsSteamBackup && cItem.showToSteamBackup == SLM.Settings.menuVisibility.NotVisible)
+                    if (IsSteamBackup && cItem.showToSteamBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (installedLibrary.Backup && cItem.showToSLMBackup == SLM.Settings.menuVisibility.NotVisible)
+                    else if (installedLibrary.Backup && cItem.showToSLMBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (IsCompressed && cItem.showToCompressed == SLM.Settings.menuVisibility.NotVisible)
+                    else if (IsCompressed && cItem.showToCompressed == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (cItem.showToNormal == SLM.Settings.menuVisibility.NotVisible)
+                    else if (cItem.showToNormal == Enums.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)

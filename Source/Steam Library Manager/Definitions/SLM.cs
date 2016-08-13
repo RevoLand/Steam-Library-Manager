@@ -7,33 +7,5 @@
 
         public static Library selectedLibrary;
         public static string userSteamID64;
-
-        public class Settings
-        {
-            public enum GameSortingMethod
-            {
-                appName,
-                appID,
-                sizeOnDisk
-            }
-
-            public enum gameSizeCalculationMethod
-            {
-                ACF,
-                Enumeration
-            }
-
-            public enum archiveSizeCalculationMethod
-            {
-                compressedSize,
-                unUncompressedSize
-            }
-
-            public enum menuVisibility
-            {
-                NotVisible,
-                Visible
-            }
-        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Data;
 
-namespace Steam_Library_Manager.Framework
+namespace Steam_Library_Manager
 {
     public class SettingBindingExtension : Binding
     {

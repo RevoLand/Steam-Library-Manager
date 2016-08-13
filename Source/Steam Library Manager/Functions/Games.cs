@@ -110,6 +110,39 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
+        public static void readGameDetailsFromZip(string zipPath, Definitions.Library targetLibrary)
+        {
+            try
+            {
+                // Open archive for read
+                using (ZipArchive compressedArchive = ZipFile.OpenRead(zipPath))
+                    // For each file in opened archive
+                    foreach (ZipArchiveEntry acfFilePath in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
+                    {
+                        // If it contains
+                        // Define a KeyValue reader
+                        Framework.KeyValue Key = new Framework.KeyValue();
+
+                        // Open .acf file from archive as text
+                        Key.ReadAsText(acfFilePath.Open());
+
+                        // If acf file has no children, skip this archive
+                        if (Key.Children.Count == 0)
+                            continue;
+
+                        AddNewGame(acfFilePath.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
+                    }
+            }
+            catch (InvalidDataException iEx)
+            {
+                MessageBoxResult removeTheBuggenArchive = MessageBox.Show($"An error happened while parsing zip file ({zipPath})\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", "An error happened while parsing zip file", MessageBoxButton.YesNo);
+
+                if (removeTheBuggenArchive == MessageBoxResult.Yes)
+                    new FileInfo(zipPath).Delete();
+
+                System.Diagnostics.Debug.WriteLine(iEx);
+            }
+        }
 
         public static void UpdateMainForm(Definitions.Library Library, string Search = null)
         {

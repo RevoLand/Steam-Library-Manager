@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -46,31 +45,11 @@ namespace Steam_Library_Manager.Definitions
 
                     Functions.Games.AddNewGame(acfFilePath, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 });
-
                 // Do a loop for each *.zip file in library
                 //foreach (string gameArchive in Directory.EnumerateFiles(steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly))
                 Parallel.ForEach(Directory.EnumerateFiles(steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly), gameArchive =>
                 {
-                    // Open archive for read
-                    using (ZipArchive compressedArchive = ZipFile.OpenRead(gameArchive))
-                    {
-                        // For each file in opened archive
-                        foreach (ZipArchiveEntry acfFilePath in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
-                        {
-                            // If it contains
-                            // Define a KeyValue reader
-                            Framework.KeyValue Key = new Framework.KeyValue();
-
-                            // Open .acf file from archive as text
-                            Key.ReadAsText(acfFilePath.Open());
-
-                            // If acf file has no children, skip this archive
-                            if (Key.Children.Count == 0)
-                                continue;
-
-                            Functions.Games.AddNewGame(acfFilePath.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
-                        }
-                    }
+                    Functions.Games.readGameDetailsFromZip(gameArchive, this);
                 });
 
                 // If library is backup library
@@ -112,9 +91,9 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (List.contextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (Backup && cItem.showToSLMBackup == SLM.Settings.menuVisibility.NotVisible)
+                    if (Backup && cItem.showToSLMBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (!Backup && cItem.showToNormal == SLM.Settings.menuVisibility.NotVisible)
+                    else if (!Backup && cItem.showToNormal == Enums.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)

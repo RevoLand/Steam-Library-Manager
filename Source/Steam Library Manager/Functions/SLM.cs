@@ -26,9 +26,23 @@ namespace Steam_Library_Manager.Functions
                     case "sizeOnDisk":
                         Sort = x => x.sizeOnDisk;
                         break;
+                    case "backupType":
+                        Sort = x => x.IsCompressed;
+                        break;
                 }
 
                 return Sort;
+            }
+
+            public static void updateMainForm()
+            {
+                try
+                {
+                    MainWindow.Accessor.gameSortingMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.GameSortingMethod), Properties.Settings.Default.defaultGameSortingMethod);
+                    MainWindow.Accessor.gameSizeCalcMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.gameSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
+                    MainWindow.Accessor.archiveSizeCalcMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.archiveSizeCalculationMethod), Properties.Settings.Default.archiveSizeCalculationMethod);
+                }
+                catch { }
             }
 
             public static void parseLibraryContextMenuItems()
@@ -63,10 +77,10 @@ namespace Steam_Library_Manager.Functions
                                 cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                 break;
                             case "showtonormal":
-                                cItem.showToNormal = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                cItem.showToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                 break;
                             case "showtoslmbackup":
-                                cItem.showToSLMBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                cItem.showToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                 break;
                             case "active":
                                 cItem.IsActive = bool.Parse(itemDetails[1]);
@@ -148,16 +162,16 @@ namespace Steam_Library_Manager.Functions
                                     cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                     break;
                                 case "showToNormal":
-                                    cItem.showToNormal = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                    cItem.showToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSLMBackup":
-                                    cItem.showToSLMBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                    cItem.showToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSteamBackup":
-                                    cItem.showToSteamBackup = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                    cItem.showToSteamBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToCompressed":
-                                    cItem.showToCompressed = (Definitions.SLM.Settings.menuVisibility)Enum.Parse(typeof(Definitions.SLM.Settings.menuVisibility), itemDetails[1], true);
+                                    cItem.showToCompressed = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "active":
                                     cItem.IsActive = bool.Parse(itemDetails[1]);
@@ -226,7 +240,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
             }
 
@@ -243,6 +257,7 @@ namespace Steam_Library_Manager.Functions
 
             Settings.parseLibraryContextMenuItems();
             Settings.parseGameContextMenuItems();
+            Settings.updateMainForm();
 
             Library.generateLibraryList();
         }

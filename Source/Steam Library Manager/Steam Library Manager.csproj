@@ -87,6 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Game.cs" />
     <Compile Include="Definitions\Library.cs" />
     <Compile Include="Forms\MoveGameForm.xaml.cs">
@@ -95,6 +96,8 @@
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
+    <Compile Include="Framework\EnumBindingSourceExtension.cs" />
+    <Compile Include="Framework\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Attributes.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Awesome.cs" />
     <Compile Include="Framework\FontAwesome.WPF\ControlExtensions.cs" />
@@ -168,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="Functions\Updater.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
