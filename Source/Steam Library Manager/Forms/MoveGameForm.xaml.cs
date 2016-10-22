@@ -59,6 +59,7 @@ namespace Steam_Library_Manager.Forms
         {
             formLogs.Add(string.Format("[{0}/{1}] {2}\n", movenFileCount, totalFileCount, movenFileName));
 
+            /*
             if (progressReportLabel.Dispatcher.CheckAccess())
             {
                 progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalFileSize - movenFileSize)} left - {Functions.fileSystem.FormatBytes(movenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
@@ -94,6 +95,7 @@ namespace Steam_Library_Manager.Forms
                     textBox.ScrollIntoView(textBox.Items[textBox.Items.Count - 1]);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
+            */
 
         }
 

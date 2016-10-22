@@ -185,7 +185,7 @@ namespace Steam_Library_Manager.Definitions
                         totalMovenFileCount++;
                         movenFileSize += currentFile.Length;
 
-                        FileInfo newFile = new FileInfo(Path.Combine(installedLibrary.steamAppsPath.FullName, currentFile.FullName));
+                        FileInfo newFile = new FileInfo(Path.Combine(targetLibrary.steamAppsPath.FullName, currentFile.FullName));
 
                         if (!newFile.Directory.Exists)
                         {

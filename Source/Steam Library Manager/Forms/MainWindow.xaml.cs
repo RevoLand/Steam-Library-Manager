@@ -139,7 +139,7 @@ namespace Steam_Library_Manager
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Definitions.SLM.selectedLibrary != null)
+            if (Definitions.SLM.selectedLibrary != null && !string.IsNullOrEmpty(searchText.Text) && searchText.Text != "Search in Library (by app Name or app ID)")
                 Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
         }
 
@@ -248,10 +248,7 @@ namespace Steam_Library_Manager
             {
                 Functions.Updater.CheckForUpdates();
             }
-            catch
-            {
-
-            }
+            catch { }
         }
     }
 }

@@ -31,22 +31,22 @@ namespace Steam_Library_Manager.Definitions
 
                 // Foreach *.acf file found in library
                 //foreach (string game in Directory.EnumerateFiles(steamAppsPath.FullName, "*.acf", SearchOption.TopDirectoryOnly))
-                Parallel.ForEach(Directory.EnumerateFiles(steamAppsPath.FullName, "*.acf", SearchOption.TopDirectoryOnly), acfFilePath =>
+                Parallel.ForEach(steamAppsPath.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly), acfFilePath =>
                 {
                     // Define a new value and call KeyValue
                     Framework.KeyValue Key = new Framework.KeyValue();
 
                     // Read the *.acf file as text
-                    Key.ReadFileAsText(acfFilePath);
+                    Key.ReadFileAsText(acfFilePath.FullName);
 
                     // If key doesn't contains a child (value in acf file)
                     if (Key.Children.Count == 0)
                         return;
 
-                    Functions.Games.AddNewGame(acfFilePath, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                    Functions.Games.AddNewGame(acfFilePath.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 });
+
                 // Do a loop for each *.zip file in library
-                //foreach (string gameArchive in Directory.EnumerateFiles(steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly))
                 Parallel.ForEach(Directory.EnumerateFiles(steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly), gameArchive =>
                 {
                     Functions.Games.readGameDetailsFromZip(gameArchive, this);

@@ -40,7 +40,7 @@
 
         <Button x:Name="button" Content="Copy" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="button_Click"/>
 
-        <ListView x:Name="textBox" Margin="10,369,10,60" AllowDrop="False" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+        <ListView x:Name="textBox" Margin="10,369,10,15" AllowDrop="False" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock MaxHeight="16" Text="{Binding}" />
@@ -48,7 +48,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ProgressBar x:Name="progressReport" Margin="10,0,10,25" Height="30" VerticalAlignment="Bottom" />
+        <!--<ProgressBar x:Name="progressReport" Margin="10,0,10,25" Height="30" VerticalAlignment="Bottom" />-->
         <Label x:Name="progressReportLabel" Margin="0,0,10,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
     </Grid>
 </Window>
