@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 
@@ -23,6 +24,61 @@ namespace Steam_Library_Manager.Forms
         // Define task
         System.Threading.Tasks.Task currentTask;
 
+        ProgressReport pr = new ProgressReport();
+
+        class ProgressReport : INotifyPropertyChanged
+        {
+            int progressBar;
+            public int ProgressBar
+            {
+                get { return progressBar; }
+                set
+                {
+                    progressBar = value;
+                    NotifyPropertyChanged("ProgressBar");
+                }
+            }
+
+            int movenFileCount;
+            public int MovenFileCount
+            {
+                get { return movenFileCount; }
+                set
+                {
+                    movenFileCount = value;
+                    NotifyPropertyChanged("MovenFileCount");
+                }
+            }
+
+            long movenFileSize;
+            public long MovenFileSize
+            {
+                get { return movenFileSize; }
+                set
+                {
+                    movenFileSize = value;
+                    NotifyPropertyChanged("MovenFileSize");
+                }
+            }
+
+            string progressLabel;
+            public string ProgressLabel
+            {
+                get { return progressLabel; }
+                set
+                {
+                    progressLabel = value;
+                    NotifyPropertyChanged("ProgressLabel");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void NotifyPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
         public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
 
         public MoveGameForm(Definitions.Game gameToMove, Definitions.Library libraryToMove)
@@ -38,6 +94,7 @@ namespace Steam_Library_Manager.Forms
         private void moveGameForm_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = Game;
+            progressReportGrid.DataContext = pr;
 
             targetLibraryText.Content = targetLibrary.fullPath;
         }
@@ -55,48 +112,15 @@ namespace Steam_Library_Manager.Forms
             Framework.WindowPlacement.SetPlacement(this, Properties.Settings.Default.moveGameFormPlacement);
         }
 
-        public void reportFileMovement(string movenFileName, int movenFileCount, int totalFileCount, long movenFileSize, long totalFileSize)
+        public void reportFileMovement(string movenFileName, int totalFileCount, long movenFileSize, long totalFileSize)
         {
-            formLogs.Add(string.Format("[{0}/{1}] {2}\n", movenFileCount, totalFileCount, movenFileName));
+            pr.MovenFileCount += 1;
+            pr.MovenFileSize += movenFileSize;
 
-            /*
-            if (progressReportLabel.Dispatcher.CheckAccess())
-            {
-                progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalFileSize - movenFileSize)} left - {Functions.fileSystem.FormatBytes(movenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
-            }
-            else
-            {
-                progressReportLabel.Dispatcher.Invoke(delegate
-                {
-                    progressReportLabel.Content = $"{Functions.fileSystem.FormatBytes(totalFileSize - movenFileSize)} left - {Functions.fileSystem.FormatBytes(movenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
-                }, System.Windows.Threading.DispatcherPriority.Normal);
-            }
+            pr.ProgressBar = ((int)Math.Round((double)(100 * pr.MovenFileSize) / totalFileSize));
+            pr.ProgressLabel = $"{Functions.fileSystem.FormatBytes(totalFileSize - pr.MovenFileSize)} left - {Functions.fileSystem.FormatBytes(pr.MovenFileSize)} / {Functions.fileSystem.FormatBytes(totalFileSize)}";
 
-            if (progressReport.Dispatcher.CheckAccess())
-            {
-                progressReport.Value = ((int)Math.Round((double)(100 * movenFileSize) / totalFileSize));
-            }
-            else
-            {
-                progressReport.Dispatcher.Invoke(delegate
-                {
-                    progressReport.Value = ((int)Math.Round((double)(100 * movenFileSize) / totalFileSize));
-                }, System.Windows.Threading.DispatcherPriority.Normal);
-            }
-
-            if (textBox.Dispatcher.CheckAccess())
-            {
-                textBox.ScrollIntoView(textBox.Items[textBox.Items.Count - 1]);
-            }
-            else
-            {
-                textBox.Dispatcher.Invoke(delegate
-                {
-                    textBox.ScrollIntoView(textBox.Items[textBox.Items.Count - 1]);
-                }, System.Windows.Threading.DispatcherPriority.Normal);
-            }
-            */
-
+            formLogs.Add(string.Format("[{0}/{1}] {2}\n", pr.MovenFileCount, totalFileCount, movenFileName));
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -120,7 +144,7 @@ namespace Steam_Library_Manager.Forms
                         if (!cancellationToken.IsCancellationRequested)
                         {
                             // If game is not exists in the target library
-                            if (targetLibrary.Games.Count(x => x.acfName == Game.acfName && compressGame != x.IsCompressed) == 0)
+                            if (targetLibrary.Games.Count(x => x.acfName == Game.acfName && compressGame == x.IsCompressed) == 0)
                             {
                                 // Add game to new library
                                 Functions.Games.AddNewGame(Game.fullAcfPath.FullName.Replace(Game.installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName), Game.appID, Game.appName, Game.installationPath.Name, targetLibrary, Game.sizeOnDisk, compressGame);

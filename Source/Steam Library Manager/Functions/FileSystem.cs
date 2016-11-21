@@ -72,6 +72,9 @@ namespace Steam_Library_Manager.Functions
                 dblSByte = bytes / 1024.0;
             }
 
+            if (dblSByte < 0)
+                dblSByte = 0;
+
             // Format the string
             return string.Format("{0:0.##} {1}", dblSByte, Suffix[current]);
         }
