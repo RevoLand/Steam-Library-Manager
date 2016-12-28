@@ -1,1 +1,1 @@
-1.3.3.0|Performance improvements & Movement form visual updates
+1.3.4.0|Changed the way we are handling config.vdf file, made small minor improvements

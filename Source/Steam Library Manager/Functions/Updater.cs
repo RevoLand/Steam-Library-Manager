@@ -43,19 +43,21 @@ namespace Steam_Library_Manager.Functions
                         // Use CMD with delay to rename file
                         // Define a process and start info to use with cmd
                         Process cmdProcess = new Process();
-                        ProcessStartInfo cmdStartInfo = new ProcessStartInfo();
+                        ProcessStartInfo cmdStartInfo = new ProcessStartInfo()
+                        {
 
-                        // Define cmd filename
-                        cmdStartInfo.FileName = "cmd.exe";
+                            // Define cmd filename
+                            FileName = "cmd.exe",
 
-                        // Define working directory as current SLM path
-                        cmdStartInfo.WorkingDirectory = Definitions.Directories.SLM.CurrentDirectory;
+                            // Define working directory as current SLM path
+                            WorkingDirectory = Definitions.Directories.SLM.CurrentDirectory,
 
-                        // Hide CMD window
-                        cmdStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            // Hide CMD window
+                            WindowStyle = ProcessWindowStyle.Hidden,
 
-                        // Set CMD arguments
-                        cmdStartInfo.Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, "SLM is successfully updated!?");
+                            // Set CMD arguments
+                            Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, "SLM is successfully updated!?")
+                        };
 
                         // Set startinfo for cmd process
                         cmdProcess.StartInfo = cmdStartInfo;

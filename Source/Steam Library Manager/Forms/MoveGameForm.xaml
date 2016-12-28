@@ -1,18 +1,17 @@
 ﻿<Window x:Name="moveGameForm" x:Class="Steam_Library_Manager.Forms.MoveGameForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Steam_Library_Manager.Forms"
         xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
         mc:Ignorable="d" 
-        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="moveGameForm_Loaded" IsTabStop="False" WindowStyle="ThreeDBorderWindow" Closing="moveGameForm_Closing" SourceInitialized="moveGameForm_SourceInitialized">
+        Title="Move Game" MinWidth="350" MinHeight="660" Width="350" Height="660" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Loaded="MoveGameForm_Loaded" IsTabStop="False" WindowStyle="ThreeDBorderWindow" Closing="MoveGameForm_Closing" SourceInitialized="MoveGameForm_SourceInitialized">
     <Grid Margin="10">
-        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Text="{Binding appName}"></TextBlock>
-        <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" ImageUrl="{Binding gameHeaderImage}"  VerticalAlignment="Top" Margin="10,55,5,0" />
+        <TextBlock TextAlignment="Center" x:Name="gameHeaderLabel" FontSize="13.333" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="40" Text="{Binding AppName}"></TextBlock>
+        <cachedImage:Image Width="307" Height="115" x:Name="gameHeaderImage" Source="/Steam Library Manager;component/Resources/no_image_available.gif" ImageUrl="{Binding GameHeaderImage}"  VerticalAlignment="Top" Margin="10,55,5,0" />
 
         <Label x:Name="label" Content="Game Library:" HorizontalContentAlignment="Center" Margin="0,175,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="gameLibraryText" Content="{Binding installedLibrary.fullPath}" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="gameLibraryText" Content="{Binding InstalledLibrary.FullPath}" HorizontalContentAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top"/>
         <Label x:Name="targetLabel" Content="Target Library:" HorizontalContentAlignment="Center" Margin="0,237,0,0" VerticalAlignment="Top"/>
         <Label x:Name="targetLibraryText" Content="X" HorizontalContentAlignment="Center" Margin="0,268,0,0" VerticalAlignment="Top"/>
 
@@ -38,7 +37,7 @@
             </CheckBox.Style>
         </CheckBox>
 
-        <Button x:Name="button" Content="Copy" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="button_Click"/>
+        <Button x:Name="button" Content="Copy" Margin="10,319,10,0" VerticalAlignment="Top" Height="45" Click="Button_Click"/>
 
         <ListView x:Name="textBox" Margin="10,369,10,60" AllowDrop="False" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
             <ListView.ItemTemplate>

@@ -17,9 +17,10 @@ namespace Steam_Library_Manager.Functions
 
                     if (selectSteamPath == MessageBoxResult.Yes)
                     {
-                        OpenFileDialog steamPathSelector = new OpenFileDialog();
-                        steamPathSelector.Filter = "Steam (Steam.exe)|Steam.exe";
-
+                        OpenFileDialog steamPathSelector = new OpenFileDialog()
+                        {
+                            Filter = "Steam (Steam.exe)|Steam.exe"
+                        };
                         if (steamPathSelector.ShowDialog() == true)
                         {
                             Properties.Settings.Default.steamInstallationPath = System.IO.Path.GetDirectoryName(steamPathSelector.FileName);

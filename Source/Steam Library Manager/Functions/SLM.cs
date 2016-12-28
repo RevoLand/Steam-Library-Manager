@@ -18,13 +18,13 @@ namespace Steam_Library_Manager.Functions
                 {
                     default:
                     case "appName":
-                        Sort = x => x.appName;
+                        Sort = x => x.AppName;
                         break;
                     case "appID":
-                        Sort = x => x.appID;
+                        Sort = x => x.AppID;
                         break;
                     case "sizeOnDisk":
-                        Sort = x => x.sizeOnDisk;
+                        Sort = x => x.SizeOnDisk;
                         break;
                     case "backupType":
                         Sort = x => x.IsCompressed;
@@ -54,7 +54,7 @@ namespace Steam_Library_Manager.Functions
                     if (string.IsNullOrEmpty(menuItem))
                         continue;
 
-                    Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
+                    Definitions.List.ContextMenu cItem = new Definitions.List.ContextMenu();
                     string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
                     foreach (string hardtonamethings in Item)
@@ -77,10 +77,10 @@ namespace Steam_Library_Manager.Functions
                                 cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                 break;
                             case "showtonormal":
-                                cItem.showToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                cItem.ShowToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                 break;
                             case "showtoslmbackup":
-                                cItem.showToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                cItem.ShowToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                 break;
                             case "active":
                                 cItem.IsActive = bool.Parse(itemDetails[1]);
@@ -98,7 +98,7 @@ namespace Steam_Library_Manager.Functions
             public static void saveLibraryContextMenuItems()
             {
                 string libraryContextMenu = "";
-                foreach (Definitions.List.contextMenu cItem in Definitions.List.libraryContextMenuItems)
+                foreach (Definitions.List.ContextMenu cItem in Definitions.List.libraryContextMenuItems)
                 {
                     if (!string.IsNullOrEmpty(cItem.Header))
                         libraryContextMenu += $"text={cItem.Header}";
@@ -113,9 +113,9 @@ namespace Steam_Library_Manager.Functions
                         libraryContextMenu += $";;iconcolor={cItem.IconColor}";
 
 
-                    libraryContextMenu += $";;showToNormal={cItem.showToNormal}";
+                    libraryContextMenu += $";;showToNormal={cItem.ShowToNormal}";
 
-                    libraryContextMenu += $";;showToSLMBackup={cItem.showToSLMBackup}";
+                    libraryContextMenu += $";;showToSLMBackup={cItem.ShowToSLMBackup}";
 
                     libraryContextMenu += $";;separator={cItem.IsSeparator}";
 
@@ -138,7 +138,7 @@ namespace Steam_Library_Manager.Functions
                         if (string.IsNullOrEmpty(menuItem))
                             continue;
 
-                        Definitions.List.contextMenu cItem = new Definitions.List.contextMenu();
+                        Definitions.List.ContextMenu cItem = new Definitions.List.ContextMenu();
                         string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
                         foreach (string hardtonamethings in Item)
@@ -162,16 +162,16 @@ namespace Steam_Library_Manager.Functions
                                     cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
                                     break;
                                 case "showToNormal":
-                                    cItem.showToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                    cItem.ShowToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSLMBackup":
-                                    cItem.showToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                    cItem.ShowToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToSteamBackup":
-                                    cItem.showToSteamBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                    cItem.ShowToSteamBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "showToCompressed":
-                                    cItem.showToCompressed = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                    cItem.ShowToCompressed = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
                                     break;
                                 case "active":
                                     cItem.IsActive = bool.Parse(itemDetails[1]);
@@ -194,7 +194,7 @@ namespace Steam_Library_Manager.Functions
             public static void saveGameContextMenuItems()
             {
                 string gameContextMenu = "";
-                foreach (Definitions.List.contextMenu cItem in Definitions.List.gameContextMenuItems)
+                foreach (Definitions.List.ContextMenu cItem in Definitions.List.gameContextMenuItems)
                 {
                     if (!string.IsNullOrEmpty(cItem.Header))
                         gameContextMenu += $"text={cItem.Header}";
@@ -207,10 +207,10 @@ namespace Steam_Library_Manager.Functions
                     if (cItem.IconColor != null)
                         gameContextMenu += $";;iconcolor={cItem.IconColor}";
 
-                    gameContextMenu += $";;showToNormal={cItem.showToNormal}";
-                    gameContextMenu += $";;showToSLMBackup={cItem.showToSLMBackup}";
-                    gameContextMenu += $";;showToSteamBackup={cItem.showToSteamBackup}";
-                    gameContextMenu += $";;showToCompressed={cItem.showToCompressed}";
+                    gameContextMenu += $";;showToNormal={cItem.ShowToNormal}";
+                    gameContextMenu += $";;showToSLMBackup={cItem.ShowToSLMBackup}";
+                    gameContextMenu += $";;showToSteamBackup={cItem.ShowToSteamBackup}";
+                    gameContextMenu += $";;showToCompressed={cItem.ShowToCompressed}";
 
                     gameContextMenu += $";;active={cItem.IsActive}";
                     gameContextMenu += $";;separator={cItem.IsSeparator}";
@@ -232,7 +232,7 @@ namespace Steam_Library_Manager.Functions
                     foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Backup))
                     {
                         // then add this library path to new defined string collection
-                        BackupDirs.Add(Library.fullPath);
+                        BackupDirs.Add(Library.FullPath);
                     }
 
                     // change our current backup directories setting with new defined string collection
@@ -259,7 +259,7 @@ namespace Steam_Library_Manager.Functions
             Settings.parseGameContextMenuItems();
             Settings.updateMainForm();
 
-            Library.generateLibraryList();
+            Library.GenerateLibraryList();
         }
 
         public static void onClosing()

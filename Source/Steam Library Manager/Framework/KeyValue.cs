@@ -14,63 +14,61 @@ namespace Steam_Library_Manager.Framework
 {
     class KVTextReader : StreamReader
     {
-        static Dictionary<char, char> escapedMapping = new Dictionary<char, char>
+        internal static Dictionary<char, char> escapedMapping = new Dictionary<char, char>
         {
+            { '\\', '\\' },
             { 'n', '\n' },
             { 'r', '\r' },
             { 't', '\t' },
             // todo: any others?
         };
 
-        public KVTextReader( KeyValue kv, Stream input )
-            : base( input )
+        public KVTextReader(KeyValue kv, Stream input)
+            : base(input)
         {
-            bool wasQuoted;
-            bool wasConditional;
-
             KeyValue currentKey = kv;
 
             do
             {
                 // bool bAccepted = true;
 
-                string s = ReadToken( out wasQuoted, out wasConditional );
+                string s = ReadToken(out bool wasQuoted, out bool wasConditional);
 
-                if ( string.IsNullOrEmpty( s ) )
+                if (string.IsNullOrEmpty(s))
                     break;
 
-                if ( currentKey == null )
+                if (currentKey == null)
                 {
-                    currentKey = new KeyValue( s );
+                    currentKey = new KeyValue(s);
                 }
                 else
                 {
                     currentKey.Name = s;
                 }
 
-                s = ReadToken( out wasQuoted, out wasConditional );
+                s = ReadToken(out wasQuoted, out wasConditional);
 
-                if ( wasConditional )
+                if (wasConditional)
                 {
                     // bAccepted = ( s == "[$WIN32]" );
 
                     // Now get the '{'
-                    s = ReadToken( out wasQuoted, out wasConditional );
+                    s = ReadToken(out wasQuoted, out wasConditional);
                 }
 
-                if ( s.StartsWith( "{" ) && !wasQuoted )
+                if (s.StartsWith("{") && !wasQuoted)
                 {
                     // header is valid so load the file
-                    currentKey.RecursiveLoadFromBuffer( this );
+                    currentKey.RecursiveLoadFromBuffer(this);
                 }
                 else
                 {
-                    throw new Exception( "LoadFromBuffer: missing {" );
+                    throw new Exception("LoadFromBuffer: missing {");
                 }
 
                 currentKey = null;
             }
-            while ( !EndOfStream );
+            while (!EndOfStream);
         }
 
         private void EatWhiteSpace()
@@ -88,21 +86,19 @@ namespace Steam_Library_Manager.Framework
 
         private bool EatCPPComment()
         {
-            if ( !EndOfStream )
+            if (!EndOfStream)
             {
-                char next = ( char )Peek();
-                if ( next == '/' )
+                char next = (char)Peek();
+                if (next == '/')
                 {
-                    Read();
-                    if ( next == '/' )
-                    {
-                        ReadLine();
-                        return true;
-                    }
-                    else
-                    {
-                        throw new Exception( "BARE / WHAT ARE YOU DOIOIOIINODGNOIGNONGOIGNGGGGGGG" );
-                    }
+                    ReadLine();
+                    return true;
+                    /*
+                     *  As came up in parsing the Dota 2 units.txt file, the reference (Valve) implementation
+                     *  of the KV format considers a single forward slash to be sufficient to comment out the
+                     *  entirety of a line. While they still _tend_ to use two, it's not required, and likely
+                     *  is just done out of habit.
+                     */
                 }
 
                 return false;
@@ -111,31 +107,31 @@ namespace Steam_Library_Manager.Framework
             return false;
         }
 
-        public string ReadToken( out bool wasQuoted, out bool wasConditional )
+        public string ReadToken(out bool wasQuoted, out bool wasConditional)
         {
             wasQuoted = false;
             wasConditional = false;
 
-            while ( true )
+            while (true)
             {
                 EatWhiteSpace();
 
-                if ( EndOfStream )
+                if (EndOfStream)
                 {
                     return null;
                 }
 
-                if ( !EatCPPComment() )
+                if (!EatCPPComment())
                 {
                     break;
                 }
             }
 
-            if ( EndOfStream )
+            if (EndOfStream)
                 return null;
 
-            char next = ( char )Peek();
-            if ( next == '"' )
+            char next = (char)Peek();
+            if (next == '"')
             {
                 wasQuoted = true;
 
@@ -143,27 +139,25 @@ namespace Steam_Library_Manager.Framework
                 Read();
 
                 var sb = new StringBuilder();
-                while ( !EndOfStream )
+                while (!EndOfStream)
                 {
-                    if ( Peek() == '\\' )
+                    if (Peek() == '\\')
                     {
                         Read();
 
-                        char escapedChar = ( char )Read();
-                        char replacedChar;
-
-                        if ( escapedMapping.TryGetValue( escapedChar, out replacedChar ) )
-                            sb.Append( replacedChar );
+                        char escapedChar = (char)Read();
+                        if (escapedMapping.TryGetValue(escapedChar, out char replacedChar))
+                            sb.Append(replacedChar);
                         else
-                            sb.Append( escapedChar );
+                            sb.Append(escapedChar);
 
                         continue;
                     }
 
-                    if ( Peek() == '"' )
+                    if (Peek() == '"')
                         break;
 
-                    sb.Append( ( char )Read() );
+                    sb.Append((char)Read());
                 }
 
                 // "
@@ -172,7 +166,7 @@ namespace Steam_Library_Manager.Framework
                 return sb.ToString();
             }
 
-            if ( next == '{' || next == '}' )
+            if (next == '{' || next == '}')
             {
                 Read();
                 return next.ToString();
@@ -181,29 +175,29 @@ namespace Steam_Library_Manager.Framework
             bool bConditionalStart = false;
             int count = 0;
             var ret = new StringBuilder();
-            while ( !EndOfStream )
+            while (!EndOfStream)
             {
-                next = ( char )Peek();
+                next = (char)Peek();
 
-                if ( next == '"' || next == '{' || next == '}' )
+                if (next == '"' || next == '{' || next == '}')
                     break;
 
-                if ( next == '[' )
+                if (next == '[')
                     bConditionalStart = true;
 
-                if ( next == ']' && bConditionalStart )
+                if (next == ']' && bConditionalStart)
                     wasConditional = true;
 
-                if ( Char.IsWhiteSpace( next ) )
+                if (Char.IsWhiteSpace(next))
                     break;
 
-                if ( count < 1023 )
+                if (count < 1023)
                 {
-                    ret.Append( next );
+                    ret.Append(next);
                 }
                 else
                 {
-                    throw new Exception( "ReadToken overflow" );
+                    throw new Exception("ReadToken overflow");
                 }
 
                 Read();
@@ -213,9 +207,6 @@ namespace Steam_Library_Manager.Framework
         }
     }
 
-    /// <summary>
-    /// Represents a recursive string key to arbitrary value container.
-    /// </summary>
     public class KeyValue
     {
         enum Type : byte
@@ -236,10 +227,10 @@ namespace Steam_Library_Manager.Framework
         /// </summary>
         /// <param name="name">The optional name of the root key.</param>
         /// <param name="value">The optional value assigned to the root key.</param>
-        public KeyValue( string name = null, string value = null )
+        public KeyValue(string name = null, string value = null)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
 
             Children = new List<KeyValue>();
         }
@@ -265,14 +256,14 @@ namespace Steam_Library_Manager.Framework
 
 
         /// <summary>
-        /// Gets the child <see cref="SteamKit2.KeyValue"/> with the specified key.
-        /// If no child with this key exists, <see cref="Invalid"/> is returned.
+        /// Gets or sets the child <see cref="SteamKit2.KeyValue" /> with the specified key.
+        /// When retrieving by key, if no child with the given key exists, <see cref="Invalid" /> is returned.
         /// </summary>
-        public KeyValue this[ string key ]
+        public KeyValue this[string key]
         {
             get
             {
-                var child = Children
+                var child = this.Children
                     .FirstOrDefault(c => string.Equals(c.Name, key, StringComparison.OrdinalIgnoreCase));
 
                 if (child == null)
@@ -280,8 +271,23 @@ namespace Steam_Library_Manager.Framework
                     return Invalid;
                 }
 
-
                 return child;
+            }
+            set
+            {
+                var existingChild = this.Children
+                    .FirstOrDefault(c => string.Equals(c.Name, key, StringComparison.OrdinalIgnoreCase));
+
+                if (existingChild != null)
+                {
+                    // if the key already exists, remove the old one
+                    this.Children.Remove(existingChild);
+                }
+
+                // ensure the given KV actually has the correct key assigned
+                value.Name = key;
+
+                this.Children.Add(value);
             }
         }
 
@@ -289,7 +295,42 @@ namespace Steam_Library_Manager.Framework
         /// Returns the value of this instance as a string.
         /// </summary>
         /// <returns>The value of this instance as a string.</returns>
-        public string AsString() => Value;
+        public string AsString()
+        {
+            return this.Value;
+        }
+
+        /// <summary>
+        /// Attempts to convert and return the value of this instance as an unsigned byte.
+        /// If the conversion is invalid, the default value is returned.
+        /// </summary>
+        /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
+        /// <returns>The value of this instance as an unsigned byte.</returns>
+        public byte AsUnsignedByte(byte defaultValue = default(byte))
+        {
+            if (byte.TryParse(Value, out byte value) == false)
+            {
+                return defaultValue;
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Attempts to convert and return the value of this instance as an unsigned short.
+        /// If the conversion is invalid, the default value is returned.
+        /// </summary>
+        /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
+        /// <returns>The value of this instance as an unsigned short.</returns>
+        public ushort AsUnsignedShort(ushort defaultValue = default(ushort))
+        {
+            if (ushort.TryParse(this.Value, out ushort value) == false)
+            {
+                return defaultValue;
+            }
+
+            return value;
+        }
 
         /// <summary>
         /// Attempts to convert and return the value of this instance as an integer.
@@ -297,11 +338,25 @@ namespace Steam_Library_Manager.Framework
         /// </summary>
         /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
         /// <returns>The value of this instance as an integer.</returns>
-        public int AsInteger( int defaultValue = default( int ) )
+        public int AsInteger(int defaultValue = default(int))
         {
-            int value;
+            if (int.TryParse(this.Value, out int value) == false)
+            {
+                return defaultValue;
+            }
 
-            if ( int.TryParse(Value, out value ) == false )
+            return value;
+        }
+
+        /// <summary>
+        /// Attempts to convert and return the value of this instance as an unsigned integer.
+        /// If the conversion is invalid, the default value is returned.
+        /// </summary>
+        /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
+        /// <returns>The value of this instance as an unsigned integer.</returns>
+        public uint AsUnsignedInteger(uint defaultValue = default(uint))
+        {
+            if (uint.TryParse(this.Value, out uint value) == false)
             {
                 return defaultValue;
             }
@@ -314,12 +369,26 @@ namespace Steam_Library_Manager.Framework
         /// If the conversion is invalid, the default value is returned.
         /// </summary>
         /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
-        /// <returns>The value of this instance as an long.</returns>
-        public long AsLong( long defaultValue = default( long ) )
+        /// <returns>The value of this instance as a long.</returns>
+        public long AsLong(long defaultValue = default(long))
         {
-            long value;
+            if (long.TryParse(this.Value, out long value) == false)
+            {
+                return defaultValue;
+            }
 
-            if ( long.TryParse(Value, out value ) == false )
+            return value;
+        }
+
+        /// <summary>
+        /// Attempts to convert and return the value of this instance as an unsigned long.
+        /// If the conversion is invalid, the default value is returned.
+        /// </summary>
+        /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
+        /// <returns>The value of this instance as an unsigned long.</returns>
+        public ulong AsUnsignedLong(ulong defaultValue = default(ulong))
+        {
+            if (ulong.TryParse(this.Value, out ulong value) == false)
             {
                 return defaultValue;
             }
@@ -332,12 +401,10 @@ namespace Steam_Library_Manager.Framework
         /// If the conversion is invalid, the default value is returned.
         /// </summary>
         /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
-        /// <returns>The value of this instance as an float.</returns>
-        public float AsFloat( float defaultValue = default( float ) )
+        /// <returns>The value of this instance as a float.</returns>
+        public float AsFloat(float defaultValue = default(float))
         {
-            float value;
-
-            if ( float.TryParse(Value, out value ) == false )
+            if (float.TryParse(this.Value, out float value) == false)
             {
                 return defaultValue;
             }
@@ -350,12 +417,10 @@ namespace Steam_Library_Manager.Framework
         /// If the conversion is invalid, the default value is returned.
         /// </summary>
         /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
-        /// <returns>The value of this instance as an boolean.</returns>
-        public bool AsBoolean( bool defaultValue = default( bool ) )
+        /// <returns>The value of this instance as a boolean.</returns>
+        public bool AsBoolean(bool defaultValue = default(bool))
         {
-            int value;
-
-            if ( int.TryParse(Value, out value ) == false )
+            if (int.TryParse(this.Value, out int value) == false)
             {
                 return defaultValue;
             }
@@ -364,12 +429,32 @@ namespace Steam_Library_Manager.Framework
         }
 
         /// <summary>
+        /// Attempts to convert and return the value of this instance as an enum.
+        /// If the conversion is invalid, the default value is returned.
+        /// </summary>
+        /// <param name="defaultValue">The default value to return if the conversion is invalid.</param>
+        /// <returns>The value of this instance as an enum.</returns>
+        public T AsEnum<T>(T defaultValue = default(T))
+            where T : struct
+        {
+            if (Enum.TryParse<T>(this.Value, out var value) == false)
+            {
+                return defaultValue;
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() => string.Format("{0} = {1}", Name, Value);
+        public override string ToString()
+        {
+            return string.Format("{0} = {1}", this.Name, this.Value);
+        }
 
         /// <summary>
         /// Attempts to load the given filename as a text <see cref="KeyValue"/>.
@@ -379,42 +464,66 @@ namespace Steam_Library_Manager.Framework
         /// <remarks>
         /// This method will swallow any exceptions that occur when reading, use <see cref="ReadAsText"/> if you wish to handle exceptions.
         /// </remarks>
-        public static KeyValue LoadAsText(string path) => LoadFromFile(path, false);
+        public static KeyValue LoadAsText(string path)
+        {
+            return LoadFromFile(path, false);
+        }
 
         /// <summary>
         /// Attempts to load the given filename as a binary <see cref="KeyValue"/>.
         /// </summary>
         /// <param name="path">The path to the file to load.</param>
         /// <returns>a <see cref="KeyValue"/> instance if the load was successful, or <c>null</c> on failure.</returns>
-        /// <remarks>
-        /// This method will swallow any exceptions that occur when reading, use <see cref="ReadAsBinary"/> if you wish to handle exceptions.
-        /// </remarks>
-        public static KeyValue LoadAsBinary(string path) => LoadFromFile(path, true);
-
-
-        static KeyValue LoadFromFile( string path, bool asBinary )
+        [Obsolete("Use TryReadAsBinary instead. Note that TryLoadAsBinary returns the root object, not a dummy parent node containg the root object.")]
+        public static KeyValue LoadAsBinary(string path)
         {
-            if ( File.Exists( path ) == false )
+            var kv = LoadFromFile(path, true);
+            if (kv == null)
+            {
+                return null;
+            }
+
+            var parent = new KeyValue();
+            parent.Children.Add(kv);
+            return parent;
+        }
+
+        /// <summary>
+        /// Attempts to load the given filename as a binary <see cref="KeyValue"/>.
+        /// </summary>
+        /// <param name="path">The path to the file to load.</param>
+        /// <param name="keyValue">The resulting <see cref="KeyValue"/> object if the load was successful, or <c>null</c> if unsuccessful.</param>
+        /// <returns><c>true</c> if the load was successful, or <c>false</c> on failure.</returns>
+        public static bool TryLoadAsBinary(string path, out KeyValue keyValue)
+        {
+            keyValue = LoadFromFile(path, true);
+            return keyValue != null;
+        }
+
+
+        static KeyValue LoadFromFile(string path, bool asBinary)
+        {
+            if (File.Exists(path) == false)
             {
                 return null;
             }
 
             try
             {
-                using ( var input = File.Open( path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )
+                using (var input = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     var kv = new KeyValue();
 
-                    if ( asBinary )
+                    if (asBinary)
                     {
-                        if ( kv.ReadAsBinary( input ) == false )
+                        if (kv.TryReadAsBinary(input) == false)
                         {
                             return null;
                         }
                     }
                     else
                     {
-                        if ( kv.ReadAsText( input ) == false )
+                        if (kv.ReadAsText(input) == false)
                         {
                             return null;
                         }
@@ -423,7 +532,7 @@ namespace Steam_Library_Manager.Framework
                     return kv;
                 }
             }
-            catch ( Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -437,22 +546,22 @@ namespace Steam_Library_Manager.Framework
         /// <remarks>
         /// This method will swallow any exceptions that occur when reading, use <see cref="ReadAsText"/> if you wish to handle exceptions.
         /// </remarks>
-        public static KeyValue LoadFromString( string input )
+        public static KeyValue LoadFromString(string input)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes( input );
+            byte[] bytes = Encoding.UTF8.GetBytes(input);
 
-            using ( MemoryStream stream = new MemoryStream( bytes ) )
+            using (MemoryStream stream = new MemoryStream(bytes))
             {
                 var kv = new KeyValue();
 
                 try
                 {
-                    if ( kv.ReadAsText( stream ) == false )
+                    if (kv.ReadAsText(stream) == false)
                         return null;
 
                     return kv;
                 }
-                catch ( Exception )
+                catch (Exception)
                 {
                     return null;
                 }
@@ -464,11 +573,11 @@ namespace Steam_Library_Manager.Framework
         /// </summary>
         /// <param name="input">The input <see cref="Stream"/> to read from.</param>
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
-        public bool ReadAsText( Stream input )
+        public bool ReadAsText(Stream input)
         {
-            Children = new List<KeyValue>();
+            this.Children = new List<KeyValue>();
 
-            new KVTextReader( this, input );
+            new KVTextReader(this, input);
 
             return true;
         }
@@ -479,66 +588,61 @@ namespace Steam_Library_Manager.Framework
         /// <seealso cref="ReadAsText"/>
         /// <param name="filename">The file to open and read.</param>
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
-        public bool ReadFileAsText( string filename )
+        public bool ReadFileAsText(string filename)
         {
-            try
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
-                using (FileStream fs = new FileStream(filename, FileMode.Open))
-                {
-                    return ReadAsText(fs);
-                }
+                return ReadAsText(fs);
             }
-            catch { return false; }
         }
 
-        internal void RecursiveLoadFromBuffer( KVTextReader kvr )
+        internal void RecursiveLoadFromBuffer(KVTextReader kvr)
         {
-            bool wasQuoted;
-            bool wasConditional;
-
-            while ( true )
+            while (true)
             {
                 // bool bAccepted = true;
 
                 // get the key name
-                string name = kvr.ReadToken( out wasQuoted, out wasConditional );
+                string name = kvr.ReadToken(out bool wasQuoted, out bool wasConditional);
 
-                if ( string.IsNullOrEmpty( name ) )
+                if (string.IsNullOrEmpty(name))
                 {
-                    throw new Exception( "RecursiveLoadFromBuffer: got EOF or empty keyname" );
+                    throw new Exception("RecursiveLoadFromBuffer: got EOF or empty keyname");
                 }
 
-                if ( name.StartsWith( "}" ) && !wasQuoted )	// top level closed, stop reading
+                if (name.StartsWith("}") && !wasQuoted)	// top level closed, stop reading
                     break;
 
-                KeyValue dat = new KeyValue( name );
-                dat.Children = new List<KeyValue>();
-                Children.Add( dat );
+                KeyValue dat = new KeyValue(name)
+                {
+                    Children = new List<KeyValue>()
+                };
+                this.Children.Add(dat);
 
                 // get the value
-                string value = kvr.ReadToken( out wasQuoted, out wasConditional );
+                string value = kvr.ReadToken(out wasQuoted, out wasConditional);
 
-                if ( wasConditional && value != null )
+                if (wasConditional && value != null)
                 {
                     // bAccepted = ( value == "[$WIN32]" );
-                    value = kvr.ReadToken( out wasQuoted, out wasConditional );
+                    value = kvr.ReadToken(out wasQuoted, out wasConditional);
                 }
 
-                if ( value == null )
-                    throw new Exception( "RecursiveLoadFromBuffer:  got NULL key" );
+                if (value == null)
+                    throw new Exception("RecursiveLoadFromBuffer:  got NULL key");
 
-                if ( value.StartsWith( "}" ) && !wasQuoted )
-                    throw new Exception( "RecursiveLoadFromBuffer:  got } in key" );
+                if (value.StartsWith("}") && !wasQuoted)
+                    throw new Exception("RecursiveLoadFromBuffer:  got } in key");
 
-                if ( value.StartsWith( "{" ) && !wasQuoted )
+                if (value.StartsWith("{") && !wasQuoted)
                 {
-                    dat.RecursiveLoadFromBuffer( kvr );
+                    dat.RecursiveLoadFromBuffer(kvr);
                 }
                 else
                 {
-                    if ( wasConditional )
+                    if (wasConditional)
                     {
-                        throw new Exception( "RecursiveLoadFromBuffer:  got conditional between key and value" );
+                        throw new Exception("RecursiveLoadFromBuffer:  got conditional between key and value");
                     }
 
                     dat.Value = value;
@@ -552,62 +656,111 @@ namespace Steam_Library_Manager.Framework
         /// </summary>
         /// <param name="path">The file path to save to.</param>
         /// <param name="asBinary">If set to <c>true</c>, saves this instance as binary.</param>
-        public void SaveToFile( string path, bool asBinary )
+        public void SaveToFile(string path, bool asBinary)
         {
-            if ( asBinary )
-                throw new NotImplementedException();
-
-            using ( var f = File.Create( path ) )
+            using (var f = File.Create(path))
             {
-                RecursiveSaveToFile( f );
+                SaveToStream(f, asBinary);
             }
         }
 
-        private void RecursiveSaveToFile( FileStream f )
+        /// <summary>
+        /// Saves this instance to a given <see cref="System.IO.Stream"/>.
+        /// </summary>
+        /// <param name="stream">The <see cref="System.IO.Stream"/> to save to.</param>
+        /// <param name="asBinary">If set to <c>true</c>, saves this instance as binary.</param>
+        public void SaveToStream(Stream stream, bool asBinary)
         {
-            RecursiveSaveToFile( f, 0 );
+            if (asBinary)
+            {
+                RecursiveSaveBinaryToStream(stream);
+            }
+            else
+            {
+                RecursiveSaveTextToFile(stream);
+            }
         }
 
-        private void RecursiveSaveToFile( FileStream f, int indentLevel )
+        void RecursiveSaveBinaryToStream(Stream f)
+        {
+            RecursiveSaveBinaryToStreamCore(f);
+            f.WriteByte((byte)Type.End);
+        }
+
+        void RecursiveSaveBinaryToStreamCore(Stream f)
+        {
+            // Only supported types ATM:
+            // 1. KeyValue with children (no value itself)
+            // 2. String KeyValue
+            if (Children.Any())
+            {
+                f.WriteByte((byte)Type.None);
+                f.WriteNullTermString(Name, Encoding.UTF8);
+                foreach (var child in Children)
+                {
+                    child.RecursiveSaveBinaryToStreamCore(f);
+                }
+                f.WriteByte((byte)Type.End);
+            }
+            else
+            {
+                f.WriteByte((byte)Type.String);
+                f.WriteNullTermString(Name, Encoding.UTF8);
+                f.WriteNullTermString(Value ?? string.Empty, Encoding.UTF8);
+            }
+        }
+
+        private void RecursiveSaveTextToFile(Stream stream, int indentLevel = 0)
         {
             // write header
-            WriteIndents( f, indentLevel );
-            WriteString( f, Name, true );
-            WriteString( f, "\n" );
-            WriteIndents( f, indentLevel );
-            WriteString( f, "{\n" );
+            WriteIndents(stream, indentLevel);
+            WriteString(stream, Name, true);
+            WriteString(stream, "\n");
+            WriteIndents(stream, indentLevel);
+            WriteString(stream, "{\n");
 
             // loop through all our keys writing them to disk
-            foreach ( KeyValue child in Children )
+            foreach (KeyValue child in Children)
             {
-                if ( child.Value == null )
+                if (child.Value == null)
                 {
-                    child.RecursiveSaveToFile( f, indentLevel + 1 );
+                    child.RecursiveSaveTextToFile(stream, indentLevel + 1);
                 }
                 else
                 {
-                    WriteIndents( f, indentLevel + 1 );
-                    WriteString( f, child.Name, true );
-                    WriteString( f, "\t\t" );
-                    WriteString( f, child.AsString(), true );
-                    WriteString( f, "\n" );
+                    WriteIndents(stream, indentLevel + 1);
+                    WriteString(stream, child.Name, true);
+                    WriteString(stream, "\t\t");
+                    WriteString(stream, EscapeText(child.AsString()), true);
+                    WriteString(stream, "\n");
                 }
             }
 
-            WriteIndents( f, indentLevel );
-            WriteString( f, "}\n" );
+            WriteIndents(stream, indentLevel);
+            WriteString(stream, "}\n");
         }
 
-        private void WriteIndents( FileStream f, int indentLevel )
+        static string EscapeText(string value)
         {
-            WriteString( f, new string( '\t', indentLevel ) );
+            foreach (var kvp in KVTextReader.escapedMapping)
+            {
+                var textToReplace = new string(kvp.Value, 1);
+                var escapedReplacement = @"\" + kvp.Key;
+                value = value.Replace(textToReplace, escapedReplacement);
+            }
+
+            return value;
         }
 
-        private static void WriteString( FileStream f, string str, bool quote = false )
+        void WriteIndents(Stream stream, int indentLevel)
         {
-            str = str.Replace(@"\", @"\\");
-            byte[] bytes = Encoding.UTF8.GetBytes( ( quote ? "\"" : "" ) + str.Replace( "\"", "\\\"" ) + ( quote ? "\"" : "" ) );
-            f.Write( bytes, 0, bytes.Length );
+            WriteString(stream, new string('\t', indentLevel));
+        }
+
+        static void WriteString(Stream stream, string str, bool quote = false)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes((quote ? "\"" : "") + str.Replace("\"", "\\\"") + (quote ? "\"" : ""));
+            stream.Write(bytes, 0, bytes.Length);
         }
 
         /// <summary>
@@ -615,79 +768,98 @@ namespace Steam_Library_Manager.Framework
         /// </summary>
         /// <param name="input">The input <see cref="Stream"/> to read from.</param>
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
-        public bool ReadAsBinary( Stream input )
+        [Obsolete("Use TryReadAsBinary instead. Note that TryReadAsBinary returns the root object, not a dummy parent node containg the root object.")]
+        public bool ReadAsBinary(Stream input)
         {
-            Children = new List<KeyValue>();
+            var dummyChild = new KeyValue();
+            this.Children.Add(dummyChild);
+            return dummyChild.TryReadAsBinary(input);
+        }
 
-            while ( true )
+        /// <summary>
+        /// Populate this instance from the given <see cref="Stream"/> as a binary <see cref="KeyValue"/>.
+        /// </summary>
+        /// <param name="input">The input <see cref="Stream"/> to read from.</param>
+        /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
+        public bool TryReadAsBinary(Stream input)
+        {
+            return TryReadAsBinaryCore(input, this, null);
+        }
+
+        static bool TryReadAsBinaryCore(Stream input, KeyValue current, KeyValue parent)
+        {
+            current.Children = new List<KeyValue>();
+
+            while (true)
             {
+                var type = (Type)input.ReadByte();
 
-                var type = ( Type )input.ReadByte();
-
-                if ( type == Type.End )
+                if (type == Type.End)
                 {
                     break;
                 }
 
-                var current = new KeyValue();
-                current.Name = input.ReadNullTermString( Encoding.UTF8 );
+                current.Name = input.ReadNullTermString(Encoding.UTF8);
 
-                try
+                switch (type)
                 {
-                    switch ( type )
-                    {
-                        case Type.None:
+                    case Type.None:
+                        {
+                            var child = new KeyValue();
+                            var didReadChild = TryReadAsBinaryCore(input, child, current);
+                            if (!didReadChild)
                             {
-                                current.ReadAsBinary( input );
-                                break;
+                                return false;
                             }
+                            break;
+                        }
 
-                        case Type.String:
-                            {
-                                current.Value = input.ReadNullTermString( Encoding.UTF8 );
-                                break;
-                            }
+                    case Type.String:
+                        {
+                            current.Value = input.ReadNullTermString(Encoding.UTF8);
+                            break;
+                        }
 
-                        case Type.WideString:
-                            {
-                                throw new InvalidDataException( "wstring is unsupported" );
-                            }
+                    case Type.WideString:
+                        {
+                            System.Diagnostics.Debug.WriteLine("KeyValue", "Encountered WideString type when parsing binary KeyValue, which is unsupported. Returning false.");
+                            return false;
+                        }
 
-                        case Type.Int32:
-                        case Type.Color:
-                        case Type.Pointer:
-                            {
-                                current.Value = Convert.ToString( input.ReadInt32() );
-                                break;
-                            }
+                    case Type.Int32:
+                    case Type.Color:
+                    case Type.Pointer:
+                        {
+                            current.Value = Convert.ToString(input.ReadInt32());
+                            break;
+                        }
 
-                        case Type.UInt64:
-                            {
-                                current.Value = Convert.ToString( input.ReadUInt64() );
-                                break;
-                            }
+                    case Type.UInt64:
+                        {
+                            current.Value = Convert.ToString(input.ReadUInt64());
+                            break;
+                        }
 
-                        case Type.Float32:
-                            {
-                                current.Value = Convert.ToString( input.ReadFloat() );
-                                break;
-                            }
+                    case Type.Float32:
+                        {
+                            current.Value = Convert.ToString(input.ReadFloat());
+                            break;
+                        }
 
-                        default:
-                            {
-                                throw new InvalidDataException( "Unknown KV type encountered." );
-                            }
-                    }
-                }
-                catch ( InvalidDataException ex )
-                {
-                    throw new InvalidDataException( string.Format( "An exception ocurred while reading KV '{0}'", current.Name ), ex );
+                    default:
+                        {
+                            return false;
+                        }
                 }
 
-                Children.Add( current );
+                if (parent != null)
+                {
+                    parent.Children.Add(current);
+                }
+                current = new KeyValue();
             }
 
-            return input.Position == input.Length;
+            return true;
         }
     }
 
@@ -760,16 +932,14 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
-        private static byte[] bufferCache;
-
-        public static byte[] ReadBytesCached(this Stream stream, int len)
+        public static void WriteNullTermString(this Stream stream, string value, Encoding encoding)
         {
-            if (bufferCache == null || bufferCache.Length < len)
-                bufferCache = new byte[len];
+            var dataLength = encoding.GetByteCount(value);
+            var data = new byte[dataLength + 1];
+            encoding.GetBytes(value, 0, value.Length, data, 0);
+            data[dataLength] = 0x00; // '\0'
 
-            stream.Read(bufferCache, 0, len);
-
-            return bufferCache;
+            stream.Write(data, 0, data.Length);
         }
 
         static byte[] discardBuffer = new byte[2 << 12];

@@ -6,9 +6,9 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    class fileSystem
+    class FileSystem
     {
-        public static void removeGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
+        public static void RemoveGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
         {
             try
             {
@@ -57,7 +57,10 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static long getFileSize(string filePath) => new FileInfo(filePath).Length;
+        public static long GetFileSize(string filePath)
+        {
+            return new FileInfo(filePath).Length;
+        }
 
         // Source: http://stackoverflow.com/a/2082893
         public static string FormatBytes(long bytes)
@@ -76,10 +79,10 @@ namespace Steam_Library_Manager.Functions
                 dblSByte = 0;
 
             // Format the string
-            return string.Format("{0:0.##} {1}", dblSByte, Suffix[current]);
+            return $"{dblSByte:0.##} {Suffix[current]}";
         }
 
-        public static long getAvailableFreeSpace(string TargetFolder)
+        public static long GetAvailableFreeSpace(string TargetFolder)
         {
             try
             {
@@ -92,7 +95,7 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public static long getUsedSpace(string TargetFolder)
+        public static long GetUsedSpace(string TargetFolder)
         {
             try
             {
@@ -105,7 +108,7 @@ namespace Steam_Library_Manager.Functions
             catch { return 0; }
         }
 
-        public static void deleteOldLibrary(Definitions.Library Library)
+        public static void DeleteOldLibrary(Definitions.Library Library)
         {
             try
             {

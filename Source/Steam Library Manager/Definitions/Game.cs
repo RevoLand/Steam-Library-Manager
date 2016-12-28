@@ -13,45 +13,48 @@ namespace Steam_Library_Manager.Definitions
 {
     public class Game
     {
-        public int appID { get; set; }
-        public string appName { get; set; }
-        public string gameHeaderImage { get; set; }
-        public string prettyGameSize { get; set; }
-        public DirectoryInfo installationPath, commonPath, downloadPath, workShopPath;
-        public FileInfo fullAcfPath, workShopAcfPath, compressedName;
-        public string acfName, workShopAcfName;
-        public long sizeOnDisk { get; set; }
-        public Framework.AsyncObservableCollection<FrameworkElement> contextMenuItems { get; set; }
+        public int AppID { get; set; }
+        public string AppName { get; set; }
+        public string GameHeaderImage { get; set; }
+        public string PrettyGameSize { get; set; }
+        public DirectoryInfo InstallationPath, CommonPath, DownloadingPath, WorkShopPath;
+        public FileInfo FullAcfPath, WorkShopAcfPath, CompressedArchiveName;
+        public string AcfName, WorkShopAcfName;
+        public long SizeOnDisk { get; set; }
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems { get; set; }
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
-        public Library installedLibrary { get; set; }
+        public Library InstalledLibrary { get; set; }
 
-        public Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems()
+        public Framework.AsyncObservableCollection<FrameworkElement> GenerateRightClickMenuItems()
         {
             Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
-                foreach (List.contextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
+                foreach (List.ContextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (IsSteamBackup && cItem.showToSteamBackup == Enums.menuVisibility.NotVisible)
+                    if (IsSteamBackup && cItem.ShowToSteamBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (installedLibrary.Backup && cItem.showToSLMBackup == Enums.menuVisibility.NotVisible)
+                    else if (InstalledLibrary.Backup && cItem.ShowToSLMBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (IsCompressed && cItem.showToCompressed == Enums.menuVisibility.NotVisible)
+                    else if (IsCompressed && cItem.ShowToCompressed == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (cItem.showToNormal == Enums.menuVisibility.NotVisible)
+                    else if (cItem.ShowToNormal == Enums.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)
                         rightClickMenu.Add(new Separator());
                     else
                     {
-                        MenuItem slmItem = new MenuItem();
-
-                        slmItem.Tag = this;
-                        slmItem.Header = string.Format(cItem.Header, appName, appID, Functions.fileSystem.FormatBytes(sizeOnDisk));
+                        MenuItem slmItem = new MenuItem()
+                        {
+                            Tag = this,
+                            Header = string.Format(cItem.Header, AppName, AppID, Functions.FileSystem.FormatBytes(SizeOnDisk))
+                        };
                         slmItem.Tag = cItem.Action;
                         slmItem.Icon = Functions.fAwesome.getAwesomeIcon(cItem.Icon, cItem.IconColor);
+                        slmItem.HorizontalContentAlignment = HorizontalAlignment.Left;
+                        slmItem.VerticalContentAlignment = VerticalAlignment.Center;
 
                         rightClickMenu.Add(slmItem);
                     }
@@ -67,73 +70,88 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void parseMenuItemAction(string Action)
+        public void ParseMenuItemAction(string Action)
         {
             switch (Action.ToLowerInvariant())
             {
                 default:
-                    System.Diagnostics.Process.Start(string.Format(Action, appID, Definitions.SLM.userSteamID64));
+                    if (string.IsNullOrEmpty(SLM.userSteamID64))
+                        return;
+
+                    System.Diagnostics.Process.Start(string.Format(Action, AppID, SLM.userSteamID64));
                     break;
                 case "disk":
-                    if (commonPath.Exists)
-                        System.Diagnostics.Process.Start(commonPath.FullName);
+                    if (CommonPath.Exists)
+                        System.Diagnostics.Process.Start(CommonPath.FullName);
                     break;
                 case "acffile":
-                    System.Diagnostics.Process.Start(fullAcfPath.FullName);
+                    System.Diagnostics.Process.Start(FullAcfPath.FullName);
                     break;
                 case "deletegamefilesslm":
 
-                    deleteFiles();
+                    DeleteFiles();
                     RemoveFromLibrary();
 
                     break;
             }
         }
 
-        public List<FileSystemInfo> getFileList(bool includeDownloads = true, bool includeWorkshop = true)
+        public List<FileSystemInfo> GetFileList(bool includeDownloads = true, bool includeWorkshop = true)
         {
             List<FileSystemInfo> FileList = new List<FileSystemInfo>();
 
             if (IsCompressed)
             {
-                FileList.Add(compressedName);
+                FileList.Add(CompressedArchiveName);
             }
             else
             {
-                if (commonPath.Exists)
+                if (CommonPath.Exists)
                 {
-                    FileList.AddRange(getCommonFiles());
+                    FileList.AddRange(GetCommonFiles());
                 }
 
-                if (includeDownloads && downloadPath.Exists)
+                if (includeDownloads && DownloadingPath.Exists)
                 {
-                    FileList.AddRange(getDownloadFiles());
-                    FileList.AddRange(getPatchFiles());
+                    FileList.AddRange(GetDownloadFiles());
+                    FileList.AddRange(GetPatchFiles());
                 }
 
-                if (includeWorkshop && workShopPath.Exists)
+                if (includeWorkshop && WorkShopPath.Exists)
                 {
-                    FileList.AddRange(getWorkshopFiles());
+                    FileList.AddRange(GetWorkshopFiles());
                 }
             }
             return FileList;
         }
 
-        public List<FileSystemInfo> getCommonFiles() => commonPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        public List<FileSystemInfo> GetCommonFiles()
+        {
+            return CommonPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        }
 
-        public List<FileSystemInfo> getDownloadFiles() => downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        public List<FileSystemInfo> GetDownloadFiles()
+        {
+            return DownloadingPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        }
 
-        public List<FileSystemInfo> getPatchFiles() => installedLibrary.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        public List<FileSystemInfo> GetPatchFiles()
+        {
+            return InstalledLibrary.downloadPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        }
 
-        public List<FileSystemInfo> getWorkshopFiles() => workShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        public List<FileSystemInfo> GetWorkshopFiles()
+        {
+            return WorkShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+        }
 
-        public void copyGameFiles(Forms.MoveGameForm currentForm, Library targetLibrary, CancellationTokenSource cancellationToken, bool compressGame = false)
+        public void CopyGameFiles(Forms.MoveGameForm currentForm, Library targetLibrary, CancellationTokenSource cancellationToken, bool compressGame = false)
         {
             currentForm.formLogs.Add($"Populating file list, please wait");
 
             ConcurrentBag<string> copiedFiles = new ConcurrentBag<string>();
             ConcurrentBag<string> createdDirectories = new ConcurrentBag<string>();
-            List<FileSystemInfo> gameFiles = getFileList();
+            List<FileSystemInfo> gameFiles = GetFileList();
             System.Diagnostics.Stopwatch timeElapsed = new System.Diagnostics.Stopwatch();
             timeElapsed.Start();
 
@@ -154,7 +172,7 @@ namespace Steam_Library_Manager.Definitions
 
                 if (!IsCompressed && compressGame)
                 {
-                    FileInfo compressedArchive = new FileInfo(compressedName.FullName.Replace(installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                    FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(InstalledLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                     if (compressedArchive.Exists)
                         compressedArchive.Delete();
@@ -165,22 +183,22 @@ namespace Steam_Library_Manager.Definitions
 
                         foreach (FileSystemInfo currentFile in gameFiles)
                         {
-                            string newFileName = currentFile.FullName.Substring(installedLibrary.steamAppsPath.FullName.Length + 1);
+                            string newFileName = currentFile.FullName.Substring(InstalledLibrary.steamAppsPath.FullName.Length + 1);
 
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
-                            currentForm.reportFileMovement(newFileName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                            currentForm.ReportFileMovement(newFileName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
 
                             if (cancellationToken.IsCancellationRequested)
                                 throw new OperationCanceledException(cancellationToken.Token);
                         }
 
-                        compressed.CreateEntryFromFile(fullAcfPath.FullName, acfName);
+                        compressed.CreateEntryFromFile(FullAcfPath.FullName, AcfName);
                     }
                 }
                 else if (IsCompressed && !compressGame)
                 {
-                    foreach (ZipArchiveEntry currentFile in ZipFile.OpenRead(compressedName.FullName).Entries)
+                    foreach (ZipArchiveEntry currentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
                         FileInfo newFile = new FileInfo(Path.Combine(targetLibrary.steamAppsPath.FullName, currentFile.FullName));
 
@@ -193,7 +211,7 @@ namespace Steam_Library_Manager.Definitions
                         currentFile.ExtractToFile(newFile.FullName, true);
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.reportFileMovement(newFile.FullName, gameFiles.Count, currentFile.Length, totalFileSize);
+                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, currentFile.Length, totalFileSize);
 
                         if (cancellationToken.IsCancellationRequested)
                             throw new OperationCanceledException(cancellationToken.Token);
@@ -203,7 +221,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), parallelOptions, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -218,14 +236,14 @@ namespace Steam_Library_Manager.Definitions
 
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.reportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
                     });
 
                     parallelOptions.MaxDegreeOfParallelism = 1;
 
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), parallelOptions, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -239,21 +257,21 @@ namespace Steam_Library_Manager.Definitions
                         }
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.reportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
                     });
 
                     if (!IsCompressed)
                     {
                         // Copy .ACF file
-                        if (fullAcfPath.Exists)
+                        if (FullAcfPath.Exists)
                         {
-                            fullAcfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, acfName), true);
-                            currentForm.reportFileMovement(Path.Combine(targetLibrary.steamAppsPath.FullName, acfName), gameFiles.Count, fullAcfPath.Length, totalFileSize);
+                            FullAcfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName), true);
+                            currentForm.ReportFileMovement(Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName), gameFiles.Count, FullAcfPath.Length, totalFileSize);
                         }
 
-                        if (workShopAcfPath.Exists)
+                        if (WorkShopAcfPath.Exists)
                         {
-                            FileInfo newACFPath = new FileInfo(workShopAcfPath.FullName.Replace(installedLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
+                            FileInfo newACFPath = new FileInfo(WorkShopAcfPath.FullName.Replace(InstalledLibrary.steamAppsPath.FullName, targetLibrary.steamAppsPath.FullName));
 
                             if (!newACFPath.Directory.Exists)
                             {
@@ -261,8 +279,8 @@ namespace Steam_Library_Manager.Definitions
                                 createdDirectories.Add(newACFPath.Directory.FullName);
                             }
 
-                            workShopAcfPath.CopyTo(newACFPath.FullName, true);
-                            currentForm.reportFileMovement(newACFPath.FullName, gameFiles.Count, newACFPath.Length, totalFileSize);
+                            WorkShopAcfPath.CopyTo(newACFPath.FullName, true);
+                            currentForm.ReportFileMovement(newACFPath.FullName, gameFiles.Count, newACFPath.Length, totalFileSize);
                         }
                     }
                 }
@@ -279,7 +297,7 @@ namespace Steam_Library_Manager.Definitions
                 MessageBoxResult removeMovenFiles = MessageBox.Show("Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (removeMovenFiles == MessageBoxResult.Yes)
-                    Functions.fileSystem.removeGivenFiles(copiedFiles, createdDirectories);
+                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories);
 
                 currentForm.formLogs.Add($"Operation cancelled by user. Time Elapsed: {timeElapsed.Elapsed}");
             }
@@ -289,28 +307,28 @@ namespace Steam_Library_Manager.Definitions
                 MessageBoxResult removeMovenFiles = MessageBox.Show("An error happened while moving game files. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (removeMovenFiles == MessageBoxResult.Yes)
-                    Functions.fileSystem.removeGivenFiles(copiedFiles, createdDirectories);
+                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories);
 
                 currentForm.formLogs.Add($"An error happened while moving game files. Time Elapsed: {timeElapsed.Elapsed}");
             }
         }
 
-        public bool deleteFiles()
+        public bool DeleteFiles()
         {
             try
             {
                 if (IsCompressed)
                 {
-                    compressedName.Delete();
+                    CompressedArchiveName.Delete();
                 }
                 else if (IsSteamBackup)
                 {
-                    if (installationPath.Exists)
-                        installationPath.Delete(true);
+                    if (InstallationPath.Exists)
+                        InstallationPath.Delete(true);
                 }
                 else
                 {
-                    List<FileSystemInfo> gameFiles = getFileList();
+                    List<FileSystemInfo> gameFiles = GetFileList();
 
                     Parallel.ForEach(gameFiles, currentFile =>
                     {
@@ -320,24 +338,24 @@ namespace Steam_Library_Manager.Definitions
                     );
 
                     // common folder, if exists
-                    if (commonPath.Exists)
-                        commonPath.Delete(true);
+                    if (CommonPath.Exists)
+                        CommonPath.Delete(true);
 
                     // downloading folder, if exists
-                    if (downloadPath.Exists)
-                        downloadPath.Delete(true);
+                    if (DownloadingPath.Exists)
+                        DownloadingPath.Delete(true);
 
                     // workshop folder, if exists
-                    if (workShopPath.Exists)
-                        workShopPath.Delete(true);
+                    if (WorkShopPath.Exists)
+                        WorkShopPath.Delete(true);
 
                     // game .acf file
-                    if (fullAcfPath.Exists)
-                        fullAcfPath.Delete();
+                    if (FullAcfPath.Exists)
+                        FullAcfPath.Delete();
 
                     // workshop .acf file
-                    if (workShopAcfPath.Exists)
-                        workShopAcfPath.Delete();
+                    if (WorkShopAcfPath.Exists)
+                        WorkShopAcfPath.Delete();
                 }
 
                 return true;
@@ -352,12 +370,12 @@ namespace Steam_Library_Manager.Definitions
 
         public void RemoveFromLibrary()
         {
-            installedLibrary.Games.Remove(this);
+            InstalledLibrary.Games.Remove(this);
 
-            installedLibrary.updateLibraryVisual();
+            InstalledLibrary.UpdateLibraryVisual();
 
-            if (SLM.selectedLibrary == installedLibrary)
-                Functions.Games.UpdateMainForm(installedLibrary);
+            if (SLM.selectedLibrary == InstalledLibrary)
+                Functions.Games.UpdateMainForm(InstalledLibrary);
         }
     }
 }

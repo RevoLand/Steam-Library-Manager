@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Functions
 {
     class Library
     {
-        public static void createNewLibrary(string newLibraryPath, bool Backup)
+        public static void CreateNewLibrary(string newLibraryPath, bool Backup)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Steam_Library_Manager.Functions
                         Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
 
                         // Add our new library to vdf file so steam will know we have a new library
-                        Key.Children[0].Children[0].Children[0].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => !x.Backup).Count()), newLibraryPath));
+                        Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => !x.Backup).Count()), newLibraryPath));
 
                         // Save vdf file
                         Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
@@ -51,7 +51,7 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 // Add library to list
-                addNewLibrary(newLibraryPath, false, Backup);
+                AddNewLibraryAsync(newLibraryPath, false, Backup);
 
                 // Save our settings
                 SLM.Settings.saveSettings();
@@ -62,23 +62,25 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void addNewLibrary(string libraryPath, bool mainLibrary, bool backupLibrary)
+        public static async void AddNewLibraryAsync(string libraryPath, bool mainLibrary, bool backupLibrary)
         {
             try
             {
-                Definitions.Library Library = new Definitions.Library();
+                Definitions.Library Library = new Definitions.Library()
+                {
 
-                // Define if library is main library
-                Library.Main = mainLibrary;
+                    // Define if library is main library
+                    Main = mainLibrary,
 
-                // Define if library is a backup dir
-                Library.Backup = backupLibrary;
+                    // Define if library is a backup dir
+                    Backup = backupLibrary,
 
-                // Define full path of library
-                Library.fullPath = libraryPath;
+                    // Define full path of library
+                    FullPath = libraryPath,
 
-                // Define our library path to SteamApps
-                Library.steamAppsPath = new DirectoryInfo(Path.Combine(libraryPath, "SteamApps"));
+                    // Define our library path to SteamApps
+                    steamAppsPath = new DirectoryInfo(Path.Combine(libraryPath, "SteamApps"))
+                };
 
                 // Define common folder path for future use
                 Library.commonPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "common"));
@@ -89,11 +91,11 @@ namespace Steam_Library_Manager.Functions
                 // Define workshop folder path
                 Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
-                Library.freeSpace = fileSystem.getAvailableFreeSpace(Library.fullPath);
-                Library.prettyFreeSpace = fileSystem.FormatBytes(Library.freeSpace);
-                Library.freeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / fileSystem.getUsedSpace(Library.fullPath)));
+                Library.freeSpace = FileSystem.GetAvailableFreeSpace(Library.FullPath);
+                Library.PrettyFreeSpace = FileSystem.FormatBytes(Library.freeSpace);
+                Library.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / FileSystem.GetUsedSpace(Library.FullPath)));
 
-                Library.contextMenu = Library.generateRightClickMenuItems();
+                Library.ContextMenu = Library.GenerateRightClickMenuItems();
 
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
@@ -106,7 +108,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void generateLibraryList()
+        public static void GenerateLibraryList()
         {
             try
             {
@@ -116,7 +118,7 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.Libraries.Clear();
 
                 if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
-                    addNewLibrary(Properties.Settings.Default.steamInstallationPath, true, false);
+                    AddNewLibraryAsync(Properties.Settings.Default.steamInstallationPath, true, false);
 
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
@@ -127,12 +129,15 @@ namespace Steam_Library_Manager.Functions
                     // Read our vdf file as text
                     Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
 
-                    // Set user id from config file
-                    Definitions.SLM.userSteamID64 = Key.Children[0].Children[0].Children[0].Children.Find(x => x.Name == "Accounts").Children[0].Children[0].Value;
-
-                    foreach (Framework.KeyValue key in Key.Children[0].Children[0].Children[0].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                    Key = Key["Software"]["Valve"]["Steam"];
+                    if (Key.Children.Count > 0)
                     {
-                        addNewLibrary(key.Value, false, false);
+                        Definitions.SLM.userSteamID64 = (Key["Accounts"].Children.Count > 0) ? Key["Accounts"].Children[0].Children[0].Value : null;
+
+                        foreach (Framework.KeyValue key in Key.Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                        {
+                            AddNewLibraryAsync(key.Value, false, false);
+                        }
                     }
                 }
                 else { /* Could not locate LibraryFolders.vdf */ }
@@ -162,11 +167,11 @@ namespace Steam_Library_Manager.Functions
                                     string newLibraryPath = newBackupDirectoryPath.SelectedPath;
 
                                     // Check if the selected path is exists
-                                    if (!libraryExists(newLibraryPath))
+                                    if (!LibraryExists(newLibraryPath))
                                     {
                                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                                         if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
-                                            addNewLibrary(newLibraryPath, false, true);
+                                            AddNewLibraryAsync(newLibraryPath, false, true);
                                         else
                                             // Else show an error message to user
                                             MessageBox.Show("Libraries can not be created at root");
@@ -177,7 +182,7 @@ namespace Steam_Library_Manager.Functions
                             }
                         }
                         else
-                            addNewLibrary(backupDirectory, false, true);
+                            AddNewLibraryAsync(backupDirectory, false, true);
                     }
                 }
             }
@@ -187,13 +192,13 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static bool libraryExists(string NewLibraryPath)
+        public static bool LibraryExists(string NewLibraryPath)
         {
             try
             {
                 NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
-                if (Definitions.List.Libraries.Where(x => x.fullPath.ToLowerInvariant() == NewLibraryPath ||
+                if (Definitions.List.Libraries.Where(x => x.FullPath.ToLowerInvariant() == NewLibraryPath ||
                 x.commonPath.FullName.ToLowerInvariant() == NewLibraryPath ||
                 x.downloadPath.FullName.ToLowerInvariant() == NewLibraryPath ||
                 x.workshopPath.FullName.ToLowerInvariant() == NewLibraryPath ||

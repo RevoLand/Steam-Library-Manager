@@ -87,6 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Definitions\ContextMenu.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Game.cs" />
     <Compile Include="Definitions\Library.cs" />
@@ -112,9 +113,9 @@
     <Compile Include="Framework\FontAwesome.WPF\ISpinable.cs" />
     <Compile Include="Framework\PortableSettingsProvider.cs" />
     <Compile Include="Framework\SettingBindingExtension.cs" />
-    <Compile Include="Framework\WindowPlacement.cs" />
+    <Compile Include="Framework\NativeMethods.cs" />
     <Compile Include="Functions\fAwesome.cs" />
-    <Compile Include="Functions\fileSystem.cs" />
+    <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
     <Compile Include="Functions\Library.cs" />
     <Compile Include="Functions\SLM.cs" />

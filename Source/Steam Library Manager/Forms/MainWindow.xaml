@@ -1,30 +1,30 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Steam_Library_Manager"
-        xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"  xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage" xmlns:slm="clr-namespace:Steam_Library_Manager" xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"  x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Width="800" Height="670" SnapsToDevicePixels="True" Loaded="mainForm_Loaded" Closing="mainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="mainForm_SourceInitialized">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:slm="clr-namespace:Steam_Library_Manager"
+    xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
+    xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+    x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Width="800" Height="670" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
     <Grid Margin="0,41,2,2">
         <TabControl x:Name="tabControl" Margin="10,0,10,10" BorderBrush="Black" Background="White">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
-                    <ListView x:Name="libraryPanel" AllowDrop="True" Drop="libraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="libraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="110" Width="Auto" Background="Transparent" Tag="{Binding}" MouseDown="libraryGrid_MouseDown" DragEnter="libraryGrid_DragEnter" Drop="libraryGrid_Drop" AllowDrop="True" Cursor="Hand">
+                                <Grid Height="110" Width="Auto" Background="Transparent" MouseDown="LibraryGrid_MouseDown" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" Cursor="Hand">
                                     <Grid.ContextMenu>
-                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenu}" >
+                                        <ContextMenu ItemsSource="{Binding ContextMenu}" >
                                             <ContextMenu.ItemContainerStyle>
                                                 <Style>
-                                                    <EventSetter Event="MenuItem.Click" Handler="libraryContextMenuItem_Click" />
+                                                    <EventSetter Event="MenuItem.Click" Handler="LibraryContextMenuItem_Click" />
                                                 </Style>
                                             </ContextMenu.ItemContainerStyle>
                                         </ContextMenu>
                                     </Grid.ContextMenu>
 
-                                    <TextBlock Text="{Binding fullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontWeight="Bold" />
+                                    <TextBlock Text="{Binding FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontWeight="Bold" />
 
                                     <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
                                         <TextBlock x:Name="libraryType">
@@ -51,32 +51,32 @@
                                     </Grid>
 
                                     <Grid Height="18" Margin="0, 0, 0, 8" VerticalAlignment="Bottom">
-                                        <ProgressBar Height="18" Value="{Binding freeSpacePerc}" VerticalAlignment="Stretch" IsIndeterminate="False" />
-                                        <TextBlock Height="18" Text="{Binding prettyFreeSpace, StringFormat=Available: \{0\}}" HorizontalAlignment="Center" FontWeight="Normal" />
+                                        <ProgressBar Height="18" Value="{Binding FreeSpacePerc}" VerticalAlignment="Stretch" IsIndeterminate="False" />
+                                        <TextBlock Height="18" Text="{Binding PrettyFreeSpace, StringFormat=Available: \{0\}}" HorizontalAlignment="Center" FontWeight="Normal" />
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView x:Name="gamePanel" IsTextSearchEnabled="True" TextSearch.TextPath="appName" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="gamePanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Tag="{Binding}" Background="Transparent" MouseDown="gameGrid_MouseDown" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <Grid Background="Transparent" MouseDown="GameGrid_MouseDown" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <Grid.ContextMenu>
-                                        <ContextMenu Tag="{Binding}" ItemsSource="{Binding contextMenuItems}">
+                                        <ContextMenu ItemsSource="{Binding ContextMenuItems}">
                                             <ContextMenu.ItemContainerStyle>
                                                 <Style>
-                                                    <EventSetter Event="MenuItem.Click" Handler="gameContextMenuItem_Click" />
+                                                    <EventSetter Event="MenuItem.Click" Handler="GameContextMenuItem_Click" />
                                                 </Style>
                                             </ContextMenu.ItemContainerStyle>
                                         </ContextMenu>
                                     </Grid.ContextMenu>
                                     <Grid Width="230px" Height="107px" Margin="5" HorizontalAlignment="Left">
-                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding gameHeaderImage}" />
+                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
                                     </Grid>
                                     <Grid>
-                                        <TextBlock x:Name="appName" Text="{Binding appName}" Padding="240,5,0,0" TextWrapping="Wrap" />
+                                        <TextBlock x:Name="appName" Text="{Binding AppName}" Padding="240,5,0,0" TextWrapping="Wrap" />
                                         <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
                                             <TextBlock x:Name="gameTypeText" Padding="0,-15,0,0">
                                                 <TextBlock.Style>
@@ -84,7 +84,7 @@
                                                         <Style.Triggers>
                                                             <MultiDataTrigger>
                                                                 <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding installedLibrary.Backup}" Value="true" />
+                                                                    <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
                                                                     <Condition Binding="{Binding IsSteamBackup}" Value="false" />
                                                                 </MultiDataTrigger.Conditions>
                                                                 <Setter Property="Text" Value="SLM backup" />
@@ -105,8 +105,8 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
-                                            <TextBlock Text="{Binding prettyGameSize}" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding appID}" HorizontalAlignment="Right" />
+                                            <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -114,7 +114,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Text="Search in Library (by app Name or app ID)" Height="25" VerticalAlignment="Bottom" TextChanged="textBox_TextChanged" GotFocus="searchText_GotFocus" LostFocus="searchText_LostFocus"/>
+                    <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Text="Search in Library (by app Name or app ID)" Height="25" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged" GotFocus="SearchText_GotFocus" LostFocus="SearchText_LostFocus"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
@@ -123,13 +123,13 @@
                         <Grid>
                             <!-- 1#1 -->
                             <Label x:Name="gameSortingMethodLabel" Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="gameSortingMethod" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{local:EnumBindingSource {x:Type enums:GameSortingMethod}}" SelectionChanged="gameSortingMethod_SelectionChanged" />
+                            <ComboBox x:Name="gameSortingMethod" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged" />
                             <!-- 1#2 -->
                             <Label x:Name="gameSizeCalcMethodLabel" Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,58,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="gameSizeCalcMethod" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" SelectionChanged="gameSizeCalcMethod_SelectionChanged" />
+                            <ComboBox x:Name="gameSizeCalcMethod" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" SelectionChanged="GameSizeCalcMethod_SelectionChanged" />
                             <!-- 2#1 -->
                             <Label x:Name="archiveSizeCalcMethodLabel" Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="245,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="archiveSizeCalcMethod" HorizontalAlignment="Left" Margin="245,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" SelectionChanged="archiveSizeCalcMethod_SelectionChanged" />
+                            <ComboBox x:Name="archiveSizeCalcMethod" HorizontalAlignment="Left" Margin="245,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" SelectionChanged="ArchiveSizeCalcMethod_SelectionChanged" />
                             <!-- 2#2 -->
                             <Label x:Name="parallelAfterSizeLabel" Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="245,58,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
                             <TextBox x:Name="parallelAfterSize" HorizontalAlignment="Left" Margin="245,84,0,0" VerticalAlignment="Top" Width="230" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
@@ -137,15 +137,15 @@
                             <Label x:Name="includeSearchResultsLabel" Content="Inc. search results while selecting another library" HorizontalAlignment="Left" Margin="480,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
                             <CheckBox x:Name="includeSearchResults" IsChecked="{slm:SettingBinding includeSearchResults}" Content="Library" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="480,36,0,0" VerticalAlignment="Top" Height="17" Width="230"/>
                             <!-- 3#2 -->
-                            <Button x:Name="checkForUpdates" Content="Check for Updates" HorizontalAlignment="Left" Margin="480,58,0,0" VerticalAlignment="Top" Width="230" Height="48" Click="checkForUpdates_Click"/>
+                            <Button x:Name="checkForUpdates" Content="Check for Updates" HorizontalAlignment="Left" Margin="480,58,0,0" VerticalAlignment="Top" Width="230" Height="48" Click="CheckForUpdates_Click"/>
                         </Grid>
                     </GroupBox>
 
                     <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,195" IsSynchronizedWithCurrentItem="True" Height="180" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Click="libraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
-                                <MenuItem Click="libraryDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
+                                <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
+                                <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -153,8 +153,8 @@
                     <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="180" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Click="gameDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
-                                <MenuItem Click="gameDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
+                                <MenuItem Click="GameDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
+                                <MenuItem Click="GameDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

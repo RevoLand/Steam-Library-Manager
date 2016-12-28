@@ -13,10 +13,10 @@ namespace Steam_Library_Manager.Definitions
         public bool Backup { get; set; }
         public int GameCount { get; set; }
         public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
-        public Framework.AsyncObservableCollection<FrameworkElement> contextMenu { get; set; }
-        public string fullPath { get; set; }
-        public string prettyFreeSpace { get; set; }
-        public int freeSpacePerc { get; set; }
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu { get; set; }
+        public string FullPath { get; set; }
+        public string PrettyFreeSpace { get; set; }
+        public int FreeSpacePerc { get; set; }
         public long freeSpace;
         public Framework.AsyncObservableCollection<Game> Games { get; set; } = new Framework.AsyncObservableCollection<Game>();
 
@@ -49,13 +49,13 @@ namespace Steam_Library_Manager.Definitions
                 // Do a loop for each *.zip file in library
                 Parallel.ForEach(Directory.EnumerateFiles(steamAppsPath.FullName, "*.zip", SearchOption.TopDirectoryOnly), gameArchive =>
                 {
-                    Functions.Games.readGameDetailsFromZip(gameArchive, this);
+                    Functions.Games.ReadGameDetailsFromZip(gameArchive, this);
                 });
 
                 // If library is backup library
                 if (Backup)
                 {
-                    foreach (string skuFile in Directory.EnumerateFiles(fullPath, "*.sis", SearchOption.AllDirectories))
+                    foreach (string skuFile in Directory.EnumerateFiles(FullPath, "*.sis", SearchOption.AllDirectories))
                     {
                         Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -64,10 +64,10 @@ namespace Steam_Library_Manager.Definitions
                         string[] name = System.Text.RegularExpressions.Regex.Split(Key["name"].Value, " and ");
 
                         int i = 0;
-                        long gameSize = Functions.fileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
+                        long gameSize = Functions.FileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
                         foreach (Framework.KeyValue app in Key["apps"].Children)
                         {
-                            if (Games.Count(x => x.appID == Convert.ToInt32(app.Value)) > 0)
+                            if (Games.Count(x => x.AppID == Convert.ToInt32(app.Value)) > 0)
                                 continue;
 
                             Functions.Games.AddNewGame(skuFile, Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, false, true);
@@ -84,28 +84,31 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public Framework.AsyncObservableCollection<FrameworkElement> generateRightClickMenuItems()
+        public Framework.AsyncObservableCollection<FrameworkElement> GenerateRightClickMenuItems()
         {
             Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
-                foreach (List.contextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
+                foreach (List.ContextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
                 {
-                    if (Backup && cItem.showToSLMBackup == Enums.menuVisibility.NotVisible)
+                    if (Backup && cItem.ShowToSLMBackup == Enums.menuVisibility.NotVisible)
                         continue;
-                    else if (!Backup && cItem.showToNormal == Enums.menuVisibility.NotVisible)
+                    else if (!Backup && cItem.ShowToNormal == Enums.menuVisibility.NotVisible)
                         continue;
 
                     if (cItem.IsSeparator)
                         rightClickMenu.Add(new Separator());
                     else
                     {
-                        MenuItem slmItem = new MenuItem();
-
-                        slmItem.Tag = this;
-                        slmItem.Header = string.Format(cItem.Header, fullPath, prettyFreeSpace);
+                        MenuItem slmItem = new MenuItem()
+                        {
+                            Tag = this,
+                            Header = string.Format(cItem.Header, FullPath, PrettyFreeSpace)
+                        };
                         slmItem.Tag = cItem.Action;
                         slmItem.Icon = Functions.fAwesome.getAwesomeIcon(cItem.Icon, cItem.IconColor);
+                        slmItem.HorizontalContentAlignment = HorizontalAlignment.Left;
+                        slmItem.VerticalContentAlignment = VerticalAlignment.Center;
 
                         rightClickMenu.Add(slmItem);
                     }
@@ -121,7 +124,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void parseMenuItemAction(string Action)
+        public void ParseMenuItemAction(string Action)
         {
             switch (Action.ToLowerInvariant())
             {
@@ -138,16 +141,16 @@ namespace Steam_Library_Manager.Definitions
                         //new Forms.moveLibrary(Library).Show();
                         MessageBox.Show("Function not implemented, process cancelled");
                     else if (moveGamesBeforeDeletion == MessageBoxResult.No)
-                        removeLibrary(true);
+                        RemoveLibrary(true);
 
                     break;
                 case "deletelibraryslm":
 
                     foreach (Game Game in Games.ToList())
                     {
-                        if (!Game.deleteFiles())
+                        if (!Game.DeleteFiles())
                         {
-                            MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", fullPath));
+                            MessageBox.Show(string.Format("An unknown error happened while removing game files. {0}", FullPath));
 
                             return;
                         }
@@ -155,9 +158,9 @@ namespace Steam_Library_Manager.Definitions
                             Game.RemoveFromLibrary();
                     }
 
-                    updateLibraryVisual();
+                    UpdateLibraryVisual();
 
-                    MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", fullPath));
+                    MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", FullPath));
                     break;
                 case "movelibrary":
                     //new Forms.moveLibrary(Library).Show();
@@ -177,11 +180,11 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void updateLibraryVisual()
+        public void UpdateLibraryVisual()
         {
-            freeSpace = Functions.fileSystem.getAvailableFreeSpace(fullPath);
-            prettyFreeSpace = Functions.fileSystem.FormatBytes(freeSpace);
-            freeSpacePerc = 100 - ((int)Math.Round((double)(100 * freeSpace) / Functions.fileSystem.getUsedSpace(fullPath)));
+            freeSpace = Functions.FileSystem.GetAvailableFreeSpace(FullPath);
+            PrettyFreeSpace = Functions.FileSystem.FormatBytes(freeSpace);
+            FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * freeSpace) / Functions.FileSystem.GetUsedSpace(FullPath)));
 
             if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
             {
@@ -196,7 +199,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void updateLibraryPath(string newLibraryPath)
+        public void UpdateLibraryPath(string newLibraryPath)
         {
             try
             {
@@ -207,7 +210,7 @@ namespace Steam_Library_Manager.Definitions
                 Key.ReadFileAsText(Steam.vdfFilePath);
 
                 // Change old library path with new one
-                Key.Children[0].Children[0].Children[0].Children.Find(key => key.Value.Contains(fullPath)).Value = newLibraryPath;
+                Key["Software"]["Valve"]["Steam"].Children.Find(key => key.Value.Contains(FullPath)).Value = newLibraryPath;
 
                 // Update config.vdf file with changes
                 Key.SaveToFile(Steam.vdfFilePath, false);
@@ -215,12 +218,12 @@ namespace Steam_Library_Manager.Definitions
             catch { }
         }
 
-        public void removeLibrary(bool deleteFiles)
+        public void RemoveLibrary(bool deleteFiles)
         {
             try
             {
                 if (deleteFiles)
-                    Functions.fileSystem.deleteOldLibrary(this);
+                    Functions.FileSystem.DeleteOldLibrary(this);
 
                 List.Libraries.Remove(this);
 
@@ -235,20 +238,20 @@ namespace Steam_Library_Manager.Definitions
                     Framework.KeyValue Key = new Framework.KeyValue();
 
                     // Read vdf file
-                    Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
+                    Key.ReadFileAsText(Steam.vdfFilePath);
 
                     // Remove old library
-                    Key.Children[0].Children[0].Children[0].Children.RemoveAll(x => x.Value == fullPath);
+                    Key["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
 
                     int i = 1;
-                    foreach (Framework.KeyValue key in Key.Children[0].Children[0].Children[0].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                    foreach (Framework.KeyValue key in Key["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                     {
                         key.Name = string.Format("BaseInstallFolder_{0}", i);
                         i++;
                     }
 
                     // Update libraryFolders.vdf file with changes
-                    Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
+                    Key.SaveToFile(Steam.vdfFilePath, false);
                 }
             }
             catch (Exception ex)

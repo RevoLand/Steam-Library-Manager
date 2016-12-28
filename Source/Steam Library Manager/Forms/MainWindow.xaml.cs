@@ -25,26 +25,26 @@ namespace Steam_Library_Manager
             gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
         }
 
-        private void mainForm_Loaded(object sender, RoutedEventArgs e)
+        private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
             Functions.SLM.onLoaded();
         }
 
-        private void mainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.MainWindowPlacement = Framework.WindowPlacement.GetPlacement(this);
+            Properties.Settings.Default.MainWindowPlacement = Framework.NativeMethods.WindowPlacement.GetPlacement(this);
 
             Functions.SLM.onClosing();
 
             Application.Current.Shutdown();
         }
 
-        private void mainForm_SourceInitialized(object sender, System.EventArgs e)
+        private void MainForm_SourceInitialized(object sender, System.EventArgs e)
         {
-            Framework.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
+            Framework.NativeMethods.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
         }
 
-        private void gameGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void GameGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If clicked button is left (so it will not conflict with context menu)
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
@@ -53,17 +53,17 @@ namespace Steam_Library_Manager
                 Grid grid = sender as Grid;
 
                 // Do drag & drop with our pictureBox
-                DragDrop.DoDragDrop(grid, grid.Tag, DragDropEffects.Move);
+                DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             }
         }
 
-        private void libraryGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void LibraryGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // If clicked button is left (so it will not conflict with context menu)
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
             {
                 // Define our library details from .Tag attribute which we set earlier
-                Definitions.Library Library = (sender as Grid).Tag as Definitions.Library;
+                Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
 
                 Definitions.SLM.selectedLibrary = Library;
 
@@ -72,27 +72,30 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void libraryGrid_Drop(object sender, DragEventArgs e)
+        private void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
-            Definitions.Library Library = (sender as Grid).Tag as Definitions.Library;
+            Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
 
             Definitions.Game Game = e.Data.GetData(typeof(Definitions.Game)) as Definitions.Game;
 
             if (Game == null || Library == null)
                 return;
 
+            if (Library == Game.InstalledLibrary && !Game.IsSteamBackup)
+                return;
+
             if (Game.IsSteamBackup)
-                System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.installationPath}\"");
+                System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.InstallationPath}\"");
             else
                 new Forms.MoveGameForm(Game, Library).Show();
         }
 
-        private void libraryGrid_DragEnter(object sender, DragEventArgs e)
+        private void LibraryGrid_DragEnter(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.Move;
         }
 
-        private void libraryPanel_Drop(object sender, DragEventArgs e)
+        private void LibraryPanel_Drop(object sender, DragEventArgs e)
         {
             string[] droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
@@ -104,7 +107,7 @@ namespace Steam_Library_Manager
 
                 if (details.Attributes.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Functions.Library.libraryExists(droppedItem))
+                    if (!Functions.Library.LibraryExists(droppedItem))
                     {
                         if (Directory.GetDirectoryRoot(droppedItem) != droppedItem)
                         {
@@ -116,7 +119,7 @@ namespace Steam_Library_Manager
                             else if (selectedLibraryType == MessageBoxResult.Yes)
                                 isNewLibraryForBackup = true;
 
-                            Functions.Library.createNewLibrary(details.FullName, isNewLibraryForBackup);
+                            Functions.Library.CreateNewLibrary(details.FullName, isNewLibraryForBackup);
                         }
                         else
                             MessageBox.Show("Libraries can not be created at root");
@@ -127,35 +130,35 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void libraryContextMenuItem_Click(object sender, RoutedEventArgs e)
+        private void LibraryContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ((Definitions.Library)(sender as MenuItem).DataContext).parseMenuItemAction((string)(sender as MenuItem).Tag);
+            ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
-        private void gameContextMenuItem_Click(object sender, RoutedEventArgs e)
+        private void GameContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ((Definitions.Game)(sender as MenuItem).DataContext).parseMenuItemAction((string)(sender as MenuItem).Tag);
+            ((Definitions.Game)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (Definitions.SLM.selectedLibrary != null && !string.IsNullOrEmpty(searchText.Text) && searchText.Text != "Search in Library (by app Name or app ID)")
                 Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
         }
 
-        private void searchText_GotFocus(object sender, RoutedEventArgs e)
+        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
         {
             if (searchText.Text == "Search in Library (by app Name or app ID)")
                 searchText.Text = "";
         }
 
-        private void searchText_LostFocus(object sender, RoutedEventArgs e)
+        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(searchText.Text))
                 searchText.Text = "Search in Library (by app Name or app ID)";
         }
 
-        private void libraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
+        private void LibraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = libraryContextMenuItems.SelectedIndex;
 
@@ -180,7 +183,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void gameDataGridMenuItem_Click(object sender, RoutedEventArgs e)
+        private void GameDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
             int selectedIndex = gameContextMenuItems.SelectedIndex;
@@ -206,7 +209,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void donateButton_MouseDown(object sender, MouseButtonEventArgs e)
+        private void DonateButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -215,7 +218,7 @@ namespace Steam_Library_Manager
             catch { }
         }
 
-        private void gameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -224,7 +227,7 @@ namespace Steam_Library_Manager
             catch { }
         }
 
-        private void gameSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GameSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -233,7 +236,7 @@ namespace Steam_Library_Manager
             catch { }
         }
 
-        private void archiveSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ArchiveSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -242,7 +245,7 @@ namespace Steam_Library_Manager
             catch { }
         }
 
-        private void checkForUpdates_Click(object sender, RoutedEventArgs e)
+        private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             try
             {

@@ -46,10 +46,7 @@ namespace FontAwesome.WPF.Converters
             var icon = value as string;
 
             if (string.IsNullOrEmpty(icon)) return FontAwesomeIcon.None;
-
-            FontAwesomeIcon rValue;
-
-            if (!ClassNameLookup.TryGetValue(icon, out rValue))
+            if (!ClassNameLookup.TryGetValue(icon, out var rValue))
             {
                 rValue = FontAwesomeIcon.None;
             }
@@ -60,10 +57,7 @@ namespace FontAwesome.WPF.Converters
         private static string FromIconToString(object value)
         {
             if (!(value is FontAwesomeIcon)) return null;
-
-            string rValue = null;
-
-            IconLookup.TryGetValue((FontAwesomeIcon) value, out rValue);
+            IconLookup.TryGetValue((FontAwesomeIcon) value, out string rValue);
             
             return rValue;
         }
