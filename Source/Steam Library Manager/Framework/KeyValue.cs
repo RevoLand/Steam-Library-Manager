@@ -48,6 +48,9 @@ namespace Steam_Library_Manager.Framework
 
                 s = ReadToken(out wasQuoted, out wasConditional);
 
+                if (string.IsNullOrEmpty(s))
+                    break;
+
                 if (wasConditional)
                 {
                     // bAccepted = ( s == "[$WIN32]" );

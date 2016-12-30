@@ -43,7 +43,7 @@ namespace Steam_Library_Manager.Definitions
                     if (Key.Children.Count == 0)
                         return;
 
-                    Functions.Games.AddNewGame(acfFilePath.FullName, Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                    Functions.Games.AddNewGame(acfFilePath.FullName, Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 });
 
                 // Do a loop for each *.zip file in library
