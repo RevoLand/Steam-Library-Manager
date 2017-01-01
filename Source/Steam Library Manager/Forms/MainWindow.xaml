@@ -5,15 +5,106 @@
     xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="800" MinHeight="670" Width="800" Height="670" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
-    <Grid Margin="0,41,2,2">
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="900" MinHeight="800" Width="900" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
+    <Window.Resources>
+        <DataTemplate x:Key="Gamelibrary_GridView">
+            <Grid MouseDown="Gamelibrary_Mousedown" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <EventSetter Event="MenuItem.Click" Handler="Gamelibrary_ContextMenuItem_Click" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Grid Width="230px" Height="107px" Margin="5" HorizontalAlignment="Left">
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding AppName}" Padding="240,5,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
+                        <TextBlock Padding="0,-15,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="SLM backup" />
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                            <Setter Property="Text" Value="Steam backup" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsCompressed}" Value="true">
+                                            <Setter Property="Text" Value="Compressed backup" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="Gamelibrary_Listview">
+            <Grid MouseDown="Gamelibrary_Mousedown" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <EventSetter Event="MenuItem.Click" Handler="Gamelibrary_ContextMenuItem_Click" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
+                        <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="SLM backup" />
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                            <Setter Property="Text" Value="Steam backup" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsCompressed}" Value="true">
+                                            <Setter Property="Text" Value="Compressed backup" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Margin="0,40,2,2">
+        <ComboBox x:Name="LibraryStyle" HorizontalAlignment="Right" Margin="10,-25,10,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{slm:EnumBindingSource {x:Type enums:LibraryStyle}}" />
         <TabControl x:Name="tabControl" Margin="10,0,10,10" BorderBrush="Black" Background="White">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
-                    <ListView x:Name="libraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
+                    <ListView SelectionChanged="LibraryGrid_MouseDown" x:Name="libraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="110" Width="Auto" Background="Transparent" MouseDown="LibraryGrid_MouseDown" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" Cursor="Hand">
+                                <Grid Height="110" Width="Auto" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" Cursor="Hand">
                                     <Grid.ContextMenu>
                                         <ContextMenu ItemsSource="{Binding ContextMenu}" >
                                             <ContextMenu.ItemContainerStyle>
@@ -62,82 +153,48 @@
                     <ListView x:Name="gamePanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Single" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Transparent" MouseDown="GameGrid_MouseDown" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                    <Grid.ContextMenu>
-                                        <ContextMenu ItemsSource="{Binding ContextMenuItems}">
-                                            <ContextMenu.ItemContainerStyle>
-                                                <Style>
-                                                    <EventSetter Event="MenuItem.Click" Handler="GameContextMenuItem_Click" />
-                                                </Style>
-                                            </ContextMenu.ItemContainerStyle>
-                                        </ContextMenu>
-                                    </Grid.ContextMenu>
-                                    <Grid Width="230px" Height="107px" Margin="5" HorizontalAlignment="Left">
-                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
-                                    </Grid>
-                                    <Grid>
-                                        <TextBlock x:Name="appName" Text="{Binding AppName}" Padding="240,5,0,0" TextWrapping="Wrap" />
-                                        <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
-                                            <TextBlock x:Name="gameTypeText" Padding="0,-15,0,0">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="{x:Type TextBlock}">
-                                                        <Style.Triggers>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
-                                                                    <Condition Binding="{Binding IsSteamBackup}" Value="false" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Text" Value="SLM backup" />
-                                                            </MultiDataTrigger>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding IsSteamBackup}" Value="true" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Text" Value="Steam backup" />
-                                                            </MultiDataTrigger>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding IsCompressed}" Value="true" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Text" Value="Compressed backup" />
-                                                            </MultiDataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                            <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Grid">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_GridView}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Listview">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Text="Search in Library (by app Name or app ID)" Height="25" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged" GotFocus="SearchText_GotFocus" LostFocus="SearchText_LostFocus"/>
+                    <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Height="25" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="White">
-                    <GroupBox x:Name="groupBox" Header="General Settings" Margin="10,10,10,380">
+                    <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,380">
                         <Grid>
                             <!-- 1#1 -->
-                            <Label x:Name="gameSortingMethodLabel" Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="gameSortingMethod" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged" />
+                            <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_GameSortingMethod}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType=enums:GameSortingMethod}}" />
                             <!-- 1#2 -->
-                            <Label x:Name="gameSizeCalcMethodLabel" Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,58,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="gameSizeCalcMethod" HorizontalAlignment="Left" Margin="10,84,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" SelectionChanged="GameSizeCalcMethod_SelectionChanged" />
+                            <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" />
                             <!-- 2#1 -->
-                            <Label x:Name="archiveSizeCalcMethodLabel" Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="245,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox x:Name="archiveSizeCalcMethod" HorizontalAlignment="Left" Margin="245,36,0,0" VerticalAlignment="Top" Width="230" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" SelectionChanged="ArchiveSizeCalcMethod_SelectionChanged" />
+                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="245,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="245,40,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" />
                             <!-- 2#2 -->
-                            <Label x:Name="parallelAfterSizeLabel" Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="245,58,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <TextBox x:Name="parallelAfterSize" HorizontalAlignment="Left" Margin="245,84,0,0" VerticalAlignment="Top" Width="230" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
+                            <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="245,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
+                            <TextBox HorizontalAlignment="Left" Margin="245,100,0,0" VerticalAlignment="Top" Width="230" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
                             <!-- 3#1 -->
-                            <Label x:Name="includeSearchResultsLabel" Content="Inc. search results while selecting another library" HorizontalAlignment="Left" Margin="480,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <CheckBox x:Name="includeSearchResults" IsChecked="{slm:SettingBinding includeSearchResults}" Content="Library" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="480,36,0,0" VerticalAlignment="Top" Height="17" Width="230"/>
+                            <Label Content="Inc. search results while selecting another library" HorizontalAlignment="Left" Margin="480,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
+                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults}" Content="Library" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="480,40,0,0" VerticalAlignment="Top" Height="17" Width="230"/>
                             <!-- 3#2 -->
-                            <Button x:Name="checkForUpdates" Content="Check for Updates" HorizontalAlignment="Left" Margin="480,58,0,0" VerticalAlignment="Top" Width="230" Height="48" Click="CheckForUpdates_Click"/>
+                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="480,70,0,0" VerticalAlignment="Top" Width="230" Height="48" Click="CheckForUpdates_Click"/>
                         </Grid>
                     </GroupBox>
 
@@ -160,20 +217,6 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <!--
-                Removen as PayPal no longer works in Turkey
-            <TabItem Header="About" Padding="20, 10">
-                <Grid Background="#FFE5E5E5">
-                    <Grid Margin="10,10,10,145">
-                        <TextBlock x:Name="textBlock" TextWrapping="WrapWithOverflow"><Run Text="SLM (Steam Library Manager) is a tool designed to backup / restore / move installed Steam applications in ease of use with multi library support."/><LineBreak /><LineBreak /><Run Text="SLM is a community driven project, please do not hesitate to contact me for any suggestions or questions."/></TextBlock>
-                    </Grid>
-                    <Grid Margin="10,0,10,10" Height="130" VerticalAlignment="Bottom">
-                        <TextBlock x:Name="textBlock1" Margin="10,0,10,46" TextWrapping="Wrap" Height="52" VerticalAlignment="Bottom"><Run Text="If you appreciate what i am doing with SLM you can show your support by donating to me! (Optional, forever!)"/></TextBlock>
-                        <Image x:Name="donateButton" Margin="10,0,10,10" Source="/Steam Library Manager;component/Resources/donate.gif" Stretch="None" Height="31" VerticalAlignment="Bottom" MouseDown="donateButton_MouseDown"/>
-                    </Grid>
-
-                </Grid>
-            </TabItem> -->
         </TabControl>
     </Grid>
 </Window>

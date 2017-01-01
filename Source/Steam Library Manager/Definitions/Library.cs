@@ -11,7 +11,6 @@ namespace Steam_Library_Manager.Definitions
     {
         public bool Main { get; set; }
         public bool Backup { get; set; }
-        public int GameCount { get; set; }
         public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu { get; set; }
         public string FullPath { get; set; }
@@ -30,7 +29,6 @@ namespace Steam_Library_Manager.Definitions
                     Games.Clear();
 
                 // Foreach *.acf file found in library
-                //foreach (string game in Directory.EnumerateFiles(steamAppsPath.FullName, "*.acf", SearchOption.TopDirectoryOnly))
                 Parallel.ForEach(steamAppsPath.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly), acfFilePath =>
                 {
                     // Define a new value and call KeyValue

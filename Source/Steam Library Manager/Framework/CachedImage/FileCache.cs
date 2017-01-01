@@ -49,7 +49,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
             // /steam/apps/107410/header.jpg
             var fileName = uri.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "");
-            var localFile = string.Format("{0}\\{1}", AppCacheDirectory, fileName);
+            var localFile = $"{AppCacheDirectory}\\{fileName}";
             var memoryStream = new MemoryStream();
 
             FileStream fileStream = null;
@@ -69,8 +69,10 @@ namespace Steam_Library_Manager.Framework.CachedImage
             {
                 var response = await request.GetResponseAsync();
                 var responseStream = response.GetResponseStream();
+
                 if (responseStream == null)
                     return null;
+
                 if (!IsWritingFile.ContainsKey(fileName))
                 {
                     IsWritingFile[fileName] = true;

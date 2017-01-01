@@ -19,25 +19,26 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         public string ImageUrl
         {
-            get { return (string)GetValue(ImageUrlProperty); }
-            set { SetValue(ImageUrlProperty, value); }
+            get => (string)GetValue(ImageUrlProperty); set => SetValue(ImageUrlProperty, value);
         }
 
         public BitmapCreateOptions CreateOptions
         {
-            get { return ((BitmapCreateOptions)(base.GetValue(Image.CreateOptionsProperty))); }
-            set { base.SetValue(Image.CreateOptionsProperty, value); }
+            get => ((BitmapCreateOptions)(GetValue(Image.CreateOptionsProperty))); set => SetValue(Image.CreateOptionsProperty, value);
         }
 
         private static async void ImageUrlPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var url = new Uri(e.NewValue as string);
+            string url = e.NewValue as string;
 
-            var cachedImage = (Image)obj;
-            var bitmapImage = new BitmapImage();
+            if (string.IsNullOrEmpty(url))
+                return;
+
             try
             {
-                var memoryStream = await FileCache.HitAsync(url);
+                var cachedImage = (Image)obj;
+                var bitmapImage = new BitmapImage();
+                var memoryStream = await FileCache.HitAsync(new Uri(url));
                 if (memoryStream == null)
                     return;
 
@@ -49,6 +50,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             }
             catch (Exception)
             {
+                // MessageBox.Show(ex.ToString());
                 // ignored, in case the downloaded file is a broken or not an image.
             }
         }

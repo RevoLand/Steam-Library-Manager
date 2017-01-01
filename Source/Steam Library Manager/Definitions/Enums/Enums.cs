@@ -1,4 +1,5 @@
 ﻿using Steam_Library_Manager.Framework;
+using System;
 using System.ComponentModel;
 
 namespace Steam_Library_Manager.Definitions.Enums
@@ -25,12 +26,18 @@ namespace Steam_Library_Manager.Definitions.Enums
     public enum archiveSizeCalculationMethod
     {
         compressed = 0,
-        unUncompressed = 1
+        Uncompressed = 1
     }
 
     public enum menuVisibility
     {
         NotVisible,
         Visible
+    }
+
+    public enum LibraryStyle
+    {
+        Grid,
+        Listview
     }
 }

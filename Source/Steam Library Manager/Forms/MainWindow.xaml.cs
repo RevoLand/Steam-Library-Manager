@@ -27,7 +27,10 @@ namespace Steam_Library_Manager
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            Functions.SLM.onLoaded();
+            Functions.SLM.OnLoaded();
+
+            settingsGroupBox.DataContext = new Definitions.Settings();
+            LibraryStyle.DataContext = settingsGroupBox.DataContext;
         }
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -44,7 +47,7 @@ namespace Steam_Library_Manager
             Framework.NativeMethods.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
         }
 
-        private void GameGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Gamelibrary_Mousedown(object sender, MouseButtonEventArgs e)
         {
             // If clicked button is left (so it will not conflict with context menu)
             if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
@@ -54,21 +57,6 @@ namespace Steam_Library_Manager
 
                 // Do drag & drop with our pictureBox
                 DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
-            }
-        }
-
-        private void LibraryGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // If clicked button is left (so it will not conflict with context menu)
-            if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
-            {
-                // Define our library details from .Tag attribute which we set earlier
-                Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
-
-                Definitions.SLM.selectedLibrary = Library;
-
-                // Update games list from current selection
-                Functions.Games.UpdateMainForm(Library, (Properties.Settings.Default.includeSearchResults && searchText.Text != "Search in Library (by app Name or app ID)") ? searchText.Text : null );
             }
         }
 
@@ -135,27 +123,15 @@ namespace Steam_Library_Manager
             ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
-        private void GameContextMenuItem_Click(object sender, RoutedEventArgs e)
+        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             ((Definitions.Game)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Definitions.SLM.selectedLibrary != null && !string.IsNullOrEmpty(searchText.Text) && searchText.Text != "Search in Library (by app Name or app ID)")
+            if (Definitions.SLM.selectedLibrary != null)
                 Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
-        }
-
-        private void SearchText_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (searchText.Text == "Search in Library (by app Name or app ID)")
-                searchText.Text = "";
-        }
-
-        private void SearchText_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(searchText.Text))
-                searchText.Text = "Search in Library (by app Name or app ID)";
         }
 
         private void LibraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
@@ -209,42 +185,6 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void DonateButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(Definitions.SLM.paypalDonationURL);
-            }
-            catch { }
-        }
-
-        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                Properties.Settings.Default.defaultGameSortingMethod = gameSortingMethod.SelectedItem.ToString();
-            }
-            catch { }
-        }
-
-        private void GameSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                Properties.Settings.Default.gameSizeCalculationMethod = gameSizeCalcMethod.SelectedItem.ToString();
-            }
-            catch { }
-        }
-
-        private void ArchiveSizeCalcMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                Properties.Settings.Default.archiveSizeCalculationMethod = archiveSizeCalcMethod.SelectedItem.ToString();
-            }
-            catch { }
-        }
-
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -252,6 +192,14 @@ namespace Steam_Library_Manager
                 Functions.Updater.CheckForUpdates();
             }
             catch { }
+        }
+
+        private void LibraryGrid_MouseDown(object sender, SelectionChangedEventArgs e)
+        {
+            Definitions.SLM.selectedLibrary = libraryPanel.SelectedItem as Definitions.Library;
+
+            // Update games list from current selection
+            Functions.Games.UpdateMainForm(libraryPanel.SelectedItem as Definitions.Library, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
         }
     }
 }

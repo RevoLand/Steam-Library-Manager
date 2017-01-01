@@ -91,6 +91,7 @@
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Game.cs" />
     <Compile Include="Definitions\Library.cs" />
+    <Compile Include="Definitions\Settings.cs" />
     <Compile Include="Forms\MoveGameForm.xaml.cs">
       <DependentUpon>MoveGameForm.xaml</DependentUpon>
     </Compile>

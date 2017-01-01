@@ -157,9 +157,6 @@ namespace Steam_Library_Manager.Forms
                             {
                                 if (Game.DeleteFiles())
                                 {
-                                    if (Definitions.SLM.selectedLibrary == Game.InstalledLibrary)
-                                        Functions.Games.UpdateMainForm(Game.InstalledLibrary);
-
                                     Game.RemoveFromLibrary();
                                 }
                             }

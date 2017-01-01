@@ -34,17 +34,6 @@ namespace Steam_Library_Manager.Functions
                 return Sort;
             }
 
-            public static void updateMainForm()
-            {
-                try
-                {
-                    MainWindow.Accessor.gameSortingMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.GameSortingMethod), Properties.Settings.Default.defaultGameSortingMethod);
-                    MainWindow.Accessor.gameSizeCalcMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.gameSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
-                    MainWindow.Accessor.archiveSizeCalcMethod.SelectedIndex = (int)Enum.Parse(typeof(Definitions.Enums.archiveSizeCalculationMethod), Properties.Settings.Default.archiveSizeCalculationMethod);
-                }
-                catch { }
-            }
-
             public static void parseLibraryContextMenuItems()
             {
                 string[] menuItems = Properties.Settings.Default.libraryContextMenu.Split('|');
@@ -251,13 +240,12 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void onLoaded()
+        public static void OnLoaded()
         {
             Steam.updateSteamInstallationPath();
 
             Settings.parseLibraryContextMenuItems();
             Settings.parseGameContextMenuItems();
-            Settings.updateMainForm();
 
             Library.GenerateLibraryList();
         }

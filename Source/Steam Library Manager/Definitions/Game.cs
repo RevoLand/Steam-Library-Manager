@@ -285,6 +285,12 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
 
+                // TODO
+                if (Properties.Settings.Default.PlayASoundOnCompletion)
+                {
+                    System.Media.SystemSounds.Exclamation.Play();
+                }
+
                 timeElapsed.Stop();
                 currentForm.formLogs.Add($"Time elapsed: {timeElapsed.Elapsed}");
                 Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
