@@ -148,7 +148,13 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Func<Definitions.Game, object> Sort = SLM.Settings.getSortingMethod();
+                if (Definitions.List.Libraries.Count(x => x == Library) == 0)
+                {
+                    MainWindow.Accessor.gamePanel.ItemsSource = null;
+                    return;
+                }
+
+                Func<Definitions.Game, object> Sort = SLM.Settings.GetSortingMethod();
 
                 if (MainWindow.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {

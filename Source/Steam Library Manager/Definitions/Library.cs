@@ -14,10 +14,14 @@ namespace Steam_Library_Manager.Definitions
         public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu { get; set; }
         public string FullPath { get; set; }
-        public string PrettyFreeSpace { get; set; }
         public int FreeSpacePerc { get; set; }
-        public long freeSpace;
+        public long FreeSpace { get; set; }
         public Framework.AsyncObservableCollection<Game> Games { get; set; } = new Framework.AsyncObservableCollection<Game>();
+        public string PrettyFreeSpace
+        {
+            get => Functions.FileSystem.FormatBytes(FreeSpace);
+            set { }
+        }
 
         public void UpdateGameList()
         {
@@ -87,7 +91,7 @@ namespace Steam_Library_Manager.Definitions
             Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
-                foreach (List.ContextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
+                foreach (ContextMenu cItem in List.libraryContextMenuItems.Where(x => x.IsActive))
                 {
                     if (Backup && cItem.ShowToSLMBackup == Enums.menuVisibility.NotVisible)
                         continue;
@@ -139,7 +143,7 @@ namespace Steam_Library_Manager.Definitions
                         //new Forms.moveLibrary(Library).Show();
                         MessageBox.Show("Function not implemented, process cancelled");
                     else if (moveGamesBeforeDeletion == MessageBoxResult.No)
-                        RemoveLibrary(true);
+                        RemoveLibraryAsync(true);
 
                     break;
                 case "deletelibraryslm":
@@ -180,27 +184,44 @@ namespace Steam_Library_Manager.Definitions
 
         public void UpdateLibraryVisual()
         {
-            freeSpace = Functions.FileSystem.GetAvailableFreeSpace(FullPath);
-            PrettyFreeSpace = Functions.FileSystem.FormatBytes(freeSpace);
-            FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * freeSpace) / Functions.FileSystem.GetUsedSpace(FullPath)));
+            try
+            {
+                foreach (Library libraryToUpdate in List.Libraries.Where(x => x.steamAppsPath.Root == steamAppsPath.Root))
+                {
+                    UpdateLibraryVisual(libraryToUpdate);
+                }
 
-            if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
-            {
-                MainWindow.Accessor.libraryPanel.Items.Refresh();
-            }
-            else
-            {
-                MainWindow.Accessor.libraryPanel.Dispatcher.Invoke(delegate
+                if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
                 {
                     MainWindow.Accessor.libraryPanel.Items.Refresh();
-                }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
+                else
+                {
+                    MainWindow.Accessor.libraryPanel.Dispatcher.Invoke(delegate
+                    {
+                        MainWindow.Accessor.libraryPanel.Items.Refresh();
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
             }
+            catch { }
         }
 
-        public void UpdateLibraryPath(string newLibraryPath)
+        public void UpdateLibraryVisual(Library libraryToUpdate)
         {
             try
             {
+                libraryToUpdate.FreeSpace = Functions.FileSystem.GetAvailableFreeSpace(libraryToUpdate.FullPath);
+                libraryToUpdate.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * libraryToUpdate.FreeSpace) / Functions.FileSystem.GetUsedSpace(libraryToUpdate.FullPath)));
+            }
+            catch { }
+        }
+
+        public async void UpdateLibraryPathAsync(string newLibraryPath)
+        {
+            try
+            {
+                await Functions.Steam.CloseSteamAsync();
+
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -212,11 +233,18 @@ namespace Steam_Library_Manager.Definitions
 
                 // Update config.vdf file with changes
                 Key.SaveToFile(Steam.vdfFilePath, false);
+
+                // Since this file started to interrupt us? 
+                // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
+                if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
+                    File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+
+                Functions.Steam.RestartSteamAsync();
             }
             catch { }
         }
 
-        public void RemoveLibrary(bool deleteFiles)
+        public async void RemoveLibraryAsync(bool deleteFiles)
         {
             try
             {
@@ -227,11 +255,13 @@ namespace Steam_Library_Manager.Definitions
 
                 if (Backup)
                 {
-                    Functions.SLM.Settings.updateBackupDirs();
-                    Functions.SLM.Settings.saveSettings();
+                    Functions.SLM.Settings.UpdateBackupDirs();
+                    Functions.SLM.Settings.SaveSettings();
                 }
                 else
                 {
+                    await Functions.Steam.CloseSteamAsync();
+
                     // Make a KeyValue reader
                     Framework.KeyValue Key = new Framework.KeyValue();
 
@@ -250,6 +280,13 @@ namespace Steam_Library_Manager.Definitions
 
                     // Update libraryFolders.vdf file with changes
                     Key.SaveToFile(Steam.vdfFilePath, false);
+
+                    // Since this file started to interrupt us? 
+                    // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
+                    if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
+                        File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+
+                    Functions.Steam.RestartSteamAsync();
                 }
             }
             catch (Exception ex)

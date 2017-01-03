@@ -8,13 +8,15 @@ namespace Steam_Library_Manager.Functions
 {
     class Library
     {
-        public static void CreateNewLibrary(string newLibraryPath, bool Backup)
+        public static async void CreateNewLibraryAsync(string newLibraryPath, bool Backup)
         {
             try
             {
                 // If we are not creating a backup library
                 if (!Backup)
                 {
+                    await Steam.CloseSteamAsync();
+
                     // Define steam dll paths for better looking
                     string currentSteamDLLPath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.dll");
                     string newSteamDLLPath = Path.Combine(newLibraryPath, "Steam.dll");
@@ -44,6 +46,13 @@ namespace Steam_Library_Manager.Functions
 
                         // Show a messagebox to user about process
                         MessageBox.Show("new library created");
+
+                        // Since this file started to interrupt us? 
+                        // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
+                        if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
+                            File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+
+                        Steam.RestartSteamAsync();
                     }
                     else
                         // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
@@ -54,7 +63,7 @@ namespace Steam_Library_Manager.Functions
                 AddNewLibraryAsync(newLibraryPath, false, Backup);
 
                 // Save our settings
-                SLM.Settings.saveSettings();
+                SLM.Settings.SaveSettings();
             }
             catch (Exception ex)
             {
@@ -91,9 +100,9 @@ namespace Steam_Library_Manager.Functions
                 // Define workshop folder path
                 Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
-                Library.freeSpace = FileSystem.GetAvailableFreeSpace(Library.FullPath);
-                Library.PrettyFreeSpace = FileSystem.FormatBytes(Library.freeSpace);
-                Library.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.freeSpace) / FileSystem.GetUsedSpace(Library.FullPath)));
+                Library.FreeSpace = FileSystem.GetAvailableFreeSpace(Library.FullPath);
+                Library.PrettyFreeSpace = FileSystem.FormatBytes(Library.FreeSpace);
+                Library.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.FreeSpace) / FileSystem.GetUsedSpace(Library.FullPath)));
 
                 Library.ContextMenu = Library.GenerateRightClickMenuItems();
 

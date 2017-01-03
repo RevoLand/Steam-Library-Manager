@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
@@ -160,12 +161,23 @@ namespace Steam_Library_Manager.Forms
                                     Game.RemoveFromLibrary();
                                 }
                             }
+
+                            // This could be annoying to call after every movement, should provide user an option for that, TODO
+                            // Functions.Steam.RestartSteamAsync();
                         }
 
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
+                    }
+
+                    if (Properties.Settings.Default.PlayASoundOnCompletion)
+                    {
+                        if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
+                            new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile).Play();
+                        else
+                            System.Media.SystemSounds.Exclamation.Play();
                     }
                 });
             }

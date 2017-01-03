@@ -37,7 +37,7 @@ namespace Steam_Library_Manager
         {
             Properties.Settings.Default.MainWindowPlacement = Framework.NativeMethods.WindowPlacement.GetPlacement(this);
 
-            Functions.SLM.onClosing();
+            Functions.SLM.OnClosing();
 
             Application.Current.Shutdown();
         }
@@ -107,7 +107,7 @@ namespace Steam_Library_Manager
                             else if (selectedLibraryType == MessageBoxResult.Yes)
                                 isNewLibraryForBackup = true;
 
-                            Functions.Library.CreateNewLibrary(details.FullName, isNewLibraryForBackup);
+                            Functions.Library.CreateNewLibraryAsync(details.FullName, isNewLibraryForBackup);
                         }
                         else
                             MessageBox.Show("Libraries can not be created at root");

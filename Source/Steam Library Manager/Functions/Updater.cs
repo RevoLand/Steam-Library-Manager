@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -69,8 +68,8 @@ namespace Steam_Library_Manager.Functions
                         System.Windows.Forms.Application.Exit();
                     }
                 }
-                else
-                    MessageBox.Show("You are using the latest version of SLM, thank you!");
+                //else
+                    //MessageBox.Show("You are using the latest version of SLM, thank you!");
             }
             catch { }
         }

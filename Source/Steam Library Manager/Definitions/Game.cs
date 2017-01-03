@@ -31,7 +31,7 @@ namespace Steam_Library_Manager.Definitions
             Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
-                foreach (List.ContextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
+                foreach (ContextMenu cItem in List.gameContextMenuItems.Where(x => x.IsActive))
                 {
                     if (IsSteamBackup && cItem.ShowToSteamBackup == Enums.menuVisibility.NotVisible)
                         continue;
@@ -283,12 +283,6 @@ namespace Steam_Library_Manager.Definitions
                             currentForm.ReportFileMovement(newACFPath.FullName, gameFiles.Count, newACFPath.Length, totalFileSize);
                         }
                     }
-                }
-
-                // TODO
-                if (Properties.Settings.Default.PlayASoundOnCompletion)
-                {
-                    System.Media.SystemSounds.Exclamation.Play();
                 }
 
                 timeElapsed.Stop();

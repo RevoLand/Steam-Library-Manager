@@ -204,7 +204,7 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool PlayASoundOnCompletion {
             get {
@@ -226,6 +226,34 @@ namespace Steam_Library_Manager.Properties {
             }
             set {
                 this["LibraryStyle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string CheckforUpdatesAtStartup {
+            get {
+                return ((string)(this["CheckforUpdatesAtStartup"]));
+            }
+            set {
+                this["CheckforUpdatesAtStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string CustomSoundFile {
+            get {
+                return ((string)(this["CustomSoundFile"]));
+            }
+            set {
+                this["CustomSoundFile"] = value;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Steam_Library_Manager.Functions
     {
         public class Settings
         {
-            public static Func<Definitions.Game, object> getSortingMethod()
+            public static Func<Definitions.Game, object> GetSortingMethod()
             {
                 Func<Definitions.Game, object> Sort;
 
@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
                 return Sort;
             }
 
-            public static void parseLibraryContextMenuItems()
+            public static void ParseLibraryContextMenuItems()
             {
                 string[] menuItems = Properties.Settings.Default.libraryContextMenu.Split('|');
 
@@ -43,7 +43,7 @@ namespace Steam_Library_Manager.Functions
                     if (string.IsNullOrEmpty(menuItem))
                         continue;
 
-                    Definitions.List.ContextMenu cItem = new Definitions.List.ContextMenu();
+                    Definitions.ContextMenu cItem = new Definitions.ContextMenu();
                     string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
                     foreach (string hardtonamethings in Item)
@@ -84,10 +84,10 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static void saveLibraryContextMenuItems()
+            public static void SaveLibraryContextMenuItems()
             {
                 string libraryContextMenu = "";
-                foreach (Definitions.List.ContextMenu cItem in Definitions.List.libraryContextMenuItems)
+                foreach (Definitions.ContextMenu cItem in Definitions.List.libraryContextMenuItems)
                 {
                     if (!string.IsNullOrEmpty(cItem.Header))
                         libraryContextMenu += $"text={cItem.Header}";
@@ -116,7 +116,7 @@ namespace Steam_Library_Manager.Functions
                 Properties.Settings.Default.libraryContextMenu = libraryContextMenu;
             }
 
-            public static void parseGameContextMenuItems()
+            public static void ParseGameContextMenuItems()
             {
                 try
                 {
@@ -127,7 +127,7 @@ namespace Steam_Library_Manager.Functions
                         if (string.IsNullOrEmpty(menuItem))
                             continue;
 
-                        Definitions.List.ContextMenu cItem = new Definitions.List.ContextMenu();
+                        Definitions.ContextMenu cItem = new Definitions.ContextMenu();
                         string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
 
                         foreach (string hardtonamethings in Item)
@@ -180,10 +180,10 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static void saveGameContextMenuItems()
+            public static void SaveGameContextMenuItems()
             {
                 string gameContextMenu = "";
-                foreach (Definitions.List.ContextMenu cItem in Definitions.List.gameContextMenuItems)
+                foreach (Definitions.ContextMenu cItem in Definitions.List.gameContextMenuItems)
                 {
                     if (!string.IsNullOrEmpty(cItem.Header))
                         gameContextMenu += $"text={cItem.Header}";
@@ -210,7 +210,7 @@ namespace Steam_Library_Manager.Functions
                 Properties.Settings.Default.gameContextMenu = gameContextMenu;
             }
 
-            public static void updateBackupDirs()
+            public static void UpdateBackupDirs()
             {
                 try
                 {
@@ -233,27 +233,30 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static void saveSettings()
+            public static void SaveSettings()
             {
-                saveLibraryContextMenuItems();
-                saveGameContextMenuItems();
+                SaveLibraryContextMenuItems();
+                SaveGameContextMenuItems();
             }
         }
 
         public static void OnLoaded()
         {
-            Steam.updateSteamInstallationPath();
+            if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
+                Updater.CheckForUpdates();
 
-            Settings.parseLibraryContextMenuItems();
-            Settings.parseGameContextMenuItems();
+            Steam.UpdateSteamInstallationPath();
+
+            Settings.ParseLibraryContextMenuItems();
+            Settings.ParseGameContextMenuItems();
 
             Library.GenerateLibraryList();
         }
 
-        public static void onClosing()
+        public static void OnClosing()
         {
-            Settings.updateBackupDirs();
-            Settings.saveSettings();
+            Settings.UpdateBackupDirs();
+            Settings.SaveSettings();
         }
 
     }

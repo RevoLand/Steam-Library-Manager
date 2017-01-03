@@ -96,9 +96,9 @@
             </Grid>
         </DataTemplate>
     </Window.Resources>
-    <Grid Margin="0,40,2,2">
+    <Grid Background="{Binding Theme.BackgroundColour, ElementName=Page}" Margin="0,40,2,2">
         <ComboBox x:Name="LibraryStyle" HorizontalAlignment="Right" Margin="10,-25,10,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{slm:EnumBindingSource {x:Type enums:LibraryStyle}}" />
-        <TabControl x:Name="tabControl" Margin="10,0,10,10" BorderBrush="Black" Background="White">
+        <TabControl Margin="10,0,10,10" BorderBrush="Black" Background="White">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
                     <ListView SelectionChanged="LibraryGrid_MouseDown" x:Name="libraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" Focusable="False" IsTabStop="False" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True">
@@ -179,22 +179,31 @@
                     <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,380">
                         <Grid>
                             <!-- 1#1 -->
-                            <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_GameSortingMethod}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType=enums:GameSortingMethod}}" />
+                            <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSortingMethod}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType=enums:GameSortingMethod}}" />
+                            
                             <!-- 1#2 -->
-                            <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" />
+                            <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" />
+                            <!-- 1#3 -->
                             <!-- 2#1 -->
-                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="245,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="245,40,0,0" VerticalAlignment="Top" Width="230" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" />
+                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="225,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" />
                             <!-- 2#2 -->
-                            <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="245,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <TextBox HorizontalAlignment="Left" Margin="245,100,0,0" VerticalAlignment="Top" Width="230" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
+                            <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
                             <!-- 3#1 -->
-                            <Label Content="Inc. search results while selecting another library" HorizontalAlignment="Left" Margin="480,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="230"/>
-                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults}" Content="Library" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="480,40,0,0" VerticalAlignment="Top" Height="17" Width="230"/>
+                            <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
                             <!-- 3#2 -->
-                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="480,70,0,0" VerticalAlignment="Top" Width="230" Height="48" Click="CheckForUpdates_Click"/>
+                            <Label Content="Play a sound on completion" HorizontalAlignment="Left" Margin="440,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <CheckBox IsChecked="{slm:SettingBinding PlayASoundOnCompletion}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,100,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
+
+                            <!-- 4#1 -->
+                            <Label Content="Check for Updates at Startup" HorizontalAlignment="Left" Margin="655,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="165"/>
+                            <CheckBox IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup}"  Margin="655,40,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="17" Width="165"/>
+                            <!-- 4#2 -->
+                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="655,70,0,0" VerticalAlignment="Top" Width="165" Height="22" Click="CheckForUpdates_Click"/>
                         </Grid>
                     </GroupBox>
 
