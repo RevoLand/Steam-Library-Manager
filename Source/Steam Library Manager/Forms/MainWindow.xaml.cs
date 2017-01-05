@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,17 +13,26 @@ namespace Steam_Library_Manager
     public partial class MainWindow : Window
     {
         public static MainWindow Accessor;
+        public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
 
         public MainWindow()
         {
             InitializeComponent();
 
+            UpdateBindings();
+        }
+
+        void UpdateBindings()
+        {
             Accessor = this;
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
 
             libraryContextMenuItems.ItemsSource = Definitions.List.libraryContextMenuItems;
             gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
+
+            textBox.ItemsSource = formLogs;
+            //taskPanel.ItemsSource = Framework.TaskManager.TaskList;
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
@@ -75,7 +85,29 @@ namespace Steam_Library_Manager
             if (Game.IsSteamBackup)
                 System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.InstallationPath}\"");
             else
-                new Forms.MoveGameForm(Game, Library).Show();
+            {
+
+                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == Game && x.TargetLibrary == Library) == 0)
+                {
+
+                    Framework.TaskManager.TaskList.Add(new Definitions.List.TaskList
+                    {
+                        TargetGame = Game,
+                        TargetLibrary = Library
+                    });
+
+                    taskPanel.ItemsSource = Framework.TaskManager.TaskList.ToList();
+
+                    MessageBox.Show("Added to task list");
+
+                }
+                else
+                {
+                    MessageBox.Show($"This item is already tasked.\n\nGame: {Game.AppName}\nTarget Library: {Library.FullPath}");
+                }
+
+                //new Forms.MoveGameForm(Game, Library).Show();
+            }
         }
 
         private void LibraryGrid_DragEnter(object sender, DragEventArgs e)
@@ -200,6 +232,20 @@ namespace Steam_Library_Manager
 
             // Update games list from current selection
             Functions.Games.UpdateMainForm(libraryPanel.SelectedItem as Definitions.Library, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
+        }
+
+        private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
+        {
+            switch((sender as Button).Tag)
+            {
+                default:
+                case "Start":
+                    Framework.TaskManager.Start();
+                    break;
+                case "Stop":
+                    Framework.TaskManager.Stop();
+                    break;
+            }
         }
     }
 }

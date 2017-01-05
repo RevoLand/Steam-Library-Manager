@@ -255,7 +255,6 @@ namespace Steam_Library_Manager.Definitions
 
                 if (Backup)
                 {
-                    Functions.SLM.Settings.UpdateBackupDirs();
                     Functions.SLM.Settings.SaveSettings();
                 }
                 else

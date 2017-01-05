@@ -98,8 +98,9 @@
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
-    <Compile Include="Framework\EnumBindingSourceExtension.cs" />
-    <Compile Include="Framework\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="Framework\TaskManager.cs" />
+    <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
+    <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Attributes.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Awesome.cs" />
     <Compile Include="Framework\FontAwesome.WPF\ControlExtensions.cs" />
@@ -112,9 +113,10 @@
     <Compile Include="Framework\FontAwesome.WPF\ImageAwesome.cs" />
     <Compile Include="Framework\FontAwesome.WPF\IRotatable.cs" />
     <Compile Include="Framework\FontAwesome.WPF\ISpinable.cs" />
-    <Compile Include="Framework\PortableSettingsProvider.cs" />
-    <Compile Include="Framework\SettingBindingExtension.cs" />
-    <Compile Include="Framework\NativeMethods.cs" />
+    <Compile Include="Framework\WPF\PortableSettingsProvider.cs" />
+    <Compile Include="Framework\WPF\SettingBindingExtension.cs" />
+    <Compile Include="Framework\WPF\NativeMethods.cs" />
+    <Compile Include="Functions\ContextMenu.cs" />
     <Compile Include="Functions\fAwesome.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
@@ -208,6 +210,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

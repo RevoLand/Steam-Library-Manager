@@ -145,9 +145,9 @@ namespace Steam_Library_Manager.Definitions
             return WorkShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
         }
 
-        public void CopyGameFiles(Forms.MoveGameForm currentForm, Library targetLibrary, CancellationTokenSource cancellationToken, bool compressGame = false)
+        public void CopyGameFiles(Library targetLibrary, CancellationToken cancellationToken, bool compressGame = false)
         {
-            currentForm.formLogs.Add($"Populating file list, please wait");
+            MainWindow.Accessor.formLogs.Add($"[{AppName}] Populating file list, please wait");
 
             ConcurrentBag<string> copiedFiles = new ConcurrentBag<string>();
             ConcurrentBag<string> createdDirectories = new ConcurrentBag<string>();
@@ -160,7 +160,7 @@ namespace Steam_Library_Manager.Definitions
                 long totalFileSize = 0;
                 ParallelOptions parallelOptions = new ParallelOptions()
                 {
-                    CancellationToken = cancellationToken.Token
+                    CancellationToken = cancellationToken
                 };
 
                 Parallel.ForEach(gameFiles, parallelOptions, file =>
@@ -168,7 +168,7 @@ namespace Steam_Library_Manager.Definitions
                     Interlocked.Add(ref totalFileSize, (file as FileInfo).Length);
                 });
 
-                currentForm.formLogs.Add($"File list populated, total files to move: {gameFiles.Count}");
+                MainWindow.Accessor.formLogs.Add($"[{AppName}] File list populated, total files to move: {gameFiles.Count}");
 
                 if (!IsCompressed && compressGame)
                 {
@@ -187,10 +187,11 @@ namespace Steam_Library_Manager.Definitions
 
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
-                            currentForm.ReportFileMovement(newFileName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                            //currentForm.ReportFileMovement(newFileName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                            MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {newFileName}");
 
                             if (cancellationToken.IsCancellationRequested)
-                                throw new OperationCanceledException(cancellationToken.Token);
+                                throw new OperationCanceledException(cancellationToken);
                         }
 
                         compressed.CreateEntryFromFile(FullAcfPath.FullName, AcfName);
@@ -211,10 +212,11 @@ namespace Steam_Library_Manager.Definitions
                         currentFile.ExtractToFile(newFile.FullName, true);
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, currentFile.Length, totalFileSize);
+                        //currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, currentFile.Length, totalFileSize);
+                        MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {newFile.FullName}");
 
                         if (cancellationToken.IsCancellationRequested)
-                            throw new OperationCanceledException(cancellationToken.Token);
+                            throw new OperationCanceledException(cancellationToken);
                     }
                 }
                 else
@@ -236,7 +238,8 @@ namespace Steam_Library_Manager.Definitions
 
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        //currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {newFile.FullName}");
                     });
 
                     parallelOptions.MaxDegreeOfParallelism = 1;
@@ -257,7 +260,8 @@ namespace Steam_Library_Manager.Definitions
                         }
                         copiedFiles.Add(newFile.FullName);
 
-                        currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        //currentForm.ReportFileMovement(newFile.FullName, gameFiles.Count, (currentFile as FileInfo).Length, totalFileSize);
+                        MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {newFile.FullName}");
                     });
 
                     if (!IsCompressed)
@@ -266,7 +270,8 @@ namespace Steam_Library_Manager.Definitions
                         if (FullAcfPath.Exists)
                         {
                             FullAcfPath.CopyTo(Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName), true);
-                            currentForm.ReportFileMovement(Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName), gameFiles.Count, FullAcfPath.Length, totalFileSize);
+                            //currentForm.ReportFileMovement(Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName), gameFiles.Count, FullAcfPath.Length, totalFileSize);
+                            MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {Path.Combine(targetLibrary.steamAppsPath.FullName, AcfName)}");
                         }
 
                         if (WorkShopAcfPath.Exists)
@@ -280,36 +285,33 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             WorkShopAcfPath.CopyTo(newACFPath.FullName, true);
-                            currentForm.ReportFileMovement(newACFPath.FullName, gameFiles.Count, newACFPath.Length, totalFileSize);
+                            //currentForm.ReportFileMovement(newACFPath.FullName, gameFiles.Count, newACFPath.Length, totalFileSize);
+                            MainWindow.Accessor.formLogs.Add($"[{AppName}] Moven file: {newACFPath.FullName}");
                         }
                     }
                 }
 
                 timeElapsed.Stop();
-                currentForm.formLogs.Add($"Time elapsed: {timeElapsed.Elapsed}");
-                Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, (Action)delegate
-                {
-                    currentForm.button.Content = "Close";
-                });
+                MainWindow.Accessor.formLogs.Add($"[{AppName}] Time elapsed: {timeElapsed.Elapsed}");
             }
             catch (OperationCanceledException)
             {
-                MessageBoxResult removeMovenFiles = MessageBox.Show("Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
+                MessageBoxResult removeMovenFiles = MessageBox.Show("[{AppName}] Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (removeMovenFiles == MessageBoxResult.Yes)
                     Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories);
 
-                currentForm.formLogs.Add($"Operation cancelled by user. Time Elapsed: {timeElapsed.Elapsed}");
+                MainWindow.Accessor.formLogs.Add($"[{AppName}] Operation cancelled by user. Time Elapsed: {timeElapsed.Elapsed}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                MessageBoxResult removeMovenFiles = MessageBox.Show("An error happened while moving game files. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
+                MessageBoxResult removeMovenFiles = MessageBox.Show("[{AppName}] An error happened while moving game files. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (removeMovenFiles == MessageBoxResult.Yes)
                     Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories);
 
-                currentForm.formLogs.Add($"An error happened while moving game files. Time Elapsed: {timeElapsed.Elapsed}");
+                MainWindow.Accessor.formLogs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {timeElapsed.Elapsed}");
             }
         }
 

@@ -140,7 +140,7 @@ namespace Steam_Library_Manager.Forms
                 {
                     try
                     {
-                        Game.CopyGameFiles(this, targetLibrary, cancellationToken, compressGame);
+                        //Game.CopyGameFiles(this, targetLibrary, cancellationToken, compressGame);
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
