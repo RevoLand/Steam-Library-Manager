@@ -12,16 +12,15 @@ namespace Steam_Library_Manager.Framework
     class TaskManager
     {
         public static BlockingCollection<Definitions.List.TaskList> TaskList = new BlockingCollection<Definitions.List.TaskList>();
-        public static CancellationTokenSource CancellationToken = new CancellationTokenSource();
+        public static CancellationTokenSource CancellationToken;
         public static bool Status = false;
 
         public static void ProcessTask(Definitions.List.TaskList currentTask)
         {
             try
             {
-                Debug.WriteLine($"[{DateTime.Now}][TaskManager] Moving \"{currentTask.TargetGame.AppName}\" to \"{currentTask.TargetLibrary.FullPath}\"");
-
-                currentTask.TargetGame.CopyGameFiles(currentTask.TargetLibrary, CancellationToken.Token, currentTask.Compress);
+                currentTask.Moving = true;
+                currentTask.TargetGame.CopyGameFiles(currentTask, CancellationToken.Token);
 
                 if (!CancellationToken.IsCancellationRequested)
                 {
@@ -60,8 +59,6 @@ namespace Steam_Library_Manager.Framework
                     }
 
                 }
-
-                Debug.WriteLine($"[{DateTime.Now}][TaskManager] Moven. \"{currentTask.TargetGame.AppName}\" to \"{currentTask.TargetLibrary.FullPath}\"");
             }
             catch (Exception ex)
             {
@@ -72,45 +69,32 @@ namespace Steam_Library_Manager.Framework
 
         public static void Start()
         {
-            try
+            if (!Status)
             {
-                if (!Status)
-                {
-                    Status = true;
+                MainWindow.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now active and waiting for tasks...");
+                CancellationToken = new CancellationTokenSource();
+                Status = true;
 
-                    Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() =>
+                {
+                    try
                     {
                         while (true && !CancellationToken.IsCancellationRequested && Status)
                         {
-                            Debug.WriteLine($"[{DateTime.Now}][TaskManager] Waiting for tasks...");
                             ProcessTask(TaskList.Take(CancellationToken.Token));
                         }
-                    });
-                }
-            }
-            catch (OperationCanceledException oEx)
-            {
-                Cancel();
-                MessageBox.Show(oEx.Message);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        public static void Cancel()
-        {
-            try
-            {
-                CancellationToken = new CancellationTokenSource();
-                Status = false;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
+                    }
+                    catch (OperationCanceledException oEx)
+                    {
+                        Stop();
+                        MessageBox.Show(oEx.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        MessageBox.Show(ex.ToString());
+                    }
+                });
             }
         }
 
@@ -120,7 +104,6 @@ namespace Steam_Library_Manager.Framework
             {
                 CancellationToken.Cancel();
                 Status = false;
-                Debug.WriteLine($"[{DateTime.Now}][TaskManager] Stopped...");
             }
             catch (Exception ex)
             {
@@ -135,7 +118,11 @@ namespace Steam_Library_Manager.Framework
             {
                 TaskList.TryTake(out Task);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                MessageBox.Show(ex.ToString());
+            }
         }
 
     }

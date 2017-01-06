@@ -13,7 +13,7 @@ namespace Steam_Library_Manager
     public partial class MainWindow : Window
     {
         public static MainWindow Accessor;
-        public Framework.AsyncObservableCollection<string> formLogs = new Framework.AsyncObservableCollection<string>();
+        public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
 
         public MainWindow()
         {
@@ -31,8 +31,7 @@ namespace Steam_Library_Manager
             libraryContextMenuItems.ItemsSource = Definitions.List.libraryContextMenuItems;
             gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
 
-            textBox.ItemsSource = formLogs;
-            //taskPanel.ItemsSource = Framework.TaskManager.TaskList;
+            TaskManager_LogsView.ItemsSource = TaskManager_Logs;
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
@@ -89,17 +88,14 @@ namespace Steam_Library_Manager
 
                 if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == Game && x.TargetLibrary == Library) == 0)
                 {
-
-                    Framework.TaskManager.TaskList.Add(new Definitions.List.TaskList
+                    Definitions.List.TaskList newTask = new Definitions.List.TaskList
                     {
                         TargetGame = Game,
                         TargetLibrary = Library
-                    });
+                    };
 
-                    taskPanel.ItemsSource = Framework.TaskManager.TaskList.ToList();
-
-                    MessageBox.Show("Added to task list");
-
+                    Framework.TaskManager.TaskList.Add(newTask);
+                    taskPanel.Items.Add(newTask);
                 }
                 else
                 {
@@ -127,7 +123,7 @@ namespace Steam_Library_Manager
 
                 if (details.Attributes.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Functions.Library.LibraryExists(droppedItem))
+                    if (!Functions.Library.IsLibraryExists(droppedItem))
                     {
                         if (Directory.GetDirectoryRoot(droppedItem) != droppedItem)
                         {
@@ -244,6 +240,26 @@ namespace Steam_Library_Manager
                     break;
                 case "Stop":
                     Framework.TaskManager.Stop();
+                    break;
+            }
+        }
+
+        private void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((sender as MenuItem).Tag)
+            {
+                default:
+                case "Remove":
+                    Definitions.List.TaskList currentTask = taskPanel.SelectedItem as Definitions.List.TaskList;
+
+                    if (currentTask.Moving && Framework.TaskManager.Status)
+                        MessageBox.Show("You can't remove a game from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
+                    else
+                    {
+                        Framework.TaskManager.RemoveTask(currentTask);
+                        taskPanel.Items.Remove(currentTask);
+
+                    }
                     break;
             }
         }

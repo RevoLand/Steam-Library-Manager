@@ -101,7 +101,6 @@ namespace Steam_Library_Manager.Functions
                 Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
 
                 Library.FreeSpace = FileSystem.GetAvailableFreeSpace(Library.FullPath);
-                Library.PrettyFreeSpace = FileSystem.FormatBytes(Library.FreeSpace);
                 Library.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.FreeSpace) / FileSystem.GetUsedSpace(Library.FullPath)));
 
                 Library.ContextMenu = Library.GenerateRightClickMenuItems();
@@ -176,7 +175,7 @@ namespace Steam_Library_Manager.Functions
                                     string newLibraryPath = newBackupDirectoryPath.SelectedPath;
 
                                     // Check if the selected path is exists
-                                    if (!LibraryExists(newLibraryPath))
+                                    if (!IsLibraryExists(newLibraryPath))
                                     {
                                         // If not exists then get directory root of selected path and see if it is equals with our selected path
                                         if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
@@ -201,7 +200,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static bool LibraryExists(string NewLibraryPath)
+        public static bool IsLibraryExists(string NewLibraryPath)
         {
             try
             {

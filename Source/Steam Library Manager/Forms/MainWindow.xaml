@@ -5,9 +5,9 @@
     xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="900" MinHeight="800" Width="900" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Width="920" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
     <Window.Resources>
-        <DataTemplate x:Key="Gamelibrary_GridView">
+        <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid MouseDown="Gamelibrary_Mousedown" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <Grid.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenuItems}">
@@ -95,6 +95,140 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="Tasklibrary_Gridview">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove from Queue" Tag="Remove"></MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <ProgressBar Maximum="{Binding ProgressBarMax, Mode=OneWay}" Value="{Binding ProgressBar, Mode=OneWay}" Opacity="0.25" >
+                </ProgressBar>
+                <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
+                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+
+                        <TextBlock Margin="0,-20,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="SLM backup" />
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding TargetGame.IsSteamBackup}" Value="true">
+                                            <Setter Property="Text" Value="Steam backup" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding TargetGame.IsCompressed}" Value="true">
+                                            <Setter Property="Text" Value="Compressed backup" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <CheckBox Content="Remove old Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="180,0,0,0" >
+                            <CheckBox.Style>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Content" Value="Compress" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="true" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Content" Value="Keep Compressed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="270,0,0,0" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="Tasklibrary_Listview">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <ProgressBar Margin="-3" Maximum="{Binding ProgressBarMax, Mode=OneWay}" Value="{Binding ProgressBar, Mode=OneWay}" Opacity="0.25" >
+                </ProgressBar>
+                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding TargetGame.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
+                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+
+                        <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="SLM backup" />
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding TargetGame.IsSteamBackup}" Value="true">
+                                            <Setter Property="Text" Value="Steam backup" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding TargetGame.IsCompressed}" Value="true">
+                                            <Setter Property="Text" Value="Compressed backup" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <CheckBox Content="Remove old Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="180,0,0,0" >
+                            <CheckBox.Style>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Content" Value="Compress" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="true" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Content" Value="Keep Compressed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="270,0,0,0" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
     <Grid Margin="0,40,2,2">
         <ComboBox x:Name="LibraryStyle" HorizontalAlignment="Right" Margin="10,-25,10,0" VerticalAlignment="Top" Width="120" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{slm:EnumBindingSource {x:Type enums:LibraryStyle}}" />
@@ -158,7 +292,7 @@
                                         <Style TargetType="ContentControl">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Grid">
-                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_GridView}" />
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Listview">
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
@@ -174,82 +308,35 @@
                     <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Height="25" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Task List" Padding="20, 10">
+            <TabItem Header="Task Manager" Padding="20, 10">
                 <Grid Background="White">
                     <ListView x:Name="taskPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,290" SelectionMode="Single" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                    <Grid.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Remove from Queue" Tag="Remove"></MenuItem>
-                                        </ContextMenu>
-                                    </Grid.ContextMenu>
-                                    <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
-                                        <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" />
-                                    </Grid>
-                                    <Grid>
-                                        <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
-                                        <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                                            <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Left" />
-                                            <CheckBox Content="Remove old Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
-                                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="180,0,0,0" >
-                                                <CheckBox.Style>
-                                                    <Style TargetType="{x:Type CheckBox}">
-                                                        <Style.Triggers>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding TargetGame.IsCompressed}" Value="false" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Content" Value="Compress" />
-                                                            </MultiDataTrigger>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding TargetGame.IsCompressed}" Value="true" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Content" Value="Keep Compressed" />
-                                                            </MultiDataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </CheckBox.Style>
-                                            </CheckBox>
-                                            
-                                            <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Right" />
-                                            <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-
-                                            <TextBlock Margin="0,-20,0,0">
-                                                <TextBlock.Style>
-                                                    <Style TargetType="{x:Type TextBlock}">
-                                                        <Style.Triggers>
-                                                            <MultiDataTrigger>
-                                                                <MultiDataTrigger.Conditions>
-                                                                    <Condition Binding="{Binding TargetGame.InstalledLibrary.Backup}" Value="true" />
-                                                                    <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
-                                                                </MultiDataTrigger.Conditions>
-                                                                <Setter Property="Text" Value="SLM backup" />
-                                                            </MultiDataTrigger>
-                                                            <DataTrigger Binding="{Binding TargetGame.IsSteamBackup}" Value="true">
-                                                                <Setter Property="Text" Value="Steam backup" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding TargetGame.IsCompressed}" Value="true">
-                                                                <Setter Property="Text" Value="Compressed backup" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Grid">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{slm:SettingBinding LibraryStyle}" Value="Listview">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Grid Margin="634,0,10,255" Height="30" VerticalAlignment="Bottom">
-                        <Button Content="Start" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Right" Width="100" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
-                        <Button Content="Stop" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Right" Width="100" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+
+                    <Grid Margin="10,0,0,255" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="234">
+                        <Button Content="Start" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="100" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+                        <Button Content="Stop" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="100" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" Margin="105,0,0,0" />
                     </Grid>
 
-                    <ListView x:Name="textBox" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
+                    <ListView x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock MaxHeight="16" Text="{Binding}" />
@@ -260,7 +347,7 @@
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="White">
-                    <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,380">
+                    <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,360">
                         <Grid>
                             <!-- 1#1 -->
                             <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
@@ -269,13 +356,29 @@
                             <!-- 1#2 -->
                             <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" />
+
                             <!-- 1#3 -->
+                            <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="120" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,5,0,0">
+                                <Grid>
+                                    <!-- 1#1 -->
+                                    <CheckBox Content="Remove Old Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="190"/>
+
+                                    <!-- 1#2 -->
+                                    <CheckBox Content="Compress" IsChecked="{slm:SettingBinding Global_Compress}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" Height="25" Width="190"/>
+
+                                    <!-- 2#3 -->
+                                    <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,65,0,0" VerticalAlignment="Top" Height="25" Width="190"/>
+                                </Grid>
+                            </GroupBox>
+
                             <!-- 2#1 -->
                             <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="225,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" />
+
                             <!-- 2#2 -->
                             <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
+
                             <!-- 3#1 -->
                             <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <CheckBox IsChecked="{slm:SettingBinding includeSearchResults}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
@@ -286,12 +389,13 @@
                             <!-- 4#1 -->
                             <Label Content="Check for Updates at Startup" HorizontalAlignment="Left" Margin="655,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="165"/>
                             <CheckBox IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup}"  Margin="655,40,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="17" Width="165"/>
+
                             <!-- 4#2 -->
                             <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="655,70,0,0" VerticalAlignment="Top" Width="165" Height="22" Click="CheckForUpdates_Click"/>
                         </Grid>
                     </GroupBox>
 
-                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,195" IsSynchronizedWithCurrentItem="True" Height="180" VerticalAlignment="Bottom">
+                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,185" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
@@ -300,7 +404,7 @@
                         </DataGrid.ContextMenu>
                     </DataGrid>
 
-                    <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="180" VerticalAlignment="Bottom">
+                    <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Click="GameDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />

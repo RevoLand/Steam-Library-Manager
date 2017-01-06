@@ -10,28 +10,32 @@ namespace Steam_Library_Manager.Functions
     {
         public static void RemoveGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
         {
-            try
+            Parallel.ForEach(fileList, currentFile =>
             {
-                Parallel.ForEach(fileList, currentFile =>
+                try
                 {
                     FileInfo file = new FileInfo(currentFile);
 
                     if (file.Exists)
                         file.Delete();
-                });
+                }
+                catch { }
+            });
 
-                if (directoryList != null)
+            if (directoryList != null)
+            {
+                Parallel.ForEach(directoryList, currentDirectory =>
                 {
-                    Parallel.ForEach(directoryList, currentDirectory =>
+                    try
                     {
                         DirectoryInfo directory = new DirectoryInfo(currentDirectory);
 
                         if (directory.Exists)
                             directory.Delete();
-                    });
-                }
+                    }
+                    catch { }
+                });
             }
-            catch { }
         }
 
         // Get directory size from path, with or without sub directories

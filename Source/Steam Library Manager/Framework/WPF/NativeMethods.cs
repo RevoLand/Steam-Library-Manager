@@ -105,9 +105,8 @@ namespace Steam_Library_Manager.Framework
 
             public static string GetPlacement(Window window)
             {
-                IntPtr windowHandle = new WindowInteropHelper(window).Handle;
                 WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-                GetWindowPlacement(windowHandle, out placement);
+                GetWindowPlacement(new WindowInteropHelper(window).Handle, out placement);
 
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
