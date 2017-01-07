@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,20 +8,60 @@ using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class Library
+    public class Library : INotifyPropertyChanged
     {
+        private bool _Offline;
+        private long _FreeSpace;
+        private int _FreeSpacePerc;
+        private string _PrettyFreeSpace;
+
         public bool Main { get; set; }
         public bool Backup { get; set; }
         public DirectoryInfo steamAppsPath, commonPath, downloadPath, workshopPath;
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu { get; set; }
         public string FullPath { get; set; }
-        public int FreeSpacePerc { get; set; }
-        public long FreeSpace { get; set; }
         public Framework.AsyncObservableCollection<Game> Games { get; set; } = new Framework.AsyncObservableCollection<Game>();
+
+        public bool Offline
+        {
+            get => _Offline;
+            set
+            {
+                _Offline = value;
+                OnPropertyChanged("Offline");
+            }
+        }
+
+        public long FreeSpace
+        {
+            get => _FreeSpace;
+            set
+            {
+                _FreeSpace = value;
+                OnPropertyChanged("FreeSpace");
+                OnPropertyChanged("PrettyFreeSpace");
+            }
+        }
+
         public string PrettyFreeSpace
         {
             get => Functions.FileSystem.FormatBytes(FreeSpace);
-            set { }
+        }
+
+        public int FreeSpacePerc
+        {
+            get =>_FreeSpacePerc;
+            set
+            {
+                _FreeSpacePerc = value;
+                OnPropertyChanged("FreeSpacePerc");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string info)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
         public void UpdateGameList()
@@ -79,6 +120,9 @@ namespace Steam_Library_Manager.Definitions
                         }
                     }
                 }
+
+                if (SLM.selectedLibrary == this)
+                    Functions.Games.UpdateMainForm(this);
             }
             catch (Exception ex)
             {
@@ -186,21 +230,9 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                foreach (Library libraryToUpdate in List.Libraries.Where(x => x.steamAppsPath.Root == steamAppsPath.Root))
+                foreach (Library libraryToUpdate in List.Libraries.Where(x => x.steamAppsPath.Root.FullName == steamAppsPath.Root.FullName).ToList())
                 {
                     UpdateLibraryVisual(libraryToUpdate);
-                }
-
-                if (MainWindow.Accessor.libraryPanel.Dispatcher.CheckAccess())
-                {
-                    MainWindow.Accessor.libraryPanel.Items.Refresh();
-                }
-                else
-                {
-                    MainWindow.Accessor.libraryPanel.Dispatcher.Invoke(delegate
-                    {
-                        MainWindow.Accessor.libraryPanel.Items.Refresh();
-                    }, System.Windows.Threading.DispatcherPriority.Normal);
                 }
             }
             catch { }

@@ -158,10 +158,10 @@ namespace Steam_Library_Manager.Functions
 
                 if (MainWindow.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {
-                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.OrderBy(Sort) : Library.Games.Where(
+                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.OrderBy(Sort).ToList() : Library.Games.Where(
                         y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                         || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderBy(Sort)
+                        ).OrderBy(Sort).ToList()
                         );
                 }
                 else

@@ -1,8 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace Steam_Library_Manager
 {
@@ -56,53 +59,58 @@ namespace Steam_Library_Manager
             Framework.NativeMethods.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
         }
 
-        private void Gamelibrary_Mousedown(object sender, MouseButtonEventArgs e)
-        {
-            // If clicked button is left (so it will not conflict with context menu)
-            if (!SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Left || SystemParameters.SwapButtons && e.ChangedButton == MouseButton.Right)
-            {
-                // Define our picturebox from sender
-                Grid grid = sender as Grid;
-
-                // Do drag & drop with our pictureBox
-                DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
-            }
-        }
-
         private void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
             Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
 
-            Definitions.Game Game = e.Data.GetData(typeof(Definitions.Game)) as Definitions.Game;
-
-            if (Game == null || Library == null)
+            if (gamePanel.SelectedItems.Count == 0 || Library == null)
                 return;
 
-            if (Library == Game.InstalledLibrary && !Game.IsSteamBackup)
-                return;
-
-            if (Game.IsSteamBackup)
-                System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{Game.InstallationPath}\"");
-            else
+            foreach (Definitions.Game gameToMove in gamePanel.SelectedItems)
             {
-
-                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == Game && x.TargetLibrary == Library) == 0)
+                if (Library.Offline)
                 {
-                    Definitions.List.TaskList newTask = new Definitions.List.TaskList
-                    {
-                        TargetGame = Game,
-                        TargetLibrary = Library
-                    };
-
-                    Framework.TaskManager.TaskList.Add(newTask);
-                    taskPanel.Items.Add(newTask);
+                    if (!Directory.Exists(Library.FullPath))
+                        continue;
+                    else
+                        Functions.Library.UpdateBackupLibraryAsync(Library);
                 }
+
+                if (Library == gameToMove.InstalledLibrary && !gameToMove.IsSteamBackup)
+                    continue;
+
+                if (gameToMove.IsSteamBackup)
+                    System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
                 else
                 {
-                    MessageBox.Show($"This item is already tasked.\n\nGame: {Game.AppName}\nTarget Library: {Library.FullPath}");
-                }
 
-                //new Forms.MoveGameForm(Game, Library).Show();
+                    if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
+                    {
+                        Definitions.List.TaskList newTask = new Definitions.List.TaskList
+                        {
+                            TargetGame = gameToMove,
+                            TargetLibrary = Library
+                        };
+
+                        Framework.TaskManager.TaskList.Add(newTask);
+                        taskPanel.Items.Add(newTask);
+
+                        DoubleAnimation da = new DoubleAnimation()
+                        {
+                            From = 1,
+                            To = 0.7,
+                            AutoReverse = true,
+                            RepeatBehavior = new RepeatBehavior(5),
+                            Duration = new Duration(TimeSpan.FromSeconds(0.1))
+                        };
+
+                        Tab_TaskManager.BeginAnimation(TextBlock.OpacityProperty, da);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"This item is already tasked.\n\nGame: {gameToMove.AppName}\nTarget Library: {Library.FullPath}");
+                    }
+                }
             }
         }
 
@@ -226,8 +234,14 @@ namespace Steam_Library_Manager
         {
             Definitions.SLM.selectedLibrary = libraryPanel.SelectedItem as Definitions.Library;
 
+
+            if (Directory.Exists(Definitions.SLM.selectedLibrary.FullPath) && Definitions.SLM.selectedLibrary.Offline)
+            {
+                Functions.Library.UpdateBackupLibraryAsync(Definitions.SLM.selectedLibrary);
+            }
+
             // Update games list from current selection
-            Functions.Games.UpdateMainForm(libraryPanel.SelectedItem as Definitions.Library, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
+            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -246,21 +260,39 @@ namespace Steam_Library_Manager
 
         private void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            switch ((sender as MenuItem).Tag)
+            try
             {
-                default:
-                case "Remove":
-                    Definitions.List.TaskList currentTask = taskPanel.SelectedItem as Definitions.List.TaskList;
+                switch ((sender as MenuItem).Tag)
+                {
+                    default:
+                    case "Remove":
+                        if (taskPanel.SelectedItems.Count == 0)
+                            return;
 
-                    if (currentTask.Moving && Framework.TaskManager.Status)
-                        MessageBox.Show("You can't remove a game from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
-                    else
-                    {
-                        Framework.TaskManager.RemoveTask(currentTask);
-                        taskPanel.Items.Remove(currentTask);
+                        List<Definitions.List.TaskList> selectedItems = taskPanel.SelectedItems.OfType<Definitions.List.TaskList>().ToList();
 
-                    }
-                    break;
+                        foreach (Definitions.List.TaskList currentTask in selectedItems)
+                        {
+                            if (currentTask.Moving && Framework.TaskManager.Status)
+                                MessageBox.Show($"[{currentTask.TargetGame.AppName}] You can't remove a game from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
+                            else
+                            {
+                                Framework.TaskManager.RemoveTask(currentTask);
+                                taskPanel.Items.Remove(currentTask);
+                            }
+                        }
+                        break;
+                }
+            }
+            catch { }
+        }
+
+        private void Gamelibrary_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
+            {
+                // Do drag & drop with our pictureBox
+                DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             }
         }
     }

@@ -45,7 +45,7 @@ namespace Steam_Library_Manager.Functions
                         Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
 
                         // Show a messagebox to user about process
-                        MessageBox.Show("new library created");
+                        MessageBox.Show("New library created");
 
                         // Since this file started to interrupt us? 
                         // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
@@ -71,7 +71,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void AddNewLibraryAsync(string libraryPath, bool mainLibrary, bool backupLibrary)
+        public static async void AddNewLibraryAsync(string libraryPath, bool mainLibrary, bool backupLibrary, bool OfflineLibrary = false)
         {
             try
             {
@@ -83,6 +83,8 @@ namespace Steam_Library_Manager.Functions
 
                     // Define if library is a backup dir
                     Backup = backupLibrary,
+
+                    Offline = OfflineLibrary,
 
                     // Define full path of library
                     FullPath = libraryPath,
@@ -108,7 +110,8 @@ namespace Steam_Library_Manager.Functions
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
-                await Task.Run(() => Library.UpdateGameList());
+                if (!OfflineLibrary)
+                    await Task.Run(() => Library.UpdateGameList());
             }
             catch (Exception ex)
             {
@@ -156,41 +159,7 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have do a loop
                     foreach (string backupDirectory in Properties.Settings.Default.backupDirectories)
                     {
-                        // If directory not exists
-                        if (!Directory.Exists(backupDirectory))
-                        {
-                            // Make a new dialog and ask user to update library path
-                            MessageBoxResult askUserToUpdatePath = MessageBox.Show("Backup library couldn't be found, would you like to select a new path?", $"Backup library ({backupDirectory}) couldn't be found!", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                            // If user wants to update
-                            if (askUserToUpdatePath == MessageBoxResult.Yes)
-                            {
-                                // Show another dialog to select new path
-                                System.Windows.Forms.FolderBrowserDialog newBackupDirectoryPath = new System.Windows.Forms.FolderBrowserDialog();
-
-                                // If new path selected from dialog
-                                if (newBackupDirectoryPath.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                                {
-                                    // define selected path to variable
-                                    string newLibraryPath = newBackupDirectoryPath.SelectedPath;
-
-                                    // Check if the selected path is exists
-                                    if (!IsLibraryExists(newLibraryPath))
-                                    {
-                                        // If not exists then get directory root of selected path and see if it is equals with our selected path
-                                        if (Directory.GetDirectoryRoot(newLibraryPath) != newLibraryPath)
-                                            AddNewLibraryAsync(newLibraryPath, false, true);
-                                        else
-                                            // Else show an error message to user
-                                            MessageBox.Show("Libraries can not be created at root");
-                                    }
-                                    else
-                                        MessageBox.Show("Library exists");
-                                }
-                            }
-                        }
-                        else
-                            AddNewLibraryAsync(backupDirectory, false, true);
+                        AddNewLibraryAsync(backupDirectory, false, true, !Directory.Exists(backupDirectory));
                     }
                 }
             }
@@ -198,6 +167,16 @@ namespace Steam_Library_Manager.Functions
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        public static async void UpdateBackupLibraryAsync(Definitions.Library libraryToUpdate)
+        {
+            try
+            {
+                libraryToUpdate.Offline = false;
+                await Task.Run(() => libraryToUpdate.UpdateGameList());
+            }
+            catch { }
         }
 
         public static bool IsLibraryExists(string NewLibraryPath)
