@@ -174,6 +174,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 libraryToUpdate.Offline = false;
+                libraryToUpdate.UpdateLibraryVisual();
                 await Task.Run(() => libraryToUpdate.UpdateGameList());
             }
             catch { }

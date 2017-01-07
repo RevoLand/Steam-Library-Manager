@@ -15,6 +15,7 @@ namespace Steam_Library_Manager.Definitions
             public Game TargetGame { get; set; }
             public Library TargetLibrary { get; set; }
             public bool Moving = false;
+            public bool Completed { get; set; } = false;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;

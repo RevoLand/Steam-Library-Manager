@@ -42,7 +42,13 @@ namespace Steam_Library_Manager
             Functions.SLM.OnLoaded();
 
             settingsGroupBox.DataContext = new Definitions.Settings();
-            LibraryStyle.DataContext = settingsGroupBox.DataContext;
+            QuickSettings.DataContext = settingsGroupBox.DataContext;
+
+            if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
+            {
+                Framework.TaskManager.Start();
+                Button_StopTaskManager.IsEnabled = true;
+            }
         }
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -97,14 +103,14 @@ namespace Steam_Library_Manager
 
                         DoubleAnimation da = new DoubleAnimation()
                         {
-                            From = 1,
-                            To = 0.7,
+                            From = 12,
+                            To = 14,
                             AutoReverse = true,
-                            RepeatBehavior = new RepeatBehavior(5),
-                            Duration = new Duration(TimeSpan.FromSeconds(0.1))
+                            RepeatBehavior = new RepeatBehavior(1),
+                            Duration = new Duration(TimeSpan.FromSeconds(0.8))
                         };
 
-                        Tab_TaskManager.BeginAnimation(TextBlock.OpacityProperty, da);
+                        Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
                     }
                     else
                     {
@@ -251,6 +257,7 @@ namespace Steam_Library_Manager
                 default:
                 case "Start":
                     Framework.TaskManager.Start();
+                    Button_StopTaskManager.IsEnabled = true;
                     break;
                 case "Stop":
                     Framework.TaskManager.Stop();
@@ -273,7 +280,7 @@ namespace Steam_Library_Manager
 
                         foreach (Definitions.List.TaskList currentTask in selectedItems)
                         {
-                            if (currentTask.Moving && Framework.TaskManager.Status)
+                            if (currentTask.Moving && Framework.TaskManager.Status && !currentTask.Completed)
                                 MessageBox.Show($"[{currentTask.TargetGame.AppName}] You can't remove a game from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
                             else
                             {
@@ -294,6 +301,11 @@ namespace Steam_Library_Manager
                 // Do drag & drop with our pictureBox
                 DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             }
+        }
+
+        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
         }
     }
 }

@@ -148,17 +148,24 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.List.Libraries.Count(x => x == Library) == 0)
-                {
-                    MainWindow.Accessor.gamePanel.ItemsSource = null;
-                    return;
-                }
-
-                Func<Definitions.Game, object> Sort = SLM.Settings.GetSortingMethod();
 
                 if (MainWindow.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {
-                    MainWindow.Accessor.gamePanel.ItemsSource = ((string.IsNullOrEmpty(Search)) ? Library.Games.OrderBy(Sort).ToList() : Library.Games.Where(
+                    if (Definitions.List.Libraries.Count(x => x == Library) == 0)
+                    {
+                        MainWindow.Accessor.gamePanel.ItemsSource = null;
+                        return;
+                    }
+
+                    Func<Definitions.Game, object> Sort = SLM.Settings.GetSortingMethod();
+
+                    MainWindow.Accessor.gamePanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk") ? 
+                        (((string.IsNullOrEmpty(Search)) ? Library.Games.OrderByDescending(Sort).ToList() : Library.Games.Where(
+                            y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                            || y.AppID.ToString().Contains(Search) // Search by app ID
+                        ).OrderByDescending(Sort).ToList()
+                        )) :
+                        ((string.IsNullOrEmpty(Search)) ? Library.Games.OrderBy(Sort).ToList() : Library.Games.Where(
                         y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                         || y.AppID.ToString().Contains(Search) // Search by app ID
                         ).OrderBy(Sort).ToList()

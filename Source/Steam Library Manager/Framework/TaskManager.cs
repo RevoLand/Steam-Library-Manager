@@ -14,6 +14,7 @@ namespace Steam_Library_Manager.Framework
         public static BlockingCollection<Definitions.List.TaskList> TaskList = new BlockingCollection<Definitions.List.TaskList>();
         public static CancellationTokenSource CancellationToken;
         public static bool Status = false;
+        public static bool IsRestartRequired = false;
 
         public static void ProcessTask(Definitions.List.TaskList currentTask)
         {
@@ -42,6 +43,11 @@ namespace Steam_Library_Manager.Framework
                         }
                     }
 
+                    if (!currentTask.TargetLibrary.Backup)
+                        IsRestartRequired = true;
+
+                    currentTask.Moving = false;
+                    currentTask.Completed = true;
 
                     if (TaskList.Count == 0)
                     {
@@ -54,10 +60,9 @@ namespace Steam_Library_Manager.Framework
                                 System.Media.SystemSounds.Exclamation.Play();
                         }
 
-                        Functions.Steam.RestartSteamAsync();
-
+                        if (IsRestartRequired)
+                            Functions.Steam.RestartSteamAsync();
                     }
-
                 }
             }
             catch (Exception ex)
@@ -87,7 +92,7 @@ namespace Steam_Library_Manager.Framework
                     catch (OperationCanceledException oEx)
                     {
                         Stop();
-                        MessageBox.Show(oEx.Message);
+                        MainWindow.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now stopped...");
                     }
                     catch (Exception ex)
                     {
@@ -102,8 +107,12 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                CancellationToken.Cancel();
-                Status = false;
+                if (Status)
+                {
+                    CancellationToken.Cancel();
+                    Status = false;
+                    IsRestartRequired = false;
+                }
             }
             catch (Exception ex)
             {
