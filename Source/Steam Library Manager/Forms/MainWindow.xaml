@@ -111,14 +111,35 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Completed}" Value="true">
                                     <Setter Property="Opacity" Value="0.75" />
-                                    <Setter Property="Foreground" Value="DarkSeaGreen" />
+                                    <Setter Property="Foreground" Value="LightBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
-                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" />
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" >
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Opacity" Value="0.4" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </cachedImage:Image>
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Text" Value="COMPLETED" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
@@ -191,14 +212,35 @@
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Completed}" Value="true">
                                     <Setter Property="Opacity" Value="0.75" />
-                                    <Setter Property="Foreground" Value="DarkSeaGreen" />
+                                    <Setter Property="Foreground" Value="LightBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" />
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Opacity" Value="0.4" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </cachedImage:Image>
+                    <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Text" Value="COMPLETED" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding TargetGame.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
@@ -381,9 +423,10 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <Grid Margin="10,0,0,255" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="260">
-                        <Button Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="120" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
-                        <Button x:Name="Button_StopTaskManager" IsEnabled="False" Content="Stop Task Manager" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="120" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" Margin="125,0,0,0" />
+                    <Grid Margin="10,0,0,255" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="450">
+                        <Button Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+                        <Button x:Name="Button_StopTaskManager" IsEnabled="False" Content="Stop Task Manager" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" Margin="145,0,0,0" />
+                        <Button Content="Clear Completed Tasks" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="290,0,0,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                     </Grid>
 
                     <ListView x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >

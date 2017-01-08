@@ -109,8 +109,8 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
-                    CancellationToken.Cancel();
                     Status = false;
+                    CancellationToken.Cancel();
                     IsRestartRequired = false;
                 }
             }

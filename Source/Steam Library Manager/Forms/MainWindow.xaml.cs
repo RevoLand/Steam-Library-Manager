@@ -89,7 +89,6 @@ namespace Steam_Library_Manager
                     System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
                 else
                 {
-
                     if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
                     {
                         Definitions.List.TaskList newTask = new Definitions.List.TaskList
@@ -106,8 +105,7 @@ namespace Steam_Library_Manager
                             From = 12,
                             To = 14,
                             AutoReverse = true,
-                            RepeatBehavior = new RepeatBehavior(1),
-                            Duration = new Duration(TimeSpan.FromSeconds(0.8))
+                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
                         };
 
                         Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
@@ -261,6 +259,19 @@ namespace Steam_Library_Manager
                     break;
                 case "Stop":
                     Framework.TaskManager.Stop();
+                    Button_StopTaskManager.IsEnabled = false;
+                    break;
+                case "ClearCompleted":
+                    if (taskPanel.Items.Count == 0)
+                        return;
+
+                    List<Definitions.List.TaskList> taskPanelItems = taskPanel.Items.OfType<Definitions.List.TaskList>().ToList();
+
+                    foreach (Definitions.List.TaskList currentTask in taskPanelItems)
+                    {
+                        if (currentTask.Completed)
+                            taskPanel.Items.Remove(currentTask);
+                    }
                     break;
             }
         }

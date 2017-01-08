@@ -15,12 +15,14 @@ namespace Steam_Library_Manager.Definitions
             public Game TargetGame { get; set; }
             public Library TargetLibrary { get; set; }
             public bool Moving = false;
-            public bool Completed { get; set; } = false;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
 
             private double _ProgressBar = 0;
+            private double _ProgressBarMax = 100;
+            private bool _Completed = false;
+
             public double ProgressBar
             {
                 get => _ProgressBar;
@@ -30,7 +32,7 @@ namespace Steam_Library_Manager.Definitions
                     OnPropertyChanged("ProgressBar");
                 }
             }
-            private double _ProgressBarMax = 100;
+
             public double ProgressBarMax
             {
                 get => _ProgressBarMax;
@@ -38,6 +40,16 @@ namespace Steam_Library_Manager.Definitions
                 {
                     _ProgressBarMax = value;
                     OnPropertyChanged("ProgressBarMax");
+                }
+            }
+
+            public bool Completed
+            {
+                get => _Completed;
+                set
+                {
+                    _Completed = value;
+                    OnPropertyChanged("Completed");
                 }
             }
 
