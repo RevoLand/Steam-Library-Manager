@@ -462,8 +462,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
-                    <Button Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
+                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <Button Tag="Refresh" Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
