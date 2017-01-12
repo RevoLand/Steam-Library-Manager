@@ -1,1 +1,1 @@
-1.3.4.0|Changed the way we are handling config.vdf file, made small minor improvements
+1.4.0.0|Task Manager, Steam Cleaner and more

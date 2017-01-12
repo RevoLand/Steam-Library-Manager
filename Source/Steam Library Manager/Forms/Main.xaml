@@ -505,6 +505,7 @@
 
                             <!-- 2#3 -->
                             <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
+                            <Button Content="View Logs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="225,155,0,0" Height="25" Width="210" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
 
                             <!-- 3#1 -->
                             <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>

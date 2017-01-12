@@ -382,14 +382,17 @@ namespace Steam_Library_Manager
                 }
                 else
                 {
-                    List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
-
-                    foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                    if (MessageBox.Show("Saved Games may be located within these folders, are you sure you want to remove them?", "There might be saved games in these folders?!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        currentJunk.DirectoryInfo.Delete(true);
-                    }
+                        List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
-                    UpdateLibraryCleaner();
+                        foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                        {
+                            currentJunk.DirectoryInfo.Delete(true);
+                        }
+
+                        UpdateLibraryCleaner();
+                    }
                 }
             }
             catch (Exception ex)
@@ -397,6 +400,12 @@ namespace Steam_Library_Manager
                 MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
+        }
+
+        private void ViewLogsButton(object sender, RoutedEventArgs e)
+        {
+            if (Directory.Exists(Definitions.Directories.SLM.LogDirectory))
+                Process.Start(Definitions.Directories.SLM.LogDirectory);
         }
     }
 }

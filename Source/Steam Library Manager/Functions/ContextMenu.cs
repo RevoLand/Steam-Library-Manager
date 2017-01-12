@@ -57,7 +57,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -150,7 +150,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
