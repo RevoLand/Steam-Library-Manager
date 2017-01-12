@@ -11,15 +11,15 @@ namespace Steam_Library_Manager.Definitions
             set => Properties.Settings.Default.defaultGameSortingMethod = value.ToString();
         }
 
-        public gameSizeCalculationMethod Setting_GameSizeCalculationMethod
+        public GameSizeCalculationMethod Setting_GameSizeCalculationMethod
         {
-            get => (gameSizeCalculationMethod)Enum.Parse(typeof(gameSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
+            get => (GameSizeCalculationMethod)Enum.Parse(typeof(GameSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
             set => Properties.Settings.Default.gameSizeCalculationMethod = value.ToString();
         }
 
-        public archiveSizeCalculationMethod Setting_ArchiveSizeCalculationMethod
+        public ArchiveSizeCalculationMethod Setting_ArchiveSizeCalculationMethod
         {
-            get => (archiveSizeCalculationMethod)Enum.Parse(typeof(archiveSizeCalculationMethod), Properties.Settings.Default.archiveSizeCalculationMethod);
+            get => (ArchiveSizeCalculationMethod)Enum.Parse(typeof(ArchiveSizeCalculationMethod), Properties.Settings.Default.archiveSizeCalculationMethod);
             set => Properties.Settings.Default.archiveSizeCalculationMethod = value.ToString();
         }
 

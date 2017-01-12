@@ -27,7 +27,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             get => ((BitmapCreateOptions)(GetValue(Image.CreateOptionsProperty))); set => SetValue(Image.CreateOptionsProperty, value);
         }
 
-        private static async void ImageUrlPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        private static async void ImageUrlPropertyChangedAsync(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             string url = e.NewValue as string;
 
@@ -39,24 +39,27 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 var cachedImage = (Image)obj;
                 var bitmapImage = new BitmapImage();
                 var memoryStream = await FileCache.HitAsync(new Uri(url));
-                if (memoryStream == null)
+
+                if (memoryStream == null || memoryStream.Length == 0)
                     return;
 
                 bitmapImage.BeginInit();
                 bitmapImage.CreateOptions = cachedImage.CreateOptions;
                 bitmapImage.StreamSource = memoryStream;
                 bitmapImage.EndInit();
+
                 cachedImage.Source = bitmapImage;
             }
             catch (Exception)
             {
-                // MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
+                //Debug.WriteLine(ex);
                 // ignored, in case the downloaded file is a broken or not an image.
             }
         }
 
         public static readonly DependencyProperty ImageUrlProperty = DependencyProperty.Register("ImageUrl",
-            typeof(string), typeof(Image), new PropertyMetadata("", ImageUrlPropertyChanged));
+            typeof(string), typeof(Image), new PropertyMetadata("", ImageUrlPropertyChangedAsync));
 
         public static readonly DependencyProperty CreateOptionsProperty = DependencyProperty.Register("CreateOptions",
             typeof(BitmapCreateOptions), typeof(Image));

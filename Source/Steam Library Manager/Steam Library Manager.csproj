@@ -73,8 +73,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -87,19 +85,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Definitions\ContextMenu.cs" />
+    <Compile Include="Definitions\ContextMenuItem.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Game.cs" />
     <Compile Include="Definitions\Library.cs" />
     <Compile Include="Definitions\Settings.cs" />
-    <Compile Include="Forms\MoveGameForm.xaml.cs">
-      <DependentUpon>MoveGameForm.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
-    <Compile Include="Framework\EnumBindingSourceExtension.cs" />
-    <Compile Include="Framework\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="Framework\TaskManager.cs" />
+    <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
+    <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Attributes.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Awesome.cs" />
     <Compile Include="Framework\FontAwesome.WPF\ControlExtensions.cs" />
@@ -112,13 +108,15 @@
     <Compile Include="Framework\FontAwesome.WPF\ImageAwesome.cs" />
     <Compile Include="Framework\FontAwesome.WPF\IRotatable.cs" />
     <Compile Include="Framework\FontAwesome.WPF\ISpinable.cs" />
-    <Compile Include="Framework\PortableSettingsProvider.cs" />
-    <Compile Include="Framework\SettingBindingExtension.cs" />
-    <Compile Include="Framework\NativeMethods.cs" />
+    <Compile Include="Framework\WPF\PortableSettingsProvider.cs" />
+    <Compile Include="Framework\WPF\SettingBindingExtension.cs" />
+    <Compile Include="Framework\WPF\NativeMethods.cs" />
+    <Compile Include="Functions\ContextMenu.cs" />
     <Compile Include="Functions\fAwesome.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\Games.cs" />
     <Compile Include="Functions\Library.cs" />
+    <Compile Include="Functions\Logger.cs" />
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -127,7 +125,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Page Include="Forms\MainWindow.xaml">
+    <Page Include="Forms\Main.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -141,14 +139,10 @@
     <Compile Include="Definitions\Steam.cs" />
     <Compile Include="Definitions\Updater.cs" />
     <Compile Include="Framework\KeyValue.cs" />
-    <Compile Include="Forms\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Forms\Main.xaml.cs">
+      <DependentUpon>Main.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\MoveGameForm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -199,15 +193,7 @@
     <Resource Include="Resources\donate.gif" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="stdole">
-      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

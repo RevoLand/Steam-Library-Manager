@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -10,39 +11,52 @@ namespace Steam_Library_Manager.Functions
     {
         public static void RemoveGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
         {
-            try
+            Parallel.ForEach(fileList, currentFile =>
             {
-                Parallel.ForEach(fileList, currentFile =>
+                try
                 {
                     FileInfo file = new FileInfo(currentFile);
 
                     if (file.Exists)
                         file.Delete();
-                });
-
-                if (directoryList != null)
+                }
+                catch (Exception ex)
                 {
-                    Parallel.ForEach(directoryList, currentDirectory =>
+                    Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                }
+            });
+
+            if (directoryList != null)
+            {
+                Parallel.ForEach(directoryList, currentDirectory =>
+                {
+                    try
                     {
                         DirectoryInfo directory = new DirectoryInfo(currentDirectory);
 
                         if (directory.Exists)
                             directory.Delete();
-                    });
-                }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                    }
+                });
             }
-            catch { }
         }
 
         // Get directory size from path, with or without sub directories
-        public static long GetDirectorySize(string directoryPath, bool includeSub)
+        public static long GetDirectorySize(DirectoryInfo directoryPath, bool includeSub)
         {
             try
             {
+                if (!Directory.Exists(directoryPath.FullName))
+                    return 0;
+
                 // Define a "long" for directory size
                 long directorySize = 0;
 
-                foreach (FileInfo currentFile in new DirectoryInfo(directoryPath).GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                foreach (FileInfo currentFile in directoryPath.GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
                 {
                     directorySize += currentFile.Length;
                 }
@@ -52,7 +66,7 @@ namespace Steam_Library_Manager.Functions
             // on error, return 0
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return 0;
             }
         }
@@ -86,37 +100,45 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                // Define a drive info
-                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
-
                 // And return available free space from defined drive info
-                return Disk.AvailableFreeSpace;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
             }
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                return 0;
+            }
         }
 
-        public static long GetUsedSpace(string TargetFolder)
+        public static long GetTotalSize(string TargetFolder)
         {
             try
             {
-                // Define a drive info
-                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
-
-                // And return available free space from defined drive info
-                return Disk.TotalSize;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                return 0;
+            }
         }
 
         public static void DeleteOldLibrary(Definitions.Library Library)
         {
             try
             {
-                if (Library.steamAppsPath.Exists)
-                    Library.steamAppsPath.Delete(true);
+                if (Library.SteamAppsFolder.Exists)
+                    Library.SteamAppsFolder.Delete(true);
+
+                if (Library.WorkshopFolder.Exists)
+                    Library.WorkshopFolder.Delete(true);
+
+                if (Library.DownloadFolder.Exists)
+                    Library.DownloadFolder.Delete(true);
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }

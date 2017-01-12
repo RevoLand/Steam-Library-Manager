@@ -46,8 +46,9 @@ namespace Steam_Library_Manager.Functions
                 else
                     return false;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return true;
             }
 
@@ -83,6 +84,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.Message, ex.Source);
             }
         }
@@ -91,17 +93,20 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                await CloseSteamAsync();
-
-                if (MessageBox.Show("Steam will be started now", "Restarting Steam", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Would you like to Restart Steam?", "Restart Steam?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
+                    await CloseSteamAsync();
+
                     if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}");
                 }
                 else
-                    throw new Exception("User doesn't wants to start Steam.");
+                    throw new Exception("User doesn't wants to restart Steam.");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
         }
     }
 }
