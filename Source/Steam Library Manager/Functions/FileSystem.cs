@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -39,14 +40,17 @@ namespace Steam_Library_Manager.Functions
         }
 
         // Get directory size from path, with or without sub directories
-        public static long GetDirectorySize(string directoryPath, bool includeSub)
+        public static long GetDirectorySize(DirectoryInfo directoryPath, bool includeSub)
         {
             try
             {
+                if (!Directory.Exists(directoryPath.FullName))
+                    return 0;
+
                 // Define a "long" for directory size
                 long directorySize = 0;
 
-                foreach (FileInfo currentFile in new DirectoryInfo(directoryPath).GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                foreach (FileInfo currentFile in directoryPath.GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
                 {
                     directorySize += currentFile.Length;
                 }

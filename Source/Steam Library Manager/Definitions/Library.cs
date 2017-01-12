@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -120,7 +121,7 @@ namespace Steam_Library_Manager.Definitions
                         string[] name = System.Text.RegularExpressions.Regex.Split(Key["name"].Value, " and ");
 
                         int i = 0;
-                        long gameSize = Functions.FileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent.FullName, true);
+                        long gameSize = Functions.FileSystem.GetDirectorySize(new DirectoryInfo(skuFile).Parent, true);
                         foreach (Framework.KeyValue app in Key["apps"].Children)
                         {
                             if (Games.Count(x => x.AppID == Convert.ToInt32(app.Value)) > 0)
@@ -326,6 +327,45 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        public List<List.JunkInfo> GetUselessFolders()
+        {
+            try
+            {
+                List<List.JunkInfo> JunkFolders = new List<List.JunkInfo>();
+
+                if (CommonFolder.Exists)
+                {
+                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(x => Games.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0))
+                    {
+                        JunkFolders.Add(new List.JunkInfo
+                        {
+                            DirectoryInfo = DirInfo,
+                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
+                        });
+                    }
+                }
+
+                if (new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).Exists)
+                {
+                    foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().Where(x => Games.Count(y => y.AppID.ToString() == x.Name) == 0))
+                    {
+                        JunkFolders.Add(new List.JunkInfo
+                        {
+                            DirectoryInfo = DirInfo,
+                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
+                        });
+                    }
+                }
+
+                return JunkFolders;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return null;
             }
         }
 

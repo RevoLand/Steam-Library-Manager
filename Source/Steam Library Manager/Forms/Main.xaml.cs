@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -248,6 +249,13 @@ namespace Steam_Library_Manager
 
             // Update games list from current selection
             Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
+
+            UpdateLibraryCleaner();
+        }
+
+        private void UpdateLibraryCleaner()
+        {
+            LibraryCleaner.ItemsSource = Definitions.SLM.selectedLibrary.GetUselessFolders().OrderByDescending(x => x.FolderSize);
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -319,6 +327,56 @@ namespace Steam_Library_Manager
         private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
+        }
+
+        private void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (LibraryCleaner.SelectedItems.Count == 0)
+                    return;
+
+                List<Definitions.List.JunkInfo> selectedItems = LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList();
+
+                foreach (Definitions.List.JunkInfo currentJunk in selectedItems)
+                {
+                    if ((string)(sender as MenuItem).Tag == "Explorer")
+                    {
+                        Process.Start(currentJunk.DirectoryInfo.FullName);
+                    }
+                    else
+                    {
+                        currentJunk.DirectoryInfo.Delete(true);
+                    }
+                }
+
+                UpdateLibraryCleaner();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void LibraryCleaner_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            if ((string)(sender as Button).Tag == "Refresh")
+            {
+                UpdateLibraryCleaner();
+            }
+            else
+            {
+                List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
+
+                foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                {
+                    currentJunk.DirectoryInfo.Delete(true);
+                }
+
+                UpdateLibraryCleaner();
+            }
+
         }
     }
 }

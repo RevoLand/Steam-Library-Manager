@@ -41,6 +41,8 @@ namespace Steam_Library_Manager.Functions
 
                 if (!LogDirectory.Exists)
                     LogDirectory.Create();
+
+                FileInfo Logfile = new FileInfo(Path.Combine(LogDirectory.FullName, DateTime.Now.Hour.ToString()));
             }
             catch (Exception ex)
             {

@@ -438,6 +438,34 @@
                     </ListView>
                 </Grid>
             </TabItem>
+            <TabItem Header="Library Cleaner" Padding="20,10">
+                <Grid>
+                    <ListView x:Name="LibraryCleaner" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click"></MenuItem>
+                                            <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click"></MenuItem>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    <Grid>
+                                        <TextBlock Text="{Binding DirectoryInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
+                                        <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
+                                            <TextBlock Text="{Binding DirectoryInfo.FullName}" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding DirectoryInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <Button Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="431" Height="35" VerticalAlignment="Bottom"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="White">
                     <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,360">

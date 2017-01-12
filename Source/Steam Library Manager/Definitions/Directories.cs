@@ -12,6 +12,7 @@ namespace Steam_Library_Manager.Definitions
             // Current running directory of SLM
             public static string CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
 
+            public static string LogDirectory = Path.Combine(CurrentDirectory, "Logs", $"{DateTime.Now.Month}-{DateTime.Now.Day}");
 
             // Set cache directory of SLM to %temp%/Assembly Name (Steam Library Manager)
             public static string CacheDirectory = Path.Combine(Path.GetTempPath(), System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);

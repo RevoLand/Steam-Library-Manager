@@ -59,5 +59,15 @@ namespace Steam_Library_Manager.Definitions
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
             }
         }
+
+        public class JunkInfo
+        {
+            public System.IO.DirectoryInfo DirectoryInfo { get; set; }
+            public long FolderSize { get; set; }
+            public string PrettyFolderSize
+            {
+                get => Functions.FileSystem.FormatBytes(FolderSize);
+            }
+        }
     }
 }
