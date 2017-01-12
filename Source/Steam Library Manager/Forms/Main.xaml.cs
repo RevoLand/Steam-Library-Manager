@@ -14,12 +14,12 @@ namespace Steam_Library_Manager
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    public partial class MainWindow : Window
+    public partial class Main : Window
     {
-        public static MainWindow Accessor;
+        public static Main Accessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
 
-        public MainWindow()
+        public Main()
         {
             InitializeComponent();
 
@@ -50,6 +50,9 @@ namespace Steam_Library_Manager
                 Framework.TaskManager.Start();
                 Button_StopTaskManager.IsEnabled = true;
             }
+
+            if (Properties.Settings.Default.Advanced_Logging)
+                Functions.Logger.StartLogger();
         }
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -87,7 +90,7 @@ namespace Steam_Library_Manager
                     continue;
 
                 if (gameToMove.IsSteamBackup)
-                    System.Diagnostics.Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
+                    Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
                 else
                 {
                     if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
@@ -232,7 +235,10 @@ namespace Steam_Library_Manager
             {
                 Functions.Updater.CheckForUpdates();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private void LibraryGrid_MouseDown(object sender, SelectionChangedEventArgs e)
@@ -312,7 +318,10 @@ namespace Steam_Library_Manager
                         break;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private void Gamelibrary_MouseMove(object sender, MouseEventArgs e)
@@ -356,6 +365,7 @@ namespace Steam_Library_Manager
             {
                 MessageBox.Show(ex.ToString());
                 Debug.WriteLine(ex);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
@@ -385,6 +395,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
     }

@@ -141,6 +141,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
 
@@ -180,6 +181,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
 
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 return rightClickMenu;
             }
         }
@@ -234,7 +236,7 @@ namespace Steam_Library_Manager.Definitions
                         List.Libraries.Remove(this);
 
                         if (SLM.selectedLibrary == this)
-                            MainWindow.Accessor.gamePanel.ItemsSource = null;
+                            Main.Accessor.gamePanel.ItemsSource = null;
                     }
                     break;
             }
@@ -249,7 +251,10 @@ namespace Steam_Library_Manager.Definitions
                     Functions.Library.UpdateLibraryVisual(libraryToUpdate);
                 });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
         }
 
         public async void UpdateLibraryPathAsync(string newLibraryPath)
@@ -277,7 +282,10 @@ namespace Steam_Library_Manager.Definitions
 
                 Functions.Steam.RestartSteamAsync();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
         }
 
         public async void RemoveLibraryAsync(bool deleteFiles)
@@ -326,6 +334,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -364,6 +373,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
                 return null;
             }

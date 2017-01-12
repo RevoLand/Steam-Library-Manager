@@ -4,7 +4,7 @@
     xmlns:slm="clr-namespace:Steam_Library_Manager"
     xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
-    x:Name="mainForm" x:Class="Steam_Library_Manager.MainWindow"
+    x:Name="mainForm" x:Class="Steam_Library_Manager.Main"
         Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Width="920" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
     <Window.Resources>
         <DataTemplate x:Key="Gamelibrary_Gridview">
@@ -490,7 +490,7 @@
                                     <!-- 1#3 -->
                                     <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
 
-                                    <!-- 2#3 -->
+                                    <!-- 1#4 -->
                                     <CheckBox Content="Start Task Manager on Startup" IsChecked="{slm:SettingBinding Global_StartTaskManagerOnStartup}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,90,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
                                 </Grid>
                             </GroupBox>
@@ -502,6 +502,9 @@
                             <!-- 2#2 -->
                             <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
+
+                            <!-- 2#3 -->
+                            <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
 
                             <!-- 3#1 -->
                             <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>

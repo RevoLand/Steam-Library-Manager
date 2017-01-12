@@ -71,7 +71,10 @@ namespace Steam_Library_Manager.Functions
                 //else
                     //MessageBox.Show("You are using the latest version of SLM, thank you!");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
         }
     }
 }

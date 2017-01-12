@@ -81,6 +81,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -118,6 +119,7 @@ namespace Steam_Library_Manager.Functions
                     new FileInfo(zipPath).Delete();
 
                 System.Diagnostics.Debug.WriteLine(iEx);
+                Logger.LogToFile(Logger.LogType.Library, iEx.ToString());
             }
         }
 
@@ -126,17 +128,17 @@ namespace Steam_Library_Manager.Functions
             try
             {
 
-                if (MainWindow.Accessor.gamePanel.Dispatcher.CheckAccess())
+                if (Main.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {
                     if (Definitions.List.Libraries.Count(x => x == Library) == 0)
                     {
-                        MainWindow.Accessor.gamePanel.ItemsSource = null;
+                        Main.Accessor.gamePanel.ItemsSource = null;
                         return;
                     }
 
                     Func<Definitions.Game, object> Sort = SLM.Settings.GetSortingMethod();
 
-                    MainWindow.Accessor.gamePanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk") ? 
+                    Main.Accessor.gamePanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk") ? 
                         (((string.IsNullOrEmpty(Search)) ? Library.Games.OrderByDescending(Sort).ToList() : Library.Games.Where(
                             y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                             || y.AppID.ToString().Contains(Search) // Search by app ID
@@ -150,7 +152,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 else
                 {
-                    MainWindow.Accessor.gamePanel.Dispatcher.Invoke(delegate
+                    Main.Accessor.gamePanel.Dispatcher.Invoke(delegate
                     {
                         UpdateMainForm(Library, Search);
                     }, System.Windows.Threading.DispatcherPriority.Normal);
@@ -159,6 +161,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }

@@ -67,6 +67,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -93,6 +94,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
@@ -143,18 +145,15 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
 
         public static void UpdateLibraryVisual(Definitions.Library libraryToUpdate)
         {
-            try
-            {
-                libraryToUpdate.FreeSpace = FileSystem.GetAvailableFreeSpace(libraryToUpdate.FullPath);
-                libraryToUpdate.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * libraryToUpdate.FreeSpace) / FileSystem.GetTotalSize(libraryToUpdate.FullPath)));
-            }
-            catch { }
+            libraryToUpdate.FreeSpace = FileSystem.GetAvailableFreeSpace(libraryToUpdate.FullPath);
+            libraryToUpdate.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * libraryToUpdate.FreeSpace) / FileSystem.GetTotalSize(libraryToUpdate.FullPath)));
         }
 
         public static async void UpdateBackupLibraryAsync(Definitions.Library libraryToUpdate)
@@ -166,7 +165,10 @@ namespace Steam_Library_Manager.Functions
 
                 await Task.Run(() => libraryToUpdate.UpdateGameList());
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+            }
         }
 
         public static bool IsLibraryExists(string NewLibraryPath)
@@ -188,6 +190,7 @@ namespace Steam_Library_Manager.Functions
             // In any error return true to prevent possible bugs
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
                 return true;
             }

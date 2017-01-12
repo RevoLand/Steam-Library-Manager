@@ -20,7 +20,10 @@ namespace Steam_Library_Manager.Functions
                     if (file.Exists)
                         file.Delete();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                }
             });
 
             if (directoryList != null)
@@ -34,7 +37,10 @@ namespace Steam_Library_Manager.Functions
                         if (directory.Exists)
                             directory.Delete();
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                    }
                 });
             }
         }
@@ -60,7 +66,7 @@ namespace Steam_Library_Manager.Functions
             // on error, return 0
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
                 return 0;
             }
         }
@@ -97,7 +103,11 @@ namespace Steam_Library_Manager.Functions
                 // And return available free space from defined drive info
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
             }
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                return 0;
+            }
         }
 
         public static long GetTotalSize(string TargetFolder)
@@ -106,7 +116,11 @@ namespace Steam_Library_Manager.Functions
             {
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                return 0;
+            }
         }
 
         public static void DeleteOldLibrary(Definitions.Library Library)
@@ -124,6 +138,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }

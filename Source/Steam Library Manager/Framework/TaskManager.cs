@@ -68,6 +68,7 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{currentTask.TargetGame.AppName}][{currentTask.TargetGame.AppID}][{currentTask.TargetGame.AcfName}] {ex}");
             }
         }
 
@@ -75,7 +76,7 @@ namespace Steam_Library_Manager.Framework
         {
             if (!Status)
             {
-                MainWindow.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now active and waiting for tasks...");
+                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now active and waiting for tasks...");
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -91,12 +92,15 @@ namespace Steam_Library_Manager.Framework
                     catch (OperationCanceledException)
                     {
                         Stop();
-                        MainWindow.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now stopped...");
+                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is stopped now...");
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, "Task Manager is stopped now");
                     }
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex);
                         MessageBox.Show(ex.ToString());
+
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
                     }
                 });
             }
@@ -117,6 +121,8 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
+
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
 
@@ -130,6 +136,7 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
 

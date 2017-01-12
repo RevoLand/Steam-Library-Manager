@@ -46,8 +46,9 @@ namespace Steam_Library_Manager.Functions
                 else
                     return false;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return true;
             }
 
@@ -83,6 +84,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.Message, ex.Source);
             }
         }
@@ -101,7 +103,10 @@ namespace Steam_Library_Manager.Functions
                 else
                     throw new Exception("User doesn't wants to restart Steam.");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
         }
     }
 }

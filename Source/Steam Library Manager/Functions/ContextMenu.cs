@@ -9,47 +9,56 @@ namespace Steam_Library_Manager.Functions
     {
         public static void ParseLibraryContextMenuItems()
         {
-            string[] MenuItems = Properties.Settings.Default.libraryContextMenu.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string MenuItem in MenuItems)
+            try
             {
-                Definitions.ContextMenuItem CMenuITem = new Definitions.ContextMenuItem();
+                string[] MenuItems = Properties.Settings.Default.libraryContextMenu.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (string MenuItemDetail in MenuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string MenuItem in MenuItems)
                 {
-                    string[] MenuItemValue = MenuItemDetail.Split(new char[] { '=' }, 2);
-                    CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
+                    Definitions.ContextMenuItem CMenuITem = new Definitions.ContextMenuItem();
 
-                    switch (MenuItemValue[0].ToLowerInvariant())
+                    foreach (string MenuItemDetail in MenuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        case "text":
-                            CMenuITem.Header = MenuItemValue[1];
-                            break;
-                        case "action":
-                            CMenuITem.Action = MenuItemValue[1];
-                            break;
-                        case "iconcolor":
-                            CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(MenuItemValue[1]);
-                            break;
-                        case "icon":
-                            CMenuITem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), MenuItemValue[1], true);
-                            break;
-                        case "showtonormal":
-                            CMenuITem.ShowToNormal = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
-                            break;
-                        case "showtoslmbackup":
-                            CMenuITem.ShowToSLMBackup = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
-                            break;
-                        case "active":
-                            CMenuITem.IsActive = bool.Parse(MenuItemValue[1]);
-                            break;
-                        case "separator":
-                            CMenuITem.IsSeparator = bool.Parse(MenuItemValue[1]);
-                            break;
-                    }
-                }
+                        string[] MenuItemValue = MenuItemDetail.Split(new char[] { '=' }, 2);
+                        CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
-                Definitions.List.LibraryCMenuItems.Add(CMenuITem);
+                        switch (MenuItemValue[0].ToLowerInvariant())
+                        {
+                            case "text":
+                                CMenuITem.Header = MenuItemValue[1];
+                                break;
+                            case "action":
+                                CMenuITem.Action = MenuItemValue[1];
+                                break;
+                            case "iconcolor":
+                                CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(MenuItemValue[1]);
+                                break;
+                            case "icon":
+                                CMenuITem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), MenuItemValue[1], true);
+                                break;
+                            case "showtonormal":
+                                CMenuITem.ShowToNormal = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
+                                break;
+                            case "showtoslmbackup":
+                                CMenuITem.ShowToSLMBackup = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
+                                break;
+                            case "active":
+                                CMenuITem.IsActive = bool.Parse(MenuItemValue[1]);
+                                break;
+                            case "separator":
+                                CMenuITem.IsSeparator = bool.Parse(MenuItemValue[1]);
+                                break;
+                        }
+                    }
+
+                    Definitions.List.LibraryCMenuItems.Add(CMenuITem);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -141,6 +150,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
                 MessageBox.Show(ex.ToString());
             }
         }
