@@ -1,5 +1,4 @@
 ﻿using Steam_Library_Manager.Framework;
-using System;
 using System.ComponentModel;
 
 namespace Steam_Library_Manager.Definitions.Enums
@@ -8,28 +7,28 @@ namespace Steam_Library_Manager.Definitions.Enums
     public enum GameSortingMethod
     {
         [Description("Sort by appName")]
-        appName = 0,
+        appName,
         [Description("Sort by appID")]
-        appID = 1,
+        appID,
         [Description("Sort by app size on disk")]
-        sizeOnDisk = 2,
+        sizeOnDisk,
         [Description("Sort by backup type")]
-        backupType = 3
+        backupType
     }
 
-    public enum gameSizeCalculationMethod
+    public enum GameSizeCalculationMethod
     {
-        ACF = 0,
-        Enumeration = 1
+        ACF,
+        Enumeration
     }
 
-    public enum archiveSizeCalculationMethod
+    public enum ArchiveSizeCalculationMethod
     {
-        compressed = 0,
-        Uncompressed = 1
+        compressed,
+        Uncompressed
     }
 
-    public enum menuVisibility
+    public enum MenuVisibility
     {
         NotVisible,
         Visible

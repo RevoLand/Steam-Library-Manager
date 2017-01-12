@@ -31,8 +31,8 @@ namespace Steam_Library_Manager
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
 
-            libraryContextMenuItems.ItemsSource = Definitions.List.libraryContextMenuItems;
-            gameContextMenuItems.ItemsSource = Definitions.List.gameContextMenuItems;
+            libraryContextMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
+            gameContextMenuItems.ItemsSource = Definitions.List.GameCMenuItems;
 
             TaskManager_LogsView.ItemsSource = TaskManager_Logs;
         }
@@ -74,7 +74,7 @@ namespace Steam_Library_Manager
 
             foreach (Definitions.Game gameToMove in gamePanel.SelectedItems)
             {
-                if (Library.Offline)
+                if (Library.IsOffline)
                 {
                     if (!Directory.Exists(Library.FullPath))
                         continue;
@@ -178,7 +178,7 @@ namespace Steam_Library_Manager
         {
             int selectedIndex = libraryContextMenuItems.SelectedIndex;
 
-            if (selectedIndex == -1 || selectedIndex >= Definitions.List.libraryContextMenuItems.Count)
+            if (selectedIndex == -1 || selectedIndex >= Definitions.List.LibraryCMenuItems.Count)
                 return;
 
             switch(((MenuItem)sender).Tag.ToString())
@@ -187,14 +187,14 @@ namespace Steam_Library_Manager
                     if (selectedIndex < 1)
                         return;
 
-                    Definitions.List.libraryContextMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    Definitions.List.LibraryCMenuItems.Move(selectedIndex, selectedIndex - 1);
                     break;
 
                 case "moveDown":
-                    if (selectedIndex == Definitions.List.libraryContextMenuItems.Count - 1)
+                    if (selectedIndex == Definitions.List.LibraryCMenuItems.Count - 1)
                         return;
 
-                    Definitions.List.libraryContextMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    Definitions.List.LibraryCMenuItems.Move(selectedIndex, selectedIndex + 1);
                     break;
             }
         }
@@ -204,7 +204,7 @@ namespace Steam_Library_Manager
 
             int selectedIndex = gameContextMenuItems.SelectedIndex;
 
-            if (selectedIndex == -1 || selectedIndex >= Definitions.List.gameContextMenuItems.Count)
+            if (selectedIndex == -1 || selectedIndex >= Definitions.List.GameCMenuItems.Count)
                 return;
 
             switch (((MenuItem)sender).Tag.ToString())
@@ -213,14 +213,14 @@ namespace Steam_Library_Manager
                     if (selectedIndex < 1)
                         return;
 
-                    Definitions.List.gameContextMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    Definitions.List.GameCMenuItems.Move(selectedIndex, selectedIndex - 1);
                     break;
 
                 case "moveDown":
-                    if (selectedIndex == Definitions.List.gameContextMenuItems.Count - 1)
+                    if (selectedIndex == Definitions.List.GameCMenuItems.Count - 1)
                         return;
 
-                    Definitions.List.gameContextMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    Definitions.List.GameCMenuItems.Move(selectedIndex, selectedIndex + 1);
                     break;
             }
         }
@@ -238,8 +238,10 @@ namespace Steam_Library_Manager
         {
             Definitions.SLM.selectedLibrary = libraryPanel.SelectedItem as Definitions.Library;
 
+            if (Definitions.SLM.selectedLibrary == null)
+                return;
 
-            if (Directory.Exists(Definitions.SLM.selectedLibrary.FullPath) && Definitions.SLM.selectedLibrary.Offline)
+            if (Directory.Exists(Definitions.SLM.selectedLibrary.FullPath) && Definitions.SLM.selectedLibrary.IsOffline)
             {
                 Functions.Library.UpdateBackupLibraryAsync(Definitions.SLM.selectedLibrary);
             }

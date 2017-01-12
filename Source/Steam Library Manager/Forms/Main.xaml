@@ -30,7 +30,7 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
                                                 <Condition Binding="{Binding IsSteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
@@ -74,7 +74,7 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
                                                 <Condition Binding="{Binding IsSteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
@@ -154,7 +154,7 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.IsBackup}" Value="true" />
                                                 <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
@@ -255,7 +255,7 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.Backup}" Value="true" />
+                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.IsBackup}" Value="true" />
                                                 <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
@@ -326,13 +326,13 @@
                                                 <Style.Triggers>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Offline}" Value="true" />
+                                                            <Condition Binding="{Binding IsOffline}" Value="true" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Visibility" Value="Visible" />
                                                     </MultiDataTrigger>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding Offline}" Value="false" />
+                                                            <Condition Binding="{Binding IsOffline}" Value="false" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Visibility" Value="Hidden" />
                                                     </MultiDataTrigger>
@@ -350,13 +350,13 @@
                                                     <Style.Triggers>
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding Backup}" Value="false" />
+                                                                <Condition Binding="{Binding IsBackup}" Value="false" />
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Text" Value="Steam Library" />
                                                         </MultiDataTrigger>
                                                         <MultiDataTrigger>
                                                             <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding Backup}" Value="true" />
+                                                                <Condition Binding="{Binding IsBackup}" Value="true" />
                                                             </MultiDataTrigger.Conditions>
                                                             <Setter Property="Text" Value="Backup Library" />
                                                         </MultiDataTrigger>
@@ -448,7 +448,7 @@
 
                             <!-- 1#2 -->
                             <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:gameSizeCalculationMethod}}" />
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSizeCalculationMethod}}" />
 
                             <!-- 1#3 -->
                             <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,3,0,0">
@@ -469,7 +469,7 @@
 
                             <!-- 2#1 -->
                             <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="225,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:archiveSizeCalculationMethod}}" />
+                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- 2#2 -->
                             <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>

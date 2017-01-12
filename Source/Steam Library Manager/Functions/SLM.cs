@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Backup))
+                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.IsBackup))
                     {
                         // then add this library path to new defined string collection
                         BackupDirs.Add(Library.FullPath);

@@ -7,82 +7,77 @@ namespace Steam_Library_Manager.Functions
 {
     class ContextMenu
     {
-
         public static void ParseLibraryContextMenuItems()
         {
-            string[] menuItems = Properties.Settings.Default.libraryContextMenu.Split('|');
+            string[] MenuItems = Properties.Settings.Default.libraryContextMenu.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (string menuItem in menuItems)
+            foreach (string MenuItem in MenuItems)
             {
-                if (string.IsNullOrEmpty(menuItem))
-                    continue;
+                Definitions.ContextMenuItem CMenuITem = new Definitions.ContextMenuItem();
 
-                Definitions.ContextMenu cItem = new Definitions.ContextMenu();
-                string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string hardtonamethings in Item)
+                foreach (string MenuItemDetail in MenuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
-                    cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
+                    string[] MenuItemValue = MenuItemDetail.Split(new char[] { '=' }, 2);
+                    CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
-                    switch (itemDetails[0].ToLowerInvariant())
+                    switch (MenuItemValue[0].ToLowerInvariant())
                     {
                         case "text":
-                            cItem.Header = itemDetails[1];
+                            CMenuITem.Header = MenuItemValue[1];
                             break;
                         case "action":
-                            cItem.Action = itemDetails[1];
+                            CMenuITem.Action = MenuItemValue[1];
                             break;
                         case "iconcolor":
-                            cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
+                            CMenuITem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(MenuItemValue[1]);
                             break;
                         case "icon":
-                            cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
+                            CMenuITem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), MenuItemValue[1], true);
                             break;
                         case "showtonormal":
-                            cItem.ShowToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                            CMenuITem.ShowToNormal = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                             break;
                         case "showtoslmbackup":
-                            cItem.ShowToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                            CMenuITem.ShowToSLMBackup = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                             break;
                         case "active":
-                            cItem.IsActive = bool.Parse(itemDetails[1]);
+                            CMenuITem.IsActive = bool.Parse(MenuItemValue[1]);
                             break;
                         case "separator":
-                            cItem.IsSeparator = bool.Parse(itemDetails[1]);
+                            CMenuITem.IsSeparator = bool.Parse(MenuItemValue[1]);
                             break;
                     }
                 }
 
-                Definitions.List.libraryContextMenuItems.Add(cItem);
+                Definitions.List.LibraryCMenuItems.Add(CMenuITem);
             }
         }
 
         public static void SaveLibraryContextMenuItems()
         {
             string libraryContextMenu = "";
-            foreach (Definitions.ContextMenu cItem in Definitions.List.libraryContextMenuItems)
+            foreach (Definitions.ContextMenuItem CMenuItem in Definitions.List.LibraryCMenuItems)
             {
-                if (!string.IsNullOrEmpty(cItem.Header))
-                    libraryContextMenu += $"text={cItem.Header}";
+                if (!string.IsNullOrEmpty(CMenuItem.Header))
+                    libraryContextMenu += $"text={CMenuItem.Header}";
 
-                if (!string.IsNullOrEmpty(cItem.Action))
-                    libraryContextMenu += $";;action={cItem.Action}";
+                if (!string.IsNullOrEmpty(CMenuItem.Action))
+                    libraryContextMenu += $";;action={CMenuItem.Action}";
 
-                if (!string.IsNullOrEmpty(cItem.Icon.ToString()))
-                    libraryContextMenu += $";;icon={cItem.Icon}";
+                if (!string.IsNullOrEmpty(CMenuItem.Icon.ToString()))
+                    libraryContextMenu += $";;icon={CMenuItem.Icon}";
 
-                if (cItem.IconColor != null)
-                    libraryContextMenu += $";;iconcolor={cItem.IconColor}";
+                if (CMenuItem.IconColor != null)
+                    libraryContextMenu += $";;iconcolor={CMenuItem.IconColor}";
 
 
-                libraryContextMenu += $";;showToNormal={cItem.ShowToNormal}";
+                libraryContextMenu += $";;showToNormal={CMenuItem.ShowToNormal}";
 
-                libraryContextMenu += $";;showToSLMBackup={cItem.ShowToSLMBackup}";
+                libraryContextMenu += $";;showToSLMBackup={CMenuItem.ShowToSLMBackup}";
 
-                libraryContextMenu += $";;separator={cItem.IsSeparator}";
+                libraryContextMenu += $";;separator={CMenuItem.IsSeparator}";
 
-                libraryContextMenu += $";;active={cItem.IsActive}";
+                libraryContextMenu += $";;active={CMenuItem.IsActive}";
 
                 libraryContextMenu += "|";
             }
@@ -94,58 +89,54 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                string[] menuItems = Properties.Settings.Default.gameContextMenu.Split('|');
+                string[] MenuItems = Properties.Settings.Default.gameContextMenu.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (string menuItem in menuItems)
+                foreach (string MenuItem in MenuItems)
                 {
-                    if (string.IsNullOrEmpty(menuItem))
-                        continue;
+                    Definitions.ContextMenuItem CMenuItem = new Definitions.ContextMenuItem();
 
-                    Definitions.ContextMenu cItem = new Definitions.ContextMenu();
-                    string[] Item = menuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (string hardtonamethings in Item)
+                    foreach (string MenuItemDetail in MenuItem.Split(new string[] { ";;" }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        string[] itemDetails = hardtonamethings.Split(new char[] { '=' }, 2);
+                        string[] MenuItemValue = MenuItemDetail.Split(new char[] { '=' }, 2);
 
-                        cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
+                        CMenuItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString("black");
 
-                        switch (itemDetails[0].ToLowerInvariant())
+                        switch (MenuItemValue[0].ToLowerInvariant())
                         {
                             case "text":
-                                cItem.Header = itemDetails[1];
+                                CMenuItem.Header = MenuItemValue[1];
                                 break;
                             case "action":
-                                cItem.Action = itemDetails[1];
+                                CMenuItem.Action = MenuItemValue[1];
                                 break;
                             case "iconcolor":
-                                cItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(itemDetails[1]);
+                                CMenuItem.IconColor = (Brush)new BrushConverter().ConvertFromInvariantString(MenuItemValue[1]);
                                 break;
                             case "icon":
-                                cItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), itemDetails[1], true);
+                                CMenuItem.Icon = (FontAwesomeIcon)Enum.Parse(typeof(FontAwesomeIcon), MenuItemValue[1], true);
                                 break;
                             case "showToNormal":
-                                cItem.ShowToNormal = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                CMenuItem.ShowToNormal = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                                 break;
                             case "showToSLMBackup":
-                                cItem.ShowToSLMBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                CMenuItem.ShowToSLMBackup = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                                 break;
                             case "showToSteamBackup":
-                                cItem.ShowToSteamBackup = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                CMenuItem.ShowToSteamBackup = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                                 break;
                             case "showToCompressed":
-                                cItem.ShowToCompressed = (Definitions.Enums.menuVisibility)Enum.Parse(typeof(Definitions.Enums.menuVisibility), itemDetails[1], true);
+                                CMenuItem.ShowToCompressed = (Definitions.Enums.MenuVisibility)Enum.Parse(typeof(Definitions.Enums.MenuVisibility), MenuItemValue[1], true);
                                 break;
                             case "active":
-                                cItem.IsActive = bool.Parse(itemDetails[1]);
+                                CMenuItem.IsActive = bool.Parse(MenuItemValue[1]);
                                 break;
                             case "separator":
-                                cItem.IsSeparator = bool.Parse(itemDetails[1]);
+                                CMenuItem.IsSeparator = bool.Parse(MenuItemValue[1]);
                                 break;
                         }
                     }
 
-                    Definitions.List.gameContextMenuItems.Add(cItem);
+                    Definitions.List.GameCMenuItems.Add(CMenuItem);
                 }
             }
             catch (Exception ex)
@@ -157,26 +148,26 @@ namespace Steam_Library_Manager.Functions
         public static void SaveGameContextMenuItems()
         {
             string gameContextMenu = "";
-            foreach (Definitions.ContextMenu cItem in Definitions.List.gameContextMenuItems)
+            foreach (Definitions.ContextMenuItem CMenuItem in Definitions.List.GameCMenuItems)
             {
-                if (!string.IsNullOrEmpty(cItem.Header))
-                    gameContextMenu += $"text={cItem.Header}";
+                if (!string.IsNullOrEmpty(CMenuItem.Header))
+                    gameContextMenu += $"text={CMenuItem.Header}";
 
-                if (!string.IsNullOrEmpty(cItem.Action))
-                    gameContextMenu += $";;action={cItem.Action}";
+                if (!string.IsNullOrEmpty(CMenuItem.Action))
+                    gameContextMenu += $";;action={CMenuItem.Action}";
 
-                gameContextMenu += $";;icon={cItem.Icon}";
+                gameContextMenu += $";;icon={CMenuItem.Icon}";
 
-                if (cItem.IconColor != null)
-                    gameContextMenu += $";;iconcolor={cItem.IconColor}";
+                if (CMenuItem.IconColor != null)
+                    gameContextMenu += $";;iconcolor={CMenuItem.IconColor}";
 
-                gameContextMenu += $";;showToNormal={cItem.ShowToNormal}";
-                gameContextMenu += $";;showToSLMBackup={cItem.ShowToSLMBackup}";
-                gameContextMenu += $";;showToSteamBackup={cItem.ShowToSteamBackup}";
-                gameContextMenu += $";;showToCompressed={cItem.ShowToCompressed}";
+                gameContextMenu += $";;showToNormal={CMenuItem.ShowToNormal}";
+                gameContextMenu += $";;showToSLMBackup={CMenuItem.ShowToSLMBackup}";
+                gameContextMenu += $";;showToSteamBackup={CMenuItem.ShowToSteamBackup}";
+                gameContextMenu += $";;showToCompressed={CMenuItem.ShowToCompressed}";
 
-                gameContextMenu += $";;active={cItem.IsActive}";
-                gameContextMenu += $";;separator={cItem.IsSeparator}";
+                gameContextMenu += $";;active={CMenuItem.IsActive}";
+                gameContextMenu += $";;separator={CMenuItem.IsSeparator}";
 
                 gameContextMenu += "|";
             }

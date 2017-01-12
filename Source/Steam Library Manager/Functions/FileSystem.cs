@@ -90,24 +90,17 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                // Define a drive info
-                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
-
                 // And return available free space from defined drive info
-                return Disk.AvailableFreeSpace;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
             }
             catch { return 0; }
         }
 
-        public static long GetUsedSpace(string TargetFolder)
+        public static long GetTotalSize(string TargetFolder)
         {
             try
             {
-                // Define a drive info
-                DriveInfo Disk = new DriveInfo(Path.GetPathRoot(TargetFolder));
-
-                // And return available free space from defined drive info
-                return Disk.TotalSize;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }
             catch { return 0; }
         }
@@ -116,8 +109,14 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Library.steamAppsPath.Exists)
-                    Library.steamAppsPath.Delete(true);
+                if (Library.SteamAppsFolder.Exists)
+                    Library.SteamAppsFolder.Delete(true);
+
+                if (Library.WorkshopFolder.Exists)
+                    Library.WorkshopFolder.Delete(true);
+
+                if (Library.DownloadFolder.Exists)
+                    Library.DownloadFolder.Delete(true);
             }
             catch (Exception ex)
             {

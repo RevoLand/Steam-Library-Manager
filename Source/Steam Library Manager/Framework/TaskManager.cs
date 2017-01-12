@@ -29,7 +29,7 @@ namespace Steam_Library_Manager.Framework
                     if (currentTask.TargetLibrary.Games.Count(x => x.AcfName == currentTask.TargetGame.AcfName && currentTask.Compress == x.IsCompressed) == 0)
                     {
                         // Add game to new library
-                        Functions.Games.AddNewGame(currentTask.TargetGame.FullAcfPath.FullName.Replace(currentTask.TargetGame.InstalledLibrary.steamAppsPath.FullName, currentTask.TargetLibrary.steamAppsPath.FullName), currentTask.TargetGame.AppID, currentTask.TargetGame.AppName, currentTask.TargetGame.InstallationPath.Name, currentTask.TargetLibrary, currentTask.TargetGame.SizeOnDisk, currentTask.Compress);
+                        Functions.Games.AddNewGame(currentTask.TargetGame.AppID, currentTask.TargetGame.AppName, currentTask.TargetGame.InstallationPath.Name, currentTask.TargetLibrary, currentTask.TargetGame.SizeOnDisk, currentTask.Compress);
 
                         // Update library details
                         currentTask.TargetLibrary.UpdateLibraryVisual();
@@ -43,7 +43,7 @@ namespace Steam_Library_Manager.Framework
                         }
                     }
 
-                    if (!currentTask.TargetLibrary.Backup)
+                    if (!currentTask.TargetLibrary.IsBackup)
                         IsRestartRequired = true;
 
                     currentTask.Moving = false;
@@ -51,7 +51,6 @@ namespace Steam_Library_Manager.Framework
 
                     if (TaskList.Count == 0)
                     {
-
                         if (Properties.Settings.Default.PlayASoundOnCompletion)
                         {
                             if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
@@ -89,7 +88,7 @@ namespace Steam_Library_Manager.Framework
                             ProcessTask(TaskList.Take(CancellationToken.Token));
                         }
                     }
-                    catch (OperationCanceledException oEx)
+                    catch (OperationCanceledException)
                     {
                         Stop();
                         MainWindow.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now stopped...");

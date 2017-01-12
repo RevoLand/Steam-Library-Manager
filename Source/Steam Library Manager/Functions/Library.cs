@@ -39,7 +39,7 @@ namespace Steam_Library_Manager.Functions
                         Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
 
                         // Add our new library to vdf file so steam will know we have a new library
-                        Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => !x.Backup).Count()), newLibraryPath));
+                        Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => !x.IsBackup).Count()), newLibraryPath));
 
                         // Save vdf file
                         Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
@@ -71,46 +71,24 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void AddNewLibraryAsync(string libraryPath, bool mainLibrary, bool backupLibrary, bool OfflineLibrary = false)
+        public static async void AddNewLibraryAsync(string LibraryPath, bool IsMainLibrary, bool IsBackupLibrary, bool IsOfflineLibrary = false)
         {
             try
             {
                 Definitions.Library Library = new Definitions.Library()
                 {
-
-                    // Define if library is main library
-                    Main = mainLibrary,
-
-                    // Define if library is a backup dir
-                    Backup = backupLibrary,
-
-                    Offline = OfflineLibrary,
+                    IsMain = IsMainLibrary,
+                    IsBackup = IsBackupLibrary,
+                    IsOffline = IsOfflineLibrary,
 
                     // Define full path of library
-                    FullPath = libraryPath,
-
-                    // Define our library path to SteamApps
-                    steamAppsPath = new DirectoryInfo(Path.Combine(libraryPath, "SteamApps"))
+                    FullPath = LibraryPath
                 };
-
-                // Define common folder path for future use
-                Library.commonPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "common"));
-
-                // Define download folder path
-                Library.downloadPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "downloading"));
-
-                // Define workshop folder path
-                Library.workshopPath = new DirectoryInfo(Path.Combine(Library.steamAppsPath.FullName, "workshop"));
-
-                Library.FreeSpace = FileSystem.GetAvailableFreeSpace(Library.FullPath);
-                Library.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * Library.FreeSpace) / FileSystem.GetUsedSpace(Library.FullPath)));
-
-                Library.ContextMenu = Library.GenerateRightClickMenuItems();
 
                 // And add collected informations to our global list
                 Definitions.List.Libraries.Add(Library);
 
-                if (!OfflineLibrary)
+                if (!IsOfflineLibrary)
                     await Task.Run(() => Library.UpdateGameList());
             }
             catch (Exception ex)
@@ -169,12 +147,23 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
+        public static void UpdateLibraryVisual(Definitions.Library libraryToUpdate)
+        {
+            try
+            {
+                libraryToUpdate.FreeSpace = FileSystem.GetAvailableFreeSpace(libraryToUpdate.FullPath);
+                libraryToUpdate.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * libraryToUpdate.FreeSpace) / FileSystem.GetTotalSize(libraryToUpdate.FullPath)));
+            }
+            catch { }
+        }
+
         public static async void UpdateBackupLibraryAsync(Definitions.Library libraryToUpdate)
         {
             try
             {
-                libraryToUpdate.Offline = false;
-                libraryToUpdate.UpdateLibraryVisual();
+                libraryToUpdate.IsOffline = false;
+                UpdateLibraryVisual(libraryToUpdate);
+
                 await Task.Run(() => libraryToUpdate.UpdateGameList());
             }
             catch { }
@@ -187,10 +176,10 @@ namespace Steam_Library_Manager.Functions
                 NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
                 if (Definitions.List.Libraries.Where(x => x.FullPath.ToLowerInvariant() == NewLibraryPath ||
-                x.commonPath.FullName.ToLowerInvariant() == NewLibraryPath ||
-                x.downloadPath.FullName.ToLowerInvariant() == NewLibraryPath ||
-                x.workshopPath.FullName.ToLowerInvariant() == NewLibraryPath ||
-                x.steamAppsPath.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
+                x.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                x.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
                     return true;
 
                 // else, return false which means library is not exists

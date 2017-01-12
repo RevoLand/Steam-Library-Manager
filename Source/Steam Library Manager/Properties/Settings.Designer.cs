@@ -298,5 +298,19 @@ namespace Steam_Library_Manager.Properties {
                 this["Global_StartTaskManagerOnStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool Advanced_Logging {
+            get {
+                return ((bool)(this["Advanced_Logging"]));
+            }
+            set {
+                this["Advanced_Logging"] = value;
+            }
+        }
     }
 }

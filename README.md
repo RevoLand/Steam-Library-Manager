@@ -44,13 +44,13 @@ If you have security concerns or want to do changes to SLM, there is completely 
 Nope, not at all. SLM is completely free and even better; open-source licensed with [MIT license](https://en.wikipedia.org/wiki/MIT_License). Nothing but love is needed for SLM.
 
 ### Can SLM contain a bug?
-Yes! SLM might be buggy or bugged for some setups. As i have zero-to-none chance to test SLM on every different setup, it may give hiccups at some point. 
-Luckily Task Manager *(which is used to move apps between libraries)* is running on a different thread. Is any kind of exception happens during app movement, your old files won't be removen no matter what you've picked as option. Unlike [*Humans*](http://www.imdb.com/title/tt4122068/) or [*Westworld*](http://www.imdb.com/title/tt0475784/), SLM ***does not*** have any kind of AI to take control over and remove your files.
+Yes! SLM might be buggy for some setups. As i have zero-to-none chance to test SLM on every different setup, it may give hiccups at some point. 
+Luckily Task Manager *(which is used to move apps between libraries)* is running on a different thread. If any kind of exception happens during app movement, your old files won't be removen no matter what you've picked as option. Unlike [*Humans*](http://www.imdb.com/title/tt4122068/) or [*Westworld*](http://www.imdb.com/title/tt0475784/), SLM ***does not*** have any kind of AI to take control over and remove your files.
 
 Short of it no matter what your files should be safe. Just contact me out *(highly appreciated)* with the exception you have received and should be fixed asap!
 
 ### I have a different question!
-Sure, just contact me over [Steam](https://steamcommunity.com/id/RevoLand/), [Reddit](https://www.reddit.com/user/RevoLand/) or Skype *(revolutionland)* and i will respond your question asap.
+Sure, just contact me over [Steam](https://steamcommunity.com/id/RevoLand/), [Reddit](https://www.reddit.com/user/RevoLand/) or Skype *(revolutionland)* and i will respond to your question asap.
 
 Credits
 ===================

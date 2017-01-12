@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
         {
             try
             {
-                string AppCacheDirectory = Path.Combine(Definitions.SLM.selectedLibrary.steamAppsPath.FullName, "HeaderImages");
+                string AppCacheDirectory = Path.Combine(Definitions.SLM.selectedLibrary.SteamAppsFolder.FullName, "HeaderImages");
                 var localFile = $"{AppCacheDirectory}\\{url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
 
                 MemoryStream memoryStream = new MemoryStream();

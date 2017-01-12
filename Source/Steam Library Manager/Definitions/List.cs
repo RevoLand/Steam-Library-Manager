@@ -7,8 +7,8 @@ namespace Steam_Library_Manager.Definitions
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
-        public static Framework.AsyncObservableCollection<ContextMenu> libraryContextMenuItems = new Framework.AsyncObservableCollection<ContextMenu>();
-        public static Framework.AsyncObservableCollection<ContextMenu> gameContextMenuItems = new Framework.AsyncObservableCollection<ContextMenu>();
+        public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
+        public static Framework.AsyncObservableCollection<ContextMenuItem> GameCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
 
         public class TaskList : INotifyPropertyChanged
         {
