@@ -361,22 +361,31 @@ namespace Steam_Library_Manager
 
         private void LibraryCleaner_ButtonClick(object sender, RoutedEventArgs e)
         {
-            if ((string)(sender as Button).Tag == "Refresh")
+            try
             {
-                UpdateLibraryCleaner();
-            }
-            else
-            {
-                List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
+                if (LibraryCleaner.Items.Count == 0)
+                    return;
 
-                foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                if ((string)(sender as Button).Tag == "Refresh")
                 {
-                    currentJunk.DirectoryInfo.Delete(true);
+                    UpdateLibraryCleaner();
                 }
+                else
+                {
+                    List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
-                UpdateLibraryCleaner();
+                    foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                    {
+                        currentJunk.DirectoryInfo.Delete(true);
+                    }
+
+                    UpdateLibraryCleaner();
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }
