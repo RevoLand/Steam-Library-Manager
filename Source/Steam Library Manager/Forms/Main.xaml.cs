@@ -48,7 +48,6 @@ namespace Steam_Library_Manager
             if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
             {
                 Framework.TaskManager.Start();
-                Button_StopTaskManager.IsEnabled = true;
             }
 
             if (Properties.Settings.Default.Advanced_Logging)
@@ -71,54 +70,61 @@ namespace Steam_Library_Manager
 
         private void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
-            Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
-
-            if (gamePanel.SelectedItems.Count == 0 || Library == null)
-                return;
-
-            foreach (Definitions.Game gameToMove in gamePanel.SelectedItems)
+            try
             {
-                if (Library.IsOffline)
+                Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
+
+                if (gamePanel.SelectedItems.Count == 0 || Library == null)
+                    return;
+
+                foreach (Definitions.Game gameToMove in gamePanel.SelectedItems)
                 {
-                    if (!Directory.Exists(Library.FullPath))
+                    if (Library.IsOffline)
+                    {
+                        if (!Directory.Exists(Library.FullPath))
+                            continue;
+                        else
+                            Functions.Library.UpdateBackupLibraryAsync(Library);
+                    }
+
+                    if (Library == gameToMove.InstalledLibrary && !gameToMove.IsSteamBackup)
                         continue;
-                    else
-                        Functions.Library.UpdateBackupLibraryAsync(Library);
-                }
 
-                if (Library == gameToMove.InstalledLibrary && !gameToMove.IsSteamBackup)
-                    continue;
-
-                if (gameToMove.IsSteamBackup)
-                    Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
-                else
-                {
-                    if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
-                    {
-                        Definitions.List.TaskList newTask = new Definitions.List.TaskList
-                        {
-                            TargetGame = gameToMove,
-                            TargetLibrary = Library
-                        };
-
-                        Framework.TaskManager.TaskList.Add(newTask);
-                        taskPanel.Items.Add(newTask);
-
-                        DoubleAnimation da = new DoubleAnimation()
-                        {
-                            From = 12,
-                            To = 14,
-                            AutoReverse = true,
-                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
-                        };
-
-                        Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
-                    }
+                    if (gameToMove.IsSteamBackup)
+                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
                     else
                     {
-                        MessageBox.Show($"This item is already tasked.\n\nGame: {gameToMove.AppName}\nTarget Library: {Library.FullPath}");
+                        if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
+                        {
+                            Definitions.List.TaskList newTask = new Definitions.List.TaskList
+                            {
+                                TargetGame = gameToMove,
+                                TargetLibrary = Library
+                            };
+
+                            Framework.TaskManager.TaskList.Add(newTask);
+                            taskPanel.Items.Add(newTask);
+
+                            DoubleAnimation da = new DoubleAnimation()
+                            {
+                                From = 12,
+                                To = 14,
+                                AutoReverse = true,
+                                Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                            };
+
+                            Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"This item is already tasked.\n\nGame: {gameToMove.AppName}\nTarget Library: {Library.FullPath}");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
@@ -326,11 +332,15 @@ namespace Steam_Library_Manager
 
         private void Gamelibrary_MouseMove(object sender, MouseEventArgs e)
         {
-            if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
+            try
             {
-                // Do drag & drop with our pictureBox
-                DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
+                if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
+                {
+                    // Do drag & drop with our pictureBox
+                    DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
+                }
             }
+            catch { }
         }
 
         private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)

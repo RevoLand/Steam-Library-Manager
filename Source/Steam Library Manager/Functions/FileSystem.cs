@@ -100,6 +100,9 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
+                    return 0;
+
                 // And return available free space from defined drive info
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
             }
@@ -114,6 +117,9 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
+                    return 0;
+
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }
             catch (Exception ex)

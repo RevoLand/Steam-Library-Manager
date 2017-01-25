@@ -77,6 +77,8 @@ namespace Steam_Library_Manager.Framework
             if (!Status)
             {
                 Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now active and waiting for tasks...");
+                Main.Accessor.Button_StartTaskManager.IsEnabled = false;
+                Main.Accessor.Button_StopTaskManager.IsEnabled = true;
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -112,6 +114,9 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
+                    Main.Accessor.Button_StartTaskManager.IsEnabled = true;
+                    Main.Accessor.Button_StopTaskManager.IsEnabled = false;
+
                     Status = false;
                     CancellationToken.Cancel();
                     IsRestartRequired = false;

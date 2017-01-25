@@ -1,1 +1,1 @@
-1.4.0.0|Task Manager, Steam Cleaner and more
+1.4.1.0|Small fixes and improvements

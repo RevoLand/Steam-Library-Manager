@@ -45,8 +45,8 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -89,8 +89,8 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -144,8 +144,8 @@
                 <Grid>
                     <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
                         <TextBlock Margin="0,-20,0,0">
@@ -245,8 +245,8 @@
                 <Grid>
                     <TextBlock Text="{Binding TargetGame.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
                         <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
@@ -424,7 +424,7 @@
                     </ListView>
 
                     <Grid Margin="10,0,0,255" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="450">
-                        <Button Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+                        <Button x:Name="Button_StartTaskManager" Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                         <Button x:Name="Button_StopTaskManager" IsEnabled="False" Content="Stop Task Manager" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" Margin="145,0,0,0" />
                         <Button Content="Clear Completed Tasks" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="290,0,0,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                     </Grid>
@@ -462,8 +462,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
-                    <Button Tag="Refresh" Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="431" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
+                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="425" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <Button Tag="Refresh" Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="425" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Padding="20, 10">

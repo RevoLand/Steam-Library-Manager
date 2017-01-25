@@ -188,22 +188,22 @@ namespace Steam_Library_Manager.Definitions
 
         public List<FileSystemInfo> GetCommonFiles()
         {
-            return CommonFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+            return CommonFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetDownloadFiles()
         {
-            return DownloadFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+            return DownloadFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetPatchFiles()
         {
-            return InstalledLibrary.DownloadFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+            return InstalledLibrary.DownloadFolder.GetFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetWorkshopFiles()
         {
-            return WorkShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => !x.Attributes.HasFlag(FileAttributes.Directory)).ToList();
+            return WorkShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public void CopyGameFiles(List.TaskList currentTask, CancellationToken cancellationToken)
