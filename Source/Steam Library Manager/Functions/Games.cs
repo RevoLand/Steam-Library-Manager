@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     Definitions.List.JunkStuff.Add(new Definitions.List.JunkInfo
                     {
-                        FileSystemInfo = new DirectoryInfo(Game.FullAcfPath.FullName),
+                        FileSystemInfo = new FileInfo(Game.FullAcfPath.FullName),
                         FolderSize = Game.FullAcfPath.Length
                     });
 

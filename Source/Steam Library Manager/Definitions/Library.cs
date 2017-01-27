@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         List.JunkStuff.Add(new List.JunkInfo
                         {
-                            FileSystemInfo = new DirectoryInfo(AcfFile.FullName),
+                            FileSystemInfo = new FileInfo(AcfFile.FullName),
                             FolderSize = AcfFile.Length
                         });
 

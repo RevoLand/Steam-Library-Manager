@@ -361,11 +361,14 @@ namespace Steam_Library_Manager
                     }
                     else
                     {
-                        if (currentJunk.FileSystemInfo.Exists)
+                        if (currentJunk.FileSystemInfo is FileInfo)
                         {
-                            if (currentJunk.FileSystemInfo is FileInfo)
+                            if (((FileInfo)currentJunk.FileSystemInfo).Exists)
                                 ((FileInfo)currentJunk.FileSystemInfo).Delete();
-                            else
+                        }
+                        else
+                        {
+                            if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
                                 ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
                         }
 
@@ -403,11 +406,14 @@ namespace Steam_Library_Manager
 
                         foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
                         {
-                            if (currentJunk.FileSystemInfo.Exists)
+                            if (currentJunk.FileSystemInfo is FileInfo)
                             {
-                                if (currentJunk.FileSystemInfo is FileInfo)
+                                if (((FileInfo)currentJunk.FileSystemInfo).Exists)
                                     ((FileInfo)currentJunk.FileSystemInfo).Delete();
-                                else
+                            }
+                            else
+                            {
+                                if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
                                     ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
                             }
 
