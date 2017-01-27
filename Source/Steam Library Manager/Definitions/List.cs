@@ -7,6 +7,8 @@ namespace Steam_Library_Manager.Definitions
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
+        public static Framework.AsyncObservableCollection<JunkInfo> JunkStuff { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
+
         public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
         public static Framework.AsyncObservableCollection<ContextMenuItem> GameCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
 
@@ -62,7 +64,7 @@ namespace Steam_Library_Manager.Definitions
 
         public class JunkInfo
         {
-            public System.IO.DirectoryInfo DirectoryInfo { get; set; }
+            public System.IO.FileSystemInfo FileSystemInfo { get; set; }
             public long FolderSize { get; set; }
             public string PrettyFolderSize
             {

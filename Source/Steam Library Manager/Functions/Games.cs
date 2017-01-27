@@ -30,8 +30,14 @@ namespace Steam_Library_Manager.Functions
                 };
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
-                if (!Game.CommonFolder.Exists && !Game.DownloadFolder.Exists && !Game.IsCompressed)
+                if (!Game.CommonFolder.Exists && !Game.DownloadFolder.Exists && !Game.IsCompressed && !Game.IsSteamBackup)
                 {
+                    Definitions.List.JunkStuff.Add(new Definitions.List.JunkInfo
+                    {
+                        FileSystemInfo = new DirectoryInfo(Game.FullAcfPath.FullName),
+                        FolderSize = Game.FullAcfPath.Length
+                    });
+
                     Game = null;
                     return; // Do not add pre-loads to list
                 }

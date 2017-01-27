@@ -35,6 +35,8 @@ namespace Steam_Library_Manager
             libraryContextMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
             gameContextMenuItems.ItemsSource = Definitions.List.GameCMenuItems;
 
+            LibraryCleaner.ItemsSource = Definitions.List.JunkStuff;
+
             TaskManager_LogsView.ItemsSource = TaskManager_Logs;
         }
 
@@ -63,7 +65,7 @@ namespace Steam_Library_Manager
             Application.Current.Shutdown();
         }
 
-        private void MainForm_SourceInitialized(object sender, System.EventArgs e)
+        private void MainForm_SourceInitialized(object sender, EventArgs e)
         {
             Framework.NativeMethods.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
         }
@@ -125,6 +127,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -261,13 +264,6 @@ namespace Steam_Library_Manager
 
             // Update games list from current selection
             Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
-
-            UpdateLibraryCleaner();
-        }
-
-        private void UpdateLibraryCleaner()
-        {
-            LibraryCleaner.ItemsSource = Definitions.SLM.selectedLibrary.GetUselessFolders().OrderByDescending(x => x.FolderSize);
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -361,15 +357,21 @@ namespace Steam_Library_Manager
                 {
                     if ((string)(sender as MenuItem).Tag == "Explorer")
                     {
-                        Process.Start(currentJunk.DirectoryInfo.FullName);
+                        Process.Start(currentJunk.FileSystemInfo.FullName);
                     }
                     else
                     {
-                        currentJunk.DirectoryInfo.Delete(true);
+                        if (currentJunk.FileSystemInfo.Exists)
+                        {
+                            if (currentJunk.FileSystemInfo is FileInfo)
+                                ((FileInfo)currentJunk.FileSystemInfo).Delete();
+                            else
+                                ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
+                        }
+
+                        Definitions.List.JunkStuff.Remove(currentJunk);
                     }
                 }
-
-                UpdateLibraryCleaner();
             }
             catch (Exception ex)
             {
@@ -388,7 +390,10 @@ namespace Steam_Library_Manager
 
                 if ((string)(sender as Button).Tag == "Refresh")
                 {
-                    UpdateLibraryCleaner();
+                    foreach (Definitions.Library library in Definitions.List.Libraries)
+                    {
+                        library.UpdateJunks();
+                    }
                 }
                 else
                 {
@@ -398,10 +403,16 @@ namespace Steam_Library_Manager
 
                         foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
                         {
-                            currentJunk.DirectoryInfo.Delete(true);
-                        }
+                            if (currentJunk.FileSystemInfo.Exists)
+                            {
+                                if (currentJunk.FileSystemInfo is FileInfo)
+                                    ((FileInfo)currentJunk.FileSystemInfo).Delete();
+                                else
+                                    ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
+                            }
 
-                        UpdateLibraryCleaner();
+                            Definitions.List.JunkStuff.Remove(currentJunk);
+                        }
                     }
                 }
             }

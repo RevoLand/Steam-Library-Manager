@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -98,7 +97,15 @@ namespace Steam_Library_Manager.Definitions
 
                     // If key doesn't contains a child (value in acf file)
                     if (Key.Children.Count == 0)
+                    {
+                        List.JunkStuff.Add(new List.JunkInfo
+                        {
+                            FileSystemInfo = new DirectoryInfo(AcfFile.FullName),
+                            FolderSize = AcfFile.Length
+                        });
+
                         return;
+                    }
 
                     Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
                 });
@@ -339,43 +346,72 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<List.JunkInfo> GetUselessFolders()
+        public void UpdateJunks()
         {
             try
             {
-                List<List.JunkInfo> JunkFolders = new List<List.JunkInfo>();
-
                 if (CommonFolder.Exists)
                 {
-                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(x => Games.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0))
+                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(
+                        x => Games.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
+                        && x.Name != "241100"
+                        ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
-                        JunkFolders.Add(new List.JunkInfo
+                        List.JunkInfo JunkInfo = new List.JunkInfo
                         {
-                            DirectoryInfo = DirInfo,
+                            FileSystemInfo = DirInfo,
                             FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
-                        });
+                        };
+
+
+                        if (!List.JunkStuff.Contains(JunkInfo))
+                            List.JunkStuff.Add(JunkInfo);
                     }
                 }
 
-                if (new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).Exists)
+                if (WorkshopFolder.Exists)
                 {
-                    foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().Where(x => Games.Count(y => y.AppID.ToString() == x.Name) == 0))
+                    foreach (FileInfo DirInfo in WorkshopFolder.GetFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
+                        x => Games.Count(y => x.Name == y.WorkShopAcfName) == 0
+                        && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
+                        ))
                     {
-                        JunkFolders.Add(new List.JunkInfo
+                        List.JunkInfo JunkInfo = new List.JunkInfo
                         {
-                            DirectoryInfo = DirInfo,
-                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
-                        });
+                            FileSystemInfo = DirInfo,
+                            FolderSize = DirInfo.Length
+                        };
+
+
+                        if (!List.JunkStuff.Contains(JunkInfo))
+                            List.JunkStuff.Add(JunkInfo);
                     }
                 }
 
-                return JunkFolders;
+                if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "content")))
+                {
+                    foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().Where(
+                        x => Games.Count(y => y.AppID.ToString() == x.Name) == 0
+                        && x.Name != "241100"
+                        ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
+                    {
+                        List.JunkInfo JunkInfo = new List.JunkInfo
+                        {
+                            FileSystemInfo = DirInfo,
+                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
+                        };
+
+
+                        if (!List.JunkStuff.Contains(JunkInfo))
+                            List.JunkStuff.Add(JunkInfo);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
-                return null;
             }
         }
 

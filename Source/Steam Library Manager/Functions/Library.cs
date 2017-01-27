@@ -90,7 +90,10 @@ namespace Steam_Library_Manager.Functions
                 Definitions.List.Libraries.Add(Library);
 
                 if (!IsOfflineLibrary)
+                {
                     await Task.Run(() => Library.UpdateGameList());
+                    await Task.Run(() => Library.UpdateJunks());
+                }
             }
             catch (Exception ex)
             {

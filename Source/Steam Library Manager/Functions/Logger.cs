@@ -131,7 +131,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                DirectoryInfo GameLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "Game", Log.Game.AppName));
+                DirectoryInfo GameLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "Game", Log.Game.InstallationPath.Name));
 
                 if (!GameLogDirectory.Exists)
                     GameLogDirectory.Create();

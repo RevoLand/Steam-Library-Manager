@@ -216,8 +216,6 @@ namespace Steam_Library_Manager.Definitions
             List<FileSystemInfo> gameFiles = GetFileList();
             currentTask.ProgressBarMax = gameFiles.Count;
             System.Diagnostics.Stopwatch timeElapsed = new System.Diagnostics.Stopwatch();
-            timeElapsed.Start();
-
             try
             {
                 long totalFileSize = 0;
@@ -230,6 +228,8 @@ namespace Steam_Library_Manager.Definitions
                 {
                     Interlocked.Add(ref totalFileSize, (file as FileInfo).Length);
                 });
+
+                timeElapsed.Start();
 
                 LogToTM($"[{AppName}] File list populated, total files to move: {gameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(totalFileSize)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"File list populated, total files to move: {gameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(totalFileSize)}", this);
@@ -262,8 +262,6 @@ namespace Steam_Library_Manager.Definitions
                             if (cancellationToken.IsCancellationRequested)
                                 throw new OperationCanceledException(cancellationToken);
                         }
-
-                        compressed.CreateEntryFromFile(FullAcfPath.FullName, AcfName);
                     }
                 }
                 else if (IsCompressed && !currentTask.Compress)
@@ -350,6 +348,7 @@ namespace Steam_Library_Manager.Definitions
                         Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{copiedFiles.Count}/{currentTask.ProgressBarMax}] Moven file: {newFile.FullName}", this);
                     });
                 }
+
 
                 timeElapsed.Stop();
                 currentTask.ProgressBar = currentTask.ProgressBarMax;

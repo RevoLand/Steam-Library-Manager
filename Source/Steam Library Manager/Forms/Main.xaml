@@ -376,7 +376,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView x:Name="gamePanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="gamePanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -451,10 +451,10 @@
                                         </ContextMenu>
                                     </Grid.ContextMenu>
                                     <Grid>
-                                        <TextBlock Text="{Binding DirectoryInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding FileSystemInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
                                         <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
-                                            <TextBlock Text="{Binding DirectoryInfo.FullName}" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding DirectoryInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding FileSystemInfo.FullName}" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding FileSystemInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
                                             <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
                                         </Grid>
                                     </Grid>
