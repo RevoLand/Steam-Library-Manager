@@ -48,7 +48,7 @@ namespace Steam_Library_Manager.Definitions
             set
             {
                 _Offline = value;
-                OnPropertyChanged("Offline");
+                OnPropertyChanged("IsOffline");
             }
         }
 
