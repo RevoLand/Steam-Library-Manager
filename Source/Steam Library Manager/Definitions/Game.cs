@@ -252,6 +252,9 @@ namespace Steam_Library_Manager.Definitions
 
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
+                            copiedFiles.Add(newFileName);
+                            currentTask.ProgressBar = copiedFiles.Count;
+
                             if (currentTask.ReportFileMovement)
                             {
                                 LogToTM($"[{AppName}][{copiedFiles.Count}/{currentTask.ProgressBarMax}] Moven file: {newFileName}");
@@ -294,7 +297,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 else
                 {
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize), parallelOptions, currentFile =>
+                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000), parallelOptions, currentFile =>
                     {
                         FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
 
@@ -322,7 +325,7 @@ namespace Steam_Library_Manager.Definitions
 
                     parallelOptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize), parallelOptions, currentFile =>
+                    Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000), parallelOptions, currentFile =>
                     {
                         FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
 

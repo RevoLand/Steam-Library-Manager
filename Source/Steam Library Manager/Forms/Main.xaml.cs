@@ -44,6 +44,9 @@ namespace Steam_Library_Manager
         {
             Functions.SLM.OnLoaded();
 
+            if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
+                Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
+
             settingsGroupBox.DataContext = new Definitions.Settings();
             QuickSettings.DataContext = settingsGroupBox.DataContext;
 

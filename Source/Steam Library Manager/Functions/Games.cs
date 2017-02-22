@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Functions
                 using (ZipArchive compressedArchive = ZipFile.OpenRead(zipPath))
                 {
                     // For each file in opened archive
-                    foreach (ZipArchiveEntry acfFilePath in compressedArchive.Entries.Where(x => x.Name.Contains(".acf")))
+                    foreach (ZipArchiveEntry acfFilePath in compressedArchive.Entries.Where(x => x.Name.Contains("appmanifest_")))
                     {
                         // If it contains
                         // Define a KeyValue reader
@@ -114,6 +114,9 @@ namespace Steam_Library_Manager.Functions
                             continue;
 
                         AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
+
+                        if (Key["SLM"]["name"] != null)
+                            MessageBox.Show(Key["SLM"]["name"].Value);
                     }
                 }
             }
@@ -133,7 +136,6 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-
                 if (Main.Accessor.gamePanel.Dispatcher.CheckAccess())
                 {
                     if (Definitions.List.Libraries.Count(x => x == Library) == 0)

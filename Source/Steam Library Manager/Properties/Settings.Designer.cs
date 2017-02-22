@@ -12,7 +12,7 @@ namespace Steam_Library_Manager.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -95,7 +95,7 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20000000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public long ParallelAfterSize {
             get {
@@ -115,26 +115,29 @@ namespace Steam_Library_Manager.Properties {
             "l=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=" +
             "Visible;;active=True;;separator=True|text={0} ({1});;action=Disk;;icon=FolderOpe" +
             "n;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSte" +
-            "amBackup=Visible;;showToCompressed=Visible;;active=True;;separator=False|text=Ga" +
-            "me Hub;;action=steam://url/GameHub/{0};;icon=Book;;iconcolor=#FF000000;;showToNo" +
-            "rmal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompress" +
-            "ed=Visible;;active=True;;separator=False|;;icon=None;;iconcolor=#FF000000;;showT" +
-            "oNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompr" +
-            "essed=Visible;;active=True;;separator=True|text=Workshop;;action=steam://url/Ste" +
-            "amWorkshopPage/{0};;icon=Cog;;iconcolor=#FF000000;;showToNormal=Visible;;showToS" +
-            "LMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=Tr" +
-            "ue;;separator=False|text=Subscribed Workshop Items;;action=http://steamcommunity" +
-            ".com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortme" +
-            "thod=lastupdated;;icon=Cogs;;iconcolor=#FF000000;;showToNormal=Visible;;showToSL" +
-            "MBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=Tru" +
-            "e;;separator=False|text=Size on disk: {2};;action=Disk;;icon=HddOutline;;iconcol" +
-            "or=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=V" +
-            "isible;;showToCompressed=Visible;;active=True;;separator=False|;;icon=None;;icon" +
-            "color=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBacku" +
-            "p=Visible;;showToCompressed=Visible;;active=True;;separator=True|text=Delete gam" +
-            "e files (SLM);;action=deleteGameFilesSLM;;icon=Trash;;iconcolor=#FF000000;;showT" +
-            "oNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompr" +
-            "essed=Visible;;active=True;;separator=False|")]
+            "amBackup=Visible;;showToCompressed=Visible;;active=True;;separator=False|text=Vi" +
+            "ew ACF File;;action=acffile;;icon=PencilSquareOutline;;iconcolor=#FF000000;;show" +
+            "ToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToComp" +
+            "ressed=Visible;;active=True;;separator=False|text=Game Hub;;action=steam://url/G" +
+            "ameHub/{0};;icon=Book;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBacku" +
+            "p=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=True;;sep" +
+            "arator=False|;;icon=None;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBa" +
+            "ckup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;active=True;;" +
+            "separator=True|text=Workshop;;action=steam://url/SteamWorkshopPage/{0};;icon=Cog" +
+            ";;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;showToStea" +
+            "mBackup=Visible;;showToCompressed=Visible;;active=True;;separator=False|text=Sub" +
+            "scribed Workshop Items;;action=http://steamcommunity.com/profiles/{1}/myworkshop" +
+            "files/?appid={0}&amp;browsefilter=mysubscriptions&amp;sortmethod=lastupdated;;ic" +
+            "on=Cogs;;iconcolor=#FF000000;;showToNormal=Visible;;showToSLMBackup=Visible;;sho" +
+            "wToSteamBackup=Visible;;showToCompressed=Visible;;active=True;;separator=False|t" +
+            "ext=Size on disk: {2};;action=Disk;;icon=HddOutline;;iconcolor=#FF000000;;showTo" +
+            "Normal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompre" +
+            "ssed=Visible;;active=True;;separator=False|;;icon=None;;iconcolor=#FF000000;;sho" +
+            "wToNormal=Visible;;showToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCom" +
+            "pressed=Visible;;active=True;;separator=True|text=Delete game files (SLM);;actio" +
+            "n=deleteGameFilesSLM;;icon=Trash;;iconcolor=#FF000000;;showToNormal=Visible;;sho" +
+            "wToSLMBackup=Visible;;showToSteamBackup=Visible;;showToCompressed=Visible;;activ" +
+            "e=True;;separator=False|")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string gameContextMenu {
             get {
@@ -190,7 +193,7 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool PlayASoundOnCompletion {
             get {
@@ -226,20 +229,6 @@ namespace Steam_Library_Manager.Properties {
             }
             set {
                 this["CheckforUpdatesAtStartup"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string CustomSoundFile {
-            get {
-                return ((string)(this["CustomSoundFile"]));
-            }
-            set {
-                this["CustomSoundFile"] = value;
             }
         }
         
@@ -310,6 +299,20 @@ namespace Steam_Library_Manager.Properties {
             }
             set {
                 this["Advanced_Logging"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string CustomSoundFile {
+            get {
+                return ((string)(this["CustomSoundFile"]));
+            }
+            set {
+                this["CustomSoundFile"] = value;
             }
         }
     }

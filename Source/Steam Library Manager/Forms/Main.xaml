@@ -500,7 +500,7 @@
                             <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- 2#2 -->
-                            <Label Content="Move files 1 by 1 after that size: (bytes)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <Label Content="Move files sync'ed if bigger than (MB)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
 
                             <!-- 2#3 -->
