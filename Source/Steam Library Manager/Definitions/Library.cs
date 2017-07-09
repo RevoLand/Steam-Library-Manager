@@ -101,7 +101,8 @@ namespace Steam_Library_Manager.Definitions
                         List.JunkStuff.Add(new List.JunkInfo
                         {
                             FileSystemInfo = new FileInfo(AcfFile.FullName),
-                            FolderSize = AcfFile.Length
+                            FolderSize = AcfFile.Length,
+                            Library = this
                         });
 
                         return;
@@ -354,13 +355,14 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(
                         x => Games.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
-                        && x.Name != "241100"
+                        && x.Name != "241100" // Steam controller configs
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
                         List.JunkInfo JunkInfo = new List.JunkInfo
                         {
                             FileSystemInfo = DirInfo,
-                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
+                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true),
+                            Library = this
                         };
 
 
@@ -379,7 +381,8 @@ namespace Steam_Library_Manager.Definitions
                         List.JunkInfo JunkInfo = new List.JunkInfo
                         {
                             FileSystemInfo = DirInfo,
-                            FolderSize = DirInfo.Length
+                            FolderSize = DirInfo.Length,
+                            Library = this
                         };
 
 
@@ -392,13 +395,14 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().Where(
                         x => Games.Count(y => y.AppID.ToString() == x.Name) == 0
-                        && x.Name != "241100"
+                        && x.Name != "241100" // Steam controller configs
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
                         List.JunkInfo JunkInfo = new List.JunkInfo
                         {
                             FileSystemInfo = DirInfo,
-                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true)
+                            FolderSize = Functions.FileSystem.GetDirectorySize(DirInfo, true),
+                            Library = this
                         };
 
 

@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Functions
                             WindowStyle = ProcessWindowStyle.Hidden,
 
                             // Set CMD arguments
-                            Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, "SLM is successfully updated!?")
+                            Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, "SLM is successfully updated(?)")
                         };
 
                         // Set startinfo for cmd process

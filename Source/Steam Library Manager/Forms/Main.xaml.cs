@@ -18,6 +18,7 @@ namespace Steam_Library_Manager
     {
         public static Main Accessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
+        Framework.Network.Server SLMServer = new Framework.Network.Server();
 
         public Main()
         {
@@ -42,7 +43,7 @@ namespace Steam_Library_Manager
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            Functions.SLM.OnLoaded();
+            Functions.SLM.OnLoad();
 
             if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
@@ -391,9 +392,6 @@ namespace Steam_Library_Manager
         {
             try
             {
-                if (LibraryCleaner.Items.Count == 0)
-                    return;
-
                 if ((string)(sender as Button).Tag == "Refresh")
                 {
                     foreach (Definitions.Library library in Definitions.List.Libraries)
@@ -401,7 +399,66 @@ namespace Steam_Library_Manager
                         library.UpdateJunks();
                     }
                 }
-                else
+
+                if (LibraryCleaner.Items.Count == 0)
+                    return;
+
+                if ((string)(sender as Button).Tag == "MoveAll")
+                {
+                    var TargetFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+                    System.Windows.Forms.DialogResult TargetFolderDialogResult = TargetFolderBrowser.ShowDialog();
+
+                    if (TargetFolderDialogResult == System.Windows.Forms.DialogResult.OK)
+                    {
+                        if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath)
+                        {
+                            if (MessageBox.Show("Are you sure you like to move junks to root of disk?", "Root?", MessageBoxButton.YesNoCancel) != MessageBoxResult.Yes)
+                            {
+                                Debug.WriteLine("test");
+                                return;
+                            }
+                        }
+
+                        // TargetFolderBrowser.SelectedPath
+                        List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
+
+                        foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                        {
+                            if (currentJunk.FileSystemInfo is FileInfo)
+                            {
+                                if (((FileInfo)currentJunk.FileSystemInfo).Exists)
+                                    (currentJunk.FileSystemInfo as FileInfo).CopyTo(currentJunk.FileSystemInfo.Name, true);
+
+                                currentJunk.FileSystemInfo.Delete();
+                            }
+                            else
+                            {
+                                if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
+                                {
+                                    foreach(FileInfo currentFile in (currentJunk.FileSystemInfo as DirectoryInfo).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    {
+                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(currentJunk.Library.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
+
+                                        if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
+                                        {
+                                            if (!newFile.Directory.Exists)
+                                            {
+                                                newFile.Directory.Create();
+                                            }
+
+                                            currentFile.CopyTo(newFile.FullName, true);
+                                        }
+                                    }
+
+                                    (currentJunk.FileSystemInfo as DirectoryInfo).Delete(true);
+                                }
+                            }
+
+                            Definitions.List.JunkStuff.Remove(currentJunk);
+                        }
+                    }
+                }
+                else if ((string)(sender as Button).Tag == "DeleteAll")
                 {
                     if (MessageBox.Show("Saved Games may be located within these folders, are you sure you want to remove them?", "There might be saved games in these folders?!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
@@ -436,6 +493,29 @@ namespace Steam_Library_Manager
         {
             if (Directory.Exists(Definitions.Directories.SLM.LogDirectory))
                 Process.Start(Definitions.Directories.SLM.LogDirectory);
+        }
+
+        private void GetIPButton_Click(object sender, RoutedEventArgs e)
+        {
+            Functions.Network.UpdatePublicIP();
+        }
+
+        private void GetPortButton_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
+        }
+
+        private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
+        {
+            //ToggleSLMServer.Content = "Stop Server";
+            SLMServer.StartServer();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Framework.Network.Client SLMClient = new Framework.Network.Client();
+
+            SLMClient.ConnectToServer();
         }
     }
 }

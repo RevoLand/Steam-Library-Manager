@@ -234,6 +234,7 @@ namespace Steam_Library_Manager.Definitions
                 LogToTM($"[{AppName}] File list populated, total files to move: {gameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(totalFileSize)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"File list populated, total files to move: {gameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(totalFileSize)}", this);
 
+                // If the game is not compressed and user would like to compress it
                 if (!IsCompressed && currentTask.Compress)
                 {
                     FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
@@ -267,6 +268,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                     }
                 }
+                // If the game is compressed and user would like to decompress it
                 else if (IsCompressed && !currentTask.Compress)
                 {
                     foreach (ZipArchiveEntry currentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
@@ -295,6 +297,7 @@ namespace Steam_Library_Manager.Definitions
                             throw new OperationCanceledException(cancellationToken);
                     }
                 }
+                // Everything else
                 else
                 {
                     Parallel.ForEach(gameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000), parallelOptions, currentFile =>

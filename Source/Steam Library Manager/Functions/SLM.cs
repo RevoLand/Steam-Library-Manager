@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void OnLoaded()
+        public static void OnLoad()
         {
             if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
                 Updater.CheckForUpdates();

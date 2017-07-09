@@ -35,7 +35,8 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.JunkStuff.Add(new Definitions.List.JunkInfo
                     {
                         FileSystemInfo = new FileInfo(Game.FullAcfPath.FullName),
-                        FolderSize = Game.FullAcfPath.Length
+                        FolderSize = Game.FullAcfPath.Length,
+                        Library = Library
                     });
 
                     Game = null;
@@ -115,8 +116,10 @@ namespace Steam_Library_Manager.Functions
 
                         AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
 
+                        /*
                         if (Key["SLM"]["name"] != null)
                             MessageBox.Show(Key["SLM"]["name"].Value);
+                        */
                     }
                 }
             }

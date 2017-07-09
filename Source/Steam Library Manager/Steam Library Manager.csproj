@@ -94,6 +94,7 @@
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
+    <Compile Include="Framework\Network.cs" />
     <Compile Include="Framework\TaskManager.cs" />
     <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
     <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Functions\Games.cs" />
     <Compile Include="Functions\Library.cs" />
     <Compile Include="Functions\Logger.cs" />
+    <Compile Include="Functions\Network.cs" />
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

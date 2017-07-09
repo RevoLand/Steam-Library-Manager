@@ -462,10 +462,39 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="425" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
-                    <Button Tag="Refresh" Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="425" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
+                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <!-- Visual error: On Fullscreen Move All button goes wider than others -->
+                    <Button Tag="MoveAll" Content="Move All" Margin="310,0,309,10" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <Button Tag="Refresh" Content="Refresh List" Margin="0,0,10,10" HorizontalAlignment="Right" Width="275" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
+            <!-- WIP
+            <TabItem Header="SLM Server" Padding="20, 10">
+                <Grid Background="White">
+                    <Label Content="Listen IP:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenIP}" Height="22" />
+                    <Button Content="Get IP" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,10,0,0" Width="68" Height="22" Click="GetIPButton_Click" />
+
+                    <Label Content="Listen Port:" Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="104,37,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenPort}" Height="22" />
+                    <Button Content="Get Port" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,37,0,0" Width="68" Height="22" Click="GetPortButton_Click" />
+
+                    <Label Content="Server Status:" Margin="10,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Name="ServerStatus" Content="" Margin="104,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="284"/>
+
+                    <Button Name="ToggleSLMServer" Content="Start Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="68" Height="22" Click="ToggleSLMServerButton_Click" />
+
+                    <Label Content="IP:" Margin="589,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox Margin="617,10,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding IPToConnect}" Height="22" />
+
+                    <Label Content="Port:" Margin="578,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox Margin="617,37,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding PortToConnect}" Height="22" />
+                    <Button Content="Connect" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,21,10,0" Width="52" Height="22" Click="Button_Click" />
+                    <Label Content="Status:" Margin="567,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label x:Name="ConnectionStatus" Content="" Margin="617,64,10,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            -->
             <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="White">
                     <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,360">

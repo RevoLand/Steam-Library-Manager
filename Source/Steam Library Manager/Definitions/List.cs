@@ -65,6 +65,7 @@ namespace Steam_Library_Manager.Definitions
         public class JunkInfo
         {
             public System.IO.FileSystemInfo FileSystemInfo { get; set; }
+            public Library Library { get; set; }
             public long FolderSize { get; set; }
             public string PrettyFolderSize
             {
