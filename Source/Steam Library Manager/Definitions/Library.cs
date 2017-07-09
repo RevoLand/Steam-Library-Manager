@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ namespace Steam_Library_Manager.Definitions
 {
     public class Library : INotifyPropertyChanged
     {
-        private bool _Offline;
+        bool _Offline;
+        FileSystemWatcher FolderWD;
 
         public bool IsMain { get; set; }
         public bool IsBackup { get; set; }
@@ -87,7 +89,7 @@ namespace Steam_Library_Manager.Definitions
                     Games.Clear();
 
                 // Foreach *.acf file found in library
-                Parallel.ForEach(SteamAppsFolder.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly), AcfFile =>
+                Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly), AcfFile =>
                 {
                     // Define a new value and call KeyValue
                     Framework.KeyValue Key = new Framework.KeyValue();
@@ -145,6 +147,80 @@ namespace Steam_Library_Manager.Definitions
 
                 if (SLM.selectedLibrary == this)
                     Functions.Games.UpdateMainForm(this);
+
+                FolderWD = new FileSystemWatcher()
+                {
+                    Path = SteamAppsFolder.FullName,
+                    Filter = "appmanifest_*.acf",
+                    EnableRaisingEvents = true
+                };
+
+                FolderWD.Created += FolderWD_Created;
+                FolderWD.Deleted += FolderWD_Deleted;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        private void FolderWD_Created(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                // Define a new value and call KeyValue
+                Framework.KeyValue Key = new Framework.KeyValue();
+
+                // Read the *.acf file as text
+                Key.ReadFileAsText(e.FullPath);
+
+                // If key doesn't contains a child (value in acf file)
+                if (Key.Children.Count == 0)
+                {
+                    List.JunkStuff.Add(new List.JunkInfo
+                    {
+                        FileSystemInfo = new FileInfo(e.FullPath),
+                        Library = this
+                    });
+
+                    return;
+                }
+
+                if (Games.Count(x => x.AppID == Convert.ToInt32(Key["appID"].Value)) > 0)
+                    return;
+
+                Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+
+                if (SLM.selectedLibrary == this)
+                    Functions.Games.UpdateMainForm(this);
+
+                UpdateLibraryVisual();
+            }
+            catch (FormatException fEx)
+            {
+                Debug.WriteLine(fEx);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        private void FolderWD_Deleted(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                if (Games.Count(x => x.AcfName == e.Name) > 0)
+                {
+                    Games.Remove(Games.First(x => x.AcfName == e.Name));
+
+                    if (SLM.selectedLibrary == this)
+                        Functions.Games.UpdateMainForm(this);
+
+                    UpdateLibraryVisual();
+                }
             }
             catch (Exception ex)
             {
@@ -224,8 +300,6 @@ namespace Steam_Library_Manager.Definitions
 
                             return;
                         }
-                        else
-                            Game.RemoveFromLibrary();
                     }
 
                     UpdateLibraryVisual();
@@ -233,6 +307,7 @@ namespace Steam_Library_Manager.Definitions
                     MessageBox.Show(string.Format("All game files in library ({0}) successfully removed.", FullPath));
                     break;
                 case "movelibrary":
+                    
                     //new Forms.moveLibrary(Library).Show();
                     break;
 
@@ -373,7 +448,7 @@ namespace Steam_Library_Manager.Definitions
 
                 if (WorkshopFolder.Exists)
                 {
-                    foreach (FileInfo DirInfo in WorkshopFolder.GetFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
+                    foreach (FileInfo DirInfo in WorkshopFolder.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
                         x => Games.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
                         ))

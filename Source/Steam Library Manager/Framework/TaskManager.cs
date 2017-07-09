@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +25,7 @@ namespace Steam_Library_Manager.Framework
                 if (!CancellationToken.IsCancellationRequested)
                 {
                     // If game is not exists in the target library
+                    /*
                     if (currentTask.TargetLibrary.Games.Count(x => x.AcfName == currentTask.TargetGame.AcfName && currentTask.Compress == x.IsCompressed) == 0)
                     {
                         // Add game to new library
@@ -34,13 +34,11 @@ namespace Steam_Library_Manager.Framework
                         // Update library details
                         currentTask.TargetLibrary.UpdateLibraryVisual();
                     }
+                    */
 
                     if (currentTask.RemoveOldFiles)
                     {
-                        if (currentTask.TargetGame.DeleteFiles())
-                        {
-                            currentTask.TargetGame.RemoveFromLibrary();
-                        }
+                        currentTask.TargetGame.DeleteFiles();
                     }
 
                     if (!currentTask.TargetLibrary.IsBackup)

@@ -418,8 +418,7 @@ namespace Steam_Library_Manager
                                 return;
                             }
                         }
-
-                        // TargetFolderBrowser.SelectedPath
+                        
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
                         foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
@@ -435,7 +434,7 @@ namespace Steam_Library_Manager
                             {
                                 if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
                                 {
-                                    foreach(FileInfo currentFile in (currentJunk.FileSystemInfo as DirectoryInfo).GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    foreach(FileInfo currentFile in (currentJunk.FileSystemInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
                                     {
                                         FileInfo newFile = new FileInfo(currentFile.FullName.Replace(currentJunk.Library.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
 

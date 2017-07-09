@@ -593,9 +593,16 @@ namespace Steam_Library_Manager.Framework
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
         public bool ReadFileAsText(string filename)
         {
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            try
             {
-                return ReadAsText(fs);
+                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read))
+                {
+                    return ReadAsText(fs);
+                }
+            }
+            catch (IOException)
+            {
+                return ReadFileAsText(filename);
             }
         }
 

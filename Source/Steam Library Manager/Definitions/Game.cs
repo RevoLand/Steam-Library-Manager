@@ -141,7 +141,6 @@ namespace Steam_Library_Manager.Definitions
                 case "deletegamefilesslm":
 
                     DeleteFiles();
-                    RemoveFromLibrary();
                     break;
             }
         }
@@ -188,22 +187,22 @@ namespace Steam_Library_Manager.Definitions
 
         public List<FileSystemInfo> GetCommonFiles()
         {
-            return CommonFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+            return CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetDownloadFiles()
         {
-            return DownloadFolder.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+            return DownloadFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetPatchFiles()
         {
-            return InstalledLibrary.DownloadFolder.GetFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
+            return InstalledLibrary.DownloadFolder.EnumerateFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
         }
 
         public List<FileSystemInfo> GetWorkshopFiles()
         {
-            return WorkShopPath.GetFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+            return WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
         public void CopyGameFiles(List.TaskList currentTask, CancellationToken cancellationToken)
@@ -448,16 +447,6 @@ namespace Steam_Library_Manager.Definitions
 
                 return false;
             }
-        }
-
-        public void RemoveFromLibrary()
-        {
-            InstalledLibrary.Games.Remove(this);
-
-            InstalledLibrary.UpdateLibraryVisual();
-
-            if (SLM.selectedLibrary == InstalledLibrary)
-                Functions.Games.UpdateMainForm(InstalledLibrary);
         }
     }
 }

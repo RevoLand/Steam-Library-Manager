@@ -56,7 +56,7 @@ namespace Steam_Library_Manager.Functions
                 // Define a "long" for directory size
                 long directorySize = 0;
 
-                foreach (FileInfo currentFile in directoryPath.GetFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
+                foreach (FileInfo currentFile in directoryPath.EnumerateFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
                 {
                     directorySize += currentFile.Length;
                 }
