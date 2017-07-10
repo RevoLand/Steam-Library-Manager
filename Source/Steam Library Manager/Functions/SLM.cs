@@ -27,6 +27,9 @@ namespace Steam_Library_Manager.Functions
                     case "backupType":
                         Sort = x => x.IsCompressed;
                         break;
+                    case "LastUpdated":
+                        Sort = x => x.LastUpdated;
+                        break;
                 }
 
                 return Sort;

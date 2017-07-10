@@ -13,7 +13,9 @@ namespace Steam_Library_Manager.Definitions.Enums
         [Description("Sort by app size on disk")]
         sizeOnDisk,
         [Description("Sort by backup type")]
-        backupType
+        backupType,
+        [Description("Sort by latest update time")]
+        LastUpdated
     }
 
     public enum GameSizeCalculationMethod

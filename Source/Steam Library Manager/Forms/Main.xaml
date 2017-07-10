@@ -24,7 +24,7 @@
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="240,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
-                        <TextBlock Padding="0,-15,0,0">
+                        <TextBlock Margin="0,-30,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -45,6 +45,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        <TextBlock Text="{Binding LastUpdated, StringFormat='Updated on: {0}'}" HorizontalAlignment="Left" Margin="0,-15,0,0" />
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
                     </Grid>
@@ -67,30 +68,32 @@
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
+                    <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
+                                            <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Text" Value="SLM backup" />
+                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                        <Setter Property="Text" Value="Steam backup" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsCompressed}" Value="true">
+                                        <Setter Property="Text" Value="Compressed backup" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding IsSteamBackup}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="SLM backup" />
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
-                                            <Setter Property="Text" Value="Steam backup" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsCompressed}" Value="true">
-                                            <Setter Property="Text" Value="Compressed backup" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding LastUpdated, StringFormat='Updated on: {0}'}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Grid>

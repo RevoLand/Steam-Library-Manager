@@ -20,6 +20,7 @@ namespace Steam_Library_Manager.Definitions
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
         public Library InstalledLibrary { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public string GameHeaderImage
         {

@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Functions
 {
     class Games
     {
-        public static void AddNewGame(int appID, string appName, string installationPath, Definitions.Library Library, long sizeOnDisk, bool isCompressed, bool isSteamBackup = false)
+        public static void AddNewGame(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
@@ -16,17 +16,18 @@ namespace Steam_Library_Manager.Functions
                 Definitions.Game Game = new Definitions.Game()
                 {
                     // Set game appID
-                    AppID = appID,
+                    AppID = AppID,
 
                     // Set game name
-                    AppName = appName,
+                    AppName = AppName,
 
                     InstalledLibrary = Library,
-                    InstallationPath = new DirectoryInfo(installationPath),
+                    InstallationPath = new DirectoryInfo(InstallationPath),
 
                     // Define it is an archive
-                    IsCompressed = isCompressed,
-                    IsSteamBackup = isSteamBackup
+                    IsCompressed = IsCompressed,
+                    IsSteamBackup = IsSteamBackup,
+                    LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
@@ -43,7 +44,7 @@ namespace Steam_Library_Manager.Functions
                     return; // Do not add pre-loads to list
                 }
 
-                if (isCompressed)
+                if (IsCompressed)
                 {
                     // If user want us to get archive size from real uncompressed size
                     if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
@@ -80,7 +81,7 @@ namespace Steam_Library_Manager.Functions
                     }
                     else
                         // Else set game size to size in acf
-                        Game.SizeOnDisk = sizeOnDisk;
+                        Game.SizeOnDisk = SizeOnDisk;
                 }
 
                 // Add our game details to global list
@@ -114,7 +115,7 @@ namespace Steam_Library_Manager.Functions
                         if (Key.Children.Count == 0)
                             continue;
 
-                        AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), true);
+                        AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), acfFilePath.LastWriteTime.UtcTicks, true);
 
                         /*
                         if (Key["SLM"]["name"] != null)
@@ -149,7 +150,7 @@ namespace Steam_Library_Manager.Functions
 
                     Func<Definitions.Game, object> Sort = SLM.Settings.GetSortingMethod();
 
-                    Main.Accessor.gamePanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk") ? 
+                    Main.Accessor.gamePanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ? 
                         (((string.IsNullOrEmpty(Search)) ? Library.Games.OrderByDescending(Sort).ToList() : Library.Games.Where(
                             y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                             || y.AppID.ToString().Contains(Search) // Search by app ID

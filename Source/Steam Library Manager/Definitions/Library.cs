@@ -110,7 +110,7 @@ namespace Steam_Library_Manager.Definitions
                         return;
                     }
 
-                    Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                    Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), Convert.ToInt64(Key["LastUpdated"].Value), false);
                 });
 
                 // Do a loop for each *.zip file in library
@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Games.Count(x => x.AppID == Convert.ToInt32(app.Value)) > 0)
                                 continue;
 
-                            Functions.Games.AddNewGame(Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, false, true);
+                            Functions.Games.AddNewGame(Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, new FileInfo(skuFile).LastWriteTimeUtc.Ticks, false, true);
 
                             if (name.Count() > 1)
                                 i++;
@@ -190,7 +190,7 @@ namespace Steam_Library_Manager.Definitions
                 if (Games.Count(x => x.AppID == Convert.ToInt32(Key["appID"].Value)) > 0)
                     return;
 
-                Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), false);
+                Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), Convert.ToInt64(Key["LastUpdated"].Value), false);
 
                 if (SLM.selectedLibrary == this)
                     Functions.Games.UpdateMainForm(this);
