@@ -413,10 +413,7 @@ namespace Steam_Library_Manager
                         if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath)
                         {
                             if (MessageBox.Show("Are you sure you like to move junks to root of disk?", "Root?", MessageBoxButton.YesNoCancel) != MessageBoxResult.Yes)
-                            {
-                                Debug.WriteLine("test");
                                 return;
-                            }
                         }
                         
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
@@ -507,7 +504,7 @@ namespace Steam_Library_Manager
         private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
         {
             //ToggleSLMServer.Content = "Stop Server";
-            SLMServer.StartServer();
+            //SLMServer.StartServer();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -515,6 +512,49 @@ namespace Steam_Library_Manager
             Framework.Network.Client SLMClient = new Framework.Network.Client();
 
             SLMClient.ConnectToServer();
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                {
+                    if ((sender as Grid).DataContext as Definitions.List.TaskList is Definitions.List.TaskList)
+                    {
+                        if (((sender as Grid).DataContext as Definitions.List.TaskList).TargetGame.CommonFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskList).TargetGame.CommonFolder.FullName);
+                    }
+                    else if (((sender as Grid).DataContext is Definitions.Game))
+                    {
+                        if (((sender as Grid).DataContext as Definitions.Game).CommonFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.Game).CommonFolder.FullName);
+                    }
+                    else if (((sender as Grid).DataContext is Definitions.Library))
+                    {
+                        if (((sender as Grid).DataContext as Definitions.Library).SteamAppsFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.Library).SteamAppsFolder.FullName);
+                    }
+                    else if (((sender as Grid).DataContext is Definitions.List.JunkInfo))
+                    {
+                        if (((sender as Grid).DataContext as Definitions.List.JunkInfo).FileSystemInfo.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.JunkInfo).FileSystemInfo.FullName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
+        }
+
+        private void DonateButton_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                Process.Start(Definitions.SLM.DonateButtonURL);
+            }
+            catch { }
         }
     }
 }

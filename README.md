@@ -22,6 +22,7 @@
     - [Where can i get SLM from?](#where-can-i-get-slm-from-do-i-have-to-compile-it-myself)
     - [Do i have to pay for SLM?](#do-i-have-to-pay-for-slm)
     - [Can SLM contain a bug?](#can-slm-contain-a-bug)
+    - [Donations?](#donations)
     - [I have a different question!](#i-have-a-different-question)
 - [Credits](#credits)
 
@@ -48,6 +49,13 @@ Yes! SLM might be buggy for some setups. As i have zero-to-none chance to test S
 Luckily Task Manager *(which is used to move apps between libraries)* is running on a different thread. If any kind of exception happens during app movement, your old files won't be removen no matter what you've picked as option. Unlike [*Humans*](http://www.imdb.com/title/tt4122068/) or [*Westworld*](http://www.imdb.com/title/tt0475784/), SLM ***does not*** have any kind of AI to take control over and remove your files.
 
 Short of it no matter what your files should be safe. Just contact me out *(highly appreciated)* with the exception you have received and should be fixed asap!
+
+### Donations?
+I would like to donate to you for your effort, is it possible?
+-- Yes it is! You can send me gift cards via [Amazon.com](https://www.amazon.com/) or [Amazon.de](https://www.amazon.de/) (highly preferred, can be done globally) to <revoland@windowslive.com> 
+
+I would love to use PayPal, but it’s not available in Turkey. As a thank you, all donors will be added to the contributors list unless you specify otherwise :)
+
 
 ### I have a different question!
 Sure, just contact me over [Steam](https://steamcommunity.com/id/RevoLand/), [Reddit](https://www.reddit.com/user/RevoLand/) or Skype *(revolutionland)* and i will respond to your question asap.

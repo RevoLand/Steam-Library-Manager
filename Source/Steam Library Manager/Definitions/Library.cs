@@ -441,7 +441,7 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (!List.JunkStuff.Contains(JunkInfo))
+                        if (List.JunkStuff.Count(x => x.FileSystemInfo.FullName == JunkInfo.FileSystemInfo.FullName) == 0)
                             List.JunkStuff.Add(JunkInfo);
                     }
                 }
@@ -461,7 +461,7 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (!List.JunkStuff.Contains(JunkInfo))
+                        if (List.JunkStuff.Count(x => x.FileSystemInfo.FullName == JunkInfo.FileSystemInfo.FullName) == 0)
                             List.JunkStuff.Add(JunkInfo);
                     }
                 }
@@ -481,7 +481,7 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (!List.JunkStuff.Contains(JunkInfo))
+                        if (List.JunkStuff.Count(x => x.FileSystemInfo.FullName == JunkInfo.FileSystemInfo.FullName) == 0)
                             List.JunkStuff.Add(JunkInfo);
                     }
                 }

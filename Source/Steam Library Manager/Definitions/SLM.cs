@@ -7,5 +7,7 @@
         public static string userSteamID64;
 
         public static int NetworkBuffer = 4096 * 1024;
+
+        public static string DonateButtonURL = "https://github.com/RevoLand/Steam-Library-Manager#donations";
     }
 }
