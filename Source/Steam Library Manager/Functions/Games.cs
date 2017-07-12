@@ -28,7 +28,9 @@ namespace Steam_Library_Manager.Functions
                     IsCompressed = IsCompressed,
                     IsSteamBackup = IsSteamBackup,
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
-                };
+            };
+
+
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                 if (!Game.CommonFolder.Exists && !Game.DownloadFolder.Exists && !Game.IsCompressed && !Game.IsSteamBackup)
@@ -115,7 +117,7 @@ namespace Steam_Library_Manager.Functions
                         if (Key.Children.Count == 0)
                             continue;
 
-                        AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), acfFilePath.LastWriteTime.UtcTicks, true);
+                        AddNewGame(Convert.ToInt32(Key["appID"].Value), !string.IsNullOrEmpty(Key["name"].Value) ? Key["name"].Value : Key["UserConfig"]["name"].Value, Key["installdir"].Value, targetLibrary, Convert.ToInt64(Key["SizeOnDisk"].Value), acfFilePath.LastWriteTime.ToUnixTimeSeconds(), true);
 
                         /*
                         if (Key["SLM"]["name"] != null)

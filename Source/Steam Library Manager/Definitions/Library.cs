@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Games.Count(x => x.AppID == Convert.ToInt32(app.Value)) > 0)
                                 continue;
 
-                            Functions.Games.AddNewGame(Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, new FileInfo(skuFile).LastWriteTimeUtc.Ticks, false, true);
+                            Functions.Games.AddNewGame(Convert.ToInt32(app.Value), name[i], Path.GetDirectoryName(skuFile), this, gameSize, ((DateTimeOffset)new FileInfo(skuFile).LastWriteTimeUtc).ToUnixTimeSeconds(), false, true);
 
                             if (name.Count() > 1)
                                 i++;
