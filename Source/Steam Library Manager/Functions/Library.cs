@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +70,52 @@ namespace Steam_Library_Manager.Functions
             {
                 Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        public static void CheckForBackupUpdates()
+        {
+            try
+            {
+                if (Definitions.List.Libraries.Count(x => x.IsBackup) == 0)
+                    return;
+
+                foreach (Definitions.Library CurrentLibrary in Definitions.List.Libraries.Where(x => !x.IsBackup))
+                {
+                    if (CurrentLibrary.Games.Count == 0)
+                        continue;
+
+                    foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.IsBackup))
+                    {
+                        foreach (Definitions.Game LatestGame in CurrentLibrary.Games.Where(x => !x.IsSteamBackup))
+                        {
+                            if (LibraryToCheck.Games.Count(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated && !x.IsSteamBackup) > 0)
+                            {
+                                Definitions.Game OldGameBackup = LibraryToCheck.Games.First(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated && !x.IsSteamBackup);
+
+                                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame.AppID == LatestGame.AppID && x.TargetLibrary == OldGameBackup.InstalledLibrary) == 0)
+                                {
+                                    Definitions.List.TaskList newTask = new Definitions.List.TaskList
+                                    {
+                                        TargetGame = LatestGame,
+                                        TargetLibrary = OldGameBackup.InstalledLibrary
+                                    };
+
+                                    Framework.TaskManager.TaskList.Add(newTask);
+                                    Main.Accessor.taskPanel.Items.Add(newTask);
+                                }
+
+                                Debug.WriteLine($"An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Latest game time: {LatestGame.LastUpdated}");
+                                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Updated on: {LatestGame.LastUpdated} - Target: {LatestGame.InstalledLibrary.FullPath} - Source: {OldGameBackup.InstalledLibrary.FullPath}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
             }
         }
 

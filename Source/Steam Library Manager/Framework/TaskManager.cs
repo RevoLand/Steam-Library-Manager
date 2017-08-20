@@ -64,6 +64,8 @@ namespace Steam_Library_Manager.Framework
         {
             if (!Status)
             {
+                Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
+
                 Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
                 Main.Accessor.Button_StartTaskManager.IsEnabled = false;
                 Main.Accessor.Button_StopTaskManager.IsEnabled = true;
@@ -101,6 +103,8 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
+                    Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                    Main.Accessor.TaskbarItemInfo.ProgressValue = 0;
                     Main.Accessor.Button_StartTaskManager.IsEnabled = true;
                     Main.Accessor.Button_StopTaskManager.IsEnabled = false;
 

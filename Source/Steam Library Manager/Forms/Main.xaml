@@ -6,6 +6,9 @@
     xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     x:Name="mainForm" x:Class="Steam_Library_Manager.Main"
         Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Width="920" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo/>
+    </Window.TaskbarItemInfo>
     <Window.Resources>
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -105,6 +108,7 @@
                         <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
                     </ContextMenu>
                 </Grid.ContextMenu>
+
                 <ProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" >
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
@@ -404,6 +408,7 @@
                     </ListView>
 
                     <TextBox Margin="215,0,10,10" TextWrapping="Wrap" Height="25" VerticalAlignment="Bottom" Text="{slm:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
+                    <Button Content="Reset Search" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="150" Height="25" Click="ResetSearchTextButton_Click"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="Tab_TaskManager" Header="Task Manager" Padding="20, 10">
@@ -433,6 +438,7 @@
                         <Button x:Name="Button_StartTaskManager" Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                         <Button x:Name="Button_StopTaskManager" IsEnabled="False" Content="Stop Task Manager" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" Margin="145,0,0,0" />
                         <Button Content="Clear Completed Tasks" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="290,0,0,0" HorizontalAlignment="Left" Width="140" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+                        <Button Content="Check for Backup Updates" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="435,0,-146,0" HorizontalAlignment="Left" Width="161" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                     </Grid>
 
                     <ListView x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
@@ -541,13 +547,17 @@
                             <!-- 2#3 -->
                             <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
                             <Button Content="View Logs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="225,155,0,0" Height="25" Width="210" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
-
+                            
+                            <!-- 2#4-->
+                            <Button Content="Clear Header Image Cache" HorizontalAlignment="Left" Margin="225,185,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210" Height="25" Click="HeaderImageClearButton_Click"/>
+                            
                             <!-- 3#1 -->
                             <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <CheckBox IsChecked="{slm:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
                             <!-- 3#2 -->
                             <Label Content="Play a sound on completion" HorizontalAlignment="Left" Margin="440,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
                             <CheckBox IsChecked="{slm:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,100,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
+
 
                             <!-- 4#1 -->
                             <Label Content="Check for Updates at Startup" HorizontalAlignment="Left" Margin="655,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="165"/>

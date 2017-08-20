@@ -31,6 +31,8 @@ namespace Steam_Library_Manager
         {
             Accessor = this;
 
+            Properties.Settings.Default.SearchText = "";
+
             libraryPanel.ItemsSource = Definitions.List.Libraries;
 
             libraryContextMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
@@ -262,8 +264,6 @@ namespace Steam_Library_Manager
 
             // Update games list from current selection
             Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null);
-
-            Definitions.SLM.selectedLibrary.ParseMenuItemAction("updategames");
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -278,6 +278,9 @@ namespace Steam_Library_Manager
                 case "Stop":
                     Framework.TaskManager.Stop();
                     Button_StopTaskManager.IsEnabled = false;
+                    break;
+                case "BackupUpdates":
+                    Functions.Library.CheckForBackupUpdates();
                     break;
                 case "ClearCompleted":
                     if (taskPanel.Items.Count == 0)
@@ -557,6 +560,24 @@ namespace Steam_Library_Manager
         {
             if (Definitions.SLM.selectedLibrary != null)
                 Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, Properties.Settings.Default.SearchText);
+        }
+
+        private void ResetSearchTextButton_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.SearchText = "";
+        }
+
+        private void HeaderImageClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(Definitions.Directories.SLM.HeaderImageDirectory))
+                {
+                    Directory.Delete(Definitions.Directories.SLM.HeaderImageDirectory, true);
+                    MessageBox.Show("Header Image Cache cleared.");
+                }
+            }
+            catch { }
         }
     }
 }

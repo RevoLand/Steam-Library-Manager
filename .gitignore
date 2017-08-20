@@ -3,5 +3,6 @@ Binaries/*.config
 Binaries/*.pdb
 Binaries/*vshost*
 Binaries/Logs/*
+Binaries/.slmcache/*
 *.suo
 Source/Steam Library Manager/obj/*

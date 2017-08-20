@@ -301,8 +301,35 @@ namespace Steam_Library_Manager.Definitions
                 // Everything else
                 else
                 {
-                    parallelOptions.MaxDegreeOfParallelism = new Random().Next(4, 16);
+                    parallelOptions.MaxDegreeOfParallelism = 1;
 
+                    Parallel.ForEach(GameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
+                    {
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
+
+                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                        {
+                            if (!newFile.Directory.Exists)
+                            {
+                                newFile.Directory.Create();
+                                CreatedDirectories.Add(newFile.Directory.FullName);
+                            }
+
+                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                        }
+
+                        CopiedFiles.Add(newFile.FullName);
+                        currentTask.MovenFileSize += (currentFile as FileInfo).Length;
+
+                        if (currentTask.ReportFileMovement)
+                        {
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                        }
+
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                    });
+
+                    parallelOptions.MaxDegreeOfParallelism = new Random().Next(6, 12);
                     LogToTM($"Parallelism degree: {parallelOptions.MaxDegreeOfParallelism}");
 
                     Parallel.ForEach(GameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
@@ -331,33 +358,6 @@ namespace Steam_Library_Manager.Definitions
                         Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
                     });
 
-                    parallelOptions.MaxDegreeOfParallelism = 1;
-
-                    Parallel.ForEach(GameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
-                    {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
-
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
-                        {
-                            if (!newFile.Directory.Exists)
-                            {
-                                newFile.Directory.Create();
-                                CreatedDirectories.Add(newFile.Directory.FullName);
-                            }
-
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
-                        }
-
-                        CopiedFiles.Add(newFile.FullName);
-                        currentTask.MovenFileSize += (currentFile as FileInfo).Length;
-
-                        if (currentTask.ReportFileMovement)
-                        {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}");
-                        }
-
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
-                    });
                 }
 
 

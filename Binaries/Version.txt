@@ -1,1 +1,1 @@
-1.4.3.0|Fixes and improvements have been done
+1.4.4.0|ACF File Detection, search function and some other fixes & improvements

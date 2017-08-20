@@ -370,56 +370,6 @@ namespace Steam_Library_Manager.Definitions
                             Main.Accessor.gamePanel.ItemsSource = null;
                     }
                     break;
-                case "updategames":
-                    if (Games.Count == 0)
-                        return;
-
-                    if (List.Libraries.Count(x => x.IsBackup) == 0)
-                        return;
-
-                    try
-                    {
-                        foreach (Library LibraryToCheck in List.Libraries.Where(x => x.IsBackup))
-                        {
-                            foreach (Game LatestGame in Games)
-                            {
-                                if (LibraryToCheck.Games.Count(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated) > 0)
-                                {
-                                    Game OldGameBackup = LibraryToCheck.Games.First(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated);
-
-                                    if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == LatestGame && x.TargetLibrary == OldGameBackup.InstalledLibrary) == 0)
-                                    {
-                                        List.TaskList newTask = new List.TaskList
-                                        {
-                                            TargetGame = LatestGame,
-                                            TargetLibrary = OldGameBackup.InstalledLibrary
-                                        };
-
-                                        Framework.TaskManager.TaskList.Add(newTask);
-                                        Main.Accessor.taskPanel.Items.Add(newTask);
-
-                                        System.Windows.Media.Animation.DoubleAnimation da = new System.Windows.Media.Animation.DoubleAnimation()
-                                        {
-                                            From = 12,
-                                            To = 14,
-                                            AutoReverse = true,
-                                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
-                                        };
-
-                                        Main.Accessor.Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
-                                    }
-
-                                    Debug.WriteLine($"An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Latest game time: {LatestGame.LastUpdated}");
-                                    Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Updated on: {LatestGame.LastUpdated} - Source: {OldGameBackup.InstalledLibrary.FullPath}");
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                    }
-                    break;
             }
         }
 

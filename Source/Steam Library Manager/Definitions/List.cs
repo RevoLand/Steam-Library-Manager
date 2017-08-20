@@ -62,7 +62,19 @@ namespace Steam_Library_Manager.Definitions
 
             public double ProgressBarPerc
             {
-                get => _MovenFileSize == 0 ? 0 :((int)Math.Round((double)(100 * _MovenFileSize) / _TotalFileSize));
+                get
+                {
+                    double perc = Math.Ceiling((double)(100 * _MovenFileSize) / _TotalFileSize);
+                    Main.Accessor.TaskbarItemInfo.ProgressValue = perc / 100;
+
+                    if (perc == 100)
+                    {
+                        Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                        Main.Accessor.TaskbarItemInfo.ProgressValue = 0;
+                    }
+
+                    return _MovenFileSize == 0 ? 0 : perc;
+                }
             }
 
             public bool Completed
