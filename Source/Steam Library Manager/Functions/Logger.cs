@@ -219,6 +219,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
+                Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
     }

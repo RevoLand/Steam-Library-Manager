@@ -13,6 +13,7 @@ namespace Steam_Library_Manager.Definitions
     {
         bool _Offline;
         FileSystemWatcher FolderWD;
+        FileSystemWatcher SLMWD;
 
         public bool IsMain { get; set; }
         public bool IsBackup { get; set; }
@@ -146,17 +147,64 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 if (SLM.selectedLibrary == this)
-                    Functions.Games.UpdateMainForm(this);
+                    Functions.Games.UpdateMainForm(this, Properties.Settings.Default.SearchText);
 
                 FolderWD = new FileSystemWatcher()
                 {
                     Path = SteamAppsFolder.FullName,
                     Filter = "appmanifest_*.acf",
-                    EnableRaisingEvents = true
+                    EnableRaisingEvents = true,
                 };
 
                 FolderWD.Created += FolderWD_Created;
                 FolderWD.Deleted += FolderWD_Deleted;
+
+                if (IsBackup)
+                {
+                    SLMWD = new FileSystemWatcher()
+                    {
+                        Path = SteamAppsFolder.FullName,
+                        Filter = "*.zip",
+                        EnableRaisingEvents = true
+                    };
+
+                    SLMWD.Created += SLMWD_Created;
+                    SLMWD.Deleted += SLMWD_Deleted;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        private void SLMWD_Created(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                Functions.Games.ReadGameDetailsFromZip(e.FullPath, this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        private void SLMWD_Deleted(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                if (Games.Count(x => x.AppID.ToString() == e.Name.Replace(".zip", "") && x.IsCompressed) > 0)
+                {
+                    Games.Remove(Games.First(x => x.AppID.ToString() == e.Name.Replace(".zip", "") && x.IsCompressed));
+
+                    if (SLM.selectedLibrary == this)
+                        Functions.Games.UpdateMainForm(this, Properties.Settings.Default.SearchText);
+
+                    UpdateLibraryVisual();
+                }
             }
             catch (Exception ex)
             {
@@ -193,7 +241,7 @@ namespace Steam_Library_Manager.Definitions
                 Functions.Games.AddNewGame(Convert.ToInt32(Key["appID"].Value), Key["name"].Value ?? Key["UserConfig"]["name"].Value, Key["installdir"].Value, this, Convert.ToInt64(Key["SizeOnDisk"].Value), Convert.ToInt64(Key["LastUpdated"].Value), false);
 
                 if (SLM.selectedLibrary == this)
-                    Functions.Games.UpdateMainForm(this);
+                    Functions.Games.UpdateMainForm(this, Properties.Settings.Default.SearchText);
 
                 UpdateLibraryVisual();
             }
@@ -217,7 +265,7 @@ namespace Steam_Library_Manager.Definitions
                     Games.Remove(Games.First(x => x.AcfName == e.Name));
 
                     if (SLM.selectedLibrary == this)
-                        Functions.Games.UpdateMainForm(this);
+                        Functions.Games.UpdateMainForm(this, Properties.Settings.Default.SearchText);
 
                     UpdateLibraryVisual();
                 }
@@ -277,7 +325,7 @@ namespace Steam_Library_Manager.Definitions
                 // Opens game installation path in explorer
                 case "disk":
                     if (SteamAppsFolder.Exists)
-                        System.Diagnostics.Process.Start(SteamAppsFolder.FullName);
+                        Process.Start(SteamAppsFolder.FullName);
                     break;
                 case "deletelibrary":
 
@@ -320,6 +368,56 @@ namespace Steam_Library_Manager.Definitions
 
                         if (SLM.selectedLibrary == this)
                             Main.Accessor.gamePanel.ItemsSource = null;
+                    }
+                    break;
+                case "updategames":
+                    if (Games.Count == 0)
+                        return;
+
+                    if (List.Libraries.Count(x => x.IsBackup) == 0)
+                        return;
+
+                    try
+                    {
+                        foreach (Library LibraryToCheck in List.Libraries.Where(x => x.IsBackup))
+                        {
+                            foreach (Game LatestGame in Games)
+                            {
+                                if (LibraryToCheck.Games.Count(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated) > 0)
+                                {
+                                    Game OldGameBackup = LibraryToCheck.Games.First(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated);
+
+                                    if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == LatestGame && x.TargetLibrary == OldGameBackup.InstalledLibrary) == 0)
+                                    {
+                                        List.TaskList newTask = new List.TaskList
+                                        {
+                                            TargetGame = LatestGame,
+                                            TargetLibrary = OldGameBackup.InstalledLibrary
+                                        };
+
+                                        Framework.TaskManager.TaskList.Add(newTask);
+                                        Main.Accessor.taskPanel.Items.Add(newTask);
+
+                                        System.Windows.Media.Animation.DoubleAnimation da = new System.Windows.Media.Animation.DoubleAnimation()
+                                        {
+                                            From = 12,
+                                            To = 14,
+                                            AutoReverse = true,
+                                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                                        };
+
+                                        Main.Accessor.Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
+                                    }
+
+                                    Debug.WriteLine($"An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Latest game time: {LatestGame.LastUpdated}");
+                                    Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Updated on: {LatestGame.LastUpdated} - Source: {OldGameBackup.InstalledLibrary.FullPath}");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                     }
                     break;
             }

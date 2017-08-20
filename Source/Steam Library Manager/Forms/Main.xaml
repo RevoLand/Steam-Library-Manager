@@ -105,7 +105,7 @@
                         <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <ProgressBar Maximum="{Binding ProgressBarMax, Mode=OneWay}" Value="{Binding ProgressBar, Mode=OneWay}" >
+                <ProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" >
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
                             <Style.Triggers>
@@ -148,8 +148,10 @@
                     <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
                         <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" />
-                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
 
                         <TextBlock Margin="0,-20,0,0">
                             <TextBlock.Style>
@@ -206,7 +208,7 @@
                         <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <ProgressBar Margin="-3" Maximum="{Binding ProgressBarMax, Mode=OneWay}" Value="{Binding ProgressBar, Mode=OneWay}" >
+                <ProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" >
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
                             <Style.Triggers>
@@ -250,6 +252,7 @@
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
                         <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
@@ -400,7 +403,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <TextBox x:Name="searchText" Margin="215,0,10,10" TextWrapping="Wrap" Height="25" VerticalAlignment="Bottom" TextChanged="TextBox_TextChanged"/>
+                    <TextBox Margin="215,0,10,10" TextWrapping="Wrap" Height="25" VerticalAlignment="Bottom" Text="{slm:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 </Grid>
             </TabItem>
             <TabItem x:Name="Tab_TaskManager" Header="Task Manager" Padding="20, 10">
@@ -504,51 +507,51 @@
                         <Grid>
                             <!-- 1#1 -->
                             <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSortingMethod}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:GameSortingMethod}}}" />
+                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:GameSortingMethod}}}" />
 
                             <!-- 1#2 -->
                             <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSizeCalculationMethod}}" />
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSizeCalculationMethod}}" />
 
                             <!-- 1#3 -->
                             <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,3,0,0">
                                 <Grid>
                                     <!-- 1#1 -->
-                                    <CheckBox Content="Remove Old Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="190"/>
+                                    <CheckBox Content="Remove Old Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="190"/>
 
                                     <!-- 1#2 -->
-                                    <CheckBox Content="Compress" IsChecked="{slm:SettingBinding Global_Compress}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
+                                    <CheckBox Content="Compress" IsChecked="{slm:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
 
                                     <!-- 1#3 -->
-                                    <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
+                                    <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
 
                                     <!-- 1#4 -->
-                                    <CheckBox Content="Start Task Manager on Startup" IsChecked="{slm:SettingBinding Global_StartTaskManagerOnStartup}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,90,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
+                                    <CheckBox Content="Start Task Manager on Startup" IsChecked="{slm:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,90,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
                                 </Grid>
                             </GroupBox>
 
                             <!-- 2#1 -->
                             <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="225,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
+                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- 2#2 -->
                             <Label Content="Move files sync'ed if bigger than (MB)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize}" Height="22" />
+                            <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" />
 
                             <!-- 2#3 -->
-                            <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
+                            <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
                             <Button Content="View Logs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="225,155,0,0" Height="25" Width="210" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
 
                             <!-- 3#1 -->
                             <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
+                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
                             <!-- 3#2 -->
                             <Label Content="Play a sound on completion" HorizontalAlignment="Left" Margin="440,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <CheckBox IsChecked="{slm:SettingBinding PlayASoundOnCompletion}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,100,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
+                            <CheckBox IsChecked="{slm:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,100,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
 
                             <!-- 4#1 -->
                             <Label Content="Check for Updates at Startup" HorizontalAlignment="Left" Margin="655,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="165"/>
-                            <CheckBox IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup}"  Margin="655,40,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="17" Width="165"/>
+                            <CheckBox IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="655,40,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="17" Width="165"/>
 
                             <!-- 4#2 -->
                             <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="655,70,0,0" VerticalAlignment="Top" Width="165" Height="22" Click="CheckForUpdates_Click"/>

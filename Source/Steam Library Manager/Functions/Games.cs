@@ -28,9 +28,7 @@ namespace Steam_Library_Manager.Functions
                     IsCompressed = IsCompressed,
                     IsSteamBackup = IsSteamBackup,
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
-            };
-
-
+                };
 
                 // If game do not have a folder in "common" directory and "downloading" directory then skip this game
                 if (!Game.CommonFolder.Exists && !Game.DownloadFolder.Exists && !Game.IsCompressed && !Game.IsSteamBackup)
@@ -88,6 +86,9 @@ namespace Steam_Library_Manager.Functions
 
                 // Add our game details to global list
                 Library.Games.Add(Game);
+
+                if (Definitions.SLM.selectedLibrary == Library)
+                    Functions.Games.UpdateMainForm(Library, Properties.Settings.Default.SearchText);
             }
             catch (Exception ex)
             {
@@ -125,6 +126,10 @@ namespace Steam_Library_Manager.Functions
                         */
                     }
                 }
+            }
+            catch (IOException)
+            {
+                ReadGameDetailsFromZip(zipPath, targetLibrary);
             }
             catch (InvalidDataException iEx)
             {

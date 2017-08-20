@@ -15,37 +15,27 @@ namespace Steam_Library_Manager.Framework
         public static bool Status = false;
         public static bool IsRestartRequired = false;
 
-        public static void ProcessTask(Definitions.List.TaskList currentTask)
+        public static void ProcessTask(Definitions.List.TaskList CurrentTask)
         {
             try
             {
-                currentTask.Moving = true;
-                currentTask.TargetGame.CopyGameFiles(currentTask, CancellationToken.Token);
+                CurrentTask.Moving = true;
+                CurrentTask.TargetGame.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
                 if (!CancellationToken.IsCancellationRequested)
                 {
-                    // If game is not exists in the target library
-                    /*
-                    if (currentTask.TargetLibrary.Games.Count(x => x.AcfName == currentTask.TargetGame.AcfName && currentTask.Compress == x.IsCompressed) == 0)
+                    if (CurrentTask.RemoveOldFiles)
                     {
-                        // Add game to new library
-                        Functions.Games.AddNewGame(currentTask.TargetGame.AppID, currentTask.TargetGame.AppName, currentTask.TargetGame.InstallationPath.Name, currentTask.TargetLibrary, currentTask.TargetGame.SizeOnDisk, currentTask.Compress);
-
-                        // Update library details
-                        currentTask.TargetLibrary.UpdateLibraryVisual();
-                    }
-                    */
-
-                    if (currentTask.RemoveOldFiles)
-                    {
-                        currentTask.TargetGame.DeleteFiles();
+                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetGame.AppName}] Removing moven files as requested. This may take a while, please wait.");
+                        CurrentTask.TargetGame.DeleteFiles();
+                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetGame.AppName}] Files removen, task is completed now.");
                     }
 
-                    if (!currentTask.TargetLibrary.IsBackup)
+                    if (!CurrentTask.TargetLibrary.IsBackup)
                         IsRestartRequired = true;
 
-                    currentTask.Moving = false;
-                    currentTask.Completed = true;
+                    CurrentTask.Moving = false;
+                    CurrentTask.Completed = true;
 
                     if (TaskList.Count == 0)
                     {
@@ -66,7 +56,7 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{currentTask.TargetGame.AppName}][{currentTask.TargetGame.AppID}][{currentTask.TargetGame.AcfName}] {ex}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.TargetGame.AppName}][{CurrentTask.TargetGame.AppID}][{CurrentTask.TargetGame.AcfName}] {ex}");
             }
         }
 
@@ -74,7 +64,7 @@ namespace Steam_Library_Manager.Framework
         {
             if (!Status)
             {
-                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is now active and waiting for tasks...");
+                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
                 Main.Accessor.Button_StartTaskManager.IsEnabled = false;
                 Main.Accessor.Button_StopTaskManager.IsEnabled = true;
                 CancellationToken = new CancellationTokenSource();
@@ -92,8 +82,7 @@ namespace Steam_Library_Manager.Framework
                     catch (OperationCanceledException)
                     {
                         Stop();
-                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}][TaskManager] Task Manager is stopped now...");
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, "Task Manager is stopped now");
+                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is stopped now...");
                     }
                     catch (Exception ex)
                     {

@@ -371,5 +371,19 @@ namespace Steam_Library_Manager.Properties {
                 this["PortToConnect"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(Steam_Library_Manager.Framework.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string SearchText {
+            get {
+                return ((string)(this["SearchText"]));
+            }
+            set {
+                this["SearchText"] = value;
+            }
+        }
     }
 }

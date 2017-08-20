@@ -185,12 +185,6 @@ namespace Steam_Library_Manager
             ((Definitions.Game)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Definitions.SLM.selectedLibrary != null)
-                Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
-        }
-
         private void LibraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = libraryContextMenuItems.SelectedIndex;
@@ -267,7 +261,9 @@ namespace Steam_Library_Manager
             }
 
             // Update games list from current selection
-            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? searchText.Text : null);
+            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null);
+
+            Definitions.SLM.selectedLibrary.ParseMenuItemAction("updategames");
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -345,7 +341,7 @@ namespace Steam_Library_Manager
 
         private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, searchText.Text);
+            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, Properties.Settings.Default.SearchText);
         }
 
         private void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
@@ -555,6 +551,12 @@ namespace Steam_Library_Manager
                 Process.Start(Definitions.SLM.DonateButtonURL);
             }
             catch { }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Definitions.SLM.selectedLibrary != null)
+                Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, Properties.Settings.Default.SearchText);
         }
     }
 }

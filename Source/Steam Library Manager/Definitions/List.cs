@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -21,28 +22,47 @@ namespace Steam_Library_Manager.Definitions
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
 
-            private double _ProgressBar = 0;
-            private double _ProgressBarMax = 100;
+            private double _TotalFileCount = 100;
+
+            private long _MovenFileSize = 0;
+            private long _TotalFileSize = 0;
+
             private bool _Completed = false;
 
-            public double ProgressBar
+            public double TotalFileCount
             {
-                get => _ProgressBar;
+                get => _TotalFileCount;
                 set
                 {
-                    _ProgressBar = value;
-                    OnPropertyChanged("ProgressBar");
+                    _TotalFileCount = value;
+                    OnPropertyChanged("TotalFileCount");
                 }
             }
 
-            public double ProgressBarMax
+            public long MovenFileSize
             {
-                get => _ProgressBarMax;
+                get => _MovenFileSize;
                 set
                 {
-                    _ProgressBarMax = value;
-                    OnPropertyChanged("ProgressBarMax");
+                    _MovenFileSize = value;
+                    OnPropertyChanged("MovenFileSize");
+                    OnPropertyChanged("ProgressBarPerc");
                 }
+            }
+
+            public long TotalFileSize
+            {
+                get => _TotalFileSize;
+                set
+                {
+                    _TotalFileSize = value;
+                    OnPropertyChanged("TotalFileSize");
+                }
+            }
+
+            public double ProgressBarPerc
+            {
+                get => _MovenFileSize == 0 ? 0 :((int)Math.Round((double)(100 * _MovenFileSize) / _TotalFileSize));
             }
 
             public bool Completed
