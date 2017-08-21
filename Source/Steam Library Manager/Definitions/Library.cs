@@ -157,6 +157,7 @@ namespace Steam_Library_Manager.Definitions
                 };
 
                 FolderWD.Created += FolderWD_Created;
+                FolderWD.Changed += FolderWD_Changed;
                 FolderWD.Deleted += FolderWD_Deleted;
 
                 if (IsBackup)
@@ -256,13 +257,28 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
+        private void FolderWD_Changed(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                FolderWD_Deleted(sender, e);
+                FolderWD_Created(sender, e);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
         private void FolderWD_Deleted(object sender, FileSystemEventArgs e)
         {
             try
             {
                 if (Games.Count(x => x.AcfName == e.Name) > 0)
                 {
-                    Games.Remove(Games.First(x => x.AcfName == e.Name));
+                    Game GameToRemove = Games.First(x => x.AcfName == e.Name);
+                    Games.Remove(GameToRemove);
 
                     if (SLM.selectedLibrary == this)
                         Functions.Games.UpdateMainForm(this, Properties.Settings.Default.SearchText);

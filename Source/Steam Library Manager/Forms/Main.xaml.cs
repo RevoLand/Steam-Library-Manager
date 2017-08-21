@@ -18,7 +18,7 @@ namespace Steam_Library_Manager
     {
         public static Main Accessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
-        Framework.Network.Server SLMServer = new Framework.Network.Server();
+        //Framework.Network.Server SLMServer = new Framework.Network.Server();
 
         public Main()
         {
@@ -35,6 +35,7 @@ namespace Steam_Library_Manager
 
             libraryPanel.ItemsSource = Definitions.List.Libraries;
 
+            taskPanel.ItemsSource = Framework.TaskManager.TaskList;
             libraryContextMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
             gameContextMenuItems.ItemsSource = Definitions.List.GameCMenuItems;
 
@@ -110,8 +111,7 @@ namespace Steam_Library_Manager
                                 TargetLibrary = Library
                             };
 
-                            Framework.TaskManager.TaskList.Add(newTask);
-                            taskPanel.Items.Add(newTask);
+                            Framework.TaskManager.AddTask(newTask);
 
                             DoubleAnimation da = new DoubleAnimation()
                             {
@@ -283,15 +283,13 @@ namespace Steam_Library_Manager
                     Functions.Library.CheckForBackupUpdates();
                     break;
                 case "ClearCompleted":
-                    if (taskPanel.Items.Count == 0)
+                    if (Framework.TaskManager.TaskList.Count == 0)
                         return;
 
-                    List<Definitions.List.TaskList> taskPanelItems = taskPanel.Items.OfType<Definitions.List.TaskList>().ToList();
-
-                    foreach (Definitions.List.TaskList currentTask in taskPanelItems)
+                    foreach (Definitions.List.TaskList currentTask in Framework.TaskManager.TaskList.ToList())
                     {
                         if (currentTask.Completed)
-                            taskPanel.Items.Remove(currentTask);
+                            Framework.TaskManager.TaskList.Remove(currentTask);
                     }
                     break;
             }

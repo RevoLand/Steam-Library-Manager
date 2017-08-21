@@ -153,6 +153,7 @@
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
                         <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
 
+                        <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
@@ -179,8 +180,8 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Remove old Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="180,0,0,0" >
+                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="200,0,0,0" >
                             <CheckBox.Style>
                                 <Style TargetType="{x:Type CheckBox}">
                                     <Style.Triggers>
@@ -200,7 +201,7 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="270,0,0,0" />
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="290,0,0,0" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -281,8 +282,8 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Remove old Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="180,0,0,0" >
+                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="200,0,0,0" >
                             <CheckBox.Style>
                                 <Style TargetType="{x:Type CheckBox}">
                                     <Style.Triggers>
@@ -302,7 +303,7 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="270,0,0,0" />
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="290,0,0,0" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -441,13 +442,13 @@
                         <Button Content="Check for Backup Updates" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="435,0,-146,0" HorizontalAlignment="Left" Width="161" MinHeight="30" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
                     </Grid>
 
-                    <ListView x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
-                        <ListView.ItemTemplate>
+                    <ListBox x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock MaxHeight="16" Text="{Binding}" />
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Library Cleaner" Padding="20,10">
@@ -523,7 +524,7 @@
                             <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,3,0,0">
                                 <Grid>
                                     <!-- 1#1 -->
-                                    <CheckBox Content="Remove Old Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="190"/>
+                                    <CheckBox Content="Remove Original Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="190"/>
 
                                     <!-- 1#2 -->
                                     <CheckBox Content="Compress" IsChecked="{slm:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Height="20" Width="190"/>

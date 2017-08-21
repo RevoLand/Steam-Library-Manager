@@ -93,7 +93,7 @@ namespace Steam_Library_Manager.Functions
                             {
                                 Definitions.Game OldGameBackup = LibraryToCheck.Games.First(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated && !x.IsSteamBackup);
 
-                                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame.AppID == LatestGame.AppID && x.TargetLibrary == OldGameBackup.InstalledLibrary) == 0)
+                                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame.AppID == LatestGame.AppID && x.TargetLibrary == OldGameBackup.InstalledLibrary && !x.Completed) == 0)
                                 {
                                     Definitions.List.TaskList newTask = new Definitions.List.TaskList
                                     {
@@ -101,8 +101,7 @@ namespace Steam_Library_Manager.Functions
                                         TargetLibrary = OldGameBackup.InstalledLibrary
                                     };
 
-                                    Framework.TaskManager.TaskList.Add(newTask);
-                                    Main.Accessor.taskPanel.Items.Add(newTask);
+                                    Framework.TaskManager.AddTask(newTask);
                                 }
 
                                 Debug.WriteLine($"An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Latest game time: {LatestGame.LastUpdated}");

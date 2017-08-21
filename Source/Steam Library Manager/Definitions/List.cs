@@ -21,13 +21,17 @@ namespace Steam_Library_Manager.Definitions
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
+            public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
 
             private double _TotalFileCount = 100;
-
             private long _MovenFileSize = 0;
             private long _TotalFileSize = 0;
-
             private bool _Completed = false;
+
+            public string PrettyAvgSpeed
+            {
+                get => _MovenFileSize == 0 ? "" : $"{Math.Round(((_MovenFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
+            }
 
             public double TotalFileCount
             {
@@ -47,6 +51,7 @@ namespace Steam_Library_Manager.Definitions
                     _MovenFileSize = value;
                     OnPropertyChanged("MovenFileSize");
                     OnPropertyChanged("ProgressBarPerc");
+                    OnPropertyChanged("PrettyAvgSpeed");
                 }
             }
 

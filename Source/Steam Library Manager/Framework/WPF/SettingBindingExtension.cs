@@ -4,15 +4,9 @@ namespace Steam_Library_Manager
 {
     public class SettingBindingExtension : Binding
     {
-        public SettingBindingExtension()
-        {
-            Initialize();
-        }
+        public SettingBindingExtension() => Initialize();
 
-        public SettingBindingExtension(string path) : base(path)
-        {
-            Initialize();
-        }
+        public SettingBindingExtension(string path) : base(path) => Initialize();
 
         private void Initialize()
         {

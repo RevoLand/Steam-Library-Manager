@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,7 +10,8 @@ namespace Steam_Library_Manager.Framework
 {
     class TaskManager
     {
-        public static BlockingCollection<Definitions.List.TaskList> TaskList = new BlockingCollection<Definitions.List.TaskList>();
+        public static AsyncObservableCollection<Definitions.List.TaskList> TaskList = new AsyncObservableCollection<Definitions.List.TaskList>();
+        public static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         public static CancellationTokenSource CancellationToken;
         public static bool Status = false;
         public static bool IsRestartRequired = false;
@@ -19,6 +20,9 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
+                if (!CurrentTask.TargetGame.InstalledLibrary.Games.Contains(CurrentTask.TargetGame))
+                    return;
+
                 CurrentTask.Moving = true;
                 CurrentTask.TargetGame.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
@@ -78,7 +82,12 @@ namespace Steam_Library_Manager.Framework
                     {
                         while (true && !CancellationToken.IsCancellationRequested && Status)
                         {
-                            ProcessTask(TaskList.Take(CancellationToken.Token));
+                            manualResetEvent.Set();
+                            if (TaskList.Count(x => !x.Completed) > 0)
+                            {
+                                ProcessTask(TaskList.First(x => !x.Completed));
+                            }
+                            manualResetEvent.WaitOne();
                         }
                     }
                     catch (OperationCanceledException)
@@ -122,11 +131,28 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
+        public static void AddTask(Definitions.List.TaskList Task)
+        {
+            try
+            {
+                TaskList.Add(Task);
+
+                if (Status)
+                    manualResetEvent.Set();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+            }
+        }
+
         public static void RemoveTask(Definitions.List.TaskList Task)
         {
             try
             {
-                TaskList.TryTake(out Task);
+                TaskList.Remove(Task);
             }
             catch (Exception ex)
             {

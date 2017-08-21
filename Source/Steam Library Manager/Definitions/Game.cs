@@ -206,7 +206,7 @@ namespace Steam_Library_Manager.Definitions
             return WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
-        public void CopyGameFiles(List.TaskList currentTask, CancellationToken cancellationToken)
+        public void CopyGameFiles(List.TaskList CurrentTask, CancellationToken cancellationToken)
         {
             LogToTM($"[{AppName}] Populating file list, please wait");
             Functions.Logger.LogToFile(Functions.Logger.LogType.Game, "Populating file list", this);
@@ -214,8 +214,7 @@ namespace Steam_Library_Manager.Definitions
             ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
             ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
             List<FileSystemInfo> GameFiles = GetFileList();
-            currentTask.TotalFileCount = GameFiles.Count;
-            System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
+            CurrentTask.TotalFileCount = GameFiles.Count;
 
             try
             {
@@ -230,16 +229,16 @@ namespace Steam_Library_Manager.Definitions
                     Interlocked.Add(ref TotalFileSize, (file as FileInfo).Length);
                 });
 
-                currentTask.TotalFileSize = TotalFileSize;
-                ElapsedTime.Start();
+                CurrentTask.TotalFileSize = TotalFileSize;
+                CurrentTask.ElapsedTime.Start();
 
                 LogToTM($"[{AppName}] File list populated, total files to move: {GameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"File list populated, total files to move: {GameFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}", this);
 
                 // If the game is not compressed and user would like to compress it
-                if (!IsCompressed && currentTask.Compress)
+                if (!IsCompressed && CurrentTask.Compress)
                 {
-                    FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
+                    FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.SteamAppsFolder.FullName));
 
                     if (compressedArchive.Exists)
                         compressedArchive.Delete();
@@ -255,14 +254,14 @@ namespace Steam_Library_Manager.Definitions
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
                             //CopiedFiles.Add(newFileName);
-                            currentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                            CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
 
-                            if (currentTask.ReportFileMovement)
+                            if (CurrentTask.ReportFileMovement)
                             {
-                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFileName}");
+                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFileName}");
                             }
 
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFileName}", this);
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFileName}", this);
 
                             if (cancellationToken.IsCancellationRequested)
                                 throw new OperationCanceledException(cancellationToken);
@@ -270,11 +269,11 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
                 // If the game is compressed and user would like to decompress it
-                else if (IsCompressed && !currentTask.Compress)
+                else if (IsCompressed && !CurrentTask.Compress)
                 {
                     foreach (ZipArchiveEntry currentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
-                        FileInfo newFile = new FileInfo(Path.Combine(currentTask.TargetLibrary.SteamAppsFolder.FullName, currentFile.FullName));
+                        FileInfo newFile = new FileInfo(Path.Combine(CurrentTask.TargetLibrary.SteamAppsFolder.FullName, currentFile.FullName));
 
                         if (!newFile.Directory.Exists)
                         {
@@ -285,14 +284,14 @@ namespace Steam_Library_Manager.Definitions
                         currentFile.ExtractToFile(newFile.FullName, true);
 
                         CopiedFiles.Add(newFile.FullName);
-                        currentTask.MovenFileSize += currentFile.Length;
+                        CurrentTask.MovenFileSize += currentFile.Length;
 
-                        if (currentTask.ReportFileMovement)
+                        if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
 
                         if (cancellationToken.IsCancellationRequested)
                             throw new OperationCanceledException(cancellationToken);
@@ -305,7 +304,7 @@ namespace Steam_Library_Manager.Definitions
 
                     Parallel.ForEach(GameFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.SteamAppsFolder.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -319,22 +318,21 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         CopiedFiles.Add(newFile.FullName);
-                        currentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                        CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
 
-                        if (currentTask.ReportFileMovement)
+                        if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
                     });
 
-                    parallelOptions.MaxDegreeOfParallelism = new Random().Next(6, 12);
-                    LogToTM($"Parallelism degree: {parallelOptions.MaxDegreeOfParallelism}");
+                    parallelOptions.MaxDegreeOfParallelism = -1;
 
                     Parallel.ForEach(GameFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, currentTask.TargetLibrary.SteamAppsFolder.FullName));
+                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(InstalledLibrary.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.SteamAppsFolder.FullName));
 
                         if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
                         {
@@ -348,37 +346,36 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         CopiedFiles.Add(newFile.FullName);
-                        currentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                        CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
 
-                        if (currentTask.ReportFileMovement)
+                        if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{currentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
                     });
 
                 }
 
+                CurrentTask.ElapsedTime.Stop();
 
-                ElapsedTime.Stop();
-
-                LogToTM($"[{AppName}] Time elapsed: {ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)currentTask.TotalFileCount)}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"Movement completed in {ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)currentTask.TotalFileCount)}", this);
+                LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
             }
             catch (OperationCanceledException)
             {
                 Framework.TaskManager.Stop();
-                currentTask.Moving = false;
-                currentTask.Completed = true;
+                CurrentTask.Moving = false;
+                CurrentTask.Completed = true;
 
                 MessageBoxResult removeMovenFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
 
                 if (removeMovenFiles == MessageBoxResult.Yes)
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
 
-                LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {ElapsedTime.Elapsed}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"Operation cancelled by user. Time Elapsed: {ElapsedTime.Elapsed}", this);
+                LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Game, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
             }
             catch (Exception ex)
             {
@@ -388,7 +385,7 @@ namespace Steam_Library_Manager.Definitions
                 if (removeMovenFiles == MessageBoxResult.Yes)
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
 
-                Main.Accessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {ElapsedTime.Elapsed}");
+                Main.Accessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
             }
         }
