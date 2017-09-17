@@ -20,19 +20,19 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                if (!CurrentTask.TargetGame.InstalledLibrary.Games.Contains(CurrentTask.TargetGame))
+                if (!CurrentTask.TargetApp.Library.Apps.Contains(CurrentTask.TargetApp))
                     return;
 
                 CurrentTask.Moving = true;
-                CurrentTask.TargetGame.CopyGameFiles(CurrentTask, CancellationToken.Token);
+                CurrentTask.TargetApp.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
                 if (!CancellationToken.IsCancellationRequested)
                 {
                     if (CurrentTask.RemoveOldFiles)
                     {
-                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetGame.AppName}] Removing moven files as requested. This may take a while, please wait.");
-                        CurrentTask.TargetGame.DeleteFiles();
-                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetGame.AppName}] Files removen, task is completed now.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moven files as requested. This may take a while, please wait.");
+                        CurrentTask.TargetApp.DeleteFiles();
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removen, task is completed now.");
                     }
 
                     if (!CurrentTask.TargetLibrary.IsBackup)
@@ -60,7 +60,7 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.TargetGame.AppName}][{CurrentTask.TargetGame.AppID}][{CurrentTask.TargetGame.AcfName}] {ex}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.TargetApp.AppName}][{CurrentTask.TargetApp.AppID}][{CurrentTask.TargetApp.AcfName}] {ex}");
             }
         }
 
@@ -68,11 +68,11 @@ namespace Steam_Library_Manager.Framework
         {
             if (!Status)
             {
-                Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
+                Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
 
-                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
-                Main.Accessor.Button_StartTaskManager.IsEnabled = false;
-                Main.Accessor.Button_StopTaskManager.IsEnabled = true;
+                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
+                Main.FormAccessor.Button_StartTaskManager.IsEnabled = false;
+                Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -93,7 +93,7 @@ namespace Steam_Library_Manager.Framework
                     catch (OperationCanceledException)
                     {
                         Stop();
-                        Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is stopped now...");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is stopped.");
                     }
                     catch (Exception ex)
                     {
@@ -112,10 +112,10 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
-                    Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                    Main.Accessor.TaskbarItemInfo.ProgressValue = 0;
-                    Main.Accessor.Button_StartTaskManager.IsEnabled = true;
-                    Main.Accessor.Button_StopTaskManager.IsEnabled = false;
+                    Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
+                    Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
+                    Main.FormAccessor.Button_StopTaskManager.IsEnabled = false;
 
                     Status = false;
                     CancellationToken.Cancel();

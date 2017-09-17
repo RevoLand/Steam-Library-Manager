@@ -7,16 +7,16 @@ namespace Steam_Library_Manager.Definitions
     public class List
     {
         // Make a new list for Library details
-        public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
-        public static Framework.AsyncObservableCollection<JunkInfo> JunkStuff { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
+        public static Framework.AsyncObservableCollection<Steam.Library> SteamLibraries = new Framework.AsyncObservableCollection<Steam.Library>();
+        public static Framework.AsyncObservableCollection<JunkInfo> Junks { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
 
         public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
-        public static Framework.AsyncObservableCollection<ContextMenuItem> GameCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
+        public static Framework.AsyncObservableCollection<ContextMenuItem> AppCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
 
         public class TaskList : INotifyPropertyChanged
         {
-            public Game TargetGame { get; set; }
-            public Library TargetLibrary { get; set; }
+            public Steam.AppInfo TargetApp { get; set; }
+            public Steam.Library TargetLibrary { get; set; }
             public bool Moving = false;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
@@ -28,10 +28,7 @@ namespace Steam_Library_Manager.Definitions
             private long _TotalFileSize = 0;
             private bool _Completed = false;
 
-            public string PrettyAvgSpeed
-            {
-                get => _MovenFileSize == 0 ? "" : $"{Math.Round(((_MovenFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
-            }
+            public string PrettyAvgSpeed => _MovenFileSize == 0 ? "" : $"{Math.Round(((_MovenFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
 
             public double TotalFileCount
             {
@@ -70,12 +67,12 @@ namespace Steam_Library_Manager.Definitions
                 get
                 {
                     double perc = Math.Ceiling((double)(100 * _MovenFileSize) / _TotalFileSize);
-                    Main.Accessor.TaskbarItemInfo.ProgressValue = perc / 100;
+                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
 
                     if (perc == 100)
                     {
-                        Main.Accessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                        Main.Accessor.TaskbarItemInfo.ProgressValue = 0;
+                        Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                        Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
                     }
 
                     return _MovenFileSize == 0 ? 0 : perc;
@@ -93,21 +90,15 @@ namespace Steam_Library_Manager.Definitions
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            protected void OnPropertyChanged(string info)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
-            }
+            protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
         public class JunkInfo
         {
-            public System.IO.FileSystemInfo FileSystemInfo { get; set; }
-            public Library Library { get; set; }
-            public long FolderSize { get; set; }
-            public string PrettyFolderSize
-            {
-                get => Functions.FileSystem.FormatBytes(FolderSize);
-            }
+            public System.IO.FileSystemInfo FSInfo { get; set; }
+            public Steam.Library Library { get; set; }
+            public long Size { get; set; }
+            public string PrettyFolderSize => Functions.FileSystem.FormatBytes(Size);
         }
     }
 }

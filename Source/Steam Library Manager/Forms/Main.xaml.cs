@@ -16,7 +16,7 @@ namespace Steam_Library_Manager
     /// 
     public partial class Main : Window
     {
-        public static Main Accessor;
+        public static Main FormAccessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
         //Framework.Network.Server SLMServer = new Framework.Network.Server();
 
@@ -29,30 +29,26 @@ namespace Steam_Library_Manager
 
         void UpdateBindings()
         {
-            Accessor = this;
+            FormAccessor = this;
 
             Properties.Settings.Default.SearchText = "";
 
-            libraryPanel.ItemsSource = Definitions.List.Libraries;
-
-            taskPanel.ItemsSource = Framework.TaskManager.TaskList;
-            libraryContextMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
-            gameContextMenuItems.ItemsSource = Definitions.List.GameCMenuItems;
-
-            LibraryCleaner.ItemsSource = Definitions.List.JunkStuff;
-
+            LibraryPanel.ItemsSource = Definitions.List.SteamLibraries;
+            TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
             TaskManager_LogsView.ItemsSource = TaskManager_Logs;
+
+            LibraryCMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
+            AppCMenuItems.ItemsSource = Definitions.List.AppCMenuItems;
+
+            LibraryCleaner.ItemsSource = Definitions.List.Junks;
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
             Functions.SLM.OnLoad();
 
-            if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
-                Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
-
-            settingsGroupBox.DataContext = new Definitions.Settings();
-            QuickSettings.DataContext = settingsGroupBox.DataContext;
+            GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
+            QuickSettings.DataContext = GeneralSettingsGroupBox.DataContext;
 
             if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
             {
@@ -81,12 +77,12 @@ namespace Steam_Library_Manager
         {
             try
             {
-                Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
+                Definitions.Steam.Library Library = (sender as Grid).DataContext as Definitions.Steam.Library;
 
-                if (gamePanel.SelectedItems.Count == 0 || Library == null)
+                if (AppPanel.SelectedItems.Count == 0 || Library == null)
                     return;
 
-                foreach (Definitions.Game gameToMove in gamePanel.SelectedItems)
+                foreach (Definitions.Steam.AppInfo App in AppPanel.SelectedItems)
                 {
                     if (Library.IsOffline)
                     {
@@ -96,18 +92,18 @@ namespace Steam_Library_Manager
                             Functions.Library.UpdateBackupLibraryAsync(Library);
                     }
 
-                    if (Library == gameToMove.InstalledLibrary && !gameToMove.IsSteamBackup)
+                    if (Library == App.Library && !App.SteamBackup)
                         continue;
 
-                    if (gameToMove.IsSteamBackup)
-                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{gameToMove.InstallationPath}\"");
+                    if (App.SteamBackup)
+                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationPath}\"");
                     else
                     {
-                        if (Framework.TaskManager.TaskList.Count(x => x.TargetGame == gameToMove && x.TargetLibrary == Library) == 0)
+                        if (Framework.TaskManager.TaskList.Count(x => x.TargetApp == App && x.TargetLibrary == Library) == 0)
                         {
                             Definitions.List.TaskList newTask = new Definitions.List.TaskList
                             {
-                                TargetGame = gameToMove,
+                                TargetApp = App,
                                 TargetLibrary = Library
                             };
 
@@ -125,7 +121,7 @@ namespace Steam_Library_Manager
                         }
                         else
                         {
-                            MessageBox.Show($"This item is already tasked.\n\nGame: {gameToMove.AppName}\nTarget Library: {Library.FullPath}");
+                            MessageBox.Show($"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.FullPath}");
                         }
                     }
                 }
@@ -144,126 +140,110 @@ namespace Steam_Library_Manager
 
         private void LibraryPanel_Drop(object sender, DragEventArgs e)
         {
-            string[] droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            string[] DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-            if (droppedItems == null) return;
+            if (DroppedItems == null) return;
 
-            foreach (string droppedItem in droppedItems)
+            foreach (string DroppedItem in DroppedItems)
             {
-                FileInfo details = new FileInfo(droppedItem);
+                FileInfo Info = new FileInfo(DroppedItem);
 
-                if (details.Attributes.HasFlag(FileAttributes.Directory))
+                if (Info.Attributes.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Functions.Library.IsLibraryExists(droppedItem))
+                    if (!Functions.Library.IsLibraryExists(DroppedItem))
                     {
-                        if (Directory.GetDirectoryRoot(droppedItem) != droppedItem)
+                        if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
                         {
-                            bool isNewLibraryForBackup = false;
-                            MessageBoxResult selectedLibraryType = MessageBox.Show("Is this selected folder going to be used for backups?", "SLM library or Steam library?", MessageBoxButton.YesNoCancel);
+                            bool IsNewLibraryForBackup = false;
+                            MessageBoxResult LibraryType = MessageBox.Show("Is this selected folder going to be used for backups?", "SLM library or Steam library?", MessageBoxButton.YesNoCancel);
 
-                            if (selectedLibraryType == MessageBoxResult.Cancel)
+                            if (LibraryType == MessageBoxResult.Cancel)
                                 return;
-                            else if (selectedLibraryType == MessageBoxResult.Yes)
-                                isNewLibraryForBackup = true;
+                            else if (LibraryType == MessageBoxResult.Yes)
+                                IsNewLibraryForBackup = true;
 
-                            Functions.Library.CreateNewLibraryAsync(details.FullName, isNewLibraryForBackup);
+                            Functions.Library.CreateNewLibraryAsync(Info.FullName, IsNewLibraryForBackup);
                         }
                         else
                             MessageBox.Show("Libraries can not be created at root");
                     }
                     else
-                        MessageBox.Show("Library exists");
+                        MessageBox.Show("Library already exists at " + DroppedItem);
                 }
             }
         }
 
-        private void LibraryContextMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
-        }
+        private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
-        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            ((Definitions.Game)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
-        }
+        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
         private void LibraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = libraryContextMenuItems.SelectedIndex;
+            int SelectedIndex = LibraryCMenuItems.SelectedIndex;
 
-            if (selectedIndex == -1 || selectedIndex >= Definitions.List.LibraryCMenuItems.Count)
+            if (SelectedIndex == -1 || SelectedIndex >= Definitions.List.LibraryCMenuItems.Count)
                 return;
 
             switch(((MenuItem)sender).Tag.ToString())
             {
                 case "moveUp":
-                    if (selectedIndex < 1)
+                    if (SelectedIndex < 1)
                         return;
 
-                    Definitions.List.LibraryCMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    Definitions.List.LibraryCMenuItems.Move(SelectedIndex, SelectedIndex - 1);
                     break;
 
                 case "moveDown":
-                    if (selectedIndex == Definitions.List.LibraryCMenuItems.Count - 1)
+                    if (SelectedIndex == Definitions.List.LibraryCMenuItems.Count - 1)
                         return;
 
-                    Definitions.List.LibraryCMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    Definitions.List.LibraryCMenuItems.Move(SelectedIndex, SelectedIndex + 1);
                     break;
             }
         }
 
-        private void GameDataGridMenuItem_Click(object sender, RoutedEventArgs e)
+        private void AppDataGridMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
-            int selectedIndex = gameContextMenuItems.SelectedIndex;
+            int SelectedIndex = AppCMenuItems.SelectedIndex;
 
-            if (selectedIndex == -1 || selectedIndex >= Definitions.List.GameCMenuItems.Count)
+            if (SelectedIndex == -1 || SelectedIndex >= Definitions.List.AppCMenuItems.Count)
                 return;
 
             switch (((MenuItem)sender).Tag.ToString())
             {
                 case "moveUp":
-                    if (selectedIndex < 1)
+                    if (SelectedIndex < 1)
                         return;
 
-                    Definitions.List.GameCMenuItems.Move(selectedIndex, selectedIndex - 1);
+                    Definitions.List.AppCMenuItems.Move(SelectedIndex, SelectedIndex - 1);
                     break;
 
                 case "moveDown":
-                    if (selectedIndex == Definitions.List.GameCMenuItems.Count - 1)
+                    if (SelectedIndex == Definitions.List.AppCMenuItems.Count - 1)
                         return;
 
-                    Definitions.List.GameCMenuItems.Move(selectedIndex, selectedIndex + 1);
+                    Definitions.List.AppCMenuItems.Move(SelectedIndex, SelectedIndex + 1);
                     break;
             }
         }
 
-        private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Functions.Updater.CheckForUpdates();
-            }
-            catch (Exception ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-            }
-        }
+        private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
 
         private void LibraryGrid_MouseDown(object sender, SelectionChangedEventArgs e)
         {
-            Definitions.SLM.selectedLibrary = libraryPanel.SelectedItem as Definitions.Library;
+            Definitions.SLM.CurrentSelectedLibrary = LibraryPanel.SelectedItem as Definitions.Steam.Library;
 
-            if (Definitions.SLM.selectedLibrary == null)
+            if (Definitions.SLM.CurrentSelectedLibrary == null)
                 return;
 
-            if (Directory.Exists(Definitions.SLM.selectedLibrary.FullPath) && Definitions.SLM.selectedLibrary.IsOffline)
+            if (Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.FullPath) && Definitions.SLM.CurrentSelectedLibrary.IsOffline)
             {
-                Functions.Library.UpdateBackupLibraryAsync(Definitions.SLM.selectedLibrary);
+                Functions.Library.UpdateBackupLibraryAsync(Definitions.SLM.CurrentSelectedLibrary);
             }
 
             // Update games list from current selection
-            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null);
+            Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
@@ -286,10 +266,10 @@ namespace Steam_Library_Manager
                     if (Framework.TaskManager.TaskList.Count == 0)
                         return;
 
-                    foreach (Definitions.List.TaskList currentTask in Framework.TaskManager.TaskList.ToList())
+                    foreach (Definitions.List.TaskList CurrentTask in Framework.TaskManager.TaskList.ToList())
                     {
-                        if (currentTask.Completed)
-                            Framework.TaskManager.TaskList.Remove(currentTask);
+                        if (CurrentTask.Completed)
+                            Framework.TaskManager.TaskList.Remove(CurrentTask);
                     }
                     break;
             }
@@ -303,19 +283,19 @@ namespace Steam_Library_Manager
                 {
                     default:
                     case "Remove":
-                        if (taskPanel.SelectedItems.Count == 0)
+                        if (TaskPanel.SelectedItems.Count == 0)
                             return;
 
-                        List<Definitions.List.TaskList> selectedItems = taskPanel.SelectedItems.OfType<Definitions.List.TaskList>().ToList();
+                        List<Definitions.List.TaskList> SelectedItems = TaskPanel.SelectedItems.OfType<Definitions.List.TaskList>().ToList();
 
-                        foreach (Definitions.List.TaskList currentTask in selectedItems)
+                        foreach (Definitions.List.TaskList CurrentTask in SelectedItems)
                         {
-                            if (currentTask.Moving && Framework.TaskManager.Status && !currentTask.Completed)
-                                MessageBox.Show($"[{currentTask.TargetGame.AppName}] You can't remove a game from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
+                            if (CurrentTask.Moving && Framework.TaskManager.Status && !CurrentTask.Completed)
+                                MessageBox.Show($"[{CurrentTask.TargetApp.AppName}] You can't remove an app from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
                             else
                             {
-                                Framework.TaskManager.RemoveTask(currentTask);
-                                taskPanel.Items.Remove(currentTask);
+                                Framework.TaskManager.RemoveTask(CurrentTask);
+                                TaskPanel.Items.Remove(CurrentTask);
                             }
                         }
                         break;
@@ -340,10 +320,7 @@ namespace Steam_Library_Manager
             catch { }
         }
 
-        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, Properties.Settings.Default.SearchText);
-        }
+        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
         private void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -352,28 +329,28 @@ namespace Steam_Library_Manager
                 if (LibraryCleaner.SelectedItems.Count == 0)
                     return;
 
-                List<Definitions.List.JunkInfo> selectedItems = LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList();
+                List<Definitions.List.JunkInfo> SelectedJunks = LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList();
 
-                foreach (Definitions.List.JunkInfo currentJunk in selectedItems)
+                foreach (Definitions.List.JunkInfo Junk in SelectedJunks)
                 {
                     if ((string)(sender as MenuItem).Tag == "Explorer")
                     {
-                        Process.Start(currentJunk.FileSystemInfo.FullName);
+                        Process.Start(Junk.FSInfo.FullName);
                     }
                     else
                     {
-                        if (currentJunk.FileSystemInfo is FileInfo)
+                        if (Junk.FSInfo is FileInfo)
                         {
-                            if (((FileInfo)currentJunk.FileSystemInfo).Exists)
-                                ((FileInfo)currentJunk.FileSystemInfo).Delete();
+                            if (((FileInfo)Junk.FSInfo).Exists)
+                                ((FileInfo)Junk.FSInfo).Delete();
                         }
                         else
                         {
-                            if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
-                                ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
+                            if (((DirectoryInfo)Junk.FSInfo).Exists)
+                                ((DirectoryInfo)Junk.FSInfo).Delete(true);
                         }
 
-                        Definitions.List.JunkStuff.Remove(currentJunk);
+                        Definitions.List.Junks.Remove(Junk);
                     }
                 }
             }
@@ -391,9 +368,9 @@ namespace Steam_Library_Manager
             {
                 if ((string)(sender as Button).Tag == "Refresh")
                 {
-                    foreach (Definitions.Library library in Definitions.List.Libraries)
+                    foreach (Definitions.Steam.Library Library in Definitions.List.SteamLibraries)
                     {
-                        library.UpdateJunks();
+                        Library.UpdateJunks();
                     }
                 }
 
@@ -415,22 +392,22 @@ namespace Steam_Library_Manager
                         
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
-                        foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                        foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
                         {
-                            if (currentJunk.FileSystemInfo is FileInfo)
+                            if (Junk.FSInfo is FileInfo)
                             {
-                                if (((FileInfo)currentJunk.FileSystemInfo).Exists)
-                                    (currentJunk.FileSystemInfo as FileInfo).CopyTo(currentJunk.FileSystemInfo.Name, true);
+                                if (((FileInfo)Junk.FSInfo).Exists)
+                                    (Junk.FSInfo as FileInfo).CopyTo(Junk.FSInfo.Name, true);
 
-                                currentJunk.FileSystemInfo.Delete();
+                                Junk.FSInfo.Delete();
                             }
                             else
                             {
-                                if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
+                                if (((DirectoryInfo)Junk.FSInfo).Exists)
                                 {
-                                    foreach(FileInfo currentFile in (currentJunk.FileSystemInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    foreach(FileInfo currentFile in (Junk.FSInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
                                     {
-                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(currentJunk.Library.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
+                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
 
                                         if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                                         {
@@ -443,11 +420,11 @@ namespace Steam_Library_Manager
                                         }
                                     }
 
-                                    (currentJunk.FileSystemInfo as DirectoryInfo).Delete(true);
+                                    (Junk.FSInfo as DirectoryInfo).Delete(true);
                                 }
                             }
 
-                            Definitions.List.JunkStuff.Remove(currentJunk);
+                            Definitions.List.Junks.Remove(Junk);
                         }
                     }
                 }
@@ -457,20 +434,20 @@ namespace Steam_Library_Manager
                     {
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
-                        foreach (Definitions.List.JunkInfo currentJunk in LibraryCleanerItems)
+                        foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
                         {
-                            if (currentJunk.FileSystemInfo is FileInfo)
+                            if (Junk.FSInfo is FileInfo)
                             {
-                                if (((FileInfo)currentJunk.FileSystemInfo).Exists)
-                                    ((FileInfo)currentJunk.FileSystemInfo).Delete();
+                                if (((FileInfo)Junk.FSInfo).Exists)
+                                    ((FileInfo)Junk.FSInfo).Delete();
                             }
                             else
                             {
-                                if (((DirectoryInfo)currentJunk.FileSystemInfo).Exists)
-                                    ((DirectoryInfo)currentJunk.FileSystemInfo).Delete(true);
+                                if (((DirectoryInfo)Junk.FSInfo).Exists)
+                                    ((DirectoryInfo)Junk.FSInfo).Delete(true);
                             }
 
-                            Definitions.List.JunkStuff.Remove(currentJunk);
+                            Definitions.List.Junks.Remove(Junk);
                         }
                     }
                 }
@@ -484,19 +461,13 @@ namespace Steam_Library_Manager
 
         private void ViewLogsButton(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(Definitions.Directories.SLM.LogDirectory))
-                Process.Start(Definitions.Directories.SLM.LogDirectory);
+            if (Directory.Exists(Definitions.Directories.SLM.Log))
+                Process.Start(Definitions.Directories.SLM.Log);
         }
 
-        private void GetIPButton_Click(object sender, RoutedEventArgs e)
-        {
-            Functions.Network.UpdatePublicIP();
-        }
+        private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
 
-        private void GetPortButton_Click(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
-        }
+        private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
 
         private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -519,23 +490,23 @@ namespace Steam_Library_Manager
                 {
                     if ((sender as Grid).DataContext as Definitions.List.TaskList is Definitions.List.TaskList)
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.TaskList).TargetGame.CommonFolder.Exists)
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskList).TargetGame.CommonFolder.FullName);
+                        if (((sender as Grid).DataContext as Definitions.List.TaskList).TargetApp.CommonFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskList).TargetApp.CommonFolder.FullName);
                     }
-                    else if (((sender as Grid).DataContext is Definitions.Game))
+                    else if (((sender as Grid).DataContext is Definitions.Steam.AppInfo))
                     {
-                        if (((sender as Grid).DataContext as Definitions.Game).CommonFolder.Exists)
-                            Process.Start(((sender as Grid).DataContext as Definitions.Game).CommonFolder.FullName);
+                        if (((sender as Grid).DataContext as Definitions.Steam.AppInfo).CommonFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.Steam.AppInfo).CommonFolder.FullName);
                     }
-                    else if (((sender as Grid).DataContext is Definitions.Library))
+                    else if (((sender as Grid).DataContext is Definitions.Steam.Library))
                     {
-                        if (((sender as Grid).DataContext as Definitions.Library).SteamAppsFolder.Exists)
-                            Process.Start(((sender as Grid).DataContext as Definitions.Library).SteamAppsFolder.FullName);
+                        if (((sender as Grid).DataContext as Definitions.Steam.Library).SteamAppsFolder.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.Steam.Library).SteamAppsFolder.FullName);
                     }
                     else if (((sender as Grid).DataContext is Definitions.List.JunkInfo))
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.JunkInfo).FileSystemInfo.Exists)
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.JunkInfo).FileSystemInfo.FullName);
+                        if (((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.Exists)
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.FullName);
                     }
                 }
             }
@@ -556,22 +527,19 @@ namespace Steam_Library_Manager
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Definitions.SLM.selectedLibrary != null)
-                Functions.Games.UpdateMainForm(Definitions.SLM.selectedLibrary, Properties.Settings.Default.SearchText);
+            if (Definitions.SLM.CurrentSelectedLibrary != null)
+                Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
         }
 
-        private void ResetSearchTextButton_Click(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.SearchText = "";
-        }
+        private void ResetSearchTextButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.SearchText = "";
 
         private void HeaderImageClearButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (Directory.Exists(Definitions.Directories.SLM.HeaderImageDirectory))
+                if (Directory.Exists(Definitions.Directories.SLM.HeaderImage))
                 {
-                    Directory.Delete(Definitions.Directories.SLM.HeaderImageDirectory, true);
+                    Directory.Delete(Definitions.Directories.SLM.HeaderImage, true);
                     MessageBox.Show("Header Image Cache cleared.");
                 }
             }

@@ -5,15 +5,15 @@ namespace Steam_Library_Manager.Definitions
 {
     public class Settings
     {
-        public GameSortingMethod Setting_GameSortingMethod
+        public AppSortingMethod Setting_AppSortingMethod
         {
-            get => (GameSortingMethod)Enum.Parse(typeof(GameSortingMethod), Properties.Settings.Default.defaultGameSortingMethod);
+            get => (AppSortingMethod)Enum.Parse(typeof(AppSortingMethod), Properties.Settings.Default.defaultGameSortingMethod);
             set => Properties.Settings.Default.defaultGameSortingMethod = value.ToString();
         }
 
-        public GameSizeCalculationMethod Setting_GameSizeCalculationMethod
+        public AppSizeCalculationMethod Setting_AppSizeCalculationMethod
         {
-            get => (GameSizeCalculationMethod)Enum.Parse(typeof(GameSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
+            get => (AppSizeCalculationMethod)Enum.Parse(typeof(AppSizeCalculationMethod), Properties.Settings.Default.gameSizeCalculationMethod);
             set => Properties.Settings.Default.gameSizeCalculationMethod = value.ToString();
         }
 

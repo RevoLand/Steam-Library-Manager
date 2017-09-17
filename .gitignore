@@ -5,4 +5,5 @@ Binaries/*vshost*
 Binaries/Logs/*
 Binaries/.slmcache/*
 *.suo
+Source/*.vs/
 Source/Steam Library Manager/obj/*

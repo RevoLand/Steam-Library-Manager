@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,13 +36,13 @@ namespace Steam_Library_Manager.Functions
                         Framework.KeyValue Key = new Framework.KeyValue();
 
                         // Read vdf file as text
-                        Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
+                        Key.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
 
                         // Add our new library to vdf file so steam will know we have a new library
-                        Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => !x.IsBackup).Count()), newLibraryPath));
+                        Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.SteamLibraries.Select(x => !x.IsBackup).Count()), newLibraryPath));
 
                         // Save vdf file
-                        Key.SaveToFile(Definitions.Steam.vdfFilePath, false);
+                        Key.SaveToFile(Definitions.Global.Steam.vdfFilePath, false);
 
                         // Show a messagebox to user about process
                         MessageBox.Show("New library created");
@@ -77,35 +76,34 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.List.Libraries.Count(x => x.IsBackup) == 0)
+                if (Definitions.List.SteamLibraries.Count(x => x.IsBackup) == 0)
                     return;
 
-                foreach (Definitions.Library CurrentLibrary in Definitions.List.Libraries.Where(x => !x.IsBackup))
+                foreach (Definitions.Steam.Library CurrentLibrary in Definitions.List.SteamLibraries.Where(x => !x.IsBackup))
                 {
-                    if (CurrentLibrary.Games.Count == 0)
+                    if (CurrentLibrary.Apps.Count == 0)
                         continue;
 
-                    foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.IsBackup))
+                    foreach (Definitions.Steam.Library LibraryToCheck in Definitions.List.SteamLibraries.Where(x => x.IsBackup))
                     {
-                        foreach (Definitions.Game LatestGame in CurrentLibrary.Games.Where(x => !x.IsSteamBackup))
+                        foreach (Definitions.Steam.AppInfo LatestApp in CurrentLibrary.Apps.Where(x => !x.SteamBackup))
                         {
-                            if (LibraryToCheck.Games.Count(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated && !x.IsSteamBackup) > 0)
+                            if (LibraryToCheck.Apps.Count(x => x.AppID == LatestApp.AppID && x.LastUpdated < LatestApp.LastUpdated && !x.SteamBackup) > 0)
                             {
-                                Definitions.Game OldGameBackup = LibraryToCheck.Games.First(x => x.AppID == LatestGame.AppID && x.LastUpdated < LatestGame.LastUpdated && !x.IsSteamBackup);
+                                Definitions.Steam.AppInfo OldAppBackup = LibraryToCheck.Apps.First(x => x.AppID == LatestApp.AppID && x.LastUpdated < LatestApp.LastUpdated && !x.SteamBackup);
 
-                                if (Framework.TaskManager.TaskList.Count(x => x.TargetGame.AppID == LatestGame.AppID && x.TargetLibrary == OldGameBackup.InstalledLibrary && !x.Completed) == 0)
+                                if (Framework.TaskManager.TaskList.Count(x => x.TargetApp.AppID == LatestApp.AppID && x.TargetLibrary == OldAppBackup.Library && !x.Completed) == 0)
                                 {
-                                    Definitions.List.TaskList newTask = new Definitions.List.TaskList
+                                    Definitions.List.TaskList NewTask = new Definitions.List.TaskList
                                     {
-                                        TargetGame = LatestGame,
-                                        TargetLibrary = OldGameBackup.InstalledLibrary
+                                        TargetApp = LatestApp,
+                                        TargetLibrary = OldAppBackup.Library
                                     };
 
-                                    Framework.TaskManager.AddTask(newTask);
+                                    Framework.TaskManager.AddTask(NewTask);
                                 }
 
-                                Debug.WriteLine($"An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Latest game time: {LatestGame.LastUpdated}");
-                                Main.Accessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestGame.AppName} - Old backup time: {OldGameBackup.LastUpdated} - Updated on: {LatestGame.LastUpdated} - Target: {LatestGame.InstalledLibrary.FullPath} - Source: {OldGameBackup.InstalledLibrary.FullPath}");
+                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestApp.AppName} - Old backup time: {OldAppBackup.LastUpdated} - Updated on: {LatestApp.LastUpdated} - Target: {LatestApp.Library.FullPath} - Source: {OldAppBackup.Library.FullPath}");
                             }
                         }
                     }
@@ -122,7 +120,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Definitions.Library Library = new Definitions.Library()
+                Definitions.Steam.Library Library = new Definitions.Steam.Library()
                 {
                     IsMain = IsMainLibrary,
                     IsBackup = IsBackupLibrary,
@@ -133,11 +131,11 @@ namespace Steam_Library_Manager.Functions
                 };
 
                 // And add collected informations to our global list
-                Definitions.List.Libraries.Add(Library);
+                Definitions.List.SteamLibraries.Add(Library);
 
                 if (!IsOfflineLibrary)
                 {
-                    await Task.Run(() => Library.UpdateGameList());
+                    await Task.Run(() => Library.UpdateAppList());
                     await Task.Run(() => Library.UpdateJunks());
                 }
             }
@@ -153,28 +151,28 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // If we already have definitions in our list
-                if (Definitions.List.Libraries.Count != 0)
+                if (Definitions.List.SteamLibraries.Count != 0)
                     // Clear them so they don't conflict
-                    Definitions.List.Libraries.Clear();
+                    Definitions.List.SteamLibraries.Clear();
 
                 if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
                     AddNewLibraryAsync(Properties.Settings.Default.steamInstallationPath, true, false);
 
                 // Make a KeyValue reader
-                Framework.KeyValue Key = new Framework.KeyValue();
+                Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
                 // If config.vdf exists
-                if (File.Exists(Definitions.Steam.vdfFilePath))
+                if (File.Exists(Definitions.Global.Steam.vdfFilePath))
                 {
                     // Read our vdf file as text
-                    Key.ReadFileAsText(Definitions.Steam.vdfFilePath);
+                    KeyValReader.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
 
-                    Key = Key["Software"]["Valve"]["Steam"];
-                    if (Key.Children.Count > 0)
+                    KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
+                    if (KeyValReader.Children.Count > 0)
                     {
-                        Definitions.SLM.userSteamID64 = (Key["Accounts"].Children.Count > 0) ? Key["Accounts"].Children[0].Children[0].Value : null;
+                        Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"].Children.Count > 0) ? KeyValReader["Accounts"].Children[0].Children[0].Value : null;
 
-                        foreach (Framework.KeyValue key in Key.Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                        foreach (Framework.KeyValue key in KeyValReader.Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                         {
                             AddNewLibraryAsync(key.Value, false, false);
                         }
@@ -186,9 +184,9 @@ namespace Steam_Library_Manager.Functions
                 if (Properties.Settings.Default.backupDirectories != null)
                 {
                     // for each backup library we have do a loop
-                    foreach (string backupDirectory in Properties.Settings.Default.backupDirectories)
+                    foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
                     {
-                        AddNewLibraryAsync(backupDirectory, false, true, !Directory.Exists(backupDirectory));
+                        AddNewLibraryAsync(BackupPath, false, true, !Directory.Exists(BackupPath));
                     }
                 }
             }
@@ -199,20 +197,14 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateLibraryVisual(Definitions.Library libraryToUpdate)
-        {
-            libraryToUpdate.FreeSpace = FileSystem.GetAvailableFreeSpace(libraryToUpdate.FullPath);
-            libraryToUpdate.FreeSpacePerc = 100 - ((int)Math.Round((double)(100 * libraryToUpdate.FreeSpace) / FileSystem.GetTotalSize(libraryToUpdate.FullPath)));
-        }
-
-        public static async void UpdateBackupLibraryAsync(Definitions.Library libraryToUpdate)
+        public static async void UpdateBackupLibraryAsync(Definitions.Steam.Library libraryToUpdate)
         {
             try
             {
                 libraryToUpdate.IsOffline = false;
-                UpdateLibraryVisual(libraryToUpdate);
+                libraryToUpdate.UpdateDiskDetails();
 
-                await Task.Run(() => libraryToUpdate.UpdateGameList());
+                await Task.Run(() => libraryToUpdate.UpdateAppList());
             }
             catch (Exception ex)
             {
@@ -226,7 +218,7 @@ namespace Steam_Library_Manager.Functions
             {
                 NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
-                if (Definitions.List.Libraries.Where(x => x.FullPath.ToLowerInvariant() == NewLibraryPath ||
+                if (Definitions.List.SteamLibraries.Where(x => x.FullPath.ToLowerInvariant() == NewLibraryPath ||
                 x.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
                 x.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
                 x.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath ||

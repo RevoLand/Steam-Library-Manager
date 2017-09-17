@@ -10,30 +10,30 @@ namespace Steam_Library_Manager.Framework.CachedImage
 {
     public static class FileCache
     {
-        public static async System.Threading.Tasks.Task<MemoryStream> HitAsync(Uri url)
+        public static async System.Threading.Tasks.Task<MemoryStream> HitAsync(Uri Url)
         {
             try
             {
-                var localFile = $"{Definitions.Directories.SLM.HeaderImageDirectory}\\{url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
+                var LocalFile = $"{Definitions.Directories.SLM.HeaderImage}\\{Url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
 
-                MemoryStream memoryStream = new MemoryStream();
+                MemoryStream MemStream = new MemoryStream();
 
-                if (!File.Exists(localFile))
+                if (!File.Exists(LocalFile))
                 {
-                    if (!Directory.Exists(Definitions.Directories.SLM.HeaderImageDirectory))
-                        Directory.CreateDirectory(Definitions.Directories.SLM.HeaderImageDirectory);
+                    if (!Directory.Exists(Definitions.Directories.SLM.HeaderImage))
+                        Directory.CreateDirectory(Definitions.Directories.SLM.HeaderImage);
 
-                    new WebClient().DownloadFileAsync(url, localFile);
+                    new WebClient().DownloadFileAsync(Url, LocalFile);
 
-                    await (await new WebClient().OpenReadTaskAsync(url)).CopyToAsync(memoryStream);
+                    await (await new WebClient().OpenReadTaskAsync(Url)).CopyToAsync(MemStream);
                 }
                 else
                 {
-                    await (new FileStream(localFile, FileMode.Open, FileAccess.Read)).CopyToAsync(memoryStream);
+                    await (new FileStream(LocalFile, FileMode.Open, FileAccess.Read)).CopyToAsync(MemStream);
                 }
 
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                return memoryStream;
+                MemStream.Seek(0, SeekOrigin.Begin);
+                return MemStream;
             }
             catch (WebException)
             {

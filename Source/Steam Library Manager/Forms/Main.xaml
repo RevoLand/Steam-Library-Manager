@@ -33,12 +33,12 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                                <Condition Binding="{Binding Library.IsBackup}" Value="true" />
+                                                <Condition Binding="{Binding SteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
                                         </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                        <DataTrigger Binding="{Binding SteamBackup}" Value="true">
                                             <Setter Property="Text" Value="Steam backup" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
@@ -78,12 +78,12 @@
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding InstalledLibrary.IsBackup}" Value="true" />
-                                            <Condition Binding="{Binding IsSteamBackup}" Value="false" />
+                                            <Condition Binding="{Binding Library.IsBackup}" Value="true" />
+                                            <Condition Binding="{Binding SteamBackup}" Value="false" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Text" Value="SLM backup" />
                                     </MultiDataTrigger>
-                                    <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                    <DataTrigger Binding="{Binding SteamBackup}" Value="true">
                                         <Setter Property="Text" Value="Steam backup" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsCompressed}" Value="true">
@@ -125,7 +125,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
-                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}" >
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetApp.GameHeaderImage}" >
                         <Image.Style>
                             <Style TargetType="Image">
                                 <Style.Triggers>
@@ -149,14 +149,14 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding TargetGame.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding TargetApp.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetApp.AppID}" HorizontalAlignment="Left" />
 
                         <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
+                        <TextBlock Text="{Binding TargetApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
 
                         <TextBlock Margin="0,-20,0,0">
                             <TextBlock.Style>
@@ -164,15 +164,15 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
+                                                <Condition Binding="{Binding TargetApp.Library.IsBackup}" Value="true" />
+                                                <Condition Binding="{Binding TargetApp.SteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
                                         </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding TargetGame.IsSteamBackup}" Value="true">
+                                        <DataTrigger Binding="{Binding TargetApp.SteamBackup}" Value="true">
                                             <Setter Property="Text" Value="Steam backup" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetGame.IsCompressed}" Value="true">
+                                        <DataTrigger Binding="{Binding TargetApp.IsCompressed}" Value="true">
                                             <Setter Property="Text" Value="Compressed backup" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -187,13 +187,13 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="false" />
+                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Compress" />
                                         </MultiDataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="true" />
+                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="true" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Keep Compressed" />
                                         </MultiDataTrigger>
@@ -229,7 +229,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetGame.GameHeaderImage}">
+                    <cachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetApp.GameHeaderImage}">
                         <Image.Style>
                             <Style TargetType="Image">
                                 <Style.Triggers>
@@ -253,10 +253,10 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding TargetGame.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding TargetApp.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding TargetGame.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetGame.PrettyGameSize}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TargetApp.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetApp.PrettyGameSize}" HorizontalAlignment="Right" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
@@ -266,15 +266,15 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.InstalledLibrary.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding TargetGame.IsSteamBackup}" Value="false" />
+                                                <Condition Binding="{Binding TargetApp.Library.IsBackup}" Value="true" />
+                                                <Condition Binding="{Binding TargetApp.SteamBackup}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="SLM backup" />
                                         </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding TargetGame.IsSteamBackup}" Value="true">
+                                        <DataTrigger Binding="{Binding TargetApp.SteamBackup}" Value="true">
                                             <Setter Property="Text" Value="Steam backup" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetGame.IsCompressed}" Value="true">
+                                        <DataTrigger Binding="{Binding TargetApp.IsCompressed}" Value="true">
                                             <Setter Property="Text" Value="Compressed backup" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -289,13 +289,13 @@
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="false" />
+                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Compress" />
                                         </MultiDataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetGame.IsCompressed}" Value="true" />
+                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="true" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Keep Compressed" />
                                         </MultiDataTrigger>
@@ -311,13 +311,13 @@
     </Window.Resources>
     <Grid Margin="0,40,2,2">
         <Grid x:Name="QuickSettings" Margin="600,-25,10,0" Height="30" VerticalAlignment="Top">
-            <ComboBox x:Name="GameSortingMethod" HorizontalAlignment="Right" Margin="0,0,125,0" VerticalAlignment="Top" Width="160" SelectedItem="{Binding Setting_GameSortingMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged" />
+            <ComboBox x:Name="GameSortingMethod" HorizontalAlignment="Right" Margin="0,0,125,0" VerticalAlignment="Top" Width="160" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:AppSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged" />
             <ComboBox x:Name="LibraryStyle" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{slm:EnumBindingSource {x:Type enums:LibraryStyle}}" />
         </Grid>
         <TabControl Margin="10,0,10,10" BorderBrush="Black" Background="White">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
-                    <ListView x:Name="libraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True" SelectionChanged="LibraryGrid_MouseDown">
+                    <ListView x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True" SelectionChanged="LibraryGrid_MouseDown">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Height="110" Width="Auto" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
@@ -325,7 +325,7 @@
                                         <ContextMenu ItemsSource="{Binding ContextMenu}" >
                                             <ContextMenu.ItemContainerStyle>
                                                 <Style>
-                                                    <EventSetter Event="MenuItem.Click" Handler="LibraryContextMenuItem_Click" />
+                                                    <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
                                                 </Style>
                                             </ContextMenu.ItemContainerStyle>
                                         </ContextMenu>
@@ -375,11 +375,11 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Games.Count, StringFormat=Game(s): \{0\}}" HorizontalAlignment="Right" />
+                                        <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
                                     </Grid>
 
                                     <Grid Height="18" Margin="0, 0, 0, 8" VerticalAlignment="Bottom">
-                                        <ProgressBar Height="18" Value="{Binding FreeSpacePerc}" VerticalAlignment="Stretch" IsIndeterminate="False" />
+                                        <ProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" VerticalAlignment="Stretch" IsIndeterminate="False" />
                                         <TextBlock Height="18" Text="{Binding PrettyFreeSpace, StringFormat=Available: \{0\}}" HorizontalAlignment="Center" FontWeight="Normal" />
                                     </Grid>
                                 </Grid>
@@ -387,7 +387,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <ListView x:Name="gamePanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,40" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -414,7 +414,7 @@
             </TabItem>
             <TabItem x:Name="Tab_TaskManager" Header="Task Manager" Padding="20, 10">
                 <Grid Background="White">
-                    <ListView x:Name="taskPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,290" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,290" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -464,10 +464,10 @@
                                         </ContextMenu>
                                     </Grid.ContextMenu>
                                     <Grid>
-                                        <TextBlock Text="{Binding FileSystemInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding FSInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
                                         <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
-                                            <TextBlock Text="{Binding FileSystemInfo.FullName}" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding FileSystemInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding FSInfo.FullName}" HorizontalAlignment="Left" />
+                                            <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
                                             <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
                                         </Grid>
                                     </Grid>
@@ -510,15 +510,15 @@
             -->
             <TabItem Header="Settings" Padding="20, 10">
                 <Grid Background="White">
-                    <GroupBox x:Name="settingsGroupBox" Header="General Settings" Margin="10,10,10,360">
+                    <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="10,10,10,360">
                         <Grid>
                             <!-- 1#1 -->
-                            <Label Content="Game sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:GameSortingMethod}}}" />
+                            <Label Content="App sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:AppSortingMethod}}}" />
 
                             <!-- 1#2 -->
-                            <Label Content="Game size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_GameSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:GameSizeCalculationMethod}}" />
+                            <Label Content="App size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:AppSizeCalculationMethod}}" />
 
                             <!-- 1#3 -->
                             <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,3,0,0">
@@ -572,7 +572,7 @@
                         </Grid>
                     </GroupBox>
 
-                    <DataGrid x:Name="libraryContextMenuItems" Margin="10,0,10,185" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
+                    <DataGrid x:Name="LibraryCMenuItems" Margin="10,0,10,185" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
@@ -581,11 +581,11 @@
                         </DataGrid.ContextMenu>
                     </DataGrid>
 
-                    <DataGrid x:Name="gameContextMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
+                    <DataGrid x:Name="AppCMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
                         <DataGrid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Click="GameDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
-                                <MenuItem Click="GameDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
+                                <MenuItem Click="AppDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
+                                <MenuItem Click="AppDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>

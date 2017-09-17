@@ -3,22 +3,21 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
     class FileSystem
     {
-        public static void RemoveGivenFiles(ConcurrentBag<string> fileList, ConcurrentBag<string> directoryList = null)
+        public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null)
         {
-            Parallel.ForEach(fileList, currentFile =>
+            Parallel.ForEach(FileList, currentFile =>
             {
                 try
                 {
-                    FileInfo file = new FileInfo(currentFile);
+                    FileInfo File = new FileInfo(currentFile);
 
-                    if (file.Exists)
-                        file.Delete();
+                    if (File.Exists)
+                        File.Delete();
                 }
                 catch (Exception ex)
                 {
@@ -26,16 +25,16 @@ namespace Steam_Library_Manager.Functions
                 }
             });
 
-            if (directoryList != null)
+            if (DirectoryList != null)
             {
-                Parallel.ForEach(directoryList, currentDirectory =>
+                Parallel.ForEach(DirectoryList, currentDirectory =>
                 {
                     try
                     {
-                        DirectoryInfo directory = new DirectoryInfo(currentDirectory);
+                        DirectoryInfo Directory = new DirectoryInfo(currentDirectory);
 
-                        if (directory.Exists)
-                            directory.Delete();
+                        if (Directory.Exists)
+                            Directory.Delete();
                     }
                     catch (Exception ex)
                     {
@@ -46,7 +45,7 @@ namespace Steam_Library_Manager.Functions
         }
 
         // Get directory size from path, with or without sub directories
-        public static long GetDirectorySize(DirectoryInfo directoryPath, bool includeSub)
+        public static long GetDirectorySize(DirectoryInfo directoryPath, bool IncludeSubDirectories)
         {
             try
             {
@@ -54,14 +53,14 @@ namespace Steam_Library_Manager.Functions
                     return 0;
 
                 // Define a "long" for directory size
-                long directorySize = 0;
+                long DirectorySize = 0;
 
-                foreach (FileInfo currentFile in directoryPath.EnumerateFileSystemInfos("*", (includeSub) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
+                foreach (FileInfo CurrentFile in directoryPath.EnumerateFileSystemInfos("*", (IncludeSubDirectories) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
                 {
-                    directorySize += currentFile.Length;
+                    DirectorySize += CurrentFile.Length;
                 }
                 // and return directory size
-                return directorySize;
+                return DirectorySize;
             }
             // on error, return 0
             catch (Exception ex)
@@ -71,29 +70,29 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static long GetFileSize(string filePath)
+        public static long GetFileSize(string FilePath)
         {
-            return new FileInfo(filePath).Length;
+            return new FileInfo(FilePath).Length;
         }
 
         // Source: http://stackoverflow.com/a/2082893
-        public static string FormatBytes(long bytes)
+        public static string FormatBytes(long Bytes)
         {
             // definition of file size suffixes
             string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int current;
-            double dblSByte = bytes;
+            int Current;
+            double dblSByte = Bytes;
 
-            for (current = 0; current < Suffix.Length && bytes >= 1024; current++, bytes /= 1024)
+            for (Current = 0; Current < Suffix.Length && Bytes >= 1024; Current++, Bytes /= 1024)
             {
-                dblSByte = bytes / 1024.0;
+                dblSByte = Bytes / 1024.0;
             }
 
             if (dblSByte < 0)
                 dblSByte = 0;
 
             // Format the string
-            return $"{dblSByte:0.##} {Suffix[current]}";
+            return $"{dblSByte:0.##} {Suffix[Current]}";
         }
 
         public static long GetAvailableFreeSpace(string TargetFolder)
@@ -126,26 +125,6 @@ namespace Steam_Library_Manager.Functions
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return 0;
-            }
-        }
-
-        public static void DeleteOldLibrary(Definitions.Library Library)
-        {
-            try
-            {
-                if (Library.SteamAppsFolder.Exists)
-                    Library.SteamAppsFolder.Delete(true);
-
-                if (Library.WorkshopFolder.Exists)
-                    Library.WorkshopFolder.Delete(true);
-
-                if (Library.DownloadFolder.Exists)
-                    Library.DownloadFolder.Delete(true);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                MessageBox.Show(ex.ToString());
             }
         }
     }

@@ -11,11 +11,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
     /// </summary>
     public class Image : System.Windows.Controls.Image
     {
-        static Image()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Image),
-                new FrameworkPropertyMetadata(typeof(Image)));
-        }
+        static Image() => DefaultStyleKeyProperty.OverrideMetadata(typeof(Image), new FrameworkPropertyMetadata(typeof(Image)));
 
         public string ImageUrl
         {
@@ -27,28 +23,28 @@ namespace Steam_Library_Manager.Framework.CachedImage
             get => ((BitmapCreateOptions)(GetValue(Image.CreateOptionsProperty))); set => SetValue(Image.CreateOptionsProperty, value);
         }
 
-        private static async void ImageUrlPropertyChangedAsync(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        private static async void ImageUrlPropertyChangedAsync(DependencyObject Obj, DependencyPropertyChangedEventArgs e)
         {
-            string url = e.NewValue as string;
+            string Url = e.NewValue as string;
 
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(Url))
                 return;
 
             try
             {
-                var cachedImage = (Image)obj;
-                var bitmapImage = new BitmapImage();
-                var memoryStream = await FileCache.HitAsync(new Uri(url));
+                var CachedImage = (Image)Obj;
+                var BitmapImage = new BitmapImage();
+                var MemStream = await FileCache.HitAsync(new Uri(Url));
 
-                if (memoryStream == null || memoryStream.Length == 0)
+                if (MemStream == null || MemStream.Length == 0)
                     return;
 
-                bitmapImage.BeginInit();
-                bitmapImage.CreateOptions = cachedImage.CreateOptions;
-                bitmapImage.StreamSource = memoryStream;
-                bitmapImage.EndInit();
+                BitmapImage.BeginInit();
+                BitmapImage.CreateOptions = CachedImage.CreateOptions;
+                BitmapImage.StreamSource = MemStream;
+                BitmapImage.EndInit();
 
-                cachedImage.Source = bitmapImage;
+                CachedImage.Source = BitmapImage;
             }
             catch (Exception)
             {

@@ -8,9 +8,9 @@ namespace Steam_Library_Manager.Functions
     {
         public class Settings
         {
-            public static Func<Definitions.Game, object> GetSortingMethod()
+            public static Func<Definitions.Steam.AppInfo, object> GetSortingMethod()
             {
-                Func<Definitions.Game, object> Sort;
+                Func<Definitions.Steam.AppInfo, object> Sort;
 
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
@@ -43,7 +43,7 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.IsBackup))
+                    foreach (Definitions.Steam.Library Library in Definitions.List.SteamLibraries.Where(x => x.IsBackup))
                     {
                         // then add this library path to new defined string collection
                         BackupDirs.Add(Library.FullPath);
@@ -62,8 +62,8 @@ namespace Steam_Library_Manager.Functions
             public static void SaveSettings()
             {
                 UpdateBackupDirs();
-                ContextMenu.SaveLibraryContextMenuItems();
-                ContextMenu.SaveGameContextMenuItems();
+                ContextMenu.SaveLibraryCMenuItems();
+                ContextMenu.SaveAppCMenuItems();
             }
         }
 
@@ -74,8 +74,13 @@ namespace Steam_Library_Manager.Functions
 
             Steam.UpdateSteamInstallationPath();
 
-            ContextMenu.ParseLibraryContextMenuItems();
-            ContextMenu.ParseGameContextMenuItems();
+            ContextMenu.ParseLibraryCMenuItems();
+            ContextMenu.ParseAppCMenuItems();
+
+            if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
+                Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
+
+
 
             Library.GenerateLibraryList();
         }

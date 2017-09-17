@@ -7,7 +7,7 @@ namespace Steam_Library_Manager.Functions
 {
     class ContextMenu
     {
-        public static void ParseLibraryContextMenuItems()
+        public static void ParseLibraryCMenuItems()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void SaveLibraryContextMenuItems()
+        public static void SaveLibraryCMenuItems()
         {
             string libraryContextMenu = "";
             foreach (Definitions.ContextMenuItem CMenuItem in Definitions.List.LibraryCMenuItems)
@@ -94,7 +94,7 @@ namespace Steam_Library_Manager.Functions
             Properties.Settings.Default.libraryContextMenu = libraryContextMenu;
         }
 
-        public static void ParseGameContextMenuItems()
+        public static void ParseAppCMenuItems()
         {
             try
             {
@@ -145,7 +145,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    Definitions.List.GameCMenuItems.Add(CMenuItem);
+                    Definitions.List.AppCMenuItems.Add(CMenuItem);
                 }
             }
             catch (Exception ex)
@@ -155,10 +155,10 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void SaveGameContextMenuItems()
+        public static void SaveAppCMenuItems()
         {
             string gameContextMenu = "";
-            foreach (Definitions.ContextMenuItem CMenuItem in Definitions.List.GameCMenuItems)
+            foreach (Definitions.ContextMenuItem CMenuItem in Definitions.List.AppCMenuItems)
             {
                 if (!string.IsNullOrEmpty(CMenuItem.Header))
                     gameContextMenu += $"text={CMenuItem.Header}";

@@ -11,25 +11,25 @@ namespace Steam_Library_Manager.Functions
         public enum LogType
         {
             SLM,
-            Game,
+            App,
             Library,
             TaskManager
         }
 
-        class GameLog
+        class AppLog
         {
             public string Message;
-            public Definitions.Game Game;
+            public Definitions.Steam.AppInfo App;
         }
 
         static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
-        static BlockingCollection<GameLog> GameLogs = new BlockingCollection<GameLog>();
+        static BlockingCollection<AppLog> AppLogs = new BlockingCollection<AppLog>();
         static BlockingCollection<string> LibraryLogs = new BlockingCollection<string>();
         static BlockingCollection<string> TaskManagerLogs = new BlockingCollection<string>();
 
-        static DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "SLM"));
-        static DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "Libraries"));
-        static DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "TaskManager"));
+        static DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "SLM"));
+        static DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "Libraries"));
+        static DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "TaskManager"));
 
         public static void StartLogger()
         {
@@ -41,6 +41,7 @@ namespace Steam_Library_Manager.Functions
                     while (true)
                     {
                         ProcessSLMLogs(SLMLogs.Take());
+                        System.Threading.Thread.Sleep(1);
                     }
                 }
                 catch (Exception ex)
@@ -51,14 +52,15 @@ namespace Steam_Library_Manager.Functions
             });
             #endregion
 
-            #region Game Logs
+            #region App Logs
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
                 {
                     while (true)
                     {
-                        ProcessGameLogs(GameLogs.Take());
+                        ProcessAppLogs(AppLogs.Take());
+                        System.Threading.Thread.Sleep(1);
                     }
                 }
                 catch (Exception ex)
@@ -77,6 +79,7 @@ namespace Steam_Library_Manager.Functions
                     while (true)
                     {
                         ProcessLibraryLogs(LibraryLogs.Take());
+                        System.Threading.Thread.Sleep(1);
                     }
                 }
                 catch (Exception ex)
@@ -95,6 +98,7 @@ namespace Steam_Library_Manager.Functions
                     while (true)
                     {
                         ProcessTaskManagerLogs(TaskManagerLogs.Take());
+                        System.Threading.Thread.Sleep(1);
                     }
                 }
                 catch (Exception ex)
@@ -127,16 +131,16 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        static void ProcessGameLogs(GameLog Log)
+        static void ProcessAppLogs(AppLog Log)
         {
             try
             {
-                DirectoryInfo GameLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.LogDirectory, "Game", Log.Game.InstallationPath.Name));
+                DirectoryInfo AppLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "App", Log.App.InstallationPath.Name));
 
-                if (!GameLogDirectory.Exists)
-                    GameLogDirectory.Create();
+                if (!AppLogDirectory.Exists)
+                    AppLogDirectory.Create();
 
-                FileInfo Logfile = new FileInfo(Path.Combine(GameLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
+                FileInfo Logfile = new FileInfo(Path.Combine(AppLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
 
                 using (StreamWriter FileWriter = (!Logfile.Exists) ? File.CreateText(Logfile.FullName) : Logfile.AppendText())
                 {
@@ -192,7 +196,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LogToFile(LogType LogType, string LogMessage, Definitions.Game Game = null)
+        public static void LogToFile(LogType LogType, string LogMessage, Definitions.Steam.AppInfo App = null)
         {
             try
             {
@@ -204,8 +208,8 @@ namespace Steam_Library_Manager.Functions
                     case LogType.SLM:
                         SLMLogs.Add(($"[{DateTime.Now}] {LogMessage}"));
                         break;
-                    case LogType.Game:
-                        GameLogs.Add(new GameLog { Game = Game, Message = $"[{DateTime.Now}] {LogMessage}" });
+                    case LogType.App:
+                        AppLogs.Add(new AppLog { App = App, Message = $"[{DateTime.Now}] {LogMessage}" });
                         break;
                     case LogType.Library:
                         LibraryLogs.Add(($"[{DateTime.Now}] {LogMessage}"));
@@ -219,7 +223,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
-                Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                Logger.LogToFile(LogType.TaskManager, ex.ToString());
             }
         }
     }

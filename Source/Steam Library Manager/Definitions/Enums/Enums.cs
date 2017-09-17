@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Steam_Library_Manager.Definitions.Enums
 {
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
-    public enum GameSortingMethod
+    public enum AppSortingMethod
     {
         [Description("Sort by appName")]
         appName,
@@ -18,7 +18,7 @@ namespace Steam_Library_Manager.Definitions.Enums
         LastUpdated
     }
 
-    public enum GameSizeCalculationMethod
+    public enum AppSizeCalculationMethod
     {
         ACF,
         Enumeration
