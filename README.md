@@ -15,23 +15,4 @@
     </a>
 </p>
 
-Head over to [Wiki](https://github.com/RevoLand/Steam-Library-Manager/wiki) for FAQ and more.
-
-Credits
-===================
-- [Mert Ercan](https://steamcommunity.com/id/RevoLand/) *(that's me!)*
-- [Mobeeuz](https://steamcommunity.com/id/Mobeeuz)
-    - SLM wouldn't get this far without him! 
-    - Also give a second and check his awesome book! [A Blue Horizon (Ashrealm)](https://www.amazon.com/dp/0995190917/)
- 
-*Below this line is ordered alphabetically.*
-- [Ceriaz](https://steamcommunity.com/id/ceriaz)
-    - SLM knows how to deal with .vdf files better now!
-- [MageMaster](https://steamcommunity.com/profiles/76561197998719155)
-    - No more disappearing tiles!
-- [RemiGC](https://github.com/RemiGC)
-    - So i know the existence of Path.Combine!
-- [white_ghost](https://steamcommunity.com/profiles/76561197991469081)
-    - SLM knows how to deal with custom app names because of him!
-- *And everyone else who downloaded & using SLM!*
-
+Head over to [Wiki](https://github.com/RevoLand/Steam-Library-Manager/wiki) for FAQ, Credits and more!
