@@ -62,9 +62,149 @@ namespace Steam_Library_Manager.Functions
             public static void SaveSettings()
             {
                 UpdateBackupDirs();
-                ContextMenu.SaveLibraryCMenuItems();
-                ContextMenu.SaveAppCMenuItems();
             }
+        }
+
+        public static void PopulateLibraryCMenuItems()
+        {
+            #region App Context Menu Item Definitions
+
+            // Open library in explorer ({0})
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Open library in explorer ({0})",
+                Action = "Disk",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
+                ShowToOffline = false
+            });
+
+            // Separator
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                IsSeparator = true,
+                ShowToOffline = false
+            });
+
+            // Remove library & files
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Remove library from Steam (/w files)",
+                Action = "deleteLibrary",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Trash,
+                ShowToOffline = false
+            });
+
+            // Delete games in library
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Delete games in library",
+                Action = "deleteLibrarySLM",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline,
+                ShowToOffline = false
+            });
+
+            // Separator
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                IsSeparator = true,
+                ShowToNormal = false,
+                ShowToOffline = false
+            });
+
+            // Remove from SLM
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Remove from SLM",
+                Action = "RemoveFromList",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Minus,
+                ShowToNormal = false
+            });
+
+            #endregion
+        }
+
+        public static void PopulateAppCMenuItems()
+        {
+            #region App Context Menu Item Definitions
+
+            // Run
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Run",
+                Action = "steam://run/{0}",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
+                ShowToCompressed = false
+            });
+
+            // Separator
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                ShowToCompressed = false,
+                IsSeparator = true
+            });
+
+            // Show on disk
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "{0} ({1})",
+                Action = "Disk",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
+            });
+
+            // View ACF
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "View ACF File",
+                Action = "acffile",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.PencilSquareOutline,
+                ShowToCompressed = false
+            });
+
+            // Game hub
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Game Hub",
+                Action = "steam://url/GameHub/{0}",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Book
+            });
+
+            // Separator
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                IsSeparator = true
+            });
+
+            // Workshop
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Workshop",
+                Action = "steam://url/SteamWorkshopPage/{0}",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
+            });
+
+            // Subscribed Workshop Items
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Subscribed Workshop Items",
+                Action = "https://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Cogs
+            });
+
+            // Separator
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                IsSeparator = true
+            });
+
+            // Subscribed Workshop Items
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Delete files (using SLM)",
+                Action = "deleteappfiles",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
+            });
+
+            #endregion
         }
 
         public static void OnLoad()
@@ -74,13 +214,11 @@ namespace Steam_Library_Manager.Functions
 
             Steam.UpdateSteamInstallationPath();
 
-            ContextMenu.ParseLibraryCMenuItems();
-            ContextMenu.ParseAppCMenuItems();
-
             if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
 
-
+            PopulateLibraryCMenuItems();
+            PopulateAppCMenuItems();
 
             Library.GenerateLibraryList();
         }

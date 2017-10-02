@@ -5,7 +5,8 @@
     xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     x:Name="mainForm" x:Class="Steam_Library_Manager.Main"
-        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Width="920" Height="800" SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" WindowStyle="ThreeDBorderWindow" SourceInitialized="MainForm_SourceInitialized">
+        Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Width="930" Height="800" SnapsToDevicePixels="True" 
+    Loaded="MainForm_Loaded" Closing="MainForm_Closing" SourceInitialized="MainForm_SourceInitialized" FontFamily="Segoe UI Light" FontSize="14">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo/>
     </Window.TaskbarItemInfo>
@@ -314,7 +315,7 @@
             <ComboBox x:Name="GameSortingMethod" HorizontalAlignment="Right" Margin="0,0,125,0" VerticalAlignment="Top" Width="160" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{slm:EnumBindingSource {x:Type enums:AppSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged" />
             <ComboBox x:Name="LibraryStyle" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{slm:EnumBindingSource {x:Type enums:LibraryStyle}}" />
         </Grid>
-        <TabControl Margin="10,0,10,10" BorderBrush="Black" Background="White">
+        <TabControl Margin="10,0,10,10" BorderBrush="Black">
             <TabItem Header="Library" IsSelected="True" Padding="20, 10">
                 <Grid>
                     <ListView x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True" SelectionChanged="LibraryGrid_MouseDown">
@@ -413,7 +414,7 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="Tab_TaskManager" Header="Task Manager" Padding="20, 10">
-                <Grid Background="White">
+                <Grid>
                     <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,290" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -509,86 +510,69 @@
             </TabItem>
             -->
             <TabItem Header="Settings" Padding="20, 10">
-                <Grid Background="White">
-                    <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="10,10,10,360">
-                        <Grid>
+                <Grid>
+                    <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="10,10,360,345">
+                        <Grid Margin="0,0,0,3">
                             <!-- 1#1 -->
-                            <Label Content="App sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:AppSortingMethod}}}" />
+                            <Label Content="Application sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:AppSortingMethod}}}" />
 
                             <!-- 1#2 -->
-                            <Label Content="App size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:AppSizeCalculationMethod}}" />
+                            <Label Content="Application size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:AppSizeCalculationMethod}}" />
 
-                            <!-- 1#3 -->
-                            <GroupBox Header="Task Manager Defaults" Margin="10,130,0,0" Height="140" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210" Padding="5,3,0,0">
-                                <Grid>
-                                    <!-- 1#1 -->
-                                    <CheckBox Content="Remove Original Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Width="190"/>
-
-                                    <!-- 1#2 -->
-                                    <CheckBox Content="Compress" IsChecked="{slm:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
-
-                                    <!-- 1#3 -->
-                                    <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
-
-                                    <!-- 1#4 -->
-                                    <CheckBox Content="Start Task Manager on Startup" IsChecked="{slm:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="0,90,0,0" VerticalAlignment="Top" Height="20" Width="190"/>
-                                </Grid>
-                            </GroupBox>
 
                             <!-- 2#1 -->
-                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="225,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="225,40,0,0" VerticalAlignment="Top" Width="210" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
+                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="10,127,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
+                            <ComboBox HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{slm:EnumBindingSource {x:Type enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- 2#2 -->
-                            <Label Content="Move files sync'ed if bigger than (MB)" HorizontalAlignment="Left" Margin="225,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <TextBox HorizontalAlignment="Left" Margin="225,100,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" />
+                            <Label Content="File size to start move synchronously (MB)" HorizontalAlignment="Left" Margin="10,185,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240" FontSize="13"/>
+                            <TextBox HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Width="240" Text="{slm:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" />
 
                             <!-- 2#3 -->
-                            <CheckBox Content="Advanced Logging (req. restart)" IsChecked="{slm:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="225,130,0,0" VerticalAlignment="Top" Height="20" Width="210"/>
-                            <Button Content="View Logs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="225,155,0,0" Height="25" Width="210" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
-                            
+                            <CheckBox Content="Advanced Logging (Requires restart)" IsChecked="{slm:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="255,10,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Button Content="View Logs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="255,40,0,0" Height="22" Width="240" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
+
                             <!-- 2#4-->
-                            <Button Content="Clear Header Image Cache" HorizontalAlignment="Left" Margin="225,185,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210" Height="25" Click="HeaderImageClearButton_Click"/>
-                            
+                            <Button Content="Clear header image cache" Margin="360,100,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="22" Click="HeaderImageClearButton_Click" HorizontalAlignment="Left" Width="135" FontSize="12"/>
+
                             <!-- 3#1 -->
-                            <Label Content="Include search results" HorizontalAlignment="Left" Margin="440,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <CheckBox IsChecked="{slm:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,40,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
+                            <CheckBox Content="Keep searching while switching library" IsChecked="{slm:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,243,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
                             <!-- 3#2 -->
-                            <Label Content="Play a sound on completion" HorizontalAlignment="Left" Margin="440,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="210"/>
-                            <CheckBox IsChecked="{slm:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="440,100,0,0" VerticalAlignment="Top" Height="17" Width="210"/>
 
 
                             <!-- 4#1 -->
-                            <Label Content="Check for Updates at Startup" HorizontalAlignment="Left" Margin="655,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="165"/>
-                            <CheckBox IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="655,40,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="17" Width="165"/>
+                            <CheckBox Content="Check for Updates at Startup" IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="255,70,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240"/>
 
                             <!-- 4#2 -->
-                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="655,70,0,0" VerticalAlignment="Top" Width="165" Height="22" Click="CheckForUpdates_Click"/>
+                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="255,100,0,0" VerticalAlignment="Top" Width="100" Height="22" Click="CheckForUpdates_Click" FontSize="12"/>
 
                             <!-- 4#3 -->
-                            <Image Name="DonateButton" MouseUp="DonateButton_MouseUp" Source="/Steam Library Manager;component/Resources/donate-button.png" Height="49" Margin="672,97,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="132" />
+                            <Image Name="DonateButton" MouseUp="DonateButton_MouseUp" Source="/Steam Library Manager;component/Resources/donate-button.png" Margin="0,0,10,10" MaxHeight="52" MaxWidth="130" Height="52" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                        </Grid>
+                    </GroupBox>
+                    <!-- <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="10,10,360,360"> -->
+                    <GroupBox Header="Task Manager Settings" Margin="0,10,0,345" Padding="5,3,0,0" HorizontalAlignment="Right" Width="355">
+                        <Grid Margin="0,0,10,0">
+                            <!-- 1#1 -->
+                            <CheckBox Content="Remove Source Files" IsChecked="{slm:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240" Margin="10,10,0,0"/>
+
+                            <!-- 1#2 -->
+                            <CheckBox Content="Compress Files" IsChecked="{slm:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+
+                            <!-- 1#3 -->
+                            <CheckBox Content="Report File Movement" IsChecked="{slm:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+
+                            <!-- 1#4 -->
+                            <CheckBox Content="Start Task Manager on Startup" IsChecked="{slm:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+
+                            <!-- 1#5 -->
+                            <CheckBox Content="Play a sound on completion" IsChecked="{slm:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+
                         </Grid>
                     </GroupBox>
 
-                    <DataGrid x:Name="LibraryCMenuItems" Margin="10,0,10,185" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
-                                <MenuItem Click="LibraryDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
-
-                    <DataGrid x:Name="AppCMenuItems" Margin="10,0,10,10" IsSynchronizedWithCurrentItem="True" Height="170" VerticalAlignment="Bottom">
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Click="AppDataGridMenuItem_Click" Header="Move Up" Tag="moveUp" />
-                                <MenuItem Click="AppDataGridMenuItem_Click" Header="Move Down" Tag="moveDown" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>

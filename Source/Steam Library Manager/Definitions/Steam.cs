@@ -284,9 +284,11 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive))
                     {
-                        if (IsBackup && CMenuItem.ShowToSLMBackup == Enums.MenuVisibility.NotVisible)
+                        if (IsBackup && !CMenuItem.ShowToSLMBackup)
                             continue;
-                        else if (!IsBackup && CMenuItem.ShowToNormal == Enums.MenuVisibility.NotVisible)
+                        else if (!IsBackup && !CMenuItem.ShowToNormal)
+                            continue;
+                        else if (IsOffline && !CMenuItem.ShowToOffline)
                             continue;
 
                         if (CMenuItem.IsSeparator)
@@ -354,11 +356,6 @@ namespace Steam_Library_Manager.Definitions
 
                         MessageBox.Show(string.Format("All app files in library ({0}) successfully removed.", FullPath));
                         break;
-                    case "movelibrary":
-
-                        //new Forms.moveLibrary(Library).Show();
-                        break;
-
                     // Removes a backup library from list
                     case "removefromlist":
                         if (IsBackup)
@@ -657,13 +654,13 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive))
                     {
-                        if (SteamBackup && cItem.ShowToSteamBackup == Enums.MenuVisibility.NotVisible)
+                        if (SteamBackup && !cItem.ShowToSteamBackup)
                             continue;
-                        else if (Library.IsBackup && cItem.ShowToSLMBackup == Enums.MenuVisibility.NotVisible)
+                        else if (Library.IsBackup && !cItem.ShowToSLMBackup)
                             continue;
-                        else if (IsCompressed && cItem.ShowToCompressed == Enums.MenuVisibility.NotVisible)
+                        else if (IsCompressed && !cItem.ShowToCompressed)
                             continue;
-                        else if (cItem.ShowToNormal == Enums.MenuVisibility.NotVisible)
+                        else if (!cItem.ShowToNormal)
                             continue;
 
                         if (cItem.IsSeparator)
@@ -712,7 +709,7 @@ namespace Steam_Library_Manager.Definitions
                     case "acffile":
                         System.Diagnostics.Process.Start(FullAcfPath.FullName);
                         break;
-                    case "deletegamefilesslm":
+                    case "deleteappfiles":
 
                         DeleteFiles();
                         break;

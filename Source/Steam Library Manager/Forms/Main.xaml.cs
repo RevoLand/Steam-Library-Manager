@@ -37,9 +37,6 @@ namespace Steam_Library_Manager
             TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
             TaskManager_LogsView.ItemsSource = TaskManager_Logs;
 
-            LibraryCMenuItems.ItemsSource = Definitions.List.LibraryCMenuItems;
-            AppCMenuItems.ItemsSource = Definitions.List.AppCMenuItems;
-
             LibraryCleaner.ItemsSource = Definitions.List.Junks;
         }
 
@@ -176,57 +173,6 @@ namespace Steam_Library_Manager
         private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
         private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
-
-        private void LibraryDataGridMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            int SelectedIndex = LibraryCMenuItems.SelectedIndex;
-
-            if (SelectedIndex == -1 || SelectedIndex >= Definitions.List.LibraryCMenuItems.Count)
-                return;
-
-            switch(((MenuItem)sender).Tag.ToString())
-            {
-                case "moveUp":
-                    if (SelectedIndex < 1)
-                        return;
-
-                    Definitions.List.LibraryCMenuItems.Move(SelectedIndex, SelectedIndex - 1);
-                    break;
-
-                case "moveDown":
-                    if (SelectedIndex == Definitions.List.LibraryCMenuItems.Count - 1)
-                        return;
-
-                    Definitions.List.LibraryCMenuItems.Move(SelectedIndex, SelectedIndex + 1);
-                    break;
-            }
-        }
-
-        private void AppDataGridMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-            int SelectedIndex = AppCMenuItems.SelectedIndex;
-
-            if (SelectedIndex == -1 || SelectedIndex >= Definitions.List.AppCMenuItems.Count)
-                return;
-
-            switch (((MenuItem)sender).Tag.ToString())
-            {
-                case "moveUp":
-                    if (SelectedIndex < 1)
-                        return;
-
-                    Definitions.List.AppCMenuItems.Move(SelectedIndex, SelectedIndex - 1);
-                    break;
-
-                case "moveDown":
-                    if (SelectedIndex == Definitions.List.AppCMenuItems.Count - 1)
-                        return;
-
-                    Definitions.List.AppCMenuItems.Move(SelectedIndex, SelectedIndex + 1);
-                    break;
-            }
-        }
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
 

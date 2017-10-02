@@ -113,7 +113,6 @@
     <Compile Include="Framework\WPF\PortableSettingsProvider.cs" />
     <Compile Include="Framework\WPF\SettingBindingExtension.cs" />
     <Compile Include="Framework\WPF\NativeMethods.cs" />
-    <Compile Include="Functions\ContextMenu.cs" />
     <Compile Include="Functions\FAwesome.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\App.cs" />
