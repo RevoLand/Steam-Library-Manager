@@ -24,16 +24,13 @@ namespace Steam_Library_Manager.Definitions.Enums
         Enumeration
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum ArchiveSizeCalculationMethod
     {
+        [Description("Use archive size")]
         compressed,
+        [Description("Calculate file size inside archive")]
         Uncompressed
-    }
-
-    public enum MenuVisibility
-    {
-        NotVisible,
-        Visible
     }
 
     public enum LibraryStyle

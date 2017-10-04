@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace Steam_Library_Manager
 {
@@ -105,16 +104,6 @@ namespace Steam_Library_Manager
                             };
 
                             Framework.TaskManager.AddTask(newTask);
-
-                            DoubleAnimation da = new DoubleAnimation()
-                            {
-                                From = 12,
-                                To = 14,
-                                AutoReverse = true,
-                                Duration = new Duration(TimeSpan.FromSeconds(0.3))
-                            };
-
-                            Tab_TaskManager.BeginAnimation(TextBlock.FontSizeProperty, da);
                         }
                         else
                         {

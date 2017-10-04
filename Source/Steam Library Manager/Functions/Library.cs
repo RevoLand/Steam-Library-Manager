@@ -108,6 +108,8 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
                 }
+
+                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Checked for Backup updates.");
             }
             catch (Exception ex)
             {

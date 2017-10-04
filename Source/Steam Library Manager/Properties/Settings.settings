@@ -15,7 +15,7 @@
       <Value Profile="(Default)">ACF</Value>
     </Setting>
     <Setting Name="archiveSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Uncompressed</Value>
+      <Value Profile="(Default)">compressed</Value>
     </Setting>
     <Setting Name="ParallelAfterSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">20</Value>
