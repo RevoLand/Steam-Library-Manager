@@ -17,6 +17,7 @@ namespace Steam_Library_Manager.Definitions
         {
             public Steam.AppInfo TargetApp { get; set; }
             public Steam.Library TargetLibrary { get; set; }
+            public bool ErrorHappened = false;
             public bool Moving = false;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
@@ -24,11 +25,11 @@ namespace Steam_Library_Manager.Definitions
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
 
             private double _TotalFileCount = 100;
-            private long _MovenFileSize = 0;
+            private long _movedFileSize = 0;
             private long _TotalFileSize = 0;
             private bool _Completed = false;
 
-            public string PrettyAvgSpeed => _MovenFileSize == 0 ? "" : $"{Math.Round(((_MovenFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
+            public string PrettyAvgSpeed => _movedFileSize == 0 ? "" : $"{Math.Round(((_movedFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
 
             public double TotalFileCount
             {
@@ -40,13 +41,13 @@ namespace Steam_Library_Manager.Definitions
                 }
             }
 
-            public long MovenFileSize
+            public long movedFileSize
             {
-                get => _MovenFileSize;
+                get => _movedFileSize;
                 set
                 {
-                    _MovenFileSize = value;
-                    OnPropertyChanged("MovenFileSize");
+                    _movedFileSize = value;
+                    OnPropertyChanged("movedFileSize");
                     OnPropertyChanged("ProgressBarPerc");
                     OnPropertyChanged("PrettyAvgSpeed");
                 }
@@ -66,7 +67,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 get
                 {
-                    double perc = Math.Ceiling((double)(100 * _MovenFileSize) / _TotalFileSize);
+                    double perc = Math.Ceiling((double)(100 * _movedFileSize) / _TotalFileSize);
                     Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
 
                     if (perc == 100)
@@ -75,7 +76,7 @@ namespace Steam_Library_Manager.Definitions
                         Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
                     }
 
-                    return _MovenFileSize == 0 ? 0 : perc;
+                    return _movedFileSize == 0 ? 0 : perc;
                 }
             }
 

@@ -26,13 +26,13 @@ namespace Steam_Library_Manager.Framework
                 CurrentTask.Moving = true;
                 CurrentTask.TargetApp.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
-                if (!CancellationToken.IsCancellationRequested)
+                if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                 {
                     if (CurrentTask.RemoveOldFiles)
                     {
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moven files as requested. This may take a while, please wait.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
                         CurrentTask.TargetApp.DeleteFiles();
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removen, task is completed now.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removed, task is completed now.");
                     }
 
                     if (!CurrentTask.TargetLibrary.IsBackup)

@@ -1,1 +1,1 @@
-1.4.4.0|ACF File Detection, search function and some other fixes & improvements
+1.4.4.1|Important fix for Task Manager

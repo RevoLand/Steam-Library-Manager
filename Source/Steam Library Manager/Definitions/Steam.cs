@@ -261,8 +261,8 @@ namespace Steam_Library_Manager.Definitions
                 {
                     if (Apps.Count(x => x.AcfName == e.Name) > 0)
                     {
-                        AppInfo RemovenApp = Apps.First(x => x.AcfName == e.Name);
-                        Apps.Remove(RemovenApp);
+                        AppInfo RemovedApp = Apps.First(x => x.AcfName == e.Name);
+                        Apps.Remove(RemovedApp);
 
                         if (SLM.CurrentSelectedLibrary == this)
                             Functions.App.UpdateAppPanel(this);
@@ -824,14 +824,14 @@ namespace Steam_Library_Manager.Definitions
                                 compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
                                 //CopiedFiles.Add(newFileName);
-                                CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                                CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
 
                                 if (CurrentTask.ReportFileMovement)
                                 {
-                                    LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFileName}");
+                                    LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFileName}");
                                 }
 
-                                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFileName}", this);
+                                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFileName}", this);
 
                                 if (cancellationToken.IsCancellationRequested)
                                     throw new OperationCanceledException(cancellationToken);
@@ -854,14 +854,14 @@ namespace Steam_Library_Manager.Definitions
                             currentFile.ExtractToFile(newFile.FullName, true);
 
                             CopiedFiles.Add(newFile.FullName);
-                            CurrentTask.MovenFileSize += currentFile.Length;
+                            CurrentTask.movedFileSize += currentFile.Length;
 
                             if (CurrentTask.ReportFileMovement)
                             {
-                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
                             }
 
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
 
                             if (cancellationToken.IsCancellationRequested)
                                 throw new OperationCanceledException(cancellationToken);
@@ -888,14 +888,14 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             CopiedFiles.Add(newFile.FullName);
-                            CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                            CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
 
                             if (CurrentTask.ReportFileMovement)
                             {
-                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
                             }
 
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
                         });
 
                         parallelOptions.MaxDegreeOfParallelism = -1;
@@ -916,14 +916,14 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             CopiedFiles.Add(newFile.FullName);
-                            CurrentTask.MovenFileSize += (currentFile as FileInfo).Length;
+                            CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
 
                             if (CurrentTask.ReportFileMovement)
                             {
-                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}");
+                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
                             }
 
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moven file: {newFile.FullName}", this);
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
                         });
 
                     }
@@ -935,13 +935,14 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (OperationCanceledException)
                 {
+                    CurrentTask.ErrorHappened = true;
                     Framework.TaskManager.Stop();
                     CurrentTask.Moving = false;
                     CurrentTask.Completed = true;
 
-                    MessageBoxResult removeMovenFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
+                    MessageBoxResult removemovedFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moved?", "Remove moved files?", MessageBoxButton.YesNo);
 
-                    if (removeMovenFiles == MessageBoxResult.Yes)
+                    if (removemovedFiles == MessageBoxResult.Yes)
                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
 
                     LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
@@ -949,10 +950,15 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
-                    MessageBoxResult removeMovenFiles = MessageBox.Show($"[{AppName}] An error happened while moving game files. Would you like to remove files that already moven?", "Remove moven files?", MessageBoxButton.YesNo);
+                    CurrentTask.ErrorHappened = true;
+                    Framework.TaskManager.Stop();
+                    CurrentTask.Moving = false;
+                    CurrentTask.Completed = true;
 
-                    if (removeMovenFiles == MessageBoxResult.Yes)
+                    MessageBox.Show(ex.ToString());
+                    MessageBoxResult removemovedFiles = MessageBox.Show($"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved?", "Remove moved files?", MessageBoxButton.YesNo);
+
+                    if (removemovedFiles == MessageBoxResult.Yes)
                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
 
                     Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");

@@ -226,7 +226,7 @@ namespace Steam_Library_Manager
                         foreach (Definitions.List.TaskList CurrentTask in SelectedItems)
                         {
                             if (CurrentTask.Moving && Framework.TaskManager.Status && !CurrentTask.Completed)
-                                MessageBox.Show($"[{CurrentTask.TargetApp.AppName}] You can't remove an app from Task Manager which is currently being moven.\n\nPlease Stop the Task Manager first.");
+                                MessageBox.Show($"[{CurrentTask.TargetApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
                             else
                             {
                                 Framework.TaskManager.RemoveTask(CurrentTask);
