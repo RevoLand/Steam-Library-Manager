@@ -81,10 +81,15 @@ namespace FontAwesome.WPF
         {
             var imageAwesome = d as ImageAwesome;
 
-            if (imageAwesome == null) return;
+            if (imageAwesome == null)
+            {
+                return;
+            }
 
             if ((bool)e.NewValue)
+            {
                 imageAwesome.BeginSpin();
+            }
             else
             {
                 imageAwesome.StopSpin();
@@ -105,7 +110,10 @@ namespace FontAwesome.WPF
         {
             var imageAwesome = d as ImageAwesome;
 
-            if (null == imageAwesome || !imageAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == imageAwesome || !imageAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             imageAwesome.StopSpin();
             imageAwesome.BeginSpin();
@@ -130,7 +138,10 @@ namespace FontAwesome.WPF
         {
             var imageAwesome = d as ImageAwesome;
 
-            if (null == imageAwesome || imageAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == imageAwesome || imageAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             imageAwesome.SetRotation();
         }
@@ -154,7 +165,10 @@ namespace FontAwesome.WPF
         {
             var imageAwesome = d as ImageAwesome;
 
-            if (null == imageAwesome || !(e.NewValue is FlipOrientation) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == imageAwesome || !(e.NewValue is FlipOrientation) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             imageAwesome.SetFlipOrientation();
         }
@@ -163,7 +177,10 @@ namespace FontAwesome.WPF
         {
             var imageAwesome = d as ImageAwesome;
 
-            if (imageAwesome == null) return;
+            if (imageAwesome == null)
+            {
+                return;
+            }
 
             d.SetValue(SourceProperty, CreateImageSource(imageAwesome.Icon, imageAwesome.Foreground));
         }

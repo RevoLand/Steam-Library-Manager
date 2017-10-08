@@ -21,7 +21,9 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 if (!File.Exists(LocalFile))
                 {
                     if (!Directory.Exists(Definitions.Directories.SLM.HeaderImage))
+                    {
                         Directory.CreateDirectory(Definitions.Directories.SLM.HeaderImage);
+                    }
 
                     new WebClient().DownloadFileAsync(Url, LocalFile);
 

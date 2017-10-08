@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace Steam_Library_Manager.Functions
 {
     class App
     {
-        public static void AddNewApp(int AppID, string AppName, string InstallationPath, Definitions.Steam.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
+        public static void AddSteamApp(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
                 // Make a new definition for app
-                Definitions.Steam.AppInfo App = new Definitions.Steam.AppInfo()
+                Definitions.AppInfo App = new Definitions.AppInfo()
                 {
                     // Set game appID
                     AppID = AppID,
@@ -26,12 +27,11 @@ namespace Steam_Library_Manager.Functions
 
                     // Define it is an archive
                     IsCompressed = IsCompressed,
-                    SteamBackup = IsSteamBackup,
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
-                if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.SteamBackup)
+                if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed)
                 {
                     Definitions.List.Junks.Add(new Definitions.List.JunkInfo
                     {
@@ -62,7 +62,7 @@ namespace Steam_Library_Manager.Functions
                     else
                     {
                         // And set archive size as game size
-                        App.SizeOnDisk = FileSystem.GetFileSize(Path.Combine(App.Library.SteamAppsFolder.FullName, App.AppID + ".zip"));
+                        App.SizeOnDisk = FileSystem.GetFileSize(Path.Combine(App.Library.Steam.SteamAppsFolder.FullName, App.AppID + ".zip"));
                     }
                 }
                 else
@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Functions
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
-                        System.Collections.Generic.List<FileSystemInfo> GameFiles = App.GetFileList();
+                        List<FileSystemInfo> GameFiles = App.GetFileList();
 
                         System.Threading.Tasks.Parallel.ForEach(GameFiles, File =>
                         {
@@ -79,15 +79,19 @@ namespace Steam_Library_Manager.Functions
 
                     }
                     else
+                    {
                         // Else set game size to size in acf
                         App.SizeOnDisk = SizeOnDisk;
+                    }
                 }
 
                 // Add our game details to global list
-                Library.Apps.Add(App);
+                Library.Steam.Apps.Add(App);
 
                 if (Definitions.SLM.CurrentSelectedLibrary == Library)
+                {
                     UpdateAppPanel(Library);
+                }
             }
             catch (Exception ex)
             {
@@ -96,7 +100,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void ReadDetailsFromZip(string ZipPath, Definitions.Steam.Library targetLibrary)
+        public static void ReadDetailsFromZip(string ZipPath, Definitions.Library targetLibrary)
         {
             try
             {
@@ -115,9 +119,11 @@ namespace Steam_Library_Manager.Functions
 
                         // If acf file has no children, skip this archive
                         if (KeyValReader.Children.Count == 0)
+                        {
                             continue;
+                        }
 
-                        AddNewApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                        AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
                     }
                 }
             }
@@ -130,14 +136,16 @@ namespace Steam_Library_Manager.Functions
                 MessageBoxResult RemoveBuggenArchive = MessageBox.Show($"An error happened while parsing zip file ({ZipPath})\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", "An error happened while parsing zip file", MessageBoxButton.YesNo);
 
                 if (RemoveBuggenArchive == MessageBoxResult.Yes)
+                {
                     new FileInfo(ZipPath).Delete();
+                }
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
             }
         }
 
-        public static void UpdateAppPanel(Definitions.Steam.Library Library)
+        public static void UpdateAppPanel(Definitions.Library Library)
         {
             try
             {
@@ -145,25 +153,46 @@ namespace Steam_Library_Manager.Functions
 
                 if (Main.FormAccessor.AppPanel.Dispatcher.CheckAccess())
                 {
-                    if (Definitions.List.SteamLibraries.Count(x => x == Library) == 0)
+                    if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
                     {
                         Main.FormAccessor.AppPanel.ItemsSource = null;
                         return;
                     }
 
-                    Func<Definitions.Steam.AppInfo, object> Sort = SLM.Settings.GetSortingMethod();
+                    Func<Definitions.AppInfo, object> Sort = SLM.Settings.GetSortingMethod();
 
-                    Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ? 
-                        (((string.IsNullOrEmpty(Search)) ? Library.Apps.OrderByDescending(Sort).ToList() : Library.Apps.Where(
-                            y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
-                            || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderByDescending(Sort).ToList()
-                        )) :
-                        ((string.IsNullOrEmpty(Search)) ? Library.Apps.OrderBy(Sort).ToList() : Library.Apps.Where(
-                        y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
-                        || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderBy(Sort).ToList()
-                        );
+                    switch (Library.Type)
+                    {
+                        case Definitions.Enums.LibraryType.Steam:
+                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
+                                (((string.IsNullOrEmpty(Search)) ?
+                                Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
+                                    y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                                    || y.AppID.ToString().Contains(Search) // Search by app ID
+                                ).OrderByDescending(Sort).ToList()
+                                )) :
+                                ((string.IsNullOrEmpty(Search)) ? Library.Steam.Apps.OrderBy(Sort).ToList() : Library.Steam.Apps.Where(
+                                y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                                || y.AppID.ToString().Contains(Search) // Search by app ID
+                                ).OrderBy(Sort).ToList()
+                                );
+                            break;
+                        case Definitions.Enums.LibraryType.SLM:
+                            List<Definitions.AppInfo> Applist = (((string.IsNullOrEmpty(Search)) ?
+                                Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
+                                    y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                                    || y.AppID.ToString().Contains(Search) // Search by app ID
+                                ).ToList()
+                                ));
+
+                            // Origin
+
+                            // Uplay
+
+                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ? 
+                                Applist.OrderByDescending(Sort) : Applist.OrderBy(Sort);
+                            break;
+                    }
                 }
                 else
                 {

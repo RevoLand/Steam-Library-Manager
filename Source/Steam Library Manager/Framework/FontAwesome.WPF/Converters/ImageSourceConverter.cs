@@ -19,13 +19,18 @@ namespace FontAwesome.WPF.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is FontAwesomeIcon)) return null;
+            if (!(value is FontAwesomeIcon))
+            {
+                return null;
+            }
 
             var brush = parameter as Brush;
 
             if (brush == null)
+            {
                 brush = Brushes.Black;
-            
+            }
+
             return ImageAwesome.CreateImageSource((FontAwesomeIcon)value, brush);
         }
 

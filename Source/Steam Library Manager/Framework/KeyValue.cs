@@ -35,7 +35,9 @@ namespace Steam_Library_Manager.Framework
                 string s = ReadToken(out bool wasQuoted, out bool wasConditional);
 
                 if (string.IsNullOrEmpty(s))
+                {
                     break;
+                }
 
                 if (currentKey == null)
                 {
@@ -49,7 +51,9 @@ namespace Steam_Library_Manager.Framework
                 s = ReadToken(out wasQuoted, out wasConditional);
 
                 if (string.IsNullOrEmpty(s))
+                {
                     break;
+                }
 
                 if (wasConditional)
                 {
@@ -131,7 +135,9 @@ namespace Steam_Library_Manager.Framework
             }
 
             if (EndOfStream)
+            {
                 return null;
+            }
 
             char next = (char)Peek();
             if (next == '"')
@@ -150,15 +156,21 @@ namespace Steam_Library_Manager.Framework
 
                         char escapedChar = (char)Read();
                         if (escapedMapping.TryGetValue(escapedChar, out char replacedChar))
+                        {
                             sb.Append(replacedChar);
+                        }
                         else
+                        {
                             sb.Append(escapedChar);
+                        }
 
                         continue;
                     }
 
                     if (Peek() == '"')
+                    {
                         break;
+                    }
 
                     sb.Append((char)Read());
                 }
@@ -183,16 +195,24 @@ namespace Steam_Library_Manager.Framework
                 next = (char)Peek();
 
                 if (next == '"' || next == '{' || next == '}')
+                {
                     break;
+                }
 
                 if (next == '[')
+                {
                     bConditionalStart = true;
+                }
 
                 if (next == ']' && bConditionalStart)
+                {
                     wasConditional = true;
+                }
 
                 if (Char.IsWhiteSpace(next))
+                {
                     break;
+                }
 
                 if (count < 1023)
                 {
@@ -232,8 +252,8 @@ namespace Steam_Library_Manager.Framework
         /// <param name="value">The optional value assigned to the root key.</param>
         public KeyValue(string name = null, string value = null)
         {
-            this.Name = name;
-            this.Value = value;
+            Name = name;
+            Value = value;
 
             Children = new List<KeyValue>();
         }
@@ -266,7 +286,7 @@ namespace Steam_Library_Manager.Framework
         {
             get
             {
-                var child = this.Children
+                var child = Children
                     .FirstOrDefault(c => string.Equals(c.Name, key, StringComparison.OrdinalIgnoreCase));
 
                 if (child == null)
@@ -278,19 +298,19 @@ namespace Steam_Library_Manager.Framework
             }
             set
             {
-                var existingChild = this.Children
+                var existingChild = Children
                     .FirstOrDefault(c => string.Equals(c.Name, key, StringComparison.OrdinalIgnoreCase));
 
                 if (existingChild != null)
                 {
                     // if the key already exists, remove the old one
-                    this.Children.Remove(existingChild);
+                    Children.Remove(existingChild);
                 }
 
                 // ensure the given KV actually has the correct key assigned
                 value.Name = key;
 
-                this.Children.Add(value);
+                Children.Add(value);
             }
         }
 
@@ -300,7 +320,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a string.</returns>
         public string AsString()
         {
-            return this.Value;
+            return Value;
         }
 
         /// <summary>
@@ -327,7 +347,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned short.</returns>
         public ushort AsUnsignedShort(ushort defaultValue = default(ushort))
         {
-            if (ushort.TryParse(this.Value, out ushort value) == false)
+            if (ushort.TryParse(Value, out ushort value) == false)
             {
                 return defaultValue;
             }
@@ -343,7 +363,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an integer.</returns>
         public int AsInteger(int defaultValue = default(int))
         {
-            if (int.TryParse(this.Value, out int value) == false)
+            if (int.TryParse(Value, out int value) == false)
             {
                 return defaultValue;
             }
@@ -359,7 +379,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned integer.</returns>
         public uint AsUnsignedInteger(uint defaultValue = default(uint))
         {
-            if (uint.TryParse(this.Value, out uint value) == false)
+            if (uint.TryParse(Value, out uint value) == false)
             {
                 return defaultValue;
             }
@@ -375,7 +395,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a long.</returns>
         public long AsLong(long defaultValue = default(long))
         {
-            if (long.TryParse(this.Value, out long value) == false)
+            if (long.TryParse(Value, out long value) == false)
             {
                 return defaultValue;
             }
@@ -391,7 +411,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned long.</returns>
         public ulong AsUnsignedLong(ulong defaultValue = default(ulong))
         {
-            if (ulong.TryParse(this.Value, out ulong value) == false)
+            if (ulong.TryParse(Value, out ulong value) == false)
             {
                 return defaultValue;
             }
@@ -407,7 +427,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a float.</returns>
         public float AsFloat(float defaultValue = default(float))
         {
-            if (float.TryParse(this.Value, out float value) == false)
+            if (float.TryParse(Value, out float value) == false)
             {
                 return defaultValue;
             }
@@ -423,7 +443,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a boolean.</returns>
         public bool AsBoolean(bool defaultValue = default(bool))
         {
-            if (int.TryParse(this.Value, out int value) == false)
+            if (int.TryParse(Value, out int value) == false)
             {
                 return defaultValue;
             }
@@ -440,7 +460,7 @@ namespace Steam_Library_Manager.Framework
         public T AsEnum<T>(T defaultValue = default(T))
             where T : struct
         {
-            if (Enum.TryParse<T>(this.Value, out var value) == false)
+            if (Enum.TryParse<T>(Value, out var value) == false)
             {
                 return defaultValue;
             }
@@ -456,7 +476,7 @@ namespace Steam_Library_Manager.Framework
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} = {1}", this.Name, this.Value);
+            return string.Format("{0} = {1}", Name, Value);
         }
 
         /// <summary>
@@ -560,7 +580,9 @@ namespace Steam_Library_Manager.Framework
                 try
                 {
                     if (kv.ReadAsText(stream) == false)
+                    {
                         return null;
+                    }
 
                     return kv;
                 }
@@ -578,7 +600,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
         public bool ReadAsText(Stream input)
         {
-            this.Children = new List<KeyValue>();
+            Children = new List<KeyValue>();
 
             new KVTextReader(this, input);
 
@@ -620,14 +642,16 @@ namespace Steam_Library_Manager.Framework
                     throw new Exception("RecursiveLoadFromBuffer: got EOF or empty keyname");
                 }
 
-                if (name.StartsWith("}") && !wasQuoted)	// top level closed, stop reading
+                if (name.StartsWith("}") && !wasQuoted) // top level closed, stop reading
+                {
                     break;
+                }
 
                 KeyValue dat = new KeyValue(name)
                 {
                     Children = new List<KeyValue>()
                 };
-                this.Children.Add(dat);
+                Children.Add(dat);
 
                 // get the value
                 string value = kvr.ReadToken(out wasQuoted, out wasConditional);
@@ -639,10 +663,14 @@ namespace Steam_Library_Manager.Framework
                 }
 
                 if (value == null)
+                {
                     throw new Exception("RecursiveLoadFromBuffer:  got NULL key");
+                }
 
                 if (value.StartsWith("}") && !wasQuoted)
+                {
                     throw new Exception("RecursiveLoadFromBuffer:  got } in key");
+                }
 
                 if (value.StartsWith("{") && !wasQuoted)
                 {
@@ -782,7 +810,7 @@ namespace Steam_Library_Manager.Framework
         public bool ReadAsBinary(Stream input)
         {
             var dummyChild = new KeyValue();
-            this.Children.Add(dummyChild);
+            Children.Add(dummyChild);
             return dummyChild.TryReadAsBinary(input);
         }
 

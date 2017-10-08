@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Functions
         class AppLog
         {
             public string Message;
-            public Definitions.Steam.AppInfo App;
+            public Definitions.AppInfo App;
         }
 
         static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
@@ -115,7 +115,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!SLMLogDirectory.Exists)
+                {
                     SLMLogDirectory.Create();
+                }
 
                 FileInfo Logfile = new FileInfo(Path.Combine(SLMLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
 
@@ -138,7 +140,9 @@ namespace Steam_Library_Manager.Functions
                 DirectoryInfo AppLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "App", Log.App.InstallationPath.Name));
 
                 if (!AppLogDirectory.Exists)
+                {
                     AppLogDirectory.Create();
+                }
 
                 FileInfo Logfile = new FileInfo(Path.Combine(AppLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
 
@@ -159,7 +163,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!LibraryLogDirectory.Exists)
+                {
                     LibraryLogDirectory.Create();
+                }
 
                 FileInfo Logfile = new FileInfo(Path.Combine(LibraryLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
 
@@ -180,7 +186,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!TaskManagerLogDirectory.Exists)
+                {
                     TaskManagerLogDirectory.Create();
+                }
 
                 FileInfo Logfile = new FileInfo(Path.Combine(TaskManagerLogDirectory.FullName, $"{Process.GetCurrentProcess().StartTime.ToString("d.M - H.mm.ss")}.txt"));
 
@@ -196,12 +204,14 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LogToFile(LogType LogType, string LogMessage, Definitions.Steam.AppInfo App = null)
+        public static void LogToFile(LogType LogType, string LogMessage, Definitions.AppInfo App = null)
         {
             try
             {
                 if (!Properties.Settings.Default.Advanced_Logging)
+                {
                     return;
+                }
 
                 switch (LogType)
                 {

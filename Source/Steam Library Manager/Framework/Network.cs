@@ -99,7 +99,9 @@ namespace Steam_Library_Manager.Framework
                         }
 
                         if (Properties.Settings.Default.ListenPort == 0)
+                        {
                             Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
+                        }
 
                         if (Functions.Network.GetPortStatus(Properties.Settings.Default.ListenPort))
                         {

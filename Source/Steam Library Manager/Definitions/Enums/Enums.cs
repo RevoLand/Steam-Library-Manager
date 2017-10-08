@@ -38,4 +38,19 @@ namespace Steam_Library_Manager.Definitions.Enums
         Grid,
         Listview
     }
+
+    public enum LibraryType
+    {
+        Steam,
+        Origin,
+        Uplay,
+        SLM
+    }
+
+    public enum GameType
+    {
+        Steam,
+        Origin,
+        Uplay
+    }
 }

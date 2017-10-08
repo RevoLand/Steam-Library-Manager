@@ -87,10 +87,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Definitions\AppInfo.cs" />
     <Compile Include="Definitions\ContextMenuItem.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Global.cs" />
+    <Compile Include="Definitions\Library.cs" />
     <Compile Include="Definitions\Settings.cs" />
+    <Compile Include="Definitions\SteamLibrary.cs" />
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
@@ -116,7 +119,6 @@
     <Compile Include="Functions\FAwesome.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\App.cs" />
-    <Compile Include="Functions\Library.cs" />
     <Compile Include="Functions\Logger.cs" />
     <Compile Include="Functions\Network.cs" />
     <Compile Include="Functions\SLM.cs" />
@@ -138,7 +140,6 @@
     <Compile Include="Definitions\Directories.cs" />
     <Compile Include="Definitions\List.cs" />
     <Compile Include="Definitions\SLM.cs" />
-    <Compile Include="Definitions\Steam.cs" />
     <Compile Include="Definitions\Updater.cs" />
     <Compile Include="Framework\KeyValue.cs" />
     <Compile Include="Forms\Main.xaml.cs">

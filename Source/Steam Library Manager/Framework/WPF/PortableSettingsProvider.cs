@@ -56,9 +56,11 @@ namespace Steam_Library_Manager.Framework
                }
 
                if (_xmlDocument.SelectSingleNode(_rootNodeName) != null)
-                  return _xmlDocument;
+                    {
+                        return _xmlDocument;
+                    }
 
-               _xmlDocument = GetBlankXmlDocument();
+                    _xmlDocument = GetBlankXmlDocument();
             }
 
             return _xmlDocument;
@@ -81,9 +83,11 @@ namespace Steam_Library_Manager.Framework
       public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
       {
          foreach (SettingsPropertyValue propertyValue in collection)
-            SetValue(propertyValue);
+            {
+                SetValue(propertyValue);
+            }
 
-         try
+            try
          {
             _rootDocument.Save(_filePath);
          }
@@ -122,8 +126,10 @@ namespace Steam_Library_Manager.Framework
          XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", propertyValue.Name));
 
          if (settingNode != null)
-            settingNode.InnerText = propertyValue.SerializedValue.ToString();
-         else
+            {
+                settingNode.InnerText = propertyValue.SerializedValue.ToString();
+            }
+            else
          {
             settingNode = _rootDocument.CreateElement("setting");
 
@@ -143,9 +149,11 @@ namespace Steam_Library_Manager.Framework
          XmlNode settingNode = targetNode.SelectSingleNode(string.Format("setting[@name='{0}']", property.Name));
 
          if (settingNode == null)
-            return property.DefaultValue != null ? property.DefaultValue.ToString() : string.Empty;
+            {
+                return property.DefaultValue != null ? property.DefaultValue.ToString() : string.Empty;
+            }
 
-         return settingNode.InnerText;
+            return settingNode.InnerText;
       }
 
       private bool IsGlobal(SettingsProperty property)
@@ -153,8 +161,10 @@ namespace Steam_Library_Manager.Framework
          foreach (DictionaryEntry attribute in property.Attributes)
          {
             if ((Attribute)attribute.Value is SettingsManageabilityAttribute)
-               return true;
-         }
+                {
+                    return true;
+                }
+            }
 
          return false;
       }

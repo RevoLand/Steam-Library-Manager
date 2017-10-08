@@ -18,7 +18,9 @@ namespace Steam_Library_Manager.Functions
 
                 // If couldn't get file content (ex: not connected to web) return
                 if (string.IsNullOrEmpty(VersionFileContents))
+                {
                     return;
+                }
 
                 // Split file content by "|"
                 string[] VersionFileContent = VersionFileContents.Split('|');
@@ -69,7 +71,9 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
                 else if(ShowResult)
+                {
                     System.Windows.MessageBox.Show("You are using the latest version of SLM, thank you!");
+                }
             }
             catch (Exception ex)
             {

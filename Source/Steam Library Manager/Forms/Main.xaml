@@ -11,6 +11,196 @@
         <TaskbarItemInfo Description="Steam Library Manager" />
     </Window.TaskbarItemInfo>
     <Window.Resources>
+        <!-- Library: Steam -->
+        <DataTemplate x:Key="Library_Steam">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" >
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Offline text -->
+                <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="true" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="Steam">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!-- ProgressBar: Available free space -->
+                    <ProgressBar Height="20" Value="{Binding Steam.FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock FontSize="13" Height="20" Text="{Binding Steam.PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Library: SLM -->
+        <DataTemplate x:Key="Library_SLM">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenu}" >
+                        <ContextMenu.ItemContainerStyle>
+                            <Style>
+                                <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Offline text -->
+                <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="true" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="SLM">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!-- ProgressBar: Available free space -->
+                    <ProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock FontSize="13" Height="20" Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        
         <!-- App Library: GridView -->
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -358,115 +548,26 @@
                     <TextBlock Text="Library" FontSize="15"/>
                 </TabItem.Header>
                 <Grid>
-                    <!-- ListView: Library Panel -->
+                    <!-- ListView: Library Panel / TODO: Kütüphane tipi kontrol edilerek bilgiler ona göre yansıtılacak -->
                     <ListView x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left"
                               Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                               IsSynchronizedWithCurrentItem="True" SelectionChanged="LibraryGrid_MouseDown">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
-                                    <Grid.ContextMenu>
-                                        <ContextMenu ItemsSource="{Binding ContextMenu}" >
-                                            <ContextMenu.ItemContainerStyle>
-                                                <Style>
-                                                    <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
-                                                </Style>
-                                            </ContextMenu.ItemContainerStyle>
-                                        </ContextMenu>
-                                    </Grid.ContextMenu>
-
-                                    <!-- TextBlock: Offline text -->
-                                    <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsOffline}" Value="true" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </MultiDataTrigger>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsOffline}" Value="false" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Visibility" Value="Hidden" />
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <!-- TextBlock: Library Path -->
-                                    <TextBlock Text="{Binding FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" />
-
-                                    <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
-                                        <!-- TextBlock: Library Type -->
-                                        <TextBlock>
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsBackup}" Value="false" />
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Text" Value="Steam" />
-                                                        </MultiDataTrigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsBackup}" Value="true" />
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Text" Value="SLM" />
-                                                        </MultiDataTrigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsOffline}" Value="true" />
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Hidden" />
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!-- TextBlock: App count -->
-                                        <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Style.Triggers>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding IsOffline}" Value="true" />
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Visibility" Value="Hidden" />
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </Grid>
-
-                                    <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsOffline}" Value="true" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Visibility" Value="Hidden" />
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-
-                                        <!-- ProgressBar: Available free space -->
-                                        <ProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
-
-                                        <!-- TextBlock: Free space text -->
-                                        <TextBlock FontSize="13" Height="20" Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
-                                    </Grid>
-                                </Grid>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="{x:Type ContentControl}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Type}" Value="Steam">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Library_Steam}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="SLM">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Library_SLM}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

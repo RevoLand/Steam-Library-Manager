@@ -3,7 +3,7 @@
     // Definitions about Steam Library Manager (SLM)
     public class SLM
     {
-        public static Steam.Library CurrentSelectedLibrary;
+        public static Library CurrentSelectedLibrary = null;
         public static string UserSteamID64;
 
         public static int NetworkBuffer = 4096 * 1024;

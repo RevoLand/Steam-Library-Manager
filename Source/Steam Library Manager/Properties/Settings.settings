@@ -2,70 +2,70 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Steam_Library_Manager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="steamInstallationPath" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="steamInstallationPath" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="backupDirectories" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="backupDirectories" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="defaultGameSortingMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="defaultGameSortingMethod" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">appName</Value>
     </Setting>
-    <Setting Name="gameSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="gameSizeCalculationMethod" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">ACF</Value>
     </Setting>
-    <Setting Name="archiveSizeCalculationMethod" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="archiveSizeCalculationMethod" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">compressed</Value>
     </Setting>
-    <Setting Name="ParallelAfterSize" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Int64" Scope="User">
+    <Setting Name="ParallelAfterSize" Roaming="true" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="includeSearchResults" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="includeSearchResults" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MainWindowPlacement" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="MainWindowPlacement" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&amp;lt;WINDOWPLACEMENT xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&amp;gt;&amp;lt;length&amp;gt;44&amp;lt;/length&amp;gt;&amp;lt;flags&amp;gt;0&amp;lt;/flags&amp;gt;&amp;lt;showCmd&amp;gt;1&amp;lt;/showCmd&amp;gt;&amp;lt;minPosition&amp;gt;&amp;lt;X&amp;gt;-1&amp;lt;/X&amp;gt;&amp;lt;Y&amp;gt;-1&amp;lt;/Y&amp;gt;&amp;lt;/minPosition&amp;gt;&amp;lt;maxPosition&amp;gt;&amp;lt;X&amp;gt;-1&amp;lt;/X&amp;gt;&amp;lt;Y&amp;gt;-1&amp;lt;/Y&amp;gt;&amp;lt;/maxPosition&amp;gt;&amp;lt;normalPosition&amp;gt;&amp;lt;Left&amp;gt;253&amp;lt;/Left&amp;gt;&amp;lt;Top&amp;gt;198&amp;lt;/Top&amp;gt;&amp;lt;Right&amp;gt;1053&amp;lt;/Right&amp;gt;&amp;lt;Bottom&amp;gt;868&amp;lt;/Bottom&amp;gt;&amp;lt;/normalPosition&amp;gt;&amp;lt;/WINDOWPLACEMENT&amp;gt;</Value>
     </Setting>
-    <Setting Name="PlayASoundOnCompletion" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="PlayASoundOnCompletion" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LibraryStyle" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="LibraryStyle" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">Grid</Value>
     </Setting>
-    <Setting Name="CheckforUpdatesAtStartup" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="CheckforUpdatesAtStartup" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Global_RemoveOldFiles" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="Global_RemoveOldFiles" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Global_Compress" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="Global_Compress" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Global_ReportFileMovement" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="Global_ReportFileMovement" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Global_StartTaskManagerOnStartup" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="Global_StartTaskManagerOnStartup" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Advanced_Logging" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
+    <Setting Name="Advanced_Logging" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="CustomSoundFile" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="CustomSoundFile" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ListenIP" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="ListenIP" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ListenPort" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Int32" Scope="User">
+    <Setting Name="ListenPort" Roaming="true" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="IPToConnect" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="IPToConnect" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PortToConnect" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.Int32" Scope="User">
+    <Setting Name="PortToConnect" Roaming="true" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="SearchText" Provider="Steam_Library_Manager.Framework.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
+    <Setting Name="SearchText" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

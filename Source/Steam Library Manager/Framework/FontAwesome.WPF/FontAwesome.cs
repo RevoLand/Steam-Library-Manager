@@ -76,10 +76,15 @@ namespace FontAwesome.WPF
         {
             var fontAwesome = d as FontAwesome;
 
-            if (fontAwesome == null) return;
+            if (fontAwesome == null)
+            {
+                return;
+            }
 
             if ((bool)e.NewValue)
+            {
                 fontAwesome.BeginSpin();
+            }
             else
             {
                 fontAwesome.StopSpin();
@@ -100,7 +105,10 @@ namespace FontAwesome.WPF
         {
             var fontAwesome = d as FontAwesome;
 
-            if (null == fontAwesome || !fontAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == fontAwesome || !fontAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             fontAwesome.StopSpin();
             fontAwesome.BeginSpin();
@@ -125,7 +133,10 @@ namespace FontAwesome.WPF
         {
             var fontAwesome = d as FontAwesome;
 
-            if (null == fontAwesome || fontAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == fontAwesome || fontAwesome.Spin || !(e.NewValue is double) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             fontAwesome.SetRotation();
         }
@@ -149,7 +160,10 @@ namespace FontAwesome.WPF
         {
             var fontAwesome = d as FontAwesome;
 
-            if (null == fontAwesome || !(e.NewValue is FlipOrientation) || e.NewValue.Equals(e.OldValue)) return;
+            if (null == fontAwesome || !(e.NewValue is FlipOrientation) || e.NewValue.Equals(e.OldValue))
+            {
+                return;
+            }
 
             fontAwesome.SetFlipOrientation();
         }

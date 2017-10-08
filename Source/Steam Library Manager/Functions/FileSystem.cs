@@ -17,7 +17,9 @@ namespace Steam_Library_Manager.Functions
                     FileInfo File = new FileInfo(currentFile);
 
                     if (File.Exists)
+                    {
                         File.Delete();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -34,7 +36,9 @@ namespace Steam_Library_Manager.Functions
                         DirectoryInfo Directory = new DirectoryInfo(currentDirectory);
 
                         if (Directory.Exists)
+                        {
                             Directory.Delete();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -50,7 +54,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!Directory.Exists(directoryPath.FullName))
+                {
                     return 0;
+                }
 
                 // Define a "long" for directory size
                 long DirectorySize = 0;
@@ -89,7 +95,9 @@ namespace Steam_Library_Manager.Functions
             }
 
             if (dblSByte < 0)
+            {
                 dblSByte = 0;
+            }
 
             // Format the string
             return $"{dblSByte:0.##} {Suffix[Current]}";
@@ -100,7 +108,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
+                {
                     return 0;
+                }
 
                 // And return available free space from defined drive info
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
@@ -117,7 +127,9 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
+                {
                     return 0;
+                }
 
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }

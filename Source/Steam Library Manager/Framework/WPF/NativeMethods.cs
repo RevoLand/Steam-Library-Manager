@@ -39,10 +39,10 @@ namespace Steam_Library_Manager.Framework
 
                 public RECT(int left, int top, int right, int bottom)
                 {
-                    this.Left = left;
-                    this.Top = top;
-                    this.Right = right;
-                    this.Bottom = bottom;
+                    Left = left;
+                    Top = top;
+                    Right = right;
+                    Bottom = bottom;
                 }
             }
 
@@ -56,8 +56,8 @@ namespace Steam_Library_Manager.Framework
 
                 public POINT(int x, int y)
                 {
-                    this.X = x;
-                    this.Y = y;
+                    X = x;
+                    Y = y;
                 }
             }
 

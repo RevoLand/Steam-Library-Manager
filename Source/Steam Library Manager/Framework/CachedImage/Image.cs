@@ -28,7 +28,9 @@ namespace Steam_Library_Manager.Framework.CachedImage
             string Url = e.NewValue as string;
 
             if (string.IsNullOrEmpty(Url))
+            {
                 return;
+            }
 
             try
             {
@@ -37,7 +39,9 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 var MemStream = await FileCache.HitAsync(new Uri(Url));
 
                 if (MemStream == null || MemStream.Length == 0)
+                {
                     return;
+                }
 
                 BitmapImage.BeginInit();
                 BitmapImage.CreateOptions = CachedImage.CreateOptions;

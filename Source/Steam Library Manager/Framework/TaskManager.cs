@@ -20,23 +20,27 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                if (!CurrentTask.TargetApp.Library.Apps.Contains(CurrentTask.TargetApp))
+                if (!CurrentTask.TargetApp.Library.Steam.Apps.Contains(CurrentTask.TargetApp))
+                {
                     return;
+                }
 
                 CurrentTask.Moving = true;
                 CurrentTask.TargetApp.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
-                if (!CancellationToken.IsCancellationRequested)
+                if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                 {
                     if (CurrentTask.RemoveOldFiles)
                     {
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moven files as requested. This may take a while, please wait.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
                         CurrentTask.TargetApp.DeleteFiles();
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removen, task is completed now.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removed, task is completed now.");
                     }
 
-                    if (!CurrentTask.TargetLibrary.IsBackup)
+                    if (CurrentTask.TargetApp.Library.Type != Definitions.Enums.LibraryType.SLM)
+                    {
                         IsRestartRequired = true;
+                    }
 
                     CurrentTask.Moving = false;
                     CurrentTask.Completed = true;
@@ -46,13 +50,19 @@ namespace Steam_Library_Manager.Framework
                         if (Properties.Settings.Default.PlayASoundOnCompletion)
                         {
                             if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
+                            {
                                 new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile).Play();
+                            }
                             else
+                            {
                                 System.Media.SystemSounds.Exclamation.Play();
+                            }
                         }
 
                         if (IsRestartRequired)
+                        {
                             Functions.Steam.RestartSteamAsync();
+                        }
                     }
                 }
             }
@@ -138,7 +148,9 @@ namespace Steam_Library_Manager.Framework
                 TaskList.Add(Task);
 
                 if (Status)
+                {
                     manualResetEvent.Set();
+                }
             }
             catch (Exception ex)
             {

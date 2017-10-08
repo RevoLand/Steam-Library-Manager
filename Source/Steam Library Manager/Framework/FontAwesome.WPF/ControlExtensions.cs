@@ -72,7 +72,10 @@ namespace FontAwesome.WPF
         {
             var storyboard = control.Resources[SpinnerStoryBoardName] as Storyboard;
 
-            if (storyboard == null) return;
+            if (storyboard == null)
+            {
+                return;
+            }
 
             storyboard.Stop();
 

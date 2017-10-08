@@ -46,9 +46,13 @@ namespace Steam_Library_Manager.Functions
                 List<int> usedPorts = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners().Select(p => p.Port).ToList();
 
                 if (usedPorts.Contains(port))
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
             catch
             {

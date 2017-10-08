@@ -25,11 +25,17 @@ namespace FontAwesome.WPF.Converters
                 var memInfo = typeof(FontAwesomeIcon).GetMember(value.ToString());
                 var attributes = memInfo[0].GetCustomAttributes(typeof(IconIdAttribute), false);
 
-                if (attributes.Length == 0) continue; // alias
+                if (attributes.Length == 0)
+                {
+                    continue; // alias
+                }
 
                 var id = ((IconIdAttribute)attributes[0]).Id;
 
-                if (ClassNameLookup.ContainsKey(id)) continue;
+                if (ClassNameLookup.ContainsKey(id))
+                {
+                    continue;
+                }
 
                 ClassNameLookup.Add(id, (FontAwesomeIcon)value);
                 IconLookup.Add((FontAwesomeIcon)value, id);
@@ -45,7 +51,11 @@ namespace FontAwesome.WPF.Converters
         {
             var icon = value as string;
 
-            if (string.IsNullOrEmpty(icon)) return FontAwesomeIcon.None;
+            if (string.IsNullOrEmpty(icon))
+            {
+                return FontAwesomeIcon.None;
+            }
+
             if (!ClassNameLookup.TryGetValue(icon, out var rValue))
             {
                 rValue = FontAwesomeIcon.None;
@@ -56,7 +66,11 @@ namespace FontAwesome.WPF.Converters
 
         private static string FromIconToString(object value)
         {
-            if (!(value is FontAwesomeIcon)) return null;
+            if (!(value is FontAwesomeIcon))
+            {
+                return null;
+            }
+
             IconLookup.TryGetValue((FontAwesomeIcon) value, out string rValue);
             
             return rValue;
@@ -65,15 +79,19 @@ namespace FontAwesome.WPF.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (Mode == CssClassConverterMode.FromStringToIcon)
+            {
                 return FromStringToIcon(value);
-            
+            }
+
             return FromIconToString(value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (Mode == CssClassConverterMode.FromStringToIcon)
+            {
                 return FromIconToString(value);
+            }
 
             return FromStringToIcon(value);
         }

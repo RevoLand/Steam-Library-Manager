@@ -19,14 +19,20 @@ namespace FontAwesome.WPF.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is FontAwesomeIcon)) return null;
+            if (!(value is FontAwesomeIcon))
+            {
+                return null;
+            }
 
             var icon = (FontAwesomeIcon) value;
 
             var memInfo = typeof(FontAwesomeIcon).GetMember(icon.ToString());
             var attributes = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-            if (attributes.Length == 0) return null; // alias
+            if (attributes.Length == 0)
+            {
+                return null; // alias
+            }
 
             return ((DescriptionAttribute)attributes[0]).Description;
         }
