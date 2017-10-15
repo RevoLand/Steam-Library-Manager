@@ -123,7 +123,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
                         DirectoryInfo = new DirectoryInfo(LibraryPath),
-                        Steam = (Directory.Exists(Path.Combine(LibraryPath, "Steam"))) ? new Definitions.SteamLibrary()
+                        Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary()
                         {
                             FullPath = LibraryPath
                         } : null
@@ -141,6 +141,32 @@ namespace Steam_Library_Manager.Functions
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                     MessageBox.Show(ex.ToString());
+                }
+            }
+
+            public static bool IsLibraryExists(string NewLibraryPath)
+            {
+                try
+                {
+                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+
+                    if (Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0)
+                    {
+                        if (Definitions.List.Libraries.Where(x => x.DirectoryInfo.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
+                        {
+                            return true;
+                        }
+                    }
+
+                    // else, return false which means library is not exists
+                    return false;
+                }
+                // In any error return true to prevent possible bugs
+                catch (Exception ex)
+                {
+                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    MessageBox.Show(ex.ToString());
+                    return true;
                 }
             }
 

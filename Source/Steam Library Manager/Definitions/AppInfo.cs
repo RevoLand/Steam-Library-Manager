@@ -265,14 +265,14 @@ namespace Steam_Library_Manager.Definitions
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
                             //CopiedFiles.Add(newFileName);
-                            CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
+                            CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
 
                             if (CurrentTask.ReportFileMovement)
                             {
-                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFileName}");
+                                LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFileName}");
                             }
 
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFileName}", this);
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFileName}", this);
 
                             if (cancellationToken.IsCancellationRequested)
                             {
@@ -297,14 +297,14 @@ namespace Steam_Library_Manager.Definitions
                         currentFile.ExtractToFile(newFile.FullName, true);
 
                         CopiedFiles.Add(newFile.FullName);
-                        CurrentTask.movedFileSize += currentFile.Length;
+                        CurrentTask.MovedFileSize += currentFile.Length;
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}", this);
 
                         if (cancellationToken.IsCancellationRequested)
                         {
@@ -333,14 +333,14 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         CopiedFiles.Add(newFile.FullName);
-                        CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
+                        CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}", this);
                     });
 
                     parallelOptions.MaxDegreeOfParallelism = -1;
@@ -361,14 +361,14 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         CopiedFiles.Add(newFile.FullName);
-                        CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
+                        CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}");
+                            LogToTM($"[{AppName}][{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] moved file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"[{CopiedFiles.Count}/{CurrentTask.TotalFileCount}] Moved file: {newFile.FullName}", this);
                     });
 
                 }
@@ -385,9 +385,9 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Moving = false;
                 CurrentTask.Completed = true;
 
-                MessageBoxResult removemovedFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moved?", "Remove moved files?", MessageBoxButton.YesNo);
+                MessageBoxResult RemoveMovedFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", "Remove moved files?", MessageBoxButton.YesNo);
 
-                if (removemovedFiles == MessageBoxResult.Yes)
+                if (RemoveMovedFiles == MessageBoxResult.Yes)
                 {
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
                 }
@@ -403,9 +403,9 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Completed = true;
 
                 MessageBox.Show(ex.ToString());
-                MessageBoxResult removemovedFiles = MessageBox.Show($"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved?", "Remove moved files?", MessageBoxButton.YesNo);
+                MessageBoxResult RemoveMovedFiles = MessageBox.Show($"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", "Remove moved files?", MessageBoxButton.YesNo);
 
-                if (removemovedFiles == MessageBoxResult.Yes)
+                if (RemoveMovedFiles == MessageBoxResult.Yes)
                 {
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
                 }
@@ -444,6 +444,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (currentFile.Exists)
                         {
+                            File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
                             currentFile.Delete();
                         }
                     }
@@ -470,12 +471,14 @@ namespace Steam_Library_Manager.Definitions
                     // game .acf file
                     if (FullAcfPath.Exists)
                     {
+                        File.SetAttributes(FullAcfPath.FullName, FileAttributes.Normal);
                         FullAcfPath.Delete();
                     }
 
                     // workshop .acf file
                     if (WorkShopAcfPath.Exists)
                     {
+                        File.SetAttributes(WorkShopAcfPath.FullName, FileAttributes.Normal);
                         WorkShopAcfPath.Delete();
                     }
                 }

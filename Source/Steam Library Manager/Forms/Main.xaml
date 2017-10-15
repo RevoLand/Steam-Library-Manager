@@ -5,7 +5,7 @@
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
-    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800"
+    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Height="800" Width="930"
     SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" SourceInitialized="MainForm_SourceInitialized">
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Description="Steam Library Manager" />
@@ -67,7 +67,7 @@
                     </TextBlock>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding AppCount, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -162,7 +162,7 @@
                     </TextBlock>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding AppCount, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -237,14 +237,10 @@
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Library.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding SteamBackup}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
+                                        <DataTrigger Binding="{Binding Library.Type}" Value="SLM">
                                             <Setter Property="Text" Value="SLM" />
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding SteamBackup}" Value="true">
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Library.Type}" Value="Steam">
                                             <Setter Property="Text" Value="Steam" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
@@ -791,7 +787,7 @@
                     <GroupBox Header="Task Manager Default Settings" Margin="0,10,0,345" Padding="5,3,0,0" HorizontalAlignment="Right" Width="355">
                         <Grid Margin="0,0,10,0">
                             <!-- Remove Source Files -->
-                            <CheckBox Content="Remove Source Files" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240" Margin="10,10,0,0"/>
+                            <CheckBox Content="Remove files at Source directory" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240" Margin="10,10,0,0"/>
 
                             <!-- Compress Files -->
                             <CheckBox Content="Compress Files" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="26" Width="240"/>

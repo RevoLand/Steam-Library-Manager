@@ -18,6 +18,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (File.Exists)
                     {
+                        System.IO.File.SetAttributes(File.FullName, FileAttributes.Normal);
                         File.Delete();
                     }
                 }

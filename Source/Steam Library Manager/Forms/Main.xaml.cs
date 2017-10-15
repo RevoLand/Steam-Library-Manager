@@ -140,23 +140,11 @@ namespace Steam_Library_Manager
 
                 if (Info.Attributes.HasFlag(FileAttributes.Directory))
                 {
-                    if (!Functions.Steam.Library.IsLibraryExists(DroppedItem))
+                    if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
                     {
                         if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
                         {
-                            bool IsNewLibraryForBackup = false;
-                            MessageBoxResult LibraryType = MessageBox.Show("Is this selected folder going to be used for backups?", "SLM library or Steam library?", MessageBoxButton.YesNoCancel);
-
-                            if (LibraryType == MessageBoxResult.Cancel)
-                            {
-                                return;
-                            }
-                            else if (LibraryType == MessageBoxResult.Yes)
-                            {
-                                IsNewLibraryForBackup = true;
-                            }
-
-                            Functions.Steam.Library.CreateNew(Info.FullName, IsNewLibraryForBackup);
+                            Functions.SLM.Library.AddNew(Info.FullName);
                         }
                         else
                         {
@@ -172,7 +160,7 @@ namespace Steam_Library_Manager
         }
 
         // TODO : Kütüphane tipine göre işlem
-        private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).Steam.ParseMenuItemAction((string)(sender as MenuItem).Tag);
+        private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
         private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
@@ -306,6 +294,7 @@ namespace Steam_Library_Manager
                         {
                             if (((FileInfo)Junk.FSInfo).Exists)
                             {
+                                File.SetAttributes(((FileInfo)Junk.FSInfo).FullName, FileAttributes.Normal);
                                 ((FileInfo)Junk.FSInfo).Delete();
                             }
                         }
@@ -336,7 +325,7 @@ namespace Steam_Library_Manager
             {
                 if ((string)(sender as Button).Tag == "Refresh")
                 {
-                    foreach (Definitions.Library Library in Definitions.List.Libraries)
+                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
                     {
                         Library.Steam.UpdateJunks();
                     }
@@ -373,6 +362,7 @@ namespace Steam_Library_Manager
                                     (Junk.FSInfo as FileInfo).CopyTo(Junk.FSInfo.Name, true);
                                 }
 
+                                File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
                                 Junk.FSInfo.Delete();
                             }
                             else
@@ -414,6 +404,7 @@ namespace Steam_Library_Manager
                             {
                                 if (((FileInfo)Junk.FSInfo).Exists)
                                 {
+                                    File.SetAttributes(((FileInfo)Junk.FSInfo).FullName, FileAttributes.Normal);
                                     ((FileInfo)Junk.FSInfo).Delete();
                                 }
                             }

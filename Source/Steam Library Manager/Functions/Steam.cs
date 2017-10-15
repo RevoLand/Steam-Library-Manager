@@ -468,37 +468,6 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             }
-
-            public static bool IsLibraryExists(string NewLibraryPath)
-            {
-                try
-                {
-                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
-
-                    if (Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.Steam) > 0)
-                    {
-                        if (Definitions.List.Libraries.Where(x => x.Steam.FullPath.ToLowerInvariant() == NewLibraryPath ||
-                        x.Steam.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                        x.Steam.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                        x.Steam.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                        x.Steam.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
-                        {
-                            return true;
-                        }
-                    }
-
-                    // else, return false which means library is not exists
-                    return false;
-                }
-                // In any error return true to prevent possible bugs
-                catch (Exception ex)
-                {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    MessageBox.Show(ex.ToString());
-                    return true;
-                }
-            }
-
         }
     }
 }
