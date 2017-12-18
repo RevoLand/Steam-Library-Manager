@@ -161,7 +161,7 @@ namespace Steam_Library_Manager
 
         private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
-        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Steam.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
 

@@ -1,1 +1,1 @@
-1.4.4.1|Important fix for Task Manager
+1.4.4.2|Fixed Issue #12

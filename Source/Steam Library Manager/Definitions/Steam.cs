@@ -172,7 +172,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show(ex.ToString());
                     Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 }
             }
@@ -193,7 +193,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show(ex.ToString());
                     Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 }
             }
@@ -233,10 +233,11 @@ namespace Steam_Library_Manager.Definitions
                 catch (FormatException FormatEx)
                 {
                     Debug.WriteLine(FormatEx);
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.Library, FormatEx.ToString());
                 }
                 catch (Exception Ex)
                 {
-                    MessageBox.Show(Ex.ToString());
+                    //MessageBox.Show(Ex.ToString());
                     Functions.Logger.LogToFile(Functions.Logger.LogType.Library, Ex.ToString());
                 }
             }
@@ -272,7 +273,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show(ex.ToString());
                     Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 }
             }
@@ -692,7 +693,7 @@ namespace Steam_Library_Manager.Definitions
                 }
             }
 
-            public void ParseMenuItemAction(string Action)
+            public async void ParseMenuItemActionAsync(string Action)
             {
                 switch (Action.ToLowerInvariant())
                 {
@@ -700,18 +701,18 @@ namespace Steam_Library_Manager.Definitions
                         if (string.IsNullOrEmpty(SLM.UserSteamID64))
                             return;
 
-                        System.Diagnostics.Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
+                        Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
                         break;
                     case "disk":
                         if (CommonFolder.Exists)
-                            System.Diagnostics.Process.Start(CommonFolder.FullName);
+                            Process.Start(CommonFolder.FullName);
                         break;
                     case "acffile":
-                        System.Diagnostics.Process.Start(FullAcfPath.FullName);
+                        Process.Start(FullAcfPath.FullName);
                         break;
                     case "deleteappfiles":
 
-                        DeleteFiles();
+                        await Task.Run(() => DeleteFiles());
                         break;
                 }
             }
