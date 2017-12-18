@@ -20,11 +20,6 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                if (!CurrentTask.TargetApp.Library.Steam.Apps.Contains(CurrentTask.TargetApp))
-                {
-                    return;
-                }
-
                 CurrentTask.Moving = true;
                 CurrentTask.TargetApp.CopyGameFiles(CurrentTask, CancellationToken.Token);
 
@@ -33,11 +28,11 @@ namespace Steam_Library_Manager.Framework
                     if (CurrentTask.RemoveOldFiles)
                     {
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                        CurrentTask.TargetApp.DeleteFiles();
+                        CurrentTask.TargetApp.DeleteFiles(CurrentTask);
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removed, task is completed now.");
                     }
 
-                    if (CurrentTask.TargetApp.Library.Type != Definitions.Enums.LibraryType.SLM)
+                    if (CurrentTask.Library.Type == Definitions.Enums.LibraryType.Steam)
                     {
                         IsRestartRequired = true;
                     }
@@ -45,7 +40,7 @@ namespace Steam_Library_Manager.Framework
                     CurrentTask.Moving = false;
                     CurrentTask.Completed = true;
 
-                    if (TaskList.Count == 0)
+                    if (TaskList.Count(x => !x.Completed) == 0)
                     {
                         if (Properties.Settings.Default.PlayASoundOnCompletion)
                         {
@@ -93,7 +88,7 @@ namespace Steam_Library_Manager.Framework
                         while (true && !CancellationToken.IsCancellationRequested && Status)
                         {
                             manualResetEvent.Set();
-                            if (TaskList.Count(x => !x.Completed) > 0)
+                            if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
                                 ProcessTask(TaskList.First(x => !x.Completed));
                             }

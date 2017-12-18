@@ -29,8 +29,18 @@ namespace Steam_Library_Manager.Definitions
             private long _MovedFileSize = 0;
             private long _TotalFileSize = 0;
             private bool _Completed = false;
+            private string _MovingFileInfo;
 
-            public string PrettyAvgSpeed => _MovedFileSize == 0 ? "" : $"{Math.Round(((_MovedFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec";
+            public string PrettyAvgSpeed => _MovedFileSize == 0 ? "" : ((_TotalFileSize == _MovedFileSize) ? "" : $"{Math.Round(((_MovedFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec");
+            public string MovingFileInfo
+            {
+                get => _MovingFileInfo;
+                set
+                {
+                    _MovingFileInfo = value;
+                    OnPropertyChanged("MovingFileInfo");
+                }
+            }
 
             public double TotalFileCount
             {
@@ -68,13 +78,17 @@ namespace Steam_Library_Manager.Definitions
             {
                 get
                 {
-                    double perc = Math.Ceiling((double)(100 * _MovedFileSize) / _TotalFileSize);
-                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
 
+                    double perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
+                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
                     if (perc == 100)
                     {
-                        Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                        Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
+                        try
+                        {
+                            Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                            Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
+                        }
+                        catch { return 0; }
                     }
 
                     return _MovedFileSize == 0 ? 0 : perc;

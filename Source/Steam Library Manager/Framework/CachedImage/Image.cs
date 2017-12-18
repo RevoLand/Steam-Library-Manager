@@ -20,7 +20,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         public BitmapCreateOptions CreateOptions
         {
-            get => ((BitmapCreateOptions)(GetValue(Image.CreateOptionsProperty))); set => SetValue(Image.CreateOptionsProperty, value);
+            get => ((BitmapCreateOptions)(GetValue(CreateOptionsProperty))); set => SetValue(CreateOptionsProperty, value);
         }
 
         private static async void ImageUrlPropertyChangedAsync(DependencyObject Obj, DependencyPropertyChangedEventArgs e)
@@ -44,7 +44,6 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 }
 
                 BitmapImage.BeginInit();
-                BitmapImage.CreateOptions = CachedImage.CreateOptions;
                 BitmapImage.StreamSource = MemStream;
                 BitmapImage.EndInit();
 

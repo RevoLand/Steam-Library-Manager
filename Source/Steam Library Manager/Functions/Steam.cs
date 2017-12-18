@@ -181,7 +181,7 @@ namespace Steam_Library_Manager.Functions
                 LibraryType = Definitions.Enums.LibraryType.Steam
             });
 
-            // Subscribed Workshop Items
+            // Delete files (using Task Manager)
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
                 Header = "Delete files (using SLM)",

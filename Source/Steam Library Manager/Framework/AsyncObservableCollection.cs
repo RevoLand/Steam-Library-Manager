@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
+using System.Windows;
 
 // https://gist.github.com/thomaslevesque/10023516
 
@@ -34,7 +36,19 @@ namespace Steam_Library_Manager.Framework
 
         protected override void InsertItem(int index, T item) => ExecuteOnSyncContext(() => base.InsertItem(index, item));
 
-        protected override void RemoveItem(int index) => ExecuteOnSyncContext(() => base.RemoveItem(index));
+        protected override void RemoveItem(int index)
+        {
+            try
+            {
+                ExecuteOnSyncContext(() => base.RemoveItem(index));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
+        }
 
         protected override void SetItem(int index, T item) => ExecuteOnSyncContext(() => base.SetItem(index, item));
 

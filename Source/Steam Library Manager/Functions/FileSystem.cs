@@ -85,23 +85,31 @@ namespace Steam_Library_Manager.Functions
         // Source: http://stackoverflow.com/a/2082893
         public static string FormatBytes(long Bytes)
         {
-            // definition of file size suffixes
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int Current;
-            double dblSByte = Bytes;
-
-            for (Current = 0; Current < Suffix.Length && Bytes >= 1024; Current++, Bytes /= 1024)
+            try
             {
-                dblSByte = Bytes / 1024.0;
-            }
+                // definition of file size suffixes
+                string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+                int Current;
+                double dblSByte = Bytes;
 
-            if (dblSByte < 0)
+                for (Current = 0; Current < Suffix.Length && Bytes >= 1024; Current++, Bytes /= 1024)
+                {
+                    dblSByte = Bytes / 1024.0;
+                }
+
+                if (dblSByte < 0)
+                {
+                    dblSByte = 0;
+                }
+
+                // Format the string
+                return $"{dblSByte:0.##} {Suffix[Current]}";
+            }
+            catch (Exception ex)
             {
-                dblSByte = 0;
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                return "0";
             }
-
-            // Format the string
-            return $"{dblSByte:0.##} {Suffix[Current]}";
         }
 
         public static long GetAvailableFreeSpace(string TargetFolder)

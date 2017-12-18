@@ -259,6 +259,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        
         <!-- App Library: ListView -->
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -306,6 +307,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        
         <!-- Task Manager: GridView -->
         <DataTemplate x:Key="Tasklibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -359,6 +361,7 @@
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
                         <TextBlock Text="{Binding TargetApp.AppID}" HorizontalAlignment="Left" />
 
+                        <TextBlock Text="{Binding MovingFileInfo}" Margin="0,-73,5,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
@@ -412,6 +415,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
+        
         <!-- Task Manager: ListView -->
         <DataTemplate x:Key="Tasklibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -570,7 +574,7 @@
 
                     <!-- ListView: App Panel -->
                     <ListView x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,50" SelectionMode="Extended" IsTabStop="False" 
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" IsSynchronizedWithCurrentItem="True">
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">

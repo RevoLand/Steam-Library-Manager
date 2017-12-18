@@ -87,7 +87,7 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Steam)
+                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Steam || (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM && Library.Type == Definitions.Enums.LibraryType.Steam))
                 {
                     foreach (Definitions.AppInfo App in AppPanel.SelectedItems)
                     {
@@ -162,7 +162,7 @@ namespace Steam_Library_Manager
         // TODO : Kütüphane tipine göre işlem
         private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
-        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
 

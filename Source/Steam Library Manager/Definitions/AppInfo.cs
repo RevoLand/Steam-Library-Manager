@@ -126,7 +126,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void ParseMenuItemAction(string Action)
+        public async void ParseMenuItemActionAsync(string Action)
         {
             switch (Action.ToLowerInvariant())
             {
@@ -149,8 +149,7 @@ namespace Steam_Library_Manager.Definitions
                     Process.Start(FullAcfPath.FullName);
                     break;
                 case "deleteappfiles":
-
-                    DeleteFiles();
+                    await Task.Run(() => DeleteFiles());
                     break;
             }
         }
@@ -262,9 +261,8 @@ namespace Steam_Library_Manager.Definitions
                         {
                             string newFileName = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
+                            CurrentTask.MovingFileInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
-
-                            //CopiedFiles.Add(newFileName);
                             CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
 
                             if (CurrentTask.ReportFileMovement)
@@ -294,6 +292,7 @@ namespace Steam_Library_Manager.Definitions
                             CreatedDirectories.Add(newFile.Directory.FullName);
                         }
 
+                        CurrentTask.MovingFileInfo = $"Decompressing: {newFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                         currentFile.ExtractToFile(newFile.FullName, true);
 
                         CopiedFiles.Add(newFile.FullName);
@@ -329,6 +328,7 @@ namespace Steam_Library_Manager.Definitions
                                 CreatedDirectories.Add(newFile.Directory.FullName);
                             }
 
+                            CurrentTask.MovingFileInfo = $"Copying: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
                             (currentFile as FileInfo).CopyTo(newFile.FullName, true);
                         }
 
@@ -357,6 +357,7 @@ namespace Steam_Library_Manager.Definitions
                                 CreatedDirectories.Add(newFile.Directory.FullName);
                             }
 
+                            CurrentTask.MovingFileInfo = $"Copying: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
                             (currentFile as FileInfo).CopyTo(newFile.FullName, true);
                         }
 
@@ -374,6 +375,7 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 CurrentTask.ElapsedTime.Stop();
+                CurrentTask.MovedFileSize = TotalFileSize;
 
                 LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
@@ -428,7 +430,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public bool DeleteFiles()
+        public bool DeleteFiles(List.TaskList Task = null)
         {
             try
             {
@@ -444,6 +446,11 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (currentFile.Exists)
                         {
+                            if (Task != null)
+                            {
+                                Task.MovingFileInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
+                            }
+
                             File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
                             currentFile.Delete();
                         }
@@ -480,6 +487,11 @@ namespace Steam_Library_Manager.Definitions
                     {
                         File.SetAttributes(WorkShopAcfPath.FullName, FileAttributes.Normal);
                         WorkShopAcfPath.Delete();
+                    }
+
+                    if (Task != null)
+                    {
+                        Task.MovingFileInfo = "";
                     }
                 }
 

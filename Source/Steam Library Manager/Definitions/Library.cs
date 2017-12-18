@@ -90,15 +90,7 @@ namespace Steam_Library_Manager.Definitions
                     break;
             }
         }
-
-
-
-        /*
-        public int AppCount
-        {
-            get => (Type != Enums.LibraryType.Steam) ? 0 : Steam.Apps.Count;
-        }
-        */
+        
 
         public long FreeSpace
         {
