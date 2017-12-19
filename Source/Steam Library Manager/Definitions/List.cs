@@ -13,13 +13,14 @@ namespace Steam_Library_Manager.Definitions
         public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
         public static Framework.AsyncObservableCollection<ContextMenuItem> AppCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
 
-        public class TaskList : INotifyPropertyChanged
+        public class TaskInfo : INotifyPropertyChanged
         {
-            public AppInfo TargetApp { get; set; }
-            public Library Library { get; set; }
+            public Enums.TaskType TaskType { get; set; }
+            public AppInfo App { get; set; }
+            public Library TargetLibrary { get; set; }
 
             public bool ErrorHappened = false;
-            public bool Moving = false;
+            public bool Active = false;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
@@ -29,16 +30,16 @@ namespace Steam_Library_Manager.Definitions
             private long _MovedFileSize = 0;
             private long _TotalFileSize = 0;
             private bool _Completed = false;
-            private string _MovingFileInfo;
+            private string _TaskStatusInfo;
 
             public string PrettyAvgSpeed => _MovedFileSize == 0 ? "" : ((_TotalFileSize == _MovedFileSize) ? "" : $"{Math.Round(((_MovedFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec");
-            public string MovingFileInfo
+            public string TaskStatusInfo
             {
-                get => _MovingFileInfo;
+                get => _TaskStatusInfo;
                 set
                 {
-                    _MovingFileInfo = value;
-                    OnPropertyChanged("MovingFileInfo");
+                    _TaskStatusInfo = value;
+                    OnPropertyChanged("TaskStatusInfo");
                 }
             }
 

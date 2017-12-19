@@ -34,7 +34,6 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
             try
             {
-                var CachedImage = (Image)Obj;
                 var BitmapImage = new BitmapImage();
                 var MemStream = await FileCache.HitAsync(new Uri(Url));
 
@@ -47,7 +46,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 BitmapImage.StreamSource = MemStream;
                 BitmapImage.EndInit();
 
-                CachedImage.Source = BitmapImage;
+                ((Image)Obj).Source = BitmapImage;
             }
             catch (Exception)
             {

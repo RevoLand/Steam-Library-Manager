@@ -15,6 +15,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             try
             {
                 var LocalFile = $"{Definitions.Directories.SLM.HeaderImage}\\{Url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
+                MemoryStream MemStream = new MemoryStream();
 
                 if (!File.Exists(LocalFile))
                 {
@@ -23,17 +24,19 @@ namespace Steam_Library_Manager.Framework.CachedImage
                         Directory.CreateDirectory(Definitions.Directories.SLM.HeaderImage);
                     }
 
+                    await (await new WebClient().OpenReadTaskAsync(Url)).CopyToAsync(MemStream);
                     new WebClient().DownloadFileAsync(Url, LocalFile);
                 }
-
-                using (FileStream fs = File.Open(LocalFile, FileMode.Open))
+                else
                 {
-                    MemoryStream MemStream = new MemoryStream();
-                    await fs.CopyToAsync(MemStream);
-
-                    MemStream.Seek(0, SeekOrigin.Begin);
-                    return MemStream;
+                    using (FileStream fs = File.Open(LocalFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        await fs.CopyToAsync(MemStream);
+                    }
                 }
+
+                MemStream.Seek(0, SeekOrigin.Begin);
+                return MemStream;
             }
             catch (WebException)
             {

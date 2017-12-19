@@ -187,6 +187,15 @@ namespace Steam_Library_Manager.Functions
                 Header = "Delete files (using SLM)",
                 Action = "deleteappfiles",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
+            });
+
+            // Delete files (using Task Manager)
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Delete files (using TaskManager)",
+                Action = "deleteappfilestm",
+                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
             });
 
@@ -378,12 +387,12 @@ namespace Steam_Library_Manager.Functions
                                 {
                                     Definitions.AppInfo OldAppBackup = LibraryToCheck.Steam.Apps.First(x => x.AppID == LatestApp.AppID && x.LastUpdated < LatestApp.LastUpdated);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.TargetApp.AppID == LatestApp.AppID && x.Library == OldAppBackup.Library && !x.Completed) == 0)
+                                    if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == LatestApp.AppID && x.TargetLibrary == OldAppBackup.Library && !x.Completed) == 0)
                                     {
-                                        Definitions.List.TaskList NewTask = new Definitions.List.TaskList
+                                        Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
-                                            TargetApp = LatestApp,
-                                            Library = OldAppBackup.Library
+                                            App = LatestApp,
+                                            TargetLibrary = OldAppBackup.Library
                                         };
 
                                         Framework.TaskManager.AddTask(NewTask);

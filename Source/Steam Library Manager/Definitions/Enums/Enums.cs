@@ -53,4 +53,10 @@ namespace Steam_Library_Manager.Definitions.Enums
         Origin,
         Uplay
     }
+
+    public enum TaskType
+    {
+        Copy,
+        Delete
+    }
 }

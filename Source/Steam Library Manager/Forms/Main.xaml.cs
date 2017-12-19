@@ -96,12 +96,12 @@ namespace Steam_Library_Manager
                             continue;
                         }
 
-                        if (Framework.TaskManager.TaskList.Count(x => x.TargetApp == App && x.Library == Library) == 0)
+                        if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
                         {
-                            Definitions.List.TaskList newTask = new Definitions.List.TaskList
+                            Definitions.List.TaskInfo newTask = new Definitions.List.TaskInfo
                             {
-                                TargetApp = App,
-                                Library = Library
+                                App = App,
+                                TargetLibrary = Library
                             };
 
                             Framework.TaskManager.AddTask(newTask);
@@ -209,7 +209,7 @@ namespace Steam_Library_Manager
                         return;
                     }
 
-                    foreach (Definitions.List.TaskList CurrentTask in Framework.TaskManager.TaskList.ToList())
+                    foreach (Definitions.List.TaskInfo CurrentTask in Framework.TaskManager.TaskList.ToList())
                     {
                         if (CurrentTask.Completed)
                         {
@@ -233,13 +233,13 @@ namespace Steam_Library_Manager
                             return;
                         }
 
-                        List<Definitions.List.TaskList> SelectedItems = TaskPanel.SelectedItems.OfType<Definitions.List.TaskList>().ToList();
+                        List<Definitions.List.TaskInfo> SelectedItems = TaskPanel.SelectedItems.OfType<Definitions.List.TaskInfo>().ToList();
 
-                        foreach (Definitions.List.TaskList CurrentTask in SelectedItems)
+                        foreach (Definitions.List.TaskInfo CurrentTask in SelectedItems)
                         {
-                            if (CurrentTask.Moving && Framework.TaskManager.Status && !CurrentTask.Completed)
+                            if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                MessageBox.Show($"[{CurrentTask.TargetApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                MessageBox.Show($"[{CurrentTask.App.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
                             }
                             else
                             {
@@ -459,11 +459,11 @@ namespace Steam_Library_Manager
             {
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
-                    if ((sender as Grid).DataContext as Definitions.List.TaskList is Definitions.List.TaskList)
+                    if ((sender as Grid).DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.TaskList).TargetApp.CommonFolder.Exists)
+                        if (((sender as Grid).DataContext as Definitions.List.TaskInfo).App.CommonFolder.Exists)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskList).TargetApp.CommonFolder.FullName);
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskInfo).App.CommonFolder.FullName);
                         }
                     }
                     else if (((sender as Grid).DataContext is Definitions.AppInfo))

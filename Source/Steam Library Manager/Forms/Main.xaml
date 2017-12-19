@@ -333,7 +333,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetApp.GameHeaderImage}" >
+                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" >
                         <Image.Style>
                             <Style TargetType="Image">
                                 <Style.Triggers>
@@ -357,52 +357,57 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding TargetApp.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" FontSize="13" />
+                    <TextBlock Text="{Binding App.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" FontSize="13" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding TargetApp.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
 
-                        <TextBlock Text="{Binding MovingFileInfo}" Margin="0,-73,5,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
-
-                        <TextBlock Margin="0,-20,0,0">
+                        <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.Library.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding TargetApp.SteamBackup}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="SLM backup" />
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding TargetApp.SteamBackup}" Value="true">
-                                            <Setter Property="Text" Value="Steam backup" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetApp.IsCompressed}" Value="true">
-                                            <Setter Property="Text" Value="Compressed backup" />
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="200,0,0,0" >
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-73,5,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
+
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0">
                             <CheckBox.Style>
                                 <Style TargetType="{x:Type CheckBox}">
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="350,0,0,0" >
+                            <CheckBox.Style>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="false" />
+                                                <Condition Binding="{Binding App.IsCompressed}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Compress" />
                                         </MultiDataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="true" />
+                                                <Condition Binding="{Binding App.IsCompressed}" Value="true" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Keep Compressed" />
                                         </MultiDataTrigger>
@@ -410,7 +415,6 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="290,0,0,0" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -440,7 +444,7 @@
                     </ProgressBar.Style>
                 </ProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding TargetApp.GameHeaderImage}">
+                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                         <Image.Style>
                             <Style TargetType="Image">
                                 <Style.Triggers>
@@ -464,49 +468,56 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding TargetApp.AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding App.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding TargetApp.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetApp.PrettyGameSize}" HorizontalAlignment="Right" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetLibrary.FullPath, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
-                        <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,40,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
+
+                        <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.Library.IsBackup}" Value="true" />
-                                                <Condition Binding="{Binding TargetApp.SteamBackup}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="SLM backup" />
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding TargetApp.SteamBackup}" Value="true">
-                                            <Setter Property="Text" Value="Steam backup" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetApp.IsCompressed}" Value="true">
-                                            <Setter Property="Text" Value="Compressed backup" />
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="60,0,0,0" />
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="200,0,0,0" >
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0">
                             <CheckBox.Style>
                                 <Style TargetType="{x:Type CheckBox}">
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CheckBox.Style>
+                        </CheckBox>
+                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="350,0,0,0" >
+                            <CheckBox.Style>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="false" />
+                                                <Condition Binding="{Binding App.IsCompressed}" Value="false" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Compress" />
                                         </MultiDataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding TargetApp.IsCompressed}" Value="true" />
+                                                <Condition Binding="{Binding App.IsCompressed}" Value="true" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Content" Value="Keep Compressed" />
                                         </MultiDataTrigger>
@@ -514,7 +525,6 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="290,0,0,0" />
                     </Grid>
                 </Grid>
             </Grid>

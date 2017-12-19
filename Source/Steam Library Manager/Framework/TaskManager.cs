@@ -10,34 +10,48 @@ namespace Steam_Library_Manager.Framework
 {
     class TaskManager
     {
-        public static AsyncObservableCollection<Definitions.List.TaskList> TaskList = new AsyncObservableCollection<Definitions.List.TaskList>();
+        public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         public static CancellationTokenSource CancellationToken;
         public static bool Status = false;
         public static bool IsRestartRequired = false;
 
-        public static void ProcessTask(Definitions.List.TaskList CurrentTask)
+        public static void ProcessTask(Definitions.List.TaskInfo CurrentTask)
         {
             try
             {
-                CurrentTask.Moving = true;
-                CurrentTask.TargetApp.CopyGameFiles(CurrentTask, CancellationToken.Token);
+                CurrentTask.Active = true;
+
+                switch(CurrentTask.TaskType)
+                {
+                    default:
+                    case Definitions.Enums.TaskType.Copy:
+                        CurrentTask.App.CopyFiles(CurrentTask, CancellationToken.Token);
+                        break;
+                    case Definitions.Enums.TaskType.Delete:
+                        CurrentTask.App.DeleteFiles(CurrentTask);
+                        break;
+                }
 
                 if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                 {
-                    if (CurrentTask.RemoveOldFiles)
+                    if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                     {
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                        CurrentTask.TargetApp.DeleteFiles(CurrentTask);
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.TargetApp.AppName}] Files removed, task is completed now.");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Removing moved files as requested. This may take a while, please wait.");
+                        CurrentTask.App.DeleteFiles(CurrentTask);
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Files removed, task is completed now.");
                     }
 
-                    if (CurrentTask.Library.Type == Definitions.Enums.LibraryType.Steam)
+                    if (CurrentTask.TargetLibrary != null)
                     {
-                        IsRestartRequired = true;
+                        if (CurrentTask.TargetLibrary.Type == Definitions.Enums.LibraryType.Steam)
+                        {
+                            IsRestartRequired = true;
+                        }
                     }
 
-                    CurrentTask.Moving = false;
+                    CurrentTask.TaskStatusInfo = "Completed";
+                    CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
                     if (TaskList.Count(x => !x.Completed) == 0)
@@ -65,7 +79,7 @@ namespace Steam_Library_Manager.Framework
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.TargetApp.AppName}][{CurrentTask.TargetApp.AppID}][{CurrentTask.TargetApp.AcfName}] {ex}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.App.AppName}][{CurrentTask.App.AppID}][{CurrentTask.App.AcfName}] {ex}");
             }
         }
 
@@ -136,7 +150,7 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
-        public static void AddTask(Definitions.List.TaskList Task)
+        public static void AddTask(Definitions.List.TaskInfo Task)
         {
             try
             {
@@ -155,7 +169,7 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
-        public static void RemoveTask(Definitions.List.TaskList Task)
+        public static void RemoveTask(Definitions.List.TaskInfo Task)
         {
             try
             {
