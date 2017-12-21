@@ -23,9 +23,6 @@
     <Setting Name="includeSearchResults" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MainWindowPlacement" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&amp;lt;WINDOWPLACEMENT xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&amp;gt;&amp;lt;length&amp;gt;44&amp;lt;/length&amp;gt;&amp;lt;flags&amp;gt;0&amp;lt;/flags&amp;gt;&amp;lt;showCmd&amp;gt;1&amp;lt;/showCmd&amp;gt;&amp;lt;minPosition&amp;gt;&amp;lt;X&amp;gt;-1&amp;lt;/X&amp;gt;&amp;lt;Y&amp;gt;-1&amp;lt;/Y&amp;gt;&amp;lt;/minPosition&amp;gt;&amp;lt;maxPosition&amp;gt;&amp;lt;X&amp;gt;-1&amp;lt;/X&amp;gt;&amp;lt;Y&amp;gt;-1&amp;lt;/Y&amp;gt;&amp;lt;/maxPosition&amp;gt;&amp;lt;normalPosition&amp;gt;&amp;lt;Left&amp;gt;253&amp;lt;/Left&amp;gt;&amp;lt;Top&amp;gt;198&amp;lt;/Top&amp;gt;&amp;lt;Right&amp;gt;1053&amp;lt;/Right&amp;gt;&amp;lt;Bottom&amp;gt;868&amp;lt;/Bottom&amp;gt;&amp;lt;/normalPosition&amp;gt;&amp;lt;/WINDOWPLACEMENT&amp;gt;</Value>
-    </Setting>
     <Setting Name="PlayASoundOnCompletion" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -67,6 +64,12 @@
     </Setting>
     <Setting Name="SearchText" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BaseTheme" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BaseLight</Value>
+    </Setting>
+    <Setting Name="ThemeAccent" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Blue</Value>
     </Setting>
   </Settings>
 </SettingsFile>

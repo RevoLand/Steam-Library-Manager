@@ -1,9 +1,12 @@
 Binaries/*.settings
 Binaries/*.config
+Binaries/*.dll
+Binaries/*.xml
 Binaries/*.pdb
 Binaries/*vshost*
 Binaries/Logs/*
 Binaries/.slmcache/*
 *.suo
 Source/*.vs/
+Source/packages/*
 Source/Steam Library Manager/obj/*

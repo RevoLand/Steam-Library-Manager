@@ -115,19 +115,6 @@ namespace Steam_Library_Manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;&lt;WINDOWPLACEMENT xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""&gt;&lt;length&gt;44&lt;/length&gt;&lt;flags&gt;0&lt;/flags&gt;&lt;showCmd&gt;1&lt;/showCmd&gt;&lt;minPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/minPosition&gt;&lt;maxPosition&gt;&lt;X&gt;-1&lt;/X&gt;&lt;Y&gt;-1&lt;/Y&gt;&lt;/maxPosition&gt;&lt;normalPosition&gt;&lt;Left&gt;253&lt;/Left&gt;&lt;Top&gt;198&lt;/Top&gt;&lt;Right&gt;1053&lt;/Right&gt;&lt;Bottom&gt;868&lt;/Bottom&gt;&lt;/normalPosition&gt;&lt;/WINDOWPLACEMENT&gt;")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public string MainWindowPlacement {
-            get {
-                return ((string)(this["MainWindowPlacement"]));
-            }
-            set {
-                this["MainWindowPlacement"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool PlayASoundOnCompletion {
@@ -305,6 +292,32 @@ namespace Steam_Library_Manager.Properties {
             }
             set {
                 this["SearchText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BaseLight")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string BaseTheme {
+            get {
+                return ((string)(this["BaseTheme"]));
+            }
+            set {
+                this["BaseTheme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string ThemeAccent {
+            get {
+                return ((string)(this["ThemeAccent"]));
+            }
+            set {
+                this["ThemeAccent"] = value;
             }
         }
     }

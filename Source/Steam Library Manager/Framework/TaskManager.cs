@@ -14,6 +14,7 @@ namespace Steam_Library_Manager.Framework
         public static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         public static CancellationTokenSource CancellationToken;
         public static bool Status = false;
+        public static bool Paused = false;
         public static bool IsRestartRequired = false;
 
         public static void ProcessTask(Definitions.List.TaskInfo CurrentTask)
@@ -26,7 +27,7 @@ namespace Steam_Library_Manager.Framework
                 {
                     default:
                     case Definitions.Enums.TaskType.Copy:
-                        CurrentTask.App.CopyFiles(CurrentTask, CancellationToken.Token);
+                        CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                         break;
                     case Definitions.Enums.TaskType.Delete:
                         CurrentTask.App.DeleteFiles(CurrentTask);
@@ -85,13 +86,11 @@ namespace Steam_Library_Manager.Framework
 
         public static void Start()
         {
-            if (!Status)
+            if (!Status && !Paused)
             {
                 Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
-                Main.FormAccessor.Button_StartTaskManager.IsEnabled = false;
-                Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -123,6 +122,38 @@ namespace Steam_Library_Manager.Framework
                     }
                 });
             }
+            else if (Paused)
+            {
+                Paused = false;
+
+                Main.FormAccessor.Button_StartTaskManager.IsEnabled = false;
+                Main.FormAccessor.Button_PauseTaskManager.IsEnabled = true;
+                Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
+            }
+        }
+
+        public static void Pause()
+        {
+            try
+            {
+                if (Status)
+                {
+                    Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
+                    Main.FormAccessor.Button_PauseTaskManager.IsEnabled = false;
+                    Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
+
+                    Paused = true;
+
+                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is paused as requested.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                MessageBox.Show(ex.ToString());
+
+                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+            }
         }
 
         public static void Stop()
@@ -134,9 +165,11 @@ namespace Steam_Library_Manager.Framework
                     Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
                     Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
                     Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
+                    Main.FormAccessor.Button_PauseTaskManager.IsEnabled = false;
                     Main.FormAccessor.Button_StopTaskManager.IsEnabled = false;
 
                     Status = false;
+                    Paused = false;
                     CancellationToken.Cancel();
                     IsRestartRequired = false;
                 }

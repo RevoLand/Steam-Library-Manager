@@ -28,5 +28,17 @@ namespace Steam_Library_Manager.Definitions
             get => (LibraryStyle)Enum.Parse(typeof(LibraryStyle), Properties.Settings.Default.LibraryStyle);
             set => Properties.Settings.Default.LibraryStyle = value.ToString();
         }
+
+        public ThemeAccents Setting_ThemeAccent
+        {
+            get => (ThemeAccents)Enum.Parse(typeof(ThemeAccents), Properties.Settings.Default.ThemeAccent);
+            set => Properties.Settings.Default.ThemeAccent = value.ToString();
+        }
+
+        public BaseTheme Setting_BaseTheme
+        {
+            get => (BaseTheme)Enum.Parse(typeof(BaseTheme), Properties.Settings.Default.BaseTheme);
+            set => Properties.Settings.Default.BaseTheme = value.ToString();
+        }
     }
 }

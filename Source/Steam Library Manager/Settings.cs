@@ -1,4 +1,6 @@
-﻿namespace Steam_Library_Manager.Properties
+﻿using MahApps.Metro;
+
+namespace Steam_Library_Manager.Properties
 {
     // This class allows you to handle specific events on the settings class:
     //  The SettingChanging event is raised before a setting's value is changed.
@@ -22,6 +24,13 @@
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             Save();
+
+            if (e.PropertyName == "BaseTheme" || e.PropertyName == "ThemeAccent")
+            {
+                ThemeManager.ChangeAppStyle(System.Windows.Application.Current,
+                                ThemeManager.GetAccent(ThemeAccent),
+                                ThemeManager.GetAppTheme(BaseTheme));
+            }
         }
 
         private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {

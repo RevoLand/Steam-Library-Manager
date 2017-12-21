@@ -221,7 +221,7 @@ namespace Steam_Library_Manager.Definitions
             return WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
         }
 
-        public void CopyFiles(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
+        public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
             LogToTM($"[{AppName}] Populating file list, please wait");
             Functions.Logger.LogToFile(Functions.Logger.LogType.App, "Populating file list", this);
@@ -230,6 +230,8 @@ namespace Steam_Library_Manager.Definitions
             ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
             List<FileSystemInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
+            int currentBlockSize = 0;
+            byte[] FSBuffer = new byte[1024 * 1024];
 
             try
             {
@@ -266,6 +268,11 @@ namespace Steam_Library_Manager.Definitions
 
                         foreach (FileSystemInfo currentFile in AppFiles)
                         {
+                            while (Framework.TaskManager.Paused)
+                            {
+                                await Task.Delay(100);
+                            }
+
                             string newFileName = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
                             CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
@@ -291,6 +298,11 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ZipArchiveEntry currentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
+                        while (Framework.TaskManager.Paused)
+                        {
+                            await Task.Delay(100);
+                        }
+
                         FileInfo newFile = new FileInfo(Path.Combine(CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName, currentFile.FullName));
 
                         if (!newFile.Directory.Exists)
@@ -323,60 +335,96 @@ namespace Steam_Library_Manager.Definitions
                 {
                     parallelOptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, CurrentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
+                        FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                        if (!NewFile.Exists || (NewFile.Length != (CurrentFile as FileInfo).Length || NewFile.LastWriteTime != (CurrentFile as FileInfo).LastWriteTime))
                         {
-                            if (!newFile.Directory.Exists)
+                            if (!NewFile.Directory.Exists)
                             {
-                                newFile.Directory.Create();
-                                CreatedDirectories.Add(newFile.Directory.FullName);
+                                NewFile.Directory.Create();
+                                CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
 
-                            CurrentTask.TaskStatusInfo = $"Copying: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                            using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            {
+                                using (FileStream NewFileContent = NewFile.OpenWrite())
+                                {
+                                    while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
+                                    {
+                                        if (cancellationToken.IsCancellationRequested)
+                                            throw (new OperationCanceledException(cancellationToken));
+
+                                        while (Framework.TaskManager.Paused)
+                                        {
+                                            Task.Delay(100);
+                                        }
+
+                                        NewFileContent.Write(FSBuffer, 0, currentBlockSize);
+
+                                        CurrentTask.MovedFileSize += currentBlockSize;
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{(CurrentFile as FileInfo).Length})";
+                                    }
+                                }
+                            }
                         }
 
-                        CopiedFiles.Add(newFile.FullName);
-                        CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
+                        CopiedFiles.Add(NewFile.FullName);
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}] Moved file: {newFile.FullName}");
+                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Moved file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
                     });
 
                     parallelOptions.MaxDegreeOfParallelism = -1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, currentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), parallelOptions, CurrentFile =>
                     {
-                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
+                        FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                        if (!newFile.Exists || (newFile.Length != (currentFile as FileInfo).Length || newFile.LastWriteTime != (currentFile as FileInfo).LastWriteTime))
+                        if (!NewFile.Exists || (NewFile.Length != (CurrentFile as FileInfo).Length || NewFile.LastWriteTime != (CurrentFile as FileInfo).LastWriteTime))
                         {
-                            if (!newFile.Directory.Exists)
+                            if (!NewFile.Directory.Exists)
                             {
-                                newFile.Directory.Create();
-                                CreatedDirectories.Add(newFile.Directory.FullName);
+                                NewFile.Directory.Create();
+                                CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
 
-                            CurrentTask.TaskStatusInfo = $"Copying: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
-                            (currentFile as FileInfo).CopyTo(newFile.FullName, true);
+                            using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            {
+                                using (FileStream NewFileContent = NewFile.OpenWrite())
+                                {
+                                    while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
+                                    {
+                                        if (cancellationToken.IsCancellationRequested)
+                                            throw (new OperationCanceledException(cancellationToken));
+
+                                        while (Framework.TaskManager.Paused)
+                                        {
+                                            Task.Delay(100);
+                                        }
+
+                                        NewFileContent.Write(FSBuffer, 0, currentBlockSize);
+
+                                        CurrentTask.MovedFileSize += currentBlockSize;
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{(CurrentFile as FileInfo).Length})";
+                                    }
+                                }
+                            }
                         }
 
-                        CopiedFiles.Add(newFile.FullName);
-                        CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
+                        CopiedFiles.Add(NewFile.FullName);
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}] Moved file: {newFile.FullName}");
+                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Moved file: {newFile.FullName}", this);
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
                     });
 
                 }
@@ -455,6 +503,11 @@ namespace Steam_Library_Manager.Definitions
                         {
                             if (Task != null)
                             {
+                                while (Framework.TaskManager.Paused)
+                                {
+                                    System.Threading.Tasks.Task.Delay(100);
+                                }
+
                                 Task.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
                                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{Task.App.AppName}] Deleting file: {currentFile.FullName}");
                             }

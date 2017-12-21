@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Definitions
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
-        public static Framework.AsyncObservableCollection<JunkInfo> Junks { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
+        public static Framework.AsyncObservableCollection<JunkInfo> LCItems { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
 
         public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
         public static Framework.AsyncObservableCollection<ContextMenuItem> AppCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
@@ -32,7 +32,11 @@ namespace Steam_Library_Manager.Definitions
             private bool _Completed = false;
             private string _TaskStatusInfo;
 
-            public string PrettyAvgSpeed => _MovedFileSize == 0 ? "" : ((_TotalFileSize == _MovedFileSize) ? "" : $"{Math.Round(((_MovedFileSize / 1024f) / 1024f) / ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec");
+            public string TaskProgressInfo
+            {
+                get => (_MovedFileSize) != 0 ? $"{_MovedFileSize}/{_TotalFileSize}" : "";
+            }
+
             public string TaskStatusInfo
             {
                 get => _TaskStatusInfo;
@@ -61,7 +65,7 @@ namespace Steam_Library_Manager.Definitions
                     _MovedFileSize = value;
                     OnPropertyChanged("MovedFileSize");
                     OnPropertyChanged("ProgressBarPerc");
-                    OnPropertyChanged("PrettyAvgSpeed");
+                    OnPropertyChanged("TaskProgressInfo");
                 }
             }
 
@@ -79,20 +83,24 @@ namespace Steam_Library_Manager.Definitions
             {
                 get
                 {
-
-                    double perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
-                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
-                    if (perc == 100)
+                    if (_MovedFileSize != 0)
                     {
-                        try
+                        double perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
+                        Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
+                        if (perc == 100)
                         {
-                            Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                            Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
+                            try
+                            {
+                                Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
+                                Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
+                            }
+                            catch { return 0; }
                         }
-                        catch { return 0; }
+
+                        return _MovedFileSize == 0 ? 0 : perc;
                     }
 
-                    return _MovedFileSize == 0 ? 0 : perc;
+                    return 0;
                 }
             }
 

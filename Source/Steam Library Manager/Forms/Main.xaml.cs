@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +14,7 @@ namespace Steam_Library_Manager
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    public partial class Main : Window
+    public partial class Main
     {
         public static Main FormAccessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
@@ -24,6 +25,7 @@ namespace Steam_Library_Manager
             InitializeComponent();
 
             UpdateBindings();
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
         }
 
         void UpdateBindings()
@@ -36,7 +38,7 @@ namespace Steam_Library_Manager
             TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
             TaskManager_LogsView.ItemsSource = TaskManager_Logs;
 
-            LibraryCleaner.ItemsSource = Definitions.List.Junks;
+            LibraryCleaner.ItemsSource = Definitions.List.LCItems;
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
@@ -57,18 +59,28 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void MainForm_ClosingAsync(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.MainWindowPlacement = Framework.NativeMethods.WindowPlacement.GetPlacement(this);
+            if (e.Cancel) return;
+            e.Cancel = true;
 
-            Functions.SLM.OnClosing();
+            var mySettings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Quit",
+                NegativeButtonText = "Cancel",
+                AnimateShow = true,
+                AnimateHide = false
+            };
 
-            Application.Current.Shutdown();
-        }
+            var result = await this.ShowMessageAsync("Quit application?",
+                "Sure you want to quit application?",
+                MessageDialogStyle.AffirmativeAndNegative, mySettings);
 
-        private void MainForm_SourceInitialized(object sender, EventArgs e)
-        {
-            Framework.NativeMethods.WindowPlacement.SetPlacement(this, Properties.Settings.Default.MainWindowPlacement);
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Functions.SLM.OnClosing();
+                Application.Current.Shutdown();
+            }
         }
 
         private void LibraryGrid_Drop(object sender, DragEventArgs e)
@@ -159,10 +171,11 @@ namespace Steam_Library_Manager
             }
         }
 
-        // TODO : Kütüphane tipine göre işlem
         private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
         private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+
+        private void RightWindowCommands_SettingsButton_Click(object sender, RoutedEventArgs e) => TabItem_Settings.IsSelected = true;
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
 
@@ -194,10 +207,18 @@ namespace Steam_Library_Manager
                 default:
                 case "Start":
                     Framework.TaskManager.Start();
+                    Button_StartTaskManager.IsEnabled = false;
+                    Button_PauseTaskManager.IsEnabled = true;
+                    Button_StopTaskManager.IsEnabled = true;
+                    break;
+                case "Pause":
+                    Framework.TaskManager.Pause();
+                    Button_PauseTaskManager.IsEnabled = false;
                     Button_StopTaskManager.IsEnabled = true;
                     break;
                 case "Stop":
                     Framework.TaskManager.Stop();
+                    Button_PauseTaskManager.IsEnabled = false;
                     Button_StopTaskManager.IsEnabled = false;
                     break;
                 case "BackupUpdates":
@@ -306,7 +327,7 @@ namespace Steam_Library_Manager
                             }
                         }
 
-                        Definitions.List.Junks.Remove(Junk);
+                        Definitions.List.LCItems.Remove(Junk);
                     }
                 }
             }
@@ -388,7 +409,7 @@ namespace Steam_Library_Manager
                                 }
                             }
 
-                            Definitions.List.Junks.Remove(Junk);
+                            Definitions.List.LCItems.Remove(Junk);
                         }
                     }
                 }
@@ -416,7 +437,7 @@ namespace Steam_Library_Manager
                                 }
                             }
 
-                            Definitions.List.Junks.Remove(Junk);
+                            Definitions.List.LCItems.Remove(Junk);
                         }
                     }
                 }
@@ -495,15 +516,6 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void DonateButton_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                Process.Start(Definitions.SLM.DonateButtonURL);
-            }
-            catch { }
-        }
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (Definitions.SLM.CurrentSelectedLibrary != null)
@@ -512,17 +524,25 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void ResetSearchTextButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.SearchText = "";
-
-        private void HeaderImageClearButton_Click(object sender, RoutedEventArgs e)
+        private async void HeaderImageClearButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (Directory.Exists(Definitions.Directories.SLM.HeaderImage))
                 {
                     Directory.Delete(Definitions.Directories.SLM.HeaderImage, true);
-                    MessageBox.Show("Header Image Cache cleared.");
                 }
+
+                await this.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.");
+            }
+            catch { }
+        }
+
+        private void DonateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(Definitions.SLM.DonateButtonURL);
             }
             catch { }
         }

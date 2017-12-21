@@ -1,16 +1,30 @@
-﻿<Window
+﻿<Controls:MetroWindow
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:SLM="clr-namespace:Steam_Library_Manager"
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+    mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Height="800" Width="930"
-    SnapsToDevicePixels="True" Loaded="MainForm_Loaded" Closing="MainForm_Closing" SourceInitialized="MainForm_SourceInitialized">
-    <Window.TaskbarItemInfo>
-        <TaskbarItemInfo Description="Steam Library Manager" />
-    </Window.TaskbarItemInfo>
-    <Window.Resources>
+    Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync" ResizeMode="CanResizeWithGrip" SaveWindowPosition="True"
+    ShowTitleBar="False" GlowBrush="{DynamicResource AccentColorBrush}" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" FontSize="13.333"
+    >
+    <!-- 
+    Resource Templates for:
+        Library (Type: Steam)
+        Library (Type: SLM)
+    
+        Application listing: GridView
+        Application listing: ListView
+    
+        Task Manager listing: GridView
+        Task Manager listing: ListView
+    -->
+    <Controls:MetroWindow.Resources>
         <!-- Library: Steam -->
         <DataTemplate x:Key="Library_Steam">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
@@ -47,7 +61,7 @@
                 </TextBlock>
 
                 <!-- TextBlock: Library Path -->
-                <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" />
+                <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
@@ -98,10 +112,10 @@
                     </Grid.Style>
 
                     <!-- ProgressBar: Available free space -->
-                    <ProgressBar Height="20" Value="{Binding Steam.FreeSpacePerc, Mode=OneWay}" />
+                    <Controls:MetroProgressBar Height="18" Value="{Binding Steam.FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock FontSize="13" Height="20" Text="{Binding Steam.PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Steam.PrettyFreeSpace}" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -142,7 +156,7 @@
                 </TextBlock>
 
                 <!-- TextBlock: Library Path -->
-                <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="13" />
+                <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
@@ -193,14 +207,14 @@
                     </Grid.Style>
 
                     <!-- ProgressBar: Available free space -->
-                    <ProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock FontSize="13" Height="20" Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- App Library: GridView -->
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -213,14 +227,13 @@
                         </ContextMenu.ItemContainerStyle>
                     </ContextMenu>
                 </Grid.ContextMenu>
-
                 <!-- App Header Image -->
-                <Grid Width="230px" Height="107px" Margin="4" HorizontalAlignment="Left">
-                    <Border BorderBrush="DarkRed" BorderThickness=".6" CornerRadius="2">
+                <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
+                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
-                            <Image.Effect>
-                                <DropShadowEffect Direction="130" Color="#FFB6C2CB" ShadowDepth="1" BlurRadius="10" />
-                            </Image.Effect>
+                            <CachedImage:Image.Effect>
+                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                            </CachedImage:Image.Effect>
                         </CachedImage:Image>
                     </Border>
                 </Grid>
@@ -228,7 +241,7 @@
 
                 <Grid>
                     <!-- App Name -->
-                    <TextBlock Text="{Binding AppName}" Padding="240,5,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding AppName}" Padding="240,4,0,0" TextWrapping="Wrap" FontSize="14" />
 
                     <!-- App Info Grid -->
                     <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
@@ -237,12 +250,12 @@
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Library.Type}" Value="SLM">
+                                        <!--<DataTrigger Binding="{Binding Library.Type}" Value="SLM">
                                             <Setter Property="Text" Value="SLM" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Library.Type}" Value="Steam">
                                             <Setter Property="Text" Value="Steam" />
-                                        </DataTrigger>
+                                        </DataTrigger>-->
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
                                             <Setter Property="Text" Value="Compressed" />
                                         </DataTrigger>
@@ -251,7 +264,7 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <TextBlock Text="{Binding LastUpdated, StringFormat='Updated on: {0}'}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
+                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
                         <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold" />
                     </Grid>
@@ -259,7 +272,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- App Library: ListView -->
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -302,51 +315,56 @@
 
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding LastUpdated, StringFormat='Updated on: {0}'}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- Task Manager: GridView -->
         <DataTemplate x:Key="Tasklibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
 
-                <ProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" >
-                    <ProgressBar.Style>
-                        <Style TargetType="ProgressBar">
+                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                    <Controls:MetroProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Completed}" Value="false">
-                                    <Setter Property="Opacity" Value="0.25" />
+                                    <Setter Property="Opacity" Value="0.20" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Completed}" Value="true">
-                                    <Setter Property="Opacity" Value="0.75" />
+                                    <Setter Property="Opacity" Value="0.70" />
                                     <Setter Property="Foreground" Value="LightBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </ProgressBar.Style>
-                </ProgressBar>
-                <Grid Width="210px" Height="87px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" >
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Opacity" Value="0.4" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </CachedImage:Image>
+                    </Controls:MetroProgressBar.Style>
+                </Controls:MetroProgressBar>
+                <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
+                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" >
+                            <CachedImage:Image.Effect>
+                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                            </CachedImage:Image.Effect>
+                            <CachedImage:Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Completed}" Value="true">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CachedImage:Image.Style>
+                        </CachedImage:Image>
+                    </Border>
                     <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                            <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
                                         <Setter Property="Text" Value="COMPLETED" />
@@ -357,7 +375,7 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="220,5,0,0" TextWrapping="Wrap" FontSize="13" />
+                    <TextBlock Text="{Binding App.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
                         <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
 
@@ -374,63 +392,53 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-73,5,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding PrettyAvgSpeed}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,-35,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat='Target: {0}'}" Margin="0,-20,2,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 2, 0" />
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-68,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TaskProgressInfo}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,-35,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
 
                         <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0">
-                            <CheckBox.Style>
-                                <Style TargetType="{x:Type CheckBox}">
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
                                             <Setter Property="Visibility" Value="Hidden" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="350,0,0,0" >
-                            <CheckBox.Style>
-                                <Style TargetType="{x:Type CheckBox}">
+                            </Grid.Style>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
                                             <Setter Property="Visibility" Value="Hidden" />
                                         </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding App.IsCompressed}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Content" Value="Compress" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding App.IsCompressed}" Value="true" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Content" Value="Keep Compressed" />
-                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
+                            </Grid.Style>
+                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- Task Manager: ListView -->
         <DataTemplate x:Key="Tasklibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"></MenuItem>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <ProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" >
-                    <ProgressBar.Style>
-                        <Style TargetType="ProgressBar">
+                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                    <Controls:MetroProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Completed}" Value="false">
                                     <Setter Property="Opacity" Value="0.25" />
@@ -441,23 +449,23 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </ProgressBar.Style>
-                </ProgressBar>
+                    </Controls:MetroProgressBar.Style>
+                </Controls:MetroProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
-                        <Image.Style>
-                            <Style TargetType="Image">
+                        <CachedImage:Image.Style>
+                            <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
                                         <Setter Property="Opacity" Value="0.4" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Image.Style>
+                        </CachedImage:Image.Style>
                     </CachedImage:Image>
                     <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
                         <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                            <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
                                         <Setter Property="Text" Value="COMPLETED" />
@@ -471,10 +479,11 @@
                     <TextBlock Text="{Binding App.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat='Target: {0}'}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap"/>
+
 
                         <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,40,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat={}{0}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
 
                         <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
@@ -489,79 +498,81 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-
+                        
                         <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0">
-                            <CheckBox.Style>
-                                <Style TargetType="{x:Type CheckBox}">
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
                                             <Setter Property="Visibility" Value="Hidden" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
-                        <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="350,0,0,0" >
-                            <CheckBox.Style>
-                                <Style TargetType="{x:Type CheckBox}">
+                            </Grid.Style>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
                                             <Setter Property="Visibility" Value="Hidden" />
                                         </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding App.IsCompressed}" Value="false" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Content" Value="Compress" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding App.IsCompressed}" Value="true" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Content" Value="Keep Compressed" />
-                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
+                            </Grid.Style>
+                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </DataTemplate>
-    </Window.Resources>
-    <Grid Margin="0,40,2,2" Background="#00000000">
+        
+    </Controls:MetroWindow.Resources>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="settings" Click="RightWindowCommands_SettingsButton_Click" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    <Controls:MetroWindow.TaskbarItemInfo>
+        <TaskbarItemInfo Description="Steam Library Manager" ProgressState="Normal" />
+    </Controls:MetroWindow.TaskbarItemInfo>
+    <Grid Margin="0,40,0,0">
+        
+        <TextBlock Margin="15, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" FontWeight="ExtraLight" Background="Transparent">
+            Steam Library Manager
+        </TextBlock>
+        
         <!-- Grid: Quick settings -->
-        <Grid x:Name="QuickSettings" Margin="500,-25,10,0" Height="35" VerticalAlignment="Top">
+        <Grid x:Name="QuickSettings" Margin="0,0,10,0">
             <!-- App Sorting Method -->
-            <ComboBox HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="30" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged">
+            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged">
                 <ComboBox.ItemContainerStyle>
-                    <Style TargetType="ComboBoxItem">
+                    <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
 
             <!-- App listing method -->
-            <ComboBox HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="150" Height="30" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}">
+            <ComboBox Controls:TextBoxHelper.Watermark="App listing method" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}">
                 <ComboBox.ItemContainerStyle>
-                    <Style TargetType="ComboBoxItem">
-                        <Setter Property="Height" Value="25" />
+                    <Style TargetType="{x:Type ComboBoxItem}">
+                        <Setter Property="Height" Value="30" />
                     </Style>
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
         </Grid>
-        <TabControl Margin="10,0,10,10">
+
+        <Controls:MetroTabControl Controls:TabControlHelper.Underlined="TabPanel" Margin="10, 35, 10, 0">
             <!-- Tab: Library -->
-            <TabItem IsSelected="True" Padding="35, 15">
-                <TabItem.Header>
-                    <TextBlock Text="Library" FontSize="15"/>
-                </TabItem.Header>
+            <Controls:MetroTabItem Header="Library" IsSelected="True">
                 <Grid>
-                    <!-- ListView: Library Panel / TODO: Kütüphane tipi kontrol edilerek bilgiler ona göre yansıtılacak -->
-                    <ListView x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="10,10,0,10" HorizontalAlignment="Left"
+                    <!-- ListView: Library Panel -->
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="0,10,0,10" HorizontalAlignment="Left"
                               Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                              IsSynchronizedWithCurrentItem="True" SelectionChanged="LibraryGrid_MouseDown">
+                              SelectionChanged="LibraryGrid_MouseDown">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -583,7 +594,7 @@
                     </ListView>
 
                     <!-- ListView: App Panel -->
-                    <ListView x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="215,10,10,50" SelectionMode="Extended" IsTabStop="False" 
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" 
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -606,20 +617,14 @@
                     </ListView>
 
                     <!-- TextBox: Search -->
-                    <TextBox Margin="215,0,10,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
-
-                    <!-- Button: Reset Search -->
-                    <Button Content="Reset Search" FontSize="13" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="150" Height="35" Click="ResetSearchTextButton_Click"/>
+                    <TextBox Controls:TextBoxHelper.Watermark="Search in selected library" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 </Grid>
-            </TabItem>
+            </Controls:MetroTabItem>
             <!-- Tab: Task Manager -->
-            <TabItem Padding="30, 15">
-                <TabItem.Header>
-                    <TextBlock Text="Task Manager" FontSize="15"/>
-                </TabItem.Header>
+            <Controls:MetroTabItem Header="Task Manager">
                 <Grid>
                     <!-- ListView: Task Manager Tasks -->
-                    <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,305" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,305" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -640,22 +645,24 @@
                         </ListView.ItemTemplate>
                     </ListView>
 
-                    <Grid Margin="10,0,0,255" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="450">
+                    <Grid Margin="0,0,0,255" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
                         <!-- Button: Start Task Manager -->
-                        <Button x:Name="Button_StartTaskManager" FontSize="13" Content="Start Task Manager" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" MinHeight="45" MaxHeight="30" Height="30" VerticalAlignment="Bottom" />
+                        <Button x:Name="Button_StartTaskManager" FontSize="13" Content="Start" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" />
 
+                        <Button x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="Pause" Tag="Pause" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="150,0,0,0" />
+                        
                         <!-- Button: Stop Task Manager -->
-                        <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="Stop Task Manager" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" MinHeight="30" Height="45" VerticalAlignment="Bottom" Margin="145,0,0,0" />
+                        <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="Stop" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="300,0,0,0" />
 
                         <!-- Button: Clear Completed Tasks -->
-                        <Button Content="Clear Completed Tasks" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="290,0,0,0" HorizontalAlignment="Left" Width="140" MinHeight="30" Height="45" VerticalAlignment="Bottom" />
+                        <Button Content="Clear Completed Tasks" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="450,0,0,0" HorizontalAlignment="Left" Width="180" Height="45" VerticalAlignment="Bottom" />
 
                         <!-- Button: Check for Backup Updates -->
-                        <Button Content="Check for Backup Updates" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="435,0,-146,0" HorizontalAlignment="Left" Width="161" MinHeight="30" Height="45" VerticalAlignment="Bottom" />
+                        <Button Content="Check for Backup Updates" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="640,0,0,0" HorizontalAlignment="Left" Width="200" Height="45" VerticalAlignment="Bottom" />
                     </Grid>
 
                     <!-- ListBox: Task Manager Logs -->
-                    <ListBox x:Name="TaskManager_LogsView" Margin="10,0,10,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
+                    <ListBox x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock MaxHeight="16" Text="{Binding}" />
@@ -663,29 +670,26 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-            </TabItem>
+            </Controls:MetroTabItem>
             <!-- Tab: Library Cleaner -->
-            <TabItem Padding="20, 10">
-                <TabItem.Header>
-                    <TextBlock Text="Library Cleaner" FontSize="15"/>
-                </TabItem.Header>
+            <Controls:MetroTabItem Header="Library Cleaner">
                 <Grid>
                     <!-- ListView: Library Cleaner -->
-                    <ListView x:Name="LibraryCleaner" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="10,10,10,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+                    <ListView x:Name="LibraryCleaner" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,0,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                                     <Grid.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click"></MenuItem>
-                                            <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click"></MenuItem>
+                                            <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click"/>
+                                            <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click"/>
                                         </ContextMenu>
                                     </Grid.ContextMenu>
                                     <Grid>
                                         <TextBlock Text="{Binding FSInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
                                         <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
                                             <TextBlock Text="{Binding FSInfo.FullName}" HorizontalAlignment="Left" />
-                                            <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat='Last Write Time: {0}'}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat=Last Write Time: \{0\}}" HorizontalAlignment="Right" TextWrapping="Wrap" />
                                             <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
                                         </Grid>
                                     </Grid>
@@ -695,15 +699,15 @@
                     </ListView>
 
                     <!-- Button: Delete All-->
-                    <Button Tag="DeleteAll" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom" />
+                    <Button Tag="DeleteAll" FontSize="13" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
 
                     <!-- Button: Move All-->
-                    <Button Tag="MoveAll" Content="Move All" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="35" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                    <Button Tag="MoveAll" FontSize="13" Content="Move All" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 
                     <!-- Button: Refresh All-->
-                    <Button Tag="Refresh" Content="Refresh List" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="35" VerticalAlignment="Bottom"/>
+                    <Button Tag="Refresh" FontSize="13" Content="Refresh List" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom"/>
                 </Grid>
-            </TabItem>
+            </Controls:MetroTabItem>
             <!-- TBC: SLM Server
             <TabItem Padding="30, 10">
                 <TabItem.Header>
@@ -735,89 +739,101 @@
             </TabItem>
             -->
             <!-- Tab: Settings -->
-            <TabItem Padding="25, 10">
-                <TabItem.Header>
-                    <TextBlock Text="Settings" FontSize="15"/>
-                </TabItem.Header>
+            <Controls:MetroTabItem Visibility="Hidden" Name="TabItem_Settings">
                 <Grid>
-                    <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="10,10,360,345">
-                        <Grid Margin="0,0,0,3">
+                    <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="0,5,360,5">
+                        <Grid>
                             <!-- Application sorting method -->
-                            <Label Content="Application sorting method:" HorizontalAlignment="Left" Margin="10,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
-                            <ComboBox HorizontalAlignment="Left" Height="30" VerticalContentAlignment="Center" Margin="10,40,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}">
-                                <ComboBox.ItemContainerStyle>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="Height" Value="30" />
-                                    </Style>
-                                </ComboBox.ItemContainerStyle>
-                            </ComboBox>
+                            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
+                                      Margin="5,5,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}" />
 
                             <!-- Application size calculation method -->
-                            <Label Content="Application size calculation method:" HorizontalAlignment="Left" Margin="10,70,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,100,0,0" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}">
-                                <ComboBox.ItemContainerStyle>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="Height" Value="30" />
-                                    </Style>
-                                </ComboBox.ItemContainerStyle>
-                            </ComboBox>
+                            <ComboBox Controls:TextBoxHelper.Watermark="Get application size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
+                                      Margin="5,55,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
+                                      SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}" />
 
                             <!-- Archive size calculation method -->
-                            <Label Content="Archive size calculation method:" HorizontalAlignment="Left" Margin="10,127,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240"/>
-                            <ComboBox HorizontalAlignment="Left" Margin="10,158,0,0" Height="30" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}">
-                                <ComboBox.ItemContainerStyle>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="Height" Value="30" />
-                                    </Style>
-                                </ComboBox.ItemContainerStyle>
-                            </ComboBox>
+                            <ComboBox Controls:TextBoxHelper.Watermark="Get compressed archive size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,105,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
+                                      SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- File size to start move synchronously (MB) -->
-                            <Label Content="File size to start move synchronously (MB)" HorizontalAlignment="Left" Margin="10,185,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="240" FontSize="12"/>
-                            <TextBox HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="30" Margin="10,216,0,0" VerticalAlignment="Top" Width="240" Text="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously after" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" 
+                                                    Margin="5,155,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024" 
+                                                    Value="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StringFormat="{}{0:N0} MB" />
 
-                            <!-- Keep searching while switching library -->
-                            <CheckBox Content="Keep searching while switching library" IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,243,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Accent" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
+                                      Margin="5,205,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}" />
+
+                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Base" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
+                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
+                                      SelectedItem="{Binding Setting_BaseTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}" />
 
                             <!-- Advanced Logging (Requires restart) -->
-                            <CheckBox Content="Advanced Logging (Requires restart)" IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="255,10,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
-
-                            <!-- Button: View Logs (If exists) -->
-                            <Button Content="View Logs (If exists)" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="255,40,0,0" Height="30" Width="240" HorizontalAlignment="Left" VerticalAlignment="Top" Click="ViewLogsButton" />
+                            <Controls:ToggleSwitch Header="Advanced Logging (Requires restart)" Margin="5,305,0,0" 
+                                                   IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" 
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Check for Updates at Startup -->
-                            <CheckBox Content="Check for Updates at Startup" IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="255,70,0,0" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Controls:ToggleSwitch Header="Check for Updates on Startup" Margin="5,355,0,0" OnLabel="Yes" OffLabel="No" 
+                                                   IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+
+                            <!-- Keep searching while switching library -->
+                            <Controls:ToggleSwitch Header="Keep searching on library change" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No" 
+                                                   IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+
+                            <!-- Button: View Logs (If exists) -->
+                            <Button Content="Open Log Folder" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Width="280" Height="40" HorizontalAlignment="Left" />
 
                             <!-- Button: Check for Updates -->
-                            <Button Content="Check for Updates" HorizontalAlignment="Left" Margin="255,100,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="CheckForUpdates_Click" FontSize="11"/>
+                            <Button Content="Check for Updates" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Width="280" Height="40" HorizontalAlignment="Left" 
+                                    Style="{StaticResource AccentedSquareButtonStyle}" />
 
                             <!-- Button: Clear image cache-->
-                            <Button Content="Clear image cache" Margin="360,100,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30" Click="HeaderImageClearButton_Click" HorizontalAlignment="Left" Width="135"/>
+                            <Button Content="Clear header image cache" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Width="280" Height="40" HorizontalAlignment="Left" 
+                                    Style="{StaticResource AccentedSquareButtonStyle}" />
 
                             <!-- Donate Button -->
-                            <Image Name="DonateButton" MouseUp="DonateButton_MouseUp" Source="/Steam Library Manager;component/Resources/donate-button.png" Margin="0,0,10,10" MaxHeight="52" MaxWidth="130" Height="52" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                            <Button Content="Donate" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Width="280" Height="40" HorizontalAlignment="Left" 
+                                    Style="{StaticResource AccentedSquareButtonStyle}" />
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="Task Manager Default Settings" Margin="0,10,0,345" Padding="5,3,0,0" HorizontalAlignment="Right" Width="355">
-                        <Grid Margin="0,0,10,0">
+                    <GroupBox Header="Task Manager Default Settings" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
+                        <Grid>
                             <!-- Remove Source Files -->
-                            <CheckBox Content="Remove files at Source directory" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="240" Margin="10,10,0,0"/>
+                            <Controls:ToggleSwitch Header="Remove files at Source directory" OnLabel="Remove" OffLabel="Do NOT Remove" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   HorizontalAlignment="Left" Margin="5,5,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                                   />
 
                             <!-- Compress Files -->
-                            <CheckBox Content="Compress Files" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Controls:ToggleSwitch Header="Compress Files" OnLabel="Compress" OffLabel="Do NOT Compress" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   HorizontalAlignment="Left" Margin="5,55,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                                   />
 
                             <!-- Report File Movement -->
-                            <CheckBox Content="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Controls:ToggleSwitch Header="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   HorizontalAlignment="Left" Margin="5,105,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                                   />
 
                             <!-- Start Task Manager on Startup -->
-                            <CheckBox Content="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Controls:ToggleSwitch Header="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   HorizontalAlignment="Left" Margin="5,155,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                                   />
 
                             <!-- Play a sound on completion-->
-                            <CheckBox Content="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Height="26" Width="240"/>
+                            <Controls:ToggleSwitch Header="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   HorizontalAlignment="Left" Margin="5,205,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                                   />
                         </Grid>
                     </GroupBox>
                 </Grid>
-            </TabItem>
-        </TabControl>
+            </Controls:MetroTabItem>
+        </Controls:MetroTabControl>
     </Grid>
-</Window>
+</Controls:MetroWindow>

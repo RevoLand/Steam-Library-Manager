@@ -73,7 +73,7 @@ namespace Steam_Library_Manager.Definitions
                         // If key doesn't contains a child (value in acf file)
                         if (KeyValReader.Children.Count == 0)
                     {
-                        List.Junks.Add(new List.JunkInfo
+                        List.LCItems.Add(new List.JunkInfo
                         {
                             FSInfo = new FileInfo(AcfFile.FullName),
                             Size = AcfFile.Length,
@@ -181,7 +181,7 @@ namespace Steam_Library_Manager.Definitions
                 // If key doesn't contains a child (value in acf file)
                 if (KeyValReader.Children.Count == 0)
                 {
-                    List.Junks.Add(new List.JunkInfo
+                    List.LCItems.Add(new List.JunkInfo
                     {
                         FSInfo = new FileInfo(e.FullPath),
                         Library = Library
@@ -509,9 +509,9 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (List.Junks.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
-                            List.Junks.Add(Junk);
+                            List.LCItems.Add(Junk);
                         }
                     }
                 }
@@ -531,9 +531,9 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (List.Junks.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
-                            List.Junks.Add(Junk);
+                            List.LCItems.Add(Junk);
                         }
                     }
 
@@ -552,9 +552,9 @@ namespace Steam_Library_Manager.Definitions
                             };
 
 
-                            if (List.Junks.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
-                                List.Junks.Add(Junk);
+                                List.LCItems.Add(Junk);
                             }
                         }
                     }
@@ -573,9 +573,9 @@ namespace Steam_Library_Manager.Definitions
                             };
 
 
-                            if (List.Junks.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
-                                List.Junks.Add(Junk);
+                                List.LCItems.Add(Junk);
                             }
                         }
                     }
