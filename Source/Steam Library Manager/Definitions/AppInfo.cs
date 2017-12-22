@@ -231,7 +231,6 @@ namespace Steam_Library_Manager.Definitions
             List<FileSystemInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
             int currentBlockSize = 0;
-            byte[] FSBuffer = new byte[1024 * 1024];
 
             try
             {
@@ -347,6 +346,8 @@ namespace Steam_Library_Manager.Definitions
                                 CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
 
+                            byte[] FSBuffer = new byte[1024 * 1024];
+
                             using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
@@ -393,6 +394,8 @@ namespace Steam_Library_Manager.Definitions
                                 NewFile.Directory.Create();
                                 CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
+
+                            byte[] FSBuffer = new byte[1024 * 1024];
 
                             using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
