@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -89,7 +90,7 @@ namespace Steam_Library_Manager.Definitions
                 // Do a loop for each *.zip file in library
                 Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly), ArchiveFile =>
                 {
-                    Functions.App.ReadDetailsFromZip(ArchiveFile, Library);
+                    Functions.App.ReadDetailsFromZipAsync(ArchiveFile, Library);
                 });
 
                 if (SLM.CurrentSelectedLibrary != null)
@@ -136,11 +137,11 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                Functions.App.ReadDetailsFromZip(e.FullPath, Library);
+                Functions.App.ReadDetailsFromZipAsync(e.FullPath, Library);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -163,7 +164,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -210,7 +211,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception Ex)
             {
-                MessageBox.Show(Ex.ToString());
+                //MessageBox.Show(Ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, Ex.ToString());
             }
         }
@@ -224,7 +225,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                //Debug.WriteLine(ex);
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -248,7 +249,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -296,7 +297,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void ParseMenuItemAction(string Action)
+        public async void ParseMenuItemActionAsync(string Action)
         {
             switch (Action.ToLowerInvariant())
             {
@@ -312,18 +313,20 @@ namespace Steam_Library_Manager.Definitions
 
                     if (IsMain)
                     {
-                        MessageBox.Show("You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!");
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!", MessageDialogStyle.Affirmative);
                         return;
                     }
 
-                    MessageBoxResult MoveAppsBeforeDeletion = MessageBox.Show("Move apps in Library before deleting the library?", "Move apps first?", MessageBoxButton.YesNoCancel);
-
-                    if (MoveAppsBeforeDeletion == MessageBoxResult.Yes)
+                    MessageDialogResult MoveAppsBeforeDeletion = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Move apps in Library before deleting the library?", MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                     {
-                        //new Forms.moveLibrary(Library).Show();
-                        MessageBox.Show("Function not implemented, process cancelled");
+                        FirstAuxiliaryButtonText = "Delete library without moving apps"
+                    });
+
+                    if (MoveAppsBeforeDeletion == MessageDialogResult.Affirmative)
+                    {
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function not implemented, process cancelled", MessageDialogStyle.Affirmative);
                     }
-                    else if (MoveAppsBeforeDeletion == MessageBoxResult.No)
+                    else if (MoveAppsBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
                         RemoveLibraryAsync(true);
                     }
@@ -333,9 +336,9 @@ namespace Steam_Library_Manager.Definitions
 
                     foreach (AppInfo App in Apps.ToList())
                     {
-                        if (!App.DeleteFiles())
+                        if (!await App.DeleteFilesAsync())
                         {
-                            MessageBox.Show(string.Format("An unknown error happened while removing app files. {0}", FullPath));
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"An unknown error happened while removing app files. {FullPath}", MessageDialogStyle.Affirmative);
 
                             return;
                         }
@@ -343,27 +346,7 @@ namespace Steam_Library_Manager.Definitions
 
                     UpdateLibraryVisual();
 
-                    MessageBox.Show(string.Format("All app files in library ({0}) successfully removed.", FullPath));
-                    break;
-                // Removes a backup library from list
-                case "removefromlist":
-                    // TODO
-                    /*
-                    if (IsBackup)
-                    {
-                        try
-                        {
-                            List.Libraries.Remove(List.Libraries.First(x => x.Steam == this));
-
-                            if (SLM.CurrentSelectedLibrary.Steam == this)
-                                Main.FormAccessor.AppPanel.ItemsSource = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                        }
-                    }
-                    */
+                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"All app files in library successfully removed.\n\nLibrary: {FullPath}", MessageDialogStyle.Affirmative);
                     break;
             }
         }
@@ -416,23 +399,23 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void DeleteFiles()
+        public async void DeleteFilesAsync()
         {
             try
             {
                 if (SteamAppsFolder.Exists)
                 {
-                    SteamAppsFolder.Delete(true);
+                    await Task.Run(() => SteamAppsFolder.Delete(true));
                 }
 
                 if (WorkshopFolder.Exists)
                 {
-                    WorkshopFolder.Delete(true);
+                    await Task.Run(() => WorkshopFolder.Delete(true));
                 }
 
                 if (DownloadFolder.Exists)
                 {
-                    DownloadFolder.Delete(true);
+                    await Task.Run(() => DownloadFolder.Delete(true));
                 }
             }
             catch (Exception Ex)
@@ -448,7 +431,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 if (deleteFiles)
                 {
-                    DeleteFiles();
+                    DeleteFilesAsync();
                 }
 
                 List.Libraries.Remove(List.Libraries.First(x => x.Steam == this));

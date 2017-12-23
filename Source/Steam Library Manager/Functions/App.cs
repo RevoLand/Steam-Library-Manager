@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -100,7 +101,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void ReadDetailsFromZip(string ZipPath, Definitions.Library targetLibrary)
+        public static async void ReadDetailsFromZipAsync(string ZipPath, Definitions.Library targetLibrary)
         {
             try
             {
@@ -129,13 +130,14 @@ namespace Steam_Library_Manager.Functions
             }
             catch (IOException)
             {
-                ReadDetailsFromZip(ZipPath, targetLibrary);
+                ReadDetailsFromZipAsync(ZipPath, targetLibrary);
             }
             catch (InvalidDataException IEx)
             {
-                MessageBoxResult RemoveBuggenArchive = MessageBox.Show($"An error happened while parsing zip file ({ZipPath})\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", "An error happened while parsing zip file", MessageBoxButton.YesNo);
-
-                if (RemoveBuggenArchive == MessageBoxResult.Yes)
+                if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file ({ZipPath})\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    NegativeButtonText = "Do NOT Remove the archive file"
+                }) == MessageDialogResult.Affirmative)
                 {
                     new FileInfo(ZipPath).Delete();
                 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Steam_Library_Manager.Framework
 {
@@ -17,7 +16,7 @@ namespace Steam_Library_Manager.Framework
         public static bool Paused = false;
         public static bool IsRestartRequired = false;
 
-        public static void ProcessTask(Definitions.List.TaskInfo CurrentTask)
+        public static async void ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
             try
             {
@@ -30,7 +29,7 @@ namespace Steam_Library_Manager.Framework
                         CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                         break;
                     case Definitions.Enums.TaskType.Delete:
-                        CurrentTask.App.DeleteFiles(CurrentTask);
+                        await CurrentTask.App.DeleteFilesAsync(CurrentTask);
                         break;
                 }
 
@@ -39,7 +38,7 @@ namespace Steam_Library_Manager.Framework
                     if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                     {
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                        CurrentTask.App.DeleteFiles(CurrentTask);
+                        await CurrentTask.App.DeleteFilesAsync(CurrentTask);
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Files removed, task is completed now.");
                     }
 
@@ -79,7 +78,6 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.App.AppName}][{CurrentTask.App.AppID}][{CurrentTask.App.AcfName}] {ex}");
             }
         }
@@ -103,7 +101,7 @@ namespace Steam_Library_Manager.Framework
                             manualResetEvent.Set();
                             if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
-                                ProcessTask(TaskList.First(x => !x.Completed));
+                                ProcessTaskAsync(TaskList.First(x => !x.Completed));
                             }
                             manualResetEvent.WaitOne();
                         }
@@ -116,8 +114,6 @@ namespace Steam_Library_Manager.Framework
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex);
-                        MessageBox.Show(ex.ToString());
-
                         Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
                     }
                 });
@@ -150,8 +146,6 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
-
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
@@ -177,8 +171,6 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
-
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
@@ -197,7 +189,6 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
@@ -211,7 +202,6 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }

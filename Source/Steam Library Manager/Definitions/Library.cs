@@ -61,33 +61,40 @@ namespace Steam_Library_Manager.Definitions
 
         public void ParseMenuItemAction(string Action)
         {
-            switch (Action.ToLowerInvariant())
+            if (Type == Enums.LibraryType.SLM)
             {
-                // Opens game installation path in explorer
-                case "disk":
-                    if (DirectoryInfo.Exists)
-                    {
-                        Process.Start(DirectoryInfo.FullName);
-                    }
-
-                    break;
-                // Removes a backup library from list
-                case "removefromlist":
-                    try
-                    {
-                        if (Type == Enums.LibraryType.SLM)
+                switch (Action.ToLowerInvariant())
+                {
+                    // Opens game installation path in explorer
+                    case "disk":
+                        if (DirectoryInfo.Exists)
                         {
-                            List.Libraries.Remove(this);
-
-                            if (SLM.CurrentSelectedLibrary == this)
-                                Main.FormAccessor.AppPanel.ItemsSource = null;
+                            Process.Start(DirectoryInfo.FullName);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                    }
-                    break;
+
+                        break;
+                    // Removes a backup library from list
+                    case "removefromlist":
+                        try
+                        {
+                            if (Type == Enums.LibraryType.SLM)
+                            {
+                                List.Libraries.Remove(this);
+
+                                if (SLM.CurrentSelectedLibrary == this)
+                                    Main.FormAccessor.AppPanel.ItemsSource = null;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                        }
+                        break;
+                }
+            }
+            else if (Type == Enums.LibraryType.Steam)
+            {
+                Steam.ParseMenuItemActionAsync(Action);
             }
         }
         

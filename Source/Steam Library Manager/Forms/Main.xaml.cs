@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -62,28 +63,27 @@ namespace Steam_Library_Manager
         private async void MainForm_ClosingAsync(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (e.Cancel) return;
-            e.Cancel = true;
-
-            var mySettings = new MetroDialogSettings()
+            if (Framework.TaskManager.TaskList.Count(x => x.Active) > 0)
             {
-                AffirmativeButtonText = "Quit",
-                NegativeButtonText = "Cancel",
-                AnimateShow = true,
-                AnimateHide = false
-            };
+                e.Cancel = true;
 
-            var result = await this.ShowMessageAsync("Quit application?",
-                "Sure you want to quit application?",
-                MessageDialogStyle.AffirmativeAndNegative, mySettings);
-
-            if (result == MessageDialogResult.Affirmative)
-            {
-                Functions.SLM.OnClosing();
-                Application.Current.Shutdown();
+                if (await this.ShowMessageAsync("Quit application?",
+                    "There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.",
+                    MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                    {
+                        AffirmativeButtonText = "Quit",
+                        NegativeButtonText = "Cancel"
+                    }) != MessageDialogResult.Affirmative)
+                {
+                    return;
+                }
             }
+
+            Functions.SLM.OnClosing();
+            Application.Current.Shutdown();
         }
 
-        private void LibraryGrid_Drop(object sender, DragEventArgs e)
+        private async void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
             try
             {
@@ -110,17 +110,16 @@ namespace Steam_Library_Manager
 
                         if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
                         {
-                            Definitions.List.TaskInfo newTask = new Definitions.List.TaskInfo
+                            Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
                                 App = App,
-                                TargetLibrary = Library
-                            };
-
-                            Framework.TaskManager.AddTask(newTask);
+                                TargetLibrary = Library,
+                                TaskType = Definitions.Enums.TaskType.Copy
+                            });
                         }
                         else
                         {
-                            MessageBox.Show($"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
                         }
                     }
                 }
@@ -137,7 +136,7 @@ namespace Steam_Library_Manager
             e.Effects = DragDropEffects.Move;
         }
 
-        private void LibraryPanel_Drop(object sender, DragEventArgs e)
+        private async void LibraryPanel_Drop(object sender, DragEventArgs e)
         {
             string[] DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
@@ -160,12 +159,12 @@ namespace Steam_Library_Manager
                         }
                         else
                         {
-                            MessageBox.Show("Libraries can not be created at root");
+                            await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Library already exists at " + DroppedItem);
+                        await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
                     }
                 }
             }
@@ -222,7 +221,7 @@ namespace Steam_Library_Manager
                     Button_StopTaskManager.IsEnabled = false;
                     break;
                 case "BackupUpdates":
-                    Functions.Steam.Library.CheckForBackupUpdates();
+                    Functions.Steam.Library.CheckForBackupUpdatesAsync();
                     break;
                 case "ClearCompleted":
                     if (Framework.TaskManager.TaskList.Count == 0)
@@ -241,7 +240,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
+        private async void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -254,13 +253,11 @@ namespace Steam_Library_Manager
                             return;
                         }
 
-                        List<Definitions.List.TaskInfo> SelectedItems = TaskPanel.SelectedItems.OfType<Definitions.List.TaskInfo>().ToList();
-
-                        foreach (Definitions.List.TaskInfo CurrentTask in SelectedItems)
+                        foreach (Definitions.List.TaskInfo CurrentTask in TaskPanel.SelectedItems.OfType<Definitions.List.TaskInfo>().ToList())
                         {
                             if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                MessageBox.Show($"[{CurrentTask.App.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                await this.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.App.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
                             }
                             else
                             {
@@ -292,7 +289,7 @@ namespace Steam_Library_Manager
 
         private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
-        private void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -316,14 +313,14 @@ namespace Steam_Library_Manager
                             if (((FileInfo)Junk.FSInfo).Exists)
                             {
                                 File.SetAttributes(((FileInfo)Junk.FSInfo).FullName, FileAttributes.Normal);
-                                ((FileInfo)Junk.FSInfo).Delete();
+                                await Task.Run(() => Junk.FSInfo.Delete());
                             }
                         }
                         else
                         {
                             if (((DirectoryInfo)Junk.FSInfo).Exists)
                             {
-                                ((DirectoryInfo)Junk.FSInfo).Delete(true);
+                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
                             }
                         }
 
@@ -340,7 +337,7 @@ namespace Steam_Library_Manager
         }
 
         // Library Cleaner Button actions
-        private void LibraryCleaner_ButtonClick(object sender, RoutedEventArgs e)
+        private async void LibraryCleaner_ButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -366,12 +363,15 @@ namespace Steam_Library_Manager
                     {
                         if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath)
                         {
-                            if (MessageBox.Show("Are you sure you like to move junks to root of disk?", "Root?", MessageBoxButton.YesNoCancel) != MessageBoxResult.Yes)
+                            if (await this.ShowMessageAsync("Root path selected?", "Are you sure you like to move junks to root of disk?", MessageDialogStyle.AffirmativeAndNegative) != MessageDialogResult.Affirmative)
                             {
                                 return;
                             }
                         }
-                        
+
+                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Relocating junk files as you have requested.");
+                        ProgressInformationMessage.SetIndeterminate();
+
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
@@ -380,11 +380,12 @@ namespace Steam_Library_Manager
                             {
                                 if (((FileInfo)Junk.FSInfo).Exists)
                                 {
-                                    (Junk.FSInfo as FileInfo).CopyTo(Junk.FSInfo.Name, true);
+                                    ProgressInformationMessage.SetMessage("Relocating file:\n\n" + Junk.FSInfo.FullName);
+                                    (Junk.FSInfo as FileInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
                                 }
 
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                Junk.FSInfo.Delete();
+                                await Task.Run(() => Junk.FSInfo.Delete());
                             }
                             else
                             {
@@ -401,22 +402,29 @@ namespace Steam_Library_Manager
                                                 newFile.Directory.Create();
                                             }
 
-                                            currentFile.CopyTo(newFile.FullName, true);
+                                            ProgressInformationMessage.SetMessage("Relocating file:\n\n" + currentFile.FullName);
+                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true));
                                         }
                                     }
 
-                                    (Junk.FSInfo as DirectoryInfo).Delete(true);
+                                    ProgressInformationMessage.SetMessage("Removing old directory:\n\n" + (Junk.FSInfo as DirectoryInfo).FullName);
+                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo).Delete(true));
                                 }
                             }
 
                             Definitions.List.LCItems.Remove(Junk);
                         }
+
+                        await ProgressInformationMessage.CloseAsync();
                     }
                 }
                 else if ((string)(sender as Button).Tag == "DeleteAll")
                 {
-                    if (MessageBox.Show("Saved Games may be located within these folders, are you sure you want to remove them?", "There might be saved games in these folders?!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    if (await this.ShowMessageAsync("There might be saved games in these folders?!", "Saved Games may be located within these folders, are you sure you want to remove them?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
+                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.");
+                        ProgressInformationMessage.SetIndeterminate();
+
                         List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
@@ -425,20 +433,24 @@ namespace Steam_Library_Manager
                             {
                                 if (((FileInfo)Junk.FSInfo).Exists)
                                 {
-                                    File.SetAttributes(((FileInfo)Junk.FSInfo).FullName, FileAttributes.Normal);
-                                    ((FileInfo)Junk.FSInfo).Delete();
+                                    File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
+                                    ProgressInformationMessage.SetMessage("Deleting file:\n\n" + Junk.FSInfo.FullName);
+                                    await Task.Run(() => Junk.FSInfo.Delete());
                                 }
                             }
                             else
                             {
                                 if (((DirectoryInfo)Junk.FSInfo).Exists)
                                 {
-                                    ((DirectoryInfo)Junk.FSInfo).Delete(true);
+                                    ProgressInformationMessage.SetMessage("Deleting Folder:\n\n" + Junk.FSInfo.FullName);
+                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
                                 }
                             }
 
                             Definitions.List.LCItems.Remove(Junk);
                         }
+
+                        await ProgressInformationMessage.CloseAsync();
                     }
                 }
             }

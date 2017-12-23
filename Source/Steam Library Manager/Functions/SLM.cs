@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Functions
 
         public static void LoadSteam()
         {
-            Steam.UpdatesteamInstallationPath();
+            Steam.UpdateSteamInstallationPathAsync();
             Steam.PopulateLibraryCMenuItems();
             Steam.PopulateAppCMenuItems();
 

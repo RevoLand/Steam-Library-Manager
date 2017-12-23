@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -149,7 +150,7 @@ namespace Steam_Library_Manager.Definitions
                     Process.Start(FullAcfPath.FullName);
                     break;
                 case "deleteappfiles":
-                    await Task.Run(() => DeleteFiles());
+                    await Task.Run(() => DeleteFilesAsync());
                     break;
                 case "deleteappfilestm":
                     Framework.TaskManager.AddTask(new List.TaskInfo
@@ -445,9 +446,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Active = false;
                 CurrentTask.Completed = true;
 
-                MessageBoxResult RemoveMovedFiles = MessageBox.Show($"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", "Remove moved files?", MessageBoxButton.YesNo);
-
-                if (RemoveMovedFiles == MessageBoxResult.Yes)
+                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                 {
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
                 }
@@ -463,9 +462,8 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Completed = true;
 
                 MessageBox.Show(ex.ToString());
-                MessageBoxResult RemoveMovedFiles = MessageBox.Show($"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", "Remove moved files?", MessageBoxButton.YesNo);
 
-                if (RemoveMovedFiles == MessageBoxResult.Yes)
+                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                 {
                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
                 }
@@ -488,13 +486,13 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public bool DeleteFiles(List.TaskInfo Task = null)
+        public async Task<bool> DeleteFilesAsync(List.TaskInfo CurrentTask = null)
         {
             try
             {
                 if (IsCompressed)
                 {
-                    CompressedArchiveName.Delete();
+                    await Task.Run(() => CompressedArchiveName.Delete());
                 }
                 else
                 {
@@ -504,15 +502,15 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (currentFile.Exists)
                         {
-                            if (Task != null)
+                            if (CurrentTask != null)
                             {
                                 while (Framework.TaskManager.Paused)
                                 {
-                                    System.Threading.Tasks.Task.Delay(100);
+                                    Task.Delay(100);
                                 }
 
-                                Task.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
-                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{Task.App.AppName}] Deleting file: {currentFile.FullName}");
+                                CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
+                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Deleting file: {currentFile.FullName}");
                             }
 
                             File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
@@ -524,19 +522,19 @@ namespace Steam_Library_Manager.Definitions
                     // common folder, if exists
                     if (CommonFolder.Exists)
                     {
-                        CommonFolder.Delete(true);
+                        await Task.Run(() => CommonFolder.Delete(true));
                     }
 
                     // downloading folder, if exists
                     if (DownloadFolder.Exists)
                     {
-                        DownloadFolder.Delete(true);
+                        await Task.Run(() => DownloadFolder.Delete(true));
                     }
 
                     // workshop folder, if exists
                     if (WorkShopPath.Exists)
                     {
-                        WorkShopPath.Delete(true);
+                        await Task.Run(() => WorkShopPath.Delete(true));
                     }
 
                     // game .acf file
@@ -553,9 +551,9 @@ namespace Steam_Library_Manager.Definitions
                         WorkShopAcfPath.Delete();
                     }
 
-                    if (Task != null)
+                    if (CurrentTask != null)
                     {
-                        Task.TaskStatusInfo = "";
+                        CurrentTask.TaskStatusInfo = "";
                     }
                 }
 

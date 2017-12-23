@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Diagnostics;
 using System.Net;
 
@@ -32,11 +33,8 @@ namespace Steam_Library_Manager.Functions
                 if (Definitions.Updater.LatestVersion > Definitions.Updater.CurrentVersion)
                 {
 
-                    // Show a messagebox to user and ask to open github page to download latest version
-                    System.Windows.Forms.DialogResult UpdateMessageBox = System.Windows.Forms.MessageBox.Show(string.Format("An update versioned ({0}) is available to download. Would you like to update SLM auto?", Definitions.Updater.LatestVersion, VersionFileContent[1], Environment.NewLine), "An update available for SLM", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Asterisk);
-
                     // If user would like to open GitHub page in browser and close SLM
-                    if (UpdateMessageBox == System.Windows.Forms.DialogResult.Yes)
+                    if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", string.Format("An update versioned ({0}) is available to download. Would you like to update SLM auto?", Definitions.Updater.LatestVersion, VersionFileContent[1], Environment.NewLine), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         // Download latest version of SLM from GitHub and name it as LatestVersionSLM.exe
                         await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe");
@@ -72,7 +70,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 else if(ShowResult)
                 {
-                    System.Windows.MessageBox.Show("You are using the latest version of SLM, thank you!");
+                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager Updater", "You are using the latest version of SLM, thank you!");
                 }
             }
             catch (Exception ex)
