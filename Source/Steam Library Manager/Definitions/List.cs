@@ -19,23 +19,18 @@ namespace Steam_Library_Manager.Definitions
             public AppInfo App { get; set; }
             public Library TargetLibrary { get; set; }
 
-            public bool ErrorHappened = false;
-            public bool Active = false;
+            public bool ErrorHappened, Active;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
 
             private double _TotalFileCount = 100;
-            private long _MovedFileSize = 0;
-            private long _TotalFileSize = 0;
+            private long _MovedFileSize, _TotalFileSize;
             private bool _Completed = false;
             private string _TaskStatusInfo;
 
-            public string TaskProgressInfo
-            {
-                get => (_MovedFileSize) != 0 ? $"{_MovedFileSize}/{_TotalFileSize}" : "";
-            }
+            public string TaskProgressInfo => (_MovedFileSize) != 0 ? $"{_MovedFileSize}/{_TotalFileSize}" : "";
 
             public string TaskStatusInfo
             {

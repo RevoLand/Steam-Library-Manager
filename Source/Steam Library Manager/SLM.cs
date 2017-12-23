@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Steam_Library_Manager
 {
-    class SLM
+    internal class SLM
     {
         [STAThread]
         public static void Main()

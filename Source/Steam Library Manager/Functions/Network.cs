@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Steam_Library_Manager.Functions
 {
-    class Network
+    internal class Network
     {
         public static void UpdatePublicIP()
         {

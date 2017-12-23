@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
@@ -12,15 +11,6 @@ namespace Steam_Library_Manager.Framework
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
-
-        public AsyncObservableCollection()
-        {
-        }
-
-        public AsyncObservableCollection(IEnumerable<T> list)
-            : base(list)
-        {
-        }
 
         private void ExecuteOnSyncContext(Action action)
         {

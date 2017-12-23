@@ -25,7 +25,11 @@ namespace Steam_Library_Manager.Framework.CachedImage
                     }
 
                     await (await new WebClient().OpenReadTaskAsync(Url)).CopyToAsync(MemStream);
-                    new WebClient().DownloadFileAsync(Url, LocalFile);
+                    using (FileStream fs = File.OpenWrite(LocalFile))
+                    {
+                        MemStream.Seek(0, SeekOrigin.Begin);
+                        await MemStream.CopyToAsync(fs);
+                    }
                 }
                 else
                 {

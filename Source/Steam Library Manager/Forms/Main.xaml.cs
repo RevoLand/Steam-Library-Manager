@@ -29,7 +29,7 @@ namespace Steam_Library_Manager
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
         }
 
-        void UpdateBindings()
+        private void UpdateBindings()
         {
             FormAccessor = this;
 

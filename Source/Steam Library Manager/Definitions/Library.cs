@@ -10,12 +10,10 @@ namespace Steam_Library_Manager.Definitions
     {
         public Enums.LibraryType Type { get; set; }
         public System.IO.DirectoryInfo DirectoryInfo { get; set; }
-
         public SteamLibrary Steam { get; set; }
-
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
-        public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
+        private Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
         {
             Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
@@ -97,12 +95,8 @@ namespace Steam_Library_Manager.Definitions
                 Steam.ParseMenuItemActionAsync(Action);
             }
         }
-        
 
-        public long FreeSpace
-        {
-            get => Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName);
-        }
+        public long FreeSpace => Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName);
 
         public string PrettyFreeSpace => Functions.FileSystem.FormatBytes(FreeSpace);
 

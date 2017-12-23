@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    class SLM
+    internal class SLM
     {
         public class Settings
         {

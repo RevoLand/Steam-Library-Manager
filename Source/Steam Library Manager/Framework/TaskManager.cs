@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Framework
 {
-    class TaskManager
+    internal class TaskManager
     {
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         public static CancellationTokenSource CancellationToken;
-        public static bool Status = false;
-        public static bool Paused = false;
-        public static bool IsRestartRequired = false;
+        public static bool Status, Paused, IsRestartRequired;
 
         public static async void ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
@@ -25,7 +23,6 @@ namespace Steam_Library_Manager.Framework
                 switch(CurrentTask.TaskType)
                 {
                     default:
-                    case Definitions.Enums.TaskType.Copy:
                         CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                         break;
                     case Definitions.Enums.TaskType.Delete:
@@ -96,7 +93,7 @@ namespace Steam_Library_Manager.Framework
                 {
                     try
                     {
-                        while (true && !CancellationToken.IsCancellationRequested && Status)
+                        while (!CancellationToken.IsCancellationRequested && Status)
                         {
                             manualResetEvent.Set();
                             if (TaskList.ToList().Count(x => !x.Completed) > 0)

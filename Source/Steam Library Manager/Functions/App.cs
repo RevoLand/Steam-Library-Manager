@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    class App
+    internal class App
     {
         public static void AddSteamApp(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {

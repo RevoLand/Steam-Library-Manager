@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Steam_Library_Manager.Framework
 {
-    class Network
+    internal class Network
     {
         /*
          * WIP
@@ -16,10 +16,9 @@ namespace Steam_Library_Manager.Framework
          */
         public class Client
         {
-            Socket ClientSocket;
-            byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
-
-            static readonly object _ClientLock = new object();
+            private Socket ClientSocket;
+            private byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
+            private static readonly object _ClientLock = new object();
 
             public void ConnectToServer()
             {
@@ -28,7 +27,7 @@ namespace Steam_Library_Manager.Framework
                 ClientSocket.BeginConnect(new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.IPToConnect), Properties.Settings.Default.PortToConnect), new AsyncCallback(ServerCallback), null);
             }
 
-            void ServerCallback(IAsyncResult ar)
+            private void ServerCallback(IAsyncResult ar)
             {
                 try
                 {
@@ -42,12 +41,12 @@ namespace Steam_Library_Manager.Framework
                 }
             }
 
-            void DoRecvFromServer()
+            private void DoRecvFromServer()
             {
                 ClientSocket.BeginReceive(ClientBuffer, 0, ClientBuffer.Length, 0, new AsyncCallback(DoReceiveFromServer), null);
             }
 
-            void DoReceiveFromServer(IAsyncResult ar)
+            private void DoReceiveFromServer(IAsyncResult ar)
             {
                 int BytesToRead = ClientSocket.EndReceive(ar);
 
@@ -60,7 +59,7 @@ namespace Steam_Library_Manager.Framework
                 DoRecvFromServer();
             }
 
-            void Recv(byte[] buffer, int offset, int length)
+            private void Recv(byte[] buffer, int offset, int length)
             {
                 Debug.WriteLine($"{buffer.Length} - {offset} - {length}");
                 lock (_ClientLock)
@@ -79,9 +78,9 @@ namespace Steam_Library_Manager.Framework
 
         public class Server
         {
-            Socket ServerSocket, ClientSocket;
-            ManualResetEvent SocketHandler = new ManualResetEvent(false);
-            byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
+            private Socket ServerSocket, ClientSocket;
+            private ManualResetEvent SocketHandler = new ManualResetEvent(false);
+            private byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
 
             public void StartServer()
             {
@@ -124,7 +123,7 @@ namespace Steam_Library_Manager.Framework
                 }
             }
 
-            void HandleServer()
+            private void HandleServer()
             {
                 while(ServerSocket != null)
                 {
@@ -136,7 +135,7 @@ namespace Steam_Library_Manager.Framework
                 }
             }
 
-            void ServerCallback(IAsyncResult ar)
+            private void ServerCallback(IAsyncResult ar)
             {
                 SocketHandler.Set();
 
@@ -149,12 +148,12 @@ namespace Steam_Library_Manager.Framework
                 SendToClient(File.ReadAllBytes(@"E:\Kurulum Dosyaları\Program\SQLEXPRWT_x64_ENU.exe"));
             }
 
-            void DoRecvFromClient()
+            private void DoRecvFromClient()
             {
                 ClientSocket.BeginReceive(ClientBuffer, 0, ClientBuffer.Length, SocketFlags.None, new AsyncCallback(DoReceiveFromClient), null);
             }
 
-            void DoReceiveFromClient(IAsyncResult ar)
+            private void DoReceiveFromClient(IAsyncResult ar)
             {
                 int BytesToRead = ClientSocket.EndReceive(ar);
 
@@ -166,12 +165,12 @@ namespace Steam_Library_Manager.Framework
                 DoRecvFromClient();
             }
 
-            void SendToClient(byte[] buffer)
+            private void SendToClient(byte[] buffer)
             {
                 ClientSocket.BeginSend(buffer, 0, buffer.Length, 0, new AsyncCallback(SendTClient), null);
             }
 
-            void SendTClient(IAsyncResult ar)
+            private void SendTClient(IAsyncResult ar)
             {
                 try
                 {

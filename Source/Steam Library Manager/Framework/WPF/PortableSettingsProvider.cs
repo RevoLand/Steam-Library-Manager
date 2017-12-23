@@ -67,11 +67,11 @@ namespace Steam_Library_Manager.Framework
          }
       }
 
-      public override string ApplicationName
-      {
-         get { return "SLM"; }
-         set { }
-      }
+        public override string ApplicationName
+        {
+            get => "SLM";
+            set { }
+        }
 
         public override string Name => _className;
 

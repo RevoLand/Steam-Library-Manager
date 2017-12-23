@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
 {
-    class FileSystem
+    internal class FileSystem
     {
         public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null)
         {
@@ -77,10 +77,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static long GetFileSize(string FilePath)
-        {
-            return new FileInfo(FilePath).Length;
-        }
+        public static long GetFileSize(string FilePath) => new FileInfo(FilePath).Length;
 
         // Source: http://stackoverflow.com/a/2082893
         public static string FormatBytes(long Bytes)

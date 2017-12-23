@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Steam_Library_Manager.Framework
 {
-    class KVTextReader : StreamReader
+    internal class KVTextReader : StreamReader
     {
         internal static Dictionary<char, char> escapedMapping = new Dictionary<char, char>
         {
@@ -232,7 +232,7 @@ namespace Steam_Library_Manager.Framework
 
     public class KeyValue
     {
-        enum Type : byte
+        private enum Type : byte
         {
             None = 0,
             String = 1,
@@ -523,8 +523,7 @@ namespace Steam_Library_Manager.Framework
             return keyValue != null;
         }
 
-
-        static KeyValue LoadFromFile(string path, bool asBinary)
+        private static KeyValue LoadFromFile(string path, bool asBinary)
         {
             if (File.Exists(path) == false)
             {
@@ -719,13 +718,13 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
-        void RecursiveSaveBinaryToStream(Stream f)
+        private void RecursiveSaveBinaryToStream(Stream f)
         {
             RecursiveSaveBinaryToStreamCore(f);
             f.WriteByte((byte)Type.End);
         }
 
-        void RecursiveSaveBinaryToStreamCore(Stream f)
+        private void RecursiveSaveBinaryToStreamCore(Stream f)
         {
             // Only supported types ATM:
             // 1. KeyValue with children (no value itself)
@@ -778,7 +777,7 @@ namespace Steam_Library_Manager.Framework
             WriteString(stream, "}\n");
         }
 
-        static string EscapeText(string value)
+        private static string EscapeText(string value)
         {
             foreach (var kvp in KVTextReader.escapedMapping)
             {
@@ -790,12 +789,12 @@ namespace Steam_Library_Manager.Framework
             return value;
         }
 
-        void WriteIndents(Stream stream, int indentLevel)
+        private void WriteIndents(Stream stream, int indentLevel)
         {
             WriteString(stream, new string('\t', indentLevel));
         }
 
-        static void WriteString(Stream stream, string str, bool quote = false)
+        private static void WriteString(Stream stream, string str, bool quote = false)
         {
             byte[] bytes = Encoding.UTF8.GetBytes((quote ? "\"" : "") + str.Replace("\"", "\\\"") + (quote ? "\"" : ""));
             stream.Write(bytes, 0, bytes.Length);
@@ -824,7 +823,7 @@ namespace Steam_Library_Manager.Framework
             return TryReadAsBinaryCore(input, this, null);
         }
 
-        static bool TryReadAsBinaryCore(Stream input, KeyValue current, KeyValue parent)
+        private static bool TryReadAsBinaryCore(Stream input, KeyValue current, KeyValue parent)
         {
             current.Children = new List<KeyValue>();
 
@@ -903,7 +902,7 @@ namespace Steam_Library_Manager.Framework
 
     internal static class StreamHelpers
     {
-        static byte[] data = new byte[8];
+        private static byte[] data = new byte[8];
         public static Int16 ReadInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
@@ -980,7 +979,7 @@ namespace Steam_Library_Manager.Framework
             stream.Write(data, 0, data.Length);
         }
 
-        static byte[] discardBuffer = new byte[2 << 12];
+        private static byte[] discardBuffer = new byte[2 << 12];
 
         public static void ReadAndDiscard(this Stream stream, int len)
         {

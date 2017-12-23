@@ -25,60 +25,27 @@ namespace Steam_Library_Manager.Definitions
         public bool IsCompressed { get; set; }
         public DateTime LastUpdated { get; set; }
 
-        public string GameHeaderImage
-        {
-            get => $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
-        }
+        public string GameHeaderImage => $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
 
-        public string PrettyGameSize
-        {
-            get => Functions.FileSystem.FormatBytes(SizeOnDisk);
-        }
+        public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
 
-        public DirectoryInfo CommonFolder
-        {
-            get => new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationPath.Name));
-        }
+        public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationPath.Name));
 
-        public DirectoryInfo DownloadFolder
-        {
-            get => new DirectoryInfo(Path.Combine(Library.Steam.DownloadFolder.FullName, InstallationPath.Name));
-        }
+        public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(Library.Steam.DownloadFolder.FullName, InstallationPath.Name));
 
-        public DirectoryInfo WorkShopPath
-        {
-            get => new DirectoryInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, "content", AppID.ToString()));
-        }
+        public DirectoryInfo WorkShopPath => new DirectoryInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, "content", AppID.ToString()));
 
-        public FileInfo CompressedArchiveName
-        {
-            get => new FileInfo(Path.Combine(Library.Steam.SteamAppsFolder.FullName, AppID + ".zip"));
-        }
+        public FileInfo CompressedArchiveName => new FileInfo(Path.Combine(Library.Steam.SteamAppsFolder.FullName, AppID + ".zip"));
 
-        public FileInfo FullAcfPath
-        {
-            get => new FileInfo(Path.Combine(Library.Steam.SteamAppsFolder.FullName, AcfName));
-        }
+        public FileInfo FullAcfPath => new FileInfo(Path.Combine(Library.Steam.SteamAppsFolder.FullName, AcfName));
 
-        public FileInfo WorkShopAcfPath
-        {
-            get => new FileInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, WorkShopAcfName));
-        }
+        public FileInfo WorkShopAcfPath => new FileInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, WorkShopAcfName));
 
-        public string AcfName
-        {
-            get => $"appmanifest_{AppID}.acf";
-        }
+        public string AcfName => $"appmanifest_{AppID}.acf";
 
-        public string WorkShopAcfName
-        {
-            get => $"appworkshop_{AppID}.acf";
-        }
+        public string WorkShopAcfName => $"appworkshop_{AppID}.acf";
 
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems
-        {
-            get => GenerateRightClickMenuItems();
-        }
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems => GenerateRightClickMenuItems();
 
         public Framework.AsyncObservableCollection<FrameworkElement> GenerateRightClickMenuItems()
         {
@@ -202,25 +169,13 @@ namespace Steam_Library_Manager.Definitions
             return FileList;
         }
 
-        public List<FileSystemInfo> GetCommonFiles()
-        {
-            return CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
-        }
+        public List<FileSystemInfo> GetCommonFiles() => CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
 
-        public List<FileSystemInfo> GetDownloadFiles()
-        {
-            return DownloadFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
-        }
+        public List<FileSystemInfo> GetDownloadFiles() => DownloadFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
 
-        public List<FileSystemInfo> GetPatchFiles()
-        {
-            return Library.Steam.DownloadFolder.EnumerateFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
-        }
+        public List<FileSystemInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
 
-        public List<FileSystemInfo> GetWorkshopFiles()
-        {
-            return WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
-        }
+        public List<FileSystemInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
 
         public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {

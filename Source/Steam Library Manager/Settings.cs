@@ -9,17 +9,8 @@ namespace Steam_Library_Manager.Properties
     //  The SettingsSaving event is raised before the setting values are saved.
     [System.Configuration.SettingsProvider(typeof(Framework.PortableSettingsProvider))]
     internal sealed partial class Settings {
-        
-        public Settings() {
-            // // To add event handlers for saving and changing settings, uncomment the lines below:
-            //
-            // this.SettingChanging += this.SettingChangingEventHandler;
-            //
-            // this.SettingsSaving += this.SettingsSavingEventHandler;
-            //
 
-            PropertyChanged += Settings_PropertyChanged;
-        }
+        public Settings() => PropertyChanged += Settings_PropertyChanged;
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -31,14 +22,6 @@ namespace Steam_Library_Manager.Properties
                                 ThemeManager.GetAccent(ThemeAccent),
                                 ThemeManager.GetAppTheme(BaseTheme));
             }
-        }
-
-        private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e) {
-            // Add code to handle the SettingChangingEvent event here.
-        }
-        
-        private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
-            // Add code to handle the SettingsSaving event here.
         }
     }
 }

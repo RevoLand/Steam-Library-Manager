@@ -1,6 +1,6 @@
 ﻿namespace Steam_Library_Manager.Definitions
 {
-    class Global
+    internal class Global
     {
         public class Steam
         {

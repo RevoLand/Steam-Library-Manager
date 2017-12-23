@@ -4,7 +4,7 @@ using System.IO;
 namespace Steam_Library_Manager.Definitions
 {
     // Definitions about directories
-    class Directories
+    internal class Directories
     {
         // SLM directory definitions
         public class SLM

@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    class Steam
+    internal class Steam
     {
         public static async void UpdateSteamInstallationPathAsync()
         {

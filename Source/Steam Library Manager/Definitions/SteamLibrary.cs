@@ -14,8 +14,8 @@ namespace Steam_Library_Manager.Definitions
     {
         public Library Library => List.Libraries.First(x => x.Steam == this);
 
-        FileSystemWatcher SteamFolderWD;
-        FileSystemWatcher SLMFolderWD;
+        private FileSystemWatcher SteamFolderWD;
+        private FileSystemWatcher SLMFolderWD;
 
         public bool IsMain { get; set; }
 

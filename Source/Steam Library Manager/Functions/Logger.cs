@@ -16,20 +16,19 @@ namespace Steam_Library_Manager.Functions
             TaskManager
         }
 
-        class AppLog
+        private class AppLog
         {
             public string Message;
             public Definitions.AppInfo App;
         }
 
-        static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
-        static BlockingCollection<AppLog> AppLogs = new BlockingCollection<AppLog>();
-        static BlockingCollection<string> LibraryLogs = new BlockingCollection<string>();
-        static BlockingCollection<string> TaskManagerLogs = new BlockingCollection<string>();
-
-        static DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "SLM"));
-        static DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "Libraries"));
-        static DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "TaskManager"));
+        private static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
+        private static BlockingCollection<AppLog> AppLogs = new BlockingCollection<AppLog>();
+        private static BlockingCollection<string> LibraryLogs = new BlockingCollection<string>();
+        private static BlockingCollection<string> TaskManagerLogs = new BlockingCollection<string>();
+        private static DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "SLM"));
+        private static DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "Libraries"));
+        private static DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "TaskManager"));
 
         public static void StartLogger()
         {
@@ -110,7 +109,7 @@ namespace Steam_Library_Manager.Functions
             #endregion
         }
 
-        static void ProcessSLMLogs(string LogMessage)
+        private static void ProcessSLMLogs(string LogMessage)
         {
             try
             {
@@ -133,7 +132,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        static void ProcessAppLogs(AppLog Log)
+        private static void ProcessAppLogs(AppLog Log)
         {
             try
             {
@@ -158,7 +157,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        static void ProcessLibraryLogs(string LogMessage)
+        private static void ProcessLibraryLogs(string LogMessage)
         {
             try
             {
@@ -181,7 +180,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        static void ProcessTaskManagerLogs(string LogMessage)
+        private static void ProcessTaskManagerLogs(string LogMessage)
         {
             try
             {

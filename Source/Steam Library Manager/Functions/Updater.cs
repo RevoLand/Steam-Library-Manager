@@ -5,7 +5,7 @@ using System.Net;
 
 namespace Steam_Library_Manager.Functions
 {
-    class Updater
+    internal class Updater
     {
         public async static void CheckForUpdates(bool ShowResult = false)
         {
@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
                 {
 
                     // If user would like to open GitHub page in browser and close SLM
-                    if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", string.Format("An update versioned ({0}) is available to download. Would you like to update SLM auto?", Definitions.Updater.LatestVersion, VersionFileContent[1], Environment.NewLine), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", $"An update versioned ({Definitions.Updater.LatestVersion}) is available to download. Would you like to update SLM auto?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         // Download latest version of SLM from GitHub and name it as LatestVersionSLM.exe
                         await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe");
@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Functions
                             WindowStyle = ProcessWindowStyle.Hidden,
 
                             // Set CMD arguments
-                            Arguments = string.Format("/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{0}\" & msg %username% \"{1}\"", AppDomain.CurrentDomain.FriendlyName, "SLM is successfully updated(?)")
+                            Arguments = $"/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{AppDomain.CurrentDomain.FriendlyName}\" & msg %username% \"{"SLM is successfully updated(?)"}\""
                         };
 
                         // Set startinfo for cmd process
