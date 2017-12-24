@@ -186,7 +186,6 @@ namespace Steam_Library_Manager.Definitions
             ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
             List<FileSystemInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
-            int currentBlockSize = 0;
 
             try
             {
@@ -302,6 +301,7 @@ namespace Steam_Library_Manager.Definitions
                                 CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
 
+                            int currentBlockSize = 0;
                             byte[] FSBuffer = new byte[1024 * 1024];
 
                             using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -326,6 +326,8 @@ namespace Steam_Library_Manager.Definitions
                                 }
                             }
                         }
+                        else
+                            CurrentTask.MovedFileSize += NewFile.Length;
 
                         CopiedFiles.Add(NewFile.FullName);
 
@@ -351,6 +353,7 @@ namespace Steam_Library_Manager.Definitions
                                 CreatedDirectories.Add(NewFile.Directory.FullName);
                             }
 
+                            int currentBlockSize = 0;
                             byte[] FSBuffer = new byte[1024 * 1024];
 
                             using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -375,6 +378,8 @@ namespace Steam_Library_Manager.Definitions
                                 }
                             }
                         }
+                        else
+                            CurrentTask.MovedFileSize += NewFile.Length;
 
                         CopiedFiles.Add(NewFile.FullName);
 
@@ -401,10 +406,13 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Active = false;
                 CurrentTask.Completed = true;
 
-                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
-                }
+                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
+                        Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
+                    }
+                }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
@@ -416,12 +424,14 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Active = false;
                 CurrentTask.Completed = true;
 
-                MessageBox.Show(ex.ToString());
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                 {
+                     if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                     {
+                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
+                     }
+                 }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
-                {
-                    Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
-                }
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");

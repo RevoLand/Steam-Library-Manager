@@ -266,19 +266,22 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await CloseSteamAsync();
-
-                    if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
+                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}");
+                        await CloseSteamAsync();
+
+                        if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
+                        {
+                            Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}");
+                        }
                     }
-                }
-                else
-                {
-                    throw new Exception("User doesn't wants to restart Steam.");
-                }
+                    else
+                    {
+                        throw new Exception("User doesn't wants to restart Steam.");
+                    }
+                }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)
             {

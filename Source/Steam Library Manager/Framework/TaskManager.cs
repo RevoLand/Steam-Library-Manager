@@ -14,13 +14,13 @@ namespace Steam_Library_Manager.Framework
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
 
-        public static async void ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
+        public static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
             try
             {
                 CurrentTask.Active = true;
 
-                switch(CurrentTask.TaskType)
+                switch (CurrentTask.TaskType)
                 {
                     default:
                         CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token);
@@ -70,6 +70,8 @@ namespace Steam_Library_Manager.Framework
                             Functions.Steam.RestartSteamAsync();
                         }
                     }
+
+                    manualResetEvent.WaitOne();
                 }
             }
             catch (Exception ex)
@@ -89,7 +91,7 @@ namespace Steam_Library_Manager.Framework
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(async () =>
                 {
                     try
                     {
@@ -98,9 +100,8 @@ namespace Steam_Library_Manager.Framework
                             manualResetEvent.Set();
                             if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
-                                ProcessTaskAsync(TaskList.First(x => !x.Completed));
+                                await ProcessTaskAsync(TaskList.First(x => !x.Completed));
                             }
-                            manualResetEvent.WaitOne();
                         }
                     }
                     catch (OperationCanceledException)
@@ -153,8 +154,6 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
-                    Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                    Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
                     Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
                     Main.FormAccessor.Button_PauseTaskManager.IsEnabled = false;
                     Main.FormAccessor.Button_StopTaskManager.IsEnabled = false;
