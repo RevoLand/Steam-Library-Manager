@@ -497,7 +497,7 @@ namespace Steam_Library_Manager.Definitions
                         foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(
                             x => Apps.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
                             && x.Name != "241100" // Steam controller configs
-                            ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
+                            ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)).ToList())
                         {
                             List.JunkInfo Junk = new List.JunkInfo
                             {
@@ -517,7 +517,7 @@ namespace Steam_Library_Manager.Definitions
                         foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
                             x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                             && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
-                            ))
+                            ).ToList())
                         {
                             List.JunkInfo Junk = new List.JunkInfo
                             {

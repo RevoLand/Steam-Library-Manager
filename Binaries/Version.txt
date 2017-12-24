@@ -1,1 +1,1 @@
-1.4.4.2|Fixed Issue #12
+1.4.4.3|Fix for crash happens during late of the application movement

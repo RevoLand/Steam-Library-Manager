@@ -591,7 +591,7 @@ namespace Steam_Library_Manager.Framework
         /// <seealso cref="ReadAsText"/>
         /// <param name="filename">The file to open and read.</param>
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
-        public bool ReadFileAsText(string filename)
+        public bool ReadFileAsText(string filename, bool FirstTry = true)
         {
             try
             {
@@ -603,6 +603,13 @@ namespace Steam_Library_Manager.Framework
             catch (IOException)
             {
                 return ReadFileAsText(filename);
+            }
+            catch (Exception)
+            {
+                if (FirstTry)
+                    return ReadFileAsText(filename);
+                else
+                    return false;
             }
         }
 
