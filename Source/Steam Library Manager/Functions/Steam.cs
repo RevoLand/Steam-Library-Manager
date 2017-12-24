@@ -13,27 +13,34 @@ namespace Steam_Library_Manager.Functions
     {
         public static async void UpdateSteamInstallationPathAsync()
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath) || !System.IO.Directory.Exists(Properties.Settings.Default.steamInstallationPath))
+            try
             {
-                Properties.Settings.Default.steamInstallationPath = Registry.GetValue(Definitions.Global.Steam.RegistryKeyPath, "SteamPath", "").ToString().Replace('/', Path.DirectorySeparatorChar);
-
-                if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
+                if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath) || !Directory.Exists(Properties.Settings.Default.steamInstallationPath))
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
-                    {
-                        OpenFileDialog SteamPathSelector = new OpenFileDialog()
-                        {
-                            Filter = "Steam (Steam.exe)|Steam.exe"
-                        };
+                    Properties.Settings.Default.steamInstallationPath = Registry.GetValue(Definitions.Global.Steam.RegistryKeyPath, "SteamPath", "").ToString().Replace('/', Path.DirectorySeparatorChar);
 
-                        if (SteamPathSelector.ShowDialog() == true)
+                    if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
+                    {
+                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
-                            Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
+                            OpenFileDialog SteamPathSelector = new OpenFileDialog()
+                            {
+                                Filter = "Steam (Steam.exe)|Steam.exe"
+                            };
+
+                            if (SteamPathSelector.ShowDialog() == true)
+                            {
+                                Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
+                            }
                         }
                     }
-                }
 
-                Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                    Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                }
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -219,6 +226,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 return true;
             }
 
@@ -245,20 +253,23 @@ namespace Steam_Library_Manager.Functions
                         }
                         else
                         {
-                            throw new Exception("Steam.exe could not found and user doesn't wants to terminate the process.");
+                            throw new OperationCanceledException("Steam.exe could not found and user doesn't wants to terminate the process.");
                         }
                     }
                     else
                     {
-                        throw new Exception("User doesn't wants to close Steam, can not continue to process.");
+                        throw new OperationCanceledException("User doesn't wants to close Steam, can not continue to process.");
                     }
 
                     await Task.Delay(6000);
                 }
             }
+            catch (OperationCanceledException)
+            { }
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -279,13 +290,15 @@ namespace Steam_Library_Manager.Functions
                     }
                     else
                     {
-                        throw new Exception("User doesn't wants to restart Steam.");
+                        throw new OperationCanceledException("User doesn't wants to restart Steam.");
                     }
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
+            catch (OperationCanceledException) { }
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -358,7 +371,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    MessageBox.Show(ex.ToString());
+                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -413,8 +426,8 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -441,7 +454,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    MessageBox.Show(ex.ToString());
+                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -479,7 +492,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    MessageBox.Show(ex.ToString());
+                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
         }

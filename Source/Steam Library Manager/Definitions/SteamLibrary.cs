@@ -130,6 +130,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -141,7 +142,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -164,7 +164,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -211,7 +210,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception Ex)
             {
-                //MessageBox.Show(Ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, Ex.ToString());
             }
         }
@@ -225,7 +223,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                //Debug.WriteLine(ex);
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -249,7 +246,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
             }
         }
@@ -396,6 +392,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -421,7 +418,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception Ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, Ex.ToString());
-                MessageBox.Show(Ex.ToString());
+                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(Ex));
             }
         }
 
@@ -469,7 +466,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                MessageBox.Show(ex.ToString());
+                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -567,7 +564,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                MessageBox.Show(ex.ToString());
+                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

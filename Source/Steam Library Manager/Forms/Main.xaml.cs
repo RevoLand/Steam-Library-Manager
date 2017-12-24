@@ -127,7 +127,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-                MessageBox.Show(ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -138,35 +138,42 @@ namespace Steam_Library_Manager
 
         private async void LibraryPanel_Drop(object sender, DragEventArgs e)
         {
-            string[] DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-            if (DroppedItems == null)
+            try
             {
-                return;
-            }
+                string[] DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-            foreach (string DroppedItem in DroppedItems)
-            {
-                FileInfo Info = new FileInfo(DroppedItem);
-
-                if (Info.Attributes.HasFlag(FileAttributes.Directory))
+                if (DroppedItems == null)
                 {
-                    if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
+                    return;
+                }
+
+                foreach (string DroppedItem in DroppedItems)
+                {
+                    FileInfo Info = new FileInfo(DroppedItem);
+
+                    if (Info.Attributes.HasFlag(FileAttributes.Directory))
                     {
-                        if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
+                        if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
                         {
-                            Functions.SLM.Library.AddNew(Info.FullName);
+                            if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
+                            {
+                                Functions.SLM.Library.AddNew(Info.FullName);
+                            }
+                            else
+                            {
+                                await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                            }
                         }
                         else
                         {
-                            await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                            await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
                         }
                     }
-                    else
-                    {
-                        await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
-                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -180,63 +187,77 @@ namespace Steam_Library_Manager
 
         private void LibraryGrid_MouseDown(object sender, SelectionChangedEventArgs e)
         {
-            Definitions.SLM.CurrentSelectedLibrary = LibraryPanel.SelectedItem as Definitions.Library;
-
-            if (Definitions.SLM.CurrentSelectedLibrary == null)
+            try
             {
-                return;
-            }
+                Definitions.SLM.CurrentSelectedLibrary = LibraryPanel.SelectedItem as Definitions.Library;
 
-            if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM)
-            {
-                if (Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.FullName))
+                if (Definitions.SLM.CurrentSelectedLibrary == null)
                 {
-                    Functions.SLM.Library.UpdateBackupLibrary(Definitions.SLM.CurrentSelectedLibrary);
+                    return;
                 }
-            }
 
-            // Update games list from current selection
-            Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
+                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM)
+                {
+                    if (Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.FullName))
+                    {
+                        Functions.SLM.Library.UpdateBackupLibrary(Definitions.SLM.CurrentSelectedLibrary);
+                    }
+                }
+
+                // Update games list from current selection
+                Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+            }
         }
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
         {
-            switch((sender as Button).Tag)
+            try
             {
-                default:
-                case "Start":
-                    Framework.TaskManager.Start();
-                    Button_StartTaskManager.IsEnabled = false;
-                    Button_PauseTaskManager.IsEnabled = true;
-                    Button_StopTaskManager.IsEnabled = true;
-                    break;
-                case "Pause":
-                    Framework.TaskManager.Pause();
-                    Button_PauseTaskManager.IsEnabled = false;
-                    Button_StopTaskManager.IsEnabled = true;
-                    break;
-                case "Stop":
-                    Framework.TaskManager.Stop();
-                    Button_PauseTaskManager.IsEnabled = false;
-                    Button_StopTaskManager.IsEnabled = false;
-                    break;
-                case "BackupUpdates":
-                    Functions.Steam.Library.CheckForBackupUpdatesAsync();
-                    break;
-                case "ClearCompleted":
-                    if (Framework.TaskManager.TaskList.Count == 0)
-                    {
-                        return;
-                    }
-
-                    foreach (Definitions.List.TaskInfo CurrentTask in Framework.TaskManager.TaskList.ToList())
-                    {
-                        if (CurrentTask.Completed)
+                switch ((sender as Button).Tag)
+                {
+                    default:
+                    case "Start":
+                        Framework.TaskManager.Start();
+                        Button_StartTaskManager.IsEnabled = false;
+                        Button_PauseTaskManager.IsEnabled = true;
+                        Button_StopTaskManager.IsEnabled = true;
+                        break;
+                    case "Pause":
+                        Framework.TaskManager.Pause();
+                        Button_PauseTaskManager.IsEnabled = false;
+                        Button_StopTaskManager.IsEnabled = true;
+                        break;
+                    case "Stop":
+                        Framework.TaskManager.Stop();
+                        Button_PauseTaskManager.IsEnabled = false;
+                        Button_StopTaskManager.IsEnabled = false;
+                        break;
+                    case "BackupUpdates":
+                        Functions.Steam.Library.CheckForBackupUpdatesAsync();
+                        break;
+                    case "ClearCompleted":
+                        if (Framework.TaskManager.TaskList.Count == 0)
                         {
-                            Framework.TaskManager.TaskList.Remove(CurrentTask);
+                            return;
                         }
-                    }
-                    break;
+
+                        foreach (Definitions.List.TaskInfo CurrentTask in Framework.TaskManager.TaskList.ToList())
+                        {
+                            if (CurrentTask.Completed)
+                            {
+                                Framework.TaskManager.TaskList.Remove(CurrentTask);
+                            }
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -271,6 +292,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -330,8 +352,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
-                Debug.WriteLine(ex);
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
@@ -456,7 +477,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
@@ -469,22 +490,22 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
+        //private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
 
-        private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
+        //private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
 
-        private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
-        {
-            //ToggleSLMServer.Content = "Stop Server";
-            //SLMServer.StartServer();
-        }
+        //private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //ToggleSLMServer.Content = "Stop Server";
+        //    //SLMServer.StartServer();
+        //}
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Framework.Network.Client SLMClient = new Framework.Network.Client();
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Framework.Network.Client SLMClient = new Framework.Network.Client();
 
-            SLMClient.ConnectToServer();
-        }
+        //    SLMClient.ConnectToServer();
+        //}
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -525,6 +546,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

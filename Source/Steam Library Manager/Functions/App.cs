@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -97,7 +96,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                MessageBox.Show(ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -144,6 +143,10 @@ namespace Steam_Library_Manager.Functions
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -208,7 +211,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                MessageBox.Show(ex.ToString());
+                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }
