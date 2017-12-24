@@ -229,9 +229,9 @@ namespace Steam_Library_Manager.Definitions
 
                             string newFileName = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
-                            CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
+                            CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
                             compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
-                            CurrentTask.MovedFileSize += (currentFile as FileInfo).Length;
+                            CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;
 
                             if (CurrentTask.ReportFileMovement)
                             {
@@ -293,7 +293,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                        if (!NewFile.Exists || (NewFile.Length != (CurrentFile as FileInfo).Length || NewFile.LastWriteTime != (CurrentFile as FileInfo).LastWriteTime))
+                        if (!NewFile.Exists || (NewFile.Length != ((FileInfo)CurrentFile).Length || NewFile.LastWriteTime != ((FileInfo)CurrentFile).LastWriteTime))
                         {
                             if (!NewFile.Directory.Exists)
                             {
@@ -304,7 +304,7 @@ namespace Steam_Library_Manager.Definitions
                             int currentBlockSize = 0;
                             byte[] FSBuffer = new byte[1024 * 1024];
 
-                            using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
@@ -321,7 +321,7 @@ namespace Steam_Library_Manager.Definitions
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
                                         CurrentTask.MovedFileSize += currentBlockSize;
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{(CurrentFile as FileInfo).Length})";
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
                             }
@@ -345,7 +345,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                        if (!NewFile.Exists || (NewFile.Length != (CurrentFile as FileInfo).Length || NewFile.LastWriteTime != (CurrentFile as FileInfo).LastWriteTime))
+                        if (!NewFile.Exists || (NewFile.Length != ((FileInfo)CurrentFile).Length || NewFile.LastWriteTime != ((FileInfo)CurrentFile).LastWriteTime))
                         {
                             if (!NewFile.Directory.Exists)
                             {
@@ -356,7 +356,7 @@ namespace Steam_Library_Manager.Definitions
                             int currentBlockSize = 0;
                             byte[] FSBuffer = new byte[1024 * 1024];
 
-                            using (FileStream CurrentFileContent = (CurrentFile as FileInfo).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
@@ -373,7 +373,7 @@ namespace Steam_Library_Manager.Definitions
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
                                         CurrentTask.MovedFileSize += currentBlockSize;
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{(CurrentFile as FileInfo).Length})";
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
                             }
@@ -399,23 +399,26 @@ namespace Steam_Library_Manager.Definitions
                 LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException oex)
             {
-                CurrentTask.ErrorHappened = true;
-                Framework.TaskManager.Stop();
-                CurrentTask.Active = false;
-                CurrentTask.Completed = true;
-
-                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                if (!CurrentTask.ErrorHappened)
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
-                    {
-                        Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
-                    }
-                }, System.Windows.Threading.DispatcherPriority.Normal);
+                    CurrentTask.ErrorHappened = true;
+                    Framework.TaskManager.Stop();
+                    CurrentTask.Active = false;
+                    CurrentTask.Completed = true;
 
-                LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
+                    await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                    {
+                        if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        {
+                            Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                        }
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                    LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
+                }
             }
             catch (Exception ex)
             {
@@ -428,7 +431,7 @@ namespace Steam_Library_Manager.Definitions
                  {
                      if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                      {
-                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories);
+                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                      }
                  }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -474,7 +477,7 @@ namespace Steam_Library_Manager.Definitions
                                     Task.Delay(100);
                                 }
 
-                                CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes((currentFile as FileInfo).Length)})";
+                                CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
                                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Deleting file: {currentFile.FullName}");
                             }
 

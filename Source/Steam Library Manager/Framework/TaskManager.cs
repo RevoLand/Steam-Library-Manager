@@ -10,7 +10,6 @@ namespace Steam_Library_Manager.Framework
     internal class TaskManager
     {
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
-        public static ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
 
@@ -70,8 +69,6 @@ namespace Steam_Library_Manager.Framework
                             Functions.Steam.RestartSteamAsync();
                         }
                     }
-
-                    manualResetEvent.WaitOne();
                 }
             }
             catch (Exception ex)
@@ -97,7 +94,6 @@ namespace Steam_Library_Manager.Framework
                     {
                         while (!CancellationToken.IsCancellationRequested && Status)
                         {
-                            manualResetEvent.Set();
                             if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
                                 await ProcessTaskAsync(TaskList.First(x => !x.Completed));
@@ -176,11 +172,6 @@ namespace Steam_Library_Manager.Framework
             try
             {
                 TaskList.Add(Task);
-
-                if (Status)
-                {
-                    manualResetEvent.Set();
-                }
             }
             catch (Exception ex)
             {

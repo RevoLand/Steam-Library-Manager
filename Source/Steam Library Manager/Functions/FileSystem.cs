@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal class FileSystem
     {
-        public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null)
+        public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
             Parallel.ForEach(FileList, currentFile =>
             {
@@ -18,6 +18,11 @@ namespace Steam_Library_Manager.Functions
 
                     if (File.Exists)
                     {
+                        if (CurrentTask != null)
+                        {
+                            CurrentTask.TaskStatusInfo = $"Deleting: {File.Name} ({FormatBytes(File.Length)})";
+                        }
+
                         System.IO.File.SetAttributes(File.FullName, FileAttributes.Normal);
                         File.Delete();
                     }
@@ -38,6 +43,11 @@ namespace Steam_Library_Manager.Functions
 
                         if (Directory.Exists)
                         {
+                            if (CurrentTask != null)
+                            {
+                                CurrentTask.TaskStatusInfo = $"Deleting directory: {Directory.Name}";
+                            }
+
                             Directory.Delete();
                         }
                     }
@@ -46,6 +56,11 @@ namespace Steam_Library_Manager.Functions
                         Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                     }
                 });
+            }
+
+            if (CurrentTask != null)
+            {
+                CurrentTask.TaskStatusInfo = "";
             }
         }
 
