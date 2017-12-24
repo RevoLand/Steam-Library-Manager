@@ -475,6 +475,10 @@ namespace Steam_Library_Manager
                     }
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+
+            }
             catch (Exception ex)
             {
                 Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));

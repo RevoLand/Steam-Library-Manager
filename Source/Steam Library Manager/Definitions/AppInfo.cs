@@ -1,5 +1,4 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
-using SharpRaven.Data;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -439,7 +438,7 @@ namespace Steam_Library_Manager.Definitions
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
-                await SLM.ravenClient.CaptureAsync(new SentryEvent(ex));
+                await SLM.ravenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -529,11 +528,13 @@ namespace Steam_Library_Manager.Definitions
 
                 return true;
             }
+            catch (FileNotFoundException)
+            { return true; }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
-                await SLM.ravenClient.CaptureAsync(new SentryEvent(ex));
+                await SLM.ravenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
 
                 return false;
             }
