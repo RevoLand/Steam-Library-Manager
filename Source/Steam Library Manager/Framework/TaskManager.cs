@@ -79,9 +79,11 @@ namespace Steam_Library_Manager.Framework
                 {
                     try
                     {
-                        while (true && !CancellationToken.IsCancellationRequested && Status)
+                        while (!CancellationToken.IsCancellationRequested && Status)
                         {
-                            if (TaskList.Count(x => !x.Completed) > 0)
+                            Thread.Sleep(100);
+
+                            if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
                                 ProcessTask(TaskList.First(x => !x.Completed));
                             }

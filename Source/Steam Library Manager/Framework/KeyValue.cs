@@ -26,52 +26,59 @@ namespace Steam_Library_Manager.Framework
         public KVTextReader(KeyValue kv, Stream input)
             : base(input)
         {
-            KeyValue currentKey = kv;
-
-            do
+            try
             {
-                // bool bAccepted = true;
+                KeyValue currentKey = kv;
 
-                string s = ReadToken(out bool wasQuoted, out bool wasConditional);
-
-                if (string.IsNullOrEmpty(s))
-                    break;
-
-                if (currentKey == null)
+                do
                 {
-                    currentKey = new KeyValue(s);
-                }
-                else
-                {
-                    currentKey.Name = s;
-                }
+                    // bool bAccepted = true;
 
-                s = ReadToken(out wasQuoted, out wasConditional);
+                    string s = ReadToken(out bool wasQuoted, out bool wasConditional);
 
-                if (string.IsNullOrEmpty(s))
-                    break;
+                    if (string.IsNullOrEmpty(s))
+                        break;
 
-                if (wasConditional)
-                {
-                    // bAccepted = ( s == "[$WIN32]" );
+                    if (currentKey == null)
+                    {
+                        currentKey = new KeyValue(s);
+                    }
+                    else
+                    {
+                        currentKey.Name = s;
+                    }
 
-                    // Now get the '{'
                     s = ReadToken(out wasQuoted, out wasConditional);
-                }
 
-                if (s.StartsWith("{") && !wasQuoted)
-                {
-                    // header is valid so load the file
-                    currentKey.RecursiveLoadFromBuffer(this);
-                }
-                else
-                {
-                    throw new Exception("LoadFromBuffer: missing {");
-                }
+                    if (string.IsNullOrEmpty(s))
+                        break;
 
-                currentKey = null;
+                    if (wasConditional)
+                    {
+                        // bAccepted = ( s == "[$WIN32]" );
+
+                        // Now get the '{'
+                        s = ReadToken(out wasQuoted, out wasConditional);
+                    }
+
+                    if (s.StartsWith("{") && !wasQuoted)
+                    {
+                        // header is valid so load the file
+                        currentKey.RecursiveLoadFromBuffer(this);
+                    }
+                    else
+                    {
+                        throw new Exception("LoadFromBuffer: missing {");
+                    }
+
+                    currentKey = null;
+                }
+                while (!EndOfStream);
             }
-            while (!EndOfStream);
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private void EatWhiteSpace()
@@ -578,11 +585,18 @@ namespace Steam_Library_Manager.Framework
         /// <returns><c>true</c> if the read was successful; otherwise, <c>false</c>.</returns>
         public bool ReadAsText(Stream input)
         {
-            this.Children = new List<KeyValue>();
+            try
+            {
+                Children = new List<KeyValue>();
 
-            new KVTextReader(this, input);
+                new KVTextReader(this, input);
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -595,7 +609,7 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     return ReadAsText(fs);
                 }

@@ -103,27 +103,26 @@ namespace Steam_Library_Manager.Functions
                 // Open archive for read
                 using (ZipArchive Archive = ZipFile.OpenRead(ZipPath))
                 {
-                    // For each file in opened archive
-                    foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                    if (Archive.Entries.Count > 0)
                     {
-                        // If it contains
-                        // Define a KeyValue reader
-                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                        // For each file in opened archive
+                        foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                        {
+                            // If it contains
+                            // Define a KeyValue reader
+                            Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
-                        // Open .acf file from archive as text
-                        KeyValReader.ReadAsText(AcfEntry.Open());
+                            // Open .acf file from archive as text
+                            KeyValReader.ReadAsText(AcfEntry.Open());
 
-                        // If acf file has no children, skip this archive
-                        if (KeyValReader.Children.Count == 0)
-                            continue;
+                            // If acf file has no children, skip this archive
+                            if (KeyValReader.Children.Count == 0)
+                                continue;
 
-                        AddNewApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                            AddNewApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                        }
                     }
                 }
-            }
-            catch (IOException)
-            {
-                ReadDetailsFromZip(ZipPath, targetLibrary);
             }
             catch (InvalidDataException IEx)
             {
@@ -134,6 +133,11 @@ namespace Steam_Library_Manager.Functions
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
             }
         }
 

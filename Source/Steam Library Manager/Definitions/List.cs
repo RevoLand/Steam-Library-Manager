@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -91,7 +92,17 @@ namespace Steam_Library_Manager.Definitions
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-            protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+            protected void OnPropertyChanged(string info)
+            {
+                try
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
         }
 
         public class JunkInfo

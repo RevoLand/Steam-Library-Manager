@@ -154,6 +154,7 @@ namespace Steam_Library_Manager.Definitions
                         };
 
                         SLMFolderWD.Created += SLMWD_Created;
+                        SLMFolderWD.Renamed += SLMFolderWD_Renamed;
                         SLMFolderWD.Deleted += SLMWD_Deleted;
                     }
                 }
@@ -169,6 +170,22 @@ namespace Steam_Library_Manager.Definitions
                 try
                 {
                     Functions.App.ReadDetailsFromZip(e.FullPath, this);
+                }
+                catch (Exception ex)
+                {
+                    //MessageBox.Show(ex.ToString());
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                }
+            }
+
+            private void SLMFolderWD_Renamed(object sender, RenamedEventArgs e)
+            {
+                try
+                {
+                    if (e.Name.EndsWith(".zip"))
+                    {
+                        Functions.App.ReadDetailsFromZip(e.FullPath, this);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -809,7 +826,7 @@ namespace Steam_Library_Manager.Definitions
                     // If the game is not compressed and user would like to compress it
                     if (!IsCompressed && CurrentTask.Compress)
                     {
-                        FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(Library.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.SteamAppsFolder.FullName));
+                        FileInfo compressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(Library.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.SteamAppsFolder.FullName) + "_SLM");
 
                         if (compressedArchive.Exists)
                             compressedArchive.Delete();
@@ -824,7 +841,6 @@ namespace Steam_Library_Manager.Definitions
 
                                 compressed.CreateEntryFromFile(currentFile.FullName, newFileName, CompressionLevel.Optimal);
 
-                                //CopiedFiles.Add(newFileName);
                                 CurrentTask.movedFileSize += (currentFile as FileInfo).Length;
 
                                 if (CurrentTask.ReportFileMovement)
@@ -838,6 +854,8 @@ namespace Steam_Library_Manager.Definitions
                                     throw new OperationCanceledException(cancellationToken);
                             }
                         }
+
+                        compressedArchive.MoveTo(compressedArchive.FullName.Replace("_SLM", ""));
                     }
                     // If the game is compressed and user would like to decompress it
                     else if (IsCompressed && !CurrentTask.Compress)
