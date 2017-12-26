@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Framework
                     CurrentTask.Moving = false;
                     CurrentTask.Completed = true;
 
-                    if (TaskList.Count == 0)
+                    if (TaskList.Count(x => !x.Completed) == 0)
                     {
                         if (Properties.Settings.Default.PlayASoundOnCompletion)
                         {

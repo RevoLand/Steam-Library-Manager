@@ -27,12 +27,6 @@ namespace Steam_Library_Manager
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, eventArgs.ExceptionObject.ToString());
             };
 
-            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
-            {
-                Debug.WriteLine(eventArgs.Exception.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, eventArgs.Exception.ToString());
-            };
-
             InitializeComponent();
 
             UpdateBindings();
