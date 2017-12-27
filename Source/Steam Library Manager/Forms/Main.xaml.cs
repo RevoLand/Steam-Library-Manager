@@ -283,7 +283,6 @@ namespace Steam_Library_Manager
                             else
                             {
                                 Framework.TaskManager.RemoveTask(CurrentTask);
-                                TaskPanel.Items.Remove(CurrentTask);
                             }
                         }
                         break;
