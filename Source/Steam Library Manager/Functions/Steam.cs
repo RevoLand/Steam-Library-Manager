@@ -35,7 +35,10 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
+                    {
+                        Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                    }
                 }
             }
             catch (Exception ex)

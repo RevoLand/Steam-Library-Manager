@@ -411,6 +411,27 @@ namespace Steam_Library_Manager.Definitions
                 LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
             }
+            catch (IOException ioex)
+            {
+                CurrentTask.ErrorHappened = true;
+                Framework.TaskManager.Stop();
+                CurrentTask.Active = false;
+                CurrentTask.Completed = true;
+
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
+                        Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                    }
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+
+
+                Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ioex}");
+
+                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+            }
             catch (OperationCanceledException)
             {
                 if (!CurrentTask.ErrorHappened)
@@ -540,10 +561,26 @@ namespace Steam_Library_Manager.Definitions
 
                 return true;
             }
-            catch (FileNotFoundException)
-            { return true; }
-            catch (DirectoryNotFoundException)
-            { return true; }
+            catch (FileNotFoundException ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
+                return true;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
+                return true;
+            }
+            catch (IOException ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
+                return true;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
+                return true;
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());

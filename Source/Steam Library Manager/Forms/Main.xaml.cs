@@ -360,6 +360,10 @@ namespace Steam_Library_Manager
                     }
                 }
             }
+            catch (UnauthorizedAccessException uaex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, uaex.ToString());
+            }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));

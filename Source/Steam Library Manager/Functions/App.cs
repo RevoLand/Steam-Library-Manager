@@ -31,8 +31,15 @@ namespace Steam_Library_Manager.Functions
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
+                if (!App.FullAcfPath.Exists)
+                {
+                    Logger.LogToFile(Logger.LogType.Library, $"Couldn't locate an ACF file for game. AppID: {AppID} - AppName: {AppName} - Source library type: {Library.Type} - IsSteamBackup? {IsSteamBackup}");
+                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent($"Couldn't locate an ACF file for game. AppID: {AppID} - AppName: {AppName} - Source library type: {Library.Type} - IsSteamBackup? {IsSteamBackup}"));
+                    return;
+                }
+
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
-                if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed)
+                    if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed)
                 {
                     Definitions.List.LCItems.Add(new Definitions.List.JunkInfo
                     {
