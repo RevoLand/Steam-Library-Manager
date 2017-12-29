@@ -10,9 +10,9 @@ namespace Steam_Library_Manager.Functions
     {
         public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
-            Parallel.ForEach(FileList, currentFile =>
+            try
             {
-                try
+                Parallel.ForEach(FileList, currentFile =>
                 {
                     FileInfo File = new FileInfo(currentFile);
 
@@ -26,19 +26,11 @@ namespace Steam_Library_Manager.Functions
                         System.IO.File.SetAttributes(File.FullName, FileAttributes.Normal);
                         File.Delete();
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                }
-            });
+                });
 
-            if (DirectoryList != null)
-            {
-                Parallel.ForEach(DirectoryList, currentDirectory =>
+                if (DirectoryList != null)
                 {
-                    try
+                    Parallel.ForEach(DirectoryList, currentDirectory =>
                     {
                         DirectoryInfo Directory = new DirectoryInfo(currentDirectory);
 
@@ -49,20 +41,21 @@ namespace Steam_Library_Manager.Functions
                                 CurrentTask.TaskStatusInfo = $"Deleting directory: {Directory.Name}";
                             }
 
-                            Directory.Delete();
+                            Directory.Delete(true);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                        Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                    }
-                });
+                    });
+                }
+                if (CurrentTask != null)
+                {
+                    CurrentTask.TaskStatusInfo = "";
+                }
             }
-
-            if (CurrentTask != null)
+            catch (IOException)
+            { }
+            catch (Exception ex)
             {
-                CurrentTask.TaskStatusInfo = "";
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -89,7 +82,7 @@ namespace Steam_Library_Manager.Functions
             // on error, return 0
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return 0;
             }
@@ -141,11 +134,32 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return 0;
             }
         }
+
+        public static long GetAvailableTotalSpace(string TargetFolder)
+        {
+            try
+            {
+                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
+                {
+                    return 0;
+                }
+
+                // And return available free space from defined drive info
+                return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
+            }
+            catch (Exception ex)
+            {
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                return 0;
+            }
+        }
+
 
         public static long GetTotalSize(string TargetFolder)
         {
@@ -160,7 +174,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
                 return 0;
             }

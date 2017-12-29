@@ -32,21 +32,12 @@ namespace Steam_Library_Manager.Definitions
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<AppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<AppInfo>();
 
-        public long FreeSpace
-        {
-            get => Functions.FileSystem.GetAvailableFreeSpace(FullPath);
-        }
-
         public void UpdateDiskDetails()
         {
             OnPropertyChanged("FreeSpace");
             OnPropertyChanged("PrettyFreeSpace");
             OnPropertyChanged("FreeSpacePerc");
         }
-
-        public string PrettyFreeSpace => Functions.FileSystem.FormatBytes(FreeSpace);
-
-        public int FreeSpacePerc => 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetTotalSize(FullPath)));
 
         public void UpdateAppList()
         {
@@ -90,8 +81,33 @@ namespace Steam_Library_Manager.Definitions
                 // Do a loop for each *.zip file in library
                 Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly), ArchiveFile =>
                 {
-                    Functions.App.ReadDetailsFromZipAsync(ArchiveFile, Library);
+                    Functions.App.ReadDetailsFromZip(ArchiveFile, Library);
                 });
+
+                if (Library.Type == Enums.LibraryType.SLM)
+                {
+                    foreach (string SkuFile in Directory.EnumerateFiles(FullPath, "*.sis", SearchOption.AllDirectories))
+                    {
+                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+
+                        KeyValReader.ReadFileAsText(SkuFile);
+
+                        string[] AppNames = System.Text.RegularExpressions.Regex.Split(KeyValReader["name"].Value, " and ");
+
+                        int i = 0;
+                        long AppSize = Functions.FileSystem.GetDirectorySize(new DirectoryInfo(SkuFile).Parent, true);
+                        foreach (Framework.KeyValue App in KeyValReader["apps"].Children)
+                        {
+                            if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value)) > 0)
+                                continue;
+
+                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], Path.GetDirectoryName(SkuFile), Library, AppSize, ((DateTimeOffset)new FileInfo(SkuFile).LastWriteTime).ToUnixTimeSeconds(), false, true);
+
+                            if (AppNames.Count() > 1)
+                                i++;
+                        }
+                    }
+                }
 
                 if (SLM.CurrentSelectedLibrary != null)
                 {
@@ -121,8 +137,9 @@ namespace Steam_Library_Manager.Definitions
                         EnableRaisingEvents = true
                     };
 
-                    SLMFolderWD.Created += SLMWD_Created;
-                    SLMFolderWD.Deleted += SLMWD_Deleted;
+                    SLMFolderWD.Created += SLMFolderWD_Created;
+                    SLMFolderWD.Renamed += SLMFolderWD_Renamed;
+                    SLMFolderWD.Deleted += SLMFolderWD_Deleted;
                 }
                 
             }
@@ -130,15 +147,15 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show(ex.ToString());
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
-        private void SLMWD_Created(object sender, FileSystemEventArgs e)
+        private void SLMFolderWD_Created(object sender, FileSystemEventArgs e)
         {
             try
             {
-                Functions.App.ReadDetailsFromZipAsync(e.FullPath, Library);
+                Functions.App.ReadDetailsFromZip(e.FullPath, Library);
             }
             catch (Exception ex)
             {
@@ -146,7 +163,23 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        private void SLMWD_Deleted(object sender, FileSystemEventArgs e)
+        private void SLMFolderWD_Renamed(object sender, RenamedEventArgs e)
+        {
+            try
+            {
+                if (e.Name.EndsWith(".zip"))
+                {
+                    Functions.App.ReadDetailsFromZip(e.FullPath, Library);
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        private void SLMFolderWD_Deleted(object sender, FileSystemEventArgs e)
         {
             try
             {
@@ -207,6 +240,7 @@ namespace Steam_Library_Manager.Definitions
             catch (FormatException FormatEx)
             {
                 Debug.WriteLine(FormatEx);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, FormatEx.ToString());
             }
             catch (Exception Ex)
             {
@@ -270,13 +304,14 @@ namespace Steam_Library_Manager.Definitions
                     {
                         MenuItem SLMItem = new MenuItem()
                         {
-                            Tag = this,
-                            Header = string.Format(CMenuItem.Header, FullPath, PrettyFreeSpace)
+                            Tag = CMenuItem.Action,
+                            Header = string.Format(CMenuItem.Header, FullPath, Library.PrettyFreeSpace),
+                            Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
+                            HorizontalContentAlignment = HorizontalAlignment.Left,
+                            VerticalContentAlignment = VerticalAlignment.Center
                         };
-                        SLMItem.Tag = CMenuItem.Action;
-                        SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor);
-                        SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
-                        SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
+
+                        SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
 
                         CMenu.Add(SLMItem);
                     }
@@ -320,7 +355,7 @@ namespace Steam_Library_Manager.Definitions
 
                     if (MoveAppsBeforeDeletion == MessageDialogResult.Affirmative)
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function not implemented, process cancelled", MessageDialogStyle.Affirmative);
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function is not implemented, process cancelled", MessageDialogStyle.Affirmative);
                     }
                     else if (MoveAppsBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
@@ -392,7 +427,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -418,20 +453,20 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception Ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, Ex.ToString());
-                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(Ex));
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(Ex));
             }
         }
 
-        public async void RemoveLibraryAsync(bool deleteFiles)
+        public async void RemoveLibraryAsync(bool ShouldDeleteFiles)
         {
             try
             {
-                if (deleteFiles)
+                if (ShouldDeleteFiles)
                 {
                     DeleteFilesAsync();
                 }
 
-                List.Libraries.Remove(List.Libraries.First(x => x.Steam == this));
+                List.Libraries.Remove(List.Libraries.First(x => x == Library));
 
                 await Functions.Steam.CloseSteamAsync();
 
@@ -466,7 +501,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -479,6 +514,10 @@ namespace Steam_Library_Manager.Definitions
                     foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(
                         x => Apps.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
                         && x.Name != "241100" // Steam controller configs
+                        && Framework.TaskManager.TaskList.Count(
+                            z => z.App.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            && z.TargetLibrary == Library
+                            ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
                         List.JunkInfo Junk = new List.JunkInfo
@@ -501,6 +540,10 @@ namespace Steam_Library_Manager.Definitions
                     foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
                         x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
+                        && Framework.TaskManager.TaskList.Count(
+                            z => z.App.WorkShopPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            && z.TargetLibrary == Library
+                            ) == 0
                         ))
                     {
                         List.JunkInfo Junk = new List.JunkInfo
@@ -542,7 +585,7 @@ namespace Steam_Library_Manager.Definitions
                     if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "downloads")))
                     {
                         foreach (FileInfo FileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).Where(
-                            x => Apps.Count(y => x.Name.Contains($"state_{y.AppID}_")) == 0 // Steam Controller Configs
+                            x => Apps.Count(y => x.Name.Contains($"state_{y.AppID}_")) == 0
                             ))
                         {
                             List.JunkInfo Junk = new List.JunkInfo
@@ -564,7 +607,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

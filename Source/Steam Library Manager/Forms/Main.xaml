@@ -29,13 +29,7 @@
         <DataTemplate x:Key="Library_Steam">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" >
-                        <ContextMenu.ItemContainerStyle>
-                            <Style>
-                                <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
-                            </Style>
-                        </ContextMenu.ItemContainerStyle>
-                    </ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" />
                 </Grid.ContextMenu>
 
                 <!-- TextBlock: Offline text -->
@@ -112,10 +106,10 @@
                     </Grid.Style>
 
                     <!-- ProgressBar: Available free space -->
-                    <Controls:MetroProgressBar Height="18" Value="{Binding Steam.FreeSpacePerc, Mode=OneWay}" />
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding Steam.PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -124,13 +118,7 @@
         <DataTemplate x:Key="Library_SLM">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenu}" >
-                        <ContextMenu.ItemContainerStyle>
-                            <Style>
-                                <EventSetter Event="MenuItem.Click" Handler="LibraryCMenuItem_Click" />
-                            </Style>
-                        </ContextMenu.ItemContainerStyle>
-                    </ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenu}" />
                 </Grid.ContextMenu>
 
                 <!-- TextBlock: Offline text -->
@@ -219,13 +207,7 @@
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}">
-                        <ContextMenu.ItemContainerStyle>
-                            <Style>
-                                <EventSetter Event="MenuItem.Click" Handler="Gamelibrary_ContextMenuItem_Click" />
-                            </Style>
-                        </ContextMenu.ItemContainerStyle>
-                    </ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
                 <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
@@ -252,10 +234,10 @@
                                     <Style.Triggers>
                                         <!--<DataTrigger Binding="{Binding Library.Type}" Value="SLM">
                                             <Setter Property="Text" Value="SLM" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Library.Type}" Value="Steam">
-                                            <Setter Property="Text" Value="Steam" />
                                         </DataTrigger>-->
+                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="Steam">
+                                            <Setter Property="Text" Value="Steam" />
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
                                             <Setter Property="Text" Value="Compressed" />
                                         </DataTrigger>
@@ -277,13 +259,7 @@
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}">
-                        <ContextMenu.ItemContainerStyle>
-                            <Style>
-                                <EventSetter Event="MenuItem.Click" Handler="Gamelibrary_ContextMenuItem_Click" />
-                            </Style>
-                        </ContextMenu.ItemContainerStyle>
-                    </ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
@@ -295,6 +271,7 @@
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
+                                    <!--
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding Library.IsBackup}" Value="true" />
@@ -302,11 +279,12 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Text" Value="SLM backup" />
                                     </MultiDataTrigger>
-                                    <DataTrigger Binding="{Binding SteamBackup}" Value="true">
-                                        <Setter Property="Text" Value="Steam backup" />
+                                    -->
+                                    <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                        <Setter Property="Text" Value="Steam" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsCompressed}" Value="true">
-                                        <Setter Property="Text" Value="Compressed backup" />
+                                        <Setter Property="Text" Value="Compressed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -570,9 +548,9 @@
             <Controls:MetroTabItem Header="Library" IsSelected="True">
                 <Grid>
                     <!-- ListView: Library Panel -->
-                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="0,10,0,10" HorizontalAlignment="Left"
-                              Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                              SelectionChanged="LibraryGrid_MouseDown">
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" 
+                              MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown" Padding="0,-2, 0, 0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
@@ -594,8 +572,9 @@
                     </ListView>
 
                     <!-- ListView: App Panel -->
-                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" 
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+                              Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" 
+                              Padding="0, -2, 0, 0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">

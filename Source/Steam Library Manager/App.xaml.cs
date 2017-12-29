@@ -21,13 +21,15 @@ namespace Steam_Library_Manager
             catch (System.Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.ToString(), "Exception Caught", MessageBoxButton.OK, MessageBoxImage.Error);
-            Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(e.Exception));
+            System.Diagnostics.Debug.WriteLine(e.Exception);
+            Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(e.Exception));
             e.Handled = true;
         }
     }

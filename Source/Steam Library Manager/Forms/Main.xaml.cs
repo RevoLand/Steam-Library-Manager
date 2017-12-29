@@ -31,15 +31,18 @@ namespace Steam_Library_Manager
 
         private void UpdateBindings()
         {
-            FormAccessor = this;
+            try
+            {
+                FormAccessor = this;
+                Properties.Settings.Default.SearchText = "";
 
-            Properties.Settings.Default.SearchText = "";
+                LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
+                TaskManager_LogsView.ItemsSource = TaskManager_Logs;
 
-            LibraryPanel.ItemsSource = Definitions.List.Libraries;
-            TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
-            TaskManager_LogsView.ItemsSource = TaskManager_Logs;
-
-            LibraryCleaner.ItemsSource = Definitions.List.LCItems;
+                LibraryCleaner.ItemsSource = Definitions.List.LCItems;
+            }
+            catch { }
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
@@ -99,27 +102,35 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Steam || (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM && Library.Type == Definitions.Enums.LibraryType.Steam))
+                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Steam ||
+                    (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM && Library.Type == Definitions.Enums.LibraryType.Steam))
                 {
                     foreach (Definitions.AppInfo App in AppPanel.SelectedItems)
                     {
-                        if (Library == App.Library)
+                        if (App.IsSteamBackup)
                         {
-                            continue;
-                        }
-
-                        if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
-                        {
-                            Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
-                            {
-                                App = App,
-                                TargetLibrary = Library,
-                                TaskType = Definitions.Enums.TaskType.Copy
-                            });
+                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationPath}\"");
                         }
                         else
                         {
-                            await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            if (Library == App.Library)
+                            {
+                                continue;
+                            }
+
+                            if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
+                            {
+                                Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
+                                {
+                                    App = App,
+                                    TargetLibrary = Library,
+                                    TaskType = Definitions.Enums.TaskType.Copy
+                                });
+                            }
+                            else
+                            {
+                                await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            }
                         }
                     }
                 }
@@ -127,7 +138,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -173,13 +184,13 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
-        private void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
-        private void Gamelibrary_ContextMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+        public void AppCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
 
         private void RightWindowCommands_SettingsButton_Click(object sender, RoutedEventArgs e) => TabItem_Settings.IsSelected = true;
 
@@ -209,7 +220,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -257,7 +268,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -291,7 +302,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -351,7 +362,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
@@ -480,7 +491,7 @@ namespace Steam_Library_Manager
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
@@ -549,7 +560,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

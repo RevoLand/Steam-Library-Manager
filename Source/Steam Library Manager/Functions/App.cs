@@ -27,6 +27,7 @@ namespace Steam_Library_Manager.Functions
 
                     // Define it is an archive
                     IsCompressed = IsCompressed,
+                    IsSteamBackup = IsSteamBackup,
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
@@ -96,57 +97,76 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
-        public static async void ReadDetailsFromZipAsync(string ZipPath, Definitions.Library targetLibrary)
+        public static async void ReadDetailsFromZip(string ZipPath, Definitions.Library targetLibrary)
         {
             try
             {
                 // Open archive for read
                 using (ZipArchive Archive = ZipFile.OpenRead(ZipPath))
                 {
-                    // For each file in opened archive
-                    foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                    if (Archive.Entries.Count > 0)
                     {
-                        // If it contains
-                        // Define a KeyValue reader
-                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
-
-                        // Open .acf file from archive as text
-                        KeyValReader.ReadAsText(AcfEntry.Open());
-
-                        // If acf file has no children, skip this archive
-                        if (KeyValReader.Children.Count == 0)
+                        // For each file in opened archive
+                        foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
                         {
-                            continue;
-                        }
+                            // If it contains
+                            // Define a KeyValue reader
+                            Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
-                        AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                            // Open .acf file from archive as text
+                            KeyValReader.ReadAsText(AcfEntry.Open());
+
+                            // If acf file has no children, skip this archive
+                            if (KeyValReader.Children.Count == 0)
+                            {
+                                continue;
+                            }
+
+                            AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                        }
                     }
                 }
             }
-            catch (IOException)
+            catch (IOException IEx)
             {
-                ReadDetailsFromZipAsync(ZipPath, targetLibrary);
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        NegativeButtonText = "Do NOT Remove the archive file"
+                    }) == MessageDialogResult.Affirmative)
+                    {
+                        new FileInfo(ZipPath).Delete();
+                    }
+                });
+
+                System.Diagnostics.Debug.WriteLine(IEx);
+                Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
             }
             catch (InvalidDataException IEx)
             {
-                if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file ({ZipPath})\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    NegativeButtonText = "Do NOT Remove the archive file"
-                }) == MessageDialogResult.Affirmative)
-                {
-                    new FileInfo(ZipPath).Delete();
-                }
+                    if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        NegativeButtonText = "Do NOT Remove the archive file"
+                    }) == MessageDialogResult.Affirmative)
+                    {
+                        new FileInfo(ZipPath).Delete();
+                    }
+                });
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
             }
         }
 
@@ -211,7 +231,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }

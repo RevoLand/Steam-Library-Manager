@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -91,8 +91,9 @@ namespace Steam_Library_Manager.Functions
             {
                 IsSeparator = true,
                 ShowToNormal = false,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
-                ShowToOffline = false
+                LibraryType = Definitions.Enums.LibraryType.SLM,
+                ShowToOffline = false,
+                ShowToSLMBackup = true
             });
 
             // Remove from SLM
@@ -101,8 +102,9 @@ namespace Steam_Library_Manager.Functions
                 Header = "Remove from SLM",
                 Action = "RemoveFromList",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Minus,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
-                ShowToNormal = false
+                LibraryType = Definitions.Enums.LibraryType.SLM,
+                ShowToNormal = false,
+                ShowToSLMBackup = true
             });
 
             #endregion
@@ -226,7 +228,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 return true;
             }
 
@@ -269,7 +271,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -298,7 +300,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -371,7 +373,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -427,7 +429,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -454,7 +456,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -492,7 +494,7 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                    Definitions.SLM.ravenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
         }

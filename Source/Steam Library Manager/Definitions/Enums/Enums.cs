@@ -6,15 +6,15 @@ namespace Steam_Library_Manager.Definitions.Enums
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum AppSortingMethod
     {
-        [Description("Sort by appName")]
+        [Description("Name")]
         appName,
-        [Description("Sort by appID")]
+        [Description("AppID")]
         appID,
-        [Description("Sort by app size on disk")]
+        [Description("Size on disk")]
         sizeOnDisk,
-        [Description("Sort by backup type")]
+        [Description("Backup type")]
         backupType,
-        [Description("Sort by latest update time")]
+        [Description("Last write time")]
         LastUpdated
     }
 
@@ -33,9 +33,12 @@ namespace Steam_Library_Manager.Definitions.Enums
         Uncompressed
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum LibraryStyle
     {
+        [Description("Grid View")]
         Grid,
+        [Description("List View")]
         Listview
     }
 
@@ -87,9 +90,12 @@ namespace Steam_Library_Manager.Definitions.Enums
         Sienna
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum BaseTheme
     {
+        [Description("Light")]
         BaseLight,
+        [Description("Dark")]
         BaseDark
     }
 }

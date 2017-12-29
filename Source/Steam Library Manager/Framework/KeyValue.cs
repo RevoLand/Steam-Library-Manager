@@ -23,59 +23,63 @@ namespace Steam_Library_Manager.Framework
             // todo: any others?
         };
 
-        public KVTextReader(KeyValue kv, Stream input)
-            : base(input)
+        public KVTextReader(KeyValue kv, Stream input) : base(input)
         {
-            KeyValue currentKey = kv;
-
-            do
+            try
             {
-                // bool bAccepted = true;
+                KeyValue currentKey = kv;
 
-                string s = ReadToken(out bool wasQuoted, out bool wasConditional);
-
-                if (string.IsNullOrEmpty(s))
+                do
                 {
-                    break;
-                }
+                    string s = ReadToken(out bool wasQuoted, out bool wasConditional);
 
-                if (currentKey == null)
-                {
-                    currentKey = new KeyValue(s);
-                }
-                else
-                {
-                    currentKey.Name = s;
-                }
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        break;
+                    }
 
-                s = ReadToken(out wasQuoted, out wasConditional);
+                    if (currentKey == null)
+                    {
+                        currentKey = new KeyValue(s);
+                    }
+                    else
+                    {
+                        currentKey.Name = s;
+                    }
 
-                if (string.IsNullOrEmpty(s))
-                {
-                    break;
-                }
-
-                if (wasConditional)
-                {
-                    // bAccepted = ( s == "[$WIN32]" );
-
-                    // Now get the '{'
                     s = ReadToken(out wasQuoted, out wasConditional);
-                }
 
-                if (s.StartsWith("{") && !wasQuoted)
-                {
-                    // header is valid so load the file
-                    currentKey.RecursiveLoadFromBuffer(this);
-                }
-                else
-                {
-                    throw new Exception("LoadFromBuffer: missing {");
-                }
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        break;
+                    }
 
-                currentKey = null;
+                    if (wasConditional)
+                    {
+                        // bAccepted = ( s == "[$WIN32]" );
+
+                        // Now get the '{'
+                        s = ReadToken(out wasQuoted, out wasConditional);
+                    }
+
+                    if (s.StartsWith("{") && !wasQuoted)
+                    {
+                        // header is valid so load the file
+                        currentKey.RecursiveLoadFromBuffer(this);
+                    }
+                    else
+                    {
+                        throw new Exception("LoadFromBuffer: missing {");
+                    }
+
+                    currentKey = null;
+                }
+                while (!EndOfStream);
             }
-            while (!EndOfStream);
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private void EatWhiteSpace()
@@ -476,7 +480,7 @@ namespace Steam_Library_Manager.Framework
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} = {1}", Name, Value);
+            return $"{Name} = {Value}";
         }
 
         /// <summary>
@@ -616,7 +620,7 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read))
+                using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     return ReadAsText(fs);
                 }
@@ -702,9 +706,16 @@ namespace Steam_Library_Manager.Framework
         /// <param name="asBinary">If set to <c>true</c>, saves this instance as binary.</param>
         public void SaveToFile(string path, bool asBinary)
         {
-            using (var f = File.Create(path))
+            try
             {
-                SaveToStream(f, asBinary);
+                using (var f = File.Create(path))
+                {
+                    SaveToStream(f, asBinary);
+                }
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
@@ -715,73 +726,101 @@ namespace Steam_Library_Manager.Framework
         /// <param name="asBinary">If set to <c>true</c>, saves this instance as binary.</param>
         public void SaveToStream(Stream stream, bool asBinary)
         {
-            if (asBinary)
+            try
             {
-                RecursiveSaveBinaryToStream(stream);
+                if (asBinary)
+                {
+                    RecursiveSaveBinaryToStream(stream);
+                }
+                else
+                {
+                    RecursiveSaveTextToFile(stream);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                RecursiveSaveTextToFile(stream);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
         private void RecursiveSaveBinaryToStream(Stream f)
         {
-            RecursiveSaveBinaryToStreamCore(f);
-            f.WriteByte((byte)Type.End);
+            try
+            {
+                RecursiveSaveBinaryToStreamCore(f);
+                f.WriteByte((byte)Type.End);
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private void RecursiveSaveBinaryToStreamCore(Stream f)
         {
-            // Only supported types ATM:
-            // 1. KeyValue with children (no value itself)
-            // 2. String KeyValue
-            if (Children.Any())
+            try
             {
-                f.WriteByte((byte)Type.None);
-                f.WriteNullTermString(Name, Encoding.UTF8);
-                foreach (var child in Children)
+                // Only supported types ATM:
+                // 1. KeyValue with children (no value itself)
+                // 2. String KeyValue
+                if (Children.Any())
                 {
-                    child.RecursiveSaveBinaryToStreamCore(f);
+                    f.WriteByte((byte)Type.None);
+                    f.WriteNullTermString(Name, Encoding.UTF8);
+                    foreach (var child in Children)
+                    {
+                        child.RecursiveSaveBinaryToStreamCore(f);
+                    }
+                    f.WriteByte((byte)Type.End);
                 }
-                f.WriteByte((byte)Type.End);
+                else
+                {
+                    f.WriteByte((byte)Type.String);
+                    f.WriteNullTermString(Name, Encoding.UTF8);
+                    f.WriteNullTermString(Value ?? string.Empty, Encoding.UTF8);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                f.WriteByte((byte)Type.String);
-                f.WriteNullTermString(Name, Encoding.UTF8);
-                f.WriteNullTermString(Value ?? string.Empty, Encoding.UTF8);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
         private void RecursiveSaveTextToFile(Stream stream, int indentLevel = 0)
         {
-            // write header
-            WriteIndents(stream, indentLevel);
-            WriteString(stream, Name, true);
-            WriteString(stream, "\n");
-            WriteIndents(stream, indentLevel);
-            WriteString(stream, "{\n");
-
-            // loop through all our keys writing them to disk
-            foreach (KeyValue child in Children)
+            try
             {
-                if (child.Value == null)
-                {
-                    child.RecursiveSaveTextToFile(stream, indentLevel + 1);
-                }
-                else
-                {
-                    WriteIndents(stream, indentLevel + 1);
-                    WriteString(stream, child.Name, true);
-                    WriteString(stream, "\t\t");
-                    WriteString(stream, EscapeText(child.AsString()), true);
-                    WriteString(stream, "\n");
-                }
-            }
+                // write header
+                WriteIndents(stream, indentLevel);
+                WriteString(stream, Name, true);
+                WriteString(stream, "\n");
+                WriteIndents(stream, indentLevel);
+                WriteString(stream, "{\n");
 
-            WriteIndents(stream, indentLevel);
-            WriteString(stream, "}\n");
+                // loop through all our keys writing them to disk
+                foreach (KeyValue child in Children)
+                {
+                    if (child.Value == null)
+                    {
+                        child.RecursiveSaveTextToFile(stream, indentLevel + 1);
+                    }
+                    else
+                    {
+                        WriteIndents(stream, indentLevel + 1);
+                        WriteString(stream, child.Name, true);
+                        WriteString(stream, "\t\t");
+                        WriteString(stream, EscapeText(child.AsString()), true);
+                        WriteString(stream, "\n");
+                    }
+                }
+
+                WriteIndents(stream, indentLevel);
+                WriteString(stream, "}\n");
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
         }
 
         private static string EscapeText(string value)

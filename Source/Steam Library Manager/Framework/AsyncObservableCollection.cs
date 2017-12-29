@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading;
-using System.Windows;
 
 // https://gist.github.com/thomaslevesque/10023516
 
@@ -14,31 +12,24 @@ namespace Steam_Library_Manager.Framework
 
         private void ExecuteOnSyncContext(Action action)
         {
-            if (SynchronizationContext.Current == _synchronizationContext)
+            try
             {
-                action();
+                if (SynchronizationContext.Current == _synchronizationContext)
+                {
+                    action();
+                }
+                else
+                {
+                    _synchronizationContext.Send(_ => action(), null);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _synchronizationContext.Send(_ => action(), null);
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
 
         protected override void InsertItem(int index, T item) => ExecuteOnSyncContext(() => base.InsertItem(index, item));
-
-        protected override void RemoveItem(int index)
-        {
-            try
-            {
-                ExecuteOnSyncContext(() => base.RemoveItem(index));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-            }
-        }
 
         protected override void SetItem(int index, T item) => ExecuteOnSyncContext(() => base.SetItem(index, item));
 

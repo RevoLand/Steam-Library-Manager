@@ -11,49 +11,50 @@ namespace Steam_Library_Manager.Definitions
         public Enums.LibraryType Type { get; set; }
         public System.IO.DirectoryInfo DirectoryInfo { get; set; }
         public SteamLibrary Steam { get; set; }
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
-
-        private Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu
         {
-            Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
-            try
+            get
             {
-                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))
+                Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+                try
                 {
-                    if (!CMenuItem.ShowToNormal)
+                    foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))
                     {
-                        continue;
-                    }
-
-                    if (CMenuItem.IsSeparator)
-                    {
-                        CMenu.Add(new Separator());
-                    }
-                    else
-                    {
-                        MenuItem SLMItem = new MenuItem()
+                        if (!CMenuItem.ShowToNormal && !CMenuItem.ShowToSLMBackup)
                         {
-                            Tag = this,
-                            Header = string.Format(CMenuItem.Header, DirectoryInfo.FullName, PrettyFreeSpace)
-                        };
+                            continue;
+                        }
 
-                        SLMItem.Tag = CMenuItem.Action;
-                        SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor);
-                        SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
-                        SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
+                        if (CMenuItem.IsSeparator)
+                        {
+                            CMenu.Add(new Separator());
+                        }
+                        else
+                        {
+                            MenuItem SLMItem = new MenuItem()
+                            {
+                                Tag = CMenuItem.Action,
+                                Header = string.Format(CMenuItem.Header, DirectoryInfo.FullName, PrettyFreeSpace),
+                                Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
+                                HorizontalContentAlignment = HorizontalAlignment.Left,
+                                VerticalContentAlignment = VerticalAlignment.Center
+                            };
 
-                        CMenu.Add(SLMItem);
+                            SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
+
+                            CMenu.Add(SLMItem);
+                        }
                     }
+
+                    return CMenu;
                 }
+                catch (FormatException ex)
+                {
+                    MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
 
-                return CMenu;
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-                return CMenu;
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                    return CMenu;
+                }
             }
         }
 
@@ -98,7 +99,9 @@ namespace Steam_Library_Manager.Definitions
 
         public long FreeSpace => Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName);
 
-        public string PrettyFreeSpace => Functions.FileSystem.FormatBytes(FreeSpace);
+        public long TotalSize => Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName);
+
+        public string PrettyFreeSpace => $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}";
 
         public int FreeSpacePerc => 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetTotalSize(DirectoryInfo.FullName)));
     }
