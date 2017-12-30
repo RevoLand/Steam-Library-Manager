@@ -1,1 +1,1 @@
-1.5.0.0|UI Improvements, task manager and code base improvements
+1.5.0.1|Minor fixes, Application panel fixes - can easily task multiple applications now

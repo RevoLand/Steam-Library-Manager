@@ -41,6 +41,10 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
             }
+            catch (NullReferenceException ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));

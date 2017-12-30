@@ -29,11 +29,17 @@ namespace Steam_Library_Manager.Framework
             }
         }
 
-        protected override void InsertItem(int index, T item) => ExecuteOnSyncContext(() => base.InsertItem(index, item));
-
-        protected override void SetItem(int index, T item) => ExecuteOnSyncContext(() => base.SetItem(index, item));
-
-        protected override void MoveItem(int oldIndex, int newIndex) => ExecuteOnSyncContext(() => base.MoveItem(oldIndex, newIndex));
+        protected override void InsertItem(int index, T item)
+        {
+            try
+            {
+                ExecuteOnSyncContext(() => base.InsertItem(index, item));
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+            }
+        }
 
         protected override void ClearItems() => ExecuteOnSyncContext(() => base.ClearItems());
     }

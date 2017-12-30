@@ -104,14 +104,22 @@ namespace Steam_Library_Manager.Functions
         {
             public static void GenerateLibraryList()
             {
-                // If we have a backup library(s)
-                if (Properties.Settings.Default.backupDirectories != null)
+                try
                 {
-                    // for each backup library we have do a loop
-                    foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
+                    // If we have a backup library(s)
+                    if (Properties.Settings.Default.backupDirectories != null && Properties.Settings.Default.backupDirectories.Count > 0)
                     {
-                        AddNew(BackupPath);
+                        // for each backup library we have do a loop
+                        foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
+                        {
+                            AddNew(BackupPath);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
             }
 

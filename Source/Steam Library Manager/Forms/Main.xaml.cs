@@ -33,6 +33,7 @@ namespace Steam_Library_Manager
         {
             try
             {
+                Definitions.SLM.RavenClient.Release = Definitions.Updater.CurrentVersion.ToString();
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 
@@ -409,7 +410,7 @@ namespace Steam_Library_Manager
                             {
                                 if (((DirectoryInfo)Junk.FSInfo).Exists)
                                 {
-                                    foreach(FileInfo currentFile in (Junk.FSInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    foreach (FileInfo currentFile in (Junk.FSInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
                                     {
                                         FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.Steam.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
 
@@ -472,10 +473,12 @@ namespace Steam_Library_Manager
                     }
                 }
             }
+            catch (FileNotFoundException)
+            { }
+            catch (DirectoryNotFoundException)
+            { }
             catch (UnauthorizedAccessException)
-            {
-
-            }
+            { }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));

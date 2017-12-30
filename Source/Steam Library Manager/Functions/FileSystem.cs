@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (!Directory.Exists(directoryPath.FullName))
+                if (!directoryPath.Exists)
                 {
                     return 0;
                 }
@@ -78,6 +78,11 @@ namespace Steam_Library_Manager.Functions
                 }
                 // and return directory size
                 return DirectorySize;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                return 0;
             }
             // on error, return 0
             catch (Exception ex)
