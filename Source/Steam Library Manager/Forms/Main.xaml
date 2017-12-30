@@ -7,6 +7,7 @@
     xmlns:SLM="clr-namespace:Steam_Library_Manager"
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+    xmlns:dd="urn:gong-wpf-dragdrop"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Height="800" Width="930"
@@ -205,7 +206,7 @@
 
         <!-- App Library: GridView -->
         <DataTemplate x:Key="Gamelibrary_Gridview">
-            <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
                 </Grid.ContextMenu>
@@ -235,7 +236,7 @@
                                         <!--<DataTrigger Binding="{Binding Library.Type}" Value="SLM">
                                             <Setter Property="Text" Value="SLM" />
                                         </DataTrigger>-->
-                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="Steam">
+                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
                                             <Setter Property="Text" Value="Steam" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
@@ -257,7 +258,7 @@
 
         <!-- App Library: ListView -->
         <DataTemplate x:Key="Gamelibrary_Listview">
-            <Grid MouseMove="Gamelibrary_MouseMove" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
                 </Grid.ContextMenu>
@@ -525,7 +526,7 @@
         <!-- Grid: Quick settings -->
         <Grid x:Name="QuickSettings" Margin="0,0,10,0">
             <!-- App Sorting Method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="GameSortingMethod_SelectionChanged">
+            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -574,7 +575,7 @@
                     <!-- ListView: App Panel -->
                     <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
                               Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" 
-                              Padding="0, -2, 0, 0">
+                              Padding="0, -2, 0, 0" dd:DragDrop.IsDragSource="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">

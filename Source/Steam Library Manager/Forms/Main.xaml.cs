@@ -102,35 +102,31 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Steam ||
-                    (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM && Library.Type == Definitions.Enums.LibraryType.Steam))
+                foreach (Definitions.AppInfo App in AppPanel.SelectedItems.AsQueryable())
                 {
-                    foreach (Definitions.AppInfo App in AppPanel.SelectedItems)
+                    if (App.IsSteamBackup)
                     {
-                        if (App.IsSteamBackup)
+                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationPath}\"");
+                    }
+                    else
+                    {
+                        if (Library == App.Library)
                         {
-                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationPath}\"");
+                            continue;
+                        }
+
+                        if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
+                        {
+                            Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
+                            {
+                                App = App,
+                                TargetLibrary = Library,
+                                TaskType = Definitions.Enums.TaskType.Copy
+                            });
                         }
                         else
                         {
-                            if (Library == App.Library)
-                            {
-                                continue;
-                            }
-
-                            if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
-                            {
-                                Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
-                                {
-                                    App = App,
-                                    TargetLibrary = Library,
-                                    TaskType = Definitions.Enums.TaskType.Copy
-                                });
-                            }
-                            else
-                            {
-                                await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
-                            }
+                            await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
                         }
                     }
                 }
@@ -306,20 +302,7 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void Gamelibrary_MouseMove(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
-                {
-                    // Do drag & drop with our pictureBox
-                    DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
-                }
-            }
-            catch { }
-        }
-
-        private void GameSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
+        private void AppSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -529,6 +512,11 @@ namespace Steam_Library_Manager
         {
             try
             {
+                //if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed && grid.DataContext is Definitions.AppInfo)
+                //{
+                //    DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
+                //}
+
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
                     if ((sender as Grid).DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
@@ -568,6 +556,7 @@ namespace Steam_Library_Manager
             }
         }
 
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (Definitions.SLM.CurrentSelectedLibrary != null)
@@ -598,5 +587,6 @@ namespace Steam_Library_Manager
             }
             catch { }
         }
+
     }
 }

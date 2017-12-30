@@ -21,6 +21,8 @@ namespace Steam_Library_Manager.Definitions
 
         public DirectoryInfo SteamAppsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamApps"));
 
+        public DirectoryInfo SteamBackupsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamBackups"));
+
         public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "common"));
 
         public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "downloading"));
@@ -84,24 +86,24 @@ namespace Steam_Library_Manager.Definitions
                     Functions.App.ReadDetailsFromZip(ArchiveFile, Library);
                 });
 
-                if (Library.Type == Enums.LibraryType.SLM)
+                if (Library.Type == Enums.LibraryType.SLM && SteamBackupsFolder.Exists)
                 {
-                    foreach (string SkuFile in Directory.EnumerateFiles(FullPath, "*.sis", SearchOption.AllDirectories))
+                    foreach (FileInfo SkuFile in SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories))
                     {
                         Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
-                        KeyValReader.ReadFileAsText(SkuFile);
+                        KeyValReader.ReadFileAsText(SkuFile.FullName);
 
                         string[] AppNames = System.Text.RegularExpressions.Regex.Split(KeyValReader["name"].Value, " and ");
 
                         int i = 0;
-                        long AppSize = Functions.FileSystem.GetDirectorySize(new DirectoryInfo(SkuFile).Parent, true);
+                        long AppSize = Functions.FileSystem.GetDirectorySize(SkuFile.Directory, true);
                         foreach (Framework.KeyValue App in KeyValReader["apps"].Children)
                         {
                             if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value)) > 0)
                                 continue;
 
-                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], Path.GetDirectoryName(SkuFile), Library, AppSize, ((DateTimeOffset)new FileInfo(SkuFile).LastWriteTime).ToUnixTimeSeconds(), false, true);
+                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, ((DateTimeOffset)SkuFile.LastWriteTimeUtc).ToUnixTimeSeconds(), false, true);
 
                             if (AppNames.Count() > 1)
                                 i++;

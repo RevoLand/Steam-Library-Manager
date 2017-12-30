@@ -78,6 +78,9 @@
       <HintPath>..\packages\Costura.Fody.1.6.2\lib\dotnet\Costura.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="GongSolutions.WPF.DragDrop, Version=1.2.0.57, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.2.0-alpha0057\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.0.184, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.0-alpha0184\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
