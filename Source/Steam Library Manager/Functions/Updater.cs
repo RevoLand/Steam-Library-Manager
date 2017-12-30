@@ -65,7 +65,7 @@ namespace Steam_Library_Manager.Functions
                         CmdProcess.Start();
 
                         // Exit SLM completely
-                        System.Windows.Forms.Application.Exit();
+                        System.Windows.Application.Current.Shutdown();
                     }
                 }
                 else if(ShowResult)
