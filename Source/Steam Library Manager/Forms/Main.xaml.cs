@@ -320,7 +320,8 @@ namespace Steam_Library_Manager
                 {
                     if ((string)(sender as MenuItem).Tag == "Explorer")
                     {
-                        Process.Start(Junk.FSInfo.FullName);
+                        if (Junk.FSInfo.Exists)
+                            Process.Start(Junk.FSInfo.FullName);
                     }
                     else
                     {
@@ -336,6 +337,7 @@ namespace Steam_Library_Manager
                         {
                             if (((DirectoryInfo)Junk.FSInfo).Exists)
                             {
+                                
                                 await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
                             }
                         }

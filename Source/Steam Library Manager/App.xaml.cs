@@ -27,6 +27,7 @@ namespace Steam_Library_Manager
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            e.Exception.Data.Add(".Net", System.Environment.Version);
             MessageBox.Show(e.Exception.ToString(), "Exception Caught", MessageBoxButton.OK, MessageBoxImage.Error);
             System.Diagnostics.Debug.WriteLine(e.Exception);
             Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(e.Exception));

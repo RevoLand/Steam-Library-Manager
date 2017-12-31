@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Functions
                                 CurrentTask.TaskStatusInfo = $"Deleting directory: {Directory.Name}";
                             }
 
-                            Directory.Delete(true);
+                            Directory.Delete();
                         }
                     });
                 }
@@ -50,8 +50,18 @@ namespace Steam_Library_Manager.Functions
                     CurrentTask.TaskStatusInfo = "";
                 }
             }
-            catch (IOException)
-            { }
+            catch (IOException ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
+            catch (AggregateException ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+            }
             catch (Exception ex)
             {
                 Logger.LogToFile(Logger.LogType.SLM, ex.ToString());

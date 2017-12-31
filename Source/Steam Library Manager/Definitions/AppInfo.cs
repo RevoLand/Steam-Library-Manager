@@ -116,7 +116,8 @@ namespace Steam_Library_Manager.Definitions
 
                     break;
                 case "acffile":
-                    Process.Start(FullAcfPath.FullName);
+                    if (FullAcfPath.Exists)
+                        Process.Start(FullAcfPath.FullName);
                     break;
                 case "deleteappfiles":
                     await Task.Run(() => DeleteFilesAsync());
