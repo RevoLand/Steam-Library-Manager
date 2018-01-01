@@ -33,6 +33,7 @@ namespace Steam_Library_Manager
         {
             try
             {
+                Debug.WriteLine(Functions.SLM.Get45PlusFromRegistry());
                 Definitions.SLM.RavenClient.Release = Definitions.Updater.CurrentVersion.ToString();
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";

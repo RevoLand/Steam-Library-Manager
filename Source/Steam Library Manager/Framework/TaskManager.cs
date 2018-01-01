@@ -50,6 +50,9 @@ namespace Steam_Library_Manager.Framework
                     CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
+                    // Update library details
+                    CurrentTask.TargetLibrary.Steam.UpdateAppList();
+
                     if (TaskList.Count(x => !x.Completed) == 0)
                     {
                         if (Properties.Settings.Default.PlayASoundOnCompletion)
@@ -82,11 +85,6 @@ namespace Steam_Library_Manager.Framework
         {
             if (!Status && !Paused)
             {
-                Main.FormAccessor.TaskbarItemInfo.Dispatcher.Invoke(delegate
-                {
-                    Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Normal;
-                });
-
                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is now active and waiting for tasks...");
                 CancellationToken = new CancellationTokenSource();
                 Status = true;

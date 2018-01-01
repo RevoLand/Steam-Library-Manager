@@ -82,16 +82,6 @@ namespace Steam_Library_Manager.Definitions
                     if (_MovedFileSize != 0)
                     {
                         perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
-                        Main.FormAccessor.TaskbarItemInfo.Dispatcher.Invoke(delegate
-                        {
-                            Main.FormAccessor.TaskbarItemInfo.ProgressValue = perc / 100;
-                            if (perc == 100)
-                            {
-
-                                Main.FormAccessor.TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.None;
-                                Main.FormAccessor.TaskbarItemInfo.ProgressValue = 0;
-                            }
-                        });
                     }
 
                     return _MovedFileSize == 0 ? 0 : perc;

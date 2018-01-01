@@ -514,9 +514,6 @@
             <Button Content="settings" Click="RightWindowCommands_SettingsButton_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Controls:MetroWindow.TaskbarItemInfo>
-        <TaskbarItemInfo Description="Steam Library Manager" ProgressState="Normal" />
-    </Controls:MetroWindow.TaskbarItemInfo>
     <Grid Margin="0,40,0,0">
         
         <TextBlock Margin="15, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" FontWeight="ExtraLight" Background="Transparent">
