@@ -98,37 +98,48 @@ namespace Steam_Library_Manager.Definitions
 
         public async void ParseMenuItemActionAsync(string Action)
         {
-            switch (Action.ToLowerInvariant())
+            try
             {
-                default:
-                    if (string.IsNullOrEmpty(SLM.UserSteamID64))
-                    {
-                        return;
-                    }
+                switch (Action.ToLowerInvariant())
+                {
+                    default:
+                        if (string.IsNullOrEmpty(SLM.UserSteamID64))
+                        {
+                            return;
+                        }
 
-                    Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
-                    break;
-                case "disk":
-                    if (CommonFolder.Exists)
-                    {
-                        Process.Start(CommonFolder.FullName);
-                    }
+                        Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
+                        break;
+                    case "disk":
+                        CommonFolder.Refresh();
 
-                    break;
-                case "acffile":
-                    if (FullAcfPath.Exists)
-                        Process.Start(FullAcfPath.FullName);
-                    break;
-                case "deleteappfiles":
-                    await Task.Run(() => DeleteFilesAsync());
-                    break;
-                case "deleteappfilestm":
-                    Framework.TaskManager.AddTask(new List.TaskInfo
-                    {
-                        App = this,
-                        TaskType = Enums.TaskType.Delete
-                    });
-                    break;
+                        if (CommonFolder.Exists)
+                        {
+                            Process.Start(CommonFolder.FullName);
+                        }
+
+                        break;
+                    case "acffile":
+                        FullAcfPath.Refresh();
+
+                        if (FullAcfPath.Exists)
+                            Process.Start(FullAcfPath.FullName);
+                        break;
+                    case "deleteappfiles":
+                        await Task.Run(() => DeleteFilesAsync());
+                        break;
+                    case "deleteappfilestm":
+                        Framework.TaskManager.AddTask(new List.TaskInfo
+                        {
+                            App = this,
+                            TaskType = Enums.TaskType.Delete
+                        });
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.App, ex.ToString(), this);
             }
         }
 
