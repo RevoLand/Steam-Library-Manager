@@ -144,27 +144,33 @@ namespace Steam_Library_Manager.Definitions
                 }
                 else
                 {
+                    CommonFolder.Refresh();
+
                     if (CommonFolder.Exists)
                     {
                         FileList.AddRange(GetCommonFiles());
                     }
 
+                    DownloadFolder.Refresh();
                     if (includeDownloads && DownloadFolder.Exists)
                     {
                         FileList.AddRange(GetDownloadFiles());
                         FileList.AddRange(GetPatchFiles());
                     }
 
+                    WorkShopPath.Refresh();
                     if (includeWorkshop && WorkShopPath.Exists)
                     {
                         FileList.AddRange(GetWorkshopFiles());
                     }
 
+                    FullAcfPath.Refresh();
                     if (FullAcfPath.Exists)
                     {
                         FileList.Add(FullAcfPath);
                     }
 
+                    WorkShopPath.Refresh();
                     if (WorkShopAcfPath.Exists)
                     {
                         FileList.Add(WorkShopAcfPath);
