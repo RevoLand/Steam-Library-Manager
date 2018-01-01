@@ -139,13 +139,16 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
-                {
-                    return 0;
-                }
-
-                // And return available free space from defined drive info
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
+            }
+            catch (ArgumentException ae)
+            {
+                ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
+                ae.Data.Add("TargetFolder", TargetFolder);
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
+                Logger.LogToFile(Logger.LogType.SLM, ae.ToString());
+
+                return 0;
             }
             catch (Exception ex)
             {
@@ -159,13 +162,16 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
-                {
-                    return 0;
-                }
-
-                // And return available free space from defined drive info
                 return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
+            }
+            catch (ArgumentException ae)
+            {
+                ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
+                ae.Data.Add("TargetFolder", TargetFolder);
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
+                Logger.LogToFile(Logger.LogType.SLM, ae.ToString());
+
+                return 0;
             }
             catch (Exception ex)
             {
