@@ -102,7 +102,7 @@ namespace Steam_Library_Manager.Definitions
                         long AppSize = Functions.FileSystem.GetDirectorySize(SkuFile.Directory, true);
                         foreach (Framework.KeyValue App in KeyValReader["apps"].Children)
                         {
-                            if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value)) > 0)
+                            if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value) && x.IsSteamBackup) > 0)
                                 continue;
 
                             Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);

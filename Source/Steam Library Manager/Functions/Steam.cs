@@ -406,26 +406,26 @@ namespace Steam_Library_Manager.Functions
 
                         foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (Definitions.AppInfo LatestApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
+                            foreach (Definitions.AppInfo CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
                             {
-                                ProgressInformationMessage.SetMessage("Checking for:\n\n" + LatestApp.AppName);
+                                ProgressInformationMessage.SetMessage("Checking for:\n\n" + CurrentApp.AppName);
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == LatestApp.AppID && x.LastUpdated > LatestApp.LastUpdated) > 0)
+                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
                                 {
-                                    Definitions.AppInfo OldAppBackup = LibraryToCheck.Steam.Apps.First(x => x.AppID == LatestApp.AppID && x.LastUpdated > LatestApp.LastUpdated);
+                                    Definitions.AppInfo LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == LatestApp.AppID && x.TargetLibrary == OldAppBackup.Library && !x.Completed) == 0)
+                                    if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == CurrentApp.AppID && x.TargetLibrary == LatestApp.Library && !x.Completed) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
                                             App = LatestApp,
-                                            TargetLibrary = OldAppBackup.Library
+                                            TargetLibrary = CurrentApp.Library
                                         };
 
                                         Framework.TaskManager.AddTask(NewTask);
                                     }
 
-                                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {LatestApp.AppName} - Old backup time: {OldAppBackup.LastUpdated} - Updated on: {LatestApp.LastUpdated} - Target: {LatestApp.Library.Steam.FullPath} - Source: {OldAppBackup.Library.Steam.FullPath}");
+                                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {CurrentApp.AppName} - Old backup time: {LatestApp.LastUpdated} - Updated on: {CurrentApp.LastUpdated} - Target: {CurrentApp.Library.Steam.FullPath} - Source: {LatestApp.Library.Steam.FullPath}");
                                 }
                             }
                         }

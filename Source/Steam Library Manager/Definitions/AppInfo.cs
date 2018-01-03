@@ -342,6 +342,8 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
+                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+
                                     while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                     {
                                         if (cancellationToken.IsCancellationRequested)
@@ -355,7 +357,6 @@ namespace Steam_Library_Manager.Definitions
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
                                         CurrentTask.MovedFileSize += currentBlockSize;
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
 
@@ -398,6 +399,8 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
+                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+
                                     while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                     {
                                         if (cancellationToken.IsCancellationRequested)
@@ -411,7 +414,6 @@ namespace Steam_Library_Manager.Definitions
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
                                         CurrentTask.MovedFileSize += currentBlockSize;
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
 

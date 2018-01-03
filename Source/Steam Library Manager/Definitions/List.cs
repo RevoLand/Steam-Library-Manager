@@ -30,7 +30,7 @@ namespace Steam_Library_Manager.Definitions
             private bool _Completed = false;
             private string _TaskStatusInfo;
 
-            public string TaskProgressInfo => (_MovedFileSize) != 0 ? $"{_MovedFileSize}/{_TotalFileSize}" : "";
+            public string TaskProgressInfo => (_MovedFileSize) != 0 ? $"{_MovedFileSize / 1024000} MB /{_TotalFileSize / 1024000} MB" : "";
 
             public string TaskStatusInfo
             {

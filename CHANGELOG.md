@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.3] - 2018-01-03
+
+### Changed
+
+- Task Manager UI
+  - Changed showing of current file info and file movement info.
+
+### Fixed
+
+- Check for backup updates function
+- Steam generated backups are not visible if there is a SLM generated backup in the same library.
+
 ## [1.5.0.2] - 2018-01-03
 
 ### Changed
