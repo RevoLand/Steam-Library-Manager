@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - ArgumentException caused by getting libraries' drive info.
 - A possible memory leak happens during file movement.
 - File attributes which was broken since v1.5
+- Check for Backup Updates function
 
 ### Removed
 

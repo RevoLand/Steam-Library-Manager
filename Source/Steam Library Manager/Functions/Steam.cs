@@ -410,9 +410,9 @@ namespace Steam_Library_Manager.Functions
                             {
                                 ProgressInformationMessage.SetMessage("Checking for:\n\n" + LatestApp.AppName);
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == LatestApp.AppID && x.LastUpdated < LatestApp.LastUpdated) > 0)
+                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == LatestApp.AppID && x.LastUpdated > LatestApp.LastUpdated) > 0)
                                 {
-                                    Definitions.AppInfo OldAppBackup = LibraryToCheck.Steam.Apps.First(x => x.AppID == LatestApp.AppID && x.LastUpdated < LatestApp.LastUpdated);
+                                    Definitions.AppInfo OldAppBackup = LibraryToCheck.Steam.Apps.First(x => x.AppID == LatestApp.AppID && x.LastUpdated > LatestApp.LastUpdated);
 
                                     if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == LatestApp.AppID && x.TargetLibrary == OldAppBackup.Library && !x.Completed) == 0)
                                     {
