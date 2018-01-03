@@ -13,6 +13,14 @@
     <a href="https://github.com/RevoLand/Steam-Library-Manager/issues">
         <img src="https://img.shields.io/github/issues/RevoLand/Steam-Library-Manager.svg?style=flat-square" alt="Issues">
     </a>
+    <a href="https://github.com/RevoLand/Steam-Library-Manager/wiki">
+        <img src="https://img.shields.io/badge/SLM-Wiki-blue.svg?style=flat-square" alt="Wiki">
+    </a>
+    <a href="https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/CHANGELOG.md">
+        <img src="https://img.shields.io/badge/SLM-Changelog-red.svg?style=flat-square" alt="License">
+    </a>
 </p>
 
-Head over to [Wiki](https://github.com/RevoLand/Steam-Library-Manager/wiki) for FAQ, Credits and more!
+# Steam Library Manager
+
+Head over to [Wiki](https://github.com/RevoLand/Steam-Library-Manager/wiki) for [FAQ](https://github.com/RevoLand/Steam-Library-Manager/wiki/FAQ), [Credits](https://github.com/RevoLand/Steam-Library-Manager/wiki/Credits) and more!

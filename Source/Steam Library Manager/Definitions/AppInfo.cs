@@ -336,7 +336,7 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             int currentBlockSize = 0;
-                            byte[] FSBuffer = new byte[1024 * 1024];
+                            byte[] FSBuffer = new byte[8192];
 
                             using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
@@ -358,6 +358,10 @@ namespace Steam_Library_Manager.Definitions
                                         CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
+
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
                             }
                         }
                         else
@@ -388,7 +392,7 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             int currentBlockSize = 0;
-                            byte[] FSBuffer = new byte[1024 * 1024];
+                            byte[] FSBuffer = new byte[8192];
 
                             using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
@@ -410,6 +414,10 @@ namespace Steam_Library_Manager.Definitions
                                         CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({NewFileContent.Length}/{((FileInfo)CurrentFile).Length})";
                                     }
                                 }
+
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
                             }
                         }
                         else

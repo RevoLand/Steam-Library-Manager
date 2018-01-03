@@ -1,1 +1,1 @@
-1.5.0.1|Minor fixes, Application panel fixes - can easily task multiple applications now
+1.5.0.2|Fixes and improvements
