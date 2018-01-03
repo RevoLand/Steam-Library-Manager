@@ -321,16 +321,20 @@ namespace Steam_Library_Manager
                 {
                     if ((string)(sender as MenuItem).Tag == "Explorer")
                     {
+                        Junk.FSInfo.Refresh();
+
                         if (Junk.FSInfo.Exists)
                             Process.Start(Junk.FSInfo.FullName);
                     }
                     else
                     {
+                        Junk.FSInfo.Refresh();
+
                         if (Junk.FSInfo is FileInfo)
                         {
-                            if (((FileInfo)Junk.FSInfo).Exists)
+                            if (Junk.FSInfo.Exists)
                             {
-                                File.SetAttributes(((FileInfo)Junk.FSInfo).FullName, FileAttributes.Normal);
+                                File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
                                 await Task.Run(() => Junk.FSInfo.Delete());
                             }
                         }
@@ -346,6 +350,10 @@ namespace Steam_Library_Manager
                         Definitions.List.LCItems.Remove(Junk);
                     }
                 }
+            }
+            catch (IOException ioex)
+            {
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ioex.ToString());
             }
             catch (UnauthorizedAccessException uaex)
             {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -72,12 +73,14 @@ namespace Steam_Library_Manager.Functions
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
                         List<FileSystemInfo> GameFiles = App.GetFileList();
+                        long GameSize = 0;
 
                         System.Threading.Tasks.Parallel.ForEach(GameFiles, File =>
                         {
-                            App.SizeOnDisk += (File as FileInfo).Length;
+                            Interlocked.Add(ref GameSize, ((FileInfo)File).Length);
                         });
 
+                        App.SizeOnDisk = GameSize;
                     }
                     else
                     {
@@ -126,7 +129,7 @@ namespace Steam_Library_Manager.Functions
                                 continue;
                             }
 
-                            AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), AcfEntry.LastWriteTime.ToUnixTimeSeconds(), true);
+                            AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true);
                         }
                     }
                 }

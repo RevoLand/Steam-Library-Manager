@@ -127,6 +127,10 @@ namespace Steam_Library_Manager.Definitions
                         break;
                     case "deleteappfiles":
                         await Task.Run(() => DeleteFilesAsync());
+
+                        Library.Steam.Apps.Remove(this);
+                        if (SLM.CurrentSelectedLibrary == Library)
+                            Functions.App.UpdateAppPanel(Library);
                         break;
                     case "deleteappfilestm":
                         Framework.TaskManager.AddTask(new List.TaskInfo

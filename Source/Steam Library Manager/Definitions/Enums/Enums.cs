@@ -14,7 +14,7 @@ namespace Steam_Library_Manager.Definitions.Enums
         sizeOnDisk,
         [Description("Backup type")]
         backupType,
-        [Description("Last write time")]
+        [Description("Last updated first")]
         LastUpdated
     }
 

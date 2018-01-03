@@ -14,8 +14,8 @@ namespace Steam_Library_Manager.Definitions
     {
         public Library Library => List.Libraries.First(x => x.Steam == this);
 
-        private FileSystemWatcher SteamFolderWD;
-        private FileSystemWatcher SLMFolderWD;
+        //private FileSystemWatcher SteamFolderWD;
+        //private FileSystemWatcher SLMFolderWD;
 
         public bool IsMain { get; set; }
 
@@ -45,6 +45,8 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                SteamAppsFolder.Refresh();
+
                 if (!SteamAppsFolder.Exists)
                 {
                     SteamAppsFolder.Create();
@@ -103,7 +105,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value)) > 0)
                                 continue;
 
-                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, ((DateTimeOffset)SkuFile.LastWriteTimeUtc).ToUnixTimeSeconds(), false, true);
+                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);
 
                             if (AppNames.Count() > 1)
                                 i++;
@@ -119,6 +121,7 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
 
+                /*
                 SteamFolderWD = new FileSystemWatcher()
                 {
                     Path = SteamAppsFolder.FullName,
@@ -143,6 +146,7 @@ namespace Steam_Library_Manager.Definitions
                     SLMFolderWD.Renamed += SLMFolderWD_Renamed;
                     SLMFolderWD.Deleted += SLMFolderWD_Deleted;
                 }
+                */
                 
             }
             catch (Exception ex)

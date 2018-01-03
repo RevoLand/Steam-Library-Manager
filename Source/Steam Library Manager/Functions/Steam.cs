@@ -30,7 +30,8 @@ namespace Steam_Library_Manager.Functions
 
                             if (SteamPathSelector.ShowDialog() == true)
                             {
-                                Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
+                                if (Directory.Exists(Path.GetDirectoryName(SteamPathSelector.FileName)))
+                                    Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
                             }
                         }
                     }
@@ -372,7 +373,7 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     // Add library to list
-                    AddNew(NewLibraryPath, false);
+                    AddNew(NewLibraryPath);
 
                     // Save our settings
                     SLM.Settings.SaveSettings();
@@ -405,7 +406,7 @@ namespace Steam_Library_Manager.Functions
 
                         foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (Definitions.AppInfo LatestApp in CurrentLibrary.Steam.Apps)
+                            foreach (Definitions.AppInfo LatestApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
                             {
                                 ProgressInformationMessage.SetMessage("Checking for:\n\n" + LatestApp.AppName);
 
@@ -440,7 +441,7 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static async void AddNew(string LibraryPath, bool IsMainLibrary)
+            public static async void AddNew(string LibraryPath, bool IsMainLibrary = false)
             {
                 try
                 {
@@ -488,12 +489,12 @@ namespace Steam_Library_Manager.Functions
                         KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
                         if (KeyValReader.Children.Count > 0)
                         {
-                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"].Children.Count > 0) ? KeyValReader["Accounts"].Children[0].Children[0].Value : null;
-
                             foreach (Framework.KeyValue key in KeyValReader.Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                             {
-                                AddNew(key.Value, false);
+                                AddNew(key.Value);
                             }
+
+                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"].Children.Count > 0) ? KeyValReader["Accounts"].Children[0].Children[0].Value : null;
                         }
                     }
                     else { /* Could not locate LibraryFolders.vdf */ }
