@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Functions
                     else
                     {
                         // And set archive size as game size
-                        App.SizeOnDisk = FileSystem.GetFileSize(Path.Combine(App.Library.Steam.SteamAppsFolder.FullName, App.AppID + ".zip"));
+                        App.SizeOnDisk = App.CompressedArchiveName.Length;
                     }
                 }
                 else

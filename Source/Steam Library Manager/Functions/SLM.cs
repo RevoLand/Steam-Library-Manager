@@ -158,7 +158,7 @@ namespace Steam_Library_Manager.Functions
                         // for each backup library we have do a loop
                         foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
                         {
-                            AddNew(BackupPath);
+                            AddNewAsync(BackupPath);
                         }
                     }
                 }
@@ -169,10 +169,13 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static async void AddNew(string LibraryPath)
+            public static async void AddNewAsync(string LibraryPath)
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(LibraryPath))
+                        return;
+
                     Definitions.Library Library = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.SLM,

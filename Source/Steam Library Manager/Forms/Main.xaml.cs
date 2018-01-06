@@ -166,7 +166,7 @@ namespace Steam_Library_Manager
                         {
                             if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
                             {
-                                Functions.SLM.Library.AddNew(Info.FullName);
+                                Functions.SLM.Library.AddNewAsync(Info.FullName);
                             }
                             else
                             {

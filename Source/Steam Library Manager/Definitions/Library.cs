@@ -97,12 +97,12 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public long FreeSpace => Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName);
+        public long FreeSpace => DirectoryInfo.Exists ? Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName) : 0;
 
-        public long TotalSize => Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName);
+        public long TotalSize => DirectoryInfo.Exists ? Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName) : 0;
 
-        public string PrettyFreeSpace => $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}";
+        public string PrettyFreeSpace => DirectoryInfo.Exists ? $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}" : "";
 
-        public int FreeSpacePerc => 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetTotalSize(DirectoryInfo.FullName)));
+        public int FreeSpacePerc => DirectoryInfo.Exists ? 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName))) : 0;
     }
 }

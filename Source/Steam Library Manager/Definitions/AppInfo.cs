@@ -464,6 +464,17 @@ namespace Steam_Library_Manager.Definitions
 
                 await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
             }
+            catch (UnauthorizedAccessException uaex)
+            {
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
+                        Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                    }
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+
+            }
             catch (OperationCanceledException)
             {
                 if (!CurrentTask.ErrorHappened)
@@ -526,14 +537,17 @@ namespace Steam_Library_Manager.Definitions
             {
                 if (IsCompressed)
                 {
-                    await Task.Run(() => CompressedArchiveName.Delete());
+                    CompressedArchiveName.Refresh();
+
+                    if (CompressedArchiveName.Exists)
+                        await Task.Run(() => CompressedArchiveName.Delete());
                 }
                 else
                 {
-                    List<FileSystemInfo> gameFiles = GetFileList();
-
-                    Parallel.ForEach(gameFiles, currentFile =>
+                    Parallel.ForEach(GetFileList(), currentFile =>
                     {
+                        currentFile.Refresh();
+
                         if (currentFile.Exists)
                         {
                             if (CurrentTask != null)
@@ -553,24 +567,28 @@ namespace Steam_Library_Manager.Definitions
                     }
                     );
 
+                    CommonFolder.Refresh();
                     // common folder, if exists
                     if (CommonFolder.Exists)
                     {
                         await Task.Run(() => CommonFolder.Delete(true));
                     }
 
+                    DownloadFolder.Refresh();
                     // downloading folder, if exists
                     if (DownloadFolder.Exists)
                     {
                         await Task.Run(() => DownloadFolder.Delete(true));
                     }
 
+                    WorkShopPath.Refresh();
                     // workshop folder, if exists
                     if (WorkShopPath.Exists)
                     {
                         await Task.Run(() => WorkShopPath.Delete(true));
                     }
 
+                    FullAcfPath.Refresh();
                     // game .acf file
                     if (FullAcfPath.Exists)
                     {
@@ -578,6 +596,7 @@ namespace Steam_Library_Manager.Definitions
                         FullAcfPath.Delete();
                     }
 
+                    WorkShopAcfPath.Refresh();
                     // workshop .acf file
                     if (WorkShopAcfPath.Exists)
                     {

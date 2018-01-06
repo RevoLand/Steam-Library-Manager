@@ -74,7 +74,9 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (!directoryPath.Exists)
+                directoryPath.Refresh();
+
+                if (!directoryPath.Exists || !new DriveInfo(Path.GetPathRoot(directoryPath.FullName)).IsReady)
                 {
                     return 0;
                 }
@@ -102,8 +104,6 @@ namespace Steam_Library_Manager.Functions
                 return 0;
             }
         }
-
-        public static long GetFileSize(string FilePath) => new FileInfo(FilePath).Length;
 
         // Source: http://stackoverflow.com/a/2082893
         public static string FormatBytes(long Bytes)
@@ -172,26 +172,6 @@ namespace Steam_Library_Manager.Functions
                 Logger.LogToFile(Logger.LogType.SLM, ae.ToString());
 
                 return 0;
-            }
-            catch (Exception ex)
-            {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
-                return 0;
-            }
-        }
-
-
-        public static long GetTotalSize(string TargetFolder)
-        {
-            try
-            {
-                if (!Directory.Exists(Path.GetPathRoot(TargetFolder)))
-                {
-                    return 0;
-                }
-
-                return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
             }
             catch (Exception ex)
             {

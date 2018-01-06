@@ -120,34 +120,14 @@ namespace Steam_Library_Manager.Definitions
                         Functions.App.UpdateAppPanel(Library);
                     }
                 }
-
-                /*
-                SteamFolderWD = new FileSystemWatcher()
-                {
-                    Path = SteamAppsFolder.FullName,
-                    Filter = "appmanifest_*.acf",
-                    EnableRaisingEvents = true,
-                };
-
-                SteamFolderWD.Created += FolderWD_Created;
-                SteamFolderWD.Changed += FolderWD_Changed;
-                SteamFolderWD.Deleted += FolderWD_Deleted;
-
-                if (Library.Type == Enums.LibraryType.SLM)
-                {
-                    SLMFolderWD = new FileSystemWatcher()
-                    {
-                        Path = SteamAppsFolder.FullName,
-                        Filter = "*.zip",
-                        EnableRaisingEvents = true
-                    };
-
-                    SLMFolderWD.Created += SLMFolderWD_Created;
-                    SLMFolderWD.Renamed += SLMFolderWD_Renamed;
-                    SLMFolderWD.Deleted += SLMFolderWD_Deleted;
-                }
-                */
                 
+            }
+            catch (UnauthorizedAccessException uaex)
+            {
+                Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}");
+                }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)
             {

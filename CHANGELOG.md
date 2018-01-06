@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.4] - 2018-01-06
+
+### Added
+
+- Handled UnauthorizedAccessException on Steam.CopyFiles method
+
+### Fixed
+
+- FileNotFoundException happens on file removal which caused by cached file properties.
+- IOException happens on getting directory info in case the device is not ready.
+- DriveNotFoundException happens with offline libraries.
+- ArgumentException in AddNew library function(?)
+
 ## [1.5.0.3] - 2018-01-03
 
 ### Changed
