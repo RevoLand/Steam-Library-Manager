@@ -70,20 +70,27 @@ namespace Steam_Library_Manager.Functions
 
         public static void OnLoad()
         {
-            if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
+            try
             {
-                Updater.CheckForUpdates();
+                if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
+                {
+                    Updater.CheckForUpdates();
+                }
+
+                LoadSteam();
+                //LoadOrigin();
+
+                // SLM Libraries
+                Library.GenerateLibraryList();
+
+                if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
+                {
+                    Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
+                }
             }
-
-            LoadSteam();
-            //LoadOrigin();
-
-            // SLM Libraries
-            Library.GenerateLibraryList();
-
-            if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
+            catch (Exception ex)
             {
-                Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
             }
         }
 
@@ -153,13 +160,16 @@ namespace Steam_Library_Manager.Functions
                 try
                 {
                     // If we have a backup library(s)
-                    if (Properties.Settings.Default.backupDirectories != null && Properties.Settings.Default.backupDirectories.Count > 0)
+                    if (Properties.Settings.Default.backupDirectories == null)
+                        return;
+                    if (Properties.Settings.Default.backupDirectories.Count == 0)
+                        return;
+
+                    // for each backup library we have, do a loop
+                    foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
                     {
-                        // for each backup library we have do a loop
-                        foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
-                        {
+                        if (!string.IsNullOrEmpty(BackupPath))
                             AddNewAsync(BackupPath);
-                        }
                     }
                 }
                 catch (Exception ex)

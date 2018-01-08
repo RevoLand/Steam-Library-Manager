@@ -29,7 +29,6 @@ namespace Steam_Library_Manager
         {
             e.Exception.Data.Add(".Net", Functions.SLM.Get45PlusFromRegistry());
             MessageBox.Show(e.Exception.ToString(), "Exception Caught", MessageBoxButton.OK, MessageBoxImage.Error);
-            System.Diagnostics.Debug.WriteLine(e.Exception);
             Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(e.Exception));
             e.Handled = true;
         }

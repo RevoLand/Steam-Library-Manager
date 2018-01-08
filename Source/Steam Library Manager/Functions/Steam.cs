@@ -464,6 +464,8 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    ex.Data.Add("LibraryPath", LibraryPath);
+                    ex.Data.Add("CurrentLibraries", Definitions.List.Libraries);
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }

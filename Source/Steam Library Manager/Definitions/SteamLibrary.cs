@@ -58,7 +58,7 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Foreach *.acf file found in library
-                Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly), AcfFile =>
+                Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList(), AcfFile =>
                 {
                         // Define a new value and call KeyValue
                         Framework.KeyValue KeyValReader = new Framework.KeyValue();
@@ -83,14 +83,15 @@ namespace Steam_Library_Manager.Definitions
                 });
 
                 // Do a loop for each *.zip file in library
-                Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly), ArchiveFile =>
+                Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly).ToList(), ArchiveFile =>
                 {
                     Functions.App.ReadDetailsFromZip(ArchiveFile, Library);
                 });
 
+                SteamBackupsFolder.Refresh();
                 if (Library.Type == Enums.LibraryType.SLM && SteamBackupsFolder.Exists)
                 {
-                    foreach (FileInfo SkuFile in SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories))
+                    foreach (FileInfo SkuFile in SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories).ToList())
                     {
                         Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
@@ -497,7 +498,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 if (CommonFolder.Exists)
                 {
-                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().Where(
+                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().ToList().Where(
                         x => Apps.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Framework.TaskManager.TaskList.Count(
@@ -523,11 +524,11 @@ namespace Steam_Library_Manager.Definitions
 
                 if (WorkshopFolder.Exists)
                 {
-                    foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("*.acf", SearchOption.TopDirectoryOnly).Where(
+                    foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("appworkshop_*.acf", SearchOption.TopDirectoryOnly).ToList().Where(
                         x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
                         && Framework.TaskManager.TaskList.Count(
-                            z => z.App.WorkShopPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            z => z.App.WorkShopAcfName.ToLowerInvariant() == x.Name.ToLowerInvariant()
                             && z.TargetLibrary == Library
                             ) == 0
                         ))
@@ -548,9 +549,13 @@ namespace Steam_Library_Manager.Definitions
 
                     if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "content")))
                     {
-                        foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().Where(
+                        foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().ToList().Where(
                             x => Apps.Count(y => y.AppID.ToString() == x.Name) == 0
                             && x.Name != "241100" // Steam controller configs
+                            && Framework.TaskManager.TaskList.Count(
+                                z => z.App.WorkShopPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                                && z.TargetLibrary == Library
+                            ) == 0
                             ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                         {
                             List.JunkInfo Junk = new List.JunkInfo
@@ -570,7 +575,7 @@ namespace Steam_Library_Manager.Definitions
 
                     if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "downloads")))
                     {
-                        foreach (FileInfo FileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).Where(
+                        foreach (FileInfo FileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).ToList().Where(
                             x => Apps.Count(y => x.Name.Contains($"state_{y.AppID}_")) == 0
                             ))
                         {

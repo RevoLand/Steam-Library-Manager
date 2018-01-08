@@ -33,7 +33,6 @@ namespace Steam_Library_Manager
         {
             try
             {
-                Debug.WriteLine(Functions.SLM.Get45PlusFromRegistry());
                 Definitions.SLM.RavenClient.Release = Definitions.Updater.CurrentVersion.ToString();
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
@@ -549,9 +548,12 @@ namespace Steam_Library_Manager
                     }
                     else if (((sender as Grid).DataContext is Definitions.Library))
                     {
-                        if (((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.Exists)
+                        if (((sender as Grid).DataContext as Definitions.Library).Steam != null)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.FullName);
+                            if (((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.Exists)
+                            {
+                                Process.Start(((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.FullName);
+                            }
                         }
                     }
                     else if (((sender as Grid).DataContext is Definitions.List.JunkInfo))
@@ -566,7 +568,6 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
