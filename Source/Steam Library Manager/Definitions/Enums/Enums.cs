@@ -96,6 +96,8 @@ namespace Steam_Library_Manager.Definitions.Enums
         [Description("Light")]
         BaseLight,
         [Description("Dark")]
-        BaseDark
+        BaseDark,
+        [Description("Custom")]
+        CustomTheme
     }
 }

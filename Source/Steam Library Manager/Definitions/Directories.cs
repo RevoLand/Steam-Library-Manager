@@ -15,9 +15,8 @@ namespace Steam_Library_Manager.Definitions
             public static string Log = Path.Combine(Current, "Logs");
 
             // Set cache directory of SLM to %temp%/Assembly Name (Steam Library Manager)
-            public static string Cache = Path.Combine(Path.GetTempPath(), System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
-
-            public static string HeaderImage = Path.Combine(Directories.SLM.Current, ".slmcache");
+            //public static string Cache = Path.Combine(Path.GetTempPath(), System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+            public static string Cache = Path.Combine(Current, ".slmcache");
         }
     }
 }

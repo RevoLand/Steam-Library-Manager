@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro;
+using System.Windows;
 
 namespace Steam_Library_Manager.Properties
 {
@@ -18,7 +19,7 @@ namespace Steam_Library_Manager.Properties
 
             if (e.PropertyName == "BaseTheme" || e.PropertyName == "ThemeAccent")
             {
-                ThemeManager.ChangeAppStyle(System.Windows.Application.Current,
+                ThemeManager.ChangeAppStyle(Application.Current,
                                 ThemeManager.GetAccent(ThemeAccent),
                                 ThemeManager.GetAppTheme(BaseTheme));
             }

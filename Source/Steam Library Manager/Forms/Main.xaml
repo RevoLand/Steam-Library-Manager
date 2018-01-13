@@ -8,6 +8,7 @@
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     xmlns:dd="urn:gong-wpf-dragdrop"
+    xmlns:Color="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Height="800" Width="930"
@@ -515,7 +516,7 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid Margin="0,40,0,0">
-        
+
         <TextBlock Margin="15, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" FontWeight="ExtraLight" Background="Transparent">
             Steam Library Manager
         </TextBlock>
@@ -769,16 +770,55 @@
                             <Button Content="Open Log Folder" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Width="280" Height="40" HorizontalAlignment="Left" />
 
                             <!-- Button: Check for Updates -->
-                            <Button Content="Check for Updates" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Width="280" Height="40" HorizontalAlignment="Left" 
-                                    Style="{StaticResource AccentedSquareButtonStyle}" />
+                            <Button Content="Check for Updates" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Width="280" Height="40" HorizontalAlignment="Left" />
 
                             <!-- Button: Clear image cache-->
-                            <Button Content="Clear header image cache" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Width="280" Height="40" HorizontalAlignment="Left" 
-                                    Style="{StaticResource AccentedSquareButtonStyle}" />
+                            <Button Content="Clear header image cache" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Width="280" Height="40" HorizontalAlignment="Left" />
 
                             <!-- Donate Button -->
-                            <Button Content="Donate" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Width="280" Height="40" HorizontalAlignment="Left" 
-                                    Style="{StaticResource AccentedSquareButtonStyle}" />
+                            <Button Content="Donate" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Width="280" Height="40" HorizontalAlignment="Left" />
+
+                            <GroupBox Header="Custom Theme" Margin="255,205,0,0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                                    <Grid>
+                                        <Label Content="Text Color:" Margin="0,5,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,5,0,0" Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="TabItem Text Color" Margin="0,55,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,55,0,0" Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Background" Margin="0,105,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,105,0,0" Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Control BG" Margin="0,155,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,155,0,0" Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Context Menu" Margin="0,205,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,205,0,0" Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Window BG" Margin="0,255,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,255,0,0" Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="TransparentWhite" Margin="0,305,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,305,0,0" Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="GrayBrush1" Margin="0,355,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,355,0,0" Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="GrayBrush2" Margin="0,405,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,405,0,0" Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Button Click" Margin="0,455,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,455,0,0" Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Button Hover" Margin="0,505,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,505,0,0" Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+
+                                        <Label Content="Button BG" Margin="0,555,0,0"/>
+                                        <Color:ColorPicker Width="150" Margin="0,555,0,0" Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </GroupBox>
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Task Manager Default Settings" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">

@@ -14,14 +14,14 @@ namespace Steam_Library_Manager.Framework.CachedImage
         {
             try
             {
-                var LocalFile = $"{Definitions.Directories.SLM.HeaderImage}\\{Url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
+                var LocalFile = $"{Definitions.Directories.SLM.Cache}\\{Url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
                 MemoryStream MemStream = new MemoryStream();
 
                 if (!File.Exists(LocalFile))
                 {
-                    if (!Directory.Exists(Definitions.Directories.SLM.HeaderImage))
+                    if (!Directory.Exists(Definitions.Directories.SLM.Cache))
                     {
-                        Directory.CreateDirectory(Definitions.Directories.SLM.HeaderImage);
+                        Directory.CreateDirectory(Definitions.Directories.SLM.Cache);
                     }
 
                     await (await new WebClient().OpenReadTaskAsync(Url)).CopyToAsync(MemStream);

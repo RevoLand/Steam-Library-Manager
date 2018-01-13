@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.6] - 2018-01-13
+
+### Added
+
+- Custom styling support
+
+### Fixed
+
+- FileNotFoundException happens on getting version info.
+- InvalidOperationException happens on getting junk files.
+- IOException happens on library cleaner.
+- DirectoryNotFoundException and IOException on GetCommonFiles.
+- ArgumentNullException caused by IOException on DeleteFilesAsync method.
+- ArgumentOutOfRangeException happens on generating Steam library list.
+
 ## [1.5.0.5] - 2018-01-08
 
 ### Fixed

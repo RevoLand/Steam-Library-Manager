@@ -496,6 +496,7 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                CommonFolder.Refresh();
                 if (CommonFolder.Exists)
                 {
                     foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().ToList().Where(
@@ -515,13 +516,14 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
                             List.LCItems.Add(Junk);
                         }
                     }
                 }
 
+                WorkshopFolder.Refresh();
                 if (WorkshopFolder.Exists)
                 {
                     foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("appworkshop_*.acf", SearchOption.TopDirectoryOnly).ToList().Where(
@@ -541,7 +543,7 @@ namespace Steam_Library_Manager.Definitions
                         };
 
 
-                        if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
                             List.LCItems.Add(Junk);
                         }
@@ -566,7 +568,7 @@ namespace Steam_Library_Manager.Definitions
                             };
 
 
-                            if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
                                 List.LCItems.Add(Junk);
                             }
@@ -587,7 +589,7 @@ namespace Steam_Library_Manager.Definitions
                             };
 
 
-                            if (List.LCItems.Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
                                 List.LCItems.Add(Junk);
                             }

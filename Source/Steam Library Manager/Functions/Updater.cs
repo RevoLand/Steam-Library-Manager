@@ -7,7 +7,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal class Updater
     {
-        public async static void CheckForUpdates(bool ShowResult = false)
+        public static async void CheckForUpdates(bool InformUser = false)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Steam_Library_Manager.Functions
                         System.Windows.Application.Current.Shutdown();
                     }
                 }
-                else if(ShowResult)
+                else if(InformUser)
                 {
                     await Main.FormAccessor.ShowMessageAsync("Steam Library Manager Updater", "You are using the latest version of SLM, thank you!");
                 }

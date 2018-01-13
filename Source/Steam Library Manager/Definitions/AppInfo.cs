@@ -201,7 +201,19 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileSystemInfo> GetCommonFiles() => CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+        public List<FileSystemInfo> GetCommonFiles()
+        {
+            try
+            {
+                CommonFolder.Refresh();
+                return CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error happened while populating files at common directory for game: {AppName} - Directory:\n{CommonFolder.FullName}\nError:\n{ex.Message}");
+                return null;
+            }
+        }
 
         public List<FileSystemInfo> GetDownloadFiles() => DownloadFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
 
@@ -582,39 +594,43 @@ namespace Steam_Library_Manager.Definitions
                 }
                 else
                 {
-                    Parallel.ForEach(GetFileList(), currentFile =>
+                    List<FileSystemInfo> FileList = GetFileList();
+                    if (FileList.Count > 0)
                     {
-                        try
+                        Parallel.ForEach(FileList, currentFile =>
                         {
-                            currentFile.Refresh();
-
-                            if (currentFile.Exists)
+                            try
                             {
-                                if (CurrentTask != null)
+                                currentFile.Refresh();
+
+                                if (currentFile.Exists)
                                 {
-                                    while (Framework.TaskManager.Paused)
+                                    if (CurrentTask != null)
                                     {
-                                        Task.Delay(100);
+                                        while (Framework.TaskManager.Paused)
+                                        {
+                                            Task.Delay(100);
+                                        }
+
+                                        CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
+                                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Deleting file: {currentFile.FullName}");
                                     }
 
-                                    CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
-                                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Deleting file: {currentFile.FullName}");
+                                    File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
+                                    currentFile.Delete();
                                 }
-
-                                File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
-                                currentFile.Delete();
+                            }
+                            catch (IOException ex)
+                            {
+                                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
+                            }
+                            catch (UnauthorizedAccessException ex)
+                            {
+                                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
                             }
                         }
-                        catch (FileNotFoundException ex)
-                        {
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
-                        }
-                        catch (UnauthorizedAccessException ex)
-                        {
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
-                        }
+                        );
                     }
-                    );
 
                     CommonFolder.Refresh();
                     // common folder, if exists

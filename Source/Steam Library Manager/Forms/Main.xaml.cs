@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager
 {
@@ -91,19 +93,20 @@ namespace Steam_Library_Manager
         {
             try
             {
-                Definitions.Library Library = (sender as Grid).DataContext as Definitions.Library;
+                Definitions.Library Library = ((Grid)sender).DataContext as Definitions.Library;
 
                 if (AppPanel.SelectedItems.Count == 0 || Library == null)
                 {
                     return;
                 }
 
+                Library.DirectoryInfo.Refresh();
                 if (!Library.DirectoryInfo.Exists)
                 {
                     return;
                 }
 
-                foreach (Definitions.AppInfo App in AppPanel.SelectedItems.AsQueryable())
+                foreach (Definitions.AppInfo App in AppPanel.SelectedItems)
                 {
                     if (App.IsSteamBackup)
                     {
@@ -116,7 +119,7 @@ namespace Steam_Library_Manager
                             continue;
                         }
 
-                        if (Framework.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library) == 0)
+                        if (Framework.TaskManager.TaskList.ToList().Count(x => x.App == App && x.TargetLibrary == Library) == 0)
                         {
                             Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
@@ -407,10 +410,11 @@ namespace Steam_Library_Manager
                         {
                             if (Junk.FSInfo is FileInfo)
                             {
-                                if (((FileInfo)Junk.FSInfo).Exists)
+                                Junk.FSInfo.Refresh();
+                                if (Junk.FSInfo.Exists)
                                 {
                                     ProgressInformationMessage.SetMessage("Relocating file:\n\n" + Junk.FSInfo.FullName);
-                                    (Junk.FSInfo as FileInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
+                                    ((FileInfo)Junk.FSInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
                                 }
 
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
@@ -418,9 +422,10 @@ namespace Steam_Library_Manager
                             }
                             else
                             {
-                                if (((DirectoryInfo)Junk.FSInfo).Exists)
+                                Junk.FSInfo.Refresh();
+                                if (Junk.FSInfo.Exists)
                                 {
-                                    foreach (FileInfo currentFile in (Junk.FSInfo as DirectoryInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    foreach (FileInfo currentFile in ((DirectoryInfo)Junk.FSInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
                                     {
                                         FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.Steam.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
 
@@ -454,13 +459,12 @@ namespace Steam_Library_Manager
                         var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.");
                         ProgressInformationMessage.SetIndeterminate();
 
-                        List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
-
-                        foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
+                        foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
                         {
                             if (Junk.FSInfo is FileInfo)
                             {
-                                if (((FileInfo)Junk.FSInfo).Exists)
+                                Junk.FSInfo.Refresh();
+                                if (Junk.FSInfo.Exists)
                                 {
                                     File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
                                     ProgressInformationMessage.SetMessage("Deleting file:\n\n" + Junk.FSInfo.FullName);
@@ -469,7 +473,8 @@ namespace Steam_Library_Manager
                             }
                             else
                             {
-                                if (((DirectoryInfo)Junk.FSInfo).Exists)
+                                Junk.FSInfo.Refresh();
+                                if (Junk.FSInfo.Exists)
                                 {
                                     ProgressInformationMessage.SetMessage("Deleting Folder:\n\n" + Junk.FSInfo.FullName);
                                     await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
@@ -483,9 +488,7 @@ namespace Steam_Library_Manager
                     }
                 }
             }
-            catch (FileNotFoundException)
-            { }
-            catch (DirectoryNotFoundException)
+            catch (IOException)
             { }
             catch (UnauthorizedAccessException)
             { }
@@ -525,11 +528,6 @@ namespace Steam_Library_Manager
         {
             try
             {
-                //if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed && grid.DataContext is Definitions.AppInfo)
-                //{
-                //    DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
-                //}
-
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
                     if ((sender as Grid).DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
@@ -584,9 +582,12 @@ namespace Steam_Library_Manager
         {
             try
             {
-                if (Directory.Exists(Definitions.Directories.SLM.HeaderImage))
+                if (Directory.Exists(Definitions.Directories.SLM.Cache))
                 {
-                    Directory.Delete(Definitions.Directories.SLM.HeaderImage, true);
+                    foreach(string file in Directory.EnumerateFiles(Definitions.Directories.SLM.Cache, "*.jpg"))
+                    {
+                        File.Delete(file);
+                    }
                 }
 
                 await this.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.");
@@ -603,5 +604,73 @@ namespace Steam_Library_Manager
             catch { }
         }
 
+        private void UpdateCustomTheme(string Key, Color value)
+        {
+            try
+            {
+                Tuple<AppTheme, Accent> Style = ThemeManager.DetectAppStyle(Application.Current);
+
+                switch(Key)
+                {
+                    case "TextBrush":
+                        Style.Item1.Resources["BlackBrush"] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["LabelTextBrush"] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["TextBrush"] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["ControlTextBrush"] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["MenuTextBrush"] = GetSolidColorBrush(value);
+                        break;
+                    case "GrayNormalBrush":
+                        Style.Item1.Resources["GrayNormalBrush"] = GetSolidColorBrush(value);
+                        break;
+                    case "WhiteBrush":
+                    case "ControlBackgroundBrush":
+                    case "WindowBackgroundBrush":
+                    case "TransparentWhiteBrush":
+                    case "GrayBrush1":
+                    case "GrayBrush2":
+                    case "GrayBrush7":
+                    case "GrayBrush8":
+                    case "GrayBrush10":
+                        Style.Item1.Resources[Key] = GetSolidColorBrush(value);
+                        break;
+
+                    case "MenuItemBackgroundBrush":
+                        Style.Item1.Resources[Key] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["ContextMenuBackgroundBrush"] = GetSolidColorBrush(value);
+                        Style.Item1.Resources["Gray7"] = value;
+                        break;
+                }
+
+                App.CreateThemeFrom("CustomTheme.xaml", Style.Item1.Resources);
+
+                if (Properties.Settings.Default.BaseTheme == "CustomTheme")
+                {
+                    ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Properties.Settings.Default.ThemeAccent), Style.Item1);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            try
+            {
+                UpdateCustomTheme(((ColorPickerLib.Controls.ColorPicker)sender).Tag.ToString(), e.NewValue.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private static SolidColorBrush GetSolidColorBrush(Color color, double opacity = 1d)
+        {
+            var brush = new SolidColorBrush(color) { Opacity = opacity };
+            brush.Freeze();
+            return brush;
+        }
     }
 }

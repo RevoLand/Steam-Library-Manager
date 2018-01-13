@@ -1,1 +1,1 @@
-1.5.0.5|Bug fixes
+1.5.0.6|Custom style support and bug fixes
