@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // Make a new definition for app
-                Definitions.AppInfo App = new Definitions.AppInfo()
+                Definitions.SteamAppInfo App = new Definitions.SteamAppInfo()
                 {
                     // Set game appID
                     AppID = AppID,
@@ -24,7 +24,7 @@ namespace Steam_Library_Manager.Functions
                     AppName = AppName,
 
                     Library = Library,
-                    InstallationPath = new DirectoryInfo(InstallationPath),
+                    InstallationDirectory = new DirectoryInfo(InstallationPath),
 
                     // Define it is an archive
                     IsCompressed = IsCompressed,
@@ -190,7 +190,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    Func<Definitions.AppInfo, object> Sort = SLM.Settings.GetSortingMethod();
+                    Func<Definitions.SteamAppInfo, object> Sort = SLM.Settings.GetSortingMethod();
 
                     switch (Library.Type)
                     {
@@ -208,8 +208,11 @@ namespace Steam_Library_Manager.Functions
                                 ).OrderBy(Sort).ToList()
                                 );
                             break;
+                        case Definitions.Enums.LibraryType.Origin:
+                            Main.FormAccessor.AppPanel.ItemsSource = Library.Origin.Apps.ToList();
+                            break;
                         case Definitions.Enums.LibraryType.SLM:
-                            List<Definitions.AppInfo> Applist = (((string.IsNullOrEmpty(Search)) ?
+                            List<Definitions.SteamAppInfo> Applist = (((string.IsNullOrEmpty(Search)) ?
                                 Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
                                     y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                                     || y.AppID.ToString().Contains(Search) // Search by app ID

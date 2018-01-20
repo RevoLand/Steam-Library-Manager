@@ -16,7 +16,7 @@ namespace Steam_Library_Manager.Definitions
         public class TaskInfo : INotifyPropertyChanged
         {
             public Enums.TaskType TaskType { get; set; }
-            public AppInfo App { get; set; }
+            public SteamAppInfo App { get; set; }
             public Library TargetLibrary { get; set; }
 
             public bool ErrorHappened, Active;

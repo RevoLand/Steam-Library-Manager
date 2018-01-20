@@ -14,9 +14,6 @@ namespace Steam_Library_Manager.Definitions
     {
         public Library Library => List.Libraries.First(x => x.Steam == this);
 
-        //private FileSystemWatcher SteamFolderWD;
-        //private FileSystemWatcher SLMFolderWD;
-
         public bool IsMain { get; set; }
 
         public DirectoryInfo SteamAppsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamApps"));
@@ -32,7 +29,7 @@ namespace Steam_Library_Manager.Definitions
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
         public string FullPath { get; set; }
-        public Framework.AsyncObservableCollection<AppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<AppInfo>();
+        public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
 
         public void UpdateDiskDetails()
         {
@@ -138,145 +135,12 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        private void SLMFolderWD_Created(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                Functions.App.ReadDetailsFromZip(e.FullPath, Library);
-            }
-            catch (Exception ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-            }
-        }
-
-        private void SLMFolderWD_Renamed(object sender, RenamedEventArgs e)
-        {
-            try
-            {
-                if (e.Name.EndsWith(".zip"))
-                {
-                    Functions.App.ReadDetailsFromZip(e.FullPath, Library);
-                }
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-            }
-        }
-
-        private void SLMFolderWD_Deleted(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                if (Apps.Count(x => x.AppID.ToString() == e.Name.Replace(".zip", "") && x.IsCompressed) > 0)
-                {
-                    Apps.Remove(Apps.First(x => x.AppID.ToString() == e.Name.Replace(".zip", "") && x.IsCompressed));
-
-                    if (SLM.CurrentSelectedLibrary.Steam == this)
-                    {
-                        Functions.App.UpdateAppPanel(SLM.CurrentSelectedLibrary);
-                    }
-
-                    UpdateLibraryVisual();
-                }
-            }
-            catch (Exception ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-            }
-        }
-
-        private void FolderWD_Created(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                // Define a new value and call KeyValue
-                Framework.KeyValue KeyValReader = new Framework.KeyValue();
-
-                // Read the *.acf file as text
-                KeyValReader.ReadFileAsText(e.FullPath);
-
-                // If key doesn't contains a child (value in acf file)
-                if (KeyValReader.Children.Count == 0)
-                {
-                    List.LCItems.Add(new List.JunkInfo
-                    {
-                        FSInfo = new FileInfo(e.FullPath),
-                        Library = Library
-                    });
-
-                    return;
-                }
-
-                if (Apps.Count(x => x.AppID == Convert.ToInt32(KeyValReader["appID"].Value)) > 0)
-                {
-                    return;
-                }
-
-                Functions.App.AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), false);
-
-                if (SLM.CurrentSelectedLibrary.Steam == this)
-                {
-                    Functions.App.UpdateAppPanel(SLM.CurrentSelectedLibrary);
-                }
-
-                UpdateLibraryVisual();
-            }
-            catch (FormatException FormatEx)
-            {
-                Debug.WriteLine(FormatEx);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, FormatEx.ToString());
-            }
-            catch (Exception Ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, Ex.ToString());
-            }
-        }
-
-        private void FolderWD_Changed(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                FolderWD_Deleted(sender, e);
-                FolderWD_Created(sender, e);
-            }
-            catch (Exception ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-            }
-        }
-
-        private void FolderWD_Deleted(object sender, FileSystemEventArgs e)
-        {
-            try
-            {
-                if (Apps.Count(x => x.AcfName == e.Name) > 0)
-                {
-                    AppInfo RemovedApp = Apps.First(x => x.AcfName == e.Name);
-                    Apps.Remove(RemovedApp);
-
-                    if (SLM.CurrentSelectedLibrary.Steam == this)
-                    {
-                        Functions.App.UpdateAppPanel(SLM.CurrentSelectedLibrary);
-                    }
-
-                    UpdateLibraryVisual();
-                }
-            }
-            catch (Exception ex)
-            {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
-            }
-        }
-
         public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
         {
             Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
             try
             {
-                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive))
+                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
                 {
                     if (!CMenuItem.ShowToNormal)
                     {
@@ -352,7 +216,7 @@ namespace Steam_Library_Manager.Definitions
                     break;
                 case "deletelibraryslm":
 
-                    foreach (AppInfo App in Apps.ToList())
+                    foreach (SteamAppInfo App in Apps.ToList())
                     {
                         if (!await App.DeleteFilesAsync())
                         {
@@ -500,10 +364,10 @@ namespace Steam_Library_Manager.Definitions
                 if (CommonFolder.Exists)
                 {
                     foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().ToList().Where(
-                        x => Apps.Count(y => y.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
+                        x => Apps.Count(y => y.InstallationDirectory.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Framework.TaskManager.TaskList.Count(
-                            z => z.App.InstallationPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            z => z.App.InstallationDirectory.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
                             && z.TargetLibrary == Library
                             ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))

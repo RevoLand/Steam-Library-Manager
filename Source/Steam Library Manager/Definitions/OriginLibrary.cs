@@ -1,0 +1,122 @@
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Linq;
+
+namespace Steam_Library_Manager.Definitions
+{
+    public class OriginLibrary : INotifyPropertyChanged
+    {
+        public Library Library => List.Libraries.First(x => x.Origin == this);
+        public bool IsMain { get; set; }
+        public string FullPath { get; set; }
+        public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+
+        //-----
+        public OriginLibrary(string _FullPath, bool _IsMain = false)
+        {
+            FullPath = _FullPath;
+            IsMain = _IsMain;
+        }
+
+        public void UpdateAppList()
+        {
+            try
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                if (Directory.Exists(FullPath))
+                {
+                    foreach(var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
+                    {
+                        var xml = XDocument.Load(OriginApp);
+
+                        Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Elements("gameTitles")?.First()?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
+                           _AppID: Convert.ToInt32(xml.Root.Elements("contentIDs")?.First()?.Elements("contentID")?.First()?.Value), _Locales: xml.Root.Elements("installMetaData")?.First()?.Elements("locales")?.First()?.Value.Split(','),
+                           _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent, _TouchupFile: xml.Root.Elements("touchup")?.First()?.Elements("filePath")?.First()?.Value,
+                           _InstallationParameter: xml.Root.Elements("touchup")?.First()?.Elements("parameters")?.First()?.Value, _UpdateParameter: xml.Root.Elements("touchup")?.First()?.Elements("updateParameters")?.First()?.Value,
+                           _RepairParameter: xml.Root.Elements("touchup")?.First()?.Elements("repairParameters")?.First()?.Value, _AppVersion: new Version(xml.Root.Elements("buildMetaData")?.First()?.Elements("gameVersion")?.First()?.Attribute("version").Value)
+                           ));
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Origin games directory is not exists.");
+                }
+                stopwatch.Stop();
+                Debug.WriteLine(stopwatch.Elapsed);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        //-----
+
+        public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
+        {
+            Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+            try
+            {
+                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Origin))
+                {
+                    if (!CMenuItem.ShowToNormal)
+                    {
+                        continue;
+                    }
+
+                    if (CMenuItem.IsSeparator)
+                    {
+                        CMenu.Add(new Separator());
+                    }
+                    else
+                    {
+                        MenuItem SLMItem = new MenuItem()
+                        {
+                            Tag = CMenuItem.Action,
+                            Header = string.Format(CMenuItem.Header, FullPath, Library.PrettyFreeSpace),
+                            Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
+                            HorizontalContentAlignment = HorizontalAlignment.Left,
+                            VerticalContentAlignment = VerticalAlignment.Center
+                        };
+
+                        SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
+
+                        CMenu.Add(SLMItem);
+                    }
+                }
+
+                return CMenu;
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+
+                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                return CMenu;
+            }
+        }
+
+        public void ParseMenuItemAction(string Action)
+        {
+            switch (Action.ToLowerInvariant())
+            {
+                case "disk":
+                    if (Directory.Exists(FullPath))
+                    {
+                        Process.Start(FullPath);
+                    }
+
+                    break;
+            }
+        }
+
+    }
+}

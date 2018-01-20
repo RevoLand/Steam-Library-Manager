@@ -105,6 +105,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -114,12 +115,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Definitions\AppInfo.cs" />
     <Compile Include="Definitions\ContextMenuItem.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Global.cs" />
     <Compile Include="Definitions\Library.cs" />
+    <Compile Include="Definitions\OriginAppInfo.cs" />
+    <Compile Include="Definitions\OriginLibrary.cs" />
     <Compile Include="Definitions\Settings.cs" />
+    <Compile Include="Definitions\SteamAppInfo.cs" />
     <Compile Include="Definitions\SteamLibrary.cs" />
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
@@ -148,6 +151,7 @@
     <Compile Include="Functions\App.cs" />
     <Compile Include="Functions\Logger.cs" />
     <Compile Include="Functions\Network.cs" />
+    <Compile Include="Functions\Origin.cs" />
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -232,10 +236,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.2.3.18\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.3.18\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.2.3.20\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.3.20\build\Fody.targets'))" />
   </Target>
   <Import Project="..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.1.6.2\build\dotnet\Costura.Fody.targets')" />
-  <Import Project="..\packages\Fody.2.3.18\build\Fody.targets" Condition="Exists('..\packages\Fody.2.3.18\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.2.3.20\build\Fody.targets" Condition="Exists('..\packages\Fody.2.3.20\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

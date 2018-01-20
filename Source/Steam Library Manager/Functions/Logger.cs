@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Functions
         private class AppLog
         {
             public string Message;
-            public Definitions.AppInfo App;
+            public Definitions.SteamAppInfo App;
         }
 
         private static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
@@ -136,7 +136,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                DirectoryInfo AppLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "App", Log.App.InstallationPath.Name));
+                DirectoryInfo AppLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "App", Log.App.InstallationDirectory.Name));
 
                 if (!AppLogDirectory.Exists)
                 {
@@ -203,7 +203,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LogToFile(LogType LogType, string LogMessage, Definitions.AppInfo App = null)
+        public static void LogToFile(LogType LogType, string LogMessage, Definitions.SteamAppInfo App = null)
         {
             try
             {

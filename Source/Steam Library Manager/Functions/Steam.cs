@@ -406,13 +406,13 @@ namespace Steam_Library_Manager.Functions
 
                         foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (Definitions.AppInfo CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
+                            foreach (Definitions.SteamAppInfo CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
                             {
                                 ProgressInformationMessage.SetMessage("Checking for:\n\n" + CurrentApp.AppName);
 
                                 if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
                                 {
-                                    Definitions.AppInfo LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated);
+                                    Definitions.SteamAppInfo LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated);
 
                                     if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == CurrentApp.AppID && x.TargetLibrary == LatestApp.Library && !x.Completed) == 0)
                                     {

@@ -10,9 +10,9 @@ namespace Steam_Library_Manager.Functions
     {
         public class Settings
         {
-            public static Func<Definitions.AppInfo, object> GetSortingMethod()
+            public static Func<Definitions.SteamAppInfo, object> GetSortingMethod()
             {
-                Func<Definitions.AppInfo, object> Sort;
+                Func<Definitions.SteamAppInfo, object> Sort;
 
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
@@ -77,7 +77,7 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 LoadSteam();
-                //LoadOrigin();
+                LoadOrigin();
 
                 // SLM Libraries
                 Library.GenerateLibraryList();
@@ -105,6 +105,22 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+            }
+        }
+
+        public static void LoadOrigin()
+        {
+            try
+            {
+                Origin.PopulateLibraryCMenuItems();
+                Origin.PopulateAppCMenuItems();
+
+                Origin.GenerateLibraryList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
                 Logger.LogToFile(Logger.LogType.Library, ex.ToString());
             }
         }
@@ -155,7 +171,8 @@ namespace Steam_Library_Manager.Functions
                         Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary()
                         {
                             FullPath = LibraryPath
-                        } : null
+                        } : null,
+                        Origin = (Directory.Exists(Path.Combine(LibraryPath, "Origin"))) ? new Definitions.OriginLibrary(Path.Combine(LibraryPath, "Origin")) : null
                     };
 
                     Definitions.List.Libraries.Add(Library);

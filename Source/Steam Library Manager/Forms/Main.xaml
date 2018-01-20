@@ -34,78 +34,47 @@
                     <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" />
                 </Grid.ContextMenu>
 
-                <!-- TextBlock: Offline text -->
-                <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="true" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
                 <!-- TextBlock: Library Path -->
                 <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="Steam">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Text="Steam"/>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding AppCount, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right"/>
                 </Grid>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
-                    <Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding Steam.SteamAppsFolder.Exists}" Value="false" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+
+                <!-- ProgressBar: Available free space -->
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        
+        <!-- Library: Origin -->
+        <DataTemplate x:Key="Library_Origin">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Origin.ContextMenu}" />
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding Origin.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="Origin"/>
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right"/>
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
 
                     <!-- ProgressBar: Available free space -->
                     <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
@@ -558,6 +527,9 @@
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Type}" Value="Steam">
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Library_Steam}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="Origin">
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Library_Origin}" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Type}" Value="SLM">
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Library_SLM}" />

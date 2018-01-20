@@ -13,14 +13,13 @@ using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class AppInfo
+    public class SteamAppInfo
     {
         public Library Library { get; set; }
-        public Enums.GameType GameType { get; set; }
 
         public int AppID { get; set; }
         public string AppName { get; set; }
-        public DirectoryInfo InstallationPath;
+        public DirectoryInfo InstallationDirectory;
         public long SizeOnDisk { get; set; }
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
@@ -30,9 +29,9 @@ namespace Steam_Library_Manager.Definitions
 
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
 
-        public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationPath.Name));
+        public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationDirectory.Name));
 
-        public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(Library.Steam.DownloadFolder.FullName, InstallationPath.Name));
+        public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(Library.Steam.DownloadFolder.FullName, InstallationDirectory.Name));
 
         public DirectoryInfo WorkShopPath => new DirectoryInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, "content", AppID.ToString()));
 
@@ -46,53 +45,54 @@ namespace Steam_Library_Manager.Definitions
 
         public string WorkShopAcfName => $"appworkshop_{AppID}.acf";
 
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems => GenerateRightClickMenuItems();
-
-        public Framework.AsyncObservableCollection<FrameworkElement> GenerateRightClickMenuItems()
+        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems
         {
-            Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
-            try
+            get
             {
-                foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive))
+                Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+                try
                 {
-                    if (IsCompressed && !cItem.ShowToCompressed)
+                    foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
                     {
-                        continue;
-                    }
-                    else if (!cItem.ShowToNormal)
-                    {
-                        continue;
-                    }
-
-                    if (cItem.IsSeparator)
-                    {
-                        rightClickMenu.Add(new Separator());
-                    }
-                    else
-                    {
-                        MenuItem SLMItem = new MenuItem()
+                        if (IsCompressed && !cItem.ShowToCompressed)
                         {
-                            Tag = this,
-                            Header = string.Format(cItem.Header, AppName, AppID, Functions.FileSystem.FormatBytes(SizeOnDisk))
-                        };
-                        SLMItem.Tag = cItem.Action;
-                        SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor);
-                        SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
-                        SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
-                        SLMItem.Click += Main.FormAccessor.AppCMenuItem_Click;
+                            continue;
+                        }
+                        else if (!cItem.ShowToNormal)
+                        {
+                            continue;
+                        }
 
-                        rightClickMenu.Add(SLMItem);
+                        if (cItem.IsSeparator)
+                        {
+                            rightClickMenu.Add(new Separator());
+                        }
+                        else
+                        {
+                            MenuItem SLMItem = new MenuItem()
+                            {
+                                Tag = this,
+                                Header = string.Format(cItem.Header, AppName, AppID, Functions.FileSystem.FormatBytes(SizeOnDisk))
+                            };
+                            SLMItem.Tag = cItem.Action;
+                            SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor);
+                            SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
+                            SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
+                            SLMItem.Click += Main.FormAccessor.AppCMenuItem_Click;
+
+                            rightClickMenu.Add(SLMItem);
+                        }
                     }
+
+                    return rightClickMenu;
                 }
+                catch (FormatException ex)
+                {
+                    MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
 
-                return rightClickMenu;
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
-
-                return rightClickMenu;
+                    return rightClickMenu;
+                }
             }
         }
 
@@ -274,6 +274,7 @@ namespace Steam_Library_Manager.Definitions
                             string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
                             CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
+                            //CurrentTask.TaskStatusInfo = $"Copying: <game files>";
                             Archive.CreateEntryFromFile(currentFile.FullName, FileNameInArchive, CompressionLevel.Optimal);
                             CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;
 
@@ -335,7 +336,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     POptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, async CurrentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
                     {
                         try
                         {
@@ -398,7 +399,7 @@ namespace Steam_Library_Manager.Definitions
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
-                            await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                                 {
@@ -410,11 +411,11 @@ namespace Steam_Library_Manager.Definitions
                             Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
                             Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ioex}");
 
-                            await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                            SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
                         }
                         catch (UnauthorizedAccessException uaex)
                         {
-                            await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                                 {
@@ -427,7 +428,8 @@ namespace Steam_Library_Manager.Definitions
 
                     POptions.MaxDegreeOfParallelism = -1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, async CurrentFile =>
+                    CurrentTask.TaskStatusInfo = $"Copying: <small files>";
+                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
                     {
                         try
                         {
@@ -448,7 +450,7 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     using (FileStream NewFileContent = NewFile.OpenWrite())
                                     {
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+                                        //CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
 
                                         while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                         {
@@ -490,7 +492,7 @@ namespace Steam_Library_Manager.Definitions
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
-                            await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                                 {
@@ -502,11 +504,11 @@ namespace Steam_Library_Manager.Definitions
                             Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
                             Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ioex}");
 
-                            await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                            SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
                         }
                         catch (UnauthorizedAccessException uaex)
                         {
-                            await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                                 {

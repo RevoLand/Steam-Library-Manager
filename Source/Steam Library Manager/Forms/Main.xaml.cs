@@ -106,11 +106,11 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                foreach (Definitions.AppInfo App in AppPanel.SelectedItems)
+                foreach (Definitions.SteamAppInfo App in AppPanel.SelectedItems)
                 {
                     if (App.IsSteamBackup)
                     {
-                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationPath}\"");
+                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationDirectory}\"");
                     }
                     else
                     {
@@ -190,7 +190,20 @@ namespace Steam_Library_Manager
 
         public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
 
-        public void AppCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.AppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+        public void AppCMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            switch(Definitions.SLM.CurrentSelectedLibrary.Type)
+            {
+                case Definitions.Enums.LibraryType.Steam:
+                case Definitions.Enums.LibraryType.SLM:
+                    ((Definitions.SteamAppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+                    break;
+                case Definitions.Enums.LibraryType.Origin:
+                    ((Definitions.OriginAppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+                    break;
+            }
+            
+        }
 
         private void RightWindowCommands_SettingsButton_Click(object sender, RoutedEventArgs e) => TabItem_Settings.IsSelected = true;
 
@@ -537,11 +550,11 @@ namespace Steam_Library_Manager
                             Process.Start(((sender as Grid).DataContext as Definitions.List.TaskInfo).App.CommonFolder.FullName);
                         }
                     }
-                    else if (((sender as Grid).DataContext is Definitions.AppInfo))
+                    else if (((sender as Grid).DataContext is Definitions.SteamAppInfo))
                     {
-                        if (((sender as Grid).DataContext as Definitions.AppInfo).CommonFolder.Exists)
+                        if (((sender as Grid).DataContext as Definitions.SteamAppInfo).CommonFolder.Exists)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.AppInfo).CommonFolder.FullName);
+                            Process.Start(((sender as Grid).DataContext as Definitions.SteamAppInfo).CommonFolder.FullName);
                         }
                     }
                     else if (((sender as Grid).DataContext is Definitions.Library))
@@ -559,6 +572,13 @@ namespace Steam_Library_Manager
                         if (((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.Exists)
                         {
                             Process.Start(((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.FullName);
+                        }
+                    }
+                    else if (((sender as Grid).DataContext is Definitions.OriginAppInfo))
+                    {
+                        if (((sender as Grid).DataContext as Definitions.OriginAppInfo).InstallationDirectory.Exists)
+                        {
+                            Process.Start(((sender as Grid).DataContext as Definitions.OriginAppInfo).InstallationDirectory.FullName);
                         }
                     }
                 }

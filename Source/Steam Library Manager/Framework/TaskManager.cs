@@ -26,6 +26,7 @@ namespace Steam_Library_Manager.Framework
                         break;
                     case Definitions.Enums.TaskType.Delete:
                         await CurrentTask.App.DeleteFilesAsync(CurrentTask);
+                        CurrentTask.App.Library.Steam.Apps.Remove(CurrentTask.App);
                         break;
                 }
 
@@ -35,6 +36,7 @@ namespace Steam_Library_Manager.Framework
                     {
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Removing moved files as requested. This may take a while, please wait.");
                         await CurrentTask.App.DeleteFilesAsync(CurrentTask);
+                        CurrentTask.App.Library.Steam.Apps.Remove(CurrentTask.App);
                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Files removed, task is completed now.");
                     }
 
@@ -50,8 +52,13 @@ namespace Steam_Library_Manager.Framework
                     CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
-                    // Update library details
                     CurrentTask.TargetLibrary.Steam.UpdateAppList();
+
+                    // Update library details
+                    if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.App.Library)
+                    {
+                        Functions.App.UpdateAppPanel(CurrentTask.App.Library);
+                    }
 
                     if (TaskList.Count(x => !x.Completed) == 0)
                     {
