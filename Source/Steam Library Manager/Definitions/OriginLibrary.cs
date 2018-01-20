@@ -37,6 +37,9 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach(var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
                     {
+                        if (new FileInfo(OriginApp).Directory.Parent.Parent.Name != new DirectoryInfo(FullPath).Name)
+                            continue;
+
                         Debug.WriteLine(OriginApp);
 
                         var xml = XDocument.Load(OriginApp);
