@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -36,14 +37,36 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach(var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
                     {
-                        var xml = XDocument.Load(OriginApp);
+                        Debug.WriteLine(OriginApp);
 
-                        Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Elements("gameTitles")?.First()?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
-                           _AppID: Convert.ToInt32(xml.Root.Elements("contentIDs")?.First()?.Elements("contentID")?.First()?.Value), _Locales: xml.Root.Elements("installMetaData")?.First()?.Elements("locales")?.First()?.Value.Split(','),
-                           _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent, _TouchupFile: xml.Root.Elements("touchup")?.First()?.Elements("filePath")?.First()?.Value,
-                           _InstallationParameter: xml.Root.Elements("touchup")?.First()?.Elements("parameters")?.First()?.Value, _UpdateParameter: xml.Root.Elements("touchup")?.First()?.Elements("updateParameters")?.First()?.Value,
-                           _RepairParameter: xml.Root.Elements("touchup")?.First()?.Elements("repairParameters")?.First()?.Value, _AppVersion: new Version(xml.Root.Elements("buildMetaData")?.First()?.Elements("gameVersion")?.First()?.Attribute("version").Value)
-                           ));
+                        var xml = XDocument.Load(OriginApp);
+                        Version ManifestVersion = new Version((xml.Root.Name.LocalName == "game") ? xml.Root.Attribute("manifestVersion").Value : ((xml.Root.Name.LocalName == "DiPManifest") ? xml.Root.Attribute("version").Value : "1.0"));
+
+                        if (ManifestVersion == new Version("4.0"))
+                        {
+                            Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("gameTitles")?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
+                                _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value), _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
+                                _AppVersion: new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")?.Attribute("version")?.Value),
+                                _Locales: xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
+                                _TouchupFile: xml.Root.Element("touchup")?.Element("filePath")?.Value, _InstallationParameter: xml.Root.Element("touchup")?.Element("parameters")?.Value,
+                                _UpdateParameter: xml.Root.Element("touchup")?.Element("updateParameters")?.Value, _RepairParameter: xml.Root.Element("touchup")?.Element("repairParameters")?.Value));
+                        }
+                        else if (ManifestVersion == new Version("2.1"))
+                        {
+                            List<string> _locales = new List<string>();
+                            foreach (var _locale in xml.Root.Element("metadata")?.Elements("localeInfo")?.Attributes()?.Where(x => x.Name == "locale"))
+                            {
+                                _locales.Add(_locale.Value);
+                            }
+
+                            Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("metadata")?.Elements("localeInfo")?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
+                                _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value.Replace("EAX", "")),
+                                _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
+                                _AppVersion: new Version(xml.Root.Attribute("gameVersion").Value),
+                                _Locales: _locales.ToArray(),
+                                _TouchupFile: xml.Root.Element("executable")?.Element("filePath")?.Value,
+                                _InstallationParameter: xml.Root.Element("executable")?.Element("parameters")?.Value));
+                        }
                     }
                 }
                 else

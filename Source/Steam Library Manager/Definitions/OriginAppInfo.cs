@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Definitions
         public string RepairParameter { get; set; }
         public Version AppVersion { get; set; }
 
-        public OriginAppInfo(Library _Library, string _AppName, int _AppID, string[] _Locales, DirectoryInfo _InstallationDirectory, string _TouchupFile, string _InstallationParameter, string _UpdateParameter, string _RepairParameter, Version _AppVersion)
+        public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
             Library = _Library;
             AppName = _AppName;
