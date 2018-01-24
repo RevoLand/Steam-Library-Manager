@@ -22,6 +22,15 @@ namespace Steam_Library_Manager.Functions
                 LibraryType = Definitions.Enums.LibraryType.Origin
             });
 
+            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Remove from SLM",
+                Action = "remove",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                ShowToNormal = false
+            });
+
             #endregion
         }
 
@@ -125,7 +134,6 @@ namespace Steam_Library_Manager.Functions
             {
                 Definitions.OriginLibrary Library = new Definitions.OriginLibrary(LibraryPath, IsMainLibrary);
                 
-
                 Definitions.List.Libraries.Add(new Definitions.Library
                 {
                     Type = Definitions.Enums.LibraryType.Origin,
@@ -141,6 +149,31 @@ namespace Steam_Library_Manager.Functions
                 ex.Data.Add("LibraryPath", LibraryPath);
                 ex.Data.Add("CurrentLibraries", Definitions.List.Libraries);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+            }
+        }
+
+        public static bool IsLibraryExists(string NewLibraryPath)
+        {
+            try
+            {
+                NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+
+                if (Definitions.List.Libraries.Where(x =>
+                x.Type == Definitions.Enums.LibraryType.Origin &&
+                (
+                    x.Origin.FullPath.ToLowerInvariant() == NewLibraryPath
+                )
+                ).Count() > 0)
+                    return true;
+
+                // else, return false which means library is not exists
+                return false;
+            }
+            // In any error return true to prevent possible bugs
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return true;
             }
         }
     }

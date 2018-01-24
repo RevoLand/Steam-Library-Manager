@@ -1,6 +1,11 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,6 +23,10 @@ namespace Steam_Library_Manager.Definitions
         public string UpdateParameter { get; set; }
         public string RepairParameter { get; set; }
         public Version AppVersion { get; set; }
+        public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
+        public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
+        public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
+        public bool IsCompressed => Framework.JunctionPoint.Exists(InstallationDirectory.FullName);
 
         public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
@@ -81,7 +90,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void ParseMenuItemAction(string Action)
+        public async void ParseMenuItemActionAsync(string Action)
         {
             try
             {
@@ -97,22 +106,20 @@ namespace Steam_Library_Manager.Definitions
 
                         break;
                     case "deleteappfiles":
-                        //await Task.Run(() => DeleteFilesAsync());
+                        await Task.Run(() => DeleteFiles());
 
-                        /*
+
                         Library.Origin.Apps.Remove(this);
                         if (SLM.CurrentSelectedLibrary == Library)
                             Functions.App.UpdateAppPanel(Library);
-                        */
-                        MessageBox.Show("Not implemented");
+
                         break;
                     case "deleteappfilestm":
-                        //Framework.TaskManager.AddTask(new List.TaskInfo
-                        //{
-                        //    App = this,
-                        //    TaskType = Enums.TaskType.Delete
-                        //});
-                        MessageBox.Show("Not implemented");
+                        Framework.TaskManager.AddTask(new List.TaskInfo
+                        {
+                            OriginApp = this,
+                            TaskType = Enums.TaskType.Delete,
+                        });
                         break;
                 }
             }
@@ -122,5 +129,346 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
+        public List<FileInfo> GetFileList()
+        {
+            try
+            {
+                InstallationDirectory?.Refresh();
+
+                return InstallationDirectory?.GetFiles("*", SearchOption.AllDirectories).ToList() ?? null;
+            }
+            catch { return null; }
+        }
+
+        public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
+        {
+            LogToTM($"[{AppName}] Populating file list, please wait");
+            Functions.Logger.LogToFile(Functions.Logger.LogType.App, "Populating file list", this);
+
+            ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
+            ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
+            List<FileInfo> AppFiles = GetFileList();
+            CurrentTask.TotalFileCount = AppFiles.Count;
+            long TotalFileSize = 0;
+
+            try
+            {
+                ParallelOptions POptions = new ParallelOptions()
+                {
+                    CancellationToken = cancellationToken
+                };
+
+                Parallel.ForEach(AppFiles, POptions, file =>
+                {
+                    Interlocked.Add(ref TotalFileSize, file.Length);
+                });
+
+                CurrentTask.TotalFileSize = TotalFileSize;
+                CurrentTask.ElapsedTime.Start();
+
+                LogToTM($"[{AppName}] File list populated, total files to move: {AppFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File list populated, total files to move: {AppFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}", this);
+
+
+                POptions.MaxDegreeOfParallelism = 1;
+
+                if (CurrentTask.TargetLibrary.Type == Enums.LibraryType.SLM && CurrentTask.TargetLibrary.Origin == null)
+                {
+                    Directory.CreateDirectory(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
+
+                    CurrentTask.TargetLibrary.Origin = new OriginLibrary(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
+                }
+
+                Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
+                {
+                    try
+                    {
+                        FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
+
+                        if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
+                        {
+                            if (!NewFile.Directory.Exists)
+                            {
+                                NewFile.Directory.Create();
+                                CreatedDirectories.Add(NewFile.Directory.FullName);
+                            }
+
+                            int currentBlockSize = 0;
+                            byte[] FSBuffer = new byte[8192];
+
+                            using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            {
+                                using (FileStream NewFileContent = NewFile.OpenWrite())
+                                {
+                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
+
+                                    while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
+                                    {
+                                        if (cancellationToken.IsCancellationRequested)
+                                            throw (new OperationCanceledException(cancellationToken));
+
+                                        while (Framework.TaskManager.Paused)
+                                        {
+                                            Task.Delay(100);
+                                        }
+
+                                        NewFileContent.Write(FSBuffer, 0, currentBlockSize);
+
+                                        CurrentTask.MovedFileSize += currentBlockSize;
+                                    }
+                                }
+
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
+                            }
+                        }
+                        else
+                            CurrentTask.MovedFileSize += NewFile.Length;
+
+                        CopiedFiles.Add(NewFile.FullName);
+
+                        if (CurrentTask.ReportFileMovement)
+                        {
+                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
+                        }
+
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
+                    }
+                    catch (IOException ioex)
+                    {
+                        CurrentTask.ErrorHappened = true;
+                        Framework.TaskManager.Stop();
+                        CurrentTask.Active = false;
+                        CurrentTask.Completed = true;
+
+                        Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                        {
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            {
+                                Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                            }
+                        }, System.Windows.Threading.DispatcherPriority.Normal);
+
+
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ioex}");
+
+                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                    }
+                    catch (UnauthorizedAccessException uaex)
+                    {
+                        Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                        {
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            {
+                                Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                            }
+                        }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                    }
+                });
+
+                POptions.MaxDegreeOfParallelism = -1;
+                CurrentTask.TaskStatusInfo = $"Copying: <small files>";
+
+                Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
+                {
+                    try
+                    {
+                        FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
+
+                        if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
+                        {
+                            if (!NewFile.Directory.Exists)
+                            {
+                                NewFile.Directory.Create();
+                                CreatedDirectories.Add(NewFile.Directory.FullName);
+                            }
+
+                            int currentBlockSize = 0;
+                            byte[] FSBuffer = new byte[8192];
+
+                            using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            {
+                                using (FileStream NewFileContent = NewFile.OpenWrite())
+                                {
+                                        //CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+
+                                        while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
+                                    {
+                                        if (cancellationToken.IsCancellationRequested)
+                                            throw (new OperationCanceledException(cancellationToken));
+
+                                        while (Framework.TaskManager.Paused)
+                                        {
+                                            Task.Delay(100);
+                                        }
+
+                                        NewFileContent.Write(FSBuffer, 0, currentBlockSize);
+
+                                        CurrentTask.MovedFileSize += currentBlockSize;
+                                    }
+                                }
+
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
+                            }
+                        }
+                        else
+                            CurrentTask.MovedFileSize += NewFile.Length;
+
+                        CopiedFiles.Add(NewFile.FullName);
+
+                        if (CurrentTask.ReportFileMovement)
+                        {
+                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
+                        }
+
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
+                    }
+                    catch (IOException ioex)
+                    {
+                        CurrentTask.ErrorHappened = true;
+                        Framework.TaskManager.Stop();
+                        CurrentTask.Active = false;
+                        CurrentTask.Completed = true;
+
+                        Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                        {
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            {
+                                Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                            }
+                        }, System.Windows.Threading.DispatcherPriority.Normal);
+
+
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}]{ioex}");
+
+                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                    }
+                    catch (UnauthorizedAccessException uaex)
+                    {
+                        Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                        {
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            {
+                                Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                            }
+                        }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                    }
+                });
+
+                CurrentTask.ElapsedTime.Stop();
+                CurrentTask.MovedFileSize = TotalFileSize;
+
+                LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
+            }
+            catch (OperationCanceledException)
+            {
+                if (!CurrentTask.ErrorHappened)
+                {
+                    CurrentTask.ErrorHappened = true;
+                    Framework.TaskManager.Stop();
+                    CurrentTask.Active = false;
+                    CurrentTask.Completed = true;
+
+                    await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                    {
+                        if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        {
+                            Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                        }
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                    LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
+                }
+            }
+            catch (Exception ex)
+            {
+                CurrentTask.ErrorHappened = true;
+                Framework.TaskManager.Stop();
+                CurrentTask.Active = false;
+                CurrentTask.Completed = true;
+
+                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    {
+                        Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                    }
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+
+
+                Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
+            }
+        }
+
+        public void DeleteFiles(List.TaskInfo CurrentTask = null)
+        {
+            try
+            {
+                var Files = GetFileList();
+
+                Parallel.ForEach(Files, currentFile =>
+                {
+                    try
+                    {
+                        currentFile.Refresh();
+                        if (currentFile.Exists)
+                        {
+                            if (CurrentTask != null)
+                            {
+                                while (Framework.TaskManager.Paused)
+                                {
+                                    Task.Delay(100);
+                                }
+
+                                CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
+                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Deleting file: {currentFile.FullName}");
+                            }
+
+                            File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
+                            currentFile.Delete();
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                    }
+                });
+
+                InstallationDirectory.Refresh();
+                if (InstallationDirectory.Exists)
+                {
+                    InstallationDirectory.Delete(true);
+                }
+            }
+            catch { }
+        }
+
+        public void LogToTM(string TextToLog)
+        {
+            try
+            {
+                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] {TextToLog}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+            }
+        }
     }
 }

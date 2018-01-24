@@ -135,7 +135,7 @@
                     </TextBlock>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding AppCount, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -238,19 +238,10 @@
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
                     <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
-                    <TextBlock HorizontalAlignment="Right" Margin="0,0,60,0">
+                    <TextBlock HorizontalAlignment="Right" Margin="0,0,70,0">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
-                                    <!--
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.IsBackup}" Value="true" />
-                                            <Condition Binding="{Binding SteamBackup}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Text" Value="SLM backup" />
-                                    </MultiDataTrigger>
-                                    -->
                                     <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
                                         <Setter Property="Text" Value="Steam" />
                                     </DataTrigger>
@@ -296,7 +287,7 @@
                 </Controls:MetroProgressBar>
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" >
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}" >
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -324,9 +315,9 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
 
                         <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
                             <TextBlock.Style>
@@ -345,7 +336,7 @@
                         <TextBlock Text="{Binding TaskProgressInfo}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,-35,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
+                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
 
                         <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
@@ -401,7 +392,7 @@
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
+                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
                         <CachedImage:Image.Style>
                             <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>
@@ -425,15 +416,15 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding App.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap"/>
 
 
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,40,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,50,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" />
 
                         <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
                             <TextBlock.Style>

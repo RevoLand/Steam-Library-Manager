@@ -295,7 +295,7 @@ namespace Steam_Library_Manager.Functions
 
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
-                            Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}");
+                            Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}", "-silent");
                         }
                     }
                     else
@@ -414,11 +414,11 @@ namespace Steam_Library_Manager.Functions
                                 {
                                     Definitions.SteamAppInfo LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.App.AppID == CurrentApp.AppID && x.TargetLibrary == LatestApp.Library && !x.Completed) == 0)
+                                    if (Framework.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && x.TargetLibrary == LatestApp.Library && !x.Completed) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
-                                            App = LatestApp,
+                                            SteamApp = LatestApp,
                                             TargetLibrary = CurrentApp.Library
                                         };
 
@@ -445,11 +445,7 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    Definitions.SteamLibrary Library = new Definitions.SteamLibrary()
-                    {
-                        IsMain = IsMainLibrary,
-                        FullPath = LibraryPath
-                    };
+                    Definitions.SteamLibrary Library = new Definitions.SteamLibrary(LibraryPath, IsMainLibrary);
 
                     Definitions.List.Libraries.Add(new Definitions.Library
                     {
@@ -465,7 +461,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     Logger.LogToFile(Logger.LogType.Library, ex.ToString());
                     ex.Data.Add("LibraryPath", LibraryPath);
-                    ex.Data.Add("CurrentLibraries", Definitions.List.Libraries);
+                    ex.Data.Add("CurrentLibraries", Definitions.List.Libraries.ToList());
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
@@ -507,6 +503,34 @@ namespace Steam_Library_Manager.Functions
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
+
+            public static bool IsLibraryExists(string NewLibraryPath)
+            {
+                try
+                {
+                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+
+                    if (Definitions.List.Libraries.Where(x => 
+                    x.Type == Definitions.Enums.LibraryType.Steam &&
+                    (x.Steam.FullPath.ToLowerInvariant() == NewLibraryPath ||
+                    x.Steam.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                    x.Steam.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                    x.Steam.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
+                    x.Steam.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath)
+                    ).Count() > 0)
+                        return true;
+
+                    // else, return false which means library is not exists
+                    return false;
+                }
+                // In any error return true to prevent possible bugs
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    return true;
+                }
+            }
+
         }
     }
 }

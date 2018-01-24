@@ -106,24 +106,46 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                foreach (Definitions.SteamAppInfo App in AppPanel.SelectedItems)
+                foreach (dynamic App in AppPanel.SelectedItems)
                 {
-                    if (App.IsSteamBackup)
+                    if (App is Definitions.SteamAppInfo)
                     {
-                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationDirectory}\"");
-                    }
-                    else
-                    {
-                        if (Library == App.Library)
+                        if (App.IsSteamBackup)
                         {
-                            continue;
+                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationDirectory}\"");
                         }
+                        else
+                        {
+                            if (Library == App.Library || Library.Type == Definitions.Enums.LibraryType.Origin)
+                            {
+                                continue;
+                            }
 
-                        if (Framework.TaskManager.TaskList.ToList().Count(x => x.App == App && x.TargetLibrary == Library) == 0)
+                            if (Framework.TaskManager.TaskList.ToList().Count(x => x.SteamApp == App && x.TargetLibrary == Library) == 0)
+                            {
+                                Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
+                                {
+                                    SteamApp = App,
+                                    TargetLibrary = Library,
+                                    TaskType = Definitions.Enums.TaskType.Copy
+                                });
+                            }
+                            else
+                            {
+                                await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            }
+                        }
+                    }
+                    else if (App is Definitions.OriginAppInfo)
+                    {
+                        if (Library == App.Library || Library.Type != Definitions.Enums.LibraryType.Origin)
+                            continue;
+
+                        if (Framework.TaskManager.TaskList.ToList().Count(x => x.OriginApp == App && x.TargetLibrary == Library) == 0)
                         {
                             Framework.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
-                                App = App,
+                                OriginApp = App,
                                 TargetLibrary = Library,
                                 TaskType = Definitions.Enums.TaskType.Copy
                             });
@@ -164,20 +186,70 @@ namespace Steam_Library_Manager
 
                     if (Info.Attributes.HasFlag(FileAttributes.Directory))
                     {
-                        if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
+                        var LibraryDialog = await this.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create with folder:\n{DroppedItem}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
                         {
-                            if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
-                            {
-                                Functions.SLM.Library.AddNewAsync(Info.FullName);
-                            }
-                            else
-                            {
-                                await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
-                            }
-                        }
-                        else
+                            AffirmativeButtonText = "Steam",
+                            NegativeButtonText = "SLM",
+                            FirstAuxiliaryButtonText = "Origin",
+                            SecondAuxiliaryButtonText = "Cancel"
+                        });
+
+                        switch (LibraryDialog)
                         {
-                            await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                            // Steam
+                            case MessageDialogResult.Affirmative:
+                                if (!Functions.Steam.Library.IsLibraryExists(DroppedItem))
+                                {
+                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
+                                    {
+                                        Functions.Steam.Library.CreateNew(DroppedItem, false);
+                                    }
+                                    else
+                                    {
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                    }
+                                }
+                                else
+                                {
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                }
+                                break;
+                                // SLM
+                            case MessageDialogResult.Negative:
+                                if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
+                                {
+                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
+                                    {
+                                        Functions.SLM.Library.AddNewAsync(Info.FullName);
+                                    }
+                                    else
+                                    {
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                    }
+                                }
+                                else
+                                {
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                }
+                                break;
+                            // Origin
+                            case MessageDialogResult.FirstAuxiliary:
+                                if (!Functions.Origin.IsLibraryExists(DroppedItem))
+                                {
+                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
+                                    {
+                                        Functions.Origin.AddNewAsync(Info.FullName);
+                                    }
+                                    else
+                                    {
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                    }
+                                }
+                                else
+                                {
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                }
+                                break;
                         }
                     }
                 }
@@ -199,7 +271,7 @@ namespace Steam_Library_Manager
                     ((Definitions.SteamAppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
                     break;
                 case Definitions.Enums.LibraryType.Origin:
-                    ((Definitions.OriginAppInfo)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+                    ((Definitions.OriginAppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
                     break;
             }
             
@@ -302,7 +374,7 @@ namespace Steam_Library_Manager
                         {
                             if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                await this.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.App.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                await this.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
                             }
                             else
                             {
@@ -545,9 +617,9 @@ namespace Steam_Library_Manager
                 {
                     if ((sender as Grid).DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.TaskInfo).App.CommonFolder.Exists)
+                        if (((sender as Grid).DataContext as Definitions.List.TaskInfo).SteamApp.CommonFolder.Exists)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskInfo).App.CommonFolder.FullName);
+                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskInfo).SteamApp.CommonFolder.FullName);
                         }
                     }
                     else if (((sender as Grid).DataContext is Definitions.SteamAppInfo))
@@ -564,6 +636,14 @@ namespace Steam_Library_Manager
                             if (((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.Exists)
                             {
                                 Process.Start(((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.FullName);
+                            }
+                        }
+
+                        if (((sender as Grid).DataContext as Definitions.Library).Origin != null)
+                        {
+                            if (Directory.Exists(((sender as Grid).DataContext as Definitions.Library).Origin.FullPath))
+                            {
+                                Process.Start(((sender as Grid).DataContext as Definitions.Library).Origin.FullPath);
                             }
                         }
                     }

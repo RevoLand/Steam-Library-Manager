@@ -31,6 +31,12 @@ namespace Steam_Library_Manager.Definitions
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
 
+        public SteamLibrary(string fullPath, bool _IsMain = false)
+        {
+            FullPath = fullPath;
+            IsMain = _IsMain;
+        }
+
         public void UpdateDiskDetails()
         {
             OnPropertyChanged("FreeSpace");
@@ -47,6 +53,9 @@ namespace Steam_Library_Manager.Definitions
                 if (!SteamAppsFolder.Exists)
                 {
                     SteamAppsFolder.Create();
+
+                    if (!SteamAppsFolder.Exists)
+                        return;
                 }
 
                 if (Apps.Count > 0)
@@ -367,7 +376,7 @@ namespace Steam_Library_Manager.Definitions
                         x => Apps.Count(y => y.InstallationDirectory.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Framework.TaskManager.TaskList.Count(
-                            z => z.App.InstallationDirectory.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            z => z.SteamApp.InstallationDirectory.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
                             && z.TargetLibrary == Library
                             ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
@@ -394,7 +403,7 @@ namespace Steam_Library_Manager.Definitions
                         x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && x.Name.ToLowerInvariant() != "appworkshop_241100.acf" // Steam Controller Configs
                         && Framework.TaskManager.TaskList.Count(
-                            z => z.App.WorkShopAcfName.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                            z => z.SteamApp.WorkShopAcfName.ToLowerInvariant() == x.Name.ToLowerInvariant()
                             && z.TargetLibrary == Library
                             ) == 0
                         ))
@@ -419,7 +428,7 @@ namespace Steam_Library_Manager.Definitions
                             x => Apps.Count(y => y.AppID.ToString() == x.Name) == 0
                             && x.Name != "241100" // Steam controller configs
                             && Framework.TaskManager.TaskList.Count(
-                                z => z.App.WorkShopPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
+                                z => z.SteamApp.WorkShopPath.Name.ToLowerInvariant() == x.Name.ToLowerInvariant()
                                 && z.TargetLibrary == Library
                             ) == 0
                             ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))

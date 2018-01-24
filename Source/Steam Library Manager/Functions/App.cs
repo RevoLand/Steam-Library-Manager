@@ -190,11 +190,12 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    Func<Definitions.SteamAppInfo, object> Sort = SLM.Settings.GetSortingMethod();
+                    Func<dynamic, object> Sort = SLM.Settings.GetSortingMethod();
 
                     switch (Library.Type)
                     {
                         case Definitions.Enums.LibraryType.Steam:
+                        case Definitions.Enums.LibraryType.SLM:
                             Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
                                 (((string.IsNullOrEmpty(Search)) ?
                                 Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
@@ -209,22 +210,18 @@ namespace Steam_Library_Manager.Functions
                                 );
                             break;
                         case Definitions.Enums.LibraryType.Origin:
-                            Main.FormAccessor.AppPanel.ItemsSource = Library.Origin.Apps.ToList();
-                            break;
-                        case Definitions.Enums.LibraryType.SLM:
-                            List<Definitions.SteamAppInfo> Applist = (((string.IsNullOrEmpty(Search)) ?
-                                Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
+                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
+                                (((string.IsNullOrEmpty(Search)) ?
+                                Library.Origin.Apps.OrderByDescending(Sort).ToList() : Library.Origin.Apps.Where(
                                     y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
                                     || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).ToList()
-                                ));
-
-                            // Origin
-
-                            // Uplay
-
-                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ? 
-                                Applist.OrderByDescending(Sort) : Applist.OrderBy(Sort);
+                                ).OrderByDescending(Sort).ToList()
+                                )) :
+                                ((string.IsNullOrEmpty(Search)) ? Library.Origin.Apps.OrderBy(Sort).ToList() : Library.Origin.Apps.Where(
+                                y => y.AppName.ToLowerInvariant().Contains(Search.ToLowerInvariant()) // Search by appName
+                                || y.AppID.ToString().Contains(Search) // Search by app ID
+                                ).OrderBy(Sort).ToList()
+                                );
                             break;
                     }
                 }

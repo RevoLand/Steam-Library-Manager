@@ -16,7 +16,8 @@ namespace Steam_Library_Manager.Definitions
         public class TaskInfo : INotifyPropertyChanged
         {
             public Enums.TaskType TaskType { get; set; }
-            public SteamAppInfo App { get; set; }
+            public SteamAppInfo SteamApp { get; set; }
+            public OriginAppInfo OriginApp { get; set; }
             public Library TargetLibrary { get; set; }
 
             public bool ErrorHappened, Active;
@@ -30,7 +31,7 @@ namespace Steam_Library_Manager.Definitions
             private bool _Completed = false;
             private string _TaskStatusInfo;
 
-            public string TaskProgressInfo => (_MovedFileSize) != 0 ? $"{_MovedFileSize / 1024000} MB /{_TotalFileSize / 1024000} MB" : "";
+            public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {_TotalFileSize / 1024000} MB";
 
             public string TaskStatusInfo
             {

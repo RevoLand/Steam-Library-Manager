@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Functions
         private class AppLog
         {
             public string Message;
-            public Definitions.SteamAppInfo App;
+            public dynamic App;
         }
 
         private static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
@@ -203,7 +203,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LogToFile(LogType LogType, string LogMessage, Definitions.SteamAppInfo App = null)
+        public static void LogToFile(LogType LogType, string LogMessage, dynamic App = null)
         {
             try
             {

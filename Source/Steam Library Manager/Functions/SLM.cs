@@ -10,9 +10,9 @@ namespace Steam_Library_Manager.Functions
     {
         public class Settings
         {
-            public static Func<Definitions.SteamAppInfo, object> GetSortingMethod()
+            public static Func<dynamic, object> GetSortingMethod()
             {
-                Func<Definitions.SteamAppInfo, object> Sort;
+                Func<dynamic, object> Sort;
 
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
@@ -60,10 +60,34 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             }
+            public static void UpdateOriginBackupDirectories()
+            {
+                try
+                {
+                    // Define a new string collection to update backup library settings
+                    System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
+
+                    // foreach defined library in library list
+                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.Origin.IsMain))
+                    {
+                        // then add this library path to new defined string collection
+                        BackupDirs.Add(Library.DirectoryInfo.FullName);
+                    }
+
+                    // change our current backup directories setting with new defined string collection
+                    Properties.Settings.Default.OriginLibraries = BackupDirs;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                    MessageBox.Show(ex.ToString());
+                }
+            }
 
             public static void SaveSettings()
             {
                 UpdateBackupDirectories();
+                UpdateOriginBackupDirectories();
             }
         }
 
@@ -81,6 +105,7 @@ namespace Steam_Library_Manager.Functions
 
                 // SLM Libraries
                 Library.GenerateLibraryList();
+                Library.GenerateOriginLibraryList();
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 {
@@ -146,8 +171,31 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have, do a loop
                     foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
                     {
-                        if (!string.IsNullOrEmpty(BackupPath))
-                            AddNewAsync(BackupPath);
+                        AddNewAsync(BackupPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+            public static void GenerateOriginLibraryList()
+            {
+                try
+                {
+                    // If we have a backup library(s)
+                    if (Properties.Settings.Default.OriginLibraries == null)
+                        return;
+
+                    if (Properties.Settings.Default.OriginLibraries.Count == 0)
+                        return;
+
+                    // for each backup library we have, do a loop
+                    foreach (string BackupPath in Properties.Settings.Default.OriginLibraries)
+                    {
+                        Origin.AddNewAsync(BackupPath);
                     }
                 }
                 catch (Exception ex)
@@ -168,11 +216,8 @@ namespace Steam_Library_Manager.Functions
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
                         DirectoryInfo = new DirectoryInfo(LibraryPath),
-                        Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary()
-                        {
-                            FullPath = LibraryPath
-                        } : null,
-                        Origin = (Directory.Exists(Path.Combine(LibraryPath, "Origin"))) ? new Definitions.OriginLibrary(Path.Combine(LibraryPath, "Origin")) : null
+                        Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary(LibraryPath) : null,
+                        //Origin = (Directory.Exists(Path.Combine(LibraryPath, "Origin"))) ? new Definitions.OriginLibrary(Path.Combine(LibraryPath, "Origin")) : null
                     };
 
                     Definitions.List.Libraries.Add(Library);

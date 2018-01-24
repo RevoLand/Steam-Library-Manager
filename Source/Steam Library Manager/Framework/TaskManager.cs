@@ -19,72 +19,119 @@ namespace Steam_Library_Manager.Framework
             {
                 CurrentTask.Active = true;
 
-                switch (CurrentTask.TaskType)
+                if (CurrentTask.SteamApp != null)
                 {
-                    default:
-                        CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token);
-                        break;
-                    case Definitions.Enums.TaskType.Delete:
-                        await CurrentTask.App.DeleteFilesAsync(CurrentTask);
-                        CurrentTask.App.Library.Steam.Apps.Remove(CurrentTask.App);
-                        break;
-                }
-
-                if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
-                {
-                    if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
+                    switch (CurrentTask.TaskType)
                     {
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                        await CurrentTask.App.DeleteFilesAsync(CurrentTask);
-                        CurrentTask.App.Library.Steam.Apps.Remove(CurrentTask.App);
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Files removed, task is completed now.");
+                        default:
+                            CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
+                            break;
+                        case Definitions.Enums.TaskType.Delete:
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
+                            CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
+                            break;
                     }
 
-                    if (CurrentTask.TargetLibrary != null)
+                    if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                     {
-                        if (CurrentTask.TargetLibrary.Type == Definitions.Enums.LibraryType.Steam)
+                        if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
+                        {
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
+                            CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Files removed, task is completed now.");
+                        }
+
+                        if (CurrentTask.TargetLibrary?.Type == Definitions.Enums.LibraryType.Steam)
                         {
                             IsRestartRequired = true;
                         }
+
+                        CurrentTask.TaskStatusInfo = "Completed";
+                        CurrentTask.Active = false;
+                        CurrentTask.Completed = true;
+
+                        CurrentTask.TargetLibrary?.Steam.UpdateAppList();
+
+                        // Update library details
+                        if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.SteamApp.Library)
+                        {
+                            Functions.App.UpdateAppPanel(CurrentTask.SteamApp.Library);
+                        }
+                    }
+                }
+                else if (CurrentTask.OriginApp != null)
+                {
+                    switch (CurrentTask.TaskType)
+                    {
+                        default:
+                            CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
+                            break;
+                        case Definitions.Enums.TaskType.Delete:
+                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
+                            break;
                     }
 
-                    CurrentTask.TaskStatusInfo = "Completed";
-                    CurrentTask.Active = false;
-                    CurrentTask.Completed = true;
-
-                    CurrentTask.TargetLibrary.Steam.UpdateAppList();
-
-                    // Update library details
-                    if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.App.Library)
+                    if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                     {
-                        Functions.App.UpdateAppPanel(CurrentTask.App.Library);
+                        if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
+                        {
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
+
+                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
+
+                            if (CurrentTask.Compress)
+                            {
+                                JunctionPoint.Create(CurrentTask.OriginApp.InstallationDirectory.FullName.Replace(CurrentTask.OriginApp.Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath), CurrentTask.OriginApp.InstallationDirectory.FullName, true);
+                            }
+
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Files removed, task is completed now.");
+                        }
+
+                        CurrentTask.TaskStatusInfo = "Completed";
+                        CurrentTask.Active = false;
+                        CurrentTask.Completed = true;
+
+                        CurrentTask.TargetLibrary?.Origin.UpdateAppList();
+
+                        // Update library details
+                        if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.OriginApp.Library)
+                        {
+                            Functions.App.UpdateAppPanel(CurrentTask.OriginApp.Library);
+                        }
+                    }
+                }
+
+                if (TaskList.Count(x => !x.Completed) == 0)
+                {
+                    if (Properties.Settings.Default.PlayASoundOnCompletion)
+                    {
+                        if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
+                        {
+                            new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile).Play();
+                        }
+                        else
+                        {
+                            System.Media.SystemSounds.Exclamation.Play();
+                        }
                     }
 
-                    if (TaskList.Count(x => !x.Completed) == 0)
+                    if (IsRestartRequired)
                     {
-                        if (Properties.Settings.Default.PlayASoundOnCompletion)
-                        {
-                            if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
-                            {
-                                new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile).Play();
-                            }
-                            else
-                            {
-                                System.Media.SystemSounds.Exclamation.Play();
-                            }
-                        }
-
-                        if (IsRestartRequired)
-                        {
-                            Functions.Steam.RestartSteamAsync();
-                        }
+                        Functions.Steam.RestartSteamAsync();
                     }
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.App.AppName}][{CurrentTask.App.AppID}][{CurrentTask.App.AcfName}] {ex}");
+                
+                if (CurrentTask.SteamApp != null)
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.SteamApp.AppName}][{CurrentTask.SteamApp.AppID}][{CurrentTask.SteamApp.AcfName}] {ex}");
+                else if(CurrentTask.OriginApp != null)
+                    Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.OriginApp.AppName}][{CurrentTask.OriginApp.AppID}] {ex}");
             }
         }
 

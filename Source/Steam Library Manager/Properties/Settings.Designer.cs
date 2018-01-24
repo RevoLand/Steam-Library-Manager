@@ -320,5 +320,17 @@ namespace Steam_Library_Manager.Properties {
                 this["ThemeAccent"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Collections.Specialized.StringCollection OriginLibraries {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["OriginLibraries"]));
+            }
+            set {
+                this["OriginLibraries"] = value;
+            }
+        }
     }
 }

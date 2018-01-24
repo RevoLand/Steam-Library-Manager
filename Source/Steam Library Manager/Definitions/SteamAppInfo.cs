@@ -135,7 +135,7 @@ namespace Steam_Library_Manager.Definitions
                     case "deleteappfilestm":
                         Framework.TaskManager.AddTask(new List.TaskInfo
                         {
-                            App = this,
+                            SteamApp = this,
                             TaskType = Enums.TaskType.Delete
                         });
                         break;
@@ -253,7 +253,7 @@ namespace Steam_Library_Manager.Definitions
                 // If the game is not compressed and user would like to compress it
                 if (!IsCompressed && CurrentTask.Compress)
                 {
-                    FileInfo CompressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName).Replace(".zip", ".slm"));
+                    FileInfo CompressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
                     if (CompressedArchive.Exists)
                     {
@@ -291,8 +291,6 @@ namespace Steam_Library_Manager.Definitions
                             }
                         }
                     }
-
-                    CompressedArchive.MoveTo(CompressedArchive.FullName.Replace(".slm", ".zip"));
                 }
                 // If the game is compressed and user would like to decompress it
                 else if (IsCompressed && !CurrentTask.Compress)
@@ -615,7 +613,7 @@ namespace Steam_Library_Manager.Definitions
                                         }
 
                                         CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
-                                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.App.AppName}] Deleting file: {currentFile.FullName}");
+                                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Deleting file: {currentFile.FullName}");
                                     }
 
                                     File.SetAttributes(currentFile.FullName, FileAttributes.Normal);

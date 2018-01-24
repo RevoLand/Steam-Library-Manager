@@ -23,7 +23,7 @@ namespace Steam_Library_Manager.Definitions
         //-----
         public OriginLibrary(string _FullPath, bool _IsMain = false)
         {
-            FullPath = _FullPath;
+            FullPath = (!_FullPath.EndsWith(Path.DirectorySeparatorChar.ToString())) ? _FullPath.Insert(_FullPath.Count(), Path.DirectorySeparatorChar.ToString()) : _FullPath;
             IsMain = _IsMain;
         }
 
@@ -31,6 +31,8 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                Apps.Clear();
+
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 if (Directory.Exists(FullPath))
@@ -70,6 +72,10 @@ namespace Steam_Library_Manager.Definitions
                                 _TouchupFile: xml.Root.Element("executable")?.Element("filePath")?.Value,
                                 _InstallationParameter: xml.Root.Element("executable")?.Element("parameters")?.Value));
                         }
+                        else
+                        {
+                            MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion}");
+                        }
                     }
                 }
                 else
@@ -93,7 +99,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Origin))
                 {
-                    if (!CMenuItem.ShowToNormal)
+                    if (!CMenuItem.ShowToNormal && IsMain)
                     {
                         continue;
                     }
@@ -140,6 +146,9 @@ namespace Steam_Library_Manager.Definitions
                         Process.Start(FullPath);
                     }
 
+                    break;
+                case "remove":
+                    List.Libraries.Remove(List.Libraries.First(x => x == Library));
                     break;
             }
         }
