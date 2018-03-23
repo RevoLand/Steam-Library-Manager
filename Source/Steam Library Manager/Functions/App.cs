@@ -72,12 +72,12 @@ namespace Steam_Library_Manager.Functions
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
-                        List<FileSystemInfo> GameFiles = App.GetFileList();
+                        List<FileInfo> GameFiles = App.GetFileList();
                         long GameSize = 0;
 
                         System.Threading.Tasks.Parallel.ForEach(GameFiles, File =>
                         {
-                            Interlocked.Add(ref GameSize, ((FileInfo)File).Length);
+                            Interlocked.Add(ref GameSize, File.Length);
                         });
 
                         App.SizeOnDisk = GameSize;

@@ -174,7 +174,7 @@
             </Grid>
         </DataTemplate>
 
-        <!-- App Library: GridView -->
+        <!-- App Library: GridView: Steam & SLM -->
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
@@ -225,8 +225,8 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-
-        <!-- App Library: ListView -->
+        
+        <!-- App Library: ListView: Steam & SLM -->
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
@@ -247,6 +247,84 @@
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsCompressed}" Value="true">
                                         <Setter Property="Text" Value="Compressed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Right" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- App Library: GridView: Origin -->
+        <DataTemplate x:Key="Gamelibrary_GridviewOrigin">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                </Grid.ContextMenu>
+                <!-- App Header Image -->
+                <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
+                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
+                            <CachedImage:Image.Effect>
+                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                            </CachedImage:Image.Effect>
+                        </CachedImage:Image>
+                    </Border>
+                </Grid>
+                <!-- /App Header Image -->
+
+                <Grid>
+                    <!-- App Name -->
+                    <TextBlock Text="{Binding AppName}" Padding="240,4,0,0" TextWrapping="Wrap" FontSize="14" />
+
+                    <!-- App Info Grid -->
+                    <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
+                        <!-- Backup Type Text -->
+                        <TextBlock Margin="0,-17,0,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSymLinked}" Value="true">
+                                            <Setter Property="Text" Value="SymLinked" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
+                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
+                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold" />
+                    </Grid>
+                    <!-- /App Info Grid -->
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- App Library: ListView: Origin-->
+        <DataTemplate x:Key="Gamelibrary_ListviewOrigin">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                </Grid.ContextMenu>
+                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
+                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
+                    <TextBlock HorizontalAlignment="Right" Margin="0,0,70,0">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSymLinked}" Value="true">
+                                        <Setter Property="Text" Value="SymLinked" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -469,6 +547,214 @@
             </Grid>
         </DataTemplate>
         
+        <!-- Task Manager: GridView: Origin -->
+        <DataTemplate x:Key="Tasklibrary_Gridview_Origin">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+
+                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                    <Controls:MetroProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Completed}" Value="false">
+                                    <Setter Property="Opacity" Value="0.20" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Completed}" Value="true">
+                                    <Setter Property="Opacity" Value="0.70" />
+                                    <Setter Property="Foreground" Value="LightBlue" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Controls:MetroProgressBar.Style>
+                </Controls:MetroProgressBar>
+                <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
+                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}" >
+                            <CachedImage:Image.Effect>
+                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                            </CachedImage:Image.Effect>
+                            <CachedImage:Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Completed}" Value="true">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </CachedImage:Image.Style>
+                        </CachedImage:Image>
+                    </Border>
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Text" Value="COMPLETED" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
+                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
+
+                        <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-68,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TaskProgressInfo}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,-35,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
+
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Task Manager: ListView: Origin -->
+        <DataTemplate x:Key="Tasklibrary_Listview_Origin">
+            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                    <Controls:MetroProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Completed}" Value="false">
+                                    <Setter Property="Opacity" Value="0.25" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Completed}" Value="true">
+                                    <Setter Property="Opacity" Value="0.75" />
+                                    <Setter Property="Foreground" Value="LightBlue" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Controls:MetroProgressBar.Style>
+                </Controls:MetroProgressBar>
+                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
+                    <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
+                        <CachedImage:Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Opacity" Value="0.4" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CachedImage:Image.Style>
+                    </CachedImage:Image>
+                    <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Completed}" Value="true">
+                                        <Setter Property="Text" Value="COMPLETED" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
+                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap"/>
+
+
+                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" />
+
+                        <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -543,12 +829,50 @@
                                     <ContentControl.Style>
                                         <Style TargetType="{x:Type ContentControl}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid">
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_GridviewOrigin}" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_ListviewOrigin}" />
+                                                </MultiDataTrigger>
+                                                <!-- Steam -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="Steam" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview">
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="Steam" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
-                                                </DataTrigger>
+                                                </MultiDataTrigger>
+                                                <!-- SLM -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="SLM" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Library.Type}" Value="SLM" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </ContentControl.Style>
@@ -572,12 +896,50 @@
                                     <ContentControl.Style>
                                         <Style TargetType="{x:Type ContentControl}">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid">
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview_Origin}" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview_Origin}" />
+                                                </MultiDataTrigger>
+                                                <!-- Steam -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview">
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
-                                                </DataTrigger>
+                                                </MultiDataTrigger>
+                                                <!-- SLM -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </ContentControl.Style>

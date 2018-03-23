@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -17,23 +18,25 @@ namespace Steam_Library_Manager.Definitions
         public string AppName { get; set; } // gameTitle
         public int AppID { get; set; } // contentID
         public string[] Locales { get; set; } // pt_BR,en_US,de_DE,es_ES,fr_FR,it_IT,es_MX,nl_NL,pl_PL,ru_RU,ar_SA,cs_CZ,da_DK,no_NO,pt_PT,zh_TW,sv_SE,tr_TR
+        public string InstalledLocale { get; set; }
         public DirectoryInfo InstallationDirectory; // D:\Oyunlar\Origin Games\FIFA 17\
         public string TouchupFile { get; set; }
-        public string InstallationParameter{ get; set; }
+        public string InstallationParameter { get; set; }
         public string UpdateParameter { get; set; }
         public string RepairParameter { get; set; }
         public Version AppVersion { get; set; }
         public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
         public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
-        public bool IsCompressed => Framework.JunctionPoint.Exists(InstallationDirectory.FullName);
+        public bool IsSymLinked => Framework.JunctionPoint.Exists(InstallationDirectory.FullName);
 
-        public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
+        public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _InstalledLocale, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
             Library = _Library;
             AppName = _AppName;
             AppID = _AppID;
             Locales = _Locales;
+            InstalledLocale = _InstalledLocale;
             InstallationDirectory = _InstallationDirectory;
             TouchupFile = _TouchupFile;
             InstallationParameter = _InstallationParameter;
@@ -94,6 +97,8 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                var touchupFile = new FileInfo(InstallationDirectory.FullName + TouchupFile);
+
                 switch (Action.ToLowerInvariant())
                 {
                     case "disk":
@@ -101,13 +106,49 @@ namespace Steam_Library_Manager.Definitions
 
                         if (InstallationDirectory.Exists)
                         {
-                            System.Diagnostics.Process.Start(InstallationDirectory.FullName);
+                            Process.Start(InstallationDirectory.FullName);
+                        }
+
+                        break;
+                    case "install":
+
+                        if (touchupFile.Exists && InstallationParameter != null)
+                        {
+                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
+                            ProgressInformationMessage.SetIndeterminate();
+
+                            var process = Process.Start(touchupFile.FullName, InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                            Debug.WriteLine(InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                            process.WaitForExit();
+                            await ProgressInformationMessage.CloseAsync();
+                        }
+
+                        break;
+                    case "repair":
+
+                        if (touchupFile.Exists && RepairParameter != null)
+                        {
+                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to repair {AppName} as you have requested.");
+                            ProgressInformationMessage.SetIndeterminate();
+
+                            var process = Process.Start(touchupFile.FullName, RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                            Debug.WriteLine(RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                            process.WaitForExit();
+                            await ProgressInformationMessage.CloseAsync();
                         }
 
                         break;
                     case "deleteappfiles":
-                        await Task.Run(() => DeleteFiles());
-
+                        if (!IsSymLinked)
+                        {
+                            await Task.Run(() => DeleteFiles());
+                        }
+                        else
+                            Framework.JunctionPoint.Delete(InstallationDirectory.FullName);
 
                         Library.Origin.Apps.Remove(this);
                         if (SLM.CurrentSelectedLibrary == Library)
@@ -135,7 +176,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 InstallationDirectory?.Refresh();
 
-                return InstallationDirectory?.GetFiles("*", SearchOption.AllDirectories).ToList() ?? null;
+                return InstallationDirectory?.GetFiles("*", SearchOption.AllDirectories)?.ToList();
             }
             catch { return null; }
         }

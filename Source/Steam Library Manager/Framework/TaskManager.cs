@@ -68,7 +68,13 @@ namespace Steam_Library_Manager.Framework
                             CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                             break;
                         case Definitions.Enums.TaskType.Delete:
-                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            if (!CurrentTask.OriginApp.IsSymLinked)
+                            {
+                                CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            }
+                            else
+                                JunctionPoint.Delete(CurrentTask.OriginApp.InstallationDirectory.FullName);
+                            
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
                     }

@@ -44,6 +44,25 @@ namespace Steam_Library_Manager.Definitions
 
                         Debug.WriteLine(OriginApp);
 
+                        string installerLog = Path.Combine(Directory.GetParent(OriginApp).FullName, "InstallLog.txt");
+                        string installedLocale = "en_US";
+
+                        if (File.Exists(installerLog))
+                        {
+                            string[] fileContent = File.ReadAllLines(installerLog);
+
+                            foreach (var line in fileContent)
+                            {
+                                if (line.Contains("Install Locale:"))
+                                {
+                                    installedLocale = line.Split(new string[] { "Install Locale:" }, StringSplitOptions.None)[1];
+                                    break;
+                                }
+                            }
+
+                            Debug.WriteLine(installedLocale);
+                        }
+
                         var xml = XDocument.Load(OriginApp);
                         Version ManifestVersion = new Version((xml.Root.Name.LocalName == "game") ? xml.Root.Attribute("manifestVersion").Value : ((xml.Root.Name.LocalName == "DiPManifest") ? xml.Root.Attribute("version").Value : "1.0"));
 
@@ -53,6 +72,7 @@ namespace Steam_Library_Manager.Definitions
                                 _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value), _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
                                 _AppVersion: new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")?.Attribute("version")?.Value),
                                 _Locales: xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
+                                _InstalledLocale: installedLocale,
                                 _TouchupFile: xml.Root.Element("touchup")?.Element("filePath")?.Value, _InstallationParameter: xml.Root.Element("touchup")?.Element("parameters")?.Value,
                                 _UpdateParameter: xml.Root.Element("touchup")?.Element("updateParameters")?.Value, _RepairParameter: xml.Root.Element("touchup")?.Element("repairParameters")?.Value));
                         }
@@ -69,6 +89,7 @@ namespace Steam_Library_Manager.Definitions
                                 _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
                                 _AppVersion: new Version(xml.Root.Attribute("gameVersion").Value),
                                 _Locales: _locales.ToArray(),
+                                _InstalledLocale: installedLocale,
                                 _TouchupFile: xml.Root.Element("executable")?.Element("filePath")?.Value,
                                 _InstallationParameter: xml.Root.Element("executable")?.Element("parameters")?.Value));
                         }

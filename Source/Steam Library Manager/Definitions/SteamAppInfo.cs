@@ -147,11 +147,11 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileSystemInfo> GetFileList(bool includeDownloads = true, bool includeWorkshop = true)
+        public List<FileInfo> GetFileList(bool includeDownloads = true, bool includeWorkshop = true)
         {
             try
             {
-                List<FileSystemInfo> FileList = new List<FileSystemInfo>();
+                List<FileInfo> FileList = new List<FileInfo>();
 
                 if (IsCompressed)
                 {
@@ -201,12 +201,12 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileSystemInfo> GetCommonFiles()
+        public List<FileInfo> GetCommonFiles()
         {
             try
             {
                 CommonFolder.Refresh();
-                return CommonFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+                return CommonFolder.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
             }
             catch (Exception ex)
             {
@@ -215,20 +215,20 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileSystemInfo> GetDownloadFiles() => DownloadFolder.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+        public List<FileInfo> GetDownloadFiles() => DownloadFolder.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
 
-        public List<FileSystemInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFileSystemInfos($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).Where(x => x is FileInfo).ToList();
+        public List<FileInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFiles($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).ToList();
 
-        public List<FileSystemInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList();
+        public List<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
 
-        public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
+        public async Task CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
             LogToTM($"[{AppName}] Populating file list, please wait");
             Functions.Logger.LogToFile(Functions.Logger.LogType.App, "Populating file list", this);
 
             ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
             ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
-            List<FileSystemInfo> AppFiles = GetFileList();
+            List<FileInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
             long TotalFileSize = 0;
 
@@ -241,7 +241,7 @@ namespace Steam_Library_Manager.Definitions
 
                 Parallel.ForEach(AppFiles, POptions, file =>
                 {
-                    Interlocked.Add(ref TotalFileSize, ((FileInfo)file).Length);
+                    Interlocked.Add(ref TotalFileSize, file.Length);
                 });
 
                 CurrentTask.TotalFileSize = TotalFileSize;
@@ -340,7 +340,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                            if (!NewFile.Exists || (NewFile.Length != ((FileInfo)CurrentFile).Length || NewFile.LastWriteTime != ((FileInfo)CurrentFile).LastWriteTime))
+                            if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
                             {
                                 if (!NewFile.Directory.Exists)
                                 {
@@ -349,13 +349,13 @@ namespace Steam_Library_Manager.Definitions
                                 }
 
                                 int currentBlockSize = 0;
-                                byte[] FSBuffer = new byte[8192];
+                                byte[] FSBuffer = new byte[1024];
 
-                                using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                                 {
                                     using (FileStream NewFileContent = NewFile.OpenWrite())
                                     {
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
 
                                         while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                         {
@@ -426,15 +426,17 @@ namespace Steam_Library_Manager.Definitions
 
                     POptions.MaxDegreeOfParallelism = -1;
 
-                    CurrentTask.TaskStatusInfo = $"Copying: <small files>";
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
+                    //CurrentTask.TaskStatusInfo = $"Copying: <small files>";
+                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, async CurrentFile =>
                     {
                         try
                         {
                             FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
-                            if (!NewFile.Exists || (NewFile.Length != ((FileInfo)CurrentFile).Length || NewFile.LastWriteTime != ((FileInfo)CurrentFile).LastWriteTime))
+                            if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
                             {
+                                CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
+
                                 if (!NewFile.Directory.Exists)
                                 {
                                     NewFile.Directory.Create();
@@ -442,13 +444,14 @@ namespace Steam_Library_Manager.Definitions
                                 }
 
                                 int currentBlockSize = 0;
-                                byte[] FSBuffer = new byte[8192];
+                                byte[] FSBuffer = new byte[4096];
 
-                                using (FileStream CurrentFileContent = ((FileInfo)CurrentFile).Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                                 {
-                                    using (FileStream NewFileContent = NewFile.OpenWrite())
+                                    using (FileStream NewFileContent = NewFile.Create())
                                     {
-                                        //CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
+
 
                                         while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                         {
@@ -464,12 +467,21 @@ namespace Steam_Library_Manager.Definitions
 
                                             CurrentTask.MovedFileSize += currentBlockSize;
                                         }
+
+
+                                        NewFileContent.Flush();
+                                        NewFileContent.Dispose();
                                     }
 
                                     NewFile.LastWriteTime = CurrentFile.LastWriteTime;
                                     NewFile.LastAccessTime = CurrentFile.LastAccessTime;
                                     NewFile.CreationTime = CurrentFile.CreationTime;
+
+                                    CurrentFileContent.Flush();
+                                    CurrentFileContent.Dispose();
                                 }
+
+                                FSBuffer = null;
                             }
                             else
                                 CurrentTask.MovedFileSize += NewFile.Length;
@@ -594,7 +606,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 else
                 {
-                    List<FileSystemInfo> FileList = GetFileList();
+                    List<FileInfo> FileList = GetFileList();
                     if (FileList.Count > 0)
                     {
                         Parallel.ForEach(FileList, currentFile =>
@@ -612,7 +624,7 @@ namespace Steam_Library_Manager.Definitions
                                             Task.Delay(100);
                                         }
 
-                                        CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
+                                        CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Deleting file: {currentFile.FullName}");
                                     }
 

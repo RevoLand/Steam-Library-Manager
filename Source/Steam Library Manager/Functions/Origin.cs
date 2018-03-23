@@ -56,6 +56,32 @@ namespace Steam_Library_Manager.Functions
                 IsSeparator = true
             });
 
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Install",
+                Action = "install",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Gear,
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                ShowToCompressed = false
+            });
+
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Repair",
+                Action = "repair",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Gears,
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                ShowToCompressed = false
+            });
+
+            // Separator
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                ShowToCompressed = false,
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                IsSeparator = true
+            });
+
             // Show on disk
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
