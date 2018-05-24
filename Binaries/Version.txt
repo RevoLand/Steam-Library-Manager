@@ -1,1 +1,1 @@
-1.5.0.6|Custom style support and bug fixes
+1.5.0.7|Fix for memory overflow happens on task manager

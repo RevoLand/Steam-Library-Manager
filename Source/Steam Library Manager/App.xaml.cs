@@ -57,7 +57,6 @@ namespace Steam_Library_Manager
                 using (var writer = System.Xml.XmlWriter.Create(fileName.FullName, new System.Xml.XmlWriterSettings { Indent = true }))
                 {
                     System.Windows.Markup.XamlWriter.Save(resourceDictionary, writer);
-                    writer.Close();
                 }
 
                 ThemeManager.AddAppTheme(ThemeName.Replace(".xaml", ""), new Uri(fileName.FullName, UriKind.Absolute));

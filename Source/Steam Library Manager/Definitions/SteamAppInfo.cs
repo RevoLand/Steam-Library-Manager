@@ -110,6 +110,7 @@ namespace Steam_Library_Manager.Definitions
 
                         Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
                         break;
+
                     case "disk":
                         CommonFolder.Refresh();
 
@@ -119,12 +120,14 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         break;
+
                     case "acffile":
                         FullAcfPath.Refresh();
 
                         if (FullAcfPath.Exists)
                             Process.Start(FullAcfPath.FullName);
                         break;
+
                     case "deleteappfiles":
                         await Task.Run(() => DeleteFilesAsync());
 
@@ -132,6 +135,7 @@ namespace Steam_Library_Manager.Definitions
                         if (SLM.CurrentSelectedLibrary == Library)
                             Functions.App.UpdateAppPanel(Library);
                         break;
+
                     case "deleteappfilestm":
                         Framework.TaskManager.AddTask(new List.TaskInfo
                         {
@@ -266,10 +270,8 @@ namespace Steam_Library_Manager.Definitions
 
                         foreach (FileSystemInfo currentFile in AppFiles)
                         {
-                            while (Framework.TaskManager.Paused)
-                            {
-                                await Task.Delay(100);
-                            }
+                            if (Framework.TaskManager.Paused)
+                                CurrentTask.mre.WaitOne();
 
                             string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
@@ -297,10 +299,8 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ZipArchiveEntry CurrentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
-                        while (Framework.TaskManager.Paused)
-                        {
-                            await Task.Delay(100);
-                        }
+                        if (Framework.TaskManager.Paused)
+                            CurrentTask.mre.WaitOne();
 
                         FileInfo NewFile = new FileInfo(Path.Combine(CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName, CurrentFile.FullName));
 
@@ -334,7 +334,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     POptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, CurrentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, async CurrentFile =>
                     {
                         try
                         {
@@ -362,10 +362,8 @@ namespace Steam_Library_Manager.Definitions
                                             if (cancellationToken.IsCancellationRequested)
                                                 throw (new OperationCanceledException(cancellationToken));
 
-                                            while (Framework.TaskManager.Paused)
-                                            {
-                                                Task.Delay(100);
-                                            }
+                                            if (Framework.TaskManager.Paused)
+                                                CurrentTask.mre.WaitOne();
 
                                             NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -405,7 +403,6 @@ namespace Steam_Library_Manager.Definitions
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
-
                             Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
                             Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ioex}");
 
@@ -420,14 +417,13 @@ namespace Steam_Library_Manager.Definitions
                                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
-
                         }
                     });
 
                     POptions.MaxDegreeOfParallelism = -1;
 
                     //CurrentTask.TaskStatusInfo = $"Copying: <small files>";
-                    Parallel.ForEach(AppFiles.Where(x => (x as FileInfo).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x as FileInfo).Length), POptions, async CurrentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, async CurrentFile =>
                     {
                         try
                         {
@@ -452,25 +448,20 @@ namespace Steam_Library_Manager.Definitions
                                     {
                                         CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
 
-
                                         while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                         {
                                             if (cancellationToken.IsCancellationRequested)
                                                 throw (new OperationCanceledException(cancellationToken));
 
-                                            while (Framework.TaskManager.Paused)
-                                            {
-                                                Task.Delay(100);
-                                            }
+                                            if (Framework.TaskManager.Paused)
+                                                CurrentTask.mre.WaitOne();
 
                                             NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
                                             CurrentTask.MovedFileSize += currentBlockSize;
                                         }
 
-
                                         NewFileContent.Flush();
-                                        NewFileContent.Dispose();
                                     }
 
                                     NewFile.LastWriteTime = CurrentFile.LastWriteTime;
@@ -478,7 +469,6 @@ namespace Steam_Library_Manager.Definitions
                                     NewFile.CreationTime = CurrentFile.CreationTime;
 
                                     CurrentFileContent.Flush();
-                                    CurrentFileContent.Dispose();
                                 }
 
                                 FSBuffer = null;
@@ -510,7 +500,6 @@ namespace Steam_Library_Manager.Definitions
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
-
                             Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
                             Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ioex}");
 
@@ -525,10 +514,8 @@ namespace Steam_Library_Manager.Definitions
                                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
-
                         }
                     });
-
                 }
 
                 CurrentTask.ElapsedTime.Stop();
@@ -572,7 +559,6 @@ namespace Steam_Library_Manager.Definitions
                          Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                      }
                  }, System.Windows.Threading.DispatcherPriority.Normal);
-
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}][{AcfName}] {ex}");
@@ -619,10 +605,8 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     if (CurrentTask != null)
                                     {
-                                        while (Framework.TaskManager.Paused)
-                                        {
-                                            Task.Delay(100);
-                                        }
+                                        if (Framework.TaskManager.Paused)
+                                            CurrentTask.mre.WaitOne();
 
                                         CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Deleting file: {currentFile.FullName}");
@@ -719,5 +703,4 @@ namespace Steam_Library_Manager.Definitions
             }
         }
     }
-
 }

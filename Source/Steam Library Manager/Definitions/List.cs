@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -8,6 +9,7 @@ namespace Steam_Library_Manager.Definitions
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
+
         public static Framework.AsyncObservableCollection<JunkInfo> LCItems { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
 
         public static Framework.AsyncObservableCollection<ContextMenuItem> LibraryCMenuItems = new Framework.AsyncObservableCollection<ContextMenuItem>();
@@ -25,10 +27,11 @@ namespace Steam_Library_Manager.Definitions
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
+            public ManualResetEvent mre = new ManualResetEvent(false);
 
             private double _TotalFileCount = 100;
             private long _MovedFileSize, _TotalFileSize;
-            private bool _Completed = false;
+            private bool _Completed;
             private string _TaskStatusInfo;
 
             public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {_TotalFileSize / 1024000} MB";
@@ -100,6 +103,7 @@ namespace Steam_Library_Manager.Definitions
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
+
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 

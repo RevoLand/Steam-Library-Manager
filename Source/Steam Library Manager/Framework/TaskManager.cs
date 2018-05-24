@@ -12,11 +12,13 @@ namespace Steam_Library_Manager.Framework
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
+        public static Definitions.List.TaskInfo ActiveTask;
 
         public static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
             try
             {
+                ActiveTask = CurrentTask;
                 CurrentTask.Active = true;
 
                 if (CurrentTask.SteamApp != null)
@@ -24,10 +26,11 @@ namespace Steam_Library_Manager.Framework
                     switch (CurrentTask.TaskType)
                     {
                         default:
-                            CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
+                            await CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
+
                         case Definitions.Enums.TaskType.Delete:
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
                             break;
                     }
@@ -67,6 +70,7 @@ namespace Steam_Library_Manager.Framework
                         default:
                             CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                             break;
+
                         case Definitions.Enums.TaskType.Delete:
                             if (!CurrentTask.OriginApp.IsSymLinked)
                             {
@@ -74,7 +78,7 @@ namespace Steam_Library_Manager.Framework
                             }
                             else
                                 JunctionPoint.Delete(CurrentTask.OriginApp.InstallationDirectory.FullName);
-                            
+
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
                     }
@@ -133,10 +137,10 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                
+
                 if (CurrentTask.SteamApp != null)
                     Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.SteamApp.AppName}][{CurrentTask.SteamApp.AppID}][{CurrentTask.SteamApp.AcfName}] {ex}");
-                else if(CurrentTask.OriginApp != null)
+                else if (CurrentTask.OriginApp != null)
                     Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.OriginApp.AppName}][{CurrentTask.OriginApp.AppID}] {ex}");
             }
         }
@@ -176,6 +180,7 @@ namespace Steam_Library_Manager.Framework
             else if (Paused)
             {
                 Paused = false;
+                ActiveTask.mre.Set();
 
                 Main.FormAccessor.Button_StartTaskManager.Dispatcher.Invoke(delegate
                 {
@@ -212,6 +217,7 @@ namespace Steam_Library_Manager.Framework
                     });
 
                     Paused = true;
+                    ActiveTask.mre.Reset();
 
                     Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [TaskManager] Task Manager is paused as requested.");
                 }
@@ -246,6 +252,7 @@ namespace Steam_Library_Manager.Framework
                     Paused = false;
                     CancellationToken.Cancel();
                     IsRestartRequired = false;
+                    ActiveTask.mre.Set();
                 }
             }
             catch (Exception ex)
@@ -280,6 +287,5 @@ namespace Steam_Library_Manager.Framework
                 Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
             }
         }
-
     }
 }
