@@ -24,18 +24,18 @@ namespace Steam_Library_Manager.Framework.CachedImage
                         Directory.CreateDirectory(Definitions.Directories.SLM.Cache);
                     }
 
-                    await (await new WebClient().OpenReadTaskAsync(Url)).CopyToAsync(MemStream);
+                    await (await new WebClient().OpenReadTaskAsync(Url).ConfigureAwait(false)).CopyToAsync(MemStream).ConfigureAwait(false);
                     using (FileStream fs = File.OpenWrite(LocalFile))
                     {
                         MemStream.Seek(0, SeekOrigin.Begin);
-                        await MemStream.CopyToAsync(fs);
+                        await MemStream.CopyToAsync(fs).ConfigureAwait(false);
                     }
                 }
                 else
                 {
                     using (FileStream fs = File.Open(LocalFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        await fs.CopyToAsync(MemStream);
+                        await fs.CopyToAsync(MemStream).ConfigureAwait(false);
                     }
                 }
 

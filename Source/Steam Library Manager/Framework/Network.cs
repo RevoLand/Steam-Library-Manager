@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Steam_Library_Manager.Framework
 {
-    internal class Network
+    internal static class Network
     {
         /*
          * WIP
@@ -17,7 +17,7 @@ namespace Steam_Library_Manager.Framework
         public class Client
         {
             private Socket ClientSocket;
-            private byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
+            private readonly byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
             private static readonly object _ClientLock = new object();
 
             public void ConnectToServer()
@@ -79,8 +79,8 @@ namespace Steam_Library_Manager.Framework
         public class Server
         {
             private Socket ServerSocket, ClientSocket;
-            private ManualResetEvent SocketHandler = new ManualResetEvent(false);
-            private byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
+            private readonly ManualResetEvent SocketHandler = new ManualResetEvent(false);
+            private readonly byte[] ClientBuffer = new byte[Definitions.SLM.NetworkBuffer];
 
             public void StartServer()
             {

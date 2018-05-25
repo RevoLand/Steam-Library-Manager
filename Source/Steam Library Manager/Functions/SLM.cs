@@ -6,35 +6,30 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    internal class SLM
+    internal static class SLM
     {
-        public class Settings
+        public static class Settings
         {
             public static Func<dynamic, object> GetSortingMethod()
             {
-                Func<dynamic, object> Sort;
-
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
-                    default:
                     case "appName":
-                        Sort = x => x.AppName;
-                        break;
-                    case "appID":
-                        Sort = x => x.AppID;
-                        break;
-                    case "sizeOnDisk":
-                        Sort = x => x.SizeOnDisk;
-                        break;
-                    case "backupType":
-                        Sort = x => x.IsCompressed;
-                        break;
-                    case "LastUpdated":
-                        Sort = x => x.LastUpdated;
-                        break;
-                }
+                    default:
+                        return x => x.AppName;
 
-                return Sort;
+                    case "appID":
+                        return x => x.AppID;
+
+                    case "sizeOnDisk":
+                        return x => x.SizeOnDisk;
+
+                    case "backupType":
+                        return x => x.IsCompressed;
+
+                    case "LastUpdated":
+                        return x => x.LastUpdated;
+                }
             }
 
             public static void UpdateBackupDirectories()
@@ -60,6 +55,7 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             }
+
             public static void UpdateOriginBackupDirectories()
             {
                 try
@@ -109,7 +105,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 {
-                    Properties.Settings.Default.ParallelAfterSize = Properties.Settings.Default.ParallelAfterSize / 1000000;
+                    Properties.Settings.Default.ParallelAfterSize /= 1000000;
                 }
             }
             catch (Exception ex)
@@ -155,7 +151,7 @@ namespace Steam_Library_Manager.Functions
             Settings.SaveSettings();
         }
 
-        public class Library
+        public static class Library
         {
             public static void GenerateLibraryList()
             {
@@ -224,8 +220,8 @@ namespace Steam_Library_Manager.Functions
 
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
-                        await Task.Run(() => Library.Steam.UpdateJunks());
+                        await Task.Run(() => Library.Steam.UpdateAppList()).ConfigureAwait(false);
+                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)
@@ -243,7 +239,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0)
                     {
-                        if (Definitions.List.Libraries.Where(x => x.DirectoryInfo.FullName.ToLowerInvariant() == NewLibraryPath).Count() > 0)
+                        if (Definitions.List.Libraries.Any(x => x.DirectoryInfo.FullName.ToLowerInvariant() == NewLibraryPath))
                         {
                             return true;
                         }
@@ -267,8 +263,8 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
-                        await Task.Run(() => Library.Steam.UpdateJunks());
+                        await Task.Run(() => Library.Steam.UpdateAppList()).ConfigureAwait(false);
+                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)

@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    public class Logger
+    public static class Logger
     {
         public enum LogType
         {
@@ -22,17 +22,18 @@ namespace Steam_Library_Manager.Functions
             public dynamic App;
         }
 
-        private static BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
-        private static BlockingCollection<AppLog> AppLogs = new BlockingCollection<AppLog>();
-        private static BlockingCollection<string> LibraryLogs = new BlockingCollection<string>();
-        private static BlockingCollection<string> TaskManagerLogs = new BlockingCollection<string>();
-        private static DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "SLM"));
-        private static DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "Libraries"));
-        private static DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "TaskManager"));
+        private static readonly BlockingCollection<string> SLMLogs = new BlockingCollection<string>();
+        private static readonly BlockingCollection<AppLog> AppLogs = new BlockingCollection<AppLog>();
+        private static readonly BlockingCollection<string> LibraryLogs = new BlockingCollection<string>();
+        private static readonly BlockingCollection<string> TaskManagerLogs = new BlockingCollection<string>();
+        private static readonly DirectoryInfo SLMLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "SLM"));
+        private static readonly DirectoryInfo LibraryLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "Libraries"));
+        private static readonly DirectoryInfo TaskManagerLogDirectory = new DirectoryInfo(Path.Combine(Definitions.Directories.SLM.Log, "TaskManager"));
 
         public static void StartLogger()
         {
             #region SLM Logs
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
@@ -49,9 +50,11 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             });
-            #endregion
+
+            #endregion SLM Logs
 
             #region App Logs
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
@@ -68,9 +71,11 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             });
-            #endregion
+
+            #endregion App Logs
 
             #region Library Logs
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
@@ -87,9 +92,11 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             });
-            #endregion
+
+            #endregion Library Logs
 
             #region Task Manager Logs
+
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 try
@@ -106,7 +113,8 @@ namespace Steam_Library_Manager.Functions
                     MessageBox.Show(ex.ToString());
                 }
             });
-            #endregion
+
+            #endregion Task Manager Logs
         }
 
         private static void ProcessSLMLogs(string LogMessage)
@@ -215,16 +223,19 @@ namespace Steam_Library_Manager.Functions
                 switch (LogType)
                 {
                     case LogType.SLM:
-                        SLMLogs.Add(($"[{DateTime.Now}] {LogMessage}"));
+                        SLMLogs.Add($"[{DateTime.Now}] {LogMessage}");
                         break;
+
                     case LogType.App:
                         AppLogs.Add(new AppLog { App = App, Message = $"[{DateTime.Now}] {LogMessage}" });
                         break;
+
                     case LogType.Library:
-                        LibraryLogs.Add(($"[{DateTime.Now}] {LogMessage}"));
+                        LibraryLogs.Add($"[{DateTime.Now}] {LogMessage}");
                         break;
+
                     case LogType.TaskManager:
-                        TaskManagerLogs.Add(($"[{DateTime.Now}] {LogMessage}"));
+                        TaskManagerLogs.Add($"[{DateTime.Now}] {LogMessage}");
                         break;
                 }
             }
@@ -232,7 +243,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Debug.WriteLine(ex);
                 MessageBox.Show(ex.ToString());
-                Logger.LogToFile(LogType.TaskManager, ex.ToString());
+                LogToFile(LogType.TaskManager, ex.ToString());
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
 {
-    internal class FileSystem
+    internal static class FileSystem
     {
         public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {

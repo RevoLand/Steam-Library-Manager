@@ -53,9 +53,7 @@ namespace FontAwesome.WPF
 
             FontAwesomeIcon symbolIcon = (FontAwesomeIcon)evt.NewValue;
             int symbolCode = (int)symbolIcon;
-            char symbolChar = (char)symbolCode;
-
-            target.Content = symbolChar;
+            target.Content = (char)symbolCode;
         }
 
         private const FontAwesomeIcon DEFAULT_CONTENT = FontAwesomeIcon.None;

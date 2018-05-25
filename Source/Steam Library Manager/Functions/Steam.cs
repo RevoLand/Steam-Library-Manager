@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Functions
 {
-    internal class Steam
+    internal static class Steam
     {
         public static async void UpdateSteamInstallationPathAsync()
         {
@@ -21,7 +21,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
                             OpenFileDialog SteamPathSelector = new OpenFileDialog()
                             {
@@ -115,7 +115,7 @@ namespace Steam_Library_Manager.Functions
                 ShowToSLMBackup = true
             });
 
-            #endregion
+            #endregion App Context Menu Item Definitions
         }
 
         public static void PopulateAppCMenuItems()
@@ -217,21 +217,14 @@ namespace Steam_Library_Manager.Functions
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
             });
 
-            #endregion
+            #endregion App Context Menu Item Definitions
         }
 
         public static bool IsSteamWorking()
         {
             try
             {
-                if (Process.GetProcessesByName("Steam").Length > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return Process.GetProcessesByName("Steam").Length > 0;
             }
             catch (Exception ex)
             {
@@ -239,7 +232,6 @@ namespace Steam_Library_Manager.Functions
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 return true;
             }
-
         }
 
         public static async Task CloseSteamAsync()
@@ -248,13 +240,13 @@ namespace Steam_Library_Manager.Functions
             {
                 if (IsSteamWorking())
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
-                            Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}", "-shutdown");
+                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam.exe could not found, SLM will try to terminate Steam processes now.", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam.exe could not found, SLM will try to terminate Steam processes now.", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
                             foreach (Process SteamProcess in Process.GetProcessesByName("Steam"))
                             {
@@ -271,7 +263,7 @@ namespace Steam_Library_Manager.Functions
                         throw new OperationCanceledException("User doesn't wants to close Steam, can not continue to process.");
                     }
 
-                    await Task.Delay(6000);
+                    await Task.Delay(6000).ConfigureAwait(false);
                 }
             }
             catch (OperationCanceledException)
@@ -289,20 +281,20 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        await CloseSteamAsync();
+                        await CloseSteamAsync().ConfigureAwait(false);
 
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
-                            Process.Start($"{Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")}", "-silent");
+                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-silent");
                         }
                     }
                     else
                     {
                         throw new OperationCanceledException("User doesn't wants to restart Steam.");
                     }
-                }, System.Windows.Threading.DispatcherPriority.Normal);
+                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -312,7 +304,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public class Library
+        public static class Library
         {
             public static async void CreateNew(string NewLibraryPath, bool Backup)
             {
@@ -321,7 +313,7 @@ namespace Steam_Library_Manager.Functions
                     // If we are not creating a backup library
                     if (!Backup)
                     {
-                        await CloseSteamAsync();
+                        await CloseSteamAsync().ConfigureAwait(false);
 
                         // Define steam dll paths for better looking
                         string SteamDLLPath = Path.Combine(NewLibraryPath, "Steam.dll");
@@ -356,7 +348,7 @@ namespace Steam_Library_Manager.Functions
                             // Show a messagebox to user about process
                             MessageBox.Show("New Steam library created");
 
-                            // Since this file started to interrupt us? 
+                            // Since this file started to interrupt us?
                             // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
                             if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
                             {
@@ -394,7 +386,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.");
+                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.").ConfigureAwait(false);
                     ProgressInformationMessage.SetIndeterminate();
 
                     foreach (Definitions.Library CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists))
@@ -431,7 +423,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    await ProgressInformationMessage.CloseAsync();
+                    await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
                     Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Checked for Backup updates.");
                 }
                 catch (Exception ex)
@@ -454,8 +446,8 @@ namespace Steam_Library_Manager.Functions
                         Steam = Library
                     });
 
-                    await Task.Run(() => Library.UpdateAppList());
-                    await Task.Run(() => Library.UpdateJunks());
+                    await Task.Run(() => Library.UpdateAppList()).ConfigureAwait(false);
+                    await Task.Run(() => Library.UpdateJunks()).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -510,18 +502,14 @@ namespace Steam_Library_Manager.Functions
                 {
                     NewLibraryPath = NewLibraryPath.ToLowerInvariant();
 
-                    if (Definitions.List.Libraries.Where(x => 
-                    x.Type == Definitions.Enums.LibraryType.Steam &&
-                    (x.Steam.FullPath.ToLowerInvariant() == NewLibraryPath ||
-                    x.Steam.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                    x.Steam.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                    x.Steam.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath ||
-                    x.Steam.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath)
-                    ).Count() > 0)
-                        return true;
-
-                    // else, return false which means library is not exists
-                    return false;
+                    return Definitions.List.Libraries.Any(x =>
+                     x.Type == Definitions.Enums.LibraryType.Steam
+                     && (x.Steam.FullPath.ToLowerInvariant() == NewLibraryPath
+                     || x.Steam.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.Steam.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.Steam.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.Steam.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath)
+                    );
                 }
                 // In any error return true to prevent possible bugs
                 catch (Exception ex)
@@ -530,7 +518,6 @@ namespace Steam_Library_Manager.Functions
                     return true;
                 }
             }
-
         }
     }
 }

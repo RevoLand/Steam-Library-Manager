@@ -20,7 +20,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         public BitmapCreateOptions CreateOptions
         {
-            get => ((BitmapCreateOptions)(GetValue(CreateOptionsProperty))); set => SetValue(CreateOptionsProperty, value);
+            get => (BitmapCreateOptions)(GetValue(CreateOptionsProperty)); set => SetValue(CreateOptionsProperty, value);
         }
 
         private static async void ImageUrlPropertyChangedAsync(DependencyObject Obj, DependencyPropertyChangedEventArgs e)
@@ -35,7 +35,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             try
             {
                 var BitmapImage = new BitmapImage();
-                var MemStream = await FileCache.HitAsync(new Uri(Url));
+                var MemStream = await FileCache.HitAsync(new Uri(Url)).ConfigureAwait(true);
 
                 if (MemStream == null || MemStream.Length == 0)
                 {

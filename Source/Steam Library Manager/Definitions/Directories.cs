@@ -4,10 +4,10 @@ using System.IO;
 namespace Steam_Library_Manager.Definitions
 {
     // Definitions about directories
-    internal class Directories
+    internal static class Directories
     {
         // SLM directory definitions
-        public class SLM
+        public static class SLM
         {
             // Current running directory of SLM
             public static string Current = AppDomain.CurrentDomain.BaseDirectory;

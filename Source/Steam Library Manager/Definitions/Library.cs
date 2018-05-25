@@ -12,6 +12,7 @@ namespace Steam_Library_Manager.Definitions
         public System.IO.DirectoryInfo DirectoryInfo { get; set; }
         public SteamLibrary Steam { get; set; }
         public OriginLibrary Origin { get; set; }
+
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu
         {
             get

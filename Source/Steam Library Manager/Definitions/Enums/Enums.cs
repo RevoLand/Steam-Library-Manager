@@ -8,12 +8,16 @@ namespace Steam_Library_Manager.Definitions.Enums
     {
         [Description("Name")]
         appName,
+
         [Description("AppID")]
         appID,
+
         [Description("Size on disk")]
         sizeOnDisk,
+
         [Description("Backup type")]
         backupType,
+
         [Description("Last updated first")]
         LastUpdated
     }
@@ -29,6 +33,7 @@ namespace Steam_Library_Manager.Definitions.Enums
     {
         [Description("Use archive size")]
         compressed,
+
         [Description("Calculate file size inside archive")]
         Uncompressed
     }
@@ -38,6 +43,7 @@ namespace Steam_Library_Manager.Definitions.Enums
     {
         [Description("Grid View")]
         Grid,
+
         [Description("List View")]
         Listview
     }
@@ -95,8 +101,10 @@ namespace Steam_Library_Manager.Definitions.Enums
     {
         [Description("Light")]
         BaseLight,
+
         [Description("Dark")]
         BaseDark,
+
         [Description("Custom")]
         CustomTheme
     }

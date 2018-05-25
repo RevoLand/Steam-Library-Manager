@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Steam_Library_Manager.Functions
 {
-    internal class Network
+    internal static class Network
     {
         public static void UpdatePublicIP()
         {
@@ -45,14 +45,7 @@ namespace Steam_Library_Manager.Functions
             {
                 List<int> usedPorts = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners().Select(p => p.Port).ToList();
 
-                if (usedPorts.Contains(port))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return usedPorts.Contains(port);
             }
             catch
             {

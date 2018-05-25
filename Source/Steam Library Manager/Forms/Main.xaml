@@ -4,25 +4,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Color="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
     xmlns:SLM="clr-namespace:Steam_Library_Manager"
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
     xmlns:dd="urn:gong-wpf-dragdrop"
-    xmlns:Color="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" MinWidth="930" MinHeight="800" Height="800" Width="930"
-    Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync" ResizeMode="CanResizeWithGrip" SaveWindowPosition="True"
+    Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync" ResizeMode="CanResizeWithGrip"
     ShowTitleBar="False" GlowBrush="{DynamicResource AccentColorBrush}" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" FontSize="13.333"
-    >
-    <!-- 
+     RightWindowCommandsOverlayBehavior="Always">
+    <!--
     Resource Templates for:
         Library (Type: Steam)
         Library (Type: SLM)
-    
+
         Application listing: GridView
         Application listing: ListView
-    
+
         Task Manager listing: GridView
         Task Manager listing: ListView
     -->
@@ -39,23 +39,23 @@
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="Steam"/>
+                    <TextBlock Text="Steam" />
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
                 </Grid>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
 
-                <!-- ProgressBar: Available free space -->
+                    <!-- ProgressBar: Available free space -->
                     <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- Library: Origin -->
         <DataTemplate x:Key="Library_Origin">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
@@ -68,10 +68,10 @@
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="Origin"/>
+                    <TextBlock Text="Origin" />
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
                 </Grid>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
@@ -80,7 +80,7 @@
                     <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -169,7 +169,7 @@
                     <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -225,7 +225,7 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- App Library: ListView: Steam & SLM -->
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
@@ -344,11 +344,11 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
 
-                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
                     <Controls:MetroProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
@@ -365,7 +365,7 @@
                 </Controls:MetroProgressBar>
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}" >
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -427,7 +427,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -439,7 +439,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -451,10 +451,10 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
                     <Controls:MetroProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
@@ -497,8 +497,7 @@
                     <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap"/>
-
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
                         <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
@@ -516,7 +515,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        
+
                         <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
                             <Grid.Style>
@@ -528,7 +527,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -540,23 +539,23 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </DataTemplate>
-        
+
         <!-- Task Manager: GridView: Origin -->
         <DataTemplate x:Key="Tasklibrary_Gridview_Origin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
 
-                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
                     <Controls:MetroProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
@@ -573,7 +572,7 @@
                 </Controls:MetroProgressBar>
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}" >
+                        <CachedImage:Image Source="/Steam Library Manager;component/Resources/no_image_available.gif" Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -635,7 +634,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -647,7 +646,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -659,10 +658,10 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click"/>
+                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch" >
+                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
                     <Controls:MetroProgressBar.Style>
                         <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
@@ -705,8 +704,7 @@
                     <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap"/>
-
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
                         <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
@@ -736,7 +734,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0"/>
+                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -748,13 +746,12 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0"/>
+                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </DataTemplate>
-
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -766,7 +763,7 @@
         <TextBlock Margin="15, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" FontWeight="ExtraLight" Background="Transparent">
             Steam Library Manager
         </TextBlock>
-        
+
         <!-- Grid: Quick settings -->
         <Grid x:Name="QuickSettings" Margin="0,0,10,0">
             <!-- App Sorting Method -->
@@ -793,8 +790,8 @@
             <Controls:MetroTabItem Header="Library" IsSelected="True">
                 <Grid>
                     <!-- ListView: Library Panel -->
-                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" 
-                              MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single"
+                              MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown" Padding="0,-2, 0, 0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -820,8 +817,8 @@
                     </ListView>
 
                     <!-- ListView: App Panel -->
-                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
-                              Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" 
+                    <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                              Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
                               Padding="0, -2, 0, 0" dd:DragDrop.IsDragSource="True">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -832,14 +829,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="Origin" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_GridviewOrigin}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="Origin" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_ListviewOrigin}" />
                                                 </MultiDataTrigger>
@@ -847,14 +844,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="Steam" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="Steam" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
                                                 </MultiDataTrigger>
@@ -862,14 +859,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="SLM" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding Library.Type}" Value="SLM" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
                                                 </MultiDataTrigger>
@@ -899,14 +896,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview_Origin}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview_Origin}" />
                                                 </MultiDataTrigger>
@@ -914,14 +911,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
                                                 </MultiDataTrigger>
@@ -929,14 +926,14 @@
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
                                                 </MultiDataTrigger>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
-                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview"/>
+                                                        <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
                                                 </MultiDataTrigger>
@@ -953,7 +950,7 @@
                         <Button x:Name="Button_StartTaskManager" FontSize="13" Content="Start" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" />
 
                         <Button x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="Pause" Tag="Pause" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="150,0,0,0" />
-                        
+
                         <!-- Button: Stop Task Manager -->
                         <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="Stop" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="300,0,0,0" />
 
@@ -965,7 +962,7 @@
                     </Grid>
 
                     <!-- ListBox: Task Manager Logs -->
-                    <ListBox x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" >
+                    <ListBox x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock MaxHeight="16" Text="{Binding}" />
@@ -984,8 +981,8 @@
                                 <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                                     <Grid.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click"/>
-                                            <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click"/>
+                                            <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                            <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                                         </ContextMenu>
                                     </Grid.ContextMenu>
                                     <Grid>
@@ -1008,36 +1005,36 @@
                     <Button Tag="MoveAll" FontSize="13" Content="Move All" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 
                     <!-- Button: Refresh All-->
-                    <Button Tag="Refresh" FontSize="13" Content="Refresh List" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom"/>
+                    <Button Tag="Refresh" FontSize="13" Content="Refresh List" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
                 </Grid>
             </Controls:MetroTabItem>
             <!-- TBC: SLM Server
             <TabItem Padding="30, 10">
                 <TabItem.Header>
-                    <TextBlock Text="SLM Server" FontSize="15"/>
+                    <TextBlock Text="SLM Server" FontSize="15" />
                 </TabItem.Header>
                 <Grid Background="White">
-                    <Label Content="Listen IP:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="Listen IP:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <TextBox HorizontalAlignment="Left" Margin="104,10,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenIP}" Height="22" />
                     <Button Content="Get IP" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,10,0,0" Width="68" Height="22" Click="GetIPButton_Click" />
 
-                    <Label Content="Listen Port:" Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="Listen Port:" Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <TextBox HorizontalAlignment="Left" Margin="104,37,0,0" VerticalAlignment="Top" Width="210" Text="{slm:SettingBinding ListenPort}" Height="22" />
                     <Button Content="Get Port" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,37,0,0" Width="68" Height="22" Click="GetPortButton_Click" />
 
-                    <Label Content="Server Status:" Margin="10,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Label Name="ServerStatus" Content="" Margin="104,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="284"/>
+                    <Label Content="Server Status:" Margin="10,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <Label Name="ServerStatus" Content="" Margin="104,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="284" />
 
                     <Button Name="ToggleSLMServer" Content="Start Server" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,89,0,0" Width="68" Height="22" Click="ToggleSLMServerButton_Click" />
 
-                    <Label Content="IP:" Margin="589,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="IP:" Margin="589,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <TextBox Margin="617,10,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding IPToConnect}" Height="22" />
 
-                    <Label Content="Port:" Margin="578,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Label Content="Port:" Margin="578,33,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <TextBox Margin="617,37,67,0" VerticalAlignment="Top" Text="{slm:SettingBinding PortToConnect}" Height="22" />
                     <Button Content="Connect" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,21,10,0" Width="52" Height="22" Click="Button_Click" />
-                    <Label Content="Status:" Margin="567,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Label x:Name="ConnectionStatus" Content="" Margin="617,64,10,0" VerticalAlignment="Top"/>
+                    <Label Content="Status:" Margin="567,63,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <Label x:Name="ConnectionStatus" Content="" Margin="617,64,10,0" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
             -->
@@ -1047,47 +1044,47 @@
                     <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="0,5,360,5">
                         <Grid>
                             <!-- Application sorting method -->
-                            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
-                                      Margin="5,5,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,5,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}" />
 
                             <!-- Application size calculation method -->
-                            <ComboBox Controls:TextBoxHelper.Watermark="Get application size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
-                                      Margin="5,55,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
-                                      SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ComboBox Controls:TextBoxHelper.Watermark="Get application size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,55,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}" />
 
                             <!-- Archive size calculation method -->
                             <ComboBox Controls:TextBoxHelper.Watermark="Get compressed archive size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,105,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
-                                      SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="5,105,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}" />
 
                             <!-- File size to start move synchronously (MB) -->
-                            <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously after" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" 
-                                                    Margin="5,155,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024" 
+                            <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously after" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                                                    Margin="5,155,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
                                                     Value="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StringFormat="{}{0:N0} MB" />
 
-                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Accent" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
-                                      Margin="5,205,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Accent" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,205,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}" />
 
-                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Base" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40" 
-                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" 
+                            <ComboBox Controls:TextBoxHelper.Watermark="Theme Base" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_BaseTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}" />
 
                             <!-- Advanced Logging (Requires restart) -->
-                            <Controls:ToggleSwitch Header="Advanced Logging (Requires restart)" Margin="5,305,0,0" 
-                                                   IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" 
+                            <Controls:ToggleSwitch Header="Advanced Logging (Requires restart)" Margin="5,305,0,0"
+                                                   IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Check for Updates at Startup -->
-                            <Controls:ToggleSwitch Header="Check for Updates on Startup" Margin="5,355,0,0" OnLabel="Yes" OffLabel="No" 
+                            <Controls:ToggleSwitch Header="Check for Updates on Startup" Margin="5,355,0,0" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Keep searching while switching library -->
-                            <Controls:ToggleSwitch Header="Keep searching on library change" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No" 
+                            <Controls:ToggleSwitch Header="Keep searching on library change" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
@@ -1106,41 +1103,41 @@
                             <GroupBox Header="Custom Theme" Margin="255,205,0,0">
                                 <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                                     <Grid>
-                                        <Label Content="Text Color:" Margin="0,5,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,5,0,0" Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Text Color:" Margin="0,5,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,5,0,0" Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="TabItem Text Color" Margin="0,55,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,55,0,0" Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="TabItem Text Color" Margin="0,55,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,55,0,0" Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Background" Margin="0,105,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,105,0,0" Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Background" Margin="0,105,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,105,0,0" Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Control BG" Margin="0,155,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,155,0,0" Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Control BG" Margin="0,155,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,155,0,0" Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Context Menu" Margin="0,205,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,205,0,0" Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Context Menu" Margin="0,205,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,205,0,0" Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Window BG" Margin="0,255,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,255,0,0" Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Window BG" Margin="0,255,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,255,0,0" Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="TransparentWhite" Margin="0,305,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,305,0,0" Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="TransparentWhite" Margin="0,305,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,305,0,0" Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="GrayBrush1" Margin="0,355,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,355,0,0" Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="GrayBrush1" Margin="0,355,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,355,0,0" Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="GrayBrush2" Margin="0,405,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,405,0,0" Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="GrayBrush2" Margin="0,405,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,405,0,0" Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Button Click" Margin="0,455,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,455,0,0" Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Button Click" Margin="0,455,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,455,0,0" Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Button Hover" Margin="0,505,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,505,0,0" Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Button Hover" Margin="0,505,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,505,0,0" Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
 
-                                        <Label Content="Button BG" Margin="0,555,0,0"/>
-                                        <Color:ColorPicker Width="150" Margin="0,555,0,0" Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True"/>
+                                        <Label Content="Button BG" Margin="0,555,0,0" />
+                                        <Color:ColorPicker Width="150" Margin="0,555,0,0" Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
                                     </Grid>
                                 </ScrollViewer>
                             </GroupBox>
@@ -1149,29 +1146,24 @@
                     <GroupBox Header="Task Manager Default Settings" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
                         <Grid>
                             <!-- Remove Source Files -->
-                            <Controls:ToggleSwitch Header="Remove files at Source directory" OnLabel="Remove" OffLabel="Do NOT Remove" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                   HorizontalAlignment="Left" Margin="5,5,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                                   />
+                            <Controls:ToggleSwitch Header="Remove files at Source directory" OnLabel="Remove" OffLabel="Do NOT Remove" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Margin="5,5,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Compress Files -->
-                            <Controls:ToggleSwitch Header="Compress Files" OnLabel="Compress" OffLabel="Do NOT Compress" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                   HorizontalAlignment="Left" Margin="5,55,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                                   />
+                            <Controls:ToggleSwitch Header="Compress Files" OnLabel="Compress" OffLabel="Do NOT Compress" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Margin="5,55,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Report File Movement -->
-                            <Controls:ToggleSwitch Header="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                   HorizontalAlignment="Left" Margin="5,105,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                                   />
+                            <Controls:ToggleSwitch Header="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Margin="5,105,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Start Task Manager on Startup -->
-                            <Controls:ToggleSwitch Header="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                   HorizontalAlignment="Left" Margin="5,155,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                                   />
+                            <Controls:ToggleSwitch Header="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Margin="5,155,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                             <!-- Play a sound on completion-->
-                            <Controls:ToggleSwitch Header="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                   HorizontalAlignment="Left" Margin="5,205,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                                   />
+                            <Controls:ToggleSwitch Header="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   HorizontalAlignment="Left" Margin="5,205,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
                         </Grid>
                     </GroupBox>
                 </Grid>

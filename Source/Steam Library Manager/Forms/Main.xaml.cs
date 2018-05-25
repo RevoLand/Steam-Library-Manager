@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace Steam_Library_Manager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    /// 
+    ///
     public partial class Main
     {
         public static Main FormAccessor;
@@ -79,7 +78,7 @@ namespace Steam_Library_Manager
                     {
                         AffirmativeButtonText = "Quit",
                         NegativeButtonText = "Cancel"
-                    }) != MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
                 {
                     return;
                 }
@@ -132,7 +131,7 @@ namespace Steam_Library_Manager
                             }
                             else
                             {
-                                await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                                await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}").ConfigureAwait(true);
                             }
                         }
                     }
@@ -152,7 +151,7 @@ namespace Steam_Library_Manager
                         }
                         else
                         {
-                            await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            await this.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}").ConfigureAwait(true);
                         }
                     }
                 }
@@ -184,7 +183,7 @@ namespace Steam_Library_Manager
                 {
                     FileInfo Info = new FileInfo(DroppedItem);
 
-                    if (Info.Attributes.HasFlag(FileAttributes.Directory))
+                    if ((Info.Attributes & FileAttributes.Directory) != 0)
                     {
                         var LibraryDialog = await this.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create with folder:\n{DroppedItem}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
                         {
@@ -192,7 +191,7 @@ namespace Steam_Library_Manager
                             NegativeButtonText = "SLM",
                             FirstAuxiliaryButtonText = "Origin",
                             SecondAuxiliaryButtonText = "Cancel"
-                        });
+                        }).ConfigureAwait(true);
 
                         switch (LibraryDialog)
                         {
@@ -206,15 +205,15 @@ namespace Steam_Library_Manager
                                     }
                                     else
                                     {
-                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
                                     }
                                 }
                                 else
                                 {
-                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
                                 }
                                 break;
-                                // SLM
+                            // SLM
                             case MessageDialogResult.Negative:
                                 if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
                                 {
@@ -224,12 +223,12 @@ namespace Steam_Library_Manager
                                     }
                                     else
                                     {
-                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
                                     }
                                 }
                                 else
                                 {
-                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
                                 }
                                 break;
                             // Origin
@@ -242,12 +241,12 @@ namespace Steam_Library_Manager
                                     }
                                     else
                                     {
-                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                                        await this.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
                                     }
                                 }
                                 else
                                 {
-                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
+                                    await this.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
                                 }
                                 break;
                         }
@@ -260,21 +259,21 @@ namespace Steam_Library_Manager
             }
         }
 
-        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem).DataContext).ParseMenuItemAction((string)(sender as MenuItem).Tag);
+        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext).ParseMenuItemAction((string)(sender as MenuItem)?.Tag);
 
         public void AppCMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            switch(Definitions.SLM.CurrentSelectedLibrary.Type)
+            switch (Definitions.SLM.CurrentSelectedLibrary.Type)
             {
                 case Definitions.Enums.LibraryType.Steam:
                 case Definitions.Enums.LibraryType.SLM:
-                    ((Definitions.SteamAppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+                    ((Definitions.SteamAppInfo)(sender as MenuItem)?.DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
                     break;
+
                 case Definitions.Enums.LibraryType.Origin:
-                    ((Definitions.OriginAppInfo)(sender as MenuItem).DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem).Tag);
+                    ((Definitions.OriginAppInfo)(sender as MenuItem)?.DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
                     break;
             }
-            
         }
 
         private void RightWindowCommands_SettingsButton_Click(object sender, RoutedEventArgs e) => TabItem_Settings.IsSelected = true;
@@ -313,28 +312,32 @@ namespace Steam_Library_Manager
         {
             try
             {
-                switch ((sender as Button).Tag)
+                switch ((sender as Button)?.Tag)
                 {
-                    default:
                     case "Start":
+                    default:
                         Framework.TaskManager.Start();
                         Button_StartTaskManager.IsEnabled = false;
                         Button_PauseTaskManager.IsEnabled = true;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
+
                     case "Pause":
                         Framework.TaskManager.Pause();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
+
                     case "Stop":
                         Framework.TaskManager.Stop();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = false;
                         break;
+
                     case "BackupUpdates":
                         Functions.Steam.Library.CheckForBackupUpdatesAsync();
                         break;
+
                     case "ClearCompleted":
                         if (Framework.TaskManager.TaskList.Count == 0)
                         {
@@ -361,10 +364,10 @@ namespace Steam_Library_Manager
         {
             try
             {
-                switch ((sender as MenuItem).Tag)
+                switch ((sender as MenuItem)?.Tag)
                 {
-                    default:
                     case "Remove":
+                    default:
                         if (TaskPanel.SelectedItems.Count == 0)
                         {
                             return;
@@ -374,7 +377,7 @@ namespace Steam_Library_Manager
                         {
                             if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                await this.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                await this.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.").ConfigureAwait(true);
                             }
                             else
                             {
@@ -402,11 +405,9 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                List<Definitions.List.JunkInfo> SelectedJunks = LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList();
-
-                foreach (Definitions.List.JunkInfo Junk in SelectedJunks)
+                foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList())
                 {
-                    if ((string)(sender as MenuItem).Tag == "Explorer")
+                    if ((string)(sender as MenuItem)?.Tag == "Explorer")
                     {
                         Junk.FSInfo.Refresh();
 
@@ -422,15 +423,14 @@ namespace Steam_Library_Manager
                             if (Junk.FSInfo.Exists)
                             {
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete());
+                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
                             }
                         }
                         else
                         {
                             if (((DirectoryInfo)Junk.FSInfo).Exists)
                             {
-                                
-                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
+                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(false);
                             }
                         }
 
@@ -458,7 +458,7 @@ namespace Steam_Library_Manager
         {
             try
             {
-                if ((string)(sender as Button).Tag == "Refresh")
+                if ((string)(sender as Button)?.Tag == "Refresh")
                 {
                     foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
                     {
@@ -471,27 +471,23 @@ namespace Steam_Library_Manager
                     return;
                 }
 
-                if ((string)(sender as Button).Tag == "MoveAll")
+                if ((string)(sender as Button)?.Tag == "MoveAll")
                 {
                     var TargetFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
                     System.Windows.Forms.DialogResult TargetFolderDialogResult = TargetFolderBrowser.ShowDialog();
 
                     if (TargetFolderDialogResult == System.Windows.Forms.DialogResult.OK)
                     {
-                        if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath)
+                        if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath
+                            && await this.ShowMessageAsync("Root path selected?", "Are you sure you like to move junks to root of disk?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) != MessageDialogResult.Affirmative)
                         {
-                            if (await this.ShowMessageAsync("Root path selected?", "Are you sure you like to move junks to root of disk?", MessageDialogStyle.AffirmativeAndNegative) != MessageDialogResult.Affirmative)
-                            {
-                                return;
-                            }
+                            return;
                         }
 
-                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Relocating junk files as you have requested.");
+                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Relocating junk files as you have requested.").ConfigureAwait(true);
                         ProgressInformationMessage.SetIndeterminate();
 
-                        List<Definitions.List.JunkInfo> LibraryCleanerItems = LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList();
-
-                        foreach (Definitions.List.JunkInfo Junk in LibraryCleanerItems)
+                        foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
                         {
                             if (Junk.FSInfo is FileInfo)
                             {
@@ -503,7 +499,7 @@ namespace Steam_Library_Manager
                                 }
 
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete());
+                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
                             }
                             else
                             {
@@ -522,26 +518,26 @@ namespace Steam_Library_Manager
                                             }
 
                                             ProgressInformationMessage.SetMessage("Relocating file:\n\n" + currentFile.FullName);
-                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true));
+                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(false);
                                         }
                                     }
 
-                                    ProgressInformationMessage.SetMessage("Removing old directory:\n\n" + (Junk.FSInfo as DirectoryInfo).FullName);
-                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo).Delete(true));
+                                    ProgressInformationMessage.SetMessage("Removing old directory:\n\n" + (Junk.FSInfo as DirectoryInfo)?.FullName);
+                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(false);
                                 }
                             }
 
                             Definitions.List.LCItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync();
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
                     }
                 }
-                else if ((string)(sender as Button).Tag == "DeleteAll")
+                else if ((string)(sender as Button)?.Tag == "DeleteAll")
                 {
-                    if (await this.ShowMessageAsync("There might be saved games in these folders?!", "Saved Games may be located within these folders, are you sure you want to remove them?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await this.ShowMessageAsync("There might be saved games in these folders?!", "Saved Games may be located within these folders, are you sure you want to remove them?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.");
+                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.").ConfigureAwait(true);
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -553,7 +549,7 @@ namespace Steam_Library_Manager
                                 {
                                     File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
                                     ProgressInformationMessage.SetMessage("Deleting file:\n\n" + Junk.FSInfo.FullName);
-                                    await Task.Run(() => Junk.FSInfo.Delete());
+                                    await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
                                 }
                             }
                             else
@@ -562,14 +558,14 @@ namespace Steam_Library_Manager
                                 if (Junk.FSInfo.Exists)
                                 {
                                     ProgressInformationMessage.SetMessage("Deleting Folder:\n\n" + Junk.FSInfo.FullName);
-                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
+                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(false);
                                 }
                             }
 
                             Definitions.List.LCItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync();
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
                     }
                 }
             }
@@ -615,50 +611,50 @@ namespace Steam_Library_Manager
             {
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
-                    if ((sender as Grid).DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
+                    if ((sender as Grid)?.DataContext as Definitions.List.TaskInfo is Definitions.List.TaskInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.TaskInfo).SteamApp.CommonFolder.Exists)
+                        if (((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.CommonFolder.Exists == true)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.TaskInfo).SteamApp.CommonFolder.FullName);
+                            Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.CommonFolder.FullName);
                         }
                     }
-                    else if (((sender as Grid).DataContext is Definitions.SteamAppInfo))
+                    else if ((sender as Grid)?.DataContext is Definitions.SteamAppInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.SteamAppInfo).CommonFolder.Exists)
+                        if (((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.CommonFolder.Exists == true)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.SteamAppInfo).CommonFolder.FullName);
+                            Process.Start(((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.CommonFolder.FullName);
                         }
                     }
-                    else if (((sender as Grid).DataContext is Definitions.Library))
+                    else if ((sender as Grid)?.DataContext is Definitions.Library)
                     {
-                        if (((sender as Grid).DataContext as Definitions.Library).Steam != null)
+                        if (((sender as Grid)?.DataContext as Definitions.Library)?.Steam != null)
                         {
-                            if (((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.Exists)
+                            if (((sender as Grid)?.DataContext as Definitions.Library)?.Steam.SteamAppsFolder.Exists == true)
                             {
-                                Process.Start(((sender as Grid).DataContext as Definitions.Library).Steam.SteamAppsFolder.FullName);
+                                Process.Start(((sender as Grid)?.DataContext as Definitions.Library)?.Steam.SteamAppsFolder.FullName);
                             }
                         }
 
-                        if (((sender as Grid).DataContext as Definitions.Library).Origin != null)
+                        if (((sender as Grid)?.DataContext as Definitions.Library)?.Origin != null)
                         {
-                            if (Directory.Exists(((sender as Grid).DataContext as Definitions.Library).Origin.FullPath))
+                            if (Directory.Exists(((sender as Grid)?.DataContext as Definitions.Library)?.Origin.FullPath))
                             {
-                                Process.Start(((sender as Grid).DataContext as Definitions.Library).Origin.FullPath);
+                                Process.Start(((sender as Grid)?.DataContext as Definitions.Library)?.Origin.FullPath);
                             }
                         }
                     }
-                    else if (((sender as Grid).DataContext is Definitions.List.JunkInfo))
+                    else if ((sender as Grid)?.DataContext is Definitions.List.JunkInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.Exists)
+                        if (((sender as Grid)?.DataContext as Definitions.List.JunkInfo)?.FSInfo.Exists == true)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.List.JunkInfo).FSInfo.FullName);
+                            Process.Start(((sender as Grid)?.DataContext as Definitions.List.JunkInfo)?.FSInfo.FullName);
                         }
                     }
-                    else if (((sender as Grid).DataContext is Definitions.OriginAppInfo))
+                    else if ((sender as Grid)?.DataContext is Definitions.OriginAppInfo)
                     {
-                        if (((sender as Grid).DataContext as Definitions.OriginAppInfo).InstallationDirectory.Exists)
+                        if (((sender as Grid)?.DataContext as Definitions.OriginAppInfo)?.InstallationDirectory.Exists == true)
                         {
-                            Process.Start(((sender as Grid).DataContext as Definitions.OriginAppInfo).InstallationDirectory.FullName);
+                            Process.Start(((sender as Grid)?.DataContext as Definitions.OriginAppInfo)?.InstallationDirectory.FullName);
                         }
                     }
                 }
@@ -668,7 +664,6 @@ namespace Steam_Library_Manager
                 Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
             }
         }
-
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -684,13 +679,13 @@ namespace Steam_Library_Manager
             {
                 if (Directory.Exists(Definitions.Directories.SLM.Cache))
                 {
-                    foreach(string file in Directory.EnumerateFiles(Definitions.Directories.SLM.Cache, "*.jpg"))
+                    foreach (string file in Directory.EnumerateFiles(Definitions.Directories.SLM.Cache, "*.jpg"))
                     {
                         File.Delete(file);
                     }
                 }
 
-                await this.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.");
+                await this.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.").ConfigureAwait(true);
             }
             catch { }
         }
@@ -710,7 +705,7 @@ namespace Steam_Library_Manager
             {
                 Tuple<AppTheme, Accent> Style = ThemeManager.DetectAppStyle(Application.Current);
 
-                switch(Key)
+                switch (Key)
                 {
                     case "TextBrush":
                         Style.Item1.Resources["BlackBrush"] = GetSolidColorBrush(value);
@@ -719,9 +714,11 @@ namespace Steam_Library_Manager
                         Style.Item1.Resources["ControlTextBrush"] = GetSolidColorBrush(value);
                         Style.Item1.Resources["MenuTextBrush"] = GetSolidColorBrush(value);
                         break;
+
                     case "GrayNormalBrush":
                         Style.Item1.Resources["GrayNormalBrush"] = GetSolidColorBrush(value);
                         break;
+
                     case "WhiteBrush":
                     case "ControlBackgroundBrush":
                     case "WindowBackgroundBrush":

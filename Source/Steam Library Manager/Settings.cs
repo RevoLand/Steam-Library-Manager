@@ -9,8 +9,8 @@ namespace Steam_Library_Manager.Properties
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
     [System.Configuration.SettingsProvider(typeof(Framework.PortableSettingsProvider))]
-    internal sealed partial class Settings {
-
+    internal sealed partial class Settings
+    {
         public Settings() => PropertyChanged += Settings_PropertyChanged;
 
         private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

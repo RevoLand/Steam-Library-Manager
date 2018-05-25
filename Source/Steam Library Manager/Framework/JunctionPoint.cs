@@ -68,10 +68,10 @@ namespace Steam_Library_Manager.Framework
         [Flags]
         private enum EFileAccess : uint
         {
-            GenericRead = 0x80000000,
-            GenericWrite = 0x40000000,
-            GenericExecute = 0x20000000,
             GenericAll = 0x10000000,
+            GenericExecute = 0x20000000,
+            GenericWrite = 0x40000000,
+            GenericRead = 0x80000000
         }
 
         [Flags]
@@ -109,17 +109,17 @@ namespace Steam_Library_Manager.Framework
             Offline = 0x00001000,
             NotContentIndexed = 0x00002000,
             Encrypted = 0x00004000,
-            Write_Through = 0x80000000,
-            Overlapped = 0x40000000,
-            NoBuffering = 0x20000000,
-            RandomAccess = 0x10000000,
-            SequentialScan = 0x08000000,
-            DeleteOnClose = 0x04000000,
-            BackupSemantics = 0x02000000,
-            PosixSemantics = 0x01000000,
-            OpenReparsePoint = 0x00200000,
+            FirstPipeInstance = 0x00080000,
             OpenNoRecall = 0x00100000,
-            FirstPipeInstance = 0x00080000
+            OpenReparsePoint = 0x00200000,
+            PosixSemantics = 0x01000000,
+            BackupSemantics = 0x02000000,
+            DeleteOnClose = 0x04000000,
+            SequentialScan = 0x08000000,
+            RandomAccess = 0x10000000,
+            NoBuffering = 0x20000000,
+            Overlapped = 0x40000000,
+            Write_Through = 0x80000000
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -132,13 +132,13 @@ namespace Steam_Library_Manager.Framework
 
             /// <summary>
             /// Size, in bytes, of the data after the Reserved member. This can be calculated by:
-            /// (4 * sizeof(ushort)) + SubstituteNameLength + PrintNameLength + 
+            /// (4 * sizeof(ushort)) + SubstituteNameLength + PrintNameLength +
             /// (namesAreNullTerminated ? 2 * sizeof(char) : 0);
             /// </summary>
             public ushort ReparseDataLength;
 
             /// <summary>
-            /// Reserved; do not use. 
+            /// Reserved; do not use.
             /// </summary>
             public ushort Reserved;
 
@@ -160,7 +160,7 @@ namespace Steam_Library_Manager.Framework
 
             /// <summary>
             /// Length, in bytes, of the print name string. If this string is null-terminated,
-            /// PrintNameLength does not include space for the null character. 
+            /// PrintNameLength does not include space for the null character.
             /// </summary>
             public ushort PrintNameLength;
 
@@ -215,15 +215,16 @@ namespace Steam_Library_Manager.Framework
             {
                 byte[] sourceDirBytes = Encoding.Unicode.GetBytes(NonInterpretedPathPrefix + Path.GetFullPath(sourceDir));
 
-                REPARSE_DATA_BUFFER reparseDataBuffer = new REPARSE_DATA_BUFFER();
-
-                reparseDataBuffer.ReparseTag = IO_REPARSE_TAG_MOUNT_POINT;
-                reparseDataBuffer.ReparseDataLength = (ushort)(sourceDirBytes.Length + 12);
-                reparseDataBuffer.SubstituteNameOffset = 0;
-                reparseDataBuffer.SubstituteNameLength = (ushort)sourceDirBytes.Length;
-                reparseDataBuffer.PrintNameOffset = (ushort)(sourceDirBytes.Length + 2);
-                reparseDataBuffer.PrintNameLength = 0;
-                reparseDataBuffer.PathBuffer = new byte[0x3ff0];
+                REPARSE_DATA_BUFFER reparseDataBuffer = new REPARSE_DATA_BUFFER
+                {
+                    ReparseTag = IO_REPARSE_TAG_MOUNT_POINT,
+                    ReparseDataLength = (ushort)(sourceDirBytes.Length + 12),
+                    SubstituteNameOffset = 0,
+                    SubstituteNameLength = (ushort)sourceDirBytes.Length,
+                    PrintNameOffset = (ushort)(sourceDirBytes.Length + 2),
+                    PrintNameLength = 0,
+                    PathBuffer = new byte[0x3ff0]
+                };
                 Array.Copy(sourceDirBytes, reparseDataBuffer.PathBuffer, sourceDirBytes.Length);
 
                 int inBufferSize = Marshal.SizeOf(reparseDataBuffer);
@@ -233,9 +234,8 @@ namespace Steam_Library_Manager.Framework
                 {
                     Marshal.StructureToPtr(reparseDataBuffer, inBuffer, false);
 
-                    int bytesReturned;
                     bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_SET_REPARSE_POINT,
-                        inBuffer, sourceDirBytes.Length + 20, IntPtr.Zero, 0, out bytesReturned, IntPtr.Zero);
+                        inBuffer, sourceDirBytes.Length + 20, IntPtr.Zero, 0, out int bytesReturned, IntPtr.Zero);
 
                     if (!result)
                         ThrowLastWin32Error($"Unable to create junction point '{sourceDir}' -> '{targetDir}'.");
@@ -267,11 +267,12 @@ namespace Steam_Library_Manager.Framework
 
             using (SafeFileHandle handle = OpenReparsePoint(junctionPoint, EFileAccess.GenericWrite))
             {
-                REPARSE_DATA_BUFFER reparseDataBuffer = new REPARSE_DATA_BUFFER();
-
-                reparseDataBuffer.ReparseTag = IO_REPARSE_TAG_MOUNT_POINT;
-                reparseDataBuffer.ReparseDataLength = 0;
-                reparseDataBuffer.PathBuffer = new byte[0x3ff0];
+                REPARSE_DATA_BUFFER reparseDataBuffer = new REPARSE_DATA_BUFFER
+                {
+                    ReparseTag = IO_REPARSE_TAG_MOUNT_POINT,
+                    ReparseDataLength = 0,
+                    PathBuffer = new byte[0x3ff0]
+                };
 
                 int inBufferSize = Marshal.SizeOf(reparseDataBuffer);
                 IntPtr inBuffer = Marshal.AllocHGlobal(inBufferSize);
@@ -279,9 +280,8 @@ namespace Steam_Library_Manager.Framework
                 {
                     Marshal.StructureToPtr(reparseDataBuffer, inBuffer, false);
 
-                    int bytesReturned;
                     bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_DELETE_REPARSE_POINT,
-                        inBuffer, 8, IntPtr.Zero, 0, out bytesReturned, IntPtr.Zero);
+                        inBuffer, 8, IntPtr.Zero, 0, out int bytesReturned, IntPtr.Zero);
 
                     if (!result)
                         ThrowLastWin32Error("Unable to delete junction point.");
@@ -350,9 +350,8 @@ namespace Steam_Library_Manager.Framework
 
             try
             {
-                int bytesReturned;
                 bool result = DeviceIoControl(handle.DangerousGetHandle(), FSCTL_GET_REPARSE_POINT,
-                    IntPtr.Zero, 0, outBuffer, outBufferSize, out bytesReturned, IntPtr.Zero);
+                    IntPtr.Zero, 0, outBuffer, outBufferSize, out int bytesReturned, IntPtr.Zero);
 
                 if (!result)
                 {

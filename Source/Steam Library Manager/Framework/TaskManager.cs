@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Framework
 {
-    internal class TaskManager
+    internal static class TaskManager
     {
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static CancellationTokenSource CancellationToken;
@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Framework
                         if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                         {
                             Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
                             Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Files removed, task is completed now.");
                         }
@@ -77,7 +77,9 @@ namespace Steam_Library_Manager.Framework
                                 CurrentTask.OriginApp.DeleteFiles(CurrentTask);
                             }
                             else
+                            {
                                 JunctionPoint.Delete(CurrentTask.OriginApp.InstallationDirectory.FullName);
+                            }
 
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
@@ -161,7 +163,7 @@ namespace Steam_Library_Manager.Framework
                         {
                             if (TaskList.ToList().Count(x => !x.Completed) > 0)
                             {
-                                await ProcessTaskAsync(TaskList.First(x => !x.Completed));
+                                await ProcessTaskAsync(TaskList.First(x => !x.Completed)).ConfigureAwait(false);
                             }
                         }
                     }

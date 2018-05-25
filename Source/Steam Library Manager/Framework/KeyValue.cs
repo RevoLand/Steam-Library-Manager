@@ -948,7 +948,7 @@ namespace Steam_Library_Manager.Framework
 
     internal static class StreamHelpers
     {
-        private static byte[] data = new byte[8];
+        private static readonly byte[] data = new byte[8];
         public static Int16 ReadInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
@@ -1025,7 +1025,7 @@ namespace Steam_Library_Manager.Framework
             stream.Write(data, 0, data.Length);
         }
 
-        private static byte[] discardBuffer = new byte[2 << 12];
+        private static readonly byte[] discardBuffer = new byte[2 << 12];
 
         public static void ReadAndDiscard(this Stream stream, int len)
         {

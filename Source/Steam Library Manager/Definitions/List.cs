@@ -5,7 +5,7 @@ using System.Threading;
 namespace Steam_Library_Manager.Definitions
 {
     // Our Library and Game definitions exists there
-    public class List
+    public static class List
     {
         // Make a new list for Library details
         public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();

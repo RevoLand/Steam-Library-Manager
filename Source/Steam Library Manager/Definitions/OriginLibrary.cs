@@ -17,13 +17,15 @@ namespace Steam_Library_Manager.Definitions
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
         public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 
         //-----
         public OriginLibrary(string _FullPath, bool _IsMain = false)
         {
-            FullPath = (!_FullPath.EndsWith(Path.DirectorySeparatorChar.ToString())) ? _FullPath.Insert(_FullPath.Count(), Path.DirectorySeparatorChar.ToString()) : _FullPath;
+            FullPath = (!_FullPath.EndsWith(Path.DirectorySeparatorChar.ToString())) ? _FullPath.Insert(_FullPath.Length, Path.DirectorySeparatorChar.ToString()) : _FullPath;
             IsMain = _IsMain;
         }
 
@@ -37,7 +39,7 @@ namespace Steam_Library_Manager.Definitions
                 stopwatch.Start();
                 if (Directory.Exists(FullPath))
                 {
-                    foreach(var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
+                    foreach (var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
                     {
                         if (new FileInfo(OriginApp).Directory.Parent.Parent.Name != new DirectoryInfo(FullPath).Name)
                             continue;
@@ -49,9 +51,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (File.Exists(installerLog))
                         {
-                            string[] fileContent = File.ReadAllLines(installerLog);
-
-                            foreach (var line in fileContent)
+                            foreach (var line in File.ReadAllLines(installerLog))
                             {
                                 if (line.Contains("Install Locale:"))
                                 {
@@ -111,6 +111,7 @@ namespace Steam_Library_Manager.Definitions
                 MessageBox.Show(ex.ToString());
             }
         }
+
         //-----
 
         public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
@@ -168,11 +169,11 @@ namespace Steam_Library_Manager.Definitions
                     }
 
                     break;
+
                 case "remove":
                     List.Libraries.Remove(List.Libraries.First(x => x == Library));
                     break;
             }
         }
-
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Functions
 {
-    internal class FAwesome
+    internal static class FAwesome
     {
         public static Image GetAwesomeIcon(FontAwesomeIcon fIcon, System.Windows.Media.Brush color) => new Image()
         {
@@ -11,6 +11,5 @@ namespace Steam_Library_Manager.Functions
             Height = 16,
             Width = 16
         };
-
     }
 }
