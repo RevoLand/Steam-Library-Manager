@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [1.5.0.8] - 2018-05-26
 
+### Added
+
+- Discord button
+- Patreon button
+
 ### Changed
 
 - Handling of DirectoryNotFoundException in Steam Library - UpdateAppList

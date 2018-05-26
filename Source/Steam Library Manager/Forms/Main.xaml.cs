@@ -518,19 +518,19 @@ namespace Steam_Library_Manager
                                             }
 
                                             ProgressInformationMessage.SetMessage("Relocating file:\n\n" + currentFile.FullName);
-                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(false);
+                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(true);
                                         }
                                     }
 
                                     ProgressInformationMessage.SetMessage("Removing old directory:\n\n" + (Junk.FSInfo as DirectoryInfo)?.FullName);
-                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(false);
+                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(true);
                                 }
                             }
 
                             Definitions.List.LCItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     }
                 }
                 else if ((string)(sender as Button)?.Tag == "DeleteAll")
@@ -565,7 +565,7 @@ namespace Steam_Library_Manager
                             Definitions.List.LCItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     }
                 }
             }
