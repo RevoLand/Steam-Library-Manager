@@ -76,7 +76,7 @@ namespace Steam_Library_Manager.Functions
             {
                 directoryPath.Refresh();
 
-                if (!directoryPath.Exists || !new DriveInfo(Path.GetPathRoot(directoryPath.FullName)).IsReady)
+                if (!directoryPath.Exists || !new DriveInfo(Path.GetPathRoot(directoryPath.Root.FullName)).IsReady)
                 {
                     return 0;
                 }
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Functions
                 // Define a "long" for directory size
                 long DirectorySize = 0;
 
-                foreach (FileInfo CurrentFile in directoryPath.EnumerateFileSystemInfos("*", (IncludeSubDirectories) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
+                foreach (var CurrentFile in directoryPath.EnumerateFiles("*", (IncludeSubDirectories) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Where(x => x is FileInfo))
                 {
                     DirectorySize += CurrentFile.Length;
                 }

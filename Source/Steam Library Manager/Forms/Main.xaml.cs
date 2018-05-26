@@ -185,7 +185,7 @@ namespace Steam_Library_Manager
 
                     if ((Info.Attributes & FileAttributes.Directory) != 0)
                     {
-                        var LibraryDialog = await this.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create with folder:\n{DroppedItem}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+                        var LibraryDialog = await this.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create in folder:\n{DroppedItem}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
                         {
                             AffirmativeButtonText = "Steam",
                             NegativeButtonText = "SLM",
@@ -537,7 +537,7 @@ namespace Steam_Library_Manager
                 {
                     if (await this.ShowMessageAsync("There might be saved games in these folders?!", "Saved Games may be located within these folders, are you sure you want to remove them?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.").ConfigureAwait(true);
+                        var ProgressInformationMessage = await this.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.", true).ConfigureAwait(true);
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -570,9 +570,11 @@ namespace Steam_Library_Manager
                 }
             }
             catch (IOException)
-            { }
+            {
+            }
             catch (UnauthorizedAccessException)
-            { }
+            {
+            }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
@@ -768,6 +770,16 @@ namespace Steam_Library_Manager
             var brush = new SolidColorBrush(color) { Opacity = opacity };
             brush.Freeze();
             return brush;
+        }
+
+        private void RightWindowCommands_PatreonButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.patreon.com/revoland");
+        }
+
+        private void RightWindowCommands_DiscordButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://discordapp.com/invite/Rwvs9Ng");
         }
     }
 }

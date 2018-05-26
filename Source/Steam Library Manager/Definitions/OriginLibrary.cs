@@ -60,7 +60,7 @@ namespace Steam_Library_Manager.Definitions
                                 }
                             }
 
-                            Debug.WriteLine(installedLocale);
+                            installedLocale = installedLocale.Replace(" ", "");
                         }
 
                         var xml = XDocument.Load(OriginApp);

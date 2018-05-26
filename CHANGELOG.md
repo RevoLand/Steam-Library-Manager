@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.8] - 2018-05-26
+
+### Changed
+
+- Handling of DirectoryNotFoundException in Steam Library - UpdateAppList
+
+### Fixed
+
+- Proper pausing on Task Manager
+- Same goes for the Origin releated tasks
+
 ## [1.5.0.7] - 2018-05-25
 
 ### Fixed

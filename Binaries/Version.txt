@@ -1,1 +1,1 @@
-1.5.0.7|Fix for memory overflow happens on task manager
+1.5.0.8|Handled DirectoryNotFoundException in Steam Library - UpdateAppList

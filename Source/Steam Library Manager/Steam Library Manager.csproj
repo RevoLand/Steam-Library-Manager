@@ -147,7 +147,7 @@
     <Compile Include="Framework\FontAwesome.WPF\ISpinable.cs" />
     <Compile Include="Framework\WPF\PortableSettingsProvider.cs" />
     <Compile Include="Framework\WPF\SettingBindingExtension.cs" />
-    <Compile Include="Definitions\DateTimeExtensions.cs" />
+    <Compile Include="Definitions\ExtensionMethods.cs" />
     <Compile Include="Functions\FAwesome.cs" />
     <Compile Include="Functions\FileSystem.cs" />
     <Compile Include="Functions\App.cs" />

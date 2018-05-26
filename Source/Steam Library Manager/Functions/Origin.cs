@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -125,7 +126,6 @@ namespace Steam_Library_Manager.Functions
                 // If local.xml exists
                 if (File.Exists(Definitions.Global.Origin.ConfigFilePath))
                 {
-                    /*
                     var OriginConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
 
                     if (string.IsNullOrEmpty(OriginConfigKeys["DownloadInPlaceDir"]))
@@ -143,7 +143,6 @@ namespace Steam_Library_Manager.Functions
                             MessageBox.Show($"Origin directory is not exists.\n\n{OriginConfigKeys["DownloadInPlaceDir"]}");
                         }
                     }
-                    */
                 }
                 else { /* Could not locate local.xml */ }
             }

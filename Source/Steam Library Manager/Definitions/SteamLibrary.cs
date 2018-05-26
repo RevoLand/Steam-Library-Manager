@@ -53,9 +53,13 @@ namespace Steam_Library_Manager.Definitions
                 if (!SteamAppsFolder.Exists)
                 {
                     SteamAppsFolder.Create();
+                    SteamAppsFolder.Refresh();
 
                     if (!SteamAppsFolder.Exists)
+                    {
+                        MessageBox.Show("Can not create steam apps folder at: " + SteamAppsFolder.FullName + "\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.");
                         return;
+                    }
                 }
 
                 if (Apps.Count > 0)
@@ -130,6 +134,13 @@ namespace Steam_Library_Manager.Definitions
                 Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}").ConfigureAwait(true);
+                }, System.Windows.Threading.DispatcherPriority.Normal);
+            }
+            catch (DirectoryNotFoundException dnfex)
+            {
+                Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                {
+                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.\n\nError: {dnfex.Message}").ConfigureAwait(true);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)

@@ -427,6 +427,9 @@ namespace Steam_Library_Manager.Definitions
                     {
                         try
                         {
+                            if (Framework.TaskManager.Paused)
+                                CurrentTask.mre.WaitOne();
+
                             FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
                             if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
@@ -599,6 +602,9 @@ namespace Steam_Library_Manager.Definitions
                         {
                             try
                             {
+                                if (Framework.TaskManager.Paused)
+                                    CurrentTask.mre.WaitOne();
+
                                 currentFile.Refresh();
 
                                 if (currentFile.Exists)

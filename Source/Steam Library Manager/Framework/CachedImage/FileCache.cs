@@ -1,56 +1,106 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
-// https://github.com/floydpink/CachedImage
-// Highly modified over the original one
+// https://github.com/frogcrush/CachedImage
 
 namespace Steam_Library_Manager.Framework.CachedImage
 {
     public static class FileCache
     {
-        public static async System.Threading.Tasks.Task<MemoryStream> HitAsync(Uri Url)
+        public enum CacheMode
         {
+            WinINet,
+            Dedicated
+        }
+
+        // Record whether a file is being written.
+        private static readonly Dictionary<string, bool> IsWritingFile = new Dictionary<string, bool>();
+
+        static FileCache()
+        {
+            AppCacheMode = CacheMode.Dedicated;
+        }
+
+        /// <summary>
+        ///     Gets or sets the cache mode. WinINet is recommended, it's provided by .Net Framework and uses the Temporary Files
+        ///     of IE and the same cache policy of IE.
+        /// </summary>
+        public static CacheMode AppCacheMode { get; set; }
+
+        public static async Task<MemoryStream> HitAsync(string url)
+        {
+            if (!Directory.Exists(Definitions.Directories.SLM.Cache))
+            {
+                Directory.CreateDirectory(Definitions.Directories.SLM.Cache);
+            }
+            var uri = new Uri(url);
+            var fileNameBuilder = new StringBuilder();
+            using (var sha1 = new SHA1Managed())
+            {
+                var canonicalUrl = uri.ToString();
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(canonicalUrl));
+                fileNameBuilder.Append(BitConverter.ToString(hash).Replace("-", "").ToLower());
+                if (Path.HasExtension(canonicalUrl))
+                    fileNameBuilder.Append(Path.GetExtension(canonicalUrl.Split('?')[0]));
+            }
+
+            var fileName = fileNameBuilder.ToString();
+            var localFile = $"{Definitions.Directories.SLM.Cache}\\{uri.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
+            var memoryStream = new MemoryStream();
+
+            FileStream fileStream = null;
+            if (!IsWritingFile.ContainsKey(fileName) && File.Exists(localFile))
+            {
+                using (fileStream = new FileStream(localFile, FileMode.Open, FileAccess.Read))
+                {
+                    await fileStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+                }
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return memoryStream;
+            }
+
+            var request = WebRequest.Create(uri);
+            request.Timeout = 30;
             try
             {
-                var LocalFile = $"{Definitions.Directories.SLM.Cache}\\{Url.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
-                MemoryStream MemStream = new MemoryStream();
-
-                if (!File.Exists(LocalFile))
+                var response = await request.GetResponseAsync().ConfigureAwait(false);
+                var responseStream = response.GetResponseStream();
+                if (responseStream == null)
+                    return null;
+                if (!IsWritingFile.ContainsKey(fileName))
                 {
-                    if (!Directory.Exists(Definitions.Directories.SLM.Cache))
-                    {
-                        Directory.CreateDirectory(Definitions.Directories.SLM.Cache);
-                    }
-
-                    await (await new WebClient().OpenReadTaskAsync(Url).ConfigureAwait(false)).CopyToAsync(MemStream).ConfigureAwait(false);
-                    using (FileStream fs = File.OpenWrite(LocalFile))
-                    {
-                        MemStream.Seek(0, SeekOrigin.Begin);
-                        await MemStream.CopyToAsync(fs).ConfigureAwait(false);
-                    }
-                }
-                else
-                {
-                    using (FileStream fs = File.Open(LocalFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        await fs.CopyToAsync(MemStream).ConfigureAwait(false);
-                    }
+                    IsWritingFile[fileName] = true;
+                    fileStream = new FileStream(localFile, FileMode.Create, FileAccess.Write);
                 }
 
-                MemStream.Seek(0, SeekOrigin.Begin);
-                return MemStream;
+                using (responseStream)
+                {
+                    var bytebuffer = new byte[1024];
+                    int bytesRead;
+                    do
+                    {
+                        bytesRead = await responseStream.ReadAsync(bytebuffer, 0, 1024).ConfigureAwait(false);
+                        if (fileStream != null)
+                            await fileStream.WriteAsync(bytebuffer, 0, bytesRead).ConfigureAwait(false);
+                        await memoryStream.WriteAsync(bytebuffer, 0, bytesRead).ConfigureAwait(false);
+                    } while (bytesRead > 0);
+                    if (fileStream != null)
+                    {
+                        await fileStream.FlushAsync().ConfigureAwait(false);
+                        fileStream.Dispose();
+                        IsWritingFile.Remove(fileName);
+                    }
+                }
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return memoryStream;
             }
             catch (WebException)
             {
-                return null;
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.ToString());
-                Debug.WriteLine(ex);
-
                 return null;
             }
         }

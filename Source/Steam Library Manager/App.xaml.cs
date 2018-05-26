@@ -44,7 +44,6 @@ namespace Steam_Library_Manager
             e.Handled = true;
         }
 
-
         public static void CreateThemeFrom(string ThemeName, ResourceDictionary resourceDictionary)
         {
             try
@@ -67,6 +66,4 @@ namespace Steam_Library_Manager
             }
         }
     }
-
-
 }

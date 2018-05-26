@@ -226,6 +226,9 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
+                        if (Framework.TaskManager.Paused)
+                            CurrentTask.mre.WaitOne();
+
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
 
                         if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
@@ -250,11 +253,8 @@ namespace Steam_Library_Manager.Definitions
                                         if (cancellationToken.IsCancellationRequested)
                                             throw (new OperationCanceledException(cancellationToken));
 
-                                        // TO:DO
-                                        while (Framework.TaskManager.Paused)
-                                        {
-                                            Task.Delay(100);
-                                        }
+                                        if (Framework.TaskManager.Paused)
+                                            CurrentTask.mre.WaitOne();
 
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -320,6 +320,9 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
+                        if (Framework.TaskManager.Paused)
+                            CurrentTask.mre.WaitOne();
+
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
 
                         if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
@@ -344,10 +347,8 @@ namespace Steam_Library_Manager.Definitions
                                         if (cancellationToken.IsCancellationRequested)
                                             throw (new OperationCanceledException(cancellationToken));
 
-                                        while (Framework.TaskManager.Paused)
-                                        {
-                                            Task.Delay(100);
-                                        }
+                                        if (Framework.TaskManager.Paused)
+                                            CurrentTask.mre.WaitOne();
 
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -464,15 +465,16 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
+                        if (Framework.TaskManager.Paused)
+                            CurrentTask.mre.WaitOne();
+
                         currentFile.Refresh();
                         if (currentFile.Exists)
                         {
                             if (CurrentTask != null)
                             {
-                                while (Framework.TaskManager.Paused)
-                                {
-                                    Task.Delay(100);
-                                }
+                                if (Framework.TaskManager.Paused)
+                                    CurrentTask.mre.WaitOne();
 
                                 CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Deleting file: {currentFile.FullName}");
