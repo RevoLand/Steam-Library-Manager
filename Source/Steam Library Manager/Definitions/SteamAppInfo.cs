@@ -395,7 +395,7 @@ namespace Steam_Library_Manager.Definitions
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
-                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                 {
@@ -410,7 +410,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                         catch (UnauthorizedAccessException uaex)
                         {
-                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                 {
@@ -495,7 +495,7 @@ namespace Steam_Library_Manager.Definitions
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
-                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                 {
@@ -510,7 +510,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                         catch (UnauthorizedAccessException uaex)
                         {
-                            Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                 {
@@ -536,7 +536,7 @@ namespace Steam_Library_Manager.Definitions
                     CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
-                    await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                    await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
                         if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
@@ -555,7 +555,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.Active = false;
                 CurrentTask.Completed = true;
 
-                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                  {
                      if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                      {

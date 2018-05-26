@@ -83,7 +83,7 @@ namespace Steam_Library_Manager.Definitions
                                 List.Libraries.Remove(this);
 
                                 if (SLM.CurrentSelectedLibrary == this)
-                                    Main.FormAccessor.AppPanel.ItemsSource = null;
+                                    Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
                             }
                         }
                         catch (Exception ex)

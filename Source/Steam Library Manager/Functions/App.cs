@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (IOException IEx)
             {
-                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
@@ -149,7 +149,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (InvalidDataException IEx)
             {
-                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
@@ -179,11 +179,11 @@ namespace Steam_Library_Manager.Functions
 
                 string Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
 
-                if (Main.FormAccessor.AppPanel.Dispatcher.CheckAccess())
+                if (Main.FormAccessor.AppView.AppPanel.Dispatcher.CheckAccess())
                 {
                     if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
                     {
-                        Main.FormAccessor.AppPanel.ItemsSource = null;
+                        Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
                         return;
                     }
 
@@ -193,7 +193,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         case Definitions.Enums.LibraryType.Steam:
                         case Definitions.Enums.LibraryType.SLM:
-                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
+                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
                                 ((string.IsNullOrEmpty(Search)) ?
                                 Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
                                     y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
@@ -206,7 +206,7 @@ namespace Steam_Library_Manager.Functions
                             break;
 
                         case Definitions.Enums.LibraryType.Origin:
-                            Main.FormAccessor.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
+                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
                                 ((string.IsNullOrEmpty(Search)) ?
                                 Library.Origin.Apps.OrderByDescending(Sort).ToList() : Library.Origin.Apps.Where(
                                     y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
@@ -221,7 +221,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 else
                 {
-                    Main.FormAccessor.AppPanel.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
                     {
                         UpdateAppPanel(Library);
                     }, System.Windows.Threading.DispatcherPriority.Normal);

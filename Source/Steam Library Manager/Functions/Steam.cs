@@ -279,7 +279,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                await Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {

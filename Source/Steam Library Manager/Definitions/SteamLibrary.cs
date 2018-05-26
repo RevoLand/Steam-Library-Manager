@@ -131,14 +131,14 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (UnauthorizedAccessException uaex)
             {
-                Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}").ConfigureAwait(true);
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (DirectoryNotFoundException dnfex)
             {
-                Main.FormAccessor.AppPanel.Dispatcher.Invoke(async delegate
+                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.\n\nError: {dnfex.Message}").ConfigureAwait(true);
                 }, System.Windows.Threading.DispatcherPriority.Normal);

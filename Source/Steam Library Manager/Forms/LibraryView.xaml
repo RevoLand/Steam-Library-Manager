@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="Steam_Library_Manager.Forms.LibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <!-- Library: Steam -->
+        <DataTemplate x:Key="Library_Steam">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" />
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="Steam" />
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
+
+                    <!-- ProgressBar: Available free space -->
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Library: Origin -->
+        <DataTemplate x:Key="Library_Origin">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Origin.ContextMenu}" />
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding Origin.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="Origin" />
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
+
+                    <!-- ProgressBar: Available free space -->
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Library: SLM -->
+        <DataTemplate x:Key="Library_SLM">
+            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                <Grid.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding ContextMenu}" />
+                </Grid.ContextMenu>
+
+                <!-- TextBlock: Offline text -->
+                <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="true" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!-- TextBlock: Library Path -->
+                <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" />
+
+                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                    <!-- TextBlock: Library Type -->
+                    <TextBlock Text="SLM">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <!-- TextBlock: App count -->
+                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+
+                <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!-- ProgressBar: Available free space -->
+                    <Controls:MetroProgressBar Height="18" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                    <!-- TextBlock: Free space text -->
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ListView VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single"
+                              MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown" Padding="0,-2, 0, 0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="{x:Type ContentControl}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="Steam">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Library_Steam}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="Origin">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Library_Origin}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Type}" Value="SLM">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Library_SLM}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

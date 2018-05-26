@@ -184,17 +184,17 @@ namespace Steam_Library_Manager.Framework
                 Paused = false;
                 ActiveTask.mre.Set();
 
-                Main.FormAccessor.Button_StartTaskManager.Dispatcher.Invoke(delegate
+                Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
                 {
-                    Main.FormAccessor.Button_StartTaskManager.IsEnabled = false;
+                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = false;
                 });
-                Main.FormAccessor.Button_PauseTaskManager.Dispatcher.Invoke(delegate
+                Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
                 {
-                    Main.FormAccessor.Button_PauseTaskManager.IsEnabled = true;
+                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = true;
                 });
-                Main.FormAccessor.Button_StopTaskManager.Dispatcher.Invoke(delegate
+                Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
                 {
-                    Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
+                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = true;
                 });
             }
         }
@@ -205,17 +205,17 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
-                    Main.FormAccessor.Button_StartTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
+                        Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = true;
                     });
-                    Main.FormAccessor.Button_PauseTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_PauseTaskManager.IsEnabled = false;
+                        Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = false;
                     });
-                    Main.FormAccessor.Button_StopTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_StopTaskManager.IsEnabled = true;
+                        Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = true;
                     });
 
                     Paused = true;
@@ -237,17 +237,17 @@ namespace Steam_Library_Manager.Framework
             {
                 if (Status)
                 {
-                    Main.FormAccessor.Button_StartTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_StartTaskManager.IsEnabled = true;
+                        Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = true;
                     });
-                    Main.FormAccessor.Button_PauseTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_PauseTaskManager.IsEnabled = false;
+                        Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = false;
                     });
-                    Main.FormAccessor.Button_StopTaskManager.Dispatcher.Invoke(delegate
+                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
                     {
-                        Main.FormAccessor.Button_StopTaskManager.IsEnabled = false;
+                        Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = false;
                     });
 
                     Status = false;

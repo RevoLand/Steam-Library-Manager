@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Functions
                 var UpdaterClient = new WebClient();
 
                 // Download update file contents
-                string VersionFileContents = await UpdaterClient.DownloadStringTaskAsync(Definitions.Updater.VersionControlURL).ConfigureAwait(false);
+                string VersionFileContents = await UpdaterClient.DownloadStringTaskAsync(Definitions.Updater.VersionControlURL).ConfigureAwait(true);
 
                 // If couldn't get file content (ex: not connected to web) return
                 if (string.IsNullOrEmpty(VersionFileContents))
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", $"An update versioned ({Definitions.Updater.LatestVersion}) is available to download. Would you like to update SLM auto?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
                         // Download latest version of SLM from GitHub and name it as LatestVersionSLM.exe
-                        await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe").ConfigureAwait(false);
+                        await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe").ConfigureAwait(true);
 
                         // Use CMD with delay to rename file
                         // Define a process and start info to use with cmd
