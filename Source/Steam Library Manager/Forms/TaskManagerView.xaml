@@ -424,7 +424,7 @@
     </UserControl.Resources>
     <Grid>
         <!-- ListView: Task Manager Tasks -->
-        <ListView VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,305" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,305" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">

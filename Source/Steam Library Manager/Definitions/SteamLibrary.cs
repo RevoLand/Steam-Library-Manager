@@ -12,6 +12,8 @@ namespace Steam_Library_Manager.Definitions
 {
     public class SteamLibrary : INotifyPropertyChanged
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public Library Library => List.Libraries.First(x => x.Steam == this);
 
         public bool IsMain { get; set; }
@@ -146,7 +148,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -189,8 +191,6 @@ namespace Steam_Library_Manager.Definitions
             catch (FormatException ex)
             {
                 MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 return CMenu;
             }
         }
@@ -259,7 +259,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -316,10 +316,10 @@ namespace Steam_Library_Manager.Definitions
                     await Task.Run(() => DownloadFolder.Delete(true)).ConfigureAwait(false);
                 }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, Ex.ToString());
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(Ex));
+                logger.Fatal(ex);
+                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -366,7 +366,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -382,8 +382,7 @@ namespace Steam_Library_Manager.Definitions
                         x => Apps.Count(y => string.Equals(y.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Framework.TaskManager.TaskList.Count(
-                            z => string.Equals(z.SteamApp.InstallationDirectory.Name, x.Name
-, StringComparison.InvariantCultureIgnoreCase)
+                            z => string.Equals(z.SteamApp.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)
                             && z.TargetLibrary == Library
                             ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
@@ -478,7 +477,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }

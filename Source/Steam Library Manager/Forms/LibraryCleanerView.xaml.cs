@@ -15,6 +15,8 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class LibraryCleanerView : UserControl
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public LibraryCleanerView()
         {
             InitializeComponent();
@@ -62,18 +64,18 @@ namespace Steam_Library_Manager.Forms
                     }
                 }
             }
-            catch (IOException ioex)
+            catch (IOException ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ioex.ToString());
+                logger.Fatal(ex);
             }
-            catch (UnauthorizedAccessException uaex)
+            catch (UnauthorizedAccessException ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, uaex.ToString());
+                logger.Fatal(ex);
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -193,16 +195,18 @@ namespace Steam_Library_Manager.Forms
                     }
                 }
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                logger.Error(ex);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
+                logger.Error(ex);
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -217,7 +221,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
         }
     }

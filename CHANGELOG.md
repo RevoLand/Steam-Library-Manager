@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+## [1.5.0.9] - 2018-05-26
+
+### Added
+
+- NLog (https://github.com/NLog/NLog)
+
+### Changed
+
+- Buffer size for file movement / still testing various buffer sizes.
+
+### Removed
+
+- Custom file logger
+
 ## [1.5.0.8] - 2018-05-26
 
 ### Added

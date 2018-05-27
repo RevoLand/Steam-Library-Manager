@@ -9,6 +9,8 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Origin
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static void PopulateLibraryCMenuItems()
         {
             #region App Context Menu Item Definitions
@@ -171,7 +173,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 ex.Data.Add("LibraryPath", LibraryPath);
                 ex.Data.Add("CurrentLibraries", Definitions.List.Libraries);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));

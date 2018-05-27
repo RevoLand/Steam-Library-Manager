@@ -9,6 +9,8 @@ namespace Steam_Library_Manager.Framework
 {
     internal static class TaskManager
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
@@ -139,11 +141,7 @@ namespace Steam_Library_Manager.Framework
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-
-                if (CurrentTask.SteamApp != null)
-                    Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.SteamApp.AppName}][{CurrentTask.SteamApp.AppID}][{CurrentTask.SteamApp.AcfName}] {ex}");
-                else if (CurrentTask.OriginApp != null)
-                    Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, $"[{CurrentTask.OriginApp.AppName}][{CurrentTask.OriginApp.AppID}] {ex}");
+                logger.Fatal(ex);
             }
         }
 
@@ -161,10 +159,12 @@ namespace Steam_Library_Manager.Framework
                     {
                         while (!CancellationToken.IsCancellationRequested && Status)
                         {
-                            if (TaskList.ToList().Count(x => !x.Completed) > 0)
+                            if (TaskList.ToList().Any(x => !x.Completed))
                             {
                                 await ProcessTaskAsync(TaskList.First(x => !x.Completed)).ConfigureAwait(false);
                             }
+
+                            Thread.Sleep(1);
                         }
                     }
                     catch (OperationCanceledException)
@@ -175,7 +175,7 @@ namespace Steam_Library_Manager.Framework
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex);
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                        logger.Fatal(ex);
                     }
                 });
             }
@@ -203,7 +203,7 @@ namespace Steam_Library_Manager.Framework
         {
             try
             {
-                if (Status)
+                if (Status && ActiveTask != null)
                 {
                     Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
                     {
@@ -226,8 +226,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -254,13 +253,12 @@ namespace Steam_Library_Manager.Framework
                     Paused = false;
                     CancellationToken.Cancel();
                     IsRestartRequired = false;
-                    ActiveTask.mre.Set();
+                    ActiveTask?.mre?.Set();
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -272,8 +270,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -285,8 +282,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                Functions.Logger.LogToFile(Functions.Logger.LogType.TaskManager, ex.ToString());
+                logger.Fatal(ex);
             }
         }
     }

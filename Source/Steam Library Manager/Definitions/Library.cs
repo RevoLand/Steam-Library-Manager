@@ -8,6 +8,8 @@ namespace Steam_Library_Manager.Definitions
 {
     public class Library
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public Enums.LibraryType Type { get; set; }
         public System.IO.DirectoryInfo DirectoryInfo { get; set; }
         public SteamLibrary Steam { get; set; }
@@ -50,11 +52,8 @@ namespace Steam_Library_Manager.Definitions
 
                     return CMenu;
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
-                    MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-
-                    Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                     return CMenu;
                 }
             }
@@ -88,7 +87,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                         catch (Exception ex)
                         {
-                            Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
+                            logger.Fatal(ex);
                         }
                         break;
                 }

@@ -14,6 +14,8 @@ namespace Steam_Library_Manager.Framework
 {
     internal class KVTextReader : StreamReader
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         internal static Dictionary<char, char> escapedMapping = new Dictionary<char, char>
         {
             { '\\', '\\' },
@@ -78,7 +80,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -236,6 +238,8 @@ namespace Steam_Library_Manager.Framework
 
     public class KeyValue
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private enum Type : byte
         {
             None = 0,
@@ -715,7 +719,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -739,7 +743,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -752,7 +756,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -782,7 +786,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -819,7 +823,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 

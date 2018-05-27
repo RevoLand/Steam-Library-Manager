@@ -1,4 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using NLog;
+using NLog.Targets.Wrappers;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -20,8 +22,19 @@ namespace Steam_Library_Manager
         {
             InitializeComponent();
 
+            SetNLogConfig();
             UpdateBindings();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+        }
+
+        private void SetNLogConfig()
+        {
+            var config = new NLog.Config.LoggingConfiguration();
+            var asyncWrapper = new AsyncTargetWrapper(new NLog.Targets.FileTarget() { ArchiveAboveSize = 10000000, FileName = "${basedir}/logs/${shortdate}.log", Name = "f", Layout = "${longdate} ${uppercase:${level}} ${message}" });
+
+            config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Debug, asyncWrapper));
+
+            LogManager.Configuration = config;
         }
 
         private void UpdateBindings()
@@ -52,11 +65,6 @@ namespace Steam_Library_Manager
             if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
             {
                 Framework.TaskManager.Start();
-            }
-
-            if (Properties.Settings.Default.Advanced_Logging)
-            {
-                Functions.Logger.StartLogger();
             }
         }
 

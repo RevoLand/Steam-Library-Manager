@@ -8,6 +8,8 @@ namespace Steam_Library_Manager.Framework
 {
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 
         private void ExecuteOnSyncContext(Action action)
@@ -25,7 +27,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -37,7 +39,7 @@ namespace Steam_Library_Manager.Framework
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 

@@ -14,6 +14,8 @@ namespace Steam_Library_Manager.Definitions
 {
     public class OriginAppInfo
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public Library Library { get; set; }
         public string AppName { get; set; } // gameTitle
         public int AppID { get; set; } // contentID
@@ -86,7 +88,6 @@ namespace Steam_Library_Manager.Definitions
                 catch (FormatException ex)
                 {
                     MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-                    Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
 
                     return rightClickMenu;
                 }
@@ -172,7 +173,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.App, ex.ToString());
+                logger.Error(ex);
             }
         }
 
@@ -190,7 +191,7 @@ namespace Steam_Library_Manager.Definitions
         public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
             LogToTM($"[{AppName}] Populating file list, please wait");
-            Functions.Logger.LogToFile(Functions.Logger.LogType.App, "Populating file list", this);
+            logger.Info("Populating file list for: {0}", AppName);
 
             ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
             ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
@@ -211,7 +212,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.ElapsedTime.Start();
 
                 LogToTM($"[{AppName}] File list populated, total files to move: {AppFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File list populated, total files to move: {AppFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}", this);
+                logger.Info("File list populated, total files to move: {0} - total size to move: {1}", AppFiles.Count, Functions.FileSystem.FormatBytes(TotalFileSize));
 
                 POptions.MaxDegreeOfParallelism = 1;
 
@@ -279,9 +280,9 @@ namespace Steam_Library_Manager.Definitions
                             LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
+                        logger.Info("File moved: {0}", NewFile.FullName);
                     }
-                    catch (IOException ioex)
+                    catch (IOException ex)
                     {
                         CurrentTask.ErrorHappened = true;
                         Framework.TaskManager.Stop();
@@ -290,16 +291,16 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ioex}");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        logger.Fatal(ex);
 
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException uaex)
                     {
@@ -314,7 +315,6 @@ namespace Steam_Library_Manager.Definitions
                 });
 
                 POptions.MaxDegreeOfParallelism = -1;
-                CurrentTask.TaskStatusInfo = $"Copying: <small files>";
 
                 Parallel.ForEach(AppFiles.Where(x => (x).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, CurrentFile =>
                 {
@@ -340,7 +340,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
-                                    //CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
 
                                     while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                     {
@@ -373,9 +373,9 @@ namespace Steam_Library_Manager.Definitions
                             LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
                         }
 
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"File moved: {NewFile.FullName}", this);
+                        logger.Info("File moved: {0}", NewFile.FullName);
                     }
-                    catch (IOException ioex)
+                    catch (IOException ex)
                     {
                         CurrentTask.ErrorHappened = true;
                         Framework.TaskManager.Stop();
@@ -384,16 +384,16 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ioex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ioex.Message}.");
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}]{ioex}");
+                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        logger.Fatal(ex);
 
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ioex));
+                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException uaex)
                     {
@@ -411,7 +411,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.MovedFileSize = TotalFileSize;
 
                 LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Movement completed in {CurrentTask.ElapsedTime.Elapsed} with Average Speed of {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}", this);
+                logger.Info("Movement completed in {0} with Average Speed of {1} MB/sec - Average file size: {2}", CurrentTask.ElapsedTime.Elapsed, Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount));
             }
             catch (OperationCanceledException)
             {
@@ -431,7 +431,7 @@ namespace Steam_Library_Manager.Definitions
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
 
                     LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
-                    Functions.Logger.LogToFile(Functions.Logger.LogType.App, $"Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}", this);
+                    logger.Info("Operation cancelled by used. Elapsed time: {0}", CurrentTask.ElapsedTime.Elapsed);
                 }
             }
             catch (Exception ex)
@@ -450,7 +450,7 @@ namespace Steam_Library_Manager.Definitions
                 }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                logger.Fatal(ex);
                 await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex)).ConfigureAwait(false);
             }
         }
@@ -484,13 +484,9 @@ namespace Steam_Library_Manager.Definitions
                             currentFile.Delete();
                         }
                     }
-                    catch (IOException ex)
+                    catch (Exception ex)
                     {
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
-                    }
-                    catch (UnauthorizedAccessException ex)
-                    {
-                        Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                        logger.Fatal(ex);
                     }
                 });
 
@@ -512,7 +508,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, $"[{AppName}][{AppID}] {ex}");
+                logger.Error(ex);
             }
         }
     }

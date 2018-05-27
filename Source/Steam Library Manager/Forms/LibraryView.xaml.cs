@@ -14,6 +14,8 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class LibraryView : UserControl
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public LibraryView()
         {
             InitializeComponent();
@@ -89,7 +91,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -237,7 +239,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
         }
     }

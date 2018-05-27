@@ -11,6 +11,8 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Steam
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static async void UpdateSteamInstallationPathAsync()
         {
             try
@@ -44,10 +46,11 @@ namespace Steam_Library_Manager.Functions
             }
             catch (NullReferenceException ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
             catch (Exception ex)
             {
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -228,7 +231,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 return true;
             }
@@ -270,7 +273,7 @@ namespace Steam_Library_Manager.Functions
             { }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -299,7 +302,7 @@ namespace Steam_Library_Manager.Functions
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -372,7 +375,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
@@ -428,7 +431,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
@@ -451,7 +454,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     ex.Data.Add("LibraryPath", LibraryPath);
                     ex.Data.Add("CurrentLibraries", Definitions.List.Libraries.ToList());
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
@@ -491,7 +494,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }

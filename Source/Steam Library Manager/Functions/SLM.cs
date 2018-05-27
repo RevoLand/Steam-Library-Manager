@@ -8,6 +8,8 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class SLM
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static class Settings
         {
             public static Func<dynamic, object> GetSortingMethod()
@@ -51,7 +53,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -75,7 +77,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -110,7 +112,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -126,7 +128,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -142,13 +144,14 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
         public static void OnClosing()
         {
             Settings.SaveSettings();
+            NLog.LogManager.Shutdown();
         }
 
         public static class Library
@@ -172,7 +175,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -196,7 +199,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -226,7 +229,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -235,23 +238,12 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
-
-                    if (Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0)
-                    {
-                        if (Definitions.List.Libraries.Any(x => x.DirectoryInfo.FullName.ToLowerInvariant() == NewLibraryPath))
-                        {
-                            return true;
-                        }
-                    }
-
-                    // else, return false which means library is not exists
-                    return false;
+                    return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0 && Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, NewLibraryPath, StringComparison.InvariantCultureIgnoreCase));
                 }
                 // In any error return true to prevent possible bugs
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                     return true;
                 }
@@ -269,7 +261,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                    logger.Fatal(ex);
                 }
             }
         }

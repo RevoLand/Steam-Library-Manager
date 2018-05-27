@@ -154,7 +154,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <ListView VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single"
+        <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single"
                               MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown" Padding="0,-2, 0, 0">
             <ListView.ItemTemplate>

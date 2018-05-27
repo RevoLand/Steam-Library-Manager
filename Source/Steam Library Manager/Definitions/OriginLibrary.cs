@@ -152,8 +152,6 @@ namespace Steam_Library_Manager.Definitions
             catch (FormatException ex)
             {
                 MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
-
-                Functions.Logger.LogToFile(Functions.Logger.LogType.Library, ex.ToString());
                 return CMenu;
             }
         }

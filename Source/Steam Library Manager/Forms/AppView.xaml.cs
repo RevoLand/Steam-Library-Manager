@@ -10,6 +10,8 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class AppView : UserControl
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public AppView()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Functions.Logger.LogToFile(Functions.Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
         }
     }

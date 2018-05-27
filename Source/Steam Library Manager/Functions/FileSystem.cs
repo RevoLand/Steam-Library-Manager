@@ -8,6 +8,8 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class FileSystem
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static void RemoveGivenFiles(ConcurrentBag<string> FileList, ConcurrentBag<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
             try
@@ -45,26 +47,31 @@ namespace Steam_Library_Manager.Functions
                         }
                     });
                 }
+
                 if (CurrentTask != null)
                 {
                     CurrentTask.TaskStatusInfo = "";
                 }
             }
+            catch (DirectoryNotFoundException ex)
+            {
+                logger.Error(ex);
+            }
             catch (IOException ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
             catch (AggregateException ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -93,44 +100,53 @@ namespace Steam_Library_Manager.Functions
             }
             catch (DirectoryNotFoundException ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
                 return 0;
             }
             // on error, return 0
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 return 0;
             }
         }
 
         // Source: http://stackoverflow.com/a/2082893
-        public static string FormatBytes(long Bytes)
+        public static string FormatBytes(long length)
         {
             try
             {
-                // definition of file size suffixes
-                string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-                int Current;
-                double dblSByte = Bytes;
+                long B = 0, KB = 1024, MB = KB * 1024, GB = MB * 1024, TB = GB * 1024;
+                double size = length;
+                string suffix = nameof(B);
 
-                for (Current = 0; Current < Suffix.Length && Bytes >= 1024; Current++, Bytes /= 1024)
+                if (length >= TB)
                 {
-                    dblSByte = Bytes / 1024.0;
+                    size = Math.Round((double)length / TB, 2);
+                    suffix = nameof(TB);
+                }
+                else if (length >= GB)
+                {
+                    size = Math.Round((double)length / GB, 2);
+                    suffix = nameof(GB);
+                }
+                else if (length >= MB)
+                {
+                    size = Math.Round((double)length / MB, 2);
+                    suffix = nameof(MB);
+                }
+                else if (length >= KB)
+                {
+                    size = Math.Round((double)length / KB, 2);
+                    suffix = nameof(KB);
                 }
 
-                if (dblSByte < 0)
-                {
-                    dblSByte = 0;
-                }
-
-                // Format the string
-                return $"{dblSByte:0.##} {Suffix[Current]}";
+                return $"{size} {suffix}";
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Error(ex);
                 return "0";
             }
         }
@@ -146,14 +162,14 @@ namespace Steam_Library_Manager.Functions
                 ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
                 ae.Data.Add("TargetFolder", TargetFolder);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
-                Logger.LogToFile(Logger.LogType.SLM, ae.ToString());
+                logger.Fatal(ae);
 
                 return 0;
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 return 0;
             }
         }
@@ -169,14 +185,14 @@ namespace Steam_Library_Manager.Functions
                 ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
                 ae.Data.Add("TargetFolder", TargetFolder);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
-                Logger.LogToFile(Logger.LogType.SLM, ae.ToString());
+                logger.Fatal(ae);
 
                 return 0;
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 return 0;
             }
         }

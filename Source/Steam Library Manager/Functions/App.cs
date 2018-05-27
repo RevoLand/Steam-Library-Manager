@@ -10,6 +10,8 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class App
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static void AddSteamApp(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
@@ -96,7 +98,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
@@ -145,7 +147,7 @@ namespace Steam_Library_Manager.Functions
                 }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
+                logger.Fatal(IEx);
             }
             catch (InvalidDataException IEx)
             {
@@ -161,12 +163,12 @@ namespace Steam_Library_Manager.Functions
                 }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                Logger.LogToFile(Logger.LogType.Library, IEx.ToString());
+                logger.Fatal(IEx);
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                Logger.LogToFile(Logger.LogType.Library, ex.ToString());
+                logger.Fatal(ex);
             }
         }
 
@@ -229,7 +231,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Logger.LogToFile(Logger.LogType.SLM, ex.ToString());
+                logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
