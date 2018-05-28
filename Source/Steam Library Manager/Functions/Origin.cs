@@ -169,7 +169,7 @@ namespace Steam_Library_Manager.Functions
                     Origin = Library
                 });
 
-                await Task.Run(() => Library.UpdateAppList()).ConfigureAwait(false);
+                await Task.Run(() => Library.UpdateAppList());
             }
             catch (Exception ex)
             {

@@ -116,7 +116,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (touchupFile.Exists && InstallationParameter != null)
                         {
-                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.").ConfigureAwait(false);
+                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
                             ProgressInformationMessage.SetIndeterminate();
 
                             var process = Process.Start(touchupFile.FullName, InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
@@ -124,7 +124,7 @@ namespace Steam_Library_Manager.Definitions
                             Debug.WriteLine(InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
 
                             process.WaitForExit();
-                            await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                            await ProgressInformationMessage.CloseAsync();
                         }
 
                         break;
@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (touchupFile.Exists && RepairParameter != null)
                         {
-                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to repair {AppName} as you have requested.").ConfigureAwait(false);
+                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to repair {AppName} as you have requested.");
                             ProgressInformationMessage.SetIndeterminate();
 
                             var process = Process.Start(touchupFile.FullName, RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
@@ -141,7 +141,7 @@ namespace Steam_Library_Manager.Definitions
                             Debug.WriteLine(RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
 
                             process.WaitForExit();
-                            await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                            await ProgressInformationMessage.CloseAsync();
                         }
 
                         break;
@@ -149,7 +149,7 @@ namespace Steam_Library_Manager.Definitions
                     case "deleteappfiles":
                         if (!IsSymLinked)
                         {
-                            await Task.Run(() => DeleteFiles()).ConfigureAwait(false);
+                            await Task.Run(() => DeleteFiles());
                         }
                         else
                         {
@@ -291,7 +291,7 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -306,7 +306,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -384,7 +384,7 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -399,7 +399,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -424,11 +424,11 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                         }
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
 
                     LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                     logger.Info("Operation cancelled by used. Elapsed time: {0}", CurrentTask.ElapsedTime.Elapsed);
@@ -443,15 +443,15 @@ namespace Steam_Library_Manager.Definitions
 
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                     }
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 logger.Fatal(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex)).ConfigureAwait(false);
+                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

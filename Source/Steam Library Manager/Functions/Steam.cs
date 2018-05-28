@@ -23,7 +23,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             OpenFileDialog SteamPathSelector = new OpenFileDialog()
                             {
@@ -243,13 +243,13 @@ namespace Steam_Library_Manager.Functions
             {
                 if (IsSteamWorking())
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
                             Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam.exe could not found, SLM will try to terminate Steam processes now.", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam.exe could not found, SLM will try to terminate Steam processes now.", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             foreach (Process SteamProcess in Process.GetProcessesByName("Steam"))
                             {
@@ -266,7 +266,7 @@ namespace Steam_Library_Manager.Functions
                         throw new OperationCanceledException("User doesn't wants to close Steam, can not continue to process.");
                     }
 
-                    await Task.Delay(6000).ConfigureAwait(false);
+                    await Task.Delay(6000);
                 }
             }
             catch (OperationCanceledException)
@@ -284,9 +284,9 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        await CloseSteamAsync().ConfigureAwait(false);
+                        await CloseSteamAsync();
 
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
@@ -297,7 +297,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         throw new OperationCanceledException("User doesn't wants to restart Steam.");
                     }
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -316,7 +316,7 @@ namespace Steam_Library_Manager.Functions
                     // If we are not creating a backup library
                     if (!Backup)
                     {
-                        await CloseSteamAsync().ConfigureAwait(false);
+                        await CloseSteamAsync();
 
                         // Define steam dll paths for better looking
                         string SteamDLLPath = Path.Combine(NewLibraryPath, "Steam.dll");
@@ -389,7 +389,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.").ConfigureAwait(false);
+                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.");
                     ProgressInformationMessage.SetIndeterminate();
 
                     foreach (Definitions.Library CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists))
@@ -426,7 +426,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                    await ProgressInformationMessage.CloseAsync();
                     Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Checked for Backup updates.");
                 }
                 catch (Exception ex)
@@ -449,8 +449,8 @@ namespace Steam_Library_Manager.Functions
                         Steam = Library
                     });
 
-                    await Task.Run(() => Library.UpdateAppList()).ConfigureAwait(false);
-                    await Task.Run(() => Library.UpdateJunks()).ConfigureAwait(false);
+                    await Task.Run(() => Library.UpdateAppList());
+                    await Task.Run(() => Library.UpdateJunks());
                 }
                 catch (Exception ex)
                 {

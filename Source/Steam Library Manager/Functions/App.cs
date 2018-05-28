@@ -140,11 +140,11 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = "Do NOT Remove the archive file"
-                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    }) == MessageDialogResult.Affirmative)
                     {
                         new FileInfo(ZipPath).Delete();
                     }
-                }).ConfigureAwait(false);
+                });
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 logger.Fatal(IEx);
@@ -156,11 +156,11 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = "Do NOT Remove the archive file"
-                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    }) == MessageDialogResult.Affirmative)
                     {
                         new FileInfo(ZipPath).Delete();
                     }
-                }).ConfigureAwait(false);
+                });
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 logger.Fatal(IEx);

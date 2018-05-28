@@ -58,7 +58,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             {
                 using (fileStream = new FileStream(localFile, FileMode.Open, FileAccess.Read))
                 {
-                    await fileStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+                    await fileStream.CopyToAsync(memoryStream);
                 }
                 memoryStream.Seek(0, SeekOrigin.Begin);
                 return memoryStream;
@@ -68,7 +68,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             request.Timeout = 30;
             try
             {
-                var response = await request.GetResponseAsync().ConfigureAwait(false);
+                var response = await request.GetResponseAsync();
                 var responseStream = response.GetResponseStream();
                 if (responseStream == null)
                     return null;
@@ -84,14 +84,14 @@ namespace Steam_Library_Manager.Framework.CachedImage
                     int bytesRead;
                     do
                     {
-                        bytesRead = await responseStream.ReadAsync(bytebuffer, 0, 1024).ConfigureAwait(false);
+                        bytesRead = await responseStream.ReadAsync(bytebuffer, 0, 1024);
                         if (fileStream != null)
-                            await fileStream.WriteAsync(bytebuffer, 0, bytesRead).ConfigureAwait(false);
-                        await memoryStream.WriteAsync(bytebuffer, 0, bytesRead).ConfigureAwait(false);
+                            await fileStream.WriteAsync(bytebuffer, 0, bytesRead);
+                        await memoryStream.WriteAsync(bytebuffer, 0, bytesRead);
                     } while (bytesRead > 0);
                     if (fileStream != null)
                     {
-                        await fileStream.FlushAsync().ConfigureAwait(false);
+                        await fileStream.FlushAsync();
                         fileStream.Dispose();
                         IsWritingFile.Remove(fileName);
                     }

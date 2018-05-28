@@ -60,7 +60,7 @@ namespace Steam_Library_Manager.Forms
                     }
                 }
 
-                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.").ConfigureAwait(true);
+                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Header Image Cache cleared.");
             }
             catch { }
         }

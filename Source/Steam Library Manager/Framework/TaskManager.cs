@@ -28,11 +28,11 @@ namespace Steam_Library_Manager.Framework
                     switch (CurrentTask.TaskType)
                     {
                         default:
-                            await CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
+                            await CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
                             break;
 
                         case Definitions.Enums.TaskType.Delete:
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
                             break;
                     }
@@ -42,7 +42,7 @@ namespace Steam_Library_Manager.Framework
                         if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                         {
                             Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Removing moved files as requested. This may take a while, please wait.");
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
+                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
                             Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Files removed, task is completed now.");
                         }
@@ -161,7 +161,7 @@ namespace Steam_Library_Manager.Framework
                         {
                             if (TaskList.ToList().Any(x => !x.Completed))
                             {
-                                await ProcessTaskAsync(TaskList.First(x => !x.Completed)).ConfigureAwait(false);
+                                await ProcessTaskAsync(TaskList.First(x => !x.Completed));
                             }
 
                             Thread.Sleep(1);

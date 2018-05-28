@@ -17,7 +17,7 @@ namespace Steam_Library_Manager.Functions
                 var UpdaterClient = new WebClient();
 
                 // Download update file contents
-                string VersionFileContents = await UpdaterClient.DownloadStringTaskAsync(Definitions.Updater.VersionControlURL).ConfigureAwait(true);
+                string VersionFileContents = await UpdaterClient.DownloadStringTaskAsync(Definitions.Updater.VersionControlURL);
 
                 // If couldn't get file content (ex: not connected to web) return
                 if (string.IsNullOrEmpty(VersionFileContents))
@@ -35,10 +35,10 @@ namespace Steam_Library_Manager.Functions
                 if (Definitions.Updater.LatestVersion > Definitions.Updater.CurrentVersion)
                 {
                     // If user would like to open GitHub page in browser and close SLM
-                    if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", $"An update versioned ({Definitions.Updater.LatestVersion}) is available to download. Would you like to update SLM auto?", MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("An update available for SLM", $"An update versioned ({Definitions.Updater.LatestVersion}) is available to download. Would you like to update SLM auto?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         // Download latest version of SLM from GitHub and name it as LatestVersionSLM.exe
-                        await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe").ConfigureAwait(true);
+                        await UpdaterClient.DownloadFileTaskAsync(new Uri(Definitions.Updater.LatestVersionDownloadURL), Definitions.Directories.SLM.Current + "LatestVersionSLM.exe");
 
                         // Use CMD with delay to rename file
                         // Define a process and start info to use with cmd
@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 else if (InformUser)
                 {
-                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager Updater", "You are using the latest version of SLM, thank you!").ConfigureAwait(true);
+                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager Updater", "You are using the latest version of SLM, thank you!");
                 }
             }
             catch (Exception ex)

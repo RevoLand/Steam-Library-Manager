@@ -81,7 +81,7 @@ namespace Steam_Library_Manager
                     {
                         AffirmativeButtonText = "Quit",
                         NegativeButtonText = "Cancel"
-                    }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
+                    }) != MessageDialogResult.Affirmative)
                 {
                     return;
                 }

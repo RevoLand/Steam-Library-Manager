@@ -135,14 +135,14 @@ namespace Steam_Library_Manager.Definitions
             {
                 Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}").ConfigureAwait(true);
+                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}");
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (DirectoryNotFoundException dnfex)
             {
                 Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.\n\nError: {dnfex.Message}").ConfigureAwait(true);
+                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.\n\nError: {dnfex.Message}");
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)
@@ -212,18 +212,18 @@ namespace Steam_Library_Manager.Definitions
 
                     if (IsMain)
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!", MessageDialogStyle.Affirmative).ConfigureAwait(true);
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!", MessageDialogStyle.Affirmative);
                         return;
                     }
 
                     MessageDialogResult MoveAppsBeforeDeletion = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Move apps in Library before deleting the library?", MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                     {
                         FirstAuxiliaryButtonText = "Delete library without moving apps"
-                    }).ConfigureAwait(true);
+                    });
 
                     if (MoveAppsBeforeDeletion == MessageDialogResult.Affirmative)
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function is not implemented, process cancelled", MessageDialogStyle.Affirmative).ConfigureAwait(true);
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function is not implemented, process cancelled", MessageDialogStyle.Affirmative);
                     }
                     else if (MoveAppsBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
@@ -236,9 +236,9 @@ namespace Steam_Library_Manager.Definitions
 
                     foreach (SteamAppInfo App in Apps.ToList())
                     {
-                        if (!await App.DeleteFilesAsync().ConfigureAwait(false))
+                        if (!await App.DeleteFilesAsync())
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"An unknown error happened while removing app files. {FullPath}", MessageDialogStyle.Affirmative).ConfigureAwait(true);
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"An unknown error happened while removing app files. {FullPath}", MessageDialogStyle.Affirmative);
 
                             return;
                         }
@@ -246,7 +246,7 @@ namespace Steam_Library_Manager.Definitions
 
                     UpdateLibraryVisual();
 
-                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"All app files in library successfully removed.\n\nLibrary: {FullPath}", MessageDialogStyle.Affirmative).ConfigureAwait(true);
+                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"All app files in library successfully removed.\n\nLibrary: {FullPath}", MessageDialogStyle.Affirmative);
                     break;
             }
         }
@@ -267,7 +267,7 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                await Functions.Steam.CloseSteamAsync().ConfigureAwait(false);
+                await Functions.Steam.CloseSteamAsync();
 
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
@@ -303,17 +303,17 @@ namespace Steam_Library_Manager.Definitions
             {
                 if (SteamAppsFolder.Exists)
                 {
-                    await Task.Run(() => SteamAppsFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => SteamAppsFolder.Delete(true));
                 }
 
                 if (WorkshopFolder.Exists)
                 {
-                    await Task.Run(() => WorkshopFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => WorkshopFolder.Delete(true));
                 }
 
                 if (DownloadFolder.Exists)
                 {
-                    await Task.Run(() => DownloadFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => DownloadFolder.Delete(true));
                 }
             }
             catch (Exception ex)
@@ -334,7 +334,7 @@ namespace Steam_Library_Manager.Definitions
 
                 List.Libraries.Remove(List.Libraries.First(x => x == Library));
 
-                await Functions.Steam.CloseSteamAsync().ConfigureAwait(false);
+                await Functions.Steam.CloseSteamAsync();
 
                 // Make a KeyValue reader
                 Framework.KeyValue KeyValReader = new Framework.KeyValue();

@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}").ConfigureAwait(true);
+                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
                             }
                         }
                     }
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}").ConfigureAwait(true);
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
                         }
                     }
                 }
@@ -124,7 +124,7 @@ namespace Steam_Library_Manager.Forms
                             NegativeButtonText = "SLM",
                             FirstAuxiliaryButtonText = "Origin",
                             SecondAuxiliaryButtonText = "Cancel"
-                        }).ConfigureAwait(true);
+                        });
 
                         switch (LibraryDialog)
                         {
@@ -138,12 +138,12 @@ namespace Steam_Library_Manager.Forms
                                     }
                                     else
                                     {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
+                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
                                     }
                                 }
                                 else
                                 {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
+                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
                                 }
                                 break;
                             // SLM
@@ -156,12 +156,12 @@ namespace Steam_Library_Manager.Forms
                                     }
                                     else
                                     {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
+                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
                                     }
                                 }
                                 else
                                 {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
+                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
                                 }
                                 break;
                             // Origin
@@ -174,12 +174,12 @@ namespace Steam_Library_Manager.Forms
                                     }
                                     else
                                     {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root").ConfigureAwait(true);
+                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
                                     }
                                 }
                                 else
                                 {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem).ConfigureAwait(true);
+                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
                                 }
                                 break;
                         }
