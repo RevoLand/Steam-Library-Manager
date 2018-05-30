@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class LibraryCleanerView : UserControl
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public LibraryCleanerView()
         {

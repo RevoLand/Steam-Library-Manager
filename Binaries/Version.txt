@@ -1,1 +1,1 @@
-1.5.0.8|Handled DirectoryNotFoundException in Steam Library - UpdateAppList
+1.5.0.9|Hotfix release and probably fixed the transfer speed issue with lots of small files

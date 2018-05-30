@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Definitions
 {
     public class Library
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Enums.LibraryType Type { get; set; }
         public System.IO.DirectoryInfo DirectoryInfo { get; set; }

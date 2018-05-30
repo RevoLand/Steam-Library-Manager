@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Framework
 {
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 

@@ -14,7 +14,7 @@ namespace Steam_Library_Manager.Definitions
 {
     public class OriginAppInfo
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Library Library { get; set; }
         public string AppName { get; set; } // gameTitle
@@ -314,7 +314,7 @@ namespace Steam_Library_Manager.Definitions
                     }
                 });
 
-                POptions.MaxDegreeOfParallelism = -1;
+                POptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
 
                 Parallel.ForEach(AppFiles.Where(x => (x).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, CurrentFile =>
                 {

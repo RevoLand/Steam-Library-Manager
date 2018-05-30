@@ -7,7 +7,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Updater
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static async void CheckForUpdates(bool InformUser = false)
         {

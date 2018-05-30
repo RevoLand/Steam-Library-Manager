@@ -8,7 +8,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class SLM
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static class Settings
         {

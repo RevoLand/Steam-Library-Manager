@@ -4,9 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
-
-## [1.5.0.9] - 2018-05-26
+## [1.5.0.9] - 2018-05-29
 
 ### Added
 
@@ -14,11 +12,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Buffer size for file movement / still testing various buffer sizes.
+- Buffer size for file movement
+- SaveWindowPlacement is set to True
+- Parsed form parts into user controls for easier access & edit.
 
 ### Removed
 
 - Custom file logger
+- ConfigureAwait calls
 
 ## [1.5.0.8] - 2018-05-26
 

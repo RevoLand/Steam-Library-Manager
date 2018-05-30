@@ -12,7 +12,7 @@ namespace Steam_Library_Manager.Definitions
 {
     public class SteamLibrary : INotifyPropertyChanged
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Library Library => List.Libraries.First(x => x.Steam == this);
 

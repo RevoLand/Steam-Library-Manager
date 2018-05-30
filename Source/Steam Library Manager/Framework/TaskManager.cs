@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Framework
 {
     internal static class TaskManager
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static AsyncObservableCollection<Definitions.List.TaskInfo> TaskList = new AsyncObservableCollection<Definitions.List.TaskInfo>();
         public static CancellationTokenSource CancellationToken;

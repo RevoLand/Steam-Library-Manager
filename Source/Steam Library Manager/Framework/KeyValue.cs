@@ -14,7 +14,7 @@ namespace Steam_Library_Manager.Framework
 {
     internal class KVTextReader : StreamReader
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         internal static Dictionary<char, char> escapedMapping = new Dictionary<char, char>
         {
@@ -238,7 +238,7 @@ namespace Steam_Library_Manager.Framework
 
     public class KeyValue
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private enum Type : byte
         {

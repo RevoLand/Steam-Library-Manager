@@ -177,6 +177,7 @@
     <Compile Include="Functions\Origin.cs" />
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

@@ -11,7 +11,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Steam
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static async void UpdateSteamInstallationPathAsync()
         {
