@@ -30,7 +30,8 @@ namespace Steam_Library_Manager.Functions
                 Action = "remove",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
-                ShowToNormal = false
+                ShowToNormal = false,
+                ShowToSLMBackup = false
             });
 
             #endregion App Context Menu Item Definitions

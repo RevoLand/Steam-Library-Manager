@@ -155,8 +155,8 @@
     </UserControl.Resources>
     <Grid>
         <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single"
-                              MaxWidth="201" Margin="0,10,0,10" HorizontalAlignment="Left" Width="201" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown" Padding="0,-2, 0, 0">
+                              MaxWidth="201" Margin="0,10,0,50" HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionChanged="LibraryGrid_MouseDown">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">
@@ -179,5 +179,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Button x:Name="CreateLibraryButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Create Library" Width="200" Height="40" Margin="0, 0, 0, 5" Click="CreateLibraryButton_ClickAsync" />
     </Grid>
 </UserControl>

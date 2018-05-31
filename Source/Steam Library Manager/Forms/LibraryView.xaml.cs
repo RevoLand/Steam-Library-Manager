@@ -114,81 +114,86 @@ namespace Steam_Library_Manager.Forms
 
                 foreach (string DroppedItem in DroppedItems)
                 {
-                    FileInfo Info = new FileInfo(DroppedItem);
+                    var Info = new DirectoryInfo(DroppedItem);
 
                     if ((Info.Attributes & FileAttributes.Directory) != 0)
                     {
-                        var LibraryDialog = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create in folder:\n{DroppedItem}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
-                        {
-                            AffirmativeButtonText = "Steam",
-                            NegativeButtonText = "SLM",
-                            FirstAuxiliaryButtonText = "Origin",
-                            SecondAuxiliaryButtonText = "Cancel"
-                        });
-
-                        switch (LibraryDialog)
-                        {
-                            // Steam
-                            case MessageDialogResult.Affirmative:
-                                if (!Functions.Steam.Library.IsLibraryExists(DroppedItem))
-                                {
-                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
-                                    {
-                                        Functions.Steam.Library.CreateNew(DroppedItem, false);
-                                    }
-                                    else
-                                    {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
-                                    }
-                                }
-                                else
-                                {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
-                                }
-                                break;
-                            // SLM
-                            case MessageDialogResult.Negative:
-                                if (!Functions.SLM.Library.IsLibraryExists(DroppedItem))
-                                {
-                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
-                                    {
-                                        Functions.SLM.Library.AddNewAsync(Info.FullName);
-                                    }
-                                    else
-                                    {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
-                                    }
-                                }
-                                else
-                                {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
-                                }
-                                break;
-                            // Origin
-                            case MessageDialogResult.FirstAuxiliary:
-                                if (!Functions.Origin.IsLibraryExists(DroppedItem))
-                                {
-                                    if (Directory.GetDirectoryRoot(DroppedItem) != DroppedItem)
-                                    {
-                                        Functions.Origin.AddNewAsync(Info.FullName);
-                                    }
-                                    else
-                                    {
-                                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
-                                    }
-                                }
-                                else
-                                {
-                                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + DroppedItem);
-                                }
-                                break;
-                        }
+                        await CreateLibraryAsync(Info.FullName);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+            }
+        }
+
+        async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
+        {
+            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create in folder:\n{LibraryPath}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Steam",
+                NegativeButtonText = "SLM",
+                FirstAuxiliaryButtonText = "Origin",
+                SecondAuxiliaryButtonText = "Cancel"
+            });
+
+            switch (LibraryDialog)
+            {
+                // Steam
+                case MessageDialogResult.Affirmative:
+                    if (!Functions.Steam.Library.IsLibraryExists(LibraryPath))
+                    {
+                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        {
+                            Functions.Steam.Library.CreateNew(LibraryPath, false);
+                        }
+                        else
+                        {
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                        }
+                    }
+                    else
+                    {
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                    }
+                    break;
+                // SLM
+                case MessageDialogResult.Negative:
+                    if (!Functions.SLM.Library.IsLibraryExists(LibraryPath))
+                    {
+                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        {
+                            Functions.SLM.Library.AddNewAsync(LibraryPath);
+                        }
+                        else
+                        {
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                        }
+                    }
+                    else
+                    {
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                    }
+                    break;
+                // Origin
+                case MessageDialogResult.FirstAuxiliary:
+                    if (!Functions.Origin.IsLibraryExists(LibraryPath))
+                    {
+                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        {
+                            Functions.Origin.AddNewAsync(LibraryPath);
+                        }
+                        else
+                        {
+                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                        }
+                    }
+                    else
+                    {
+                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                    }
+                    break;
             }
         }
 
@@ -240,6 +245,17 @@ namespace Steam_Library_Manager.Forms
             catch (Exception ex)
             {
                 logger.Error(ex);
+            }
+        }
+
+        private async void CreateLibraryButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    await CreateLibraryAsync(dialog.SelectedPath);
+                }
             }
         }
     }

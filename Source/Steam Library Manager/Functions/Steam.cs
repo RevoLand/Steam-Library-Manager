@@ -57,7 +57,7 @@ namespace Steam_Library_Manager.Functions
 
         public static void PopulateLibraryCMenuItems()
         {
-            #region App Context Menu Item Definitions
+            #region Library Context Menu Item Definitions
 
             // Open library in explorer ({0})
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
@@ -118,7 +118,7 @@ namespace Steam_Library_Manager.Functions
                 ShowToSLMBackup = true
             });
 
-            #endregion App Context Menu Item Definitions
+            #endregion Library Context Menu Item Definitions
         }
 
         public static void PopulateAppCMenuItems()
