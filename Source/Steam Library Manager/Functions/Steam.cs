@@ -313,6 +313,9 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(NewLibraryPath))
+                        return;
+
                     // If we are not creating a backup library
                     if (!Backup)
                     {

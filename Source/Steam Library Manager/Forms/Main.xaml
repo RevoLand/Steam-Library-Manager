@@ -17,13 +17,16 @@
         <Controls:WindowCommands>
             <Button Content="Patreon" Click="RightWindowCommands_PatreonButton_Click" />
             <Button Content="Discord" Click="RightWindowCommands_DiscordButton_Click" />
-            <Button Content="Settings" Click="RightWindowCommands_SettingsButton_Click" />
+            <!--<Button Content="Settings" Click="RightWindowCommands_SettingsButton_Click" />-->
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid Margin="0,40,0,0">
-        <TextBlock Margin="15, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" FontWeight="ExtraLight" Background="Transparent">
+    <Grid Margin="5, 10, 0, 5">
+        <Grid Margin="15, 0, 0, 0">
+            <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+            <TextBlock Margin="50, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">
             Steam Library Manager
-        </TextBlock>
+            </TextBlock>
+        </Grid>
 
         <!-- Grid: Quick settings -->
         <Grid x:Name="QuickSettings" Margin="0,0,10,0">
@@ -98,7 +101,7 @@
             </TabItem>
             -->
             <!-- Tab: Settings -->
-            <Controls:MetroTabItem Visibility="Hidden" Name="TabItem_Settings">
+            <Controls:MetroTabItem Header="Settings" Name="TabItem_Settings">
                 <Forms:SettingsView x:Name="SettingsView" />
             </Controls:MetroTabItem>
         </Controls:MetroTabControl>
