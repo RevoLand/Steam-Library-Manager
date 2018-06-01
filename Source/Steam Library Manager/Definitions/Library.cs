@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -6,7 +7,7 @@ using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class Library
+    public class Library : INotifyPropertyChanged
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -109,5 +110,16 @@ namespace Steam_Library_Manager.Definitions
         public string PrettyFreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}" : "";
 
         public int FreeSpacePerc => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName))) : 0;
+
+        public void UpdateDiskDetails()
+        {
+            OnPropertyChanged("FreeSpace");
+            OnPropertyChanged("PrettyFreeSpace");
+            OnPropertyChanged("FreeSpacePerc");
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
     }
 }

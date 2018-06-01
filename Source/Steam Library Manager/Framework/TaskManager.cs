@@ -135,8 +135,11 @@ namespace Steam_Library_Manager.Framework
                     if (IsRestartRequired)
                     {
                         Functions.Steam.RestartSteamAsync();
+                        IsRestartRequired = false;
                     }
                 }
+
+                Functions.SLM.Library.UpdateLibraryVisual();
             }
             catch (Exception ex)
             {

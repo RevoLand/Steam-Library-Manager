@@ -223,17 +223,18 @@ namespace Steam_Library_Manager.Functions
             #endregion App Context Menu Item Definitions
         }
 
-        public static bool IsSteamWorking()
+        public static string GetActiveSteamProcessPath()
         {
             try
             {
-                return Process.GetProcessesByName("Steam").Length > 0;
+                var test = Process.GetProcessesByName("Steam").FirstOrDefault();
+                return test?.MainModule.FileName;
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-                return true;
+                return null;
             }
         }
 
@@ -241,17 +242,18 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (IsSteamWorking())
+                var ActiveSteamPath = GetActiveSteamProcessPath();
+                if (!string.IsNullOrEmpty(ActiveSteamPath))
                 {
                     if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
+                        if (File.Exists(ActiveSteamPath))
                         {
-                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-shutdown");
+                            Process.Start(ActiveSteamPath, "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam.exe could not found, SLM will try to terminate Steam processes now.", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", $"Steam.exe could not found (even it is already working?), SLM can try to terminate the Steam processes now if you want to.\n\nActive Steam process path: {ActiveSteamPath}", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
-                            foreach (Process SteamProcess in Process.GetProcessesByName("Steam"))
+                            foreach (var SteamProcess in Process.GetProcessesByName("Steam"))
                             {
                                 SteamProcess.Kill();
                             }
@@ -284,7 +286,7 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like SLM to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         await CloseSteamAsync();
 

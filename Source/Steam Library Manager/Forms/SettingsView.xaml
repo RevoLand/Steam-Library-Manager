@@ -57,7 +57,7 @@
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
-                <!-- Button: View Logs (If exists) -->
+                <!-- Button: Open Log Folder -->
                 <Button Content="Open Log Folder" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Width="280" Height="40" HorizontalAlignment="Left" />
 
                 <!-- Button: Check for Updates -->
@@ -71,69 +71,82 @@
 
                 <GroupBox Header="Custom Theme" Margin="255,205,0,0">
                     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                        <Grid>
-                            <Label Content="Text Color:" Margin="0,5,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,5,0,0" Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="TabItem Text Color" Margin="0,55,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,55,0,0" Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Background" Margin="0,105,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,105,0,0" Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Control BG" Margin="0,155,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,155,0,0" Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Context Menu" Margin="0,205,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,205,0,0" Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Window BG" Margin="0,255,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,255,0,0" Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="TransparentWhite" Margin="0,305,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,305,0,0" Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="GrayBrush1" Margin="0,355,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,355,0,0" Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="GrayBrush2" Margin="0,405,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,405,0,0" Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Button Click" Margin="0,455,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,455,0,0" Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Button Hover" Margin="0,505,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,505,0,0" Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-
-                            <Label Content="Button BG" Margin="0,555,0,0" />
-                            <Color:ColorPicker Width="150" Margin="0,555,0,0" Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged"  HorizontalAlignment="Right" VerticalAlignment="Top" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                        </Grid>
+                        <StackPanel>
+                            <UniformGrid Rows="2">
+                                <Label Content="Text Color:" />
+                                <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="TabItem Text Color" />
+                                <Color:ColorPicker Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Background" />
+                                <Color:ColorPicker Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Control BG" />
+                                <Color:ColorPicker Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Context Menu" />
+                                <Color:ColorPicker Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Window BG" />
+                                <Color:ColorPicker Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="TransparentWhite" />
+                                <Color:ColorPicker Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="GrayBrush1" />
+                                <Color:ColorPicker Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="GrayBrush2" />
+                                <Color:ColorPicker Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Button Click" />
+                                <Color:ColorPicker Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Button Hover" />
+                                <Color:ColorPicker Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                            <UniformGrid Rows="2">
+                                <Label Content="Button BG" />
+                                <Color:ColorPicker Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                            </UniformGrid>
+                        </StackPanel>
                     </ScrollViewer>
                 </GroupBox>
             </Grid>
         </GroupBox>
         <GroupBox Header="Task Manager Default Settings" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
-            <Grid>
+            <StackPanel>
                 <!-- Remove Source Files -->
-                <Controls:ToggleSwitch Header="Remove files at Source directory" OnLabel="Remove" OffLabel="Do NOT Remove" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   HorizontalAlignment="Left" Margin="5,5,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                <Controls:ToggleSwitch Margin="5" Header="Remove files at Source directory" OnLabel="Remove" OffLabel="Do NOT Remove" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Compress Files -->
-                <Controls:ToggleSwitch Header="Compress Files" OnLabel="Compress" OffLabel="Do NOT Compress" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   HorizontalAlignment="Left" Margin="5,55,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                <Controls:ToggleSwitch Margin="5" Header="Compress Files" OnLabel="Compress" OffLabel="Do NOT Compress" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Report File Movement -->
-                <Controls:ToggleSwitch Header="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   HorizontalAlignment="Left" Margin="5,105,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                <Controls:ToggleSwitch Margin="5" Header="Report File Movement" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Start Task Manager on Startup -->
-                <Controls:ToggleSwitch Header="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   HorizontalAlignment="Left" Margin="5,155,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                <Controls:ToggleSwitch Margin="5" Header="Start Task Manager on Startup" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Play a sound on completion-->
-                <Controls:ToggleSwitch Header="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   HorizontalAlignment="Left" Margin="5,205,0,0" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
-            </Grid>
+                <Controls:ToggleSwitch Margin="5" Header="Play a sound on completion" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>

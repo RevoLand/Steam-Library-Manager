@@ -39,13 +39,6 @@ namespace Steam_Library_Manager.Definitions
             IsMain = _IsMain;
         }
 
-        public void UpdateDiskDetails()
-        {
-            OnPropertyChanged("FreeSpace");
-            OnPropertyChanged("PrettyFreeSpace");
-            OnPropertyChanged("FreeSpacePerc");
-        }
-
         public void UpdateAppList()
         {
             try
@@ -244,22 +237,10 @@ namespace Steam_Library_Manager.Definitions
                         }
                     }
 
-                    UpdateLibraryVisual();
+                    Functions.SLM.Library.UpdateLibraryVisual();
 
                     await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"All app files in library successfully removed.\n\nLibrary: {FullPath}", MessageDialogStyle.Affirmative);
                     break;
-            }
-        }
-
-        public void UpdateLibraryVisual()
-        {
-            try
-            {
-                Parallel.ForEach(List.Libraries.Where(x => x.Type == Enums.LibraryType.Steam && string.Equals(x.Steam.SteamAppsFolder.Root.FullName, SteamAppsFolder.Root.FullName, StringComparison.InvariantCultureIgnoreCase)), LibraryToUpdate => LibraryToUpdate.Steam.UpdateDiskDetails());
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
             }
         }
 

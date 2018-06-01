@@ -264,6 +264,18 @@ namespace Steam_Library_Manager.Functions
                     logger.Fatal(ex);
                 }
             }
+
+            public static void UpdateLibraryVisual()
+            {
+                try
+                {
+                    Parallel.ForEach(Definitions.List.Libraries, LibraryToUpdate => LibraryToUpdate.UpdateDiskDetails());
+                }
+                catch (Exception ex)
+                {
+                    logger.Fatal(ex);
+                }
+            }
         }
     }
 }
