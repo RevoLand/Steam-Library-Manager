@@ -397,24 +397,24 @@ namespace Steam_Library_Manager.Functions
                     var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.");
                     ProgressInformationMessage.SetIndeterminate();
 
-                    foreach (Definitions.Library CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists))
+                    foreach (var CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
                     {
                         if (CurrentLibrary.Steam.Apps.Count == 0)
                         {
                             continue;
                         }
 
-                        foreach (Definitions.Library LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
+                        foreach (var LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (Definitions.SteamAppInfo CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
+                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
                             {
                                 ProgressInformationMessage.SetMessage("Checking for:\n\n" + CurrentApp.AppName);
 
                                 if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
                                 {
-                                    Definitions.SteamAppInfo LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated);
+                                    var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && x.TargetLibrary == LatestApp.Library && !x.Completed) == 0)
+                                    if (Framework.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
@@ -423,16 +423,15 @@ namespace Steam_Library_Manager.Functions
                                         };
 
                                         Framework.TaskManager.AddTask(NewTask);
+                                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {CurrentApp.AppName} - Old backup time: {LatestApp.LastUpdated} - Updated on: {CurrentApp.LastUpdated} - Target: {CurrentApp.Library.Steam.FullPath} - Source: {LatestApp.Library.Steam.FullPath}");
                                     }
-
-                                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {CurrentApp.AppName} - Old backup time: {LatestApp.LastUpdated} - Updated on: {CurrentApp.LastUpdated} - Target: {CurrentApp.Library.Steam.FullPath} - Source: {LatestApp.Library.Steam.FullPath}");
                                 }
                             }
                         }
                     }
 
                     await ProgressInformationMessage.CloseAsync();
-                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Checked for Backup updates.");
+                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Check for Backup updates completed.");
                 }
                 catch (Exception ex)
                 {

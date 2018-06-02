@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.10] - 2018-06-03
+
+### Added
+
+- Library Creation Button (Thank you [Catalin Chelariu](http://www.softpedia.com/editors/browse/catalin-chelariu) for suggestion)
+- Settings tab to tabcontrol
+
+### Changed
+
+- Steam restart function updated
+- File movement order
+
+### Fixed
+
+- Reflection of disk size changes
+- "If you click check for backup updates while a backup is being performed, the game you are backing up will reappear" - Thank you Mobeeuz, like always.
+- "Remove from List" origin context menu item appearing for Steam / SLM libraries.
+- SLM Libraries being duplicated on save.
+
+### Removed
+
+- Settings button from top right corner.
+
 ## [1.5.0.9] - 2018-05-29
 
 ### Added

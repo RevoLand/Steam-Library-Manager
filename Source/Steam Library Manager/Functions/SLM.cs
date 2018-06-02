@@ -42,8 +42,11 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM))
+                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM).ToList())
                     {
+                        if (BackupDirs.Contains(Library.DirectoryInfo.FullName))
+                            continue;
+
                         // then add this library path to new defined string collection
                         BackupDirs.Add(Library.DirectoryInfo.FullName);
                     }
@@ -66,8 +69,11 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.Origin.IsMain))
+                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.Origin.IsMain).ToList())
                     {
+                        if (BackupDirs.Contains(Library.DirectoryInfo.FullName))
+                            continue;
+
                         // then add this library path to new defined string collection
                         BackupDirs.Add(Library.DirectoryInfo.FullName);
                     }
