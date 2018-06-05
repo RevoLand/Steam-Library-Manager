@@ -486,12 +486,12 @@ namespace Steam_Library_Manager.Functions
                         KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
                         if (KeyValReader?.Children.Count > 0)
                         {
-                            foreach (Framework.KeyValue key in KeyValReader.Children.Where(x => x.Name.Contains("BaseInstallFolder")))
+                            foreach (var key in KeyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
                             {
                                 AddNew(key.Value);
                             }
 
-                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"].Children.Count > 0) ? KeyValReader["Accounts"]?.Children[0]?.Children[0]?.Value : null;
+                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"]?.Children.Count > 0) ? KeyValReader["Accounts"]?.Children.FirstOrDefault()?.Children.FirstOrDefault()?.Value : null;
                         }
                     }
                     else { /* Could not locate LibraryFolders.vdf */ }
