@@ -315,7 +315,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -415,7 +415,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="SymLink" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>

@@ -27,7 +27,7 @@ namespace Steam_Library_Manager.Definitions
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
-            public ManualResetEvent mre = new ManualResetEvent(false);
+            public ManualResetEvent mre = new ManualResetEvent(!Framework.TaskManager.Paused);
 
             private double _TotalFileCount = 100;
             private long _MovedFileSize, _TotalFileSize;

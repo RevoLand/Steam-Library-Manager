@@ -74,14 +74,7 @@ namespace Steam_Library_Manager.Framework
                             break;
 
                         case Definitions.Enums.TaskType.Delete:
-                            if (!CurrentTask.OriginApp.IsSymLinked)
-                            {
-                                CurrentTask.OriginApp.DeleteFiles(CurrentTask);
-                            }
-                            else
-                            {
-                                JunctionPoint.Delete(CurrentTask.OriginApp.InstallationDirectory.FullName);
-                            }
+                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
 
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
@@ -96,11 +89,6 @@ namespace Steam_Library_Manager.Framework
                             CurrentTask.OriginApp.DeleteFiles(CurrentTask);
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
 
-                            if (CurrentTask.Compress)
-                            {
-                                JunctionPoint.Create(CurrentTask.OriginApp.InstallationDirectory.FullName.Replace(CurrentTask.OriginApp.Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath), CurrentTask.OriginApp.InstallationDirectory.FullName, true);
-                            }
-
                             Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Files removed, task is completed now.");
                         }
 
@@ -109,6 +97,11 @@ namespace Steam_Library_Manager.Framework
                         CurrentTask.Completed = true;
 
                         CurrentTask.TargetLibrary?.Origin.UpdateAppList();
+
+                        if (CurrentTask.Compress)
+                        {
+                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppID == CurrentTask.OriginApp.AppID).InstallAsync();
+                        }
 
                         // Update library details
                         if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.OriginApp.Library)

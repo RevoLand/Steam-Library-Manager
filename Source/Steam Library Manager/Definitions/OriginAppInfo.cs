@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Definitions
         public string[] Locales { get; set; } // pt_BR,en_US,de_DE,es_ES,fr_FR,it_IT,es_MX,nl_NL,pl_PL,ru_RU,ar_SA,cs_CZ,da_DK,no_NO,pt_PT,zh_TW,sv_SE,tr_TR
         public string InstalledLocale { get; set; }
         public DirectoryInfo InstallationDirectory; // D:\Oyunlar\Origin Games\FIFA 17\
-        public string TouchupFile { get; set; }
+        public FileInfo TouchupFile { get; set; }
         public string InstallationParameter { get; set; }
         public string UpdateParameter { get; set; }
         public string RepairParameter { get; set; }
@@ -30,7 +30,6 @@ namespace Steam_Library_Manager.Definitions
         public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
         public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
-        public bool IsSymLinked => Framework.JunctionPoint.Exists(InstallationDirectory.FullName);
 
         public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _InstalledLocale, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
@@ -40,7 +39,7 @@ namespace Steam_Library_Manager.Definitions
             Locales = _Locales;
             InstalledLocale = _InstalledLocale;
             InstallationDirectory = _InstallationDirectory;
-            TouchupFile = _TouchupFile;
+            TouchupFile = new FileInfo(_InstallationDirectory.FullName + _TouchupFile);
             InstallationParameter = _InstallationParameter;
             UpdateParameter = _UpdateParameter;
             RepairParameter = _RepairParameter;
@@ -98,8 +97,6 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                var touchupFile = new FileInfo(InstallationDirectory.FullName + TouchupFile);
-
                 switch (Action.ToLowerInvariant())
                 {
                     case "disk":
@@ -114,47 +111,18 @@ namespace Steam_Library_Manager.Definitions
 
                     case "install":
 
-                        if (touchupFile.Exists && InstallationParameter != null)
-                        {
-                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
-                            ProgressInformationMessage.SetIndeterminate();
-
-                            var process = Process.Start(touchupFile.FullName, InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
-
-                            Debug.WriteLine(InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
-
-                            process.WaitForExit();
-                            await ProgressInformationMessage.CloseAsync();
-                        }
+                        await InstallAsync();
 
                         break;
 
                     case "repair":
 
-                        if (touchupFile.Exists && RepairParameter != null)
-                        {
-                            var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to repair {AppName} as you have requested.");
-                            ProgressInformationMessage.SetIndeterminate();
-
-                            var process = Process.Start(touchupFile.FullName, RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
-
-                            Debug.WriteLine(RepairParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
-
-                            process.WaitForExit();
-                            await ProgressInformationMessage.CloseAsync();
-                        }
+                        await InstallAsync(true);
 
                         break;
 
                     case "deleteappfiles":
-                        if (!IsSymLinked)
-                        {
-                            await Task.Run(() => DeleteFiles());
-                        }
-                        else
-                        {
-                            Framework.JunctionPoint.Delete(InstallationDirectory.FullName);
-                        }
+                        await Task.Run(() => DeleteFiles());
 
                         Library.Origin.Apps.Remove(this);
                         if (SLM.CurrentSelectedLibrary == Library)
@@ -227,8 +195,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
-                        if (Framework.TaskManager.Paused)
-                            CurrentTask.mre.WaitOne();
+                        CurrentTask.mre.WaitOne();
 
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
 
@@ -241,7 +208,7 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             int currentBlockSize = 0;
-                            byte[] FSBuffer = new byte[8192];
+                            byte[] FSBuffer = new byte[4096];
 
                             using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
@@ -254,8 +221,7 @@ namespace Steam_Library_Manager.Definitions
                                         if (cancellationToken.IsCancellationRequested)
                                             throw (new OperationCanceledException(cancellationToken));
 
-                                        if (Framework.TaskManager.Paused)
-                                            CurrentTask.mre.WaitOne();
+                                        CurrentTask.mre.WaitOne();
 
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -320,8 +286,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
-                        if (Framework.TaskManager.Paused)
-                            CurrentTask.mre.WaitOne();
+                        CurrentTask.mre.WaitOne();
 
                         FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Origin.FullPath, CurrentTask.TargetLibrary.Origin.FullPath));
 
@@ -334,21 +299,20 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             int currentBlockSize = 0;
-                            byte[] FSBuffer = new byte[8192];
+                            byte[] FSBuffer = new byte[4096];
 
                             using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                             {
                                 using (FileStream NewFileContent = NewFile.OpenWrite())
                                 {
-                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)CurrentFile).Length)})";
+                                    CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
 
                                     while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
                                     {
                                         if (cancellationToken.IsCancellationRequested)
                                             throw (new OperationCanceledException(cancellationToken));
 
-                                        if (Framework.TaskManager.Paused)
-                                            CurrentTask.mre.WaitOne();
+                                        CurrentTask.mre.WaitOne();
 
                                         NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -465,16 +429,14 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
-                        if (Framework.TaskManager.Paused)
-                            CurrentTask.mre.WaitOne();
+                        CurrentTask.mre.WaitOne();
 
                         currentFile.Refresh();
                         if (currentFile.Exists)
                         {
                             if (CurrentTask != null)
                             {
-                                if (Framework.TaskManager.Paused)
-                                    CurrentTask.mre.WaitOne();
+                                CurrentTask.mre.WaitOne();
 
                                 CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                                 Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Deleting file: {currentFile.FullName}");
@@ -509,6 +471,55 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show(ex.ToString());
                 logger.Error(ex);
+            }
+        }
+
+        public async Task InstallAsync(bool Repair = false)
+        {
+            try
+            {
+                TouchupFile.Refresh();
+
+                if (TouchupFile.Exists && !string.IsNullOrEmpty(InstallationParameter))
+                {
+                    if (Repair && string.IsNullOrEmpty(RepairParameter))
+                    {
+                        return;
+                    }
+
+                    await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                    {   
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
+                        ProgressInformationMessage.SetIndeterminate();
+
+                        var process = Process.Start(TouchupFile.FullName, ((Repair) ? RepairParameter : InstallationParameter).Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                        Debug.WriteLine(InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
+
+                        ProgressInformationMessage.SetMessage($"Asking Origin to install {AppName} as you have requested.\n\n\nWaiting for Origin to complete the installation...");
+
+                        while (!process.HasExited)
+                        {
+                            await Task.Delay(100);
+                        }
+
+                        await ProgressInformationMessage.CloseAsync();
+
+                        var installLog = File.ReadAllLines(Path.Combine(InstallationDirectory.FullName, "__Installer", "InstallLog.txt")).Reverse();
+                        if (installLog.Any(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1))
+                        {
+                            var test = installLog.FirstOrDefault(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1);
+
+                            await Main.FormAccessor.ShowMessageAsync("Origin App Installation", "Origin app installation completed.\n\n\nResult message:\n\n" + test);
+                        }
+                    });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }

@@ -271,8 +271,7 @@ namespace Steam_Library_Manager.Definitions
 
                         foreach (FileSystemInfo currentFile in AppFiles)
                         {
-                            if (Framework.TaskManager.Paused)
-                                CurrentTask.mre.WaitOne();
+                            CurrentTask.mre.WaitOne();
 
                             string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
@@ -299,8 +298,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ZipArchiveEntry CurrentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
-                        if (Framework.TaskManager.Paused)
-                            CurrentTask.mre.WaitOne();
+                        CurrentTask.mre.WaitOne();
 
                         FileInfo NewFile = new FileInfo(Path.Combine(CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName, CurrentFile.FullName));
 
@@ -362,8 +360,7 @@ namespace Steam_Library_Manager.Definitions
                                             if (cancellationToken.IsCancellationRequested)
                                                 throw (new OperationCanceledException(cancellationToken));
 
-                                            if (Framework.TaskManager.Paused)
-                                                CurrentTask.mre.WaitOne();
+                                            CurrentTask.mre.WaitOne();
 
                                             NewFileContent.Write(FSBuffer, 0, currentBlockSize);
 
@@ -431,8 +428,7 @@ namespace Steam_Library_Manager.Definitions
                             if (cancellationToken.IsCancellationRequested)
                                 throw (new OperationCanceledException(cancellationToken));
 
-                            if (Framework.TaskManager.Paused)
-                                CurrentTask.mre.WaitOne();
+                            CurrentTask.mre.WaitOne();
 
                             FileInfo NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
@@ -593,8 +589,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             try
                             {
-                                if (Framework.TaskManager.Paused)
-                                    CurrentTask.mre.WaitOne();
+                                CurrentTask.mre.WaitOne();
 
                                 currentFile.Refresh();
 
@@ -602,8 +597,7 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     if (CurrentTask != null)
                                     {
-                                        if (Framework.TaskManager.Paused)
-                                            CurrentTask.mre.WaitOne();
+                                        CurrentTask.mre.WaitOne();
 
                                         CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
                                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.SteamApp.AppName}] Deleting file: {currentFile.FullName}");

@@ -119,18 +119,6 @@
 
                     <!-- App Info Grid -->
                     <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
-                        <!-- Backup Type Text -->
-                        <TextBlock Margin="0,-17,0,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSymLinked}" Value="true">
-                                            <Setter Property="Text" Value="SymLinked" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
 
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
@@ -153,17 +141,6 @@
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
                     <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
-                    <TextBlock HorizontalAlignment="Right" Margin="0,0,70,0">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsSymLinked}" Value="true">
-                                        <Setter Property="Text" Value="SymLinked" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
 
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />

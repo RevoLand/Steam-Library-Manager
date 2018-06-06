@@ -44,7 +44,7 @@ namespace Steam_Library_Manager.Functions
             // Run
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Run",
+                Header = "Run (Unavailable)",
                 Action = "steam://run/{0}", // TO-DO
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
@@ -152,8 +152,8 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                //Logger.LogToFile(Logger.LogType.Library, ex.ToString());
-                //Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                logger.Fatal(ex);
+                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
