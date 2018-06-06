@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Framework
 
                         if (CurrentTask.Compress)
                         {
-                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppID == CurrentTask.OriginApp.AppID).InstallAsync();
+                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppID == CurrentTask.OriginApp.AppID)?.InstallAsync();
                         }
 
                         // Update library details
