@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -28,7 +29,7 @@ namespace Steam_Library_Manager.Definitions
 
         public DirectoryInfo WorkshopFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "workshop"));
 
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
+        public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
@@ -146,9 +147,9 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
+        public List<FrameworkElement> GenerateCMenuItems()
         {
-            Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+            var CMenu = new List<FrameworkElement>();
             try
             {
                 foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))

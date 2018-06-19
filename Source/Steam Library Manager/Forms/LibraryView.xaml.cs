@@ -38,7 +38,7 @@ namespace Steam_Library_Manager.Forms
                     return;
                 }
 
-                foreach (dynamic App in Main.FormAccessor.AppView.AppPanel.SelectedItems)
+                foreach (dynamic App in Main.FormAccessor.AppView.AppPanel.SelectedItems.Cast<dynamic>().ToList())
                 {
                     if (App is Definitions.SteamAppInfo)
                     {
@@ -128,7 +128,7 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
+        private async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
         {
             var LibraryDialog = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create in folder:\n{LibraryPath}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
             {

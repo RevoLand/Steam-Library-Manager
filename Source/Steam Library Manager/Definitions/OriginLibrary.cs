@@ -16,7 +16,7 @@ namespace Steam_Library_Manager.Definitions
         public bool IsMain { get; set; }
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu => GenerateCMenuItems();
+        public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -95,7 +95,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                         else
                         {
-                            MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion}");
+                            MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion} - {OriginApp}");
                         }
                     }
                 }
@@ -114,9 +114,9 @@ namespace Steam_Library_Manager.Definitions
 
         //-----
 
-        public Framework.AsyncObservableCollection<FrameworkElement> GenerateCMenuItems()
+        public List<FrameworkElement> GenerateCMenuItems()
         {
-            Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+            var CMenu = new List<FrameworkElement>();
             try
             {
                 foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Origin))

@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -47,11 +46,11 @@ namespace Steam_Library_Manager.Definitions
 
         public string WorkShopAcfName => $"appworkshop_{AppID}.acf";
 
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems
+        public List<FrameworkElement> ContextMenuItems
         {
             get
             {
-                Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+                var rightClickMenu = new List<FrameworkElement>();
                 try
                 {
                     foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
@@ -234,8 +233,8 @@ namespace Steam_Library_Manager.Definitions
             LogToTM($"[{AppName}] Populating file list, please wait");
             logger.Info("Populating file list for: {0}", AppName);
 
-            ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
-            ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
+            List<string> CopiedFiles = new List<string>();
+            List<string> CreatedDirectories = new List<string>();
             List<FileInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
             long TotalFileSize = 0;
@@ -589,7 +588,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             try
                             {
-                                CurrentTask.mre.WaitOne();
+                                CurrentTask?.mre.WaitOne();
 
                                 currentFile.Refresh();
 

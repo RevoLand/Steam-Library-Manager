@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -47,11 +46,11 @@ namespace Steam_Library_Manager.Definitions
         }
 
         //-----
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenuItems
+        public List<FrameworkElement> ContextMenuItems
         {
             get
             {
-                Framework.AsyncObservableCollection<FrameworkElement> rightClickMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+                var rightClickMenu = new List<FrameworkElement>();
                 try
                 {
                     foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Origin))
@@ -161,8 +160,8 @@ namespace Steam_Library_Manager.Definitions
             LogToTM($"[{AppName}] Populating file list, please wait");
             logger.Info("Populating file list for: {0}", AppName);
 
-            ConcurrentBag<string> CopiedFiles = new ConcurrentBag<string>();
-            ConcurrentBag<string> CreatedDirectories = new ConcurrentBag<string>();
+            List<string> CopiedFiles = new List<string>();
+            List<string> CreatedDirectories = new List<string>();
             List<FileInfo> AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
             long TotalFileSize = 0;
@@ -429,7 +428,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     try
                     {
-                        CurrentTask.mre.WaitOne();
+                        CurrentTask?.mre.WaitOne();
 
                         currentFile.Refresh();
                         if (currentFile.Exists)
@@ -488,7 +487,7 @@ namespace Steam_Library_Manager.Definitions
                     }
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                    {   
+                    {
                         var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
                         ProgressInformationMessage.SetIndeterminate();
 
@@ -513,7 +512,6 @@ namespace Steam_Library_Manager.Definitions
                             await Main.FormAccessor.ShowMessageAsync("Origin App Installation", "Origin app installation completed.\n\n\nResult message:\n\n" + test);
                         }
                     });
-
                 }
             }
             catch (Exception ex)

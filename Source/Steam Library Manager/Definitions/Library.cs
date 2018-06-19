@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -16,11 +17,11 @@ namespace Steam_Library_Manager.Definitions
         public SteamLibrary Steam { get; set; }
         public OriginLibrary Origin { get; set; }
 
-        public Framework.AsyncObservableCollection<FrameworkElement> ContextMenu
+        public List<FrameworkElement> ContextMenu
         {
             get
             {
-                Framework.AsyncObservableCollection<FrameworkElement> CMenu = new Framework.AsyncObservableCollection<FrameworkElement>();
+                var CMenu = new List<FrameworkElement>();
                 try
                 {
                     foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))

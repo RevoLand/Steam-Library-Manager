@@ -198,15 +198,45 @@ namespace Steam_Library_Manager.Forms
             catch (IOException ex)
             {
                 logger.Error(ex);
+
+                if (Main.FormAccessor.IsAnyDialogOpen)
+                {
+                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
+
+                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
+                    {
+                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
             }
             catch (UnauthorizedAccessException ex)
             {
                 logger.Error(ex);
+
+                if (Main.FormAccessor.IsAnyDialogOpen)
+                {
+                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
+
+                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
+                    {
+                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());
+                    }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
             }
             catch (Exception ex)
             {
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 logger.Fatal(ex);
+
+                if (Main.FormAccessor.IsAnyDialogOpen)
+                {
+                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
+
+                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
+                     {
+                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());
+                     }, System.Windows.Threading.DispatcherPriority.Normal);
+                }
             }
         }
 

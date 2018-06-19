@@ -131,9 +131,9 @@ namespace Steam_Library_Manager.Functions
                 {
                     var OriginConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
 
-                    if (string.IsNullOrEmpty(OriginConfigKeys["DownloadInPlaceDir"]))
+                    if (OriginConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
-                        MessageBox.Show($"Origin config file is broken(?)\n\n{Definitions.Global.Origin.ConfigFilePath}");
+                        logger.Log(NLog.LogLevel.Error, $"Origin config file doesn't contains DownloadInPlaceDir config\n\n{Definitions.Global.Origin.ConfigFilePath}");
                     }
                     else
                     {
