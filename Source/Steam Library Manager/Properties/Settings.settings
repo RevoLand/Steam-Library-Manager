@@ -74,5 +74,8 @@
     <Setting Name="OriginLibraries" Roaming="true" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CompressionLevel" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Fastest</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

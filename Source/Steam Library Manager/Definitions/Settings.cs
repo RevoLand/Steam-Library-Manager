@@ -23,6 +23,12 @@ namespace Steam_Library_Manager.Definitions
             set => Properties.Settings.Default.archiveSizeCalculationMethod = value.ToString();
         }
 
+        public CompressionLevel Setting_CompressionLevel
+        {
+            get => (CompressionLevel)Enum.Parse(typeof(CompressionLevel), Properties.Settings.Default.CompressionLevel);
+            set => Properties.Settings.Default.CompressionLevel = value.ToString();
+        }
+
         public LibraryStyle Setting_LibraryStyle
         {
             get => (LibraryStyle)Enum.Parse(typeof(LibraryStyle), Properties.Settings.Default.LibraryStyle);

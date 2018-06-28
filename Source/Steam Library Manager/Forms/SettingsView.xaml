@@ -29,31 +29,37 @@
                                       SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}" />
 
+                <!-- Compression method -->
+                <ComboBox Controls:TextBoxHelper.Watermark="Compression Type" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      Margin="5,155,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_CompressionLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:CompressionLevel}}" />
+
                 <!-- File size to start move synchronously (MB) -->
                 <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously after" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
-                                                    Margin="5,155,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
+                                                    Margin="5,205,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
                                                     Value="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StringFormat="{}{0:N0} MB" />
 
                 <ComboBox Controls:TextBoxHelper.Watermark="Theme Accent" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,205,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}" />
 
                 <ComboBox Controls:TextBoxHelper.Watermark="Theme Base" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      Margin="5,305,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_BaseTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}" />
 
                 <!-- Advanced Logging (Requires restart) -->
-                <Controls:ToggleSwitch Header="Advanced Logging (Requires restart)" Margin="5,305,0,0"
+                <Controls:ToggleSwitch Header="Advanced Logging (Requires restart)" Margin="5,355,0,0"
                                                    IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Check for Updates at Startup -->
-                <Controls:ToggleSwitch Header="Check for Updates on Startup" Margin="5,355,0,0" OnLabel="Yes" OffLabel="No"
+                <Controls:ToggleSwitch Header="Check for Updates on Startup" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Keep searching while switching library -->
-                <Controls:ToggleSwitch Header="Keep searching on library change" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No"
+                <Controls:ToggleSwitch Header="Keep searching on library change" Margin="5,455,0,0" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
