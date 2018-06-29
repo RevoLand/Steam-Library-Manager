@@ -4,10 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.11] - 2018-06-29
+
+### Added
+
+- CompressionLevel setting for Compressing apps.
+- Suggestion Form button to get feedback for future of SLM.
+
+### Changed
+
+- Handling of PathTooLongException in CopyFilesAsync (*The specified path, file name, or both are too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.*)
+- Handling of UnauthorizedAccessException in SteamLibrary.AddNew (*Отказано в доступе по пути "H:\Program Files (x86)\Steam.dll".*)
+- Handling of FileNotFoundException in CopyFilesAsync while compressing files. (*Could not find file 'J:\SteamLibrary\SteamApps\common\Commandos 3 Destination Berlin\Legacy\Data2.PCK'.*)
+
 ### Fixed
 
 - InvalidOperationException in LibraryGrid_Drop
-- KeyNotFoundException (#22)
+- KeyNotFoundException (#22 - *The given key was not present in the dictionary.*)
+- FileNotFoundException in AddSteamApp (*Could not find file 'S:\Game\Steam\SteamBackup\SteamApps\586200.zip'.*)
+- IOException in CopyFilesAsync (*The process cannot access the file 'E:\SteamArchive\SteamApps\378540.zip' because it is being used by another process.*)
+- InvalidOperationException in UpdateAppList (*Collection was modified; enumeration operation may not execute.*)
+- DivideByZeroException in CopyFilesAsync function. (*Attempted to divide by zero.*)
+- ArgumentNullException in SteamAppInfo.GetFileList function (*Value cannot be null. Parameter name: collection*)
+- Custom Theme options also changes the current theme.
+- IOException (*The process cannot access the file 'C:\Users\revoland\Downloads\.slmcache\CustomTheme.xaml' because it is being used by another process.*)
+- NullReferenceException in TaskManager_ContextMenu_Click (*Object reference not set to an instance of an object.*)
 
 ## [1.5.0.10] - 2018-06-03
 

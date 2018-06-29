@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Definitions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public Library Library => List.Libraries.First(x => x.Steam == this);
+        public Library Library => List.Libraries.ToList().First(x => x.Steam == this);
 
         public bool IsMain { get; set; }
 
@@ -117,12 +117,9 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
 
-                if (SLM.CurrentSelectedLibrary != null)
+                if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == Library)
                 {
-                    if (SLM.CurrentSelectedLibrary == Library)
-                    {
-                        Functions.App.UpdateAppPanel(Library);
-                    }
+                    Functions.App.UpdateAppPanel(Library);
                 }
             }
             catch (UnauthorizedAccessException uaex)
@@ -152,7 +149,7 @@ namespace Steam_Library_Manager.Definitions
             var CMenu = new List<FrameworkElement>();
             try
             {
-                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
+                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.ToList().Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
                 {
                     if (!CMenuItem.ShowToNormal)
                     {

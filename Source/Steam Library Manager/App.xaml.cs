@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Steam_Library_Manager
@@ -21,6 +22,20 @@ namespace Steam_Library_Manager
                 }
                 else
                 {
+                    var tryCount = 0;
+                    while (fileName.IsFileLocked())
+                    {
+                        tryCount++;
+                        Task.Delay(1000);
+
+                        if (tryCount > 5)
+                        {
+                            base.OnStartup(e);
+                            MessageBox.Show("CustomTheme.xaml is locked/not accessible. Skipping the custom theme loading.");
+                            break;
+                        }
+                    }
+
                     ThemeManager.AddAppTheme("CustomTheme", new Uri(fileName, UriKind.Absolute));
                 }
 
@@ -29,6 +44,11 @@ namespace Steam_Library_Manager
                                             ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
 
                 base.OnStartup(e);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                base.OnStartup(e);
+                MessageBox.Show(ex.ToString());
             }
             catch (Exception ex)
             {
@@ -59,6 +79,7 @@ namespace Steam_Library_Manager
                 }
 
                 ThemeManager.AddAppTheme(ThemeName.Replace(".xaml", ""), new Uri(fileName.FullName, UriKind.Absolute));
+                ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(Steam_Library_Manager.Properties.Settings.Default.ThemeAccent), ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
             }
             catch (Exception ex)
             {

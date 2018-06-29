@@ -378,6 +378,15 @@ namespace Steam_Library_Manager.Functions
                     // Save our settings
                     SLM.Settings.SaveSettings();
                 }
+                catch (UnauthorizedAccessException ex)
+                {
+                    await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                     {
+                         await Main.FormAccessor.ShowMessageAsync("Unable to copy Steam.dll?", $"An error releated to file system is happened while creating a new library.\n\nError: {ex.Message}.\n\nThe error is releated to file system permissions. Try running SLM as administrator or take the target folder permissions for your user.", MessageDialogStyle.AffirmativeAndNegative);
+                     }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                    logger.Fatal(ex);
+                }
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);

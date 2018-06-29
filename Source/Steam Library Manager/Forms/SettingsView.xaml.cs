@@ -3,6 +3,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -78,20 +79,20 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                Tuple<AppTheme, Accent> Style = ThemeManager.DetectAppStyle();
+                var Style = ThemeManager.AppThemes.FirstOrDefault(x => x.Name == "CustomTheme");
 
                 switch (Key)
                 {
                     case "TextBrush":
-                        Style.Item1.Resources["BlackBrush"] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["LabelTextBrush"] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["TextBrush"] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["ControlTextBrush"] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["MenuTextBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["BlackBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["LabelTextBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["TextBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["ControlTextBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["MenuTextBrush"] = GetSolidColorBrush(value);
                         break;
 
                     case "GrayNormalBrush":
-                        Style.Item1.Resources["GrayNormalBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["GrayNormalBrush"] = GetSolidColorBrush(value);
                         break;
 
                     case "WhiteBrush":
@@ -103,21 +104,29 @@ namespace Steam_Library_Manager.Forms
                     case "GrayBrush7":
                     case "GrayBrush8":
                     case "GrayBrush10":
-                        Style.Item1.Resources[Key] = GetSolidColorBrush(value);
+                        Style.Resources[Key] = GetSolidColorBrush(value);
                         break;
 
                     case "MenuItemBackgroundBrush":
-                        Style.Item1.Resources[Key] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["ContextMenuBackgroundBrush"] = GetSolidColorBrush(value);
-                        Style.Item1.Resources["Gray7"] = value;
+                        Style.Resources[Key] = GetSolidColorBrush(value);
+                        Style.Resources["ContextMenuBackgroundBrush"] = GetSolidColorBrush(value);
+                        Style.Resources["Gray7"] = value;
                         break;
                 }
 
-                App.CreateThemeFrom("CustomTheme.xaml", Style.Item1.Resources);
+                /*
+                if (Path.Combine(Definitions.Directories.SLM.Cache, "CustomTheme").IsFileLocked())
+                {
+                    Debug.WriteLine("CustomTheme.xaml file is not accessible atm. Can't save the style!?");
+                    return;
+                }
+                */
+
+                App.CreateThemeFrom("CustomTheme.xaml", Style.Resources);
 
                 if (Properties.Settings.Default.BaseTheme == "CustomTheme")
                 {
-                    ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Properties.Settings.Default.ThemeAccent), Style.Item1);
+                    ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Properties.Settings.Default.ThemeAccent), Style);
                 }
             }
             catch (Exception ex)

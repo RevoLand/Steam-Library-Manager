@@ -155,7 +155,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder)).AvailableFreeSpace;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.AvailableFreeSpace ?? 0;
             }
             catch (ArgumentException ae)
             {
@@ -178,7 +178,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder)).TotalSize;
+                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.TotalSize ?? 0;
             }
             catch (ArgumentException ae)
             {

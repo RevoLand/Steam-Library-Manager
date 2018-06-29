@@ -139,14 +139,32 @@ namespace Steam_Library_Manager
 
         private void RightWindowCommands_PatreonButton_Click(object sender, RoutedEventArgs e)
         {
-            // hack because of this: https://github.com/dotnet/corefx/issues/10361
-            Process.Start(new ProcessStartInfo("cmd", $"/c start https://www.patreon.com/revoland") { CreateNoWindow = true });
+            try
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://www.patreon.com/revoland") { CreateNoWindow = true });
+            }
+            catch { }
         }
 
         private void RightWindowCommands_DiscordButton_Click(object sender, RoutedEventArgs e)
         {
-            // hack because of this: https://github.com/dotnet/corefx/issues/10361
-            Process.Start(new ProcessStartInfo("cmd", $"/c start https://discordapp.com/invite/Rwvs9Ng") { CreateNoWindow = true });
+            try
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://discordapp.com/invite/Rwvs9Ng") { CreateNoWindow = true });
+            }
+            catch { }
+        }
+
+        private void RightWindowCommands_SuggestionFormButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://goo.gl/forms/Bu1o0ETFdUWF5ZNJ3") { CreateNoWindow = true });
+            }
+            catch { }
         }
     }
 }

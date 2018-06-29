@@ -65,8 +65,10 @@ namespace Steam_Library_Manager.Functions
                     }
                     else
                     {
+                        App.CompressedArchiveName.Refresh();
+
                         // And set archive size as game size
-                        App.SizeOnDisk = App.CompressedArchiveName.Length;
+                        App.SizeOnDisk = App.CompressedArchiveName?.Length ?? 0;
                     }
                 }
                 else

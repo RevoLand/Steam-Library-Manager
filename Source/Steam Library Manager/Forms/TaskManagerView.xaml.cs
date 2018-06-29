@@ -78,18 +78,17 @@ namespace Steam_Library_Manager.Forms
             {
                 switch ((sender as MenuItem)?.Tag)
                 {
-                    case "Remove":
                     default:
                         if (TaskPanel.SelectedItems.Count == 0)
                         {
                             return;
                         }
 
-                        foreach (Definitions.List.TaskInfo CurrentTask in TaskPanel.SelectedItems.OfType<Definitions.List.TaskInfo>().ToList())
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
                         {
                             if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
                             }
                             else
                             {
@@ -101,6 +100,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }

@@ -170,20 +170,36 @@ namespace Steam_Library_Manager.Definitions
 
                     if (CommonFolder.Exists)
                     {
-                        FileList.AddRange(GetCommonFiles());
+                        var commonFiles = GetCommonFiles();
+
+                        if (commonFiles != null)
+                        {
+                            FileList.AddRange(commonFiles);
+                        }
                     }
 
                     DownloadFolder.Refresh();
                     if (includeDownloads && DownloadFolder.Exists)
                     {
-                        FileList.AddRange(GetDownloadFiles());
-                        FileList.AddRange(GetPatchFiles());
+                        var downloadFiles = GetDownloadFiles();
+                        var patchFiles = GetPatchFiles();
+
+                        if (downloadFiles != null)
+                        {
+                            FileList.AddRange(downloadFiles);
+                        }
+
+                        if (patchFiles != null)
+                        {
+                            FileList.AddRange(patchFiles);
+                        }
                     }
 
                     WorkShopPath.Refresh();
                     if (includeWorkshop && WorkShopPath.Exists)
                     {
-                        FileList.AddRange(GetWorkshopFiles());
+                        var workshopPath = GetWorkshopFiles();
+                        FileList.AddRange(workshopPath);
                     }
 
                     FullAcfPath.Refresh();
@@ -261,34 +277,61 @@ namespace Steam_Library_Manager.Definitions
 
                     if (CompressedArchive.Exists)
                     {
+                        while (CompressedArchive.IsFileLocked())
+                        {
+                            logger.Info($"{CompressedArchive.FullName} is in use. Delaying the task until archive gets free.");
+                            await Task.Delay(1000);
+                        }
+
                         CompressedArchive.Delete();
                     }
 
                     using (ZipArchive Archive = ZipFile.Open(CompressedArchive.FullName, ZipArchiveMode.Create))
                     {
-                        CopiedFiles.Add(CompressedArchive.FullName);
-
-                        foreach (FileSystemInfo currentFile in AppFiles)
+                        try
                         {
-                            CurrentTask.mre.WaitOne();
+                            CopiedFiles.Add(CompressedArchive.FullName);
 
-                            string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
-
-                            CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
-                            Archive.CreateEntryFromFile(currentFile.FullName, FileNameInArchive, Properties.Settings.Default.CompressionLevel.ParseEnum<CompressionLevel>());
-                            CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;
-
-                            if (CurrentTask.ReportFileMovement)
+                            foreach (FileSystemInfo currentFile in AppFiles)
                             {
-                                LogToTM($"[{AppName}] Compressed file: {FileNameInArchive}");
-                            }
+                                CurrentTask.mre.WaitOne();
 
-                            logger.Info("Compressed file: {0}", FileNameInArchive);
+                                string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
-                            if (cancellationToken.IsCancellationRequested)
-                            {
-                                throw new OperationCanceledException(cancellationToken);
+                                CurrentTask.TaskStatusInfo = $"Compressing: {currentFile.Name} ({Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length)})";
+                                Archive.CreateEntryFromFile(currentFile.FullName, FileNameInArchive, Properties.Settings.Default.CompressionLevel.ParseEnum<CompressionLevel>());
+                                CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;
+
+                                if (CurrentTask.ReportFileMovement)
+                                {
+                                    LogToTM($"[{AppName}] Compressed file: {FileNameInArchive}");
+                                }
+
+                                logger.Info("Compressed file: {0}", FileNameInArchive);
+
+                                if (cancellationToken.IsCancellationRequested)
+                                {
+                                    throw new OperationCanceledException(cancellationToken);
+                                }
                             }
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            CurrentTask.ErrorHappened = true;
+                            Framework.TaskManager.Stop();
+                            CurrentTask.Active = false;
+                            CurrentTask.Completed = true;
+
+                            await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                             {
+                                 if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while compressing files.\n\nError: {ex.Message}.\n\nWould you like to remove archive file that is generated by SLM?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                                 {
+                                     Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                                 }
+                             }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while compressing files. Error: {ex.Message}.");
+                            logger.Fatal(ex);
                         }
                     }
                 }
@@ -386,6 +429,24 @@ namespace Steam_Library_Manager.Definitions
 
                             logger.Info("File moved: {0}", NewFile.FullName);
                         }
+                        catch (PathTooLongException ex)
+                        {
+                            CurrentTask.ErrorHappened = true;
+                            Framework.TaskManager.Stop();
+                            CurrentTask.Active = false;
+                            CurrentTask.Completed = true;
+
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                            {
+                                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] PathTooLongException happened while copying files. Nothing can be made by SLM in this error.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                                {
+                                    Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                                }
+                            }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                            logger.Fatal(ex);
+                        }
                         catch (IOException ex)
                         {
                             CurrentTask.ErrorHappened = true;
@@ -474,6 +535,24 @@ namespace Steam_Library_Manager.Definitions
 
                             logger.Info("File moved: {0}", NewFile.FullName);
                         }
+                        catch (PathTooLongException ex)
+                        {
+                            CurrentTask.ErrorHappened = true;
+                            Framework.TaskManager.Stop();
+                            CurrentTask.Active = false;
+                            CurrentTask.Completed = true;
+
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                            {
+                                if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] PathTooLongException happened while copying files. Nothing can be made by SLM in this error.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                                {
+                                    Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
+                                }
+                            }, System.Windows.Threading.DispatcherPriority.Normal);
+
+                            Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                            logger.Fatal(ex);
+                        }
                         catch (IOException ex)
                         {
                             CurrentTask.ErrorHappened = true;
@@ -510,8 +589,8 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.ElapsedTime.Stop();
                 CurrentTask.MovedFileSize = TotalFileSize;
 
-                LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
-                logger.Info("Movement completed in {0} with Average Speed of {1} MB/sec - Average file size: {2}", CurrentTask.ElapsedTime.Elapsed, Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount));
+                LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
+                logger.Info("Movement completed in {0} with Average Speed of {1} MB/sec - Average file size: {2}", CurrentTask.ElapsedTime.Elapsed, GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount));
             }
             catch (OperationCanceledException)
             {
@@ -552,6 +631,19 @@ namespace Steam_Library_Manager.Definitions
                 Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
                 logger.Fatal(ex);
                 await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
+            }
+        }
+
+        private double GetElapsedTimeAverage(long FileSize, double ElapsedTime)
+        {
+            try
+            {
+                return Math.Round(FileSize / 1024f / 1024f / ElapsedTime, 3);
+            }
+            catch (Exception ex)
+            {
+                logger.Warn(ex, "Exception happened in function: GetElapsedTimeAverage");
+                return 0;
             }
         }
 

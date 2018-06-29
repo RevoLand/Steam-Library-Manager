@@ -15,6 +15,7 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Content="Suggestion Form" Click="RightWindowCommands_SuggestionFormButton_Click" />
             <Button Content="Patreon" Click="RightWindowCommands_PatreonButton_Click" />
             <Button Content="Discord" Click="RightWindowCommands_DiscordButton_Click" />
             <!--<Button Content="Settings" Click="RightWindowCommands_SettingsButton_Click" />-->
