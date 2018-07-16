@@ -76,7 +76,7 @@ namespace Steam_Library_Manager.Definitions
                                 _TouchupFile: xml.Root.Element("touchup")?.Element("filePath")?.Value, _InstallationParameter: xml.Root.Element("touchup")?.Element("parameters")?.Value,
                                 _UpdateParameter: xml.Root.Element("touchup")?.Element("updateParameters")?.Value, _RepairParameter: xml.Root.Element("touchup")?.Element("repairParameters")?.Value));
                         }
-                        else if (ManifestVersion == new Version("2.1") || ManifestVersion == new Version("1.1"))
+                        else if (ManifestVersion >= new Version("1.1") && ManifestVersion <= new Version("3.0"))
                         {
                             List<string> _locales = new List<string>();
                             foreach (var _locale in xml.Root.Element("metadata")?.Elements("localeInfo")?.Attributes()?.Where(x => x.Name == "locale"))
@@ -97,7 +97,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion} - {OriginApp}");
                         }
-                    }
+                    } // foreach
                 }
                 else
                 {
