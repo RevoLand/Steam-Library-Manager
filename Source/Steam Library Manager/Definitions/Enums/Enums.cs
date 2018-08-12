@@ -73,7 +73,8 @@ namespace Steam_Library_Manager.Definitions.Enums
     public enum TaskType
     {
         Copy,
-        Delete
+        Delete,
+        Compress
     }
 
     public enum ThemeAccents

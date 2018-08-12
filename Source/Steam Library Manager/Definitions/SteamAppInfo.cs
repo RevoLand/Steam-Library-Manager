@@ -55,11 +55,11 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
                     {
-                        if (IsCompressed && !cItem.ShowToCompressed)
+                        if (IsCompressed && cItem.ShowToCompressed)
                         {
                             continue;
                         }
-                        else if (!cItem.ShowToNormal)
+                        else if (IsSteamBackup && !cItem.ShowToSteamBackup)
                         {
                             continue;
                         }
@@ -109,6 +109,18 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
+                        break;
+
+                    case "compress":
+                        if (Framework.TaskManager.TaskList.ToList().Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
+                        {
+                            Framework.TaskManager.AddTask(new List.TaskInfo
+                            {
+                                SteamApp = this,
+                                TargetLibrary = Library,
+                                TaskType = Enums.TaskType.Compress
+                            });
+                        }
                         break;
 
                     case "disk":
@@ -271,9 +283,9 @@ namespace Steam_Library_Manager.Definitions
                 logger.Info("File list populated, total files to move: {0} - total size to move: {1}", AppFiles.Count, Functions.FileSystem.FormatBytes(TotalFileSize));
 
                 // If the game is not compressed and user would like to compress it
-                if (!IsCompressed && CurrentTask.Compress)
+                if (!IsCompressed && (CurrentTask.Compress || CurrentTask.TaskType == Enums.TaskType.Compress))
                 {
-                    FileInfo CompressedArchive = new FileInfo(CompressedArchiveName.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
+                    FileInfo CompressedArchive = (CurrentTask.TaskType == Enums.TaskType.Compress) ? CompressedArchiveName : new FileInfo(CompressedArchiveName.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
 
                     if (CompressedArchive.Exists)
                     {
@@ -336,13 +348,13 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
                 // If the game is compressed and user would like to decompress it
-                else if (IsCompressed && !CurrentTask.Compress)
+                else if (IsCompressed && (!CurrentTask.Compress || CurrentTask.TaskType == Enums.TaskType.Compress))
                 {
                     foreach (ZipArchiveEntry CurrentFile in ZipFile.OpenRead(CompressedArchiveName.FullName).Entries)
                     {
                         CurrentTask.mre.WaitOne();
 
-                        FileInfo NewFile = new FileInfo(Path.Combine(CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName, CurrentFile.FullName));
+                        FileInfo NewFile = new FileInfo(Path.Combine((CurrentTask.TaskType == Enums.TaskType.Compress) ? CurrentTask.SteamApp.Library.Steam.SteamAppsFolder.FullName : CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName, CurrentFile.FullName));
 
                         if (!NewFile.Directory.Exists)
                         {

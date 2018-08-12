@@ -132,6 +132,7 @@ namespace Steam_Library_Manager.Functions
                 Action = "steam://run/{0}",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
+                ShowToSteamBackup = false,
                 ShowToCompressed = false
             });
 
@@ -140,7 +141,27 @@ namespace Steam_Library_Manager.Functions
             {
                 ShowToCompressed = false,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
-                IsSeparator = true
+                IsSeparator = true,
+                ShowToSteamBackup = false
+            });
+
+            // Compress
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "(De)Compress",
+                Action = "Compress",
+                LibraryType = Definitions.Enums.LibraryType.Steam,
+                ShowToCompressed = false,
+                ShowToSteamBackup = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
+            });
+            // Separator
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                ShowToCompressed = false,
+                LibraryType = Definitions.Enums.LibraryType.Steam,
+                IsSeparator = true,
+                ShowToSteamBackup = false
             });
 
             // Show on disk
@@ -149,6 +170,7 @@ namespace Steam_Library_Manager.Functions
                 Header = "{0} ({1})",
                 Action = "Disk",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
+                ShowToCompressed = true,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
             });
 

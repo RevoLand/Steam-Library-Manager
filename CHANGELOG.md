@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.12] - 2018-08-12
+
+### Added
+
+- Compress/Decompress within the same library.
+- Support for Origin manifest file version 3.0
+
 ## [1.5.0.11] - 2018-06-29
 
 ### Added
