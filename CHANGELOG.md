@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.13] - 2018-12-25
+
+### Added
+
+-  [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) to use for file copying.
+
+### Fixed
+
+- [Issue #20: Transfer speed over a 10Gig network caps out at 600mb/s](https://github.com/RevoLand/Steam-Library-Manager/issues/20)
+
 ## [1.5.0.12] - 2018-08-12
 
 ### Added

@@ -1,1 +1,1 @@
-1.5.0.12|Compress/Decompress within the same library.
+1.5.0.13|Movement speed improvements

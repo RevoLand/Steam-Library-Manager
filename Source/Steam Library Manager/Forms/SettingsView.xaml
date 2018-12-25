@@ -13,18 +13,18 @@
         <GroupBox x:Name="GeneralSettingsGroupBox" Header="General Settings" Margin="0,5,360,5">
             <Grid>
                 <!-- Application sorting method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="Sort applications by" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                <ComboBox Controls:TextBoxHelper.Watermark="Sort games by" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       Margin="5,5,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}" />
 
                 <!-- Application size calculation method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="Get application size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                <ComboBox Controls:TextBoxHelper.Watermark="Calculation method for games" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       Margin="5,55,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}" />
 
                 <!-- Archive size calculation method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="Get compressed archive size from" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                <ComboBox Controls:TextBoxHelper.Watermark="Calculation method for archive size" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       Margin="5,105,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}" />
@@ -36,7 +36,7 @@
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:CompressionLevel}}" />
 
                 <!-- File size to start move synchronously (MB) -->
-                <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously after" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Move files synchronously if bigger than" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
                                                     Margin="5,205,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
                                                     Value="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StringFormat="{}{0:N0} MB" />
 
@@ -64,23 +64,23 @@
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Button: Open Log Folder -->
-                <Button Content="Open Log Folder" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Width="280" Height="40" HorizontalAlignment="Left" />
+                <Button Content="Open Log Folder" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Height="40" />
 
                 <!-- Button: Check for Updates -->
-                <Button Content="Check for Updates" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Width="280" Height="40" HorizontalAlignment="Left" />
+                <Button Content="Check for Updates" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40" />
 
                 <!-- Button: Clear image cache-->
-                <Button Content="Clear header image cache" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Width="280" Height="40" HorizontalAlignment="Left" />
+                <Button Content="Clear header image cache" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40" />
 
                 <!-- Donate Button -->
-                <Button Content="Donate" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Width="280" Height="40" HorizontalAlignment="Left" />
+                <Button Content="Donate" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Height="40" />
 
                 <GroupBox Header="Custom Theme" Margin="255,205,0,0">
                     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <UniformGrid Rows="2">
                                 <Label Content="Text Color:" />
-                                <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
                             </UniformGrid>
                             <UniformGrid Rows="2">
                                 <Label Content="TabItem Text Color" />

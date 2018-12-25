@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using FileCopyLib;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -384,9 +385,21 @@ namespace Steam_Library_Manager.Definitions
                 // Everything else
                 else
                 {
+                    // Create directories
+                    Parallel.ForEach(AppFiles, POptions, CurrentFile =>
+                    {
+                        var NewFile = new FileInfo(CurrentFile.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, CurrentTask.TargetLibrary.Steam.SteamAppsFolder.FullName));
+
+                        if (!NewFile.Directory.Exists)
+                        {
+                            NewFile.Directory.Create();
+                            CreatedDirectories.Add(NewFile.Directory.FullName);
+                        }
+                    });
+                    void CopyProgressCallback(FileProgress s) { OnFileProgress(s); }
                     POptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, CurrentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), POptions, CurrentFile =>
                     {
                         try
                         {
@@ -394,38 +407,11 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
                             {
-                                if (!NewFile.Directory.Exists)
-                                {
-                                    NewFile.Directory.Create();
-                                    CreatedDirectories.Add(NewFile.Directory.FullName);
-                                }
-
-                                int currentBlockSize = 0;
-                                byte[] FSBuffer = new byte[4096];
-
-                                using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                                {
-                                    using (FileStream NewFileContent = NewFile.OpenWrite())
-                                    {
-                                        CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
-
-                                        while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
-                                        {
-                                            if (cancellationToken.IsCancellationRequested)
-                                                throw (new OperationCanceledException(cancellationToken));
-
-                                            CurrentTask.mre.WaitOne();
-
-                                            NewFileContent.Write(FSBuffer, 0, currentBlockSize);
-
-                                            CurrentTask.MovedFileSize += currentBlockSize;
-                                        }
-                                    }
-
-                                    NewFile.LastWriteTime = CurrentFile.LastWriteTime;
-                                    NewFile.LastAccessTime = CurrentFile.LastAccessTime;
-                                    NewFile.CreationTime = CurrentFile.CreationTime;
-                                }
+                                FileCopier.CopyWithProgress(CurrentFile.FullName, NewFile.FullName, CopyProgressCallback);
+                                CurrentTask.MovedFileSize += CurrentFile.Length;
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
                             }
                             else
                             {
@@ -440,6 +426,10 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             logger.Info("File moved: {0}", NewFile.FullName);
+                        }
+                        catch (System.ComponentModel.Win32Exception)
+                        {
+                            throw new OperationCanceledException(cancellationToken);
                         }
                         catch (PathTooLongException ex)
                         {
@@ -493,7 +483,7 @@ namespace Steam_Library_Manager.Definitions
 
                     POptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
 
-                    Parallel.ForEach(AppFiles.Where(x => (x).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderByDescending(x => (x).Length), POptions, CurrentFile =>
+                    Parallel.ForEach(AppFiles.Where(x => (x).Length <= Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), POptions, CurrentFile =>
                     {
                         try
                         {
@@ -506,32 +496,12 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!NewFile.Exists || (NewFile.Length != CurrentFile.Length || NewFile.LastWriteTime != CurrentFile.LastWriteTime))
                             {
-                                CurrentTask.TaskStatusInfo = $"Copying: {CurrentFile.Name} ({Functions.FileSystem.FormatBytes(CurrentFile.Length)})";
+                                FileCopier.CopyWithProgress(CurrentFile.FullName, NewFile.FullName, CopyProgressCallback);
+                                CurrentTask.MovedFileSize += CurrentFile.Length;
 
-                                if (!NewFile.Directory.Exists)
-                                {
-                                    NewFile.Directory.Create();
-                                    CreatedDirectories.Add(NewFile.Directory.FullName);
-                                }
-
-                                int currentBlockSize = 0;
-                                byte[] FSBuffer = new byte[4096];
-                                using (FileStream CurrentFileContent = CurrentFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                                {
-                                    using (FileStream NewFileContent = NewFile.Create())
-                                    {
-                                        while ((currentBlockSize = CurrentFileContent.Read(FSBuffer, 0, FSBuffer.Length)) > 0)
-                                        {
-                                            NewFileContent.Write(FSBuffer, 0, currentBlockSize);
-
-                                            CurrentTask.MovedFileSize += currentBlockSize;
-                                        }
-                                    }
-
-                                    NewFile.LastWriteTime = CurrentFile.LastWriteTime;
-                                    NewFile.LastAccessTime = CurrentFile.LastAccessTime;
-                                    NewFile.CreationTime = CurrentFile.CreationTime;
-                                }
+                                NewFile.LastWriteTime = CurrentFile.LastWriteTime;
+                                NewFile.LastAccessTime = CurrentFile.LastAccessTime;
+                                NewFile.CreationTime = CurrentFile.CreationTime;
                             }
                             else
                             {
@@ -546,6 +516,10 @@ namespace Steam_Library_Manager.Definitions
                             }
 
                             logger.Info("File moved: {0}", NewFile.FullName);
+                        }
+                        catch (System.ComponentModel.Win32Exception)
+                        {
+                            throw new OperationCanceledException(cancellationToken);
                         }
                         catch (PathTooLongException ex)
                         {
@@ -644,6 +618,16 @@ namespace Steam_Library_Manager.Definitions
                 logger.Fatal(ex);
                 await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
+        }
+
+        private void OnFileProgress(FileProgress s)
+        {
+            Framework.TaskManager.ActiveTask.mre.WaitOne();
+
+            if (Framework.TaskManager.CancellationToken.IsCancellationRequested)
+                throw (new OperationCanceledException(Framework.TaskManager.CancellationToken.Token));
+
+            Framework.TaskManager.ActiveTask.TaskStatusInfo = $"Copying file: {s.Percentage.ToString("0.00")}%";
         }
 
         private double GetElapsedTimeAverage(long FileSize, double ElapsedTime)

@@ -108,8 +108,6 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void RightWindowCommands_SettingsButton_Click(object sender, RoutedEventArgs e) => TabItem_Settings.IsSelected = true;
-
         private void AppSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
         //private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
@@ -137,12 +135,12 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void RightWindowCommands_PatreonButton_Click(object sender, RoutedEventArgs e)
+        private void RightWindowCommands_DonateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                Process.Start(new ProcessStartInfo("cmd", $"/c start https://www.patreon.com/revoland") { CreateNoWindow = true });
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/RevoLand/Steam-Library-Manager/wiki/Donations") { CreateNoWindow = true });
             }
             catch { }
         }

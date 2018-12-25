@@ -10,3 +10,4 @@ Binaries/.slmcache/*
 Source/*.vs/
 Source/packages/*
 Source/Steam Library Manager/obj/*
+.csproj.user
