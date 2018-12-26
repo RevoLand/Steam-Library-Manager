@@ -163,7 +163,7 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
                         <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
@@ -270,7 +270,7 @@
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding OriginApp.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
-                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
+                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,0">
                         <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
 
                         <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
@@ -316,6 +316,20 @@
                                 </Style>
                             </Grid.Style>
                             <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                        </Grid>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <ComboBox HorizontalAlignment="Left" Height="15"
+                                      Margin="455,0,0,0" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding OriginApp.Locales}" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -370,8 +384,8 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,1,0,0" TextWrapping="Wrap" />
-                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
+                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
+                    <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
                         <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
 
@@ -417,6 +431,10 @@
                             </Grid.Style>
                             <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
+
+                        <ComboBox HorizontalAlignment="Left" Height="15"
+                                      Margin="460,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding OriginApp.Locales}" />
                     </Grid>
                 </Grid>
             </Grid>

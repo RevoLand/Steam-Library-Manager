@@ -57,7 +57,7 @@ namespace Steam_Library_Manager.Functions
                                 WindowStyle = ProcessWindowStyle.Hidden,
 
                                 // Set CMD arguments
-                                Arguments = $"/C ping 1.1.1.1 -n 1 -w 2000 > nul & move /y LatestVersionSLM.exe \"{AppDomain.CurrentDomain.FriendlyName}\" & msg %username% \"SLM is successfully updated(?)\""
+                                Arguments = $"/C ping 1.1.1.1 -n 1 -w 3000 > nul & move /y LatestVersionSLM.exe \"{AppDomain.CurrentDomain.FriendlyName}\" & msg %username% \"SLM is successfully updated(?)\""
                             }
                         };
 
