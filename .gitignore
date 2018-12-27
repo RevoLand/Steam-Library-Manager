@@ -2,6 +2,7 @@ Binaries/*.settings
 Binaries/*.config
 Binaries/*.dll
 Binaries/*.xml
+!Binaries/Version.xml
 Binaries/*.pdb
 Binaries/*vshost*
 Binaries/Logs/*
