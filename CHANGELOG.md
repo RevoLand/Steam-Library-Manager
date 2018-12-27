@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0.14] - 2018-12-27
+
+### Added
+
+- [AutoUpdater.NET](https://github.com/ravibpatel/AutoUpdater.NET) to use for updating.
+- Locale selection for Origin game installation from available locales.
+
+### Removed
+
+- Self coded auto-updater mechanism.
+
 ## [1.5.0.13] - 2018-12-25
 
 ### Added

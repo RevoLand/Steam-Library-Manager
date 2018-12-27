@@ -41,7 +41,7 @@ namespace Steam_Library_Manager
         {
             try
             {
-                Definitions.SLM.RavenClient.Release = Definitions.Updater.CurrentVersion.ToString();
+                Definitions.SLM.RavenClient.Release = System.Windows.Forms.Application.ProductVersion;
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 

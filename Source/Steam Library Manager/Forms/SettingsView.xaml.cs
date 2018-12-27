@@ -20,7 +20,7 @@ namespace Steam_Library_Manager.Forms
             InitializeComponent();
         }
 
-        private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates(true);
+        private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates();
 
         private void ViewLogsButton(object sender, RoutedEventArgs e)
         {

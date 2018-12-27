@@ -101,7 +101,7 @@ namespace Steam_Library_Manager.Functions
             {
                 if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
                 {
-                    Updater.CheckForUpdates();
+                    AutoUpdaterDotNET.AutoUpdater.Start(Definitions.Updater.VersionControlURL);
                 }
 
                 LoadSteam();
