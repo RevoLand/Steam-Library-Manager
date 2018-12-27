@@ -41,7 +41,9 @@ namespace Steam_Library_Manager
         {
             try
             {
+                System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)3072;
                 Definitions.SLM.RavenClient.Release = System.Windows.Forms.Application.ProductVersion;
+
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 
@@ -57,6 +59,7 @@ namespace Steam_Library_Manager
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
+            AutoUpdaterDotNET.AutoUpdater.ReportErrors = true;
             Functions.SLM.OnLoad();
 
             SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();

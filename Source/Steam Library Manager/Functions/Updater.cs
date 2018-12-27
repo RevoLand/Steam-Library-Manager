@@ -6,8 +6,12 @@ namespace Steam_Library_Manager.Functions
     {
         public static void CheckForUpdates()
         {
-            AutoUpdater.Start(Definitions.Updater.VersionControlURL);
-            AutoUpdater.ShowUpdateForm();
+            try
+            {
+                AutoUpdater.Start(Definitions.Updater.VersionControlURL, System.Windows.Application.ResourceAssembly);
+                AutoUpdater.ShowUpdateForm();
+            }
+            catch { }
         }
     }
 }
