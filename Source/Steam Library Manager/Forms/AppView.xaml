@@ -3,8 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -38,13 +40,13 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <!--<DataTrigger Binding="{Binding Library.Type}" Value="SLM">
-                                            <Setter Property="Text" Value="SLM" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_SLM}" />
                                         </DataTrigger>-->
                                         <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
-                                            <Setter Property="Text" Value="Steam" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
-                                            <Setter Property="Text" Value="Compressed" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_Compressed}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -77,10 +79,10 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
-                                        <Setter Property="Text" Value="Steam" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsCompressed}" Value="true">
-                                        <Setter Property="Text" Value="Compressed" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_Compressed}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

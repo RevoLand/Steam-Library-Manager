@@ -127,4 +127,230 @@
   <data name="no_image_available" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
+    <value>Sort games by</value>
+  </data>
+  <data name="Forms_Settings_GameListMethod" xml:space="preserve">
+    <value>Game listing method</value>
+  </data>
+  <data name="Forms_Main_TabHeader_Library" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
+    <value>Task Manager</value>
+  </data>
+  <data name="Forms_Main_TabHeader_LibraryCleaner" xml:space="preserve">
+    <value>Library Cleaner</value>
+  </data>
+  <data name="Forms_Main_TabHeader_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Forms_Main_SuggestionForm" xml:space="preserve">
+    <value>Suggestion Form</value>
+  </data>
+  <data name="Forms_Main_Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="Forms_Main_Discord" xml:space="preserve">
+    <value>Discord</value>
+  </data>
+  <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
+    <value>Search in selected library</value>
+  </data>
+  <data name="Forms_Steam" xml:space="preserve">
+    <value>Steam</value>
+    
+  </data>
+  <data name="Forms_Compressed" xml:space="preserve">
+    <value>Compressed</value>
+  </data>
+  <data name="Forms_SLM" xml:space="preserve">
+    <value>SLM</value>
+  </data>
+  <data name="Forms_AppView_LastUpdate" xml:space="preserve">
+    <value>Updated on: {0}</value>
+  </data>
+  <data name="Forms_Origin" xml:space="preserve">
+    <value>Origin</value>
+  </data>
+  <data name="Forms_LibraryView_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Forms_LibraryView_CreateLibrary" xml:space="preserve">
+    <value>Create Library</value>
+  </data>
+  <data name="Forms_LibraryView_AppCount" xml:space="preserve">
+    <value>App(s): {0}</value>
+    <comment>Apps.Count</comment>
+  </data>
+  <data name="Forms_TaskManager_RemoveFromQueue" xml:space="preserve">
+    <value>Remove selected Game(s) from Queue</value>
+  </data>
+  <data name="Forms_TaskManager_Completed" xml:space="preserve">
+    <value>COMPLETED</value>
+  </data>
+  <data name="Forms_TaskManager_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Forms_TaskManager_ProgressBarPerc" xml:space="preserve">
+    <value>{0}%</value>
+    <comment>ProgressBarPerc</comment>
+  </data>
+  <data name="Forms_TaskManager_TargetLibrary" xml:space="preserve">
+    <value>Target: {0}</value>
+    <comment>TargetLibrary.FullPath</comment>
+  </data>
+  <data name="Forms_TaskManager_ReportFileMovement" xml:space="preserve">
+    <value>Report File Movement</value>
+  </data>
+  <data name="Forms_TaskManager_RemoveFiles" xml:space="preserve">
+    <value>Remove Original Files</value>
+  </data>
+  <data name="Forms_TaskManager_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="Forms_TaskManager_AutoInstall" xml:space="preserve">
+    <value>Auto Install</value>
+  </data>
+  <data name="Forms_TaskManager_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Forms_TaskManager_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Forms_TaskManager_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Forms_TaskManager_ClearCompletedTasks" xml:space="preserve">
+    <value>Clear Completed Tasks</value>
+  </data>
+  <data name="Forms_TaskManager_CheckForBackupUpdates" xml:space="preserve">
+    <value>Check for Backup Updates</value>
+  </data>
+  <data name="Forms_LibraryCleaner_Open" xml:space="preserve">
+    <value>Open in Explorer</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteSelectedFolders" xml:space="preserve">
+    <value>Delete selected Folder(s)</value>
+  </data>
+  <data name="Forms_LibraryCleaner_LastWriteTime" xml:space="preserve">
+    <value>Last Write Time: {0}</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteAll" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
+  <data name="Forms_LibraryCleaner_MoveAll" xml:space="preserve">
+    <value>Move All</value>
+  </data>
+  <data name="Forms_LibraryCleaner_RefreshList" xml:space="preserve">
+    <value>Refresh List</value>
+  </data>
+  <data name="Forms_Settings_GeneralSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
+    <value>Calculation method for games</value>
+  </data>
+  <data name="Forms_Settings_CalculationMethodForArchiveSize" xml:space="preserve">
+    <value>Calculation method for archive size</value>
+  </data>
+  <data name="Forms_Settings_CompressionType" xml:space="preserve">
+    <value>Compression Type</value>
+  </data>
+  <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
+    <value>Move files synchronously if bigger than</value>
+  </data>
+  <data name="Forms_Settings_ThemeAccent" xml:space="preserve">
+    <value>Theme Accent</value>
+  </data>
+  <data name="Forms_Settings_ThemeBase" xml:space="preserve">
+    <value>Theme Base</value>
+  </data>
+  <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
+    <value>Advanced Logging (Requires restart)</value>
+  </data>
+  <data name="Forms_Settings_CheckForUpdatesOnStartup" xml:space="preserve">
+    <value>Check for Updates on Startup</value>
+  </data>
+  <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
+    <value>Keep searching on library change</value>
+  </data>
+  <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
+    <value>Open Logs Folder</value>
+  </data>
+  <data name="Forms_Settings_CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="Forms_Settings_ClearHeaderİmageCache" xml:space="preserve">
+    <value>Clear header image cache</value>
+  </data>
+  <data name="Forms_Settings_CustomTheme" xml:space="preserve">
+    <value>Custom Theme</value>
+  </data>
+  <data name="Forms_Settings_TextColor" xml:space="preserve">
+    <value>Text Color:</value>
+  </data>
+  <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">
+    <value>TabItem Text Color</value>
+  </data>
+  <data name="Forms_Settings_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="Forms_Settings_ControlBG" xml:space="preserve">
+    <value>Control BG</value>
+  </data>
+  <data name="Forms_Settings_ContextMenu" xml:space="preserve">
+    <value>Context Menu</value>
+  </data>
+  <data name="Forms_Settings_WindowBG" xml:space="preserve">
+    <value>Window BG</value>
+  </data>
+  <data name="Forms_Settings_TransparentWhite" xml:space="preserve">
+    <value>TransparentWhite</value>
+  </data>
+  <data name="Forms_Settings_GrayBrush1" xml:space="preserve">
+    <value>GrayBrush1</value>
+  </data>
+  <data name="Forms_Settings_GrayBrush2" xml:space="preserve">
+    <value>GrayBrush2</value>
+  </data>
+  <data name="Forms_Settings_ButtonClick" xml:space="preserve">
+    <value>Button Click</value>
+  </data>
+  <data name="Forms_Settings_ButtonHover" xml:space="preserve">
+    <value>Button Hover</value>
+  </data>
+  <data name="Forms_Settings_ButtonBG" xml:space="preserve">
+    <value>Button BG</value>
+  </data>
+  <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
+    <value>Task Manager Default Settings</value>
+  </data>
+  <data name="Forms_Settings_RemoveFiles" xml:space="preserve">
+    <value>Remove files at Source directory</value>
+  </data>
+  <data name="Forms_Settings_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
+    <value>Do NOT Remove</value>
+  </data>
+  <data name="Forms_Settings_CompressFiles" xml:space="preserve">
+    <value>Compress Files</value>
+  </data>
+  <data name="Forms_Settings_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
+    <value>Do NOT Compress</value>
+  </data>
+  <data name="Forms_Settings_ReportFileMovement" xml:space="preserve">
+    <value>Report File Movement</value>
+  </data>
+  <data name="Forms_Settings_StartTaskManagerOnStartup" xml:space="preserve">
+    <value>Start Task Manager on Startup</value>
+  </data>
+  <data name="Forms_Settings_PlayASoundOnCompletion" xml:space="preserve">
+    <value>Play a sound on completion</value>
+  </data>
 </root>

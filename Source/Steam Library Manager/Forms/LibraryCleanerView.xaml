@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <Grid>
         <!-- ListView: Library Cleaner -->
@@ -12,8 +14,8 @@
                     <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                         <Grid.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Open in Explorer" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
-                                <MenuItem Header="Delete selected Folder(s)" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid>
@@ -30,12 +32,12 @@
         </ListView>
 
         <!-- Button: Delete All-->
-        <Button Tag="DeleteAll" FontSize="13" Content="Delete All" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
 
         <!-- Button: Move All-->
-        <Button Tag="MoveAll" FontSize="13" Content="Move All" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+        <Button Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 
         <!-- Button: Refresh All-->
-        <Button Tag="Refresh" FontSize="13" Content="Refresh List" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
     </Grid>
 </UserControl>

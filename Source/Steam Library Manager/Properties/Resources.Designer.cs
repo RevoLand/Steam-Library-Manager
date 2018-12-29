@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -77,6 +77,672 @@ namespace Steam_Library_Manager.Properties {
             get {
                 object obj = ResourceManager.GetObject("FontAwesome", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated on: {0}.
+        /// </summary>
+        internal static string Forms_AppView_LastUpdate {
+            get {
+                return ResourceManager.GetString("Forms_AppView_LastUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compressed.
+        /// </summary>
+        internal static string Forms_Compressed {
+            get {
+                return ResourceManager.GetString("Forms_Compressed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete All.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_DeleteAll {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_DeleteAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selected Folder(s).
+        /// </summary>
+        internal static string Forms_LibraryCleaner_DeleteSelectedFolders {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_DeleteSelectedFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Write Time: {0}.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_LastWriteTime {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_LastWriteTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move All.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_MoveAll {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_MoveAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open in Explorer.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_Open {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh List.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_RefreshList {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_RefreshList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App(s): {0}.
+        /// </summary>
+        internal static string Forms_LibraryView_AppCount {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_AppCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Library.
+        /// </summary>
+        internal static string Forms_LibraryView_CreateLibrary {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_CreateLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        internal static string Forms_LibraryView_Offline {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord.
+        /// </summary>
+        internal static string Forms_Main_Discord {
+            get {
+                return ResourceManager.GetString("Forms_Main_Discord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        internal static string Forms_Main_Donate {
+            get {
+                return ResourceManager.GetString("Forms_Main_Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search in selected library.
+        /// </summary>
+        internal static string Forms_Main_SearchInLibrary {
+            get {
+                return ResourceManager.GetString("Forms_Main_SearchInLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suggestion Form.
+        /// </summary>
+        internal static string Forms_Main_SuggestionForm {
+            get {
+                return ResourceManager.GetString("Forms_Main_SuggestionForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library.
+        /// </summary>
+        internal static string Forms_Main_TabHeader_Library {
+            get {
+                return ResourceManager.GetString("Forms_Main_TabHeader_Library", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library Cleaner.
+        /// </summary>
+        internal static string Forms_Main_TabHeader_LibraryCleaner {
+            get {
+                return ResourceManager.GetString("Forms_Main_TabHeader_LibraryCleaner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Forms_Main_TabHeader_Settings {
+            get {
+                return ResourceManager.GetString("Forms_Main_TabHeader_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Manager.
+        /// </summary>
+        internal static string Forms_Main_TabHeader_TaskManager {
+            get {
+                return ResourceManager.GetString("Forms_Main_TabHeader_TaskManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin.
+        /// </summary>
+        internal static string Forms_Origin {
+            get {
+                return ResourceManager.GetString("Forms_Origin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Logging (Requires restart).
+        /// </summary>
+        internal static string Forms_Settings_AdvancedLogging {
+            get {
+                return ResourceManager.GetString("Forms_Settings_AdvancedLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background.
+        /// </summary>
+        internal static string Forms_Settings_Background {
+            get {
+                return ResourceManager.GetString("Forms_Settings_Background", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Button BG.
+        /// </summary>
+        internal static string Forms_Settings_ButtonBG {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ButtonBG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Button Click.
+        /// </summary>
+        internal static string Forms_Settings_ButtonClick {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ButtonClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Button Hover.
+        /// </summary>
+        internal static string Forms_Settings_ButtonHover {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ButtonHover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation method for archive size.
+        /// </summary>
+        internal static string Forms_Settings_CalculationMethodForArchiveSize {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CalculationMethodForArchiveSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        internal static string Forms_Settings_CheckForUpdates {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates on Startup.
+        /// </summary>
+        internal static string Forms_Settings_CheckForUpdatesOnStartup {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CheckForUpdatesOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear header image cache.
+        /// </summary>
+        internal static string Forms_Settings_ClearHeaderİmageCache {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ClearHeaderİmageCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compress.
+        /// </summary>
+        internal static string Forms_Settings_Compress {
+            get {
+                return ResourceManager.GetString("Forms_Settings_Compress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compress Files.
+        /// </summary>
+        internal static string Forms_Settings_CompressFiles {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CompressFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compression Type.
+        /// </summary>
+        internal static string Forms_Settings_CompressionType {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CompressionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Menu.
+        /// </summary>
+        internal static string Forms_Settings_ContextMenu {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ContextMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control BG.
+        /// </summary>
+        internal static string Forms_Settings_ControlBG {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ControlBG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Theme.
+        /// </summary>
+        internal static string Forms_Settings_CustomTheme {
+            get {
+                return ResourceManager.GetString("Forms_Settings_CustomTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do NOT Compress.
+        /// </summary>
+        internal static string Forms_Settings_DoNOTCompress {
+            get {
+                return ResourceManager.GetString("Forms_Settings_DoNOTCompress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do NOT Remove.
+        /// </summary>
+        internal static string Forms_Settings_DoNOTRemove {
+            get {
+                return ResourceManager.GetString("Forms_Settings_DoNOTRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game listing method.
+        /// </summary>
+        internal static string Forms_Settings_GameListMethod {
+            get {
+                return ResourceManager.GetString("Forms_Settings_GameListMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Settings.
+        /// </summary>
+        internal static string Forms_Settings_GeneralSettings {
+            get {
+                return ResourceManager.GetString("Forms_Settings_GeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrayBrush1.
+        /// </summary>
+        internal static string Forms_Settings_GrayBrush1 {
+            get {
+                return ResourceManager.GetString("Forms_Settings_GrayBrush1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GrayBrush2.
+        /// </summary>
+        internal static string Forms_Settings_GrayBrush2 {
+            get {
+                return ResourceManager.GetString("Forms_Settings_GrayBrush2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move files synchronously if bigger than.
+        /// </summary>
+        internal static string Forms_Settings_MoveFilesSyncBySize {
+            get {
+                return ResourceManager.GetString("Forms_Settings_MoveFilesSyncBySize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Logs Folder.
+        /// </summary>
+        internal static string Forms_Settings_OpenLogsFolder {
+            get {
+                return ResourceManager.GetString("Forms_Settings_OpenLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play a sound on completion.
+        /// </summary>
+        internal static string Forms_Settings_PlayASoundOnCompletion {
+            get {
+                return ResourceManager.GetString("Forms_Settings_PlayASoundOnCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string Forms_Settings_Remove {
+            get {
+                return ResourceManager.GetString("Forms_Settings_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove files at Source directory.
+        /// </summary>
+        internal static string Forms_Settings_RemoveFiles {
+            get {
+                return ResourceManager.GetString("Forms_Settings_RemoveFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report File Movement.
+        /// </summary>
+        internal static string Forms_Settings_ReportFileMovement {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ReportFileMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep searching on library change.
+        /// </summary>
+        internal static string Forms_Settings_SearchOnLibraryChange {
+            get {
+                return ResourceManager.GetString("Forms_Settings_SearchOnLibraryChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calculation method for games.
+        /// </summary>
+        internal static string Forms_Settings_SizeCalculationMethod {
+            get {
+                return ResourceManager.GetString("Forms_Settings_SizeCalculationMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort games by.
+        /// </summary>
+        internal static string Forms_Settings_SortGamesBy {
+            get {
+                return ResourceManager.GetString("Forms_Settings_SortGamesBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Task Manager on Startup.
+        /// </summary>
+        internal static string Forms_Settings_StartTaskManagerOnStartup {
+            get {
+                return ResourceManager.GetString("Forms_Settings_StartTaskManagerOnStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TabItem Text Color.
+        /// </summary>
+        internal static string Forms_Settings_TabItemTextColor {
+            get {
+                return ResourceManager.GetString("Forms_Settings_TabItemTextColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Manager Default Settings.
+        /// </summary>
+        internal static string Forms_Settings_TaskManagerDefaults {
+            get {
+                return ResourceManager.GetString("Forms_Settings_TaskManagerDefaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Color:.
+        /// </summary>
+        internal static string Forms_Settings_TextColor {
+            get {
+                return ResourceManager.GetString("Forms_Settings_TextColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Accent.
+        /// </summary>
+        internal static string Forms_Settings_ThemeAccent {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ThemeAccent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Base.
+        /// </summary>
+        internal static string Forms_Settings_ThemeBase {
+            get {
+                return ResourceManager.GetString("Forms_Settings_ThemeBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransparentWhite.
+        /// </summary>
+        internal static string Forms_Settings_TransparentWhite {
+            get {
+                return ResourceManager.GetString("Forms_Settings_TransparentWhite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window BG.
+        /// </summary>
+        internal static string Forms_Settings_WindowBG {
+            get {
+                return ResourceManager.GetString("Forms_Settings_WindowBG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM.
+        /// </summary>
+        internal static string Forms_SLM {
+            get {
+                return ResourceManager.GetString("Forms_SLM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam.
+        /// </summary>
+        internal static string Forms_Steam {
+            get {
+                return ResourceManager.GetString("Forms_Steam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Install.
+        /// </summary>
+        internal static string Forms_TaskManager_AutoInstall {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_AutoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Backup Updates.
+        /// </summary>
+        internal static string Forms_TaskManager_CheckForBackupUpdates {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_CheckForBackupUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Completed Tasks.
+        /// </summary>
+        internal static string Forms_TaskManager_ClearCompletedTasks {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_ClearCompletedTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to COMPLETED.
+        /// </summary>
+        internal static string Forms_TaskManager_Completed {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compress.
+        /// </summary>
+        internal static string Forms_TaskManager_Compress {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Compress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Forms_TaskManager_Delete {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        internal static string Forms_TaskManager_Pause {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}%.
+        /// </summary>
+        internal static string Forms_TaskManager_ProgressBarPerc {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_ProgressBarPerc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Original Files.
+        /// </summary>
+        internal static string Forms_TaskManager_RemoveFiles {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_RemoveFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove selected Game(s) from Queue.
+        /// </summary>
+        internal static string Forms_TaskManager_RemoveFromQueue {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_RemoveFromQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report File Movement.
+        /// </summary>
+        internal static string Forms_TaskManager_ReportFileMovement {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_ReportFileMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string Forms_TaskManager_Start {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string Forms_TaskManager_Stop {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target: {0}.
+        /// </summary>
+        internal static string Forms_TaskManager_TargetLibrary {
+            get {
+                return ResourceManager.GetString("Forms_TaskManager_TargetLibrary", resourceCulture);
             }
         }
         

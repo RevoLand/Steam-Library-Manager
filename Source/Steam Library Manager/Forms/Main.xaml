@@ -4,9 +4,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
     xmlns:SLM="clr-namespace:Steam_Library_Manager"
     xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
     xmlns:Forms="clr-namespace:Steam_Library_Manager.Forms"
+    xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Height="800" Width="930" MinHeight="800" MinWidth="930"
@@ -15,9 +17,9 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="Suggestion Form" Click="RightWindowCommands_SuggestionFormButton_Click" />
-            <Button Content="Donate" Click="RightWindowCommands_DonateButton_Click" />
-            <Button Content="Discord" Click="RightWindowCommands_DiscordButton_Click" />
+            <Button Content="{l:Static p:Resources.Forms_Main_SuggestionForm}" Click="RightWindowCommands_SuggestionFormButton_Click" />
+            <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click" />
+            <Button Content="{l:Static p:Resources.Forms_Main_Discord}" Click="RightWindowCommands_DiscordButton_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid Margin="5, 10, 0, 5">
@@ -31,7 +33,7 @@
         <!-- Grid: Quick settings -->
         <Grid x:Name="QuickSettings" Margin="0,0,10,0">
             <!-- App Sorting Method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="Sort games by" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged">
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -40,7 +42,7 @@
             </ComboBox>
 
             <!-- App listing method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="Game listing method" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}">
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -51,7 +53,7 @@
 
         <Controls:MetroTabControl Controls:TabControlHelper.Underlined="TabPanel" Margin="10, 50, 10, 0">
             <!-- Tab: Library -->
-            <Controls:MetroTabItem Header="Library" IsSelected="True">
+            <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>
                     <Forms:LibraryView x:Name="LibraryView" />
 
@@ -59,15 +61,15 @@
                     <Forms:AppView x:Name="AppView" />
                     
                     <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="Search in selected library" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
+                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
                 </Grid>
             </Controls:MetroTabItem>
             <!-- Tab: Task Manager -->
-            <Controls:MetroTabItem Header="Task Manager">
+            <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_TaskManager}">
                 <Forms:TaskManagerView x:Name="TaskManagerView" />
             </Controls:MetroTabItem>
             <!-- Tab: Library Cleaner -->
-            <Controls:MetroTabItem Header="Library Cleaner">
+            <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_LibraryCleaner}">
                 <Forms:LibraryCleanerView x:Name="LibraryCleanerView" />
             </Controls:MetroTabItem>
             <!-- TBC: SLM Server
@@ -101,7 +103,7 @@
             </TabItem>
             -->
             <!-- Tab: Settings -->
-            <Controls:MetroTabItem Header="Settings" Name="TabItem_Settings">
+            <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Settings}" Name="TabItem_Settings">
                 <Forms:SettingsView x:Name="SettingsView" />
             </Controls:MetroTabItem>
         </Controls:MetroTabControl>
