@@ -773,4 +773,10 @@
   <data name="UnauthorizedAccessExceptionMessage" xml:space="preserve">
     <value>[{0}] An error related to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {1}</value>
   </data>
+  <data name="Forms_Main_Translate" xml:space="preserve">
+    <value>Translate</value>
+  </data>
+  <data name="Forms_Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

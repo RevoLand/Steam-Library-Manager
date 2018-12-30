@@ -95,13 +95,13 @@ namespace Steam_Library_Manager.Definitions
                         }
                         else
                         {
-                            MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.OriginUnknownManifestFile), ManifestVersion, OriginApp));
+                            MessageBox.Show(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)), ManifestVersion, OriginApp));
                         }
                     } // foreach
                 }
                 else
                 {
-                    MessageBox.Show(Functions.SLM.Translate(Properties.Resources.OriginDirectoryNotExists));
+                    MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.OriginDirectoryNotExists)));
                 }
                 stopwatch.Stop();
             }
@@ -150,7 +150,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FormatException ex)
             {
-                MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.OriginAppInfo_FormatException), ex));
+                MessageBox.Show(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginAppInfo_FormatException)), ex));
                 return CMenu;
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Gu.Localization;
-using Steam_Library_Manager.Properties;
 using System;
 using System.IO;
 using System.Linq;
@@ -12,9 +11,9 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static string Translate(string key, ErrorHandling errorHandling = ErrorHandling.ReturnErrorInfoPreserveNeutral)
+        public static string Translate(string key)
         {
-            return Translation.GetOrCreate(Resources.ResourceManager, key, errorHandling).Translated;
+            return Translator.Translate(Properties.Resources.ResourceManager, key);
         }
 
         public static class Settings

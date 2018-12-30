@@ -66,7 +66,7 @@
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
-                <ComboBox HorizontalAlignment="Left" Height="40"
+                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       Margin="5,515,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Path=(localization:Translator.CurrentCulture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" />
 

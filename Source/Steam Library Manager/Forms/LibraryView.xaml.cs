@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.TaskManager_AlreadyTasked), string.Format(Functions.SLM.Translate(Properties.Resources.TaskManager_AlreadyTaskedMessage), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
                             }
                         }
                     }
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.TaskManager_AlreadyTasked), string.Format(Functions.SLM.Translate(Properties.Resources.TaskManager_AlreadyTaskedMessage), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
                         }
                     }
                 }
@@ -130,12 +130,12 @@ namespace Steam_Library_Manager.Forms
 
         private async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
         {
-            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibraryDialog), string.Format(Functions.SLM.Translate(Properties.Resources.CreateLibraryDialogMessage), LibraryPath), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), LibraryPath), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
             {
-                AffirmativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Steam),
-                NegativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_SLM),
-                FirstAuxiliaryButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Origin),
-                SecondAuxiliaryButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Cancel)
+                AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Steam)),
+                NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
+                FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Origin)),
+                SecondAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
             });
 
             switch (LibraryDialog)
@@ -150,12 +150,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootError), Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_Exists), string.Format(Functions.SLM.Translate(Properties.Resources.CreateLibrary_ExistsMessage), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
                     }
                     break;
                 // SLM
@@ -168,12 +168,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootError), Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_Exists), string.Format(Functions.SLM.Translate(Properties.Resources.CreateLibrary_ExistsMessage), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
                     }
                     break;
                 // Origin
@@ -186,12 +186,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootError), Functions.SLM.Translate(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.CreateLibrary_Exists), string.Format(Functions.SLM.Translate(Properties.Resources.CreateLibrary_ExistsMessage), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
                     }
                     break;
             }

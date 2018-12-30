@@ -693,6 +693,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Translate.
+        /// </summary>
+        internal static string Forms_Main_Translate {
+            get {
+                return ResourceManager.GetString("Forms_Main_Translate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Origin.
         /// </summary>
         internal static string Forms_Origin {
@@ -932,6 +941,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string Forms_Settings_HeaderImageCacheMessage {
             get {
                 return ResourceManager.GetString("Forms_Settings_HeaderImageCacheMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string Forms_Settings_Language {
+            get {
+                return ResourceManager.GetString("Forms_Settings_Language", resourceCulture);
             }
         }
         

@@ -23,7 +23,6 @@ namespace Steam_Library_Manager
             InitializeComponent();
 
             Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
-            Gu.Localization.Translator.ErrorHandling = Gu.Localization.ErrorHandling.ReturnErrorInfoPreserveNeutral;
 
             SetNLogConfig();
             UpdateBindings();
@@ -80,12 +79,12 @@ namespace Steam_Library_Manager
             {
                 e.Cancel = true;
 
-                if (await this.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.Forms_QuitSLM),
-                    Functions.SLM.Translate(Properties.Resources.Forms_QuitSLMMessage),
+                if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
+                    Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
                     MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                     {
-                        AffirmativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Quit),
-                        NegativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Cancel)
+                        AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
+                        NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
                     }) != MessageDialogResult.Affirmative)
                 {
                     return;
@@ -168,6 +167,12 @@ namespace Steam_Library_Manager
                 Process.Start(new ProcessStartInfo("cmd", $"/c start https://goo.gl/forms/Bu1o0ETFdUWF5ZNJ3") { CreateNoWindow = true });
             }
             catch { }
+        }
+
+        private void RightWindowCommands_TranslateFormButton_Click(object sender, RoutedEventArgs e)
+        {
+            // hack because of this: https://github.com/dotnet/corefx/issues/10361
+            Process.Start(new ProcessStartInfo("cmd", $"/c start https://crowdin.com/project/steam-library-manager") { CreateNoWindow = true });
         }
     }
 }

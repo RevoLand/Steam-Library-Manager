@@ -251,7 +251,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Properties\Resources.tr.resx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\compressedLibraryIcon.png" />
