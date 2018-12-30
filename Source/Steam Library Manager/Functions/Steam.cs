@@ -23,7 +23,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync("Steam installation couldn't be found", "Steam couldn't be found under registry. Would you like to locate Steam manually?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.Steam_NotInstalled), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             OpenFileDialog SteamPathSelector = new OpenFileDialog()
                             {
@@ -62,7 +62,7 @@ namespace Steam_Library_Manager.Functions
             // Open library in explorer ({0})
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Open library in explorer ({0})",
+                Header = SLM.Translate(Properties.Resources.SteamLibrary_CMenu_Open),
                 Action = "Disk",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
@@ -80,7 +80,7 @@ namespace Steam_Library_Manager.Functions
             // Remove library & files
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Remove library from Steam (/w files)",
+                Header = SLM.Translate(Properties.Resources.SteamLibrary_CMenu_RemoveFromSteam),
                 Action = "deleteLibrary",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Functions
             // Delete games in library
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Delete games in library",
+                Header = SLM.Translate(Properties.Resources.SteamLibrary_CMenu_DeleteGames),
                 Action = "deleteLibrarySLM",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
@@ -110,7 +110,7 @@ namespace Steam_Library_Manager.Functions
             // Remove from SLM
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Remove from SLM",
+                Header = SLM.Translate(Properties.Resources.SteamLibrary_CMenu_RemoveFromSLM),
                 Action = "RemoveFromList",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Minus,
                 LibraryType = Definitions.Enums.LibraryType.SLM,
@@ -128,7 +128,7 @@ namespace Steam_Library_Manager.Functions
             // Run
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Run",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_Play),
                 Action = "steam://run/{0}",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
@@ -148,7 +148,7 @@ namespace Steam_Library_Manager.Functions
             // Compress
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "(De)Compress",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_Compress),
                 Action = "Compress",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = false,
@@ -167,7 +167,7 @@ namespace Steam_Library_Manager.Functions
             // Show on disk
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "{0} ({1})",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_DiskInfo),
                 Action = "Disk",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = true,
@@ -177,7 +177,7 @@ namespace Steam_Library_Manager.Functions
             // View ACF
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "View ACF File",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_ViewACF),
                 Action = "acffile",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.PencilSquareOutline,
                 LibraryType = Definitions.Enums.LibraryType.Steam,
@@ -187,7 +187,7 @@ namespace Steam_Library_Manager.Functions
             // Game hub
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Game Hub",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_GameHub),
                 Action = "steam://url/GameHub/{0}",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Book
@@ -202,7 +202,7 @@ namespace Steam_Library_Manager.Functions
             // Workshop
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Workshop",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_Workshop),
                 Action = "steam://url/SteamWorkshopPage/{0}",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
@@ -211,7 +211,7 @@ namespace Steam_Library_Manager.Functions
             // Subscribed Workshop Items
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Subscribed Workshop Items",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_SubscribedWorkshopItems),
                 Action = "https://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Cogs
@@ -227,7 +227,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using Task Manager)
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Delete files (using SLM)",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_DeleteFilesSLM),
                 Action = "deleteappfiles",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
@@ -236,7 +236,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using Task Manager)
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = "Delete files (using TaskManager)",
+                Header = SLM.Translate(Properties.Resources.SteamApp_CMenu_DeleteFilesTM),
                 Action = "deleteappfilestm",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
@@ -249,8 +249,8 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                var test = Process.GetProcessesByName("Steam").FirstOrDefault();
-                return test?.MainModule.FileName;
+                var activeSteamProcess = Process.GetProcessesByName("Steam").FirstOrDefault();
+                return activeSteamProcess?.MainModule.FileName;
             }
             catch (Exception ex)
             {
@@ -267,13 +267,13 @@ namespace Steam_Library_Manager.Functions
                 var ActiveSteamPath = GetActiveSteamProcessPath();
                 if (!string.IsNullOrEmpty(ActiveSteamPath))
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", "Steam needs to be closed for this action. Would you like SLM to close Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.Steam_NeedsToBeClosed), SLM.Translate(Properties.Resources.Steam_NeedsToBeClosedMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         if (File.Exists(ActiveSteamPath))
                         {
                             Process.Start(ActiveSteamPath, "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync("Steam needs to be closed", $"Steam.exe could not found (even it is already working?), SLM can try to terminate the Steam processes now if you want to.\n\nActive Steam process path: {ActiveSteamPath}", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.Steam_NeedsToBeClosed), string.Format(SLM.Translate(Properties.Resources.Steam_NeedsToBeClosedMessage2), ActiveSteamPath), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             foreach (var SteamProcess in Process.GetProcessesByName("Steam"))
                             {
@@ -282,12 +282,12 @@ namespace Steam_Library_Manager.Functions
                         }
                         else
                         {
-                            throw new OperationCanceledException("Steam.exe could not found and user doesn't wants to terminate the process.");
+                            throw new OperationCanceledException(SLM.Translate(Properties.Resources.Steam_NeedsToBeClosed_NotFoundAndUserCancelled));
                         }
                     }
                     else
                     {
-                        throw new OperationCanceledException("User doesn't wants to close Steam, can not continue to process.");
+                        throw new OperationCanceledException(SLM.Translate(Properties.Resources.Steam_NeedsToBeClosed_UserCancelled));
                     }
 
                     await Task.Delay(6000);
@@ -308,7 +308,7 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Restart Steam?", "Would you like SLM to Restart Steam?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.Steam_Start), SLM.Translate(Properties.Resources.Steam_StartMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         await CloseSteamAsync();
 
@@ -319,7 +319,7 @@ namespace Steam_Library_Manager.Functions
                     }
                     else
                     {
-                        throw new OperationCanceledException("User doesn't wants to restart Steam.");
+                        throw new OperationCanceledException(SLM.Translate(Properties.Resources.Steam_Start_UserCancelled));
                     }
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
@@ -376,7 +376,7 @@ namespace Steam_Library_Manager.Functions
                             Key.SaveToFile(Definitions.Global.Steam.vdfFilePath, false);
 
                             // Show a messagebox to user about process
-                            MessageBox.Show("New Steam library created");
+                            MessageBox.Show(SLM.Translate(Properties.Resources.CreateSteamLibrary_Created));
 
                             // Since this file started to interrupt us?
                             // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle.
@@ -390,7 +390,7 @@ namespace Steam_Library_Manager.Functions
                         else
                         {
                             // Show an error to user and cancel the process because we couldn't get Steam.dll in new library dir
-                            MessageBox.Show("Failed to copy Steam.dll into new library directory. Permission error, maybe?");
+                            MessageBox.Show(SLM.Translate(Properties.Resources.CreateSteamLibrary_UnknownError));
                         }
                     }
 
@@ -404,7 +404,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                      {
-                         await Main.FormAccessor.ShowMessageAsync("Unable to copy Steam.dll?", $"An error releated to file system is happened while creating a new library.\n\nError: {ex.Message}.\n\nThe error is releated to file system permissions. Try running SLM as administrator or take the target folder permissions for your user.", MessageDialogStyle.AffirmativeAndNegative);
+                         await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessException), string.Format(SLM.Translate(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessExceptionMessage), ex.Message), MessageDialogStyle.AffirmativeAndNegative);
                      }, System.Windows.Threading.DispatcherPriority.Normal);
 
                     logger.Fatal(ex);
@@ -425,7 +425,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Checking for backup updates as you have requested.");
+                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(Properties.Resources.PleaseWait), SLM.Translate(Properties.Resources.Steam_CheckForBackupUpdates));
                     ProgressInformationMessage.SetIndeterminate();
 
                     foreach (var CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
@@ -439,7 +439,7 @@ namespace Steam_Library_Manager.Functions
                         {
                             foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
                             {
-                                ProgressInformationMessage.SetMessage("Checking for:\n\n" + CurrentApp.AppName);
+                                ProgressInformationMessage.SetMessage(string.Format(SLM.Translate(Properties.Resources.Steam_CheckForBackupUpdates_Progress), CurrentApp.AppName));
 
                                 if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
                                 {
@@ -454,7 +454,7 @@ namespace Steam_Library_Manager.Functions
                                         };
 
                                         Framework.TaskManager.AddTask(NewTask);
-                                        Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] An update is available for: {CurrentApp.AppName} - Old backup time: {LatestApp.LastUpdated} - Updated on: {CurrentApp.LastUpdated} - Target: {CurrentApp.Library.Steam.FullPath} - Source: {LatestApp.Library.Steam.FullPath}");
+                                        Main.FormAccessor.TaskManager_Logs.Add(string.Format(SLM.Translate(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound), DateTime.Now, CurrentApp.AppName, LatestApp.LastUpdated, CurrentApp.LastUpdated, CurrentApp.Library.Steam.FullPath, LatestApp.Library.Steam.FullPath));
                                     }
                                 }
                             }
@@ -462,7 +462,7 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     await ProgressInformationMessage.CloseAsync();
-                    Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] Check for Backup updates completed.");
+                    Main.FormAccessor.TaskManager_Logs.Add(string.Format(SLM.Translate(Properties.Resources.Steam_CheckForBackupUpdates_Completed), DateTime.Now));
                 }
                 catch (Exception ex)
                 {

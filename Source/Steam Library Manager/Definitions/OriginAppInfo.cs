@@ -17,11 +17,11 @@ namespace Steam_Library_Manager.Definitions
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Library Library { get; set; }
-        public string AppName { get; set; } // gameTitle
-        public int AppID { get; set; } // contentID
-        public string[] Locales { get; set; } // pt_BR,en_US,de_DE,es_ES,fr_FR,it_IT,es_MX,nl_NL,pl_PL,ru_RU,ar_SA,cs_CZ,da_DK,no_NO,pt_PT,zh_TW,sv_SE,tr_TR
+        public string AppName { get; set; }
+        public int AppID { get; set; }
+        public string[] Locales { get; set; }
         public string InstalledLocale { get; set; }
-        public DirectoryInfo InstallationDirectory; // D:\Oyunlar\Origin Games\FIFA 17\
+        public DirectoryInfo InstallationDirectory;
         public FileInfo TouchupFile { get; set; }
         public string InstallationParameter { get; set; }
         public string UpdateParameter { get; set; }
@@ -86,7 +86,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (FormatException ex)
                 {
-                    MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+                    MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.OriginAppInfo_FormatException), ex));
 
                     return rightClickMenu;
                 }
@@ -158,8 +158,8 @@ namespace Steam_Library_Manager.Definitions
 
         public async void CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
-            LogToTM($"[{AppName}] Populating file list, please wait");
-            logger.Info("Populating file list for: {0}", AppName);
+            LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.PopulatingFileList), AppName));
+            logger.Info(Functions.SLM.Translate(Properties.Resources.PopulatingFileList), AppName);
 
             List<string> CopiedFiles = new List<string>();
             List<string> CreatedDirectories = new List<string>();
@@ -179,8 +179,8 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.TotalFileSize = TotalFileSize;
                 CurrentTask.ElapsedTime.Start();
 
-                LogToTM($"[{AppName}] File list populated, total files to move: {AppFiles.Count} - total size to move: {Functions.FileSystem.FormatBytes(TotalFileSize)}");
-                logger.Info("File list populated, total files to move: {0} - total size to move: {1}", AppFiles.Count, Functions.FileSystem.FormatBytes(TotalFileSize));
+                LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.FileListPopulated), AppName, AppFiles.Count, Functions.FileSystem.FormatBytes(TotalFileSize)));
+                logger.Info(Functions.SLM.Translate(Properties.Resources.FileListPopulated), AppName, AppFiles.Count, Functions.FileSystem.FormatBytes(TotalFileSize));
 
                 if (CurrentTask.TargetLibrary.Type == Enums.LibraryType.SLM && CurrentTask.TargetLibrary.Origin == null)
                 {
@@ -227,10 +227,10 @@ namespace Steam_Library_Manager.Definitions
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
+                            LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.FileMoved), AppName, NewFile.FullName));
                         }
 
-                        logger.Info("File moved: {0}", NewFile.FullName);
+                        logger.Info(Functions.SLM.Translate(Properties.Resources.FileMoved), AppName, NewFile.FullName);
                     }
                     catch (System.ComponentModel.Win32Exception)
                     {
@@ -245,13 +245,13 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] PathTooLongException happened while copying files. Nothing can be made by SLM in this error.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.Origin_PathTooLongException), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        Main.FormAccessor.TaskManager_Logs.Add(string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError), AppName, ex.Message));
                         logger.Fatal(ex);
                     }
                     catch (IOException ex)
@@ -263,13 +263,13 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        Main.FormAccessor.TaskManager_Logs.Add(string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError), AppName, ex.Message));
                         logger.Fatal(ex);
 
                         SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
@@ -278,7 +278,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.FilePermissionRelatedError_DeleteFiles), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -317,10 +317,10 @@ namespace Steam_Library_Manager.Definitions
 
                         if (CurrentTask.ReportFileMovement)
                         {
-                            LogToTM($"[{AppName}] File moved: {NewFile.FullName}");
+                            LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.FileMoved), AppName, NewFile.FullName));
                         }
 
-                        logger.Info("File moved: {0}", NewFile.FullName);
+                        logger.Info(Functions.SLM.Translate(Properties.Resources.FileMoved), AppName, NewFile.FullName);
                     }
                     catch (System.ComponentModel.Win32Exception)
                     {
@@ -335,13 +335,13 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] PathTooLongException happened while copying files. Nothing can be made by SLM in this error.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.Origin_PathTooLongException), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        Main.FormAccessor.TaskManager_Logs.Add(string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError), AppName, ex.Message));
                         logger.Fatal(ex);
                     }
                     catch (IOException ex)
@@ -353,22 +353,22 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file system is happened while moving files.\n\nError: {ex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
                         }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                        Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error releated to file system is happened while moving files. Error: {ex.Message}.");
+                        Main.FormAccessor.TaskManager_Logs.Add(string.Format(Functions.SLM.Translate(Properties.Resources.FileSystemRelatedError), AppName, ex.Message));
                         logger.Fatal(ex);
 
                         SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
-                    catch (UnauthorizedAccessException uaex)
+                    catch (UnauthorizedAccessException ex)
                     {
                         Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.\n\nError: {uaex.Message}.\n\nWould you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.FilePermissionRelatedError_DeleteFiles), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                             {
                                 Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                             }
@@ -379,8 +379,8 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.ElapsedTime.Stop();
                 CurrentTask.MovedFileSize = TotalFileSize;
 
-                LogToTM($"[{AppName}] Time elapsed: {CurrentTask.ElapsedTime.Elapsed} - Average speed: {Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3)} MB/sec - Average file size: {Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)}");
-                logger.Info("Movement completed in {0} with Average Speed of {1} MB/sec - Average file size: {2}", CurrentTask.ElapsedTime.Elapsed, Math.Round(((TotalFileSize / 1024f) / 1024f) / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount));
+                LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.TaskCompleted), AppName, CurrentTask.ElapsedTime.Elapsed, Math.Round(TotalFileSize / 1024f / 1024f / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount)));
+                logger.Info(Functions.SLM.Translate(Properties.Resources.TaskCompleted), AppName, CurrentTask.ElapsedTime.Elapsed, Math.Round(TotalFileSize / 1024f / 1024f / CurrentTask.ElapsedTime.Elapsed.TotalSeconds, 3), Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount));
             }
             catch (OperationCanceledException)
             {
@@ -393,14 +393,14 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.TaskCancelled_RemoveFiles), AppName), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
                             Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                         }
                     }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                    LogToTM($"[{AppName}] Operation cancelled by user. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
-                    logger.Info("Operation cancelled by used. Elapsed time: {0}", CurrentTask.ElapsedTime.Elapsed);
+                    LogToTM(string.Format(Functions.SLM.Translate(Properties.Resources.TaskCancelled_ElapsedTime), AppName, CurrentTask.ElapsedTime.Elapsed));
+                    logger.Info(Functions.SLM.Translate(Properties.Resources.TaskCancelled_ElapsedTime), AppName, CurrentTask.ElapsedTime.Elapsed);
                 }
             }
             catch (Exception ex)
@@ -412,13 +412,13 @@ namespace Steam_Library_Manager.Definitions
 
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("Remove moved files?", $"[{AppName}] An error happened while moving game files. Would you like to remove files that already moved from target library?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.RemoveMovedFiles), string.Format(Functions.SLM.Translate(Properties.Resources.AnyException_RemoveFiles), AppName, ex.Message), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
                         Functions.FileSystem.RemoveGivenFiles(CopiedFiles, CreatedDirectories, CurrentTask);
                     }
                 }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                Main.FormAccessor.TaskManager_Logs.Add($"[{AppName}] An error happened while moving game files. Time Elapsed: {CurrentTask.ElapsedTime.Elapsed}");
+                Main.FormAccessor.TaskManager_Logs.Add(string.Format(Functions.SLM.Translate(Properties.Resources.AnyError_ElapsedTime), AppName, CurrentTask.ElapsedTime.Elapsed));
                 logger.Fatal(ex);
                 await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
@@ -431,16 +431,14 @@ namespace Steam_Library_Manager.Definitions
             if (Framework.TaskManager.CancellationToken.IsCancellationRequested)
                 throw (new OperationCanceledException(Framework.TaskManager.CancellationToken.Token));
 
-            Framework.TaskManager.ActiveTask.TaskStatusInfo = $"Copying file: {s.Percentage.ToString("0.00")}%";
+            Framework.TaskManager.ActiveTask.TaskStatusInfo = string.Format(Functions.SLM.Translate(Properties.Resources.TaskStatus_CopyingFile), s.Percentage.ToString("0.00"), s.Transferred, s.Total);
         }
 
         public void DeleteFiles(List.TaskInfo CurrentTask = null)
         {
             try
             {
-                var Files = GetFileList();
-
-                Parallel.ForEach(Files, currentFile =>
+                Parallel.ForEach(GetFileList(), currentFile =>
                 {
                     try
                     {
@@ -453,8 +451,8 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 CurrentTask.mre.WaitOne();
 
-                                CurrentTask.TaskStatusInfo = $"Deleting: {currentFile.Name} ({Functions.FileSystem.FormatBytes(currentFile.Length)})";
-                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{CurrentTask.OriginApp.AppName}] Deleting file: {currentFile.FullName}");
+                                CurrentTask.TaskStatusInfo = string.Format(Functions.SLM.Translate(Properties.Resources.TaskStatus_DeletingFile), currentFile.Name, Functions.FileSystem.FormatBytes(currentFile.Length));
+                                Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{AppName}] {string.Format(Functions.SLM.Translate(Properties.Resources.TaskStatus_DeletingFile), currentFile.Name, Functions.FileSystem.FormatBytes(currentFile.Length))}");
                             }
 
                             File.SetAttributes(currentFile.FullName, FileAttributes.Normal);
@@ -504,14 +502,14 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", $"Asking Origin to install {AppName} as you have requested.");
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(Properties.Resources.PleaseWait), string.Format(Functions.SLM.Translate(Properties.Resources.OriginInstallation_Start), AppName));
                         ProgressInformationMessage.SetIndeterminate();
 
                         var process = Process.Start(TouchupFile.FullName, ((Repair) ? RepairParameter : InstallationParameter).Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
 
                         Debug.WriteLine(InstallationParameter.Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
 
-                        ProgressInformationMessage.SetMessage($"Asking Origin to install {AppName} as you have requested.\n\n\nWaiting for Origin to complete the installation...");
+                        ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.OriginInstallation_Ongoing), AppName));
 
                         while (!process.HasExited)
                         {
@@ -523,9 +521,9 @@ namespace Steam_Library_Manager.Definitions
                         var installLog = File.ReadAllLines(Path.Combine(InstallationDirectory.FullName, "__Installer", "InstallLog.txt")).Reverse();
                         if (installLog.Any(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1))
                         {
-                            var test = installLog.FirstOrDefault(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1);
+                            var installerResult = installLog.FirstOrDefault(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1);
 
-                            await Main.FormAccessor.ShowMessageAsync("Origin App Installation", "Origin app installation completed.\n\n\nResult message:\n\n" + test);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.OriginInstallation), string.Format(Functions.SLM.Translate(Properties.Resources.OriginInstallation_Completed), installerResult));
                         }
                     });
                 }

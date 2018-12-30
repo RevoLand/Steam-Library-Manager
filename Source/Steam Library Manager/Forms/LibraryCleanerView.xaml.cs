@@ -105,12 +105,12 @@ namespace Steam_Library_Manager.Forms
                     if (TargetFolderDialogResult == System.Windows.Forms.DialogResult.OK)
                     {
                         if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath
-                            && await Main.FormAccessor.ShowMessageAsync("Root path selected?", "Are you sure you like to move junks to root of disk?", MessageDialogStyle.AffirmativeAndNegative) != MessageDialogResult.Affirmative)
+                            && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_RootPathSelected), Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage), MessageDialogStyle.AffirmativeAndNegative) != MessageDialogResult.Affirmative)
                         {
                             return;
                         }
 
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Relocating junk files as you have requested.");
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(Properties.Resources.PleaseWait), Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_MovingFiles));
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -120,7 +120,7 @@ namespace Steam_Library_Manager.Forms
                                 Junk.FSInfo.Refresh();
                                 if (Junk.FSInfo.Exists)
                                 {
-                                    ProgressInformationMessage.SetMessage("Relocating file:\n\n" + Junk.FSInfo.FullName);
+                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_MovingFile), Junk.FSInfo.FullName));
                                     ((FileInfo)Junk.FSInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
                                 }
 
@@ -143,12 +143,12 @@ namespace Steam_Library_Manager.Forms
                                                 newFile.Directory.Create();
                                             }
 
-                                            ProgressInformationMessage.SetMessage("Relocating file:\n\n" + currentFile.FullName);
+                                            ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_MovingFile), currentFile.FullName));
                                             await Task.Run(() => currentFile.CopyTo(newFile.FullName, true));
                                         }
                                     }
 
-                                    ProgressInformationMessage.SetMessage("Removing old directory:\n\n" + (Junk.FSInfo as DirectoryInfo)?.FullName);
+                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory), Junk.FSInfo.FullName));
                                     await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true));
                                 }
                             }
@@ -161,9 +161,9 @@ namespace Steam_Library_Manager.Forms
                 }
                 else if ((string)(sender as Button)?.Tag == "DeleteAll")
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("There might be saved games in these folders?!", "Saved Games may be located within these folders, are you sure you want to remove them?", MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_DeleteWarning), Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                     {
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync("Please wait...", "Removing junk files as you have requested.", true);
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(Properties.Resources.PleaseWait), Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_Delete), true);
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -174,7 +174,7 @@ namespace Steam_Library_Manager.Forms
                                 if (Junk.FSInfo.Exists)
                                 {
                                     File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                    ProgressInformationMessage.SetMessage("Deleting file:\n\n" + Junk.FSInfo.FullName);
+                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_MovingFile), Junk.FSInfo.FullName));
                                     await Task.Run(() => Junk.FSInfo.Delete());
                                 }
                             }
@@ -183,7 +183,7 @@ namespace Steam_Library_Manager.Forms
                                 Junk.FSInfo.Refresh();
                                 if (Junk.FSInfo.Exists)
                                 {
-                                    ProgressInformationMessage.SetMessage("Deleting Folder:\n\n" + Junk.FSInfo.FullName);
+                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory), Junk.FSInfo.FullName));
                                     await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
                                 }
                             }
@@ -201,8 +201,6 @@ namespace Steam_Library_Manager.Forms
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
-                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
-
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                     {
                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());
@@ -215,8 +213,6 @@ namespace Steam_Library_Manager.Forms
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
-                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
-
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                     {
                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());
@@ -230,8 +226,6 @@ namespace Steam_Library_Manager.Forms
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
-                    Debug.WriteLine("Dialog gözüküyor, kapatalım?");
-
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                      {
                          await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>());

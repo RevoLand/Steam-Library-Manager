@@ -5,6 +5,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Color="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
+             xmlns:localization="clr-namespace:Gu.Localization;assembly=Gu.Localization"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
@@ -64,6 +65,10 @@
                 <Controls:ToggleSwitch Header="{l:Static p:Resources.Forms_Settings_SearchOnLibraryChange}" Margin="5,455,0,0" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+
+                <ComboBox HorizontalAlignment="Left" Height="40"
+                                      Margin="5,515,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Path=(localization:Translator.CurrentCulture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" />
 
                 <!-- Button: Open Logs Folder -->
                 <Button Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Height="40" />

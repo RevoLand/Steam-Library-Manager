@@ -111,6 +111,7 @@
       <HintPath>..\packages\SharpRaven.2.4.0\lib\net45\SharpRaven.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
@@ -163,6 +164,7 @@
     <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
+    <Compile Include="Framework\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Framework\Network.cs" />
     <Compile Include="Framework\TaskManager.cs" />
     <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
@@ -190,6 +192,11 @@
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -238,17 +245,13 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Properties\Resources.tr.resx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\compressedLibraryIcon.png" />

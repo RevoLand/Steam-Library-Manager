@@ -22,6 +22,9 @@ namespace Steam_Library_Manager
         {
             InitializeComponent();
 
+            Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
+            Gu.Localization.Translator.ErrorHandling = Gu.Localization.ErrorHandling.ReturnErrorInfoPreserveNeutral;
+
             SetNLogConfig();
             UpdateBindings();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
@@ -77,12 +80,12 @@ namespace Steam_Library_Manager
             {
                 e.Cancel = true;
 
-                if (await this.ShowMessageAsync("Quit application?",
-                    "There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.",
+                if (await this.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.Forms_QuitSLM),
+                    Functions.SLM.Translate(Properties.Resources.Forms_QuitSLMMessage),
                     MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                     {
-                        AffirmativeButtonText = "Quit",
-                        NegativeButtonText = "Cancel"
+                        AffirmativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Quit),
+                        NegativeButtonText = Functions.SLM.Translate(Properties.Resources.Forms_Cancel)
                     }) != MessageDialogResult.Affirmative)
                 {
                     return;

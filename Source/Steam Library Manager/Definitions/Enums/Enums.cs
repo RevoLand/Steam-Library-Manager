@@ -6,19 +6,19 @@ namespace Steam_Library_Manager.Definitions.Enums
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum AppSortingMethod
     {
-        [Description("Name")]
+        [LocalizedDescription("Enums_Name")]
         appName,
 
-        [Description("AppID")]
+        [LocalizedDescription("Enums_AppID")]
         appID,
 
-        [Description("Size on disk")]
+        [LocalizedDescription("Enums_SizeOnDisk")]
         sizeOnDisk,
 
-        [Description("Backup type")]
+        [LocalizedDescription("Enums_BackupType")]
         backupType,
 
-        [Description("Last updated first")]
+        [LocalizedDescription("Enums_LastUpdate")]
         LastUpdated
     }
 
@@ -31,10 +31,10 @@ namespace Steam_Library_Manager.Definitions.Enums
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum ArchiveSizeCalculationMethod
     {
-        [Description("Use archive size")]
+        [LocalizedDescription("Enums_ArchiveSize")]
         compressed,
 
-        [Description("Calculate file size inside archive")]
+        [LocalizedDescription("Enums_ArchiveFileSize")]
         Uncompressed
     }
 
@@ -48,10 +48,10 @@ namespace Steam_Library_Manager.Definitions.Enums
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum LibraryStyle
     {
-        [Description("Grid View")]
+        [LocalizedDescription("Enums_GridView")]
         Grid,
 
-        [Description("List View")]
+        [LocalizedDescription("Enums_ListView")]
         Listview
     }
 
@@ -70,10 +70,16 @@ namespace Steam_Library_Manager.Definitions.Enums
         Uplay
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum TaskType
     {
+        [LocalizedDescription("Enums_Copy")]
         Copy,
+
+        [LocalizedDescription("Enums_Delete")]
         Delete,
+
+        [LocalizedDescription("Enums_Compress")]
         Compress
     }
 
@@ -107,13 +113,13 @@ namespace Steam_Library_Manager.Definitions.Enums
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum BaseTheme
     {
-        [Description("Light")]
+        [LocalizedDescription("Enums_Light")]
         BaseLight,
 
-        [Description("Dark")]
+        [LocalizedDescription("Enums_Dark")]
         BaseDark,
 
-        [Description("Custom")]
+        [LocalizedDescription("Enums_Custom")]
         CustomTheme
     }
 }

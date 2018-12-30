@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Forms
                         {
                             if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"[{CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName}] You can't remove an app from Task Manager which is currently being moved.\n\nPlease Stop the Task Manager first.");
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.TM_TaskActiveError), string.Format(Functions.SLM.Translate(Properties.Resources.TM_TaskActiveErrorMessage), CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName));
                             }
                             else
                             {

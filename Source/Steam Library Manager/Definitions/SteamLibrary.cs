@@ -53,7 +53,7 @@ namespace Steam_Library_Manager.Definitions
 
                     if (!SteamAppsFolder.Exists)
                     {
-                        MessageBox.Show("Can not create steam apps folder at: " + SteamAppsFolder.FullName + "\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.");
+                        MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.SteamLibrary_CantCreate), SteamAppsFolder.FullName));
                         return;
                     }
                 }
@@ -126,14 +126,14 @@ namespace Steam_Library_Manager.Definitions
             {
                 Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] An error releated to folder permissions happened during generating library content. Running SLM as Administrator might help.\n\nError: {uaex.Message}");
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.UnauthorizedAccessException), string.Format(Functions.SLM.Translate(Properties.Resources.UnauthorizedAccessExceptionMessage), FullPath, uaex.Message));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (DirectoryNotFoundException dnfex)
             {
                 Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync("UnauthorizedAccessException!", $"[{FullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.\n\nIf you believe this path exists and SLM can't do it's job, please contact with me.\n\nError: {dnfex.Message}");
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.DirectoryNotFoundException), string.Format(Functions.SLM.Translate(Properties.Resources.DirectoryNotFoundExceptionMessage), FullPath, dnfex.Message));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (Exception ex)
@@ -181,7 +181,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FormatException ex)
             {
-                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+                MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.SteamAppInfo_FormatException), ex));
                 return CMenu;
             }
         }
@@ -203,20 +203,20 @@ namespace Steam_Library_Manager.Definitions
 
                     if (IsMain)
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!", MessageDialogStyle.Affirmative);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.DeleteMainSteamLibrary), Functions.SLM.Translate(Properties.Resources.DeleteMainSteamLibraryMessage), MessageDialogStyle.Affirmative);
                         return;
                     }
 
-                    MessageDialogResult MoveAppsBeforeDeletion = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Move apps in Library before deleting the library?", MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
+                    MessageDialogResult MoveGamesBeforeDeletion = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.MoveGamesInLibrary), Functions.SLM.Translate(Properties.Resources.MoveGamesInLibraryMessage), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                     {
-                        FirstAuxiliaryButtonText = "Delete library without moving apps"
+                        FirstAuxiliaryButtonText = Functions.SLM.Translate(Properties.Resources.DeleteLibraryWithoutMovingGames)
                     });
 
-                    if (MoveAppsBeforeDeletion == MessageDialogResult.Affirmative)
+                    if (MoveGamesBeforeDeletion == MessageDialogResult.Affirmative)
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Function is not implemented, process cancelled", MessageDialogStyle.Affirmative);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.MoveGamesConfirmError), Functions.SLM.Translate(Properties.Resources.MoveGamesConfirmErrorMessage), MessageDialogStyle.Affirmative);
                     }
-                    else if (MoveAppsBeforeDeletion == MessageDialogResult.FirstAuxiliary)
+                    else if (MoveGamesBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
                         RemoveLibraryAsync(true);
                     }
@@ -229,7 +229,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (!await App.DeleteFilesAsync())
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"An unknown error happened while removing app files. {FullPath}", MessageDialogStyle.Affirmative);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.SteamApp_RemovingError), string.Format(Functions.SLM.Translate(Properties.Resources.SteamApp_RemovingErrorMessage), FullPath), MessageDialogStyle.Affirmative);
 
                             return;
                         }
@@ -237,7 +237,7 @@ namespace Steam_Library_Manager.Definitions
 
                     Functions.SLM.Library.UpdateLibraryVisual();
 
-                    await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"All app files in library successfully removed.\n\nLibrary: {FullPath}", MessageDialogStyle.Affirmative);
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(Properties.Resources.DeleteSteamLibrary), string.Format(Functions.SLM.Translate(Properties.Resources.DeleteSteamLibraryMessage), FullPath), MessageDialogStyle.Affirmative);
                     break;
             }
         }

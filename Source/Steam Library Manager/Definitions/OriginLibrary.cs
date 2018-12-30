@@ -95,16 +95,15 @@ namespace Steam_Library_Manager.Definitions
                         }
                         else
                         {
-                            MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion} - {OriginApp}");
+                            MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.OriginUnknownManifestFile), ManifestVersion, OriginApp));
                         }
                     } // foreach
                 }
                 else
                 {
-                    MessageBox.Show("Origin games directory is not exists.");
+                    MessageBox.Show(Functions.SLM.Translate(Properties.Resources.OriginDirectoryNotExists));
                 }
                 stopwatch.Stop();
-                Debug.WriteLine(stopwatch.Elapsed);
             }
             catch (Exception ex)
             {
@@ -151,7 +150,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FormatException ex)
             {
-                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+                MessageBox.Show(string.Format(Functions.SLM.Translate(Properties.Resources.OriginAppInfo_FormatException), ex));
                 return CMenu;
             }
         }
