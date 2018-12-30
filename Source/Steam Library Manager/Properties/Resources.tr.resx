@@ -140,19 +140,19 @@
     <value>Steam Library Manager</value>
   </data>
   <data name="CreateLibrary_ExistsMessage" xml:space="preserve">
-    <value>Library already exists at {0}</value>
+    <value>{0} konumunda kütüphane zaten mevcut</value>
   </data>
   <data name="CreateLibrary_RootError" xml:space="preserve">
     <value>Steam Library Manager</value>
   </data>
   <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
-    <value>Libraries can not be created at root</value>
+    <value>Kütüphaneler kök dizinde oluşturulamaz</value>
   </data>
   <data name="CreateSteamLibrary_Created" xml:space="preserve">
     <value>New Steam library created</value>
   </data>
   <data name="CreateSteamLibrary_UnauthorizedAccessException" xml:space="preserve">
-    <value>Unable to copy Steam.dll</value>
+    <value>Steam.dll dosyası kopyalanamadı</value>
   </data>
   <data name="CreateSteamLibrary_UnauthorizedAccessExceptionMessage" xml:space="preserve">
     <value>An error related to file system is happened while creating a new library.\n\nError: {0}.\n\nThe error is related to file system permissions. Try running SLM as administrator or take the target folder permissions for your user.</value>
@@ -188,10 +188,10 @@
     <value>File size in archive</value>
   </data>
   <data name="Enums_ArchiveSize" xml:space="preserve">
-    <value>Archive size</value>
+    <value>Arşiv boyutu</value>
   </data>
   <data name="Enums_BackupType" xml:space="preserve">
-    <value>Backup type</value>
+    <value>Yedekleme türü</value>
   </data>
   <data name="Enums_Compress" xml:space="preserve">
     <value>Compress</value>
@@ -200,31 +200,31 @@
     <value>Copy</value>
   </data>
   <data name="Enums_Custom" xml:space="preserve">
-    <value>Custom Theme</value>
+    <value>Özel Tema</value>
   </data>
   <data name="Enums_Dark" xml:space="preserve">
-    <value>Dark Theme</value>
+    <value>Koyu Tema</value>
   </data>
   <data name="Enums_Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Sil</value>
   </data>
   <data name="Enums_GridView" xml:space="preserve">
-    <value>Grid View</value>
+    <value>Izgara Görünümü</value>
   </data>
   <data name="Enums_LastUpdate" xml:space="preserve">
     <value>Last update</value>
   </data>
   <data name="Enums_Light" xml:space="preserve">
-    <value>Light Theme</value>
+    <value>Açık Tema</value>
   </data>
   <data name="Enums_ListView" xml:space="preserve">
-    <value>List View</value>
+    <value>Liste Görünümü</value>
   </data>
   <data name="Enums_Name" xml:space="preserve">
-    <value>Name</value>
+    <value>İsim</value>
   </data>
   <data name="Enums_SizeOnDisk" xml:space="preserve">
-    <value>Size on disk</value>
+    <value>Diskteki boyutu</value>
   </data>
   <data name="FileListPopulated" xml:space="preserve">
     <value>[{0}] File list populated, total files to move: {1} - total size to move: {2}</value>
@@ -248,16 +248,16 @@
     <value>Updated on: {0}</value>
   </data>
   <data name="Forms_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>İptal</value>
   </data>
   <data name="Forms_Compressed" xml:space="preserve">
-    <value>Compressed</value>
+    <value>Sıkıştırılmış</value>
   </data>
   <data name="Forms_LibraryCleaner_Delete" xml:space="preserve">
     <value>Removing junk files as you have requested.</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteAll" xml:space="preserve">
-    <value>Delete All</value>
+    <value>Tümünü Sil</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteSelectedFolders" xml:space="preserve">
     <value>Delete selected Folder(s)</value>
