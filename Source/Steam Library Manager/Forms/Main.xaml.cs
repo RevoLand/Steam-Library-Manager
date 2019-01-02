@@ -22,6 +22,8 @@ namespace Steam_Library_Manager
         {
             InitializeComponent();
 
+            Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
+
             SetNLogConfig();
             UpdateBindings();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
@@ -33,7 +35,6 @@ namespace Steam_Library_Manager
             var asyncWrapper = new AsyncTargetWrapper(new NLog.Targets.FileTarget() { ArchiveAboveSize = 10000000, FileName = "${basedir}/logs/${shortdate}.log", Name = "f", Layout = "${longdate} ${uppercase:${level}} ${message}" });
 
             config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Debug, asyncWrapper));
-
             LogManager.Configuration = config;
         }
 
@@ -78,12 +79,12 @@ namespace Steam_Library_Manager
             {
                 e.Cancel = true;
 
-                if (await this.ShowMessageAsync("Quit application?",
-                    "There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.",
+                if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
+                    Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
                     MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                     {
-                        AffirmativeButtonText = "Quit",
-                        NegativeButtonText = "Cancel"
+                        AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
+                        NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
                     }) != MessageDialogResult.Affirmative)
                 {
                     return;
@@ -166,6 +167,12 @@ namespace Steam_Library_Manager
                 Process.Start(new ProcessStartInfo("cmd", $"/c start https://goo.gl/forms/Bu1o0ETFdUWF5ZNJ3") { CreateNoWindow = true });
             }
             catch { }
+        }
+
+        private void RightWindowCommands_TranslateFormButton_Click(object sender, RoutedEventArgs e)
+        {
+            // hack because of this: https://github.com/dotnet/corefx/issues/10361
+            Process.Start(new ProcessStartInfo("cmd", $"/c start https://crowdin.com/project/steam-library-manager") { CreateNoWindow = true });
         }
     }
 }

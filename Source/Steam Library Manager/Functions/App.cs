@@ -139,12 +139,12 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = "Do NOT Remove the archive file"
+                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
                     }) == MessageDialogResult.Affirmative)
                     {
-                        new FileInfo(ZipPath).Delete();
+                        File.Delete(ZipPath);
                     }
                 });
 
@@ -155,12 +155,12 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync("An error happened while parsing zip file", $"An error happened while parsing zip file:\n\n{ZipPath}\n\nIt is still suggested to check the archive file manually to see if it is really corrupted or not!\n\nWould you like to remove the given archive file?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = "Do NOT Remove the archive file"
+                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
                     }) == MessageDialogResult.Affirmative)
                     {
-                        new FileInfo(ZipPath).Delete();
+                        File.Delete(ZipPath);
                     }
                 });
 

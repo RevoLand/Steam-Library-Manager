@@ -4,6 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <UserControl.Resources>
         <!-- Library: Steam -->
@@ -18,7 +20,7 @@
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="Steam" />
+                    <TextBlock Text="{l:Static p:Resources.Forms_Steam}" />
 
                     <!-- TextBlock: App count -->
                     <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
@@ -47,7 +49,7 @@
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="Origin" />
+                    <TextBlock Text="{l:Static p:Resources.Forms_Origin}" />
 
                     <!-- TextBlock: App count -->
                     <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
@@ -72,7 +74,7 @@
                 </Grid.ContextMenu>
 
                 <!-- TextBlock: Offline text -->
-                <TextBlock Text="OFFLINE" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
+                <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_Offline}" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -98,7 +100,7 @@
 
                 <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
                     <!-- TextBlock: Library Type -->
-                    <TextBlock Text="SLM">
+                    <TextBlock Text="{l:Static p:Resources.Forms_SLM}">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -180,6 +182,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button x:Name="CreateLibraryButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Create Library" Width="200" Height="40" Margin="0, 0, 0, 5" Click="CreateLibraryButton_ClickAsync" />
+        <Button x:Name="CreateLibraryButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="{l:Static p:Resources.Forms_LibraryView_CreateLibrary}" Width="200" Height="40" Margin="0, 0, 0, 5" Click="CreateLibraryButton_ClickAsync" />
     </Grid>
 </UserControl>

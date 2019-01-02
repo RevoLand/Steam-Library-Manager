@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Definitions
                             MenuItem SLMItem = new MenuItem()
                             {
                                 Tag = CMenuItem.Action,
-                                Header = string.Format(CMenuItem.Header, DirectoryInfo.FullName, PrettyFreeSpace),
+                                Header = Framework.StringFormat.Format(CMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
                                 Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
                                 HorizontalContentAlignment = HorizontalAlignment.Left,
                                 VerticalContentAlignment = VerticalAlignment.Center

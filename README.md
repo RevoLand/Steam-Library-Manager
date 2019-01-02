@@ -7,6 +7,9 @@
     <a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest">
         <img src="https://img.shields.io/github/downloads/RevoLand/Steam-Library-Manager/total.svg?style=flat-square" alt="Total Downloads">
     </a>
+    <a title="Crowdin" target="_blank" href="https://crowdin.com/project/steam-library-manager">
+        <img src="https://d322cqt584bo4o.cloudfront.net/steam-library-manager/localized.svg">
+    </a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License">
     </a>

@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
         public BitmapCreateOptions CreateOptions
         {
             get => (BitmapCreateOptions)(GetValue(CreateOptionsProperty));
-            set => base.SetValue(CreateOptionsProperty, value);
+            set => SetValue(CreateOptionsProperty, value);
         }
 
         private static void FailedImageUrlPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -95,16 +95,15 @@ namespace Steam_Library_Manager.Definitions
                         }
                         else
                         {
-                            MessageBox.Show($"Unknown Manifest Version from Origin game: {ManifestVersion} - {OriginApp}");
+                            MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)), new { ManifestVersion, OriginApp }));
                         }
                     } // foreach
                 }
                 else
                 {
-                    MessageBox.Show("Origin games directory is not exists.");
+                    MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.OriginDirectoryNotExists)));
                 }
                 stopwatch.Stop();
-                Debug.WriteLine(stopwatch.Elapsed);
             }
             catch (Exception ex)
             {
@@ -135,7 +134,7 @@ namespace Steam_Library_Manager.Definitions
                         MenuItem SLMItem = new MenuItem()
                         {
                             Tag = CMenuItem.Action,
-                            Header = string.Format(CMenuItem.Header, FullPath, Library.PrettyFreeSpace),
+                            Header = Framework.StringFormat.Format(CMenuItem.Header, new { LibraryFullPath = Library.DirectoryInfo.FullName, FreeDiskSpace = Library.PrettyFreeSpace }),
                             Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
                             HorizontalContentAlignment = HorizontalAlignment.Left,
                             VerticalContentAlignment = VerticalAlignment.Center
@@ -151,7 +150,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FormatException ex)
             {
-                MessageBox.Show($"An error happened while parsing context menu, most likely happened duo typo on color name.\n\n{ex}");
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginAppInfo_FormatException)), new { ExceptionMessage = ex.Message }));
                 return CMenu;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gu.Localization;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,11 @@ namespace Steam_Library_Manager.Functions
     internal static class SLM
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public static string Translate(string key)
+        {
+            return Translator.Translate(Properties.Resources.ResourceManager, key);
+        }
 
         public static class Settings
         {
@@ -222,7 +228,6 @@ namespace Steam_Library_Manager.Functions
                         Type = Definitions.Enums.LibraryType.SLM,
                         DirectoryInfo = new DirectoryInfo(LibraryPath),
                         Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary(LibraryPath) : null,
-                        //Origin = (Directory.Exists(Path.Combine(LibraryPath, "Origin"))) ? new Definitions.OriginLibrary(Path.Combine(LibraryPath, "Origin")) : null
                     };
 
                     Definitions.List.Libraries.Add(Library);
@@ -246,7 +251,6 @@ namespace Steam_Library_Manager.Functions
                 {
                     return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0 && Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, NewLibraryPath, StringComparison.InvariantCultureIgnoreCase));
                 }
-                // In any error return true to prevent possible bugs
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);

@@ -4,8 +4,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <UserControl.Resources>
         <!-- Task Manager: GridView -->
@@ -13,7 +15,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
 
@@ -54,7 +56,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="COMPLETED" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -71,7 +73,7 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -85,7 +87,7 @@
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
 
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="{x:Type Grid}">
@@ -96,7 +98,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -108,7 +110,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -120,7 +122,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
@@ -155,7 +157,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="COMPLETED" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -177,7 +179,7 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -185,7 +187,7 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="{x:Type Grid}">
@@ -196,7 +198,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -208,7 +210,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Compress" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -220,7 +222,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
 
@@ -261,7 +263,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="COMPLETED" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -278,7 +280,7 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -292,7 +294,7 @@
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
 
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="{x:Type Grid}">
@@ -303,7 +305,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -315,7 +317,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -341,7 +343,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove selected Game(s) from Queue" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
                 <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
@@ -376,7 +378,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="COMPLETED" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -398,7 +400,7 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="Delete" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -406,7 +408,7 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <CheckBox Content="Report File Movement" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
+                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="{x:Type Grid}">
@@ -417,7 +419,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Remove Original Files" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
                         </Grid>
                         <Grid>
                             <Grid.Style>
@@ -429,7 +431,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
-                            <CheckBox Content="Auto Install" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
                         </Grid>
 
                         <ComboBox HorizontalAlignment="Left" Height="15"
@@ -503,18 +505,18 @@
 
         <Grid Margin="0,0,0,255" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="Start" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" />
+            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" />
 
-            <Button x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="Pause" Tag="Pause" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="150,0,0,0" />
+            <Button x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="150,0,0,0" />
 
             <!-- Button: Stop Task Manager -->
-            <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="Stop" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="300,0,0,0" />
+            <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="300,0,0,0" />
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Content="Clear Completed Tasks" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="450,0,0,0" HorizontalAlignment="Left" Width="180" Height="45" VerticalAlignment="Bottom" />
+            <Button Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="450,0,0,0" HorizontalAlignment="Left" Width="180" Height="45" VerticalAlignment="Bottom" />
 
             <!-- Button: Check for Backup Updates -->
-            <Button Content="Check for Backup Updates" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="640,0,0,0" HorizontalAlignment="Left" Width="200" Height="45" VerticalAlignment="Bottom" />
+            <Button Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="640,0,0,0" HorizontalAlignment="Left" Width="200" Height="45" VerticalAlignment="Bottom" />
         </Grid>
 
         <!-- ListBox: Task Manager Logs -->

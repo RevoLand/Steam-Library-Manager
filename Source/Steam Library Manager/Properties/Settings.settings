@@ -77,5 +77,8 @@
     <Setting Name="CompressionLevel" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">Fastest</Value>
     </Setting>
+    <Setting Name="Language" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

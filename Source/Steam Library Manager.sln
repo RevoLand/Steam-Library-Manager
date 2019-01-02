@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam Library Manager", "Steam Library Manager\Steam Library Manager.csproj", "{1E4D6DFF-D115-441D-AEA8-F22F60B2CBE4}"
 EndProject
@@ -20,6 +20,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_DuplicateKeyHandling = Fail
+		RESX_ShowErrorsInErrorList = True
+		RESX_AutoCreateNewLanguageFiles = False
 		SolutionGuid = {BAC111FB-A259-47CA-987C-ECC3D96BDA53}
+		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"Functions.SLM.Translate(Properties.$File.$Key)|$Key"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"\"{x:Static properties:$File.$Key}\""},{"Extensions":".xaml","Patterns":"\"{l:Static p:$File.$Key}\""}]}
 	EndGlobalSection
 EndGlobal

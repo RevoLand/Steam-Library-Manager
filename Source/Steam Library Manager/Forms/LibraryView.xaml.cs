@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName =  (Definitions.SteamAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
                             }
                         }
                     }
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"This item is already tasked.\n\nGame: {App.AppName}\nTarget Library: {Library.DirectoryInfo.FullName}");
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName = (Definitions.OriginAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
                         }
                     }
                 }
@@ -130,12 +130,12 @@ namespace Steam_Library_Manager.Forms
 
         private async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
         {
-            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", $"Select Library type you want to create in folder:\n{LibraryPath}", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), new { LibraryPath }), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
             {
-                AffirmativeButtonText = "Steam",
-                NegativeButtonText = "SLM",
-                FirstAuxiliaryButtonText = "Origin",
-                SecondAuxiliaryButtonText = "Cancel"
+                AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Steam)),
+                NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
+                FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Origin)),
+                SecondAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
             });
 
             switch (LibraryDialog)
@@ -150,12 +150,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
                 // SLM
@@ -168,12 +168,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
                 // Origin
@@ -186,12 +186,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Libraries can not be created at root");
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync("Steam Library Manager", "Library already exists at " + LibraryPath);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
             }
