@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName =  (Definitions.SteamAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
                             }
                         }
                     }
@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), (Definitions.SteamAppInfo)App.AppName, Library.DirectoryInfo.FullName));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName = (Definitions.OriginAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace Steam_Library_Manager.Forms
 
         private async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
         {
-            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), LibraryPath), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), new { LibraryPath }), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
             {
                 AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Steam)),
                 NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
@@ -155,7 +155,7 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
                 // SLM
@@ -173,7 +173,7 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
                 // Origin
@@ -191,7 +191,7 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), string.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), LibraryPath));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
                     }
                     break;
             }

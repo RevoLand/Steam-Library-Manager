@@ -139,7 +139,7 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.ReadZip_IOException), string.Format(SLM.Translate(Properties.Resources.ReadZip_IOExceptionMessage), ZipPath), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
                     }) == MessageDialogResult.Affirmative)
@@ -155,7 +155,7 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(Properties.Resources.ReadZip_InvalidDataException), string.Format(SLM.Translate(Properties.Resources.ReadZip_InvalidDataExceptionMessage), ZipPath), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
                     }) == MessageDialogResult.Affirmative)

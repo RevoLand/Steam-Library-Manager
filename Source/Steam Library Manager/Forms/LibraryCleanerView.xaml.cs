@@ -120,7 +120,7 @@ namespace Steam_Library_Manager.Forms
                                 Junk.FSInfo.Refresh();
                                 if (Junk.FSInfo.Exists)
                                 {
-                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), Junk.FSInfo.FullName));
+                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = Junk.FSInfo.FullName }));
                                     ((FileInfo)Junk.FSInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
                                 }
 
@@ -143,12 +143,12 @@ namespace Steam_Library_Manager.Forms
                                                 newFile.Directory.Create();
                                             }
 
-                                            ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), currentFile.FullName));
+                                            ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = currentFile.FullName }));
                                             await Task.Run(() => currentFile.CopyTo(newFile.FullName, true));
                                         }
                                     }
 
-                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), Junk.FSInfo.FullName));
+                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
                                     await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true));
                                 }
                             }
@@ -174,7 +174,7 @@ namespace Steam_Library_Manager.Forms
                                 if (Junk.FSInfo.Exists)
                                 {
                                     File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), Junk.FSInfo.FullName));
+                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = Junk.FSInfo.FullName }));
                                     await Task.Run(() => Junk.FSInfo.Delete());
                                 }
                             }
@@ -183,7 +183,7 @@ namespace Steam_Library_Manager.Forms
                                 Junk.FSInfo.Refresh();
                                 if (Junk.FSInfo.Exists)
                                 {
-                                    ProgressInformationMessage.SetMessage(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), Junk.FSInfo.FullName));
+                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
                                     await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true));
                                 }
                             }

@@ -18,7 +18,7 @@ namespace Steam_Library_Manager.Functions
             // Open library in explorer ({0})
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginLibrary_CMenu_Open),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_Open)),
                 Action = "Disk",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
                 LibraryType = Definitions.Enums.LibraryType.Origin
@@ -26,7 +26,7 @@ namespace Steam_Library_Manager.Functions
 
             Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginLibrary_CMenu_RemoveFromSLM),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_RemoveFromSLM)),
                 Action = "remove",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
@@ -44,7 +44,7 @@ namespace Steam_Library_Manager.Functions
             // Run
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_Run),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Run)),
                 Action = "steam://run/{0}", // TO-DO
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Functions
 
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_Install),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Install)),
                 Action = "install",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Gear,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Functions
 
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_Repair),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Repair)),
                 Action = "repair",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Gears,
                 LibraryType = Definitions.Enums.LibraryType.Origin,
@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Functions
             // Show on disk
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_DiskInfo),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DiskInfo)),
                 Action = "Disk",
                 LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
@@ -104,7 +104,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using SLM)
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_DeleteFilesSLM),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
                 LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
@@ -113,7 +113,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using Task Manager)
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(Properties.Resources.OriginApp_CMenu_DeleteFilesTM),
+                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
                 LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (OriginConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
-                        logger.Log(NLog.LogLevel.Error, SLM.Translate(Properties.Resources.Origin_MissingKey), Definitions.Global.Origin.ConfigFilePath);
+                        logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(Properties.Resources.Origin_MissingKey), new { OriginConfigFilePath =  Definitions.Global.Origin.ConfigFilePath }));
                     }
                     else
                     {
@@ -143,7 +143,7 @@ namespace Steam_Library_Manager.Functions
                         }
                         else
                         {
-                            MessageBox.Show(string.Format(SLM.Translate(Properties.Resources.Origin_DirectoryNotExists), OriginConfigKeys["DownloadInPlaceDir"]));
+                            MessageBox.Show(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = OriginConfigKeys["DownloadInPlaceDir"] }));
                         }
                     }
                 }

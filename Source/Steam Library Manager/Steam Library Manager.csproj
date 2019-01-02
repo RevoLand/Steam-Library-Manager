@@ -167,6 +167,7 @@
     <Compile Include="Framework\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Framework\Network.cs" />
     <Compile Include="Framework\TaskManager.cs" />
+    <Compile Include="Framework\StringFormat.cs" />
     <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
     <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Framework\FontAwesome.WPF\Attributes.cs" />

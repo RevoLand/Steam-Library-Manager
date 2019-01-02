@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (CurrentTask != null)
                         {
-                            CurrentTask.TaskStatusInfo = string.Format(SLM.Translate(Properties.Resources.TaskStatus_DeletingFile), File.Name, FormatBytes(File.Length));
+                            CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = File.Name, FormattedFileSize = FormatBytes(File.Length) });
                         }
 
                         System.IO.File.SetAttributes(File.FullName, FileAttributes.Normal);
@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Functions
                         {
                             if (CurrentTask != null)
                             {
-                                CurrentTask.TaskStatusInfo = string.Format(SLM.Translate(Properties.Resources.TaskStatus_DeletingDirectory), Directory.Name);
+                                CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingDirectory)), new { DirectoryName = Directory.Name });
                             }
 
                             Directory.Delete();
