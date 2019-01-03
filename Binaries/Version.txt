@@ -1,1 +1,1 @@
-1.5.0.14|Locale selection support for Origin game installation
+1.5.0.15|Fix for Startup Issue #31

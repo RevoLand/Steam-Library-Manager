@@ -44,7 +44,7 @@ namespace Steam_Library_Manager.Definitions
                         if (new FileInfo(OriginApp).Directory.Parent.Parent.Name != new DirectoryInfo(FullPath).Name)
                             continue;
 
-                        Debug.WriteLine(OriginApp);
+                        //Debug.WriteLine(OriginApp);
 
                         string installerLog = Path.Combine(Directory.GetParent(OriginApp).FullName, "InstallLog.txt");
                         string installedLocale = "en_US";
@@ -66,10 +66,14 @@ namespace Steam_Library_Manager.Definitions
                         var xml = XDocument.Load(OriginApp);
                         Version ManifestVersion = new Version((xml.Root.Name.LocalName == "game") ? xml.Root.Attribute("manifestVersion").Value : ((xml.Root.Name.LocalName == "DiPManifest") ? xml.Root.Attribute("version").Value : "1.0"));
 
+                        Debug.WriteLine(ManifestVersion);
+                        Debug.WriteLine(OriginApp);
+                        Debug.WriteLine("----------------------");
+
                         if (ManifestVersion == new Version("4.0"))
                         {
                             Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("gameTitles")?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
-                                _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value), _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
+                                _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements().FirstOrDefault(x => int.TryParse(x.Value, out int appId))?.Value), _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
                                 _AppVersion: new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")?.Attribute("version")?.Value),
                                 _Locales: xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
                                 _InstalledLocale: installedLocale,

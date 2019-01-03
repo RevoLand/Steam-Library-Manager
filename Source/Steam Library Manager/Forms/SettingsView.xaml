@@ -66,9 +66,11 @@
                                                    IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
+                <!-- Will be enabled in the next release
                 <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       Margin="5,515,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Path=(localization:Translator.CurrentCulture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" />
+                -->
 
                 <!-- Button: Open Logs Folder -->
                 <Button Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Height="40" />

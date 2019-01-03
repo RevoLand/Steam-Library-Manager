@@ -60,7 +60,6 @@ namespace Steam_Library_Manager
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            AutoUpdaterDotNET.AutoUpdater.ReportErrors = true;
             Functions.SLM.OnLoad();
 
             SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
