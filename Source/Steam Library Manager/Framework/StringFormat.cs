@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Framework
 
             var tokenizedString = TokenizeString(format, out tokens);
 
-            return String.Format(provider, tokenizedString, tokens.Select(s => values[s]).ToArray());
+            return string.Format(provider, tokenizedString, tokens.Select(s => values[s]).ToArray());
         }
 
         /// <summary>

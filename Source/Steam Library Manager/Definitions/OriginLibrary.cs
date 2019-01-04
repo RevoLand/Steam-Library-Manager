@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -39,6 +41,31 @@ namespace Steam_Library_Manager.Definitions
                 stopwatch.Start();
                 if (Directory.Exists(FullPath))
                 {
+                    List<KeyValuePair<string, string>> AppIds = new List<KeyValuePair<string, string>>();
+
+                    if (Directory.Exists(Directories.Origin.LocalContentDirectoy))
+                    {
+                        foreach (string OriginApp in Directory.EnumerateFiles(Directories.Origin.LocalContentDirectoy, "*.mfst", SearchOption.AllDirectories))
+                        {
+                            var appId = Path.GetFileNameWithoutExtension(OriginApp);
+
+                            if (!appId.StartsWith("Origin"))
+                            {
+                                // Get game id by fixing file via adding : before integer part of the name
+                                // for example OFB-EAST52017 converts to OFB-EAST:52017
+                                var match = System.Text.RegularExpressions.Regex.Match(appId, @"^(.*?)(\d+)$");
+                                if (!match.Success)
+                                {
+                                    continue;
+                                }
+
+                                appId = match.Groups[1].Value + ":" + match.Groups[2].Value;
+                            }
+
+                            AppIds.Add(new KeyValuePair<string, string>(new FileInfo(OriginApp).Directory.Name, appId));
+                        }
+                    }
+
                     foreach (var OriginApp in Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories))
                     {
                         if (new FileInfo(OriginApp).Directory.Parent.Parent.Name != new DirectoryInfo(FullPath).Name)
@@ -66,19 +93,17 @@ namespace Steam_Library_Manager.Definitions
                         var xml = XDocument.Load(OriginApp);
                         Version ManifestVersion = new Version((xml.Root.Name.LocalName == "game") ? xml.Root.Attribute("manifestVersion").Value : ((xml.Root.Name.LocalName == "DiPManifest") ? xml.Root.Attribute("version").Value : "1.0"));
 
-                        Debug.WriteLine(ManifestVersion);
-                        Debug.WriteLine(OriginApp);
-                        Debug.WriteLine("----------------------");
+                        OriginAppInfo originApp = null;
 
                         if (ManifestVersion == new Version("4.0"))
                         {
-                            Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("gameTitles")?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
+                            originApp = new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("gameTitles")?.Elements("gameTitle")?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
                                 _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements().FirstOrDefault(x => int.TryParse(x.Value, out int appId))?.Value), _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
                                 _AppVersion: new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")?.Attribute("version")?.Value),
                                 _Locales: xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
                                 _InstalledLocale: installedLocale,
                                 _TouchupFile: xml.Root.Element("touchup")?.Element("filePath")?.Value, _InstallationParameter: xml.Root.Element("touchup")?.Element("parameters")?.Value,
-                                _UpdateParameter: xml.Root.Element("touchup")?.Element("updateParameters")?.Value, _RepairParameter: xml.Root.Element("touchup")?.Element("repairParameters")?.Value));
+                                _UpdateParameter: xml.Root.Element("touchup")?.Element("updateParameters")?.Value, _RepairParameter: xml.Root.Element("touchup")?.Element("repairParameters")?.Value);
                         }
                         else if (ManifestVersion >= new Version("1.1") && ManifestVersion <= new Version("3.0"))
                         {
@@ -88,19 +113,34 @@ namespace Steam_Library_Manager.Definitions
                                 _locales.Add(_locale.Value);
                             }
 
-                            Apps.Add(new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("metadata")?.Elements("localeInfo")?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
+                            originApp = new OriginAppInfo(_Library: Library, _AppName: xml.Root.Element("metadata")?.Elements("localeInfo")?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
                                 _AppID: Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value.Replace("EAX", "")),
                                 _InstallationDirectory: new FileInfo(OriginApp).Directory.Parent,
                                 _AppVersion: new Version(xml.Root.Attribute("gameVersion").Value),
                                 _Locales: _locales.ToArray(),
                                 _InstalledLocale: installedLocale,
                                 _TouchupFile: xml.Root.Element("executable")?.Element("filePath")?.Value,
-                                _InstallationParameter: xml.Root.Element("executable")?.Element("parameters")?.Value));
+                                _InstallationParameter: xml.Root.Element("executable")?.Element("parameters")?.Value);
                         }
                         else
                         {
                             MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)), new { ManifestVersion, OriginApp }));
+                            continue;
                         }
+
+                        if (AppIds.Count(x => x.Key == originApp.InstallationDirectory.Name) > 0)
+                        {
+                            var appId = AppIds.First(x => x.Key == originApp.InstallationDirectory.Name);
+
+                            dynamic appLocalData = GetGameLocalData(appId.Value);
+
+                            if (appLocalData != null)
+                            {
+                                originApp.GameHeaderImage = appLocalData.customAttributes.imageServer + appLocalData.localizableAttributes.packArtLarge;
+                            }
+                        }
+
+                        Apps.Add(originApp);
                     } // foreach
                 }
                 else
@@ -112,6 +152,24 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        public static JObject GetGameLocalData(string gameId)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+
+                Debug.WriteLine($"https://api1.origin.com/ecommerce2/public/{gameId}/en_US");
+
+                string myJSON = client.DownloadString($"https://api1.origin.com/ecommerce2/public/{gameId}/en_US");
+                return JObject.Parse(myJSON);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
             }
         }
 

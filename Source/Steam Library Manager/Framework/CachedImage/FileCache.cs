@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -50,7 +51,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             }
 
             var fileName = fileNameBuilder.ToString();
-            var localFile = $"{Definitions.Directories.SLM.Cache}\\{uri.AbsolutePath.Replace("/steam/apps/", "").Replace("/header", "")}";
+            var localFile = (!url.Contains("origin")) ? $"{Definitions.Directories.SLM.Cache}\\{uri.Segments[3].Replace("/", "")}.jpg" : $"{Definitions.Directories.SLM.Cache}\\{uri.Segments.Last()}";
             var memoryStream = new MemoryStream();
 
             FileStream fileStream = null;
@@ -65,7 +66,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             }
 
             var request = WebRequest.Create(uri);
-            request.Timeout = 30;
+            request.Timeout = 10;
             try
             {
                 var response = await request.GetResponseAsync();

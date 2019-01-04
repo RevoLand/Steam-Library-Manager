@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Framework
         {
             while ( !EndOfStream )
             {
-                if ( !Char.IsWhiteSpace( ( char )Peek() ) )
+                if ( !char.IsWhiteSpace( ( char )Peek() ) )
                 {
                     break;
                 }
@@ -215,7 +215,7 @@ namespace Steam_Library_Manager.Framework
                     wasConditional = true;
                 }
 
-                if (Char.IsWhiteSpace(next))
+                if (char.IsWhiteSpace(next))
                 {
                     break;
                 }
@@ -953,35 +953,35 @@ namespace Steam_Library_Manager.Framework
     internal static class StreamHelpers
     {
         private static readonly byte[] data = new byte[8];
-        public static Int16 ReadInt16(this Stream stream)
+        public static short ReadInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
 
             return BitConverter.ToInt16(data, 0);
         }
 
-        public static UInt16 ReadUInt16(this Stream stream)
+        public static ushort ReadUInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
 
             return BitConverter.ToUInt16(data, 0);
         }
 
-        public static Int32 ReadInt32(this Stream stream)
+        public static int ReadInt32(this Stream stream)
         {
             stream.Read(data, 0, 4);
 
             return BitConverter.ToInt32(data, 0);
         }
 
-        public static UInt32 ReadUInt32(this Stream stream)
+        public static uint ReadUInt32(this Stream stream)
         {
             stream.Read(data, 0, 4);
 
             return BitConverter.ToUInt32(data, 0);
         }
 
-        public static UInt64 ReadUInt64(this Stream stream)
+        public static ulong ReadUInt64(this Stream stream)
         {
             stream.Read(data, 0, 8);
 

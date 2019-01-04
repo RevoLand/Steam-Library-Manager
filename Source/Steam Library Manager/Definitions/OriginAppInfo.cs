@@ -30,6 +30,7 @@ namespace Steam_Library_Manager.Definitions
         public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
         public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
+        public string GameHeaderImage { get; set; }
 
         public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _InstalledLocale, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
@@ -46,7 +47,6 @@ namespace Steam_Library_Manager.Definitions
             AppVersion = _AppVersion;
         }
 
-        //-----
         public List<FrameworkElement> ContextMenuItems
         {
             get

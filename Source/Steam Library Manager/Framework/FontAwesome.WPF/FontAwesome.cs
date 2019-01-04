@@ -18,7 +18,7 @@ namespace FontAwesome.WPF
         /// <summary>
         /// The key used for storing the spinner Storyboard.
         /// </summary>
-        private static readonly string StoryBoardName = String.Format("{0}-storyboard-spinner", typeof(FontAwesome).Name);
+        private static readonly string StoryBoardName = string.Format("{0}-storyboard-spinner", typeof(FontAwesome).Name);
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.Icon dependency property.
         /// </summary>

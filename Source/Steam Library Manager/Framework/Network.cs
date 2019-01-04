@@ -92,7 +92,7 @@ namespace Steam_Library_Manager.Framework
                     }
                     else
                     {
-                        if (String.IsNullOrEmpty(Properties.Settings.Default.ListenIP))
+                        if (string.IsNullOrEmpty(Properties.Settings.Default.ListenIP))
                         {
                             Functions.Network.UpdatePublicIP();
                         }

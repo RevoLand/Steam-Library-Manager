@@ -104,7 +104,7 @@
                     <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
-                <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
+                <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
                             <CachedImage:Image.Effect>
@@ -117,10 +117,10 @@
 
                 <Grid>
                     <!-- App Name -->
-                    <TextBlock Text="{Binding AppName}" Padding="240,4,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding AppName}" Padding="125,4,0,0" TextWrapping="Wrap" FontSize="14" />
 
                     <!-- App Info Grid -->
-                    <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
+                    <Grid VerticalAlignment="Bottom" Margin="125,0,0,5">
 
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />

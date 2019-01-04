@@ -18,5 +18,10 @@ namespace Steam_Library_Manager.Definitions
             //public static string Cache = Path.Combine(Path.GetTempPath(), System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
             public static string Cache = Path.Combine(Current, ".slmcache");
         }
+
+        public static class Origin
+        {
+            public static string LocalContentDirectoy = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Origin", "LocalContent");
+        }
     }
 }
