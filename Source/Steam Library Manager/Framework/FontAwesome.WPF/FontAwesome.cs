@@ -15,30 +15,36 @@ namespace FontAwesome.WPF
         /// FontAwesome FontFamily.
         /// </summary>
         private static readonly FontFamily FontAwesomeFontFamily = new FontFamily(new Uri("pack://application:,,,/Resources/fa/"), "./#FontAwesome");
+
         /// <summary>
         /// The key used for storing the spinner Storyboard.
         /// </summary>
         private static readonly string StoryBoardName = string.Format("{0}-storyboard-spinner", typeof(FontAwesome).Name);
+
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.Icon dependency property.
         /// </summary>
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(FontAwesomeIcon), typeof(FontAwesome), new PropertyMetadata(FontAwesomeIcon.None, OnIconPropertyChanged));
+
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.Spin dependency property.
         /// </summary>
         public static readonly DependencyProperty SpinProperty =
             DependencyProperty.Register("Spin", typeof(bool), typeof(FontAwesome), new PropertyMetadata(false, OnSpinPropertyChanged));
+
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.Spin dependency property.
         /// </summary>
         public static readonly DependencyProperty SpinDurationProperty =
             DependencyProperty.Register("SpinDuration", typeof(double), typeof(FontAwesome), new PropertyMetadata(1d, SpinDurationChanged, SpinDurationCoerceValue));
+
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.Rotation dependency property.
         /// </summary>
         public static readonly DependencyProperty RotationProperty =
             DependencyProperty.Register("Rotation", typeof(double), typeof(FontAwesome), new PropertyMetadata(0d, RotationChanged, RotationCoerceValue));
+
         /// <summary>
         /// Identifies the FontAwesome.WPF.FontAwesome.FlipOrientation dependency property.
         /// </summary>
@@ -50,16 +56,17 @@ namespace FontAwesome.WPF
         /// </summary>
         public FontAwesomeIcon Icon
         {
-            get { return (FontAwesomeIcon)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            get => (FontAwesomeIcon)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
         }
+
         /// <summary>
         /// Gets or sets the current spin (angle) animation of the icon.
         /// </summary>
         public bool Spin
         {
-            get { return (bool)GetValue(SpinProperty); }
-            set { SetValue(SpinProperty, value); }
+            get => (bool)GetValue(SpinProperty);
+            set => SetValue(SpinProperty, value);
         }
 
         private static void OnIconPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -97,8 +104,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public double SpinDuration
         {
-            get { return (double)GetValue(SpinDurationProperty); }
-            set { SetValue(SpinDurationProperty, value); }
+            get => (double)GetValue(SpinDurationProperty);
+            set => SetValue(SpinDurationProperty, value);
         }
 
         private static void SpinDurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -125,8 +132,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public double Rotation
         {
-            get { return (double)GetValue(RotationProperty); }
-            set { SetValue(RotationProperty, value); }
+            get => (double)GetValue(RotationProperty);
+            set => SetValue(RotationProperty, value);
         }
 
         private static void RotationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -152,8 +159,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public FlipOrientation FlipOrientation
         {
-            get { return (FlipOrientation)GetValue(FlipOrientationProperty); }
-            set { SetValue(FlipOrientationProperty, value); }
+            get => (FlipOrientation)GetValue(FlipOrientationProperty);
+            set => SetValue(FlipOrientationProperty, value);
         }
 
         private static void FlipOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

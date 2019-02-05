@@ -17,10 +17,7 @@ namespace Steam_Library_Manager.Forms
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public LibraryCleanerView()
-        {
-            InitializeComponent();
-        }
+        public LibraryCleanerView() => InitializeComponent();
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {

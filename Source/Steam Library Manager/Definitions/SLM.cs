@@ -4,7 +4,6 @@
     public static class SLM
     {
         public static Library CurrentSelectedLibrary;
-        public static string UserSteamID64;
 
         public static int NetworkBuffer = 4096 * 1024;
 

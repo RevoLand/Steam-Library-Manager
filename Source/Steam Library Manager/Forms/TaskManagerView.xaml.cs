@@ -15,10 +15,7 @@ namespace Steam_Library_Manager.Forms
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public TaskManagerView()
-        {
-            InitializeComponent();
-        }
+        public TaskManagerView() => InitializeComponent();
 
         private void TaskManager_Buttons_Click(object sender, RoutedEventArgs e)
         {
@@ -119,6 +116,28 @@ namespace Steam_Library_Manager.Forms
             {
                 logger.Fatal(ex);
             }
+        }
+
+        private bool AutoScroll = true;
+
+        private void TaskManager_LogsView_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            try
+            {
+                var scrollViewer = ((ScrollViewer)e.OriginalSource);
+                // User scroll event : set or unset autoscroll mode
+                if (e.ExtentHeightChange == 0)
+                {
+                    AutoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
+                }
+
+                // Content scroll event : autoscroll eventually
+                if (AutoScroll && e.ExtentHeightChange != 0)
+                {
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
+                }
+            }
+            catch { }
         }
     }
 }

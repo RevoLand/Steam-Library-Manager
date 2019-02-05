@@ -17,7 +17,6 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="{l:Static p:Resources.Forms_Main_SuggestionForm}" Click="RightWindowCommands_SuggestionFormButton_Click" />
             <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click" />
             <Button Content="{l:Static p:Resources.Forms_Main_Translate}" Click="RightWindowCommands_TranslateFormButton_Click" />
             <Button Content="{l:Static p:Resources.Forms_Main_Discord}" Click="RightWindowCommands_DiscordButton_Click" />
@@ -62,7 +61,7 @@
                     <Forms:AppView x:Name="AppView" />
                     
                     <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged" />
+                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" />
                 </Grid>
             </Controls:MetroTabItem>
             <!-- Tab: Task Manager -->

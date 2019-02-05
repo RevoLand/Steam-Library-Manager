@@ -22,10 +22,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
         // Record whether a file is being written.
         private static readonly Dictionary<string, bool> IsWritingFile = new Dictionary<string, bool>();
 
-        static FileCache()
-        {
-            AppCacheMode = CacheMode.Dedicated;
-        }
+        static FileCache() => AppCacheMode = CacheMode.Dedicated;
 
         /// <summary>
         ///     Gets or sets the cache mode. WinINet is recommended, it's provided by .Net Framework and uses the Temporary Files

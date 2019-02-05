@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Localization support
+  - Supported Languages: English, Turkish *(WIP)*
+    - Help us [Translate!](https://crowdin.com/project/steam-library-manager)
+- Language selector
+- Steam UserID selector
+- Auto Scrolling for logs in the Task Manager tab
+
+### Removed
+
+- Suggestion form button, use Discord if needed.
+
+## [1.5.0.16] - 2019-01-12
+
+### Added
+
+- Auto Scrolling for logs in the Task Manager tab
+
+### Fixed
+
+- Origin game header images
+
 ## [1.5.0.15] - 2019-01-03
 
 ### Fixed

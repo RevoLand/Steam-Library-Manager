@@ -8,12 +8,6 @@ namespace Steam_Library_Manager.Framework
 
         public LocalizedDescriptionAttribute(string resourceKey) => this.resourceKey = resourceKey;
 
-        public override string Description
-        {
-            get
-            {
-                return Functions.SLM.Translate(resourceKey);
-            }
-        }
+        public override string Description => Functions.SLM.Translate(resourceKey);
     }
 }

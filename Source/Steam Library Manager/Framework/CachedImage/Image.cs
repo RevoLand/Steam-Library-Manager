@@ -16,11 +16,8 @@ namespace Steam_Library_Manager.Framework.CachedImage
     /// </summary>
     public class Image : System.Windows.Controls.Image, INotifyPropertyChanged
     {
-        static Image()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Image),
+        static Image() => DefaultStyleKeyProperty.OverrideMetadata(typeof(Image),
                 new FrameworkPropertyMetadata(typeof(Image)));
-        }
 
         public string ImageUrl
         {

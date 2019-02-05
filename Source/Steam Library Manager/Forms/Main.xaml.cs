@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using NLog;
 using NLog.Targets.Wrappers;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -54,8 +55,13 @@ namespace Steam_Library_Manager
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TaskManager_Logs;
 
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LCItems;
+
+                SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
@@ -154,16 +160,6 @@ namespace Steam_Library_Manager
             {
                 // hack because of this: https://github.com/dotnet/corefx/issues/10361
                 Process.Start(new ProcessStartInfo("cmd", $"/c start https://discordapp.com/invite/Rwvs9Ng") { CreateNoWindow = true });
-            }
-            catch { }
-        }
-
-        private void RightWindowCommands_SuggestionFormButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                Process.Start(new ProcessStartInfo("cmd", $"/c start https://goo.gl/forms/Bu1o0ETFdUWF5ZNJ3") { CreateNoWindow = true });
             }
             catch { }
         }

@@ -201,7 +201,7 @@ namespace Steam_Library_Manager.Definitions
                     }
                 });
 
-                void CopyProgressCallback(FileProgress s) { OnFileProgress(s); }
+                void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
                 POptions.MaxDegreeOfParallelism = 1;
 
                 Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), POptions, CurrentFile =>
@@ -430,7 +430,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 return Math.Round(FileSize / 1024f / 1024f / ElapsedTime, 3);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }

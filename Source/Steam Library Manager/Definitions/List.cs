@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
@@ -15,6 +16,8 @@ namespace Steam_Library_Manager.Definitions
 
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems = new ObservableCollection<ContextMenuItem>();
+
+        public static List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
 
         public class TaskInfo : INotifyPropertyChanged
         {

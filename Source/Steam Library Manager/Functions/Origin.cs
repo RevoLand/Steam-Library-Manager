@@ -133,7 +133,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (OriginConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
-                        logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(Properties.Resources.Origin_MissingKey), new { OriginConfigFilePath =  Definitions.Global.Origin.ConfigFilePath }));
+                        logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
                     }
                     else
                     {
@@ -151,7 +151,6 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
                 Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }

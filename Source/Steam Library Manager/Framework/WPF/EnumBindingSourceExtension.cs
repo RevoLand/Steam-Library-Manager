@@ -6,14 +6,15 @@ namespace Steam_Library_Manager
     public class EnumBindingSourceExtension : MarkupExtension
     {
         private Type _enumType;
+
         public Type EnumType
         {
-            get { return _enumType; }
+            get => _enumType;
             set
             {
                 if (value != _enumType)
                 {
-                    if (null != value)
+                    if (value != null)
                     {
                         Type enumType = Nullable.GetUnderlyingType(value) ?? value;
 
@@ -28,16 +29,15 @@ namespace Steam_Library_Manager
             }
         }
 
-        public EnumBindingSourceExtension() { }
-
-        public EnumBindingSourceExtension(Type enumType)
+        public EnumBindingSourceExtension()
         {
-            EnumType = enumType;
         }
+
+        public EnumBindingSourceExtension(Type enumType) => EnumType = enumType;
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (null == _enumType)
+            if (_enumType == null)
             {
                 throw new InvalidOperationException("The EnumType must be specified.");
             }

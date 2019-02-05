@@ -13,15 +13,14 @@ namespace FontAwesome.WPF
         /// Gets or sets the category of the icon.
         /// </summary>
         public string Category { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the FontAwesome.WPF.IconCategoryAttribute class.
         /// </summary>
         /// <param name="category">The icon category.</param>
-        public IconCategoryAttribute(string category)
-        {
-            Category = category;
-        }
+        public IconCategoryAttribute(string category) => Category = category;
     }
+
     /// <summary>
     /// Represents the field is an alias of another icon.
     /// </summary>
@@ -46,9 +45,6 @@ namespace FontAwesome.WPF
         /// Initializes a new instance of the FontAwesome.WPF.IconIdAttribute class.
         /// </summary>
         /// <param name="id">The icon id (css class name).</param>
-        public IconIdAttribute(string id)
-        {
-            Id = id;
-        }
+        public IconIdAttribute(string id) => Id = id;
     }
 }

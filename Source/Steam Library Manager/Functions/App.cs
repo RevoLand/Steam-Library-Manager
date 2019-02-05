@@ -191,7 +191,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    Func<dynamic, object> Sort = SLM.Settings.GetSortingMethod();
+                    Func<dynamic, object> Sort = SLM.Settings.GetSortingMethod(Library);
 
                     switch (Library.Type)
                     {

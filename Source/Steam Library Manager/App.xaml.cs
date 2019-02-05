@@ -11,7 +11,7 @@ namespace Steam_Library_Manager
     /// </summary>
     public partial class App : Application
     {
-        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         protected override void OnStartup(StartupEventArgs e)
         {

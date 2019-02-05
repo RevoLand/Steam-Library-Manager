@@ -56,7 +56,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     foreach (ContextMenuItem cItem in List.AppCMenuItems.Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
                     {
-                        if (IsCompressed && cItem.ShowToCompressed)
+                        if (IsCompressed && !cItem.ShowToCompressed)
                         {
                             continue;
                         }
@@ -104,12 +104,12 @@ namespace Steam_Library_Manager.Definitions
                 switch (Action.ToLowerInvariant())
                 {
                     default:
-                        if (string.IsNullOrEmpty(SLM.UserSteamID64))
+                        if (string.IsNullOrEmpty(Properties.Settings.Default.SteamID64))
                         {
                             return;
                         }
 
-                        Process.Start(string.Format(Action, AppID, SLM.UserSteamID64));
+                        Process.Start(string.Format(Action, AppID, Properties.Settings.Default.SteamID64));
                         break;
 
                     case "compress":
@@ -292,7 +292,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         while (CompressedArchive.IsFileLocked())
                         {
-                            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_CompressedArchiveExistsAndInUse)), new {ArchiveFullPath =  CompressedArchive.FullName}));
+                            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_CompressedArchiveExistsAndInUse)), new { ArchiveFullPath = CompressedArchive.FullName }));
                             await Task.Delay(1000);
                         }
 
@@ -398,7 +398,7 @@ namespace Steam_Library_Manager.Definitions
                             CreatedDirectories.Add(NewFile.Directory.FullName);
                         }
                     });
-                    void CopyProgressCallback(FileProgress s) { OnFileProgress(s); }
+                    void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
                     POptions.MaxDegreeOfParallelism = 1;
 
                     Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), POptions, CurrentFile =>
@@ -597,7 +597,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                     }, System.Windows.Threading.DispatcherPriority.Normal);
 
-                    LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime =  CurrentTask.ElapsedTime.Elapsed }));
+                    LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                     logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                 }
             }
@@ -638,7 +638,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 return Math.Round(FileSize / 1024f / 1024f / ElapsedTime, 3);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }
@@ -687,7 +687,7 @@ namespace Steam_Library_Manager.Definitions
                                     {
                                         CurrentTask.mre.WaitOne();
 
-                                        CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName =  currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(currentFile.Length) });
+                                        CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(currentFile.Length) });
                                         Main.FormAccessor.TaskManager_Logs.Add($"[{DateTime.Now}] [{AppName}] {Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(currentFile.Length) })}");
                                     }
 

@@ -16,10 +16,7 @@ namespace Steam_Library_Manager.Forms
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public LibraryView()
-        {
-            InitializeComponent();
-        }
+        public LibraryView() => InitializeComponent();
 
         private async void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
@@ -64,7 +61,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName =  (Definitions.SteamAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { AppName = (Definitions.SteamAppInfo)App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
                             }
                         }
                     }

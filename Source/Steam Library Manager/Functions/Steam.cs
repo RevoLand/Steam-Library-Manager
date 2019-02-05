@@ -437,11 +437,11 @@ namespace Steam_Library_Manager.Functions
 
                         foreach (var LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
+                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
                             {
                                 ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = CurrentApp.AppName }));
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
+                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
                                 {
                                     var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
@@ -522,7 +522,21 @@ namespace Steam_Library_Manager.Functions
                                 AddNew(key.Value);
                             }
 
-                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"]?.Children.Count > 0) ? KeyValReader["Accounts"]?.Children.FirstOrDefault()?.Children.FirstOrDefault()?.Value : null;
+                            if (KeyValReader["Accounts"]?.Children.Count > 0)
+                            {
+                                foreach (var account in KeyValReader["Accounts"].Children)
+                                {
+                                    var steamID = account.Children.SingleOrDefault(x => x.Name == "SteamID");
+                                    if (steamID == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamID.Value));
+                                }
+
+                                Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIDList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
+                            }
                         }
                     }
                     else { /* Could not locate LibraryFolders.vdf */ }

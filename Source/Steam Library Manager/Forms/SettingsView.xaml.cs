@@ -15,10 +15,7 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        public SettingsView()
-        {
-            InitializeComponent();
-        }
+        public SettingsView() => InitializeComponent();
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates();
 

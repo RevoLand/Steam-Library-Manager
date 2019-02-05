@@ -57,24 +57,24 @@ namespace FontAwesome.WPF
         /// </summary>
         public Brush Foreground
         {
-            get { return (Brush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
+            get => (Brush)GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
         }
         /// <summary>
         /// Gets or sets the FontAwesome icon. Changing this property will cause the icon to be redrawn.
         /// </summary>
         public FontAwesomeIcon Icon
         {
-            get { return (FontAwesomeIcon)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            get => (FontAwesomeIcon)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
         }
         /// <summary>
         /// Gets or sets the current spin (angle) animation of the icon.
         /// </summary>
         public bool Spin
         {
-            get { return (bool)GetValue(SpinProperty); }
-            set { SetValue(SpinProperty, value); }
+            get => (bool)GetValue(SpinProperty);
+            set => SetValue(SpinProperty, value);
         }
 
         private static void OnSpinPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -102,8 +102,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public double SpinDuration
         {
-            get { return (double)GetValue(SpinDurationProperty); }
-            set { SetValue(SpinDurationProperty, value); }
+            get => (double)GetValue(SpinDurationProperty);
+            set => SetValue(SpinDurationProperty, value);
         }
 
         private static void SpinDurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -130,8 +130,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public double Rotation
         {
-            get { return (double)GetValue(RotationProperty); }
-            set { SetValue(RotationProperty, value); }
+            get => (double)GetValue(RotationProperty);
+            set => SetValue(RotationProperty, value);
         }
 
         private static void RotationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -157,8 +157,8 @@ namespace FontAwesome.WPF
         /// </summary>
         public FlipOrientation FlipOrientation
         {
-            get { return (FlipOrientation)GetValue(FlipOrientationProperty); }
-            set { SetValue(FlipOrientationProperty, value); }
+            get => (FlipOrientation)GetValue(FlipOrientationProperty);
+            set => SetValue(FlipOrientationProperty, value);
         }
 
         private static void FlipOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
