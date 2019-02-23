@@ -856,6 +856,6 @@ Hata: {ExceptionMessage}</value>
     <value>[{AppName}] Oyun taşıması iptal edildi. Hedef kütüphaneden şuana kadar taşınan dosyaların kaldırılmasını ister misiniz?</value>
   </data>
   <data name="Enums_LastPlayed" xml:space="preserve">
-    <value>Last play</value>
+    <value>Son Oynanma</value>
   </data>
 </root>
