@@ -186,7 +186,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     Directory.CreateDirectory(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
 
-                    CurrentTask.TargetLibrary.Origin = new OriginLibrary(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
+                    CurrentTask.TargetLibrary.Origin = new OriginLibrary(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"), library: CurrentTask.TargetLibrary);
                 }
 
                 // Create directories
@@ -271,8 +271,6 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                         logger.Fatal(ex);
-
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException ex)
                     {
@@ -361,8 +359,6 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                         logger.Fatal(ex);
-
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException ex)
                     {
@@ -420,7 +416,6 @@ namespace Steam_Library_Manager.Definitions
 
                 Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.AnyError_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                 logger.Fatal(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -543,7 +538,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Error(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }

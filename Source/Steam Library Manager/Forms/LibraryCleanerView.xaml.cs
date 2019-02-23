@@ -71,7 +71,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                
                 logger.Fatal(ex);
             }
         }
@@ -218,7 +218,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                
                 logger.Fatal(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)

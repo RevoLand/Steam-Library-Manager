@@ -14,7 +14,7 @@ namespace Steam_Library_Manager.Definitions
 {
     public class OriginLibrary : INotifyPropertyChanged
     {
-        public Library Library => List.Libraries.First(x => x.Origin == this);
+        public Library Library;
         public bool IsMain { get; set; }
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
@@ -25,10 +25,11 @@ namespace Steam_Library_Manager.Definitions
         protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 
         //-----
-        public OriginLibrary(string _FullPath, bool _IsMain = false)
+        public OriginLibrary(string _FullPath, Library library, bool _IsMain = false)
         {
             FullPath = (!_FullPath.EndsWith(Path.DirectorySeparatorChar.ToString())) ? _FullPath.Insert(_FullPath.Length, Path.DirectorySeparatorChar.ToString()) : _FullPath;
             IsMain = _IsMain;
+            Library = library;
         }
 
         public void UpdateAppList()
@@ -230,7 +231,7 @@ namespace Steam_Library_Manager.Definitions
                     break;
 
                 case "remove":
-                    List.Libraries.Remove(List.Libraries.First(x => x == Library));
+                    List.Libraries.Remove(Library);
                     break;
             }
         }

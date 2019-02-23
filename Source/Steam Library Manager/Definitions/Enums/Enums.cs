@@ -19,7 +19,10 @@ namespace Steam_Library_Manager.Definitions.Enums
         backupType,
 
         [LocalizedDescription("Enums_LastUpdate")]
-        LastUpdated
+        LastUpdated,
+
+        [LocalizedDescription("Enums_LastPlayed")]
+        LastPlayed
     }
 
     public enum AppSizeCalculationMethod

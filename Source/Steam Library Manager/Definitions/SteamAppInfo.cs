@@ -26,6 +26,7 @@ namespace Steam_Library_Manager.Definitions
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
         public DateTime LastUpdated { get; set; }
+        public DateTime LastPlayed { get; set; }
 
         public string GameHeaderImage => $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
 
@@ -232,7 +233,6 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 return null;
             }
         }
@@ -468,8 +468,6 @@ namespace Steam_Library_Manager.Definitions
 
                             Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                             logger.Fatal(ex);
-
-                            SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                         }
                         catch (UnauthorizedAccessException ex)
                         {
@@ -558,8 +556,6 @@ namespace Steam_Library_Manager.Definitions
 
                             Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                             logger.Fatal(ex);
-
-                            SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                         }
                         catch (UnauthorizedAccessException ex)
                         {
@@ -580,7 +576,7 @@ namespace Steam_Library_Manager.Definitions
                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
                 logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
                 if (!CurrentTask.ErrorHappened)
                 {
@@ -618,7 +614,6 @@ namespace Steam_Library_Manager.Definitions
 
                 Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.AnyError_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                 logger.Fatal(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -772,7 +767,6 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
 
                 return false;
             }

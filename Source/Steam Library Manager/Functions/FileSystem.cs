@@ -72,7 +72,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -106,7 +105,6 @@ namespace Steam_Library_Manager.Functions
             // on error, return 0
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 logger.Fatal(ex);
                 return 0;
             }
@@ -159,16 +157,12 @@ namespace Steam_Library_Manager.Functions
             }
             catch (ArgumentException ae)
             {
-                ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
-                ae.Data.Add("TargetFolder", TargetFolder);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
                 logger.Fatal(ae);
 
                 return 0;
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 logger.Fatal(ex);
                 return 0;
             }
@@ -182,16 +176,12 @@ namespace Steam_Library_Manager.Functions
             }
             catch (ArgumentException ae)
             {
-                ae.Data.Add("GetPathRootResult", Path.GetPathRoot(TargetFolder));
-                ae.Data.Add("TargetFolder", TargetFolder);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ae));
                 logger.Fatal(ae);
 
                 return 0;
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 logger.Fatal(ex);
                 return 0;
             }

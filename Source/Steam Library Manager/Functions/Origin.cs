@@ -152,7 +152,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -160,23 +159,21 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Definitions.OriginLibrary Library = new Definitions.OriginLibrary(LibraryPath, IsMainLibrary);
-
-                Definitions.List.Libraries.Add(new Definitions.Library
+                var newLibrary = new Definitions.Library
                 {
                     Type = Definitions.Enums.LibraryType.Origin,
-                    DirectoryInfo = new DirectoryInfo(LibraryPath),
-                    Origin = Library
-                });
+                    DirectoryInfo = new DirectoryInfo(LibraryPath)
+                };
 
-                await Task.Run(() => Library.UpdateAppList());
+                newLibrary.Origin = new Definitions.OriginLibrary(LibraryPath, newLibrary, IsMainLibrary);
+
+                Definitions.List.Libraries.Add(newLibrary);
+
+                await Task.Run(() => newLibrary.Origin.UpdateAppList());
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                ex.Data.Add("LibraryPath", LibraryPath);
-                ex.Data.Add("CurrentLibraries", Definitions.List.Libraries);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

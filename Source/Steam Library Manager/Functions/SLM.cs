@@ -37,6 +37,10 @@ namespace Steam_Library_Manager.Functions
 
                     case "LastUpdated":
                         return x => x.LastUpdated;
+
+                    case "LastPlayed":
+
+                        return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.LastPlayed;
                 }
             }
 
@@ -226,9 +230,13 @@ namespace Steam_Library_Manager.Functions
                     Definitions.Library Library = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath),
-                        Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary(LibraryPath) : null,
+                        DirectoryInfo = new DirectoryInfo(LibraryPath)
                     };
+
+                    if (Directory.Exists(LibraryPath))
+                    {
+                        Library.Steam = new Definitions.SteamLibrary(LibraryPath, Library);
+                    }
 
                     Definitions.List.Libraries.Add(Library);
 

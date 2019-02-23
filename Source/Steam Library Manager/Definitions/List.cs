@@ -18,6 +18,7 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<ContextMenuItem> AppCMenuItems = new ObservableCollection<ContextMenuItem>();
 
         public static List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
+        public static Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
 
         public class TaskInfo : INotifyPropertyChanged
         {

@@ -70,7 +70,7 @@
                 <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
                     <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Path=(localization:Translator.CurrentCulture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" />
+                                      SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged" />
                     
 
                     <ComboBox Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"

@@ -34,6 +34,11 @@ namespace Steam_Library_Manager.Functions
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
+                if (Definitions.List.SteamApps_LastPlayedDic.ContainsKey(AppID))
+                {
+                    App.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
+                }
+
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
                 if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.IsSteamBackup)
                 {
@@ -101,7 +106,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -169,7 +173,6 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 logger.Fatal(ex);
             }
         }
@@ -197,7 +200,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         case Definitions.Enums.LibraryType.Steam:
                         case Definitions.Enums.LibraryType.SLM:
-                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
+                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed") ?
                                 ((string.IsNullOrEmpty(Search)) ?
                                 Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
                                     y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
@@ -234,7 +237,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }

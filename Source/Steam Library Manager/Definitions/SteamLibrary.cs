@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Definitions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public Library Library => List.Libraries.ToList().First(x => x.Steam == this);
+        public Library Library;
 
         public bool IsMain { get; set; }
 
@@ -34,10 +34,11 @@ namespace Steam_Library_Manager.Definitions
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
 
-        public SteamLibrary(string fullPath, bool _IsMain = false)
+        public SteamLibrary(string fullPath, Library library, bool _IsMain = false)
         {
             FullPath = fullPath;
             IsMain = _IsMain;
+            Library = library;
         }
 
         public void UpdateAppList()
@@ -53,7 +54,7 @@ namespace Steam_Library_Manager.Definitions
 
                     if (!SteamAppsFolder.Exists)
                     {
-                        MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamLibrary_CantCreate)), new { SteamAppsFolderFullPath =  SteamAppsFolder.FullName }));
+                        MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamLibrary_CantCreate)), new { SteamAppsFolderFullPath = SteamAppsFolder.FullName }));
                         return;
                     }
                 }
@@ -140,7 +141,6 @@ namespace Steam_Library_Manager.Definitions
             {
                 MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -272,7 +272,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -298,7 +297,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -311,7 +309,7 @@ namespace Steam_Library_Manager.Definitions
                     DeleteFilesAsync();
                 }
 
-                List.Libraries.Remove(List.Libraries.First(x => x == Library));
+                List.Libraries.Remove(Library);
 
                 await Functions.Steam.CloseSteamAsync();
 
@@ -346,7 +344,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -457,7 +454,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 

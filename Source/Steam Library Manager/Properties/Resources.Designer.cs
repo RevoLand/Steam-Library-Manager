@@ -358,6 +358,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last play.
+        /// </summary>
+        internal static string Enums_LastPlayed {
+            get {
+                return ResourceManager.GetString("Enums_LastPlayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last update.
         /// </summary>
         internal static string Enums_LastUpdate {

@@ -21,9 +21,9 @@ namespace Steam_Library_Manager
 
         public Main()
         {
-            InitializeComponent();
-
             Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
+
+            InitializeComponent();
 
             SetNLogConfig();
             UpdateBindings();
@@ -44,7 +44,6 @@ namespace Steam_Library_Manager
             try
             {
                 System.Net.ServicePointManager.SecurityProtocol = (System.Net.SecurityProtocolType)3072;
-                Definitions.SLM.RavenClient.Release = System.Windows.Forms.Application.ProductVersion;
 
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
@@ -119,23 +118,6 @@ namespace Steam_Library_Manager
 
         private void AppSortingMethod_SelectionChanged(object sender, SelectionChangedEventArgs e) => Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
 
-        //private void GetIPButton_Click(object sender, RoutedEventArgs e) => Functions.Network.UpdatePublicIP();
-
-        //private void GetPortButton_Click(object sender, RoutedEventArgs e) => Properties.Settings.Default.ListenPort = Functions.Network.GetAvailablePort();
-
-        //private void ToggleSLMServerButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //ToggleSLMServer.Content = "Stop Server";
-        //    //SLMServer.StartServer();
-        //}
-
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Framework.Network.Client SLMClient = new Framework.Network.Client();
-
-        //    SLMClient.ConnectToServer();
-        //}
-
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (Definitions.SLM.CurrentSelectedLibrary != null)
@@ -168,6 +150,15 @@ namespace Steam_Library_Manager
         {
             // hack because of this: https://github.com/dotnet/corefx/issues/10361
             Process.Start(new ProcessStartInfo("cmd", $"/c start https://crowdin.com/project/steam-library-manager") { CreateNoWindow = true });
+        }
+
+        private void DonateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/RevoLand/Steam-Library-Manager/wiki/Donations") { CreateNoWindow = true });
+            }
+            catch { }
         }
     }
 }
