@@ -15,10 +15,7 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        public SettingsView()
-        {
-            InitializeComponent();
-        }
+        public SettingsView() => InitializeComponent();
 
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates();
 
@@ -70,7 +67,7 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                Process.Start(Definitions.SLM.DonateButtonURL);
+                Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/RevoLand/Steam-Library-Manager/wiki/Donations") { CreateNoWindow = true });
             }
             catch { }
         }
@@ -134,6 +131,11 @@ namespace Steam_Library_Manager.Forms
                 Debug.WriteLine(ex);
                 //MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.Language = Gu.Localization.Translator.CurrentCulture.TwoLetterISOLanguageName;
         }
     }
 }

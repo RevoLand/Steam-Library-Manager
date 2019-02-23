@@ -330,7 +330,7 @@
                                 </Style>
                             </Grid.Style>
                             <ComboBox HorizontalAlignment="Left" Height="15"
-                                      Margin="455,0,0,0" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="455,0,0,0" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
                                       ItemsSource="{Binding OriginApp.Locales}" />
                         </Grid>
                     </Grid>
@@ -435,7 +435,7 @@
                         </Grid>
 
                         <ComboBox HorizontalAlignment="Left" Height="15"
-                                      Margin="460,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="460,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
                                       ItemsSource="{Binding OriginApp.Locales}" />
                     </Grid>
                 </Grid>
@@ -520,12 +520,17 @@
         </Grid>
 
         <!-- ListBox: Task Manager Logs -->
-        <ListBox x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom">
-            <ListBox.ItemTemplate>
+        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock MaxHeight="16" Text="{Binding}" />
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

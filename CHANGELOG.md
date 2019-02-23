@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Localization support
+  - Supported Languages: English, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
+- Language selector
+- Steam UserID selector
+- Auto Scrolling for logs in the Task Manager tab
+- Order by Last Play time for Steam games.
+- Supporters tab.
+
+### Changed
+
+- Target framework version changed to 4.6.2 from 4.5 ([NET Framework Web Installer](https://www.microsoft.com/en-us/download/details.aspx?id=53345))
+
+### Deprecated
+
+- Custom theming support
+
+### Removed
+
+- Suggestion form button, use Discord if needed.
+- Unused networking code
+- [SharpRaven](https://github.com/getsentry/raven-csharp)
+
+## [1.5.0.15] - 2019-01-03
+
+### Fixed
+
+- Issue #3 : Startup Error on Origin Games with manifest version v4.0
+
 ## [1.5.0.14] - 2018-12-27
 
 ### Added

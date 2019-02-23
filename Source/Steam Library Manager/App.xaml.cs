@@ -11,14 +11,10 @@ namespace Steam_Library_Manager
     /// </summary>
     public partial class App : Application
     {
-        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-
         protected override void OnStartup(StartupEventArgs e)
         {
             try
             {
-                SetupExceptionHandling();
-
                 var fileName = Path.Combine(Definitions.Directories.SLM.Cache, "CustomTheme.xaml");
                 if (!File.Exists(fileName))
                 {
@@ -57,38 +53,6 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
-            }
-        }
-
-        private void SetupExceptionHandling()
-        {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
-
-            DispatcherUnhandledException += (s, e) =>
-                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
-
-            TaskScheduler.UnobservedTaskException += (s, e) =>
-                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
-        }
-
-        private void LogUnhandledException(Exception exception, string source)
-        {
-            string message = $"Unhandled exception ({source})";
-            try
-            {
-                System.Reflection.AssemblyName assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
-                message = string.Format("Unhandled exception in {0} v{1}", assemblyName.Name, assemblyName.Version);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(exception));
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Exception in LogUnhandledException");
-            }
-            finally
-            {
-                _logger.Error(exception, message);
             }
         }
 

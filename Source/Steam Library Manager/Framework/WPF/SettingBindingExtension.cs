@@ -12,6 +12,7 @@ namespace Steam_Library_Manager
         {
             Source = Properties.Settings.Default;
             Mode = BindingMode.TwoWay;
+            UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
         }
     }
 }

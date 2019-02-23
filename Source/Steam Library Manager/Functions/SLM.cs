@@ -18,7 +18,7 @@ namespace Steam_Library_Manager.Functions
 
         public static class Settings
         {
-            public static Func<dynamic, object> GetSortingMethod()
+            public static Func<dynamic, object> GetSortingMethod(Definitions.Library Library)
             {
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
@@ -33,10 +33,14 @@ namespace Steam_Library_Manager.Functions
                         return x => x.SizeOnDisk;
 
                     case "backupType":
-                        return x => x.IsCompressed;
+                        return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.IsCompressed;
 
                     case "LastUpdated":
                         return x => x.LastUpdated;
+
+                    case "LastPlayed":
+
+                        return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.LastPlayed;
                 }
             }
 
@@ -226,9 +230,13 @@ namespace Steam_Library_Manager.Functions
                     Definitions.Library Library = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath),
-                        Steam = (Directory.Exists(LibraryPath)) ? new Definitions.SteamLibrary(LibraryPath) : null,
+                        DirectoryInfo = new DirectoryInfo(LibraryPath)
                     };
+
+                    if (Directory.Exists(LibraryPath))
+                    {
+                        Library.Steam = new Definitions.SteamLibrary(LibraryPath, Library);
+                    }
 
                     Definitions.List.Libraries.Add(Library);
 

@@ -12,10 +12,7 @@ namespace Steam_Library_Manager.Forms
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public AppView()
-        {
-            InitializeComponent();
-        }
+        public AppView() => InitializeComponent();
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {

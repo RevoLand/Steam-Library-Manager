@@ -72,14 +72,12 @@ namespace Steam_Library_Manager.Framework
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
-            IEnumerable<string> tokens;
+            var tokenizedString = TokenizeString(format, out IEnumerable<string> tokens);
 
-            var tokenizedString = TokenizeString(format, out tokens);
-
-            return String.Format(provider, tokenizedString, tokens.Select(s => values[s]).ToArray());
+            return string.Format(provider, tokenizedString, tokens.Select(s => values[s]).ToArray());
         }
 
         /// <summary>
@@ -89,9 +87,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>A string where the tokens are replaced with ordinal values.</returns>
         public static string TokenizeString(string format)
         {
-            IEnumerable<string> junk;
-
-            return TokenizeString(format, out junk);
+            return TokenizeString(format, out IEnumerable<string> junk);
         }
 
         /// <summary>
@@ -104,7 +100,7 @@ namespace Steam_Library_Manager.Framework
         {
             if (format == null)
             {
-                throw new ArgumentNullException("format");
+                throw new ArgumentNullException(nameof(format));
             }
 
             //performance: minimize the number of times the builder will have to "grow", while keeping the initial size reasonable
@@ -117,7 +113,7 @@ namespace Steam_Library_Manager.Framework
             var currentIndex = 0;
             while (match.Success)
             {
-                sb.Append(format.Substring(currentIndex, match.Index - currentIndex));
+                sb.Append(format, currentIndex, match.Index - currentIndex);
 
                 var fullToken = match.ToString();
 
@@ -184,6 +180,6 @@ namespace Steam_Library_Manager.Framework
             return valueDictionary;
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

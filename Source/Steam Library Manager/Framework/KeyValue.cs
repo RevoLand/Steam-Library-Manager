@@ -86,9 +86,9 @@ namespace Steam_Library_Manager.Framework
 
         private void EatWhiteSpace()
         {
-            while ( !EndOfStream )
+            while (!EndOfStream)
             {
-                if ( !Char.IsWhiteSpace( ( char )Peek() ) )
+                if (!char.IsWhiteSpace((char)Peek()))
                 {
                     break;
                 }
@@ -215,7 +215,7 @@ namespace Steam_Library_Manager.Framework
                     wasConditional = true;
                 }
 
-                if (Char.IsWhiteSpace(next))
+                if (char.IsWhiteSpace(next))
                 {
                     break;
                 }
@@ -275,6 +275,7 @@ namespace Steam_Library_Manager.Framework
         /// Gets or sets the name of this instance.
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// Gets or sets the value of this instance.
         /// </summary>
@@ -284,7 +285,6 @@ namespace Steam_Library_Manager.Framework
         /// Gets the children of this instance.
         /// </summary>
         public List<KeyValue> Children { get; private set; }
-
 
         /// <summary>
         /// Gets or sets the child <see cref="SteamKit2.KeyValue" /> with the specified key.
@@ -339,7 +339,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned byte.</returns>
         public byte AsUnsignedByte(byte defaultValue = default(byte))
         {
-            if (byte.TryParse(Value, out byte value) == false)
+            if (!byte.TryParse(Value, out byte value))
             {
                 return defaultValue;
             }
@@ -355,7 +355,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned short.</returns>
         public ushort AsUnsignedShort(ushort defaultValue = default(ushort))
         {
-            if (ushort.TryParse(Value, out ushort value) == false)
+            if (!ushort.TryParse(Value, out ushort value))
             {
                 return defaultValue;
             }
@@ -371,7 +371,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an integer.</returns>
         public int AsInteger(int defaultValue = default(int))
         {
-            if (int.TryParse(Value, out int value) == false)
+            if (!int.TryParse(Value, out int value))
             {
                 return defaultValue;
             }
@@ -387,7 +387,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned integer.</returns>
         public uint AsUnsignedInteger(uint defaultValue = default(uint))
         {
-            if (uint.TryParse(Value, out uint value) == false)
+            if (!uint.TryParse(Value, out uint value))
             {
                 return defaultValue;
             }
@@ -403,7 +403,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a long.</returns>
         public long AsLong(long defaultValue = default(long))
         {
-            if (long.TryParse(Value, out long value) == false)
+            if (!long.TryParse(Value, out long value))
             {
                 return defaultValue;
             }
@@ -419,7 +419,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as an unsigned long.</returns>
         public ulong AsUnsignedLong(ulong defaultValue = default(ulong))
         {
-            if (ulong.TryParse(Value, out ulong value) == false)
+            if (!ulong.TryParse(Value, out ulong value))
             {
                 return defaultValue;
             }
@@ -435,7 +435,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a float.</returns>
         public float AsFloat(float defaultValue = default(float))
         {
-            if (float.TryParse(Value, out float value) == false)
+            if (!float.TryParse(Value, out float value))
             {
                 return defaultValue;
             }
@@ -451,7 +451,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>The value of this instance as a boolean.</returns>
         public bool AsBoolean(bool defaultValue = default(bool))
         {
-            if (int.TryParse(Value, out int value) == false)
+            if (!int.TryParse(Value, out int value))
             {
                 return defaultValue;
             }
@@ -468,7 +468,7 @@ namespace Steam_Library_Manager.Framework
         public T AsEnum<T>(T defaultValue = default(T))
             where T : struct
         {
-            if (Enum.TryParse<T>(Value, out var value) == false)
+            if (!Enum.TryParse<T>(Value, out var value))
             {
                 return defaultValue;
             }
@@ -533,7 +533,7 @@ namespace Steam_Library_Manager.Framework
 
         private static KeyValue LoadFromFile(string path, bool asBinary)
         {
-            if (File.Exists(path) == false)
+            if (!File.Exists(path))
             {
                 return null;
             }
@@ -546,14 +546,14 @@ namespace Steam_Library_Manager.Framework
 
                     if (asBinary)
                     {
-                        if (kv.TryReadAsBinary(input) == false)
+                        if (!kv.TryReadAsBinary(input))
                         {
                             return null;
                         }
                     }
                     else
                     {
-                        if (kv.ReadAsText(input) == false)
+                        if (!kv.ReadAsText(input))
                         {
                             return null;
                         }
@@ -586,7 +586,7 @@ namespace Steam_Library_Manager.Framework
 
                 try
                 {
-                    if (kv.ReadAsText(stream) == false)
+                    if (!kv.ReadAsText(stream))
                     {
                         return null;
                     }
@@ -953,35 +953,36 @@ namespace Steam_Library_Manager.Framework
     internal static class StreamHelpers
     {
         private static readonly byte[] data = new byte[8];
-        public static Int16 ReadInt16(this Stream stream)
+
+        public static short ReadInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
 
             return BitConverter.ToInt16(data, 0);
         }
 
-        public static UInt16 ReadUInt16(this Stream stream)
+        public static ushort ReadUInt16(this Stream stream)
         {
             stream.Read(data, 0, 2);
 
             return BitConverter.ToUInt16(data, 0);
         }
 
-        public static Int32 ReadInt32(this Stream stream)
+        public static int ReadInt32(this Stream stream)
         {
             stream.Read(data, 0, 4);
 
             return BitConverter.ToInt32(data, 0);
         }
 
-        public static UInt32 ReadUInt32(this Stream stream)
+        public static uint ReadUInt32(this Stream stream)
         {
             stream.Read(data, 0, 4);
 
             return BitConverter.ToUInt32(data, 0);
         }
 
-        public static UInt64 ReadUInt64(this Stream stream)
+        public static ulong ReadUInt64(this Stream stream)
         {
             stream.Read(data, 0, 8);
 
@@ -1001,7 +1002,6 @@ namespace Steam_Library_Manager.Framework
 
             using (MemoryStream ms = new MemoryStream())
             {
-
                 while (true)
                 {
                     byte[] data = new byte[characterSize];

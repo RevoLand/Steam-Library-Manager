@@ -30,6 +30,7 @@ namespace Steam_Library_Manager.Definitions
         public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
         public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
+        public string GameHeaderImage { get; set; }
 
         public OriginAppInfo(Library _Library, string _AppName, int _AppID, DirectoryInfo _InstallationDirectory, Version _AppVersion, string[] _Locales, string _InstalledLocale, string _TouchupFile, string _InstallationParameter, string _UpdateParameter = null, string _RepairParameter = null)
         {
@@ -46,7 +47,6 @@ namespace Steam_Library_Manager.Definitions
             AppVersion = _AppVersion;
         }
 
-        //-----
         public List<FrameworkElement> ContextMenuItems
         {
             get
@@ -186,7 +186,7 @@ namespace Steam_Library_Manager.Definitions
                 {
                     Directory.CreateDirectory(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
 
-                    CurrentTask.TargetLibrary.Origin = new OriginLibrary(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"));
+                    CurrentTask.TargetLibrary.Origin = new OriginLibrary(Path.Combine(CurrentTask.TargetLibrary.DirectoryInfo.FullName, "Origin"), library: CurrentTask.TargetLibrary);
                 }
 
                 // Create directories
@@ -201,7 +201,7 @@ namespace Steam_Library_Manager.Definitions
                     }
                 });
 
-                void CopyProgressCallback(FileProgress s) { OnFileProgress(s); }
+                void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
                 POptions.MaxDegreeOfParallelism = 1;
 
                 Parallel.ForEach(AppFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), POptions, CurrentFile =>
@@ -271,8 +271,6 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                         logger.Fatal(ex);
-
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException ex)
                     {
@@ -361,8 +359,6 @@ namespace Steam_Library_Manager.Definitions
 
                         Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
                         logger.Fatal(ex);
-
-                        SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
                     }
                     catch (UnauthorizedAccessException ex)
                     {
@@ -420,7 +416,6 @@ namespace Steam_Library_Manager.Definitions
 
                 Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.AnyError_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                 logger.Fatal(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -430,7 +425,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 return Math.Round(FileSize / 1024f / 1024f / ElapsedTime, 3);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }
@@ -543,7 +538,6 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 logger.Error(ex);
-                await SLM.RavenClient.CaptureAsync(new SharpRaven.Data.SentryEvent(ex));
             }
         }
     }

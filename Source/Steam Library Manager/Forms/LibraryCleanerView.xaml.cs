@@ -17,10 +17,7 @@ namespace Steam_Library_Manager.Forms
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public LibraryCleanerView()
-        {
-            InitializeComponent();
-        }
+        public LibraryCleanerView() => InitializeComponent();
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -74,7 +71,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                
                 logger.Fatal(ex);
             }
         }
@@ -221,7 +218,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+                
                 logger.Fatal(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)

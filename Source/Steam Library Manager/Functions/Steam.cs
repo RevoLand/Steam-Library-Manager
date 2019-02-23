@@ -51,7 +51,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -255,7 +254,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
+
                 return null;
             }
         }
@@ -298,7 +297,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -327,7 +325,6 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 logger.Fatal(ex);
-                Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
             }
         }
 
@@ -412,7 +409,6 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);
-                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -437,11 +433,11 @@ namespace Steam_Library_Manager.Functions
 
                         foreach (var LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup).ToList())
+                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
                             {
                                 ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = CurrentApp.AppName }));
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated) > 0)
+                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
                                 {
                                     var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
@@ -467,7 +463,6 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);
-                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -475,24 +470,22 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    Definitions.SteamLibrary Library = new Definitions.SteamLibrary(LibraryPath, IsMainLibrary);
-
-                    Definitions.List.Libraries.Add(new Definitions.Library
+                    var newLibrary = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.Steam,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath),
-                        Steam = Library
-                    });
+                        DirectoryInfo = new DirectoryInfo(LibraryPath)
+                    };
 
-                    await Task.Run(() => Library.UpdateAppList());
-                    await Task.Run(() => Library.UpdateJunks());
+                    newLibrary.Steam = new Definitions.SteamLibrary(LibraryPath, newLibrary, IsMainLibrary);
+
+                    Definitions.List.Libraries.Add(newLibrary);
+
+                    await Task.Run(() => newLibrary.Steam.UpdateAppList());
+                    await Task.Run(() => newLibrary.Steam.UpdateJunks());
                 }
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);
-                    ex.Data.Add("LibraryPath", LibraryPath);
-                    ex.Data.Add("CurrentLibraries", Definitions.List.Libraries.ToList());
-                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 
@@ -500,17 +493,41 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.SteamID64))
+                    {
+                        var localConfigFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "userdata", Framework.SteamIDConvert.Steam64ToSteam32(Convert.ToInt64(Properties.Settings.Default.SteamID64)).Split(':').Last(), "config", "localconfig.vdf");
+                        if (File.Exists(localConfigFilePath))
+                        {
+                            Framework.KeyValue configFile = new Framework.KeyValue();
+                            configFile.ReadFileAsText(localConfigFilePath);
+
+                            var appsPath = configFile["Software"]["Valve"]["Steam"]["apps"];
+
+                            if (appsPath?.Children.Count > 0)
+                            {
+                                foreach (var app in appsPath.Children)
+                                {
+                                    var lastPlayed = app["LastPlayed"].Value;
+                                    if (lastPlayed != null)
+                                    {
+                                        Definitions.List.SteamApps_LastPlayedDic.Add(Convert.ToInt32(app.Name), new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(lastPlayed)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
                     {
                         AddNew(Properties.Settings.Default.steamInstallationPath, true);
                     }
 
-                    // Make a KeyValue reader
-                    Framework.KeyValue KeyValReader = new Framework.KeyValue();
-
                     // If config.vdf exists
                     if (File.Exists(Definitions.Global.Steam.vdfFilePath))
                     {
+                        // Make a KeyValue reader
+                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+
                         // Read our vdf file as text
                         KeyValReader.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
 
@@ -522,7 +539,21 @@ namespace Steam_Library_Manager.Functions
                                 AddNew(key.Value);
                             }
 
-                            Definitions.SLM.UserSteamID64 = (KeyValReader["Accounts"]?.Children.Count > 0) ? KeyValReader["Accounts"]?.Children.FirstOrDefault()?.Children.FirstOrDefault()?.Value : null;
+                            if (KeyValReader["Accounts"]?.Children.Count > 0)
+                            {
+                                foreach (var account in KeyValReader["Accounts"].Children)
+                                {
+                                    var steamID = account.Children.SingleOrDefault(x => x.Name == "SteamID");
+                                    if (steamID == null)
+                                    {
+                                        continue;
+                                    }
+
+                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamID.Value));
+                                }
+
+                                Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIDList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
+                            }
                         }
                     }
                     else { /* Could not locate LibraryFolders.vdf */ }
@@ -530,7 +561,6 @@ namespace Steam_Library_Manager.Functions
                 catch (Exception ex)
                 {
                     logger.Fatal(ex);
-                    Definitions.SLM.RavenClient.Capture(new SharpRaven.Data.SentryEvent(ex));
                 }
             }
 

@@ -16,11 +16,8 @@ namespace Steam_Library_Manager.Framework.CachedImage
     /// </summary>
     public class Image : System.Windows.Controls.Image, INotifyPropertyChanged
     {
-        static Image()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Image),
+        static Image() => DefaultStyleKeyProperty.OverrideMetadata(typeof(Image),
                 new FrameworkPropertyMetadata(typeof(Image)));
-        }
 
         public string ImageUrl
         {
@@ -70,7 +67,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         private static async void ImageUrlPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var url = (String)e.NewValue;
+            var url = (string)e.NewValue;
             var cachedImage = (Image)obj;
 
             cachedImage.Source = await LoadImageAsync(url, cachedImage);
@@ -79,7 +76,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
 
         private static async Task<BitmapImage> LoadImageAsync(string url, Image img)
         {
-            if (String.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
             {
                 return img.FailedImage;
             }
@@ -113,8 +110,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
                         if (memoryStream == null)
                         {
                             Debug.WriteLine("No hit for URL " + url);
-                            img.IsLoading = false;
-                            return img.FailedImage;
+                            return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif", UriKind.Absolute));
                         }
 
                         bitmapImage.BeginInit();

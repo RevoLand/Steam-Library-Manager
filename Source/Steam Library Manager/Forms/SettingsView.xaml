@@ -14,150 +14,158 @@
     <Grid>
 
         <GroupBox x:Name="GeneralSettingsGroupBox" Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}" Margin="0,5,360,5">
-            <Grid>
-                <!-- Application sorting method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,5,0,0" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <UniformGrid Columns="2" HorizontalAlignment="Left">
+                <WrapPanel Orientation="Vertical">
+                    <!-- Application sorting method -->
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}" />
 
-                <!-- Application size calculation method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SizeCalculationMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,55,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Setting_AppSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Application size calculation method -->
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SizeCalculationMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_AppSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}" />
 
-                <!-- Archive size calculation method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,105,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Archive size calculation method -->
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}" />
 
-                <!-- Compression method -->
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionType}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,155,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Setting_CompressionLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Compression method -->
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionType}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_CompressionLevel}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:CompressionLevel}}" />
 
-                <!-- File size to start move synchronously (MB) -->
-                <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
-                                                    Margin="5,205,0,0" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
-                                                    Value="{SLM:SettingBinding ParallelAfterSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StringFormat="{}{0:N0} MB" />
+                    <!-- File size to start move synchronously (MB) -->
+                    <Controls:NumericUpDown Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                                                    HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
+                                                    Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB" />
 
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}" />
 
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,305,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Setting_BaseTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}" />
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Setting_BaseTheme}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}" />
 
-                <!-- Advanced Logging (Requires restart) -->
-                <Controls:ToggleSwitch Header="{l:Static p:Resources.Forms_Settings_AdvancedLogging}" Margin="5,355,0,0"
-                                                   IsChecked="{SLM:SettingBinding Advanced_Logging, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"
+                    <!-- Advanced Logging (Requires restart) -->
+                    <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_AdvancedLogging}"
+                                                   IsChecked="{SLM:SettingBinding Advanced_Logging}" HorizontalAlignment="Left"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
-                <!-- Check for Updates at Startup -->
-                <Controls:ToggleSwitch Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" Margin="5,405,0,0" OnLabel="Yes" OffLabel="No"
-                                                   IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Check for Updates at Startup -->
+                    <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" OnLabel="Yes" OffLabel="No"
+                                                   IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
-                <!-- Keep searching while switching library -->
-                <Controls:ToggleSwitch Header="{l:Static p:Resources.Forms_Settings_SearchOnLibraryChange}" Margin="5,455,0,0" OnLabel="Yes" OffLabel="No"
-                                                   IsChecked="{SLM:SettingBinding includeSearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- Keep searching while switching library -->
+                    <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_SearchOnLibraryChange}" OnLabel="Yes" OffLabel="No"
+                                                   IsChecked="{SLM:SettingBinding includeSearchResults}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                </WrapPanel>
+                <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
+                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                              VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
+                                      SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged" />
+                    
 
-                <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      Margin="5,515,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Path=(localization:Translator.CurrentCulture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" />
+                    <ComboBox Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                              VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" ItemsSource="{Binding}"
+                              SelectedValue="{SLM:SettingBinding SteamID64}" DisplayMemberPath="Item1" SelectedValuePath="Item2"/>
 
-                <!-- Button: Open Logs Folder -->
-                <Button Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" Margin="255,5,0,0" VerticalAlignment="Top" Click="ViewLogsButton" Height="40" />
+                    <!-- Button: Open Logs Folder -->
+                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40" />
 
-                <!-- Button: Check for Updates -->
-                <Button Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" Margin="255,55,0,0" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40" />
+                    <!-- Button: Check for Updates -->
+                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40" />
 
-                <!-- Button: Clear image cache-->
-                <Button Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" Margin="255,105,0,0" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40" />
+                    <!-- Button: Clear image cache-->
+                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40" />
 
-                <!-- Donate Button -->
-                <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" Margin="255,155,0,0" VerticalAlignment="Top" Height="40" />
+                    <!-- Donate Button -->
+                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="40" />
 
-                <GroupBox Header="{l:Static p:Resources.Forms_Settings_CustomTheme}" Margin="255,205,0,0">
-                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_TextColor}" />
-                                <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_TabItemTextColor}" />
-                                <Color:ColorPicker Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_Background}" />
-                                <Color:ColorPicker Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_ControlBG}" />
-                                <Color:ColorPicker Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_ContextMenu}" />
-                                <Color:ColorPicker Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_WindowBG}" />
-                                <Color:ColorPicker Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_TransparentWhite}" />
-                                <Color:ColorPicker Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush1}" />
-                                <Color:ColorPicker Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush2}" />
-                                <Color:ColorPicker Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_ButtonClick}" />
-                                <Color:ColorPicker Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_ButtonHover}" />
-                                <Color:ColorPicker Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                            <UniformGrid Rows="2">
-                                <Label Content="{l:Static p:Resources.Forms_Settings_ButtonBG}" />
-                                <Color:ColorPicker Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                            </UniformGrid>
-                        </StackPanel>
-                    </ScrollViewer>
-                </GroupBox>
-            </Grid>
+                    <GroupBox Margin="5" Header="{l:Static p:Resources.Forms_Settings_CustomTheme}" MaxHeight="300">
+                        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_TextColor}" />
+                                    <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_TabItemTextColor}" />
+                                    <Color:ColorPicker Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_Background}" />
+                                    <Color:ColorPicker Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_ControlBG}" />
+                                    <Color:ColorPicker Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_ContextMenu}" />
+                                    <Color:ColorPicker Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_WindowBG}" />
+                                    <Color:ColorPicker Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_TransparentWhite}" />
+                                    <Color:ColorPicker Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush1}" />
+                                    <Color:ColorPicker Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush2}" />
+                                    <Color:ColorPicker Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonClick}" />
+                                    <Color:ColorPicker Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonHover}" />
+                                    <Color:ColorPicker Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                                <UniformGrid Rows="2">
+                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonBG}" />
+                                    <Color:ColorPicker Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
+                                </UniformGrid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </GroupBox>
+                </WrapPanel>
+            </UniformGrid>
         </GroupBox>
         <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
             <StackPanel>
                 <!-- Remove Source Files -->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_RemoveFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_RemoveFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Compress Files -->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Report File Movement -->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Start Task Manager on Startup -->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_StartTaskManagerOnStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_StartTaskManagerOnStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
 
                 <!-- Play a sound on completion-->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
             </StackPanel>
         </GroupBox>
