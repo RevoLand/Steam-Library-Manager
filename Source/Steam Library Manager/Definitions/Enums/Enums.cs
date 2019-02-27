@@ -120,9 +120,6 @@ namespace Steam_Library_Manager.Definitions.Enums
         BaseLight,
 
         [LocalizedDescription("Enums_Dark")]
-        BaseDark,
-
-        [LocalizedDescription("Enums_Custom")]
-        CustomTheme
+        BaseDark
     }
 }

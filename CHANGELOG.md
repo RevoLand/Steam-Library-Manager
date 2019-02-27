@@ -13,22 +13,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Language selector
 - Steam UserID selector
 - Auto Scrolling for logs in the Task Manager tab
-- Order by Last Play time for Steam games.
-- Supporters tab.
+- Order by Last Play time for Steam games
+- Include Supporters list
+- Number of "Pending, Completed, Total" tasks in Task Manager
 
 ### Changed
 
 - Target framework version changed to 4.6.2 from 4.5 ([NET Framework Web Installer](https://www.microsoft.com/en-us/download/details.aspx?id=53345))
+- Minor tweaks on Task Manager UI for both Grid & List view
 
-### Deprecated
+### Fixed
 
-- Custom theming support
+- Broken Task Manager UI on Deleting Origin games with Task Manager option
 
 ### Removed
 
 - Suggestion form button, use Discord if needed.
 - Unused networking code
 - [SharpRaven](https://github.com/getsentry/raven-csharp)
+- Custom theming support
+- [ColorPickerLib](https://github.com/Dirkster99/ColorPickerLib)
 
 ## [1.5.0.15] - 2019-01-03
 

@@ -17,7 +17,6 @@ namespace Steam_Library_Manager
     {
         public static Main FormAccessor;
         public Framework.AsyncObservableCollection<string> TaskManager_Logs = new Framework.AsyncObservableCollection<string>();
-        //Framework.Network.Server SLMServer = new Framework.Network.Server();
 
         public Main()
         {
@@ -51,6 +50,7 @@ namespace Steam_Library_Manager
                 LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
 
                 TaskManagerView.TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
+                TaskManagerView.TaskManagerInformation.DataContext = Framework.TaskManager.TMInfo;
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TaskManager_Logs;
 
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LCItems;

@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Color="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
              xmlns:localization="clr-namespace:Gu.Localization;assembly=Gu.Localization"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
@@ -86,60 +85,12 @@
                     <!-- Button: Clear image cache-->
                     <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40" />
 
-                    <!-- Donate Button -->
-                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="40" />
-
-                    <GroupBox Margin="5" Header="{l:Static p:Resources.Forms_Settings_CustomTheme}" MaxHeight="300">
+                    <GroupBox Margin="5" Header="Supporters" MaxHeight="300">
                         <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                             <StackPanel>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_TextColor}" />
-                                    <Color:ColorPicker Tag="TextBrush" SelectedColor="{Binding Color, Source={StaticResource TextBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_TabItemTextColor}" />
-                                    <Color:ColorPicker Tag="GrayNormalBrush" SelectedColor="{Binding Color, Source={StaticResource GrayNormalBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_Background}" />
-                                    <Color:ColorPicker Tag="WhiteBrush" SelectedColor="{Binding Color, Source={StaticResource WhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_ControlBG}" />
-                                    <Color:ColorPicker Tag="ControlBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource ControlBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_ContextMenu}" />
-                                    <Color:ColorPicker Tag="MenuItemBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource MenuItemBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_WindowBG}" />
-                                    <Color:ColorPicker Tag="WindowBackgroundBrush" SelectedColor="{Binding Color, Source={StaticResource WindowBackgroundBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_TransparentWhite}" />
-                                    <Color:ColorPicker Tag="TransparentWhiteBrush" SelectedColor="{Binding Color, Source={StaticResource TransparentWhiteBrush}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush1}" />
-                                    <Color:ColorPicker Tag="GrayBrush1" SelectedColor="{Binding Color, Source={StaticResource GrayBrush1}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_GrayBrush2}" />
-                                    <Color:ColorPicker Tag="GrayBrush2" SelectedColor="{Binding Color, Source={StaticResource GrayBrush2}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonClick}" />
-                                    <Color:ColorPicker Tag="GrayBrush7" SelectedColor="{Binding Color, Source={StaticResource GrayBrush7}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonHover}" />
-                                    <Color:ColorPicker Tag="GrayBrush8" SelectedColor="{Binding Color, Source={StaticResource GrayBrush8}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
-                                <UniformGrid Rows="2">
-                                    <Label Content="{l:Static p:Resources.Forms_Settings_ButtonBG}" />
-                                    <Color:ColorPicker Tag="GrayBrush10" SelectedColor="{Binding Color, Source={StaticResource GrayBrush10}, Mode=OneTime}" SelectedColorChanged="ColorPicker_SelectedColorChanged" ColorMode="ColorPalette" DisplayColorAndName="True" ShowRecentColors="True" />
-                                </UniformGrid>
+                                <Button Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35" />
+                                <Separator/>
+                                <TextBlock Text="Mike Burkart (Paypal)"/>
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>

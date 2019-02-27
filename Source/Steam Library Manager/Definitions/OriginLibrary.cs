@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,17 +11,13 @@ using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class OriginLibrary : INotifyPropertyChanged
+    public class OriginLibrary
     {
         public Library Library;
         public bool IsMain { get; set; }
         public string FullPath { get; set; }
         public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
         public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 
         //-----
         public OriginLibrary(string _FullPath, Library library, bool _IsMain = false)

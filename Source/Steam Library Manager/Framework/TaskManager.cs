@@ -16,11 +16,14 @@ namespace Steam_Library_Manager.Framework
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
         public static Definitions.List.TaskInfo ActiveTask;
+        public static Definitions.List.TMInfo TMInfo { get; set; } = new Definitions.List.TMInfo();
 
         public static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
             try
             {
+                TmInfoUpdate();
+
                 ActiveTask = CurrentTask;
                 CurrentTask.Active = true;
 
@@ -140,13 +143,17 @@ namespace Steam_Library_Manager.Framework
                 Debug.WriteLine(ex);
                 logger.Fatal(ex);
             }
+            finally
+            {
+                TmInfoUpdate();
+            }
         }
 
         public static void Start()
         {
             if (!Status && !Paused)
             {
-                Main.FormAccessor.TaskManager_Logs.Add(StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_Active)), new { CurrentTime =  DateTime.Now }));
+                Main.FormAccessor.TaskManager_Logs.Add(StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_Active)), new { CurrentTime = DateTime.Now }));
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -161,7 +168,7 @@ namespace Steam_Library_Manager.Framework
                                 await ProcessTaskAsync(TaskList.First(x => !x.Completed));
                             }
 
-                            Thread.Sleep(1);
+                            Thread.Sleep(100);
                         }
                     }
                     catch (OperationCanceledException)
@@ -264,6 +271,8 @@ namespace Steam_Library_Manager.Framework
             try
             {
                 TaskList.Add(Task);
+
+                TmInfoUpdate();
             }
             catch (Exception ex)
             {
@@ -276,11 +285,21 @@ namespace Steam_Library_Manager.Framework
             try
             {
                 TaskList.Remove(Task);
+
+                TmInfoUpdate();
             }
             catch (Exception ex)
             {
                 logger.Fatal(ex);
             }
+        }
+
+        private static void TmInfoUpdate()
+        {
+            TMInfo.PendingTasks = TaskList.Count(x => !x.Active && !x.Completed);
+            TMInfo.CompletedTasks = TaskList.Count(x => !x.Active && x.Completed);
+            TMInfo.TotalTasks = TaskList.Count;
+            TMInfo.UpdateUI();
         }
     }
 }

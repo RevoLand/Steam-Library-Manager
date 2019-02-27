@@ -134,7 +134,8 @@ namespace Steam_Library_Manager.Definitions
                         Framework.TaskManager.AddTask(new List.TaskInfo
                         {
                             OriginApp = this,
-                            TaskType = Enums.TaskType.Delete,
+                            TargetLibrary = Library,
+                            TaskType = Enums.TaskType.Delete
                         });
                         break;
                 }

@@ -112,6 +112,23 @@ namespace Steam_Library_Manager.Definitions
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
+        public class TMInfo : INotifyPropertyChanged
+        {
+            public int PendingTasks { get; set; }
+            public int CompletedTasks { get; set; }
+            public int TotalTasks { get; set; }
+
+            public void UpdateUI()
+            {
+                OnPropertyChanged("PendingTasks");
+                OnPropertyChanged("CompletedTasks");
+                OnPropertyChanged("TotalTasks");
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
+
         public class JunkInfo
         {
             public System.IO.FileSystemInfo FSInfo { get; set; }
