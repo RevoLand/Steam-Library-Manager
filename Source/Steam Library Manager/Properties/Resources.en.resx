@@ -853,4 +853,7 @@ Error: {ExceptionMessage}</value>
   <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
     <value>[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?</value>
   </data>
+  <data name="Enums_LastPlayed" xml:space="preserve">
+    <value>Last play</value>
+  </data>
 </root>

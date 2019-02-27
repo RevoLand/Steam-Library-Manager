@@ -855,4 +855,7 @@ Hata: {ExceptionMessage}</value>
   <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
     <value>[{AppName}] Oyun taşıması iptal edildi. Hedef kütüphaneden şuana kadar taşınan dosyaların kaldırılmasını ister misiniz?</value>
   </data>
+  <data name="Enums_LastPlayed" xml:space="preserve">
+    <value>Son Oynanma</value>
+  </data>
 </root>
