@@ -9,9 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Localization support
-  - Supported Languages: English, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
+  - Supported Languages: English, French, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
 - Language selector
-- Steam UserID selector
+- Steam UserID selector (to fetch Last Play time)
 - Auto Scrolling for logs in the Task Manager tab
 - Order by Last Play time for Steam games
 - Include Supporters list
@@ -30,8 +30,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Suggestion form button, use Discord if needed.
 - Unused networking code
-- [SharpRaven](https://github.com/getsentry/raven-csharp)
 - Custom theming support
+- [SharpRaven](https://github.com/getsentry/raven-csharp)
 - [ColorPickerLib](https://github.com/Dirkster99/ColorPickerLib)
 
 ## [1.5.0.15] - 2019-01-03
