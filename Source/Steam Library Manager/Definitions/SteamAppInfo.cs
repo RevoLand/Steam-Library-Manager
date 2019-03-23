@@ -237,12 +237,12 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileInfo> GetCommonFiles()
+        public IEnumerable<FileInfo> GetCommonFiles()
         {
             try
             {
                 CommonFolder.Refresh();
-                return CommonFolder.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
+                return CommonFolder.EnumerateFiles("*", SearchOption.AllDirectories);
             }
             catch (Exception ex)
             {
@@ -251,11 +251,11 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public List<FileInfo> GetDownloadFiles() => DownloadFolder.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
+        public IEnumerable<FileInfo> GetDownloadFiles() => DownloadFolder.EnumerateFiles("*", SearchOption.AllDirectories);
 
-        public List<FileInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFiles($"*{AppID}*.patch", SearchOption.TopDirectoryOnly).ToList();
+        public IEnumerable<FileInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFiles($"*{AppID}*.patch", SearchOption.TopDirectoryOnly);
 
-        public List<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories).ToList();
+        public IEnumerable<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories);
 
         public async Task CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
