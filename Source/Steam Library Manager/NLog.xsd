@@ -3021,12 +3021,12 @@
           <xs:element name="propertiesElementName" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="propertiesElementValueAttribute" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="attribute" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.XmlAttribute" />
-          <xs:element name="elementEncode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="elementName" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="element" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.XmlElement" />
           <xs:element name="elementValue" minOccurs="0" maxOccurs="1" type="Layout" />
           <xs:element name="includeEmptyValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="indentXml" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="elementEncode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="excludeProperties" type="xs:string">
           <xs:annotation>
@@ -3073,11 +3073,6 @@
             <xs:documentation>XML attribute name to use when rendering property-value When null (or empty) then value-attribute is not included and value is formatted as XML-element-value</xs:documentation>
           </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="elementEncode" type="xs:boolean">
-          <xs:annotation>
-            <xs:documentation>Xml Encode the value for the XML element</xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="elementName" type="xs:string">
           <xs:annotation>
             <xs:documentation>Name of the root XML element</xs:documentation>
@@ -3096,6 +3091,11 @@
         <xs:attribute name="indentXml" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Auto indent and create new lines</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="elementEncode" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Determines wether or not this attribute will be Xml encoded.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
       </xs:extension>
@@ -3131,10 +3131,10 @@
   </xs:complexType>
   <xs:complexType name="NLog.Layouts.XmlElement">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="encode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
       <xs:element name="name" minOccurs="0" maxOccurs="1" type="xs:string" />
       <xs:element name="value" minOccurs="0" maxOccurs="1" type="Layout" />
       <xs:element name="attribute" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.XmlAttribute" />
-      <xs:element name="elementEncode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
       <xs:element name="element" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.XmlElement" />
       <xs:element name="includeEmptyValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
       <xs:element name="indentXml" minOccurs="0" maxOccurs="1" type="xs:boolean" />
@@ -3148,6 +3148,11 @@
       <xs:element name="propertiesElementName" minOccurs="0" maxOccurs="1" type="xs:string" />
       <xs:element name="propertiesElementValueAttribute" minOccurs="0" maxOccurs="1" type="xs:string" />
     </xs:choice>
+    <xs:attribute name="encode" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Determines wether or not this attribute will be Xml encoded.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="name" type="xs:string">
       <xs:annotation>
         <xs:documentation>Name of the element</xs:documentation>
@@ -3156,11 +3161,6 @@
     <xs:attribute name="value" type="SimpleLayoutAttribute">
       <xs:annotation>
         <xs:documentation>Value inside the element</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="elementEncode" type="xs:boolean">
-      <xs:annotation>
-        <xs:documentation>Xml Encode the value for the XML element</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="includeEmptyValue" type="xs:boolean">

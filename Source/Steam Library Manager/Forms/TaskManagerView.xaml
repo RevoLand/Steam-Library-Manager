@@ -15,6 +15,8 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -134,6 +136,8 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -231,6 +235,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -342,6 +347,7 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>

@@ -9,13 +9,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Localization support
-  - Supported Languages: English, French, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
+  - Supported Languages: English, French *(WIP)*, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
 - Language selector
 - Steam UserID selector (to fetch Last Play time)
 - Auto Scrolling for logs in the Task Manager tab
 - Order by Last Play time for Steam games
 - Include Supporters list
 - Number of "Pending, Completed, Total" tasks in Task Manager
+- Ability to change multiple task options at once in Task Manager (Compress / Remove Original Files)
 
 ### Changed
 

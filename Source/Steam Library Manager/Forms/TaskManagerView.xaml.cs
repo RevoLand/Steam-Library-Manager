@@ -65,7 +65,6 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                
             }
         }
 
@@ -73,13 +72,13 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
+                if (TaskPanel.SelectedItems.Count == 0)
+                {
+                    return;
+                }
                 switch ((sender as MenuItem)?.Tag)
                 {
                     default:
-                        if (TaskPanel.SelectedItems.Count == 0)
-                        {
-                            return;
-                        }
 
                         foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
                         {
@@ -93,13 +92,26 @@ namespace Steam_Library_Manager.Forms
                             }
                         }
                         break;
+
+                    case "ToggleCompress":
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        {
+                            CurrentTask.Compress = !CurrentTask.Compress;
+                        }
+                        break;
+
+                    case "ToggleRemoveFiles":
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        {
+                            CurrentTask.RemoveOldFiles = !CurrentTask.RemoveOldFiles;
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
-                
             }
         }
 

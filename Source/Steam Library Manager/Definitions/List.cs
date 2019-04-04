@@ -126,6 +126,7 @@ namespace Steam_Library_Manager.Definitions
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
+
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
