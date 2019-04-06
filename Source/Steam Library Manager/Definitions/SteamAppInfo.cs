@@ -233,6 +233,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
+                logger.Fatal(ex);
                 return null;
             }
         }
@@ -576,7 +577,7 @@ namespace Steam_Library_Manager.Definitions
                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
                 logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException)
             {
                 if (!CurrentTask.ErrorHappened)
                 {

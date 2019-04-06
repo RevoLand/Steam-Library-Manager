@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [1.5.1.0] - 2019-04-06
 
 ### Added
 
@@ -12,11 +12,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
   - Supported Languages: English, French *(WIP)*, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
 - Language selector
 - Steam UserID selector (to fetch Last Play time)
-- Auto Scrolling for logs in the Task Manager tab
+- Auto Scrolling for logs in the Task Manager tab *(Use with caution on games with lots of small files)*
 - Order by Last Play time for Steam games
 - Include Supporters list
 - Number of "Pending, Completed, Total" tasks in Task Manager
-- Ability to change multiple task options at once in Task Manager (Compress / Remove Original Files)
+- Ability to change task options at once for multiple tasks in Task Manager (Compress / Remove Original Files)
 
 ### Changed
 

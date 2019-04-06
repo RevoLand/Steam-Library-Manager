@@ -90,9 +90,9 @@
                             <StackPanel>
                                 <Button Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35" />
                                 <Separator/>
-                                <TextBlock Text="Ken Tittle (Patreon)"/>
                                 <TextBlock Text="Mike Burkart (Paypal)"/>
                                 <TextBlock Text="Marisa Smith (Paypal)"/>
+                                <TextBlock Text="Ken Tittle (Patreon)"/>
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>

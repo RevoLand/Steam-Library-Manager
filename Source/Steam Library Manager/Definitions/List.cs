@@ -34,32 +34,12 @@ namespace Steam_Library_Manager.Definitions
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
             public ManualResetEvent mre = new ManualResetEvent(!Framework.TaskManager.Paused);
 
-            private double _TotalFileCount = 100;
-            private long _MovedFileSize, _TotalFileSize;
-            private bool _Completed;
-            private string _TaskStatusInfo;
+            private long _MovedFileSize;
+            public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {TotalFileSize / 1024000} MB";
 
-            public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {_TotalFileSize / 1024000} MB";
+            public string TaskStatusInfo { get; set; }
 
-            public string TaskStatusInfo
-            {
-                get => _TaskStatusInfo;
-                set
-                {
-                    _TaskStatusInfo = value;
-                    OnPropertyChanged("TaskStatusInfo");
-                }
-            }
-
-            public double TotalFileCount
-            {
-                get => _TotalFileCount;
-                set
-                {
-                    _TotalFileCount = value;
-                    OnPropertyChanged("TotalFileCount");
-                }
-            }
+            public double TotalFileCount { get; set; }
 
             public long MovedFileSize
             {
@@ -73,15 +53,7 @@ namespace Steam_Library_Manager.Definitions
                 }
             }
 
-            public long TotalFileSize
-            {
-                get => _TotalFileSize;
-                set
-                {
-                    _TotalFileSize = value;
-                    OnPropertyChanged("TotalFileSize");
-                }
-            }
+            public long TotalFileSize { get; set; }
 
             public double ProgressBarPerc
             {
@@ -90,22 +62,14 @@ namespace Steam_Library_Manager.Definitions
                     double perc = 0;
                     if (_MovedFileSize != 0)
                     {
-                        perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
+                        perc = Math.Floor((double)(100 * _MovedFileSize) / TotalFileSize);
                     }
 
                     return _MovedFileSize == 0 ? 0 : perc;
                 }
             }
 
-            public bool Completed
-            {
-                get => _Completed;
-                set
-                {
-                    _Completed = value;
-                    OnPropertyChanged("Completed");
-                }
-            }
+            public bool Completed { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -118,16 +82,7 @@ namespace Steam_Library_Manager.Definitions
             public int CompletedTasks { get; set; }
             public int TotalTasks { get; set; }
 
-            public void UpdateUI()
-            {
-                OnPropertyChanged("PendingTasks");
-                OnPropertyChanged("CompletedTasks");
-                OnPropertyChanged("TotalTasks");
-            }
-
             public event PropertyChangedEventHandler PropertyChanged;
-
-            protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
         public class JunkInfo

@@ -299,7 +299,6 @@ namespace Steam_Library_Manager.Framework
             TMInfo.PendingTasks = TaskList.Count(x => !x.Active && !x.Completed);
             TMInfo.CompletedTasks = TaskList.Count(x => !x.Active && x.Completed);
             TMInfo.TotalTasks = TaskList.Count;
-            TMInfo.UpdateUI();
         }
     }
 }

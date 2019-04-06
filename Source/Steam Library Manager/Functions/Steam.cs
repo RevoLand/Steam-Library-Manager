@@ -508,7 +508,7 @@ namespace Steam_Library_Manager.Functions
                                 foreach (var app in appsPath.Children)
                                 {
                                     var lastPlayed = app["LastPlayed"].Value;
-                                    if (lastPlayed != null)
+                                    if (lastPlayed != null && !Definitions.List.SteamApps_LastPlayedDic.ContainsKey(Convert.ToInt32(app.Name)))
                                     {
                                         Definitions.List.SteamApps_LastPlayedDic.Add(Convert.ToInt32(app.Name), new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(lastPlayed)));
                                     }
