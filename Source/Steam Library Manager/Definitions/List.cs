@@ -10,12 +10,12 @@ namespace Steam_Library_Manager.Definitions
     public static class List
     {
         // Make a new list for Library details
-        public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
+        public static ObservableCollection<Library> Libraries { get; set; } = new ObservableCollection<Library>();
 
-        public static Framework.AsyncObservableCollection<JunkInfo> LCItems { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
+        public static ObservableCollection<JunkInfo> LCItems { get; set; } = new ObservableCollection<JunkInfo>();
 
-        public static ObservableCollection<ContextMenuItem> LibraryCMenuItems = new ObservableCollection<ContextMenuItem>();
-        public static ObservableCollection<ContextMenuItem> AppCMenuItems = new ObservableCollection<ContextMenuItem>();
+        public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
+        public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
         public static List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
         public static Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();

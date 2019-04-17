@@ -517,16 +517,19 @@
             <!-- Button: Check for Backup Updates -->
             <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45"  />
         </WrapPanel>
-        <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 238" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+        <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 228" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}"/>
             <TextBlock Text="  |  "/>
             <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}"/>
             <TextBlock Text="  |  "/>
             <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
+            <TextBlock Text="  |  "/>
+            <TextBlock Text="Logs Auto Scroll: "/>
+            <Controls:ToggleSwitch Margin="0" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->
-        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="230" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
+        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

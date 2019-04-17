@@ -450,7 +450,7 @@ namespace Steam_Library_Manager.Functions
                                         };
 
                                         Framework.TaskManager.AddTask(NewTask);
-                                        Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
+                                        Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
                                     }
                                 }
                             }
@@ -458,7 +458,7 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     await ProgressInformationMessage.CloseAsync();
-                    Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
+                    Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                 }
                 catch (Exception ex)
                 {

@@ -169,7 +169,6 @@
     <Compile Include="Forms\TaskManagerView.xaml.cs">
       <DependentUpon>TaskManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
     <Compile Include="Framework\LocalizedDescriptionAttribute.cs" />

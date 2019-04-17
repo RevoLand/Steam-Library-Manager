@@ -131,21 +131,14 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private bool AutoScroll = true;
-
         private void TaskManager_LogsView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             try
             {
                 var scrollViewer = ((ScrollViewer)e.OriginalSource);
-                // User scroll event : set or unset autoscroll mode
-                if (e.ExtentHeightChange == 0)
-                {
-                    AutoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
-                }
 
                 // Content scroll event : autoscroll eventually
-                if (AutoScroll && e.ExtentHeightChange != 0)
+                if (Properties.Settings.Default.TaskManager_Logs_AutoScroll && e.ExtentHeightChange != 0)
                 {
                     scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
                 }

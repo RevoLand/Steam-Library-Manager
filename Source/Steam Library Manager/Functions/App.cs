@@ -177,67 +177,6 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateAppPanel(Definitions.Library Library)
-        {
-            try
-            {
-                if (Library == null)
-                    return;
-
-                string Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
-
-                if (Main.FormAccessor.AppView.AppPanel.Dispatcher.CheckAccess())
-                {
-                    if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
-                    {
-                        Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
-                        return;
-                    }
-
-                    Func<dynamic, object> Sort = SLM.Settings.GetSortingMethod(Library);
-
-                    switch (Library.Type)
-                    {
-                        case Definitions.Enums.LibraryType.Steam:
-                        case Definitions.Enums.LibraryType.SLM:
-                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed") ?
-                                ((string.IsNullOrEmpty(Search)) ?
-                                Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
-                                    y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderByDescending(Sort).ToList()
-                                ) :
-                                ((string.IsNullOrEmpty(Search)) ? Library.Steam.Apps.OrderBy(Sort).ToList() : Library.Steam.Apps.Where(
-                                y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderBy(Sort).ToList()
-                                );
-                            break;
-
-                        case Definitions.Enums.LibraryType.Origin:
-                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
-                                ((string.IsNullOrEmpty(Search)) ?
-                                Library.Origin.Apps.OrderByDescending(Sort).ToList() : Library.Origin.Apps.Where(
-                                    y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderByDescending(Sort).ToList()
-                                ) :
-                                ((string.IsNullOrEmpty(Search)) ? Library.Origin.Apps.OrderBy(Sort).ToList() : Library.Origin.Apps.Where(
-                                y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderBy(Sort).ToList()
-                                );
-                            break;
-                    }
-                }
-                else
-                {
-                    Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
-                    {
-                        UpdateAppPanel(Library);
-                    }, System.Windows.Threading.DispatcherPriority.Normal);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-            }
-        }
+        public static void UpdateAppPanel(Definitions.Library Library) => Main.FormAccessor.LibraryChange.Report(Library);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Steam_Library_Manager.Definitions
         public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
         public string FullPath { get; set; }
-        public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
+        public ObservableCollection<SteamAppInfo> Apps { get; set; } = new ObservableCollection<SteamAppInfo>();
 
         public SteamLibrary(string fullPath, Library library, bool _IsMain = false)
         {
