@@ -4,9 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
-
-## [1.5.1.1] - 2019-04-17
+## [1.5.1.1] - 2019-04-19
 
 ### Added
 
@@ -14,8 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- (Task Manager) Tasked item crash with: System.IndexOutOfRangeException: Index was outside the bounds of the array.
-- Origin game header images are not downloading: RuntimeBinderException
+- (Task Manager) Tasked item crashes with error: System.IndexOutOfRangeException: Index was outside the bounds of the array.
+- RuntimeBinderException
 
 ## [1.5.1.0] - 2019-04-06
 
