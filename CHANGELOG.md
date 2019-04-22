@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.1.2] - 2019-04-22
+
+### Fixed
+
+- System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+  - Steam_Library_Manager.Functions.App.AddSteamApp
+  - Steam_Library_Manager.Definitions.SteamLibrary.UpdateJunks() (Issue: #40)
+
 ## [1.5.1.1] - 2019-04-19
 
 ### Added
@@ -67,7 +75,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
--  [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) to use for file copying.
+- [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) to use for file copying.
 
 ### Fixed
 
@@ -133,7 +141,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- NLog (https://github.com/NLog/NLog)
+- NLog (<https://github.com/NLog/NLog)>
 
 ### Changed
 

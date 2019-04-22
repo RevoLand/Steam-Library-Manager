@@ -97,8 +97,8 @@ namespace Steam_Library_Manager
 
                 LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
 
-                TaskManagerView.TaskPanel.ItemsSource = Framework.TaskManager.TaskList;
-                TaskManagerView.TaskManagerInformation.DataContext = Framework.TaskManager.TMInfo;
+                TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
+                TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TMLogs;
 
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LCItems;
@@ -120,14 +120,14 @@ namespace Steam_Library_Manager
 
             if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
             {
-                Framework.TaskManager.Start();
+                Functions.TaskManager.Start();
             }
         }
 
         private async void MainForm_ClosingAsync(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (e.Cancel) return;
-            if (Framework.TaskManager.TaskList.Count(x => x.Active) > 0)
+            if (Functions.TaskManager.TaskList.Count(x => x.Active) > 0)
             {
                 e.Cancel = true;
 

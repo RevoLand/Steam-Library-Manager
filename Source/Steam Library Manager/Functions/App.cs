@@ -42,7 +42,7 @@ namespace Steam_Library_Manager.Functions
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
                 if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.IsSteamBackup)
                 {
-                    Definitions.List.LCItems.Add(new Definitions.List.JunkInfo
+                    Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
                         FSInfo = new FileInfo(App.FullAcfPath.FullName),
                         Size = App.FullAcfPath.Length,

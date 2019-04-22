@@ -114,9 +114,9 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "compress":
-                        if (Framework.TaskManager.TaskList.ToList().Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
+                        if (Functions.TaskManager.TaskList.ToList().Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
                         {
-                            Framework.TaskManager.AddTask(new List.TaskInfo
+                            Functions.TaskManager.AddTask(new List.TaskInfo
                             {
                                 SteamApp = this,
                                 TargetLibrary = Library,
@@ -153,7 +153,7 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "deleteappfilestm":
-                        Framework.TaskManager.AddTask(new List.TaskInfo
+                        Functions.TaskManager.AddTask(new List.TaskInfo
                         {
                             SteamApp = this,
                             TargetLibrary = Library,
@@ -333,7 +333,7 @@ namespace Steam_Library_Manager.Definitions
                         catch (FileNotFoundException ex)
                         {
                             CurrentTask.ErrorHappened = true;
-                            Framework.TaskManager.Stop();
+                            Functions.TaskManager.Stop();
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
@@ -437,7 +437,7 @@ namespace Steam_Library_Manager.Definitions
                         catch (PathTooLongException ex)
                         {
                             CurrentTask.ErrorHappened = true;
-                            Framework.TaskManager.Stop();
+                            Functions.TaskManager.Stop();
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
@@ -455,7 +455,7 @@ namespace Steam_Library_Manager.Definitions
                         catch (IOException ex)
                         {
                             CurrentTask.ErrorHappened = true;
-                            Framework.TaskManager.Stop();
+                            Functions.TaskManager.Stop();
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
@@ -525,7 +525,7 @@ namespace Steam_Library_Manager.Definitions
                         catch (PathTooLongException ex)
                         {
                             CurrentTask.ErrorHappened = true;
-                            Framework.TaskManager.Stop();
+                            Functions.TaskManager.Stop();
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
@@ -543,7 +543,7 @@ namespace Steam_Library_Manager.Definitions
                         catch (IOException ex)
                         {
                             CurrentTask.ErrorHappened = true;
-                            Framework.TaskManager.Stop();
+                            Functions.TaskManager.Stop();
                             CurrentTask.Active = false;
                             CurrentTask.Completed = true;
 
@@ -582,7 +582,7 @@ namespace Steam_Library_Manager.Definitions
                 if (!CurrentTask.ErrorHappened)
                 {
                     CurrentTask.ErrorHappened = true;
-                    Framework.TaskManager.Stop();
+                    Functions.TaskManager.Stop();
                     CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
@@ -601,7 +601,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 CurrentTask.ErrorHappened = true;
-                Framework.TaskManager.Stop();
+                Functions.TaskManager.Stop();
                 CurrentTask.Active = false;
                 CurrentTask.Completed = true;
 
@@ -620,12 +620,12 @@ namespace Steam_Library_Manager.Definitions
 
         private void OnFileProgress(FileProgress s)
         {
-            Framework.TaskManager.ActiveTask.mre.WaitOne();
+            Functions.TaskManager.ActiveTask.mre.WaitOne();
 
-            if (Framework.TaskManager.CancellationToken.IsCancellationRequested)
-                throw (new OperationCanceledException(Framework.TaskManager.CancellationToken.Token));
+            if (Functions.TaskManager.CancellationToken.IsCancellationRequested)
+                throw (new OperationCanceledException(Functions.TaskManager.CancellationToken.Token));
 
-            Framework.TaskManager.ActiveTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CopyingFile)), new { Percentage = s.Percentage.ToString("0.00"), TransferredBytes = s.Transferred, TotalBytes = s.Total });
+            Functions.TaskManager.ActiveTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CopyingFile)), new { Percentage = s.Percentage.ToString("0.00"), TransferredBytes = s.Transferred, TotalBytes = s.Total });
         }
 
         private double GetElapsedTimeAverage(long FileSize, double ElapsedTime)

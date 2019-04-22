@@ -441,7 +441,7 @@ namespace Steam_Library_Manager.Functions
                                 {
                                     var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
+                                    if (Functions.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
@@ -449,7 +449,7 @@ namespace Steam_Library_Manager.Functions
                                             TargetLibrary = CurrentApp.Library
                                         };
 
-                                        Framework.TaskManager.AddTask(NewTask);
+                                        Functions.TaskManager.AddTask(NewTask);
                                         Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
                                     }
                                 }

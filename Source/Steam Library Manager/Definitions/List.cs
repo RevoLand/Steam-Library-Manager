@@ -14,6 +14,8 @@ namespace Steam_Library_Manager.Definitions
 
         public static ObservableCollection<JunkInfo> LCItems { get; set; } = new ObservableCollection<JunkInfo>();
 
+        public static IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(Junk => LCItems.Add(Junk));
+
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
@@ -32,7 +34,7 @@ namespace Steam_Library_Manager.Definitions
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
-            public ManualResetEvent mre = new ManualResetEvent(!Framework.TaskManager.Paused);
+            public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 
             private long _MovedFileSize;
             public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {TotalFileSize / 1024000} MB";

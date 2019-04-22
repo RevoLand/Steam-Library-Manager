@@ -25,20 +25,20 @@ namespace Steam_Library_Manager.Forms
                 {
                     case "Start":
                     default:
-                        Framework.TaskManager.Start();
+                        Functions.TaskManager.Start();
                         Button_StartTaskManager.IsEnabled = false;
                         Button_PauseTaskManager.IsEnabled = true;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
 
                     case "Pause":
-                        Framework.TaskManager.Pause();
+                        Functions.TaskManager.Pause();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
 
                     case "Stop":
-                        Framework.TaskManager.Stop();
+                        Functions.TaskManager.Stop();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = false;
                         break;
@@ -48,16 +48,16 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "ClearCompleted":
-                        if (Framework.TaskManager.TaskList.Count == 0)
+                        if (Functions.TaskManager.TaskList.Count == 0)
                         {
                             return;
                         }
 
-                        foreach (Definitions.List.TaskInfo CurrentTask in Framework.TaskManager.TaskList.ToList())
+                        foreach (Definitions.List.TaskInfo CurrentTask in Functions.TaskManager.TaskList.ToList())
                         {
                             if (CurrentTask.Completed)
                             {
-                                Framework.TaskManager.TaskList.Remove(CurrentTask);
+                                Functions.TaskManager.TaskList.Remove(CurrentTask);
                             }
                         }
                         break;
@@ -83,13 +83,13 @@ namespace Steam_Library_Manager.Forms
 
                         foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
                         {
-                            if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
+                            if (CurrentTask.Active && Functions.TaskManager.Status && !CurrentTask.Completed)
                             {
                                 await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { AppName = CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName }));
                             }
                             else
                             {
-                                Framework.TaskManager.RemoveTask(CurrentTask);
+                                Functions.TaskManager.RemoveTask(CurrentTask);
                             }
                         }
                         break;

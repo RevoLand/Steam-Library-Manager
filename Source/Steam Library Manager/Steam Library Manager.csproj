@@ -173,7 +173,7 @@
     <Compile Include="Framework\CachedImage\Image.cs" />
     <Compile Include="Framework\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Framework\SteamIDConvert.cs" />
-    <Compile Include="Framework\TaskManager.cs" />
+    <Compile Include="Functions\TaskManager.cs" />
     <Compile Include="Framework\StringFormat.cs" />
     <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
     <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
