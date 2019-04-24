@@ -1,1 +1,1 @@
-1.5.1.1|IndexOutOfRangeException fix
+1.5.1.2|NotSupportedException fix
