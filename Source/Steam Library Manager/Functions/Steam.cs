@@ -150,7 +150,7 @@ namespace Steam_Library_Manager.Functions
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Compress)),
                 Action = "Compress",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
-                ShowToCompressed = false,
+                ShowToCompressed = true,
                 ShowToSteamBackup = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
             });

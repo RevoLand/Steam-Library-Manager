@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.1.3] - 2019-04-27
+
+### Fixed
+
+- No button to decompress a game after it was compressed. (Issue: #41)
+- Incorrect task status message on game compressing.
+
 ## [1.5.1.2] - 2019-04-24
 
 ### Fixed

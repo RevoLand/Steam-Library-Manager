@@ -69,13 +69,13 @@ namespace Steam_Library_Manager.Definitions
                         {
                             MenuItem SLMItem = new MenuItem()
                             {
-                                Tag = this,
-                                Header = Framework.StringFormat.Format(cItem.Header, new { AppName, AppID, SizeOnDisk = Functions.FileSystem.FormatBytes(SizeOnDisk) })
+                                Header = Framework.StringFormat.Format(cItem.Header, new { AppName, AppID, SizeOnDisk = Functions.FileSystem.FormatBytes(SizeOnDisk) }),
+                                Tag = cItem.Action,
+                                Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor),
+                                HorizontalContentAlignment = HorizontalAlignment.Left,
+                                VerticalContentAlignment = VerticalAlignment.Center
                             };
-                            SLMItem.Tag = cItem.Action;
-                            SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor);
-                            SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
-                            SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
+
                             SLMItem.Click += Main.FormAccessor.AppCMenuItem_Click;
 
                             rightClickMenu.Add(SLMItem);

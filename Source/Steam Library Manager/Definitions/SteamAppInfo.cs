@@ -61,7 +61,8 @@ namespace Steam_Library_Manager.Definitions
                         {
                             continue;
                         }
-                        else if (IsSteamBackup && !cItem.ShowToSteamBackup)
+
+                        if (IsSteamBackup && !cItem.ShowToSteamBackup)
                         {
                             continue;
                         }
@@ -74,13 +75,13 @@ namespace Steam_Library_Manager.Definitions
                         {
                             MenuItem SLMItem = new MenuItem()
                             {
-                                Tag = this,
-                                Header = Framework.StringFormat.Format(cItem.Header, new { AppName, AppID, SizeOnDisk = Functions.FileSystem.FormatBytes(SizeOnDisk) })
+                                Header = Framework.StringFormat.Format(cItem.Header, new { AppName, AppID, SizeOnDisk = Functions.FileSystem.FormatBytes(SizeOnDisk) }),
+                                Tag = cItem.Action,
+                                Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor),
+                                HorizontalContentAlignment = HorizontalAlignment.Left,
+                                VerticalContentAlignment = VerticalAlignment.Center
                             };
-                            SLMItem.Tag = cItem.Action;
-                            SLMItem.Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor);
-                            SLMItem.HorizontalContentAlignment = HorizontalAlignment.Left;
-                            SLMItem.VerticalContentAlignment = VerticalAlignment.Center;
+
                             SLMItem.Click += Main.FormAccessor.AppCMenuItem_Click;
 
                             rightClickMenu.Add(SLMItem);
@@ -120,6 +121,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 SteamApp = this,
                                 TargetLibrary = Library,
+                                Compress = !IsCompressed,
                                 TaskType = Enums.TaskType.Compress
                             });
                         }
@@ -312,7 +314,7 @@ namespace Steam_Library_Manager.Definitions
 
                                 string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
-                                CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length) });
+                                CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CompressingFile)), new { FileName = currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length) });
 
                                 Archive.CreateEntryFromFile(currentFile.FullName, FileNameInArchive, Properties.Settings.Default.CompressionLevel.ParseEnum<CompressionLevel>());
                                 CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;
