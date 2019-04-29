@@ -93,6 +93,7 @@
                                 <TextBlock Text="Mike Burkart (Paypal)"/>
                                 <TextBlock Text="Marisa Smith (Paypal)"/>
                                 <TextBlock Text="Ken Tittle (Patreon)"/>
+                                <TextBlock Text="DigitalBirdie (Paypal)"/>
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>
