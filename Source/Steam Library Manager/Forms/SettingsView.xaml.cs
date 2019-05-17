@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -52,6 +53,29 @@ namespace Steam_Library_Manager.Forms
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Properties.Settings.Default.Language = Gu.Localization.Translator.CurrentCulture.TwoLetterISOLanguageName;
+        }
+
+        private void CompactSelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var compactFileSelector = new Microsoft.Win32.OpenFileDialog()
+                {
+                    Filter = "Compact Executable (compact.exe)|compact.exe",
+                    CheckFileExists = true
+                };
+
+                if (compactFileSelector.ShowDialog() != true) return;
+
+                if (Directory.Exists(Path.GetDirectoryName(compactFileSelector.FileName)))
+                {
+                    Properties.Settings.Default.CompactExecutablePath = compactFileSelector.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

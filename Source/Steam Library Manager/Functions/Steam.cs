@@ -25,15 +25,15 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
-                            OpenFileDialog SteamPathSelector = new OpenFileDialog()
+                            var steamPathSelector = new OpenFileDialog()
                             {
-                                Filter = "Steam (Steam.exe)|Steam.exe"
+                                Filter = "Steam Executable (Steam.exe)|Steam.exe"
                             };
 
-                            if (SteamPathSelector.ShowDialog() == true)
+                            if (steamPathSelector.ShowDialog() == true)
                             {
-                                if (Directory.Exists(Path.GetDirectoryName(SteamPathSelector.FileName)))
-                                    Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
+                                if (Directory.Exists(Path.GetDirectoryName(steamPathSelector.FileName)))
+                                    Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(steamPathSelector.FileName);
                             }
                         }
                     }
@@ -154,6 +154,18 @@ namespace Steam_Library_Manager.Functions
                 ShowToSteamBackup = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
             });
+
+            // Compact
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Compact",
+                Action = "compact",
+                LibraryType = Definitions.Enums.LibraryType.Steam,
+                ShowToCompressed = false,
+                ShowToSteamBackup = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+            });
+
             // Separator
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {

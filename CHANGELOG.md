@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+## [1.5.2.0] - 2019-05-17
+
+### Added
+
+- Windows 10 compact function (WIP)
+
+### Changed
+
+- Task Manager UI tweaked
+
 ## [1.5.1.3] - 2019-04-27
 
 ### Fixed

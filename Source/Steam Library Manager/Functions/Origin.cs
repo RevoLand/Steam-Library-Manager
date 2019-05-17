@@ -51,6 +51,16 @@ namespace Steam_Library_Manager.Functions
                 ShowToCompressed = false
             });
 
+            // Compact
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Compact",
+                Action = "compact",
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                ShowToCompressed = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+            });
+
             // Separator
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {

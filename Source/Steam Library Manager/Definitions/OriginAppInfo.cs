@@ -108,6 +108,17 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         break;
+                    case "compact":
+                        if (Functions.TaskManager.TaskList.Count(x => x.OriginApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
+                        {
+                            Functions.TaskManager.AddTask(new List.TaskInfo
+                            {
+                                OriginApp = this,
+                                TargetLibrary = Library,
+                                TaskType = Enums.TaskType.Compact
+                            });
+                        }
+                        break;
 
                     case "install":
 

@@ -332,5 +332,31 @@ namespace Steam_Library_Manager.Properties {
                 this["TaskManager_Logs_AutoScroll"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string CompactExecutablePath {
+            get {
+                return ((string)(this["CompactExecutablePath"]));
+            }
+            set {
+                this["CompactExecutablePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("XPRESS8K")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string DefaultCompactLevel {
+            get {
+                return ((string)(this["DefaultCompactLevel"]));
+            }
+            set {
+                this["DefaultCompactLevel"] = value;
+            }
+        }
     }
 }

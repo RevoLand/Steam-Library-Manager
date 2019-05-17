@@ -28,6 +28,7 @@ namespace Steam_Library_Manager.Definitions
             public SteamAppInfo SteamApp { get; set; }
             public OriginAppInfo OriginApp { get; set; }
             public Library TargetLibrary { get; set; }
+            public Enums.CompactLevel CompactLevel { get; set; } = (Enums.CompactLevel)Enum.Parse(typeof(Enums.CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
 
             public bool ErrorHappened, Active;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
@@ -36,8 +37,8 @@ namespace Steam_Library_Manager.Definitions
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
             public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 
-            private long _MovedFileSize;
-            public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {TotalFileSize / 1024000} MB";
+            private long _movedFileSize;
+            public string TaskProgressInfo => (_movedFileSize == 0) ? "" : $"{_movedFileSize / 1024000} MB / {TotalFileSize / 1024000} MB";
 
             public string TaskStatusInfo { get; set; }
 
@@ -45,10 +46,10 @@ namespace Steam_Library_Manager.Definitions
 
             public long MovedFileSize
             {
-                get => _MovedFileSize;
+                get => _movedFileSize;
                 set
                 {
-                    _MovedFileSize = value;
+                    _movedFileSize = value;
                     OnPropertyChanged("MovedFileSize");
                     OnPropertyChanged("ProgressBarPerc");
                     OnPropertyChanged("TaskProgressInfo");
@@ -62,12 +63,12 @@ namespace Steam_Library_Manager.Definitions
                 get
                 {
                     double perc = 0;
-                    if (_MovedFileSize != 0)
+                    if (_movedFileSize != 0)
                     {
-                        perc = Math.Floor((double)(100 * _MovedFileSize) / TotalFileSize);
+                        perc = Math.Floor((double)(100 * _movedFileSize) / TotalFileSize);
                     }
 
-                    return _MovedFileSize == 0 ? 0 : perc;
+                    return _movedFileSize == 0 ? 0 : perc;
                 }
             }
 
@@ -78,7 +79,7 @@ namespace Steam_Library_Manager.Definitions
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
-        public class TMInfo : INotifyPropertyChanged
+        public class TmInfo : INotifyPropertyChanged
         {
             public int PendingTasks { get; set; }
             public int CompletedTasks { get; set; }

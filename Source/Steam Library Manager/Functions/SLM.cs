@@ -132,7 +132,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LoadSteam()
+        private static void LoadSteam()
         {
             try
             {
@@ -148,7 +148,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LoadOrigin()
+        private static void LoadOrigin()
         {
             try
             {

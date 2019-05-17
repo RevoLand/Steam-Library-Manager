@@ -15,7 +15,7 @@ namespace Steam_Library_Manager.Definitions
 {
     public class SteamAppInfo
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Library Library { get; set; }
 
@@ -99,11 +99,11 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public async void ParseMenuItemActionAsync(string Action)
+        public async void ParseMenuItemActionAsync(string action)
         {
             try
             {
-                switch (Action.ToLowerInvariant())
+                switch (action.ToLowerInvariant())
                 {
                     default:
                         if (string.IsNullOrEmpty(Properties.Settings.Default.SteamID64))
@@ -111,11 +111,11 @@ namespace Steam_Library_Manager.Definitions
                             return;
                         }
 
-                        Process.Start(string.Format(Action, AppID, Properties.Settings.Default.SteamID64));
+                        Process.Start(string.Format(action, AppID, Properties.Settings.Default.SteamID64));
                         break;
 
                     case "compress":
-                        if (Functions.TaskManager.TaskList.ToList().Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
                         {
                             Functions.TaskManager.AddTask(new List.TaskInfo
                             {
@@ -123,6 +123,17 @@ namespace Steam_Library_Manager.Definitions
                                 TargetLibrary = Library,
                                 Compress = !IsCompressed,
                                 TaskType = Enums.TaskType.Compress
+                            });
+                        }
+                        break;
+                    case "compact":
+                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
+                        {
+                            Functions.TaskManager.AddTask(new List.TaskInfo
+                            {
+                                SteamApp = this,
+                                TargetLibrary = Library,
+                                TaskType = Enums.TaskType.Compact
                             });
                         }
                         break;
@@ -166,7 +177,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -174,7 +185,7 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                List<FileInfo> FileList = new List<FileInfo>();
+                var FileList = new List<FileInfo>();
 
                 if (IsCompressed)
                 {
@@ -235,12 +246,12 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
                 return null;
             }
         }
 
-        public IEnumerable<FileInfo> GetCommonFiles()
+        private IEnumerable<FileInfo> GetCommonFiles()
         {
             try
             {
@@ -254,20 +265,25 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public IEnumerable<FileInfo> GetDownloadFiles() => DownloadFolder.EnumerateFiles("*", SearchOption.AllDirectories);
+        private IEnumerable<FileInfo> GetDownloadFiles() => DownloadFolder.EnumerateFiles("*", SearchOption.AllDirectories);
 
-        public IEnumerable<FileInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFiles($"*{AppID}*.patch", SearchOption.TopDirectoryOnly);
+        private IEnumerable<FileInfo> GetPatchFiles() => Library.Steam.DownloadFolder.EnumerateFiles($"*{AppID}*.patch", SearchOption.TopDirectoryOnly);
 
-        public IEnumerable<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories);
+        private IEnumerable<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories);
+
+        public async Task CompactTask(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
+        {
+            LogToTM($"Task Type: Compact - Game: {AppName} - CompactLevel: {CurrentTask.CompactLevel}");
+        }
 
         public async Task CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
             LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
-            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
+            Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
 
-            List<string> CopiedFiles = new List<string>();
-            List<string> CreatedDirectories = new List<string>();
-            List<FileInfo> AppFiles = GetFileList();
+            var CopiedFiles = new List<string>();
+            var CreatedDirectories = new List<string>();
+            var AppFiles = GetFileList();
             CurrentTask.TotalFileCount = AppFiles.Count;
             long TotalFileSize = 0;
 
@@ -284,7 +300,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.ElapsedTime.Start();
 
                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileListPopulated)), new { AppName, FileCount = AppFiles.Count, TotalFileSize = Functions.FileSystem.FormatBytes(TotalFileSize) }));
-                logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileListPopulated)), new { AppName, FileCount = AppFiles.Count, TotalFileSize = Functions.FileSystem.FormatBytes(TotalFileSize) }));
+                Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileListPopulated)), new { AppName, FileCount = AppFiles.Count, TotalFileSize = Functions.FileSystem.FormatBytes(TotalFileSize) }));
 
                 // If the game is not compressed and user would like to compress it
                 if (!IsCompressed && (CurrentTask.Compress || CurrentTask.TaskType == Enums.TaskType.Compress))
@@ -295,7 +311,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         while (CompressedArchive.IsFileLocked())
                         {
-                            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_CompressedArchiveExistsAndInUse)), new { ArchiveFullPath = CompressedArchive.FullName }));
+                            Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_CompressedArchiveExistsAndInUse)), new { ArchiveFullPath = CompressedArchive.FullName }));
                             await Task.Delay(1000);
                         }
 
@@ -324,7 +340,7 @@ namespace Steam_Library_Manager.Definitions
                                     LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileCompressed)), new { AppName, FileNameInArchive }));
                                 }
 
-                                logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileCompressed)), new { AppName, FileNameInArchive }));
+                                Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileCompressed)), new { AppName, FileNameInArchive }));
 
                                 if (cancellationToken.IsCancellationRequested)
                                 {
@@ -348,7 +364,7 @@ namespace Steam_Library_Manager.Definitions
                              }, System.Windows.Threading.DispatcherPriority.Normal);
 
                             Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CompressArchive_FileNotFoundEx)), new { AppName, ExceptionMessage = ex.Message }));
-                            logger.Fatal(ex);
+                            Logger.Fatal(ex);
                         }
                     }
                 }
@@ -379,7 +395,7 @@ namespace Steam_Library_Manager.Definitions
                             LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileDecompressed)), new { AppName, NewFileFullPath = NewFile.FullName }));
                         }
 
-                        logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileDecompressed)), new { AppName, NewFileFullPath = NewFile.FullName }));
+                        Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FileDecompressed)), new { AppName, NewFileFullPath = NewFile.FullName }));
 
                         if (cancellationToken.IsCancellationRequested)
                         {
@@ -430,7 +446,7 @@ namespace Steam_Library_Manager.Definitions
                                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
                             }
 
-                            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
+                            Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
@@ -452,7 +468,7 @@ namespace Steam_Library_Manager.Definitions
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
                             Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            logger.Fatal(ex);
+                            Logger.Fatal(ex);
                         }
                         catch (IOException ex)
                         {
@@ -470,7 +486,7 @@ namespace Steam_Library_Manager.Definitions
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
                             Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            logger.Fatal(ex);
+                            Logger.Fatal(ex);
                         }
                         catch (UnauthorizedAccessException ex)
                         {
@@ -518,7 +534,7 @@ namespace Steam_Library_Manager.Definitions
                                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
                             }
 
-                            logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
+                            Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = NewFile.FullName }));
                         }
                         catch (System.ComponentModel.Win32Exception)
                         {
@@ -540,7 +556,7 @@ namespace Steam_Library_Manager.Definitions
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
                             Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            logger.Fatal(ex);
+                            Logger.Fatal(ex);
                         }
                         catch (IOException ex)
                         {
@@ -558,7 +574,7 @@ namespace Steam_Library_Manager.Definitions
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
                             Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            logger.Fatal(ex);
+                            Logger.Fatal(ex);
                         }
                         catch (UnauthorizedAccessException ex)
                         {
@@ -577,7 +593,7 @@ namespace Steam_Library_Manager.Definitions
                 CurrentTask.MovedFileSize = TotalFileSize;
 
                 LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
-                logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
+                Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(TotalFileSize, CurrentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(TotalFileSize / (long)CurrentTask.TotalFileCount) }));
             }
             catch (OperationCanceledException)
             {
@@ -597,7 +613,7 @@ namespace Steam_Library_Manager.Definitions
                     }, System.Windows.Threading.DispatcherPriority.Normal);
 
                     LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
-                    logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
+                    Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
                 }
             }
             catch (Exception ex)
@@ -616,7 +632,7 @@ namespace Steam_Library_Manager.Definitions
                  }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.AnyError_ElapsedTime)), new { AppName, ElapsedTime = CurrentTask.ElapsedTime.Elapsed }));
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -651,7 +667,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                logger.Error(ex);
+                Logger.Error(ex);
             }
         }
 
@@ -699,7 +715,7 @@ namespace Steam_Library_Manager.Definitions
                             }
                             catch (Exception ex)
                             {
-                                logger.Fatal(ex);
+                                Logger.Fatal(ex);
                             }
                         }
                         );
@@ -752,28 +768,28 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FileNotFoundException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
                 return true;
             }
             catch (DirectoryNotFoundException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
                 return true;
             }
             catch (IOException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
                 return true;
             }
             catch (UnauthorizedAccessException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
                 return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
 
                 return false;
             }

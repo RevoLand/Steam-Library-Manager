@@ -648,6 +648,7 @@
           <xs:element name="useDefaultRowHighlightingRules" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="highlight-row" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleRowHighlightingRule" />
           <xs:element name="highlight-word" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleWordHighlightingRule" />
+          <xs:element name="autoFlush" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="optimizeBufferReuse" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
@@ -693,6 +694,11 @@
         <xs:attribute name="useDefaultRowHighlightingRules" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to use default row highlighting rules.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="autoFlush" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether to auto-flush after </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="optimizeBufferReuse" type="xs:boolean">
@@ -803,6 +809,7 @@
           <xs:element name="detectConsoleAvailable" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="encoding" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="error" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="autoFlush" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="optimizeBufferReuse" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
@@ -838,6 +845,11 @@
         <xs:attribute name="error" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to send the log messages to the standard error instead of the standard output.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="autoFlush" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether to auto-flush after </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="optimizeBufferReuse" type="xs:boolean">
