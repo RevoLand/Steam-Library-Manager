@@ -16,7 +16,7 @@ namespace Steam_Library_Manager.Functions
         public static CancellationTokenSource CancellationToken;
         public static bool Status, Paused, IsRestartRequired;
         public static Definitions.List.TaskInfo ActiveTask;
-        public static Definitions.List.TmInfo TMInfo { get; set; } = new Definitions.List.TmInfo();
+        public static Definitions.List.TmInfo TMInfo { get; } = new Definitions.List.TmInfo();
 
         private static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {

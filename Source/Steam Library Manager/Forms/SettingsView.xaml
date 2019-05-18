@@ -67,12 +67,6 @@
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
                 </WrapPanel>
                 <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
-                    <StackPanel Orientation="Horizontal" Width="240">
-                        <TextBox Controls:TextBoxHelper.Watermark="Compact.exe Path" Controls:TextBoxHelper.UseFloatingWatermark="True"
-                                 HorizontalAlignment="Left" HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="200" Text="{SLM:SettingBinding CompactExecutablePath}"/>
-                        <Button Margin="5, 0, 0, 0" x:Name="compactSelectButton" Width="35" Height="40" Click="CompactSelectButton_Click">...</Button>
-                    </StackPanel>
-                    
                     <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_compactLevel}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />

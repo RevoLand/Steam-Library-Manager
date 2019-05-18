@@ -1,4 +1,5 @@
-﻿using FileCopyLib;
+﻿using CliWrap;
+using FileCopyLib;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -273,7 +274,59 @@ namespace Steam_Library_Manager.Definitions
 
         public async Task CompactTask(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
         {
-            LogToTM($"Task Type: Compact - Game: {AppName} - CompactLevel: {CurrentTask.CompactLevel}");
+            try
+            {
+                /*
+                    Syntax
+                    compact [{/c|/u}] [/s[:dir]] [/a] [/i] [/f] [/q] [FileName[...]]
+
+                    Parameters
+
+                    /c : Compresses the specified directory or file.
+                    /u : Uncompresses the specified directory or file.
+                    /s : dir : Specifies that the requested action (compress or uncompress) be applied to all subdirectories of the specified directory, or of the current directory if none is specified.
+                    /a : Displays hidden or system files.
+                    /i : Ignores errors.
+                    /f : Forces compression or uncompression of the specified directory or file. This is used in the case of a file that was partly compressed when the operation was interrupted by a system crash. To force the file to be compressed in its entirety, use the /c and /f parameters and specify the partially compressed file.
+                    /q : Reports only the most essential information.
+                    FileName : Specifies the file or directory. You can use multiple file names and wildcard characters (* and ?).
+                    /? : Displays help at the command prompt.
+                 */
+                CurrentTask.mre.WaitOne();
+
+                var result = await Cli.Wrap("compact")
+                    .SetArguments($"/c /i /q /EXE:{CurrentTask.CompactLevel} /s")
+                    .SetWorkingDirectory(CommonFolder.FullName)
+                    .SetCancellationToken(cancellationToken)
+                    .SetStandardOutputCallback(OnCompactFolderProgress)
+                    .SetStandardErrorCallback(OnCompactFolderProgress)
+                    .EnableStandardErrorValidation()
+                    .ExecuteAsync().ConfigureAwait(false);
+
+                var exitCode = result.ExitCode;
+                var stdErr = result.StandardError;
+                var runTime = result.RunTime;
+
+                LogToTM(string.IsNullOrEmpty(stdErr)
+                    ? $"[{AppName}] Task completed in {runTime}"
+                    : $"[{AppName}] Task failed with error message: {stdErr}");
+            }
+            catch (Exception ex)
+            {
+                LogToTM(ex.ToString());
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void OnCompactFolderProgress(string progress)
+        {
+            if (progress?.Length == 0 || !Functions.TaskManager.ActiveTask.ReportFileMovement) return;
+
+            Functions.TaskManager.ActiveTask.mre.WaitOne();
+
+            Functions.TaskManager.ActiveTask.TaskStatusInfo = progress;
+
+            LogToTM(progress);
         }
 
         public async Task CopyFilesAsync(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
@@ -658,7 +711,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void LogToTM(string TextToLog)
+        private void LogToTM(string TextToLog)
         {
             try
             {
