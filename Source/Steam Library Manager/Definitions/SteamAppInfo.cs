@@ -23,13 +23,15 @@ namespace Steam_Library_Manager.Definitions
         public int AppID { get; set; }
         public string AppName { get; set; }
         public DirectoryInfo InstallationDirectory;
+
         public long SizeOnDisk { get; set; }
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
+        public bool IsCompacted { get; private set; }
         public DateTime LastUpdated { get; set; }
         public DateTime LastPlayed { get; set; }
 
-        public string GameHeaderImage => $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
+        public string GameHeaderImage { get; }
 
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
 
@@ -45,9 +47,20 @@ namespace Steam_Library_Manager.Definitions
 
         public FileInfo WorkShopAcfPath => new FileInfo(Path.Combine(Library.Steam.WorkshopFolder.FullName, WorkShopAcfName));
 
-        public string AcfName => $"appmanifest_{AppID}.acf";
+        public string AcfName { get; }
 
-        public string WorkShopAcfName => $"appworkshop_{AppID}.acf";
+        public string WorkShopAcfName { get; }
+
+        public SteamAppInfo(int appId, Library library, DirectoryInfo installationDirectory)
+        {
+            AppID = appId;
+            Library = library;
+            InstallationDirectory = installationDirectory;
+            GameHeaderImage = $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
+            AcfName = $"appmanifest_{AppID}.acf";
+            WorkShopAcfName = $"appworkshop_{AppID}.acf";
+            IsCompacted = CompactStatus();
+        }
 
         public List<FrameworkElement> ContextMenuItems
         {
@@ -127,6 +140,7 @@ namespace Steam_Library_Manager.Definitions
                             });
                         }
                         break;
+
                     case "compact":
                         if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
                         {
@@ -272,7 +286,28 @@ namespace Steam_Library_Manager.Definitions
 
         private IEnumerable<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories);
 
-        public async Task CompactTask(List.TaskInfo CurrentTask, CancellationToken cancellationToken)
+        private bool CompactStatus()
+        {
+            try
+            {
+                var result = Cli.Wrap("compact")
+                    .SetArguments($"/q")
+                    .SetWorkingDirectory(CommonFolder.FullName)
+                    .ExecuteAsync().Result;
+
+                // May not be the best approach, to be improved if needed to.
+                return !result.StandardOutput.Contains("0 are compressed");
+            }
+            catch (Exception ex)
+            {
+                LogToTM(ex.ToString());
+                Debug.WriteLine(ex);
+
+                return false;
+            }
+        }
+
+        public async Task CompactTask(List.TaskInfo currentTask, CancellationToken cancellationToken)
         {
             try
             {
@@ -292,10 +327,13 @@ namespace Steam_Library_Manager.Definitions
                     FileName : Specifies the file or directory. You can use multiple file names and wildcard characters (* and ?).
                     /? : Displays help at the command prompt.
                  */
-                CurrentTask.mre.WaitOne();
+
+                LogToTM($"Current status of {AppName} is {(IsCompacted ? "compressed" : "not compressed")} and the task is set to {(currentTask.Compact ? "compress" : "uncompress")} the app.");
+
+                currentTask.mre.WaitOne();
 
                 var result = await Cli.Wrap("compact")
-                    .SetArguments($"/c /i /q /EXE:{CurrentTask.CompactLevel} /s")
+                    .SetArguments($"{(currentTask.Compact ? "/c" : "/u")} /i /q {(currentTask.ForceCompact ? "/f" : "")} /EXE:{currentTask.CompactLevel} /s")
                     .SetWorkingDirectory(CommonFolder.FullName)
                     .SetCancellationToken(cancellationToken)
                     .SetStandardOutputCallback(OnCompactFolderProgress)
@@ -308,8 +346,10 @@ namespace Steam_Library_Manager.Definitions
                 var runTime = result.RunTime;
 
                 LogToTM(string.IsNullOrEmpty(stdErr)
-                    ? $"[{AppName}] Task completed in {runTime}"
-                    : $"[{AppName}] Task failed with error message: {stdErr}");
+                    ? $"[{AppName}] Task completed in {runTime} - ExitCode: {exitCode}"
+                    : $"[{AppName}] Task failed with error message: {stdErr} - ExitCode: {exitCode}");
+
+                IsCompacted = CompactStatus();
             }
             catch (Exception ex)
             {

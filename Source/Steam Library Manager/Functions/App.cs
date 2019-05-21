@@ -17,16 +17,10 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // Make a new definition for app
-                Definitions.SteamAppInfo App = new Definitions.SteamAppInfo()
+                var App = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(InstallationPath))
                 {
-                    // Set game appID
-                    AppID = AppID,
-
                     // Set game name
                     AppName = AppName,
-
-                    Library = Library,
-                    InstallationDirectory = new DirectoryInfo(InstallationPath),
 
                     // Define it is an archive
                     IsCompressed = IsCompressed,

@@ -19,8 +19,8 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
-        public static List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
-        public static Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
+        public static readonly List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
+        public static readonly Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
 
         public class TaskInfo : INotifyPropertyChanged
         {
@@ -29,6 +29,8 @@ namespace Steam_Library_Manager.Definitions
             public OriginAppInfo OriginApp { get; set; }
             public Library TargetLibrary { get; set; }
             public Enums.CompactLevel CompactLevel { get; set; } = (Enums.CompactLevel)Enum.Parse(typeof(Enums.CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
+            public bool Compact { get; set; } = true;
+            public bool ForceCompact { get; set; }
 
             public bool ErrorHappened, Active;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;

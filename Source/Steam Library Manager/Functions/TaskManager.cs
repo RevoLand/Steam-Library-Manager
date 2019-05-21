@@ -85,7 +85,7 @@ namespace Steam_Library_Manager.Functions
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
                         case Definitions.Enums.TaskType.Compact:
-                            //await CurrentTask.OriginApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
+                            await CurrentTask.OriginApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
                     }
 
