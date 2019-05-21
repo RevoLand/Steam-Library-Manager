@@ -4,13 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
-
-## [1.5.2.0] - 2019-05-17
+## [1.5.1.4] - 2019-05-21
 
 ### Added
 
-- Windows 10 compact function (WIP)
+- New Task Type: Compact - Windows compact function (Beta, please report errors you encounter)
+  - Compress/Uncompress
+  - Show compact status
+- Russian language (Credits to MrDubstep863, thank you!)
+- [CliWrap](https://github.com/Tyrrrz/CliWrap)
 
 ### Changed
 
@@ -47,7 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Localization support
-  - Supported Languages: English, French *(WIP)*, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
+  - Supported Languages: English, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
 - Language selector
 - Steam UserID selector (to fetch Last Play time)
 - Auto Scrolling for logs in the Task Manager tab *(Use with caution on games with lots of small files)*
