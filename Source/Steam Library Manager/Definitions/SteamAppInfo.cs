@@ -329,6 +329,7 @@ namespace Steam_Library_Manager.Definitions
                  */
 
                 LogToTM($"Current status of {AppName} is {(IsCompacted ? "compressed" : "not compressed")} and the task is set to {(currentTask.Compact ? "compress" : "uncompress")} the app.");
+                currentTask.ElapsedTime.Start();
 
                 currentTask.mre.WaitOne();
 
@@ -349,7 +350,21 @@ namespace Steam_Library_Manager.Definitions
                     ? $"[{AppName}] Task completed in {runTime} - ExitCode: {exitCode}"
                     : $"[{AppName}] Task failed with error message: {stdErr} - ExitCode: {exitCode}");
 
+                currentTask.ElapsedTime.Stop();
                 IsCompacted = CompactStatus();
+            }
+            catch (OperationCanceledException)
+            {
+                if (!currentTask.ErrorHappened)
+                {
+                    currentTask.ErrorHappened = true;
+                    Functions.TaskManager.Stop();
+                    currentTask.Active = false;
+                    currentTask.Completed = true;
+
+                    LogToTM(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = currentTask.ElapsedTime.Elapsed }));
+                    Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_ElapsedTime)), new { AppName, ElapsedTime = currentTask.ElapsedTime.Elapsed }));
+                }
             }
             catch (Exception ex)
             {
@@ -364,7 +379,7 @@ namespace Steam_Library_Manager.Definitions
 
             Functions.TaskManager.ActiveTask.mre.WaitOne();
 
-            Functions.TaskManager.ActiveTask.TaskStatusInfo = progress;
+            Functions.TaskManager.ActiveTask.TaskStatusInfo = progress.Replace(CommonFolder.FullName, "");
 
             LogToTM(progress);
         }
