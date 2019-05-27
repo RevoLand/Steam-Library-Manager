@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Oyun dosyaları taşınırken bir hata oluştu. Geçen süre: {ElapsedTime}</value>
   </data>
@@ -134,7 +135,6 @@ Hata: {ExceptionMessage}
 
 SLM tarafından oluşturulan arşiv dosyasının kaldırılmasını ister misiniz?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="compressedLibraryIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\compressedLibraryIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -229,6 +229,9 @@ Hata: {ExceptionMessage}</value>
   </data>
   <data name="Enums_GridView" xml:space="preserve">
     <value>Tablo görünümü</value>
+  </data>
+  <data name="Enums_LastPlayed" xml:space="preserve">
+    <value>Son Oynanma</value>
   </data>
   <data name="Enums_LastUpdate" xml:space="preserve">
     <value>Son güncelleme</value>
@@ -359,6 +362,9 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
     <value>Görev Yöneticisi</value>
   </data>
+  <data name="Forms_Main_Translate" xml:space="preserve">
+    <value>Tercüme</value>
+  </data>
   <data name="Forms_Origin" xml:space="preserve">
     <value>Origin</value>
   </data>
@@ -439,6 +445,9 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   </data>
   <data name="Forms_Settings_HeaderImageCacheMessage" xml:space="preserve">
     <value>Oyun resim önbelleği temizlendi.</value>
+  </data>
+  <data name="Forms_Settings_Language" xml:space="preserve">
+    <value>Dil</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
     <value>Dosyalar şundan büyük ise senkronize olarak kopyala</value>
@@ -784,6 +793,9 @@ SLM'yi yönetici olarak çalıştırmayı deneyiniz.</value>
   <data name="TaskCancelled_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] İşlem kullanıcı tarafından iptal edildi. Geçen süre: {ElapsedTime}</value>
   </data>
+  <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
+    <value>[{AppName}] Oyun taşıması iptal edildi. Hedef kütüphaneden şuana kadar taşınan dosyaların kaldırılmasını ister misiniz?</value>
+  </data>
   <data name="TaskCompleted" xml:space="preserve">
     <value>[{AppName}] Geçen süre: {ElapsedTime} - Ortalama hız: {AverageSpeed} MB/saniye- Ortalama dosya boyutu: {AverageFileSize}</value>
   </data>
@@ -845,17 +857,5 @@ Lütfen öncelikle Görev Yöneticisi'ni durdurun.</value>
     <value>[{FullPath}] Kütüphane içeriğini oluştururken dosya izinleriyle ilgili bir hata oluştu. SLM'yi yönetici olarak çalıştırmak yardımcı olabilir.
 
 Hata: {ExceptionMessage}</value>
-  </data>
-  <data name="Forms_Main_Translate" xml:space="preserve">
-    <value>Tercüme</value>
-  </data>
-  <data name="Forms_Settings_Language" xml:space="preserve">
-    <value>Dil</value>
-  </data>
-  <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
-    <value>[{AppName}] Oyun taşıması iptal edildi. Hedef kütüphaneden şuana kadar taşınan dosyaların kaldırılmasını ister misiniz?</value>
-  </data>
-  <data name="Enums_LastPlayed" xml:space="preserve">
-    <value>Son Oynanma</value>
   </data>
 </root>

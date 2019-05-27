@@ -19,14 +19,14 @@ namespace Steam_Library_Manager
         public static Main FormAccessor;
         private ObservableCollection<string> TMLogs { get; } = new ObservableCollection<string>();
 
-        public IProgress<string> TaskManager_Logs = new Progress<string>(log => FormAccessor.TMLogs.Add(log));
+        public readonly IProgress<string> TaskManager_Logs = new Progress<string>(log => FormAccessor.TMLogs.Add(log));
 
-        public IProgress<Definitions.Library> LibraryChange = new Progress<Definitions.Library>(Library =>
+        public readonly IProgress<Definitions.Library> LibraryChange = new Progress<Definitions.Library>(Library =>
         {
             if (Library == null)
                 return;
 
-            string Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
+            var Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
             if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
             {
                 FormAccessor.AppView.AppPanel.ItemsSource = null;
@@ -74,7 +74,7 @@ namespace Steam_Library_Manager
 
             SetNLogConfig();
             UpdateBindings();
-            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
         }
 
         private void SetNLogConfig()

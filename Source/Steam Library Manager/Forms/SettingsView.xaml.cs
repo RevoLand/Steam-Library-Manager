@@ -1,5 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using AutoUpdaterDotNET;
+using MahApps.Metro.Controls.Dialogs;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -10,11 +10,25 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class SettingsView
     {
         public SettingsView() => InitializeComponent();
 
-        private void CheckForUpdates_Click(object sender, RoutedEventArgs e) => Functions.Updater.CheckForUpdates();
+        private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AutoUpdater.Start(Definitions.Updater.VersionControlURL, Application.ResourceAssembly);
+                AutoUpdater.CheckForUpdateEvent += async args =>
+                {
+                    if (!args.IsUpdateAvailable)
+                    {
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.AutoUpdater)), Functions.SLM.Translate(nameof(Properties.Resources.Updater_LatestVersionMessage))).ConfigureAwait(false);
+                    }
+                };
+            }
+            catch { }
+        }
 
         private void ViewLogsButton(object sender, RoutedEventArgs e)
         {
@@ -30,7 +44,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (Directory.Exists(Definitions.Directories.SLM.Cache))
                 {
-                    foreach (string file in Directory.EnumerateFiles(Definitions.Directories.SLM.Cache, "*.jpg"))
+                    foreach (var file in Directory.EnumerateFiles(Definitions.Directories.SLM.Cache, "*.jpg"))
                     {
                         File.Delete(file);
                     }

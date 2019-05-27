@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Произошла ошибка при перемещении файлов игры. Время истекло: {ElapsedTime}</value>
   </data>
@@ -134,7 +135,6 @@
 
 Хотите удалить архивный файл сгенерированным SLM?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="compressedLibraryIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\compressedLibraryIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -227,6 +227,9 @@
   </data>
   <data name="Enums_GridView" xml:space="preserve">
     <value>Вид сетки</value>
+  </data>
+  <data name="Enums_LastPlayed" xml:space="preserve">
+    <value>Последняя игра</value>
   </data>
   <data name="Enums_LastUpdate" xml:space="preserve">
     <value>Последнее обновление</value>
@@ -357,6 +360,9 @@
   <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
     <value>Менеджер задач</value>
   </data>
+  <data name="Forms_Main_Translate" xml:space="preserve">
+    <value>Перевести</value>
+  </data>
   <data name="Forms_Origin" xml:space="preserve">
     <value>Оригинал</value>
   </data>
@@ -437,6 +443,9 @@
   </data>
   <data name="Forms_Settings_HeaderImageCacheMessage" xml:space="preserve">
     <value>Кэш изображений заголовка очищен.</value>
+  </data>
+  <data name="Forms_Settings_Language" xml:space="preserve">
+    <value>Язык</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
     <value>Переместить файлы синхронно, если больше чем</value>
@@ -782,6 +791,9 @@
   <data name="TaskCancelled_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Операция отменена пользователем. Время истекло: {ElapsedTime}</value>
   </data>
+  <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
+    <value>[{AppName}] Передвижение игры отменено. Вы хотите удалить файлы, которые уже перемещены из целевой библиотеки?</value>
+  </data>
   <data name="TaskCompleted" xml:space="preserve">
     <value>[{AppName}] Прошло времени: {ElapsedTime} — Средняя скорость: {AverageSpeed} MB/сек — Средний размер файла: {AverageFileSize}</value>
   </data>
@@ -843,17 +855,5 @@
     <value>[{FullPath}] Произошла ошибка связанная с правами доступа к папке во время создания содержимого библиотеки. Запуск SLM от имени администратора может помочь.
 
 Ошибка: {ExceptionMessage}</value>
-  </data>
-  <data name="Forms_Main_Translate" xml:space="preserve">
-    <value>Перевести</value>
-  </data>
-  <data name="Forms_Settings_Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
-    <value>[{AppName}] Передвижение игры отменено. Вы хотите удалить файлы, которые уже перемещены из целевой библиотеки?</value>
-  </data>
-  <data name="Enums_LastPlayed" xml:space="preserve">
-    <value>Последняя игра</value>
   </data>
 </root>
