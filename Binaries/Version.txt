@@ -1,1 +1,1 @@
-1.5.1.4|New Feature: Compact
+1.5.1.5|Compact improvements

@@ -34,10 +34,12 @@ namespace Steam_Library_Manager.Functions
                         default:
                             await CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
+
                         case Definitions.Enums.TaskType.Delete:
                             await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
                             break;
+
                         case Definitions.Enums.TaskType.Compact:
                             await CurrentTask.SteamApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
@@ -76,7 +78,7 @@ namespace Steam_Library_Manager.Functions
                     switch (CurrentTask.TaskType)
                     {
                         default:
-                            CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token);
+                            await CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
 
                         case Definitions.Enums.TaskType.Delete:
@@ -84,6 +86,7 @@ namespace Steam_Library_Manager.Functions
 
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
+
                         case Definitions.Enums.TaskType.Compact:
                             await CurrentTask.OriginApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
                             break;
