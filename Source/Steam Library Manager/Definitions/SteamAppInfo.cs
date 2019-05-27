@@ -328,29 +328,37 @@ namespace Steam_Library_Manager.Definitions
                     /? : Displays help at the command prompt.
                  */
 
+                var AppFiles = GetFileList();
+                currentTask.TotalFileCount = AppFiles.Count;
+                long TotalFileSize = 0;
+
+                Parallel.ForEach(AppFiles, file => Interlocked.Add(ref TotalFileSize, file.Length));
+                currentTask.TotalFileSize = TotalFileSize;
+
                 LogToTM($"Current status of {AppName} is {(IsCompacted ? "compressed" : "not compressed")} and the task is set to {(currentTask.Compact ? "compress" : "uncompress")} the app.");
                 currentTask.ElapsedTime.Start();
 
                 currentTask.mre.WaitOne();
 
-                var result = await Cli.Wrap("compact")
-                    .SetArguments($"{(currentTask.Compact ? "/c" : "/u")} /i /q {(currentTask.ForceCompact ? "/f" : "")} /EXE:{currentTask.CompactLevel} /s")
-                    .SetWorkingDirectory(CommonFolder.FullName)
-                    .SetCancellationToken(cancellationToken)
-                    .SetStandardOutputCallback(OnCompactFolderProgress)
-                    .SetStandardErrorCallback(OnCompactFolderProgress)
-                    .EnableStandardErrorValidation()
-                    .ExecuteAsync().ConfigureAwait(false);
+                foreach (var file in AppFiles)
+                {
+                    await Cli.Wrap("compact")
+                        .SetArguments($"{(currentTask.Compact ? "/c" : "/u")} /i /q {(currentTask.ForceCompact ? "/f" : "")} /EXE:{currentTask.CompactLevel} {file.Name}")
+                        .SetWorkingDirectory(file.Directory.FullName)
+                        .SetCancellationToken(cancellationToken)
+                        .SetStandardOutputCallback(OnCompactFolderProgress)
+                        .SetStandardErrorCallback(OnCompactFolderProgress)
+                        .EnableStandardErrorValidation()
+                        .ExecuteAsync().ConfigureAwait(false);
 
-                var exitCode = result.ExitCode;
-                var stdErr = result.StandardError;
-                var runTime = result.RunTime;
-
-                LogToTM(string.IsNullOrEmpty(stdErr)
-                    ? $"[{AppName}] Task completed in {runTime} - ExitCode: {exitCode}"
-                    : $"[{AppName}] Task failed with error message: {stdErr} - ExitCode: {exitCode}");
+                    Functions.TaskManager.ActiveTask.TaskStatusInfo = $"Compressing file: {file.FullName.Replace(Library.Steam.SteamAppsFolder.FullName, "")}";
+                    currentTask.MovedFileSize += file.Length;
+                }
 
                 currentTask.ElapsedTime.Stop();
+
+                LogToTM($"[{AppName}] Compact task completed in {currentTask.ElapsedTime.Elapsed}");
+
                 IsCompacted = CompactStatus();
             }
             catch (OperationCanceledException)
@@ -378,9 +386,6 @@ namespace Steam_Library_Manager.Definitions
             if (progress?.Length == 0 || !Functions.TaskManager.ActiveTask.ReportFileMovement) return;
 
             Functions.TaskManager.ActiveTask.mre.WaitOne();
-
-            Functions.TaskManager.ActiveTask.TaskStatusInfo = progress.Replace(CommonFolder.FullName, "");
-
             LogToTM(progress);
         }
 
