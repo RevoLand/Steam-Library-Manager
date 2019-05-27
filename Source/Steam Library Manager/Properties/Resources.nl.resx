@@ -1,0 +1,865 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <data name="AnyError_ElapsedTime" xml:space="preserve">
+    <value>[{AppName}] An error happened while moving game files. Time Elapsed: {ElapsedTime}</value>
+  </data>
+  <data name="AnyException_RemoveFiles" xml:space="preserve">
+    <value>[{AppName}] An error happened while moving game files.
+
+{ExceptionMessage}
+
+Would you like to remove files that already moved from target library?</value>
+  </data>
+  <data name="AutoUpdater" xml:space="preserve">
+    <value>Auto Updater</value>
+  </data>
+  <data name="CompressArchive_FileNotFoundEx" xml:space="preserve">
+    <value>[{AppName}] An error related to file system is happened while compressing files.
+
+Error: {ExceptionMessage}.
+
+Would you like to remove archive file that is generated by SLM?</value>
+  </data>
+  <data name="compressedLibraryIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\compressedLibraryIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CreateLibraryDialog" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="CreateLibraryDialogMessage" xml:space="preserve">
+    <value>Select Library type you want to create in folder:
+{LibraryPath}</value>
+  </data>
+  <data name="CreateLibrary_Exists" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="CreateLibrary_ExistsMessage" xml:space="preserve">
+    <value>Library already exists at {LibraryPath}</value>
+  </data>
+  <data name="CreateLibrary_RootError" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
+    <value>Libraries can not be created at root</value>
+  </data>
+  <data name="CreateSteamLibrary_Created" xml:space="preserve">
+    <value>New Steam library created</value>
+  </data>
+  <data name="CreateSteamLibrary_UnauthorizedAccessException" xml:space="preserve">
+    <value>Unable to copy Steam.dll</value>
+  </data>
+  <data name="CreateSteamLibrary_UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>An error related to file system is happened while creating a new library at: {NewLibraryPath}
+
+Error: {ExceptionMessage}.
+
+The error is related to file system permissions. Try running SLM as administrator or take the target folder permissions for your user.</value>
+  </data>
+  <data name="CreateSteamLibrary_UnknownError" xml:space="preserve">
+    <value>Failed to copy Steam.dll into new library directory. Permission error, maybe?</value>
+  </data>
+  <data name="DeleteLibraryWithoutMovingGames" xml:space="preserve">
+    <value>Delete library without moving games</value>
+  </data>
+  <data name="DeleteMainSteamLibrary" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="DeleteMainSteamLibraryMessage" xml:space="preserve">
+    <value>You can't remove the main library of Steam, can you? Never tested tbh. TODO: TEST!</value>
+  </data>
+  <data name="DeleteSteamLibrary" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="DeleteSteamLibraryMessage" xml:space="preserve">
+    <value>All game files in library successfully removed as requested.
+
+Library: {LibraryFullPath}</value>
+  </data>
+  <data name="DirectoryNotFoundException" xml:space="preserve">
+    <value>DirectoryNotFoundException</value>
+  </data>
+  <data name="DirectoryNotFoundExceptionMessage" xml:space="preserve">
+    <value>[{FolderfullPath}] Folder couldn't be created/not found. Running SLM as Administrator might help.
+
+Error: {ExceptionMessage}</value>
+  </data>
+  <data name="Enums_AppID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Enums_ArchiveFileSize" xml:space="preserve">
+    <value>File size in archive</value>
+  </data>
+  <data name="Enums_ArchiveSize" xml:space="preserve">
+    <value>Archive size</value>
+  </data>
+  <data name="Enums_BackupType" xml:space="preserve">
+    <value>Backup type</value>
+  </data>
+  <data name="Enums_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="Enums_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Enums_Custom" xml:space="preserve">
+    <value>Custom Theme</value>
+  </data>
+  <data name="Enums_Dark" xml:space="preserve">
+    <value>Dark Theme</value>
+  </data>
+  <data name="Enums_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Enums_GridView" xml:space="preserve">
+    <value>Grid View</value>
+  </data>
+  <data name="Enums_LastPlayed" xml:space="preserve">
+    <value>Last play</value>
+  </data>
+  <data name="Enums_LastUpdate" xml:space="preserve">
+    <value>Last update</value>
+  </data>
+  <data name="Enums_Light" xml:space="preserve">
+    <value>Light Theme</value>
+  </data>
+  <data name="Enums_ListView" xml:space="preserve">
+    <value>List View</value>
+  </data>
+  <data name="Enums_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Enums_SizeOnDisk" xml:space="preserve">
+    <value>Size on disk</value>
+  </data>
+  <data name="FileListPopulated" xml:space="preserve">
+    <value>[{AppName}] File list populated, total files to move: {FileCount} - total size to move: {TotalFileSize}</value>
+  </data>
+  <data name="FileMoved" xml:space="preserve">
+    <value>[{AppName}] File copied: {NewFileName}</value>
+  </data>
+  <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
+    <value>[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+
+Error: {ExceptionMessage}.
+
+Would you like to remove files that already moved from target library?</value>
+  </data>
+  <data name="FileSystemRelatedError" xml:space="preserve">
+    <value>[{AppName}] An error related to file system is happened while moving files. Error: {ExceptionMessage}</value>
+  </data>
+  <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
+    <value>[{AppName}] An error releated to file system is happened while moving files.
+
+Error: {ExceptionMessage}
+
+Would you like to remove files that already moved from target library?</value>
+  </data>
+  <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Forms_AppView_LastUpdate" xml:space="preserve">
+    <value>Updated on: {0}</value>
+  </data>
+  <data name="Forms_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Forms_Compressed" xml:space="preserve">
+    <value>Compressed</value>
+  </data>
+  <data name="Forms_LibraryCleaner_Delete" xml:space="preserve">
+    <value>Removing junk files as you have requested.</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteAll" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteSelectedFolders" xml:space="preserve">
+    <value>Delete selected Folder(s)</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteWarning" xml:space="preserve">
+    <value>There might be saved games in these folders?!</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeleteWarningMessage" xml:space="preserve">
+    <value>Saved Games may be located within these folders, are you sure you want to remove them?</value>
+  </data>
+  <data name="Forms_LibraryCleaner_DeletingDirectory" xml:space="preserve">
+    <value>Removing old directory:
+
+{DirectoryFullPath}</value>
+  </data>
+  <data name="Forms_LibraryCleaner_LastWriteTime" xml:space="preserve">
+    <value>Last Write Time: {0}</value>
+  </data>
+  <data name="Forms_LibraryCleaner_MoveAll" xml:space="preserve">
+    <value>Move All</value>
+  </data>
+  <data name="Forms_LibraryCleaner_MovingFile" xml:space="preserve">
+    <value>Moving file:
+
+{FileFullName}</value>
+  </data>
+  <data name="Forms_LibraryCleaner_MovingFiles" xml:space="preserve">
+    <value>Moving junk files as you have requested.</value>
+  </data>
+  <data name="Forms_LibraryCleaner_Open" xml:space="preserve">
+    <value>Open in Explorer</value>
+  </data>
+  <data name="Forms_LibraryCleaner_RefreshList" xml:space="preserve">
+    <value>Refresh List</value>
+  </data>
+  <data name="Forms_LibraryCleaner_RootPathSelected" xml:space="preserve">
+    <value>Root path selected?</value>
+  </data>
+  <data name="Forms_LibraryCleaner_RootPathSelectedMessage" xml:space="preserve">
+    <value>Are you sure you like to move junks to root of disk?</value>
+  </data>
+  <data name="Forms_LibraryView_AppCount" xml:space="preserve">
+    <value>App(s): {0}</value>
+  </data>
+  <data name="Forms_LibraryView_CreateLibrary" xml:space="preserve">
+    <value>Create Library</value>
+  </data>
+  <data name="Forms_LibraryView_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Forms_Main_Discord" xml:space="preserve">
+    <value>Discord</value>
+  </data>
+  <data name="Forms_Main_Donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
+    <value>Search in selected library</value>
+  </data>
+  <data name="Forms_Main_SuggestionForm" xml:space="preserve">
+    <value>Suggestion Form</value>
+  </data>
+  <data name="Forms_Main_TabHeader_Library" xml:space="preserve">
+    <value>Library</value>
+  </data>
+  <data name="Forms_Main_TabHeader_LibraryCleaner" xml:space="preserve">
+    <value>Library Cleaner</value>
+  </data>
+  <data name="Forms_Main_TabHeader_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
+    <value>Task Manager</value>
+  </data>
+  <data name="Forms_Main_Translate" xml:space="preserve">
+    <value>Translate</value>
+  </data>
+  <data name="Forms_Origin" xml:space="preserve">
+    <value>Origin</value>
+  </data>
+  <data name="Forms_Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Forms_QuitSLM" xml:space="preserve">
+    <value>Quit application?</value>
+  </data>
+  <data name="Forms_QuitSLMMessage" xml:space="preserve">
+    <value>There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.</value>
+  </data>
+  <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
+    <value>Advanced Logging (Requires restart)</value>
+  </data>
+  <data name="Forms_Settings_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="Forms_Settings_ButtonBG" xml:space="preserve">
+    <value>Button BG</value>
+  </data>
+  <data name="Forms_Settings_ButtonClick" xml:space="preserve">
+    <value>Button Click</value>
+  </data>
+  <data name="Forms_Settings_ButtonHover" xml:space="preserve">
+    <value>Button Hover</value>
+  </data>
+  <data name="Forms_Settings_CalculationMethodForArchiveSize" xml:space="preserve">
+    <value>Calculation method for archive size</value>
+  </data>
+  <data name="Forms_Settings_CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="Forms_Settings_CheckForUpdatesOnStartup" xml:space="preserve">
+    <value>Check for Updates on Startup</value>
+  </data>
+  <data name="Forms_Settings_ClearHeaderİmageCache" xml:space="preserve">
+    <value>Clear header image cache</value>
+  </data>
+  <data name="Forms_Settings_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="Forms_Settings_CompressFiles" xml:space="preserve">
+    <value>Compress Files</value>
+  </data>
+  <data name="Forms_Settings_CompressionType" xml:space="preserve">
+    <value>Compression Type</value>
+  </data>
+  <data name="Forms_Settings_ContextMenu" xml:space="preserve">
+    <value>Context Menu</value>
+  </data>
+  <data name="Forms_Settings_ControlBG" xml:space="preserve">
+    <value>Control BG</value>
+  </data>
+  <data name="Forms_Settings_CustomTheme" xml:space="preserve">
+    <value>Custom Theme</value>
+  </data>
+  <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
+    <value>Do NOT Compress</value>
+  </data>
+  <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
+    <value>Do NOT Remove</value>
+  </data>
+  <data name="Forms_Settings_GameListMethod" xml:space="preserve">
+    <value>Game listing method</value>
+  </data>
+  <data name="Forms_Settings_GeneralSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="Forms_Settings_GrayBrush1" xml:space="preserve">
+    <value>GrayBrush1</value>
+  </data>
+  <data name="Forms_Settings_GrayBrush2" xml:space="preserve">
+    <value>GrayBrush2</value>
+  </data>
+  <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="Forms_Settings_HeaderImageCacheMessage" xml:space="preserve">
+    <value>Header Image Cache cleared.</value>
+  </data>
+  <data name="Forms_Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
+    <value>Move files synchronously if bigger than</value>
+  </data>
+  <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
+    <value>Open Logs Folder</value>
+  </data>
+  <data name="Forms_Settings_PlayASoundOnCompletion" xml:space="preserve">
+    <value>Play a sound on completion</value>
+  </data>
+  <data name="Forms_Settings_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Forms_Settings_RemoveFiles" xml:space="preserve">
+    <value>Remove files at Source directory</value>
+  </data>
+  <data name="Forms_Settings_ReportFileMovement" xml:space="preserve">
+    <value>Report File Movement</value>
+  </data>
+  <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
+    <value>Keep searching on library change</value>
+  </data>
+  <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
+    <value>Calculation method for games</value>
+  </data>
+  <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
+    <value>Sort games by</value>
+  </data>
+  <data name="Forms_Settings_StartTaskManagerOnStartup" xml:space="preserve">
+    <value>Start Task Manager on Startup</value>
+  </data>
+  <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">
+    <value>TabItem Text Color</value>
+  </data>
+  <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
+    <value>Task Manager Default Settings</value>
+  </data>
+  <data name="Forms_Settings_TextColor" xml:space="preserve">
+    <value>Text Color:</value>
+  </data>
+  <data name="Forms_Settings_ThemeAccent" xml:space="preserve">
+    <value>Theme Accent</value>
+  </data>
+  <data name="Forms_Settings_ThemeBase" xml:space="preserve">
+    <value>Theme Base</value>
+  </data>
+  <data name="Forms_Settings_TransparentWhite" xml:space="preserve">
+    <value>TransparentWhite</value>
+  </data>
+  <data name="Forms_Settings_WindowBG" xml:space="preserve">
+    <value>Window BG</value>
+  </data>
+  <data name="Forms_SLM" xml:space="preserve">
+    <value>SLM</value>
+  </data>
+  <data name="Forms_Steam" xml:space="preserve">
+    <value>Steam</value>
+  </data>
+  <data name="Forms_TaskManager_AutoInstall" xml:space="preserve">
+    <value>Auto Install</value>
+  </data>
+  <data name="Forms_TaskManager_CheckForBackupUpdates" xml:space="preserve">
+    <value>Check for Backup Updates</value>
+  </data>
+  <data name="Forms_TaskManager_ClearCompletedTasks" xml:space="preserve">
+    <value>Clear Completed Tasks</value>
+  </data>
+  <data name="Forms_TaskManager_Completed" xml:space="preserve">
+    <value>COMPLETED</value>
+  </data>
+  <data name="Forms_TaskManager_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="Forms_TaskManager_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Forms_TaskManager_Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Forms_TaskManager_ProgressBarPerc" xml:space="preserve">
+    <value>{0}%</value>
+    <comment>ProgressBarPerc</comment>
+  </data>
+  <data name="Forms_TaskManager_RemoveFiles" xml:space="preserve">
+    <value>Remove Original Files</value>
+  </data>
+  <data name="Forms_TaskManager_RemoveFromQueue" xml:space="preserve">
+    <value>Remove selected Game(s) from Queue</value>
+  </data>
+  <data name="Forms_TaskManager_ReportFileMovement" xml:space="preserve">
+    <value>Report File Movement</value>
+  </data>
+  <data name="Forms_TaskManager_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Forms_TaskManager_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Forms_TaskManager_TargetLibrary" xml:space="preserve">
+    <value>Target: {0}</value>
+    <comment>TargetLibrary.FullPath</comment>
+  </data>
+  <data name="MoveGamesConfirmError" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="MoveGamesConfirmErrorMessage" xml:space="preserve">
+    <value>Function is not implemented, process cancelled</value>
+  </data>
+  <data name="MoveGamesInLibrary" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="MoveGamesInLibraryMessage" xml:space="preserve">
+    <value>Move games in Library before deleting the library?</value>
+  </data>
+  <data name="no_image_available" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OriginAppInfo_FormatException" xml:space="preserve">
+    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
+
+{ExceptionMessage}</value>
+  </data>
+  <data name="OriginApp_CMenu_DeleteFilesSLM" xml:space="preserve">
+    <value>Delete files (using SLM)</value>
+  </data>
+  <data name="OriginApp_CMenu_DeleteFilesTM" xml:space="preserve">
+    <value>Delete files (using TaskManager)</value>
+  </data>
+  <data name="OriginApp_CMenu_DiskInfo" xml:space="preserve">
+    <value>{AppName} ({SizeOnDisk})</value>
+  </data>
+  <data name="OriginApp_CMenu_Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="OriginApp_CMenu_Repair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="OriginApp_CMenu_Run" xml:space="preserve">
+    <value>Run (Unavailable)</value>
+  </data>
+  <data name="OriginDirectoryNotExists" xml:space="preserve">
+    <value>Origin game installation directory is not exists?!</value>
+  </data>
+  <data name="OriginInstallation" xml:space="preserve">
+    <value>Origin App Installation</value>
+  </data>
+  <data name="OriginInstallation_Completed" xml:space="preserve">
+    <value>Origin game installation completed.
+
+Installer result message:
+{installerResult}</value>
+  </data>
+  <data name="OriginInstallation_Ongoing" xml:space="preserve">
+    <value>Asking Origin to install {AppName} as you have requested.
+
+Waiting for Origin to complete the installation...</value>
+  </data>
+  <data name="OriginInstallation_Start" xml:space="preserve">
+    <value>Asking Origin to install {AppName} as you have requested.</value>
+  </data>
+  <data name="OriginLibrary_CMenu_Open" xml:space="preserve">
+    <value>Open library in explorer ({LibraryFullPath})</value>
+  </data>
+  <data name="OriginLibrary_CMenu_RemoveFromSLM" xml:space="preserve">
+    <value>Remove from SLM</value>
+  </data>
+  <data name="OriginUnknownManifestFile" xml:space="preserve">
+    <value>Unknown Manifest Version from Origin game: {OriginApp} - {ManifestVersion}</value>
+  </data>
+  <data name="Origin_DirectoryNotExists" xml:space="preserve">
+    <value>Origin directory does not exists.
+
+{NotFoundDirectoryFullPath}</value>
+  </data>
+  <data name="Origin_MissingKey" xml:space="preserve">
+    <value>Origin config file doesn't contains 'DownloadInPlaceDir' config
+
+{OriginConfigFilePath}</value>
+  </data>
+  <data name="PathTooLongException" xml:space="preserve">
+    <value>[{AppName}] PathTooLongException happened while copying files. Nothing can be made by SLM in this error.
+
+Error: {ExceptionMessage}
+
+Would you like to remove files that already moved from target library?</value>
+  </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Please wait...</value>
+  </data>
+  <data name="PopulatingFileList" xml:space="preserve">
+    <value>[{AppName}] Populating file list, please wait</value>
+  </data>
+  <data name="ReadZip_DontDelete" xml:space="preserve">
+    <value>Don't delete the archive file</value>
+  </data>
+  <data name="ReadZip_InvalidDataException" xml:space="preserve">
+    <value>An error happened while parsing zip file</value>
+  </data>
+  <data name="ReadZip_InvalidDataExceptionMessage" xml:space="preserve">
+    <value>An error happened while parsing zip file:
+
+{ZipPath}
+
+It is still suggested to check the archive file manually to see if it is really corrupted or not!
+
+Would you like to remove the given archive file?</value>
+  </data>
+  <data name="ReadZip_IOException" xml:space="preserve">
+    <value>An error happened while parsing zip file</value>
+  </data>
+  <data name="ReadZip_IOExceptionMessage" xml:space="preserve">
+    <value>An error happened while parsing zip file:
+
+{ZipPath}
+
+It is still suggested to check the archive file manually to see if it is really corrupted or not!
+
+Would you like to remove the given archive file?</value>
+  </data>
+  <data name="RemoveMovedFiles" xml:space="preserve">
+    <value>Remove moved files?</value>
+  </data>
+  <data name="SteamAppInfo_CompressedArchiveExistsAndInUse" xml:space="preserve">
+    <value>{ArchiveFullPath} is in use. Delaying the task until archive gets free.</value>
+  </data>
+  <data name="SteamAppInfo_FileCompressed" xml:space="preserve">
+    <value>[{AppName}] File compressed: {FileNameInArchive}</value>
+  </data>
+  <data name="SteamAppInfo_FileDecompressed" xml:space="preserve">
+    <value>[{AppName}] File decompressed: {NewFileFullPath}</value>
+  </data>
+  <data name="SteamAppInfo_FormatException" xml:space="preserve">
+    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
+
+{ExceptionMessage}</value>
+  </data>
+  <data name="SteamApp_CMenu_Compress" xml:space="preserve">
+    <value>(De)Compress</value>
+  </data>
+  <data name="SteamApp_CMenu_DeleteFilesSLM" xml:space="preserve">
+    <value>Delete files (using SLM)</value>
+  </data>
+  <data name="SteamApp_CMenu_DeleteFilesTM" xml:space="preserve">
+    <value>Delete files (using TaskManager)</value>
+  </data>
+  <data name="SteamApp_CMenu_DiskInfo" xml:space="preserve">
+    <value>{AppName} ({SizeOnDisk})</value>
+  </data>
+  <data name="SteamApp_CMenu_GameHub" xml:space="preserve">
+    <value>Game Hub</value>
+  </data>
+  <data name="SteamApp_CMenu_Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="SteamApp_CMenu_SubscribedWorkshopItems" xml:space="preserve">
+    <value>Subscribed Workshop Items</value>
+  </data>
+  <data name="SteamApp_CMenu_ViewACF" xml:space="preserve">
+    <value>View ACF File</value>
+  </data>
+  <data name="SteamApp_CMenu_Workshop" xml:space="preserve">
+    <value>Workshop</value>
+  </data>
+  <data name="SteamApp_GetCommonFilesError" xml:space="preserve">
+    <value>An error happened while populating files at common directory for game: {AppName} - Directory:
+{CommonFolderFullPath}
+
+Error:
+{ExceptionMessage}</value>
+  </data>
+  <data name="SteamApp_RemovingError" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
+    <value>An unknown error happened while removing app files. {FullPath}</value>
+  </data>
+  <data name="SteamLibraryManager" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="SteamLibrary_CantCreate" xml:space="preserve">
+    <value>Can't create steam library folder at: {SteamAppsFolderFullPath}
+
+Try running SLM as administrator.</value>
+  </data>
+  <data name="SteamLibrary_CMenu_DeleteGames" xml:space="preserve">
+    <value>Delete games in library</value>
+  </data>
+  <data name="SteamLibrary_CMenu_Open" xml:space="preserve">
+    <value>Open library in explorer ({LibraryFullPath})</value>
+  </data>
+  <data name="SteamLibrary_CMenu_RemoveFromSLM" xml:space="preserve">
+    <value>Remove from SLM</value>
+  </data>
+  <data name="SteamLibrary_CMenu_RemoveFromSteam" xml:space="preserve">
+    <value>Remove library from Steam (/w files)</value>
+  </data>
+  <data name="Steam_CheckForBackupUpdates" xml:space="preserve">
+    <value>Checking for backup updates as you have requested.</value>
+  </data>
+  <data name="Steam_CheckForBackupUpdates_Completed" xml:space="preserve">
+    <value>[{CurrentTime}] Check for Backup updates completed.</value>
+  </data>
+  <data name="Steam_CheckForBackupUpdates_Progress" xml:space="preserve">
+    <value>Checking for:
+
+{CurrentAppName}</value>
+  </data>
+  <data name="Steam_CheckForBackupUpdates_UpdateFound" xml:space="preserve">
+    <value>[{CurrentTime}] An update is available for: {CurrentAppName} - Old backup time: {CurrentAppLastUpdatedOn} - Updated on: {NewAppLastUpdatedOn} - Target: {CurrentAppSteamFullPath} - Source: {NewAppSteamFullPath}</value>
+  </data>
+  <data name="Steam_NeedsToBeClosed" xml:space="preserve">
+    <value>Steam needs to be closed</value>
+  </data>
+  <data name="Steam_NeedsToBeClosedMessage" xml:space="preserve">
+    <value>Steam needs to be closed for this action. Would you like SLM to close Steam?</value>
+  </data>
+  <data name="Steam_NeedsToBeClosedMessage2" xml:space="preserve">
+    <value>Steam.exe could not found (even it is already working?), SLM can try to terminate the Steam processes now if you want to.
+
+Active Steam process path: {ActiveSteamPath}</value>
+  </data>
+  <data name="Steam_NeedsToBeClosed_NotFoundAndUserCancelled" xml:space="preserve">
+    <value>Steam.exe could not found and user doesn't wants to terminate the process.</value>
+  </data>
+  <data name="Steam_NeedsToBeClosed_UserCancelled" xml:space="preserve">
+    <value>User doesn't wants to close Steam, can not continue to process.</value>
+  </data>
+  <data name="Steam_NotInstalled" xml:space="preserve">
+    <value>Steam installation couldn't be found</value>
+  </data>
+  <data name="Steam_NotInstalledMessage" xml:space="preserve">
+    <value>Steam couldn't be found under registry. Would you like to locate Steam manually?</value>
+  </data>
+  <data name="Steam_Start" xml:space="preserve">
+    <value>Start Steam?</value>
+  </data>
+  <data name="Steam_StartMessage" xml:space="preserve">
+    <value>Would you like SLM to Start Steam?</value>
+  </data>
+  <data name="Steam_Start_UserCancelled" xml:space="preserve">
+    <value>User doesn't wants to start Steam.</value>
+  </data>
+  <data name="TaskCancelled_ElapsedTime" xml:space="preserve">
+    <value>[{AppName}] Operation cancelled by user. Time Elapsed: {ElapsedTime}</value>
+  </data>
+  <data name="TaskCancelled_RemoveFiles" xml:space="preserve">
+    <value>[{AppName}] Game movement cancelled. Would you like to remove files that already moved from target library?</value>
+  </data>
+  <data name="TaskCompleted" xml:space="preserve">
+    <value>[{AppName}] Time elapsed: {ElapsedTime} - Average speed: {AverageSpeed} MB/sec - Average file size: {AverageFileSize}</value>
+  </data>
+  <data name="TaskManager_Active" xml:space="preserve">
+    <value>[{CurrentTime}] [TaskManager] Task Manager is now active and waiting for tasks...</value>
+  </data>
+  <data name="TaskManager_AlreadyTasked" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="TaskManager_AlreadyTaskedMessage" xml:space="preserve">
+    <value>This item is already tasked.
+
+Game: {AppName}
+Target Library: {LibraryFullPath}</value>
+  </data>
+  <data name="TaskManager_Paused" xml:space="preserve">
+    <value>[{CurrentTime}] [TaskManager] Task Manager is paused as requested.</value>
+  </data>
+  <data name="TaskManager_RemoveOldFiles" xml:space="preserve">
+    <value>[{CurrentTime}] [{AppName}] Removing copied source files as requested. This may take a while, please wait.</value>
+  </data>
+  <data name="TaskManager_RemoveOldFilesCompleted" xml:space="preserve">
+    <value>[{CurrentTime}] [{AppName}] Files removed, task is completed now.</value>
+  </data>
+  <data name="TaskManager_Stopped" xml:space="preserve">
+    <value>[{CurrentTime}] [TaskManager] Task Manager is stopped.</value>
+  </data>
+  <data name="TaskStatus_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="TaskStatus_CompressingFile" xml:space="preserve">
+    <value>Compressing: {CurrentFileName} ({FileSize})</value>
+  </data>
+  <data name="TaskStatus_CopyingFile" xml:space="preserve">
+    <value>Copying file: {Percentage}%</value>
+    <comment>Available variables: Percentage, TransferredBytes, TotalBytes</comment>
+  </data>
+  <data name="TaskStatus_Decompress" xml:space="preserve">
+    <value>Decompressing: {NewFileName} ({NewFileSize})</value>
+  </data>
+  <data name="TaskStatus_DeletingDirectory" xml:space="preserve">
+    <value>Deleting directory: {DirectoryName}</value>
+  </data>
+  <data name="TaskStatus_DeletingFile" xml:space="preserve">
+    <value>Deleting: {FileName} ({FormattedFileSize})</value>
+  </data>
+  <data name="TM_TaskActiveError" xml:space="preserve">
+    <value>Steam Library Manager</value>
+  </data>
+  <data name="TM_TaskActiveErrorMessage" xml:space="preserve">
+    <value>[{AppName}] You can't remove an app from Task Manager which is currently being moved.
+
+Please Stop the Task Manager first.</value>
+  </data>
+  <data name="UnauthorizedAccessException" xml:space="preserve">
+    <value>UnauthorizedAccessException</value>
+  </data>
+  <data name="UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>[{FullPath}] An error related to folder permissions happened during generating library content. Running SLM as Administrator might help.
+
+Error: {ExceptionMessage}</value>
+  </data>
+  <data name="Updater_LatestVersionMessage" xml:space="preserve">
+    <value>You are using the latest version of SLM.</value>
+  </data>
+</root>
