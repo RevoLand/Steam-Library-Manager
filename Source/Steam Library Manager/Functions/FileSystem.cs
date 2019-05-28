@@ -10,7 +10,7 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void RemoveGivenFiles(List<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
+        public static void RemoveGivenFiles(IEnumerable<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
             try
             {
@@ -80,6 +80,13 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                /*
+                dynamic fso = Activator.CreateInstance(Type.GetTypeFromProgID("Scripting.FileSystemObject"));
+                var fldr = fso.GetFolder(directoryPath.FullName);
+
+                return Convert.ToInt64((ulong)fldr.size);
+                */
+
                 directoryPath.Refresh();
 
                 if (!directoryPath.Exists || !new DriveInfo(Path.GetPathRoot(directoryPath.Root.FullName)).IsReady)

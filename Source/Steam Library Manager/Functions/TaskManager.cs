@@ -64,7 +64,7 @@ namespace Steam_Library_Manager.Functions
                         CurrentTask.Active = false;
                         CurrentTask.Completed = true;
 
-                        CurrentTask.TargetLibrary?.Steam.UpdateAppList();
+                        CurrentTask.TargetLibrary?.Steam.UpdateAppListAsync();
 
                         // Update library details
                         if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.SteamApp.Library)

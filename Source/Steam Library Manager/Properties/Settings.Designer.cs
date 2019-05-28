@@ -345,5 +345,18 @@ namespace Steam_Library_Manager.Properties {
                 this["DefaultCompactLevel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool AdvancedCompactSizeDetection {
+            get {
+                return ((bool)(this["AdvancedCompactSizeDetection"]));
+            }
+            set {
+                this["AdvancedCompactSizeDetection"] = value;
+            }
+        }
     }
 }

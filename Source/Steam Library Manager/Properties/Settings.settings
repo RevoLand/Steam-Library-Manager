@@ -77,5 +77,8 @@
     <Setting Name="DefaultCompactLevel" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">XPRESS8K</Value>
     </Setting>
+    <Setting Name="AdvancedCompactSizeDetection" Roaming="true" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

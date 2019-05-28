@@ -27,7 +27,7 @@ namespace Steam_Library_Manager.Definitions
         public long SizeOnDisk { get; set; }
         public bool IsCompressed { get; set; }
         public bool IsSteamBackup { get; set; }
-        public bool IsCompacted { get; private set; }
+        public bool IsCompacted { get; set; } = false;
         public DateTime LastUpdated { get; set; }
         public DateTime LastPlayed { get; set; }
 
@@ -59,7 +59,6 @@ namespace Steam_Library_Manager.Definitions
             GameHeaderImage = $"http://cdn.akamai.steamstatic.com/steam/apps/{AppID}/header.jpg";
             AcfName = $"appmanifest_{AppID}.acf";
             WorkShopAcfName = $"appworkshop_{AppID}.acf";
-            IsCompacted = CompactStatus();
         }
 
         public List<FrameworkElement> ContextMenuItems
@@ -286,14 +285,33 @@ namespace Steam_Library_Manager.Definitions
 
         private IEnumerable<FileInfo> GetWorkshopFiles() => WorkShopPath.EnumerateFiles("*", SearchOption.AllDirectories);
 
-        private bool CompactStatus()
+        public async Task<bool> CompactStatus()
         {
             try
             {
-                var result = Cli.Wrap("compact")
-                    .SetArguments($"/q")
+                if (!CommonFolder.Exists)
+                    return false;
+
+                var result = await Cli.Wrap("compact")
+                    .SetArguments($"{((Properties.Settings.Default.AdvancedCompactSizeDetection) ? "/s" : "")} /q")
                     .SetWorkingDirectory(CommonFolder.FullName)
-                    .ExecuteAsync().Result;
+                    .ExecuteAsync().ConfigureAwait(false);
+
+                if (Properties.Settings.Default.AdvancedCompactSizeDetection)
+                {
+                    var output = result.StandardOutput.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                    var noutput = output[output.Length - 2].Split(new[] { " total bytes of data are stored in " },
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                    var sizeBeforeCompact = noutput[0];
+                    var sizeAfterCompact = Convert.ToInt64(noutput[1].Replace(" bytes.", "").Replace(".", ""));
+
+                    if (sizeAfterCompact != 0)
+                    {
+                        SizeOnDisk = sizeAfterCompact;
+                        Debug.WriteLine($"SizeOnDisk updated for game: {AppName} - new size: {SizeOnDisk}");
+                    }
+                }
 
                 // May not be the best approach, to be improved if needed to.
                 return !result.StandardOutput.Contains("0 are compressed");
@@ -342,6 +360,11 @@ namespace Steam_Library_Manager.Definitions
 
                 foreach (var file in AppFiles)
                 {
+                    if (!file.Directory.Exists)
+                    {
+                        LogToTM($"Directory doesn't exists !? - {file.Directory.FullName}");
+                    }
+
                     await Cli.Wrap("compact")
                         .SetArguments($"{(currentTask.Compact ? "/c" : "/u")} /i /q {(currentTask.ForceCompact ? "/f" : "")} /EXE:{currentTask.CompactLevel} {file.Name}")
                         .SetWorkingDirectory(file.Directory.FullName)
@@ -355,11 +378,28 @@ namespace Steam_Library_Manager.Definitions
                     currentTask.MovedFileSize += file.Length;
                 }
 
+                if (CommonFolder.Exists)
+                {
+                    var result = await Cli.Wrap("compact")
+                        .SetArguments($"/s /q")
+                        .SetWorkingDirectory(CommonFolder.FullName)
+                        .SetCancellationToken(cancellationToken)
+                        .EnableStandardErrorValidation()
+                        .ExecuteAsync().ConfigureAwait(false);
+
+                    var output = result.StandardOutput.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var resultText in output.Skip(output.Length - 3))
+                    {
+                        LogToTM(resultText);
+                    }
+                }
+
                 currentTask.ElapsedTime.Stop();
 
                 LogToTM($"[{AppName}] Compact task completed in {currentTask.ElapsedTime.Elapsed}");
 
-                IsCompacted = CompactStatus();
+                IsCompacted = await CompactStatus().ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {

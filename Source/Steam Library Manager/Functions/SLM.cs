@@ -242,7 +242,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync());
                         await Task.Run(() => Library.Steam.UpdateJunks());
                     }
                 }
@@ -273,7 +273,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync());
                         await Task.Run(() => Library.Steam.UpdateJunks());
                     }
                 }

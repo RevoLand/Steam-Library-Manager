@@ -28,7 +28,7 @@ namespace Steam_Library_Manager.Definitions
         public string UpdateParameter { get; set; }
         public string RepairParameter { get; set; }
         public Version AppVersion { get; set; }
-        public long SizeOnDisk => Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
+        public long SizeOnDisk { get; private set; }
         public string PrettyGameSize => Functions.FileSystem.FormatBytes(SizeOnDisk);
         public DateTime LastUpdated => InstallationDirectory.LastWriteTimeUtc;
         public string GameHeaderImage { get; set; }
@@ -47,7 +47,8 @@ namespace Steam_Library_Manager.Definitions
             UpdateParameter = _UpdateParameter;
             RepairParameter = _RepairParameter;
             AppVersion = _AppVersion;
-            IsCompacted = CompactStatus();
+            SizeOnDisk = Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
+            IsCompacted = CompactStatus().Result;
         }
 
         public List<FrameworkElement> ContextMenuItems
@@ -172,14 +173,33 @@ namespace Steam_Library_Manager.Definitions
             catch { return null; }
         }
 
-        private bool CompactStatus()
+        public async Task<bool> CompactStatus()
         {
             try
             {
-                var result = Cli.Wrap("compact")
-                    .SetArguments($"/q")
+                if (!InstallationDirectory.Exists)
+                    return false;
+
+                var result = await Cli.Wrap("compact")
+                    .SetArguments($"{((Properties.Settings.Default.AdvancedCompactSizeDetection) ? "/s" : "")} /q")
                     .SetWorkingDirectory(InstallationDirectory.FullName)
-                    .ExecuteAsync().Result;
+                    .ExecuteAsync().ConfigureAwait(false);
+
+                if (Properties.Settings.Default.AdvancedCompactSizeDetection)
+                {
+                    var output = result.StandardOutput.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                    var noutput = output[output.Length - 2].Split(new[] { " total bytes of data are stored in " },
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                    var sizeBeforeCompact = noutput[0];
+                    var sizeAfterCompact = Convert.ToInt64(noutput[1].Replace(" bytes.", "").Replace(".", ""));
+
+                    if (sizeAfterCompact != 0)
+                    {
+                        SizeOnDisk = sizeAfterCompact;
+                        Debug.WriteLine($"SizeOnDisk updated for game: {AppName} - new size: {SizeOnDisk}");
+                    }
+                }
 
                 // May not be the best approach, to be improved if needed to.
                 return !result.StandardOutput.Contains("0 are compressed");
@@ -228,6 +248,11 @@ namespace Steam_Library_Manager.Definitions
 
                 foreach (var file in AppFiles)
                 {
+                    if (!file.Directory.Exists)
+                    {
+                        LogToTM($"Directory doesn't exists !? - {file.Directory.FullName}");
+                    }
+
                     await Cli.Wrap("compact")
                         .SetArguments($"{(currentTask.Compact ? "/c" : "/u")} /i /q {(currentTask.ForceCompact ? "/f" : "")} /EXE:{currentTask.CompactLevel} {file.Name}")
                         .SetWorkingDirectory(file.Directory.FullName)
@@ -241,11 +266,28 @@ namespace Steam_Library_Manager.Definitions
                     currentTask.MovedFileSize += file.Length;
                 }
 
+                if (InstallationDirectory.Exists)
+                {
+                    var result = await Cli.Wrap("compact")
+                        .SetArguments($"/s /q")
+                        .SetWorkingDirectory(InstallationDirectory.FullName)
+                        .SetCancellationToken(cancellationToken)
+                        .EnableStandardErrorValidation()
+                        .ExecuteAsync().ConfigureAwait(false);
+
+                    var output = result.StandardOutput.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var resultText in output.Skip(output.Length - 3))
+                    {
+                        LogToTM(resultText);
+                    }
+                }
+
                 currentTask.ElapsedTime.Stop();
 
                 LogToTM($"[{AppName}] Compact task completed in {currentTask.ElapsedTime.Elapsed}");
 
-                IsCompacted = CompactStatus();
+                IsCompacted = await CompactStatus().ConfigureAwait(false);
             }
             catch (OperationCanceledException)
             {

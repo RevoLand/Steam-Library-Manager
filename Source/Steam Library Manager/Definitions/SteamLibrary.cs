@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Definitions
             Library = library;
         }
 
-        public void UpdateAppList()
+        public async Task UpdateAppListAsync()
         {
             try
             {
@@ -65,10 +65,11 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Foreach *.acf file found in library
-                foreach (FileInfo AcfFile in SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList())
+                foreach (var AcfFile in SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList())
+                //Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly), async AcfFile =>
                 {
                     // Define a new value and call KeyValue
-                    Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                    var KeyValReader = new Framework.KeyValue();
 
                     // Read the *.acf file as text
                     KeyValReader.ReadFileAsText(AcfFile.FullName);
@@ -83,11 +84,15 @@ namespace Steam_Library_Manager.Definitions
                             Library = Library
                         });
 
-                        continue;
+                        return;
                     }
 
-                    Functions.App.AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), false);
+                    await Functions.App.AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value),
+                        KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value,
+                        KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value),
+                        Convert.ToInt64(KeyValReader["LastUpdated"].Value), false).ConfigureAwait(false);
                 }
+                //);
 
                 // Do a loop for each *.zip file in library
                 Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly).ToList(), ArchiveFile => Functions.App.ReadDetailsFromZip(ArchiveFile, Library));
@@ -110,7 +115,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value) && x.IsSteamBackup) > 0)
                                 continue;
 
-                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);
+                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);
 
                             if (AppNames.Length > 1)
                                 i++;
@@ -125,14 +130,14 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (UnauthorizedAccessException uaex)
             {
-                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)), new { FullPath, ExceptionMessage = uaex.Message }));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (DirectoryNotFoundException dnfex)
             {
-                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)), new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message }));
                 }, System.Windows.Threading.DispatcherPriority.Normal);

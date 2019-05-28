@@ -492,7 +492,7 @@ namespace Steam_Library_Manager.Functions
 
                     Definitions.List.Libraries.Add(newLibrary);
 
-                    await Task.Run(() => newLibrary.Steam.UpdateAppList());
+                    await Task.Run(() => newLibrary.Steam.UpdateAppListAsync());
                     await Task.Run(() => newLibrary.Steam.UpdateJunks());
                 }
                 catch (Exception ex)
