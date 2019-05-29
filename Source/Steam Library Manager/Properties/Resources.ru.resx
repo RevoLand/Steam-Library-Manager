@@ -400,7 +400,7 @@
     <value>Проверить наличие обновлений</value>
   </data>
   <data name="Forms_Settings_CheckForUpdatesOnStartup" xml:space="preserve">
-    <value>Проверить обновления при запуске</value>
+    <value>Проверять обновление при запуске</value>
   </data>
   <data name="Forms_Settings_ClearHeaderİmageCache" xml:space="preserve">
     <value>Очистить кэш изображений заголовка</value>
@@ -469,7 +469,7 @@
     <value>Сообщить о перемещении файла</value>
   </data>
   <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
-    <value>Продолжайть поиск при изменении библиотеки</value>
+    <value>Продолжать поиск при изменении библиотеки</value>
   </data>
   <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
     <value>Метод расчета для игр</value>
