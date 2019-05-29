@@ -97,7 +97,7 @@ namespace Steam_Library_Manager
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TmViewLogs;
 
-                LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LCItems;
+                LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LcItems;
 
                 SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
             }

@@ -46,18 +46,18 @@ namespace Steam_Library_Manager.Forms
                             if (Junk.FSInfo.Exists)
                             {
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
+                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
                             }
                         }
                         else
                         {
                             if (((DirectoryInfo)Junk.FSInfo).Exists)
                             {
-                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(false);
+                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(true);
                             }
                         }
 
-                        Definitions.List.LCItems.Remove(Junk);
+                        Definitions.List.LcItems.Remove(Junk);
                     }
                 }
             }
@@ -101,12 +101,12 @@ namespace Steam_Library_Manager.Forms
                     if (TargetFolderDialogResult == System.Windows.Forms.DialogResult.OK)
                     {
                         if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath
-                            && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) != MessageDialogResult.Affirmative)
+                            && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) != MessageDialogResult.Affirmative)
                         {
                             return;
                         }
 
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFiles))).ConfigureAwait(false);
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFiles))).ConfigureAwait(true);
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -121,7 +121,7 @@ namespace Steam_Library_Manager.Forms
                                 }
 
                                 File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
+                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
                             }
                             else
                             {
@@ -140,26 +140,26 @@ namespace Steam_Library_Manager.Forms
                                             }
 
                                             ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = currentFile.FullName }));
-                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(false);
+                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(true);
                                         }
                                     }
 
                                     ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(false);
+                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(true);
                                 }
                             }
 
-                            Definitions.List.LCItems.Remove(Junk);
+                            Definitions.List.LcItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     }
                 }
                 else if ((string)(sender as Button)?.Tag == "DeleteAll")
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_Delete)), true).ConfigureAwait(false);
+                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_Delete)), true).ConfigureAwait(true);
                         ProgressInformationMessage.SetIndeterminate();
 
                         foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
@@ -171,7 +171,7 @@ namespace Steam_Library_Manager.Forms
                                 {
                                     File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
                                     ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(false);
+                                    await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
                                 }
                             }
                             else
@@ -180,14 +180,14 @@ namespace Steam_Library_Manager.Forms
                                 if (Junk.FSInfo.Exists)
                                 {
                                     ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(false);
+                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(true);
                                 }
                             }
 
-                            Definitions.List.LCItems.Remove(Junk);
+                            Definitions.List.LcItems.Remove(Junk);
                         }
 
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     }
                 }
             }
@@ -199,8 +199,8 @@ namespace Steam_Library_Manager.Forms
                 {
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                     {
-                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(false)).ConfigureAwait(false);
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
+                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -211,8 +211,8 @@ namespace Steam_Library_Manager.Forms
                 {
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                     {
-                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(false)).ConfigureAwait(false);
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
+                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 }
             }
             catch (Exception ex)
@@ -223,8 +223,8 @@ namespace Steam_Library_Manager.Forms
                 {
                     await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
                      {
-                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(false)).ConfigureAwait(false);
-                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
+                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 }
             }
         }

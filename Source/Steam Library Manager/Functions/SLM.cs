@@ -238,12 +238,12 @@ namespace Steam_Library_Manager.Functions
                         Library.Steam = new Definitions.SteamLibrary(LibraryPath, Library);
                     }
 
-                    Definitions.List.Libraries.Add(Library);
+                    Definitions.List.LibraryProgress.Report(Library);
 
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(false);
-                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(false);
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(true);
+                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(true);
                     }
                 }
                 catch (Exception ex)
@@ -273,14 +273,14 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(false);
-                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(false);
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(true);
+                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(true);
                     }
 
                     if (Library.Origin != null)
                     {
                         Library.DirectoryInfo.Refresh();
-                        await Task.Run(() => Library.Origin.UpdateAppList()).ConfigureAwait(false);
+                        await Task.Run(() => Library.Origin.UpdateAppList()).ConfigureAwait(true);
                         Library.UpdateDiskDetails();
                     }
                 }

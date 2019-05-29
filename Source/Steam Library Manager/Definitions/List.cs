@@ -12,9 +12,10 @@ namespace Steam_Library_Manager.Definitions
         // Make a new list for Library details
         public static ObservableCollection<Library> Libraries { get; set; } = new ObservableCollection<Library>();
 
-        public static ObservableCollection<JunkInfo> LCItems { get; set; } = new ObservableCollection<JunkInfo>();
+        public static ObservableCollection<JunkInfo> LcItems { get; set; } = new ObservableCollection<JunkInfo>();
 
-        public static IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(Junk => LCItems.Add(Junk));
+        public static readonly IProgress<Library> LibraryProgress = new Progress<Library>(library => Libraries.Add(library));
+        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => LcItems.Add(junk));
 
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();

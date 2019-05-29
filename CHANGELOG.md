@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Compact tasks are not pausing properly.
 - Offline Origin libraries not showing correctly.
 - Offline Origin libraries are not becoming online when it should be.
+- NotSupportedException on adding/creating a new library.
 
 ## [1.5.1.5] - 2019-05-28
 

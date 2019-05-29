@@ -375,7 +375,7 @@ namespace Steam_Library_Manager.Definitions
                             Library = Library
                         };
 
-                        if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
                             List.LCProgress.Report(Junk);
                         }
@@ -403,7 +403,7 @@ namespace Steam_Library_Manager.Definitions
                             Library = Library
                         };
 
-                        if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
                             List.LCProgress.Report(Junk);
                         }
@@ -428,7 +428,7 @@ namespace Steam_Library_Manager.Definitions
                                 Library = Library
                             };
 
-                            if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
                                 List.LCProgress.Report(Junk);
                             }
@@ -448,7 +448,7 @@ namespace Steam_Library_Manager.Definitions
                                 Library = Library
                             };
 
-                            if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
                                 List.LCProgress.Report(Junk);
                             }

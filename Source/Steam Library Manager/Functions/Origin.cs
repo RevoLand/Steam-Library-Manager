@@ -177,7 +177,7 @@ namespace Steam_Library_Manager.Functions
 
                 newLibrary.Origin = new Definitions.OriginLibrary(LibraryPath, newLibrary, IsMainLibrary);
 
-                Definitions.List.Libraries.Add(newLibrary);
+                Definitions.List.LibraryProgress.Report(newLibrary);
 
                 await Task.Run(() => newLibrary.Origin.UpdateAppList()).ConfigureAwait(false);
             }
