@@ -130,7 +130,7 @@ namespace Steam_Library_Manager.Functions
                                 continue;
                             }
 
-                            await AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true);
+                            await AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
                         }
                     }
                 }
@@ -142,11 +142,11 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
-                    }) == MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
                         File.Delete(ZipPath);
                     }
-                });
+                }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 logger.Fatal(IEx);
@@ -158,11 +158,11 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
-                    }) == MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
                         File.Delete(ZipPath);
                     }
-                });
+                }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 logger.Fatal(IEx);

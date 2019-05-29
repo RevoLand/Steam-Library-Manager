@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Definitions
 
                 if (Directory.Exists(FullPath))
                 {
-                    List<KeyValuePair<string, string>> AppIds = new List<KeyValuePair<string, string>>();
+                    var AppIds = new List<KeyValuePair<string, string>>();
 
                     if (Directory.Exists(Directories.Origin.LocalContentDirectoy))
                     {
@@ -135,10 +135,11 @@ namespace Steam_Library_Manager.Definitions
 
                         Apps.Add(originApp);
                     } // foreach
-                }
-                else
-                {
-                    MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.OriginDirectoryNotExists)));
+
+                    if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == Library)
+                    {
+                        Functions.App.UpdateAppPanel(Library);
+                    }
                 }
             }
             catch (Exception ex)

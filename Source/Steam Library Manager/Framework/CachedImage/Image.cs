@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
             var url = (string)e.NewValue;
             var cachedImage = (Image)obj;
 
-            cachedImage.Source = await LoadImageAsync(url, cachedImage);
+            cachedImage.Source = await LoadImageAsync(url, cachedImage).ConfigureAwait(true);
             cachedImage.IsLoading = false;
         }
 
@@ -106,7 +106,7 @@ namespace Steam_Library_Manager.Framework.CachedImage
                 case FileCache.CacheMode.Dedicated:
                     try
                     {
-                        var memoryStream = await FileCache.HitAsync(url);
+                        var memoryStream = await FileCache.HitAsync(url).ConfigureAwait(true);
                         if (memoryStream == null)
                         {
                             Debug.WriteLine("No hit for URL " + url);

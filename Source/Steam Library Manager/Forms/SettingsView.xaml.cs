@@ -50,7 +50,7 @@ namespace Steam_Library_Manager.Forms
                     }
                 }
 
-                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCache)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCacheMessage)));
+                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCache)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCacheMessage))).ConfigureAwait(false);
             }
             catch { }
         }

@@ -49,10 +49,10 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                         {
-                            Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
+                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
                             await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
                             CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
-                            Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
+                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
                         }
 
                         if (CurrentTask.TargetLibrary?.Type == Definitions.Enums.LibraryType.Steam)
@@ -96,12 +96,12 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                         {
-                            Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
+                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
 
                             CurrentTask.OriginApp.DeleteFiles(CurrentTask);
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
 
-                            Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
+                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
                         }
 
                         CurrentTask.TaskStatusInfo = SLM.Translate(nameof(Properties.Resources.TaskStatus_Completed));
@@ -161,7 +161,7 @@ namespace Steam_Library_Manager.Functions
         {
             if (!Status && !Paused)
             {
-                Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Active)), new { CurrentTime = DateTime.Now }));
+                Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Active)), new { CurrentTime = DateTime.Now }));
                 CancellationToken = new CancellationTokenSource();
                 Status = true;
 
@@ -182,7 +182,7 @@ namespace Steam_Library_Manager.Functions
                     catch (OperationCanceledException)
                     {
                         Stop();
-                        Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Stopped)), new { CurrentTime = DateTime.Now }));
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Stopped)), new { CurrentTime = DateTime.Now }));
                     }
                     catch (Exception ex)
                     {
@@ -233,7 +233,7 @@ namespace Steam_Library_Manager.Functions
                     Paused = true;
                     ActiveTask.mre.Reset();
 
-                    Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Paused)), new { CurrentTime = DateTime.Now }));
+                    Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Paused)), new { CurrentTime = DateTime.Now }));
                 }
             }
             catch (Exception ex)

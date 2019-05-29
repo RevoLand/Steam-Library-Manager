@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+## [1.5.1.6] - 2019-05-30
+
+### Added
+
+- Size detection for compressed games with compact *(Huge performance impact on libraries with lots of games, Needs to be enabled from Settings - Disabled by default)*
+
+### Fixed
+
+- Compact tasks are not pausing properly.
+- Offline Origin libraries not showing correctly.
+- Offline Origin libraries are not becoming online when it should be.
+
 ## [1.5.1.5] - 2019-05-28
 
 ### Changed

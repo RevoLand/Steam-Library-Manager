@@ -17,51 +17,47 @@ namespace Steam_Library_Manager
     public partial class Main
     {
         public static Main FormAccessor;
-        private ObservableCollection<string> TMLogs { get; } = new ObservableCollection<string>();
+        private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
 
-        public readonly IProgress<string> TaskManager_Logs = new Progress<string>(log => FormAccessor.TMLogs.Add(log));
+        public readonly IProgress<string> TmLogs = new Progress<string>(log => FormAccessor.TmViewLogs.Add(log));
 
-        public readonly IProgress<Definitions.Library> LibraryChange = new Progress<Definitions.Library>(Library =>
+        public readonly IProgress<Definitions.Library> LibraryChange = new Progress<Definitions.Library>(library =>
         {
-            if (Library == null)
+            if (library == null)
                 return;
 
-            var Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
-            if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
+            var search = Properties.Settings.Default.includeSearchResults ? Properties.Settings.Default.SearchText : null;
+            if (Definitions.List.Libraries.Count(x => x == library) == 0 || !library.DirectoryInfo.Exists)
             {
                 FormAccessor.AppView.AppPanel.ItemsSource = null;
                 return;
             }
 
-            Func<dynamic, object> Sort = Functions.SLM.Settings.GetSortingMethod(Library);
+            var sortingMethod = Functions.SLM.Settings.GetSortingMethod(library);
 
-            switch (Library.Type)
+            switch (library.Type)
             {
                 case Definitions.Enums.LibraryType.Steam:
                 case Definitions.Enums.LibraryType.SLM:
-                    FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed") ?
-                        ((string.IsNullOrEmpty(Search)) ?
-                        Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
-                            y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderByDescending(Sort).ToList()
-                        ) :
-                        ((string.IsNullOrEmpty(Search)) ? Library.Steam.Apps.OrderBy(Sort).ToList() : Library.Steam.Apps.Where(
-                        y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderBy(Sort).ToList()
-                        );
+                    FormAccessor.AppView.AppPanel.ItemsSource = Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed" ?
+                        string.IsNullOrEmpty(search) ?
+                            library.Steam.Apps.OrderByDescending(sortingMethod).ToList() : library.Steam.Apps.Where(
+                                y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                            ).OrderByDescending(sortingMethod).ToList() :
+                        string.IsNullOrEmpty(search) ? library.Steam.Apps.OrderBy(sortingMethod).ToList() : library.Steam.Apps.Where(
+                            y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                        ).OrderBy(sortingMethod).ToList();
                     break;
 
                 case Definitions.Enums.LibraryType.Origin:
-                    FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
-                        ((string.IsNullOrEmpty(Search)) ?
-                        Library.Origin.Apps.OrderByDescending(Sort).ToList() : Library.Origin.Apps.Where(
-                            y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderByDescending(Sort).ToList()
-                        ) :
-                        ((string.IsNullOrEmpty(Search)) ? Library.Origin.Apps.OrderBy(Sort).ToList() : Library.Origin.Apps.Where(
-                        y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                        ).OrderBy(Sort).ToList()
-                        );
+                    FormAccessor.AppView.AppPanel.ItemsSource = Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" ?
+                        string.IsNullOrEmpty(search) ?
+                            library.Origin.Apps.OrderByDescending(sortingMethod).ToList() : library.Origin.Apps.Where(
+                                y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                            ).OrderByDescending(sortingMethod).ToList() :
+                        string.IsNullOrEmpty(search) ? library.Origin.Apps.OrderBy(sortingMethod).ToList() : library.Origin.Apps.Where(
+                            y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                        ).OrderBy(sortingMethod).ToList();
                     break;
             }
         });
@@ -99,7 +95,7 @@ namespace Steam_Library_Manager
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
-                TaskManagerView.TaskManager_LogsView.ItemsSource = TMLogs;
+                TaskManagerView.TaskManager_LogsView.ItemsSource = TmViewLogs;
 
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LCItems;
 
@@ -137,7 +133,7 @@ namespace Steam_Library_Manager
                     {
                         AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
                         NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-                    }) != MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(false) != MessageDialogResult.Affirmative)
                 {
                     return;
                 }

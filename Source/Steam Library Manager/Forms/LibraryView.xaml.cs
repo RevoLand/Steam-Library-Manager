@@ -61,7 +61,7 @@ namespace Steam_Library_Manager.Forms
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName })).ConfigureAwait(false);
                             }
                         }
                     }
@@ -81,7 +81,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName }));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName })).ConfigureAwait(false);
                         }
                     }
                 }
@@ -114,7 +114,7 @@ namespace Steam_Library_Manager.Forms
 
                     if ((Info.Attributes & FileAttributes.Directory) != 0)
                     {
-                        await CreateLibraryAsync(Info.FullName);
+                        await CreateLibraryAsync(Info.FullName).ConfigureAwait(false);
                     }
                 }
             }
@@ -132,7 +132,7 @@ namespace Steam_Library_Manager.Forms
                 NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
                 FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Origin)),
                 SecondAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-            });
+            }).ConfigureAwait(false);
 
             switch (LibraryDialog)
             {
@@ -146,12 +146,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
                     }
                     break;
                 // SLM
@@ -164,12 +164,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
                     }
                     break;
                 // Origin
@@ -182,12 +182,12 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage)));
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath }));
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
                     }
                     break;
             }
@@ -204,12 +204,9 @@ namespace Steam_Library_Manager.Forms
                     return;
                 }
 
-                if (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM)
+                if (Definitions.SLM.CurrentSelectedLibrary.Type != Definitions.Enums.LibraryType.Steam && Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.FullName) && !Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.Exists)
                 {
-                    if (Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.FullName))
-                    {
-                        Functions.SLM.Library.UpdateBackupLibrary(Definitions.SLM.CurrentSelectedLibrary);
-                    }
+                    Functions.SLM.Library.UpdateBackupLibrary(Definitions.SLM.CurrentSelectedLibrary);
                 }
 
                 // Update games list from current selection
@@ -250,7 +247,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    await CreateLibraryAsync(dialog.SelectedPath);
+                    await CreateLibraryAsync(dialog.SelectedPath).ConfigureAwait(false);
                 }
             }
         }

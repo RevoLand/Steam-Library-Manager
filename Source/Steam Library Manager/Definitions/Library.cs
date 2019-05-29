@@ -114,6 +114,7 @@ namespace Steam_Library_Manager.Definitions
 
         public void UpdateDiskDetails()
         {
+            OnPropertyChanged("DirectoryInfo");
             OnPropertyChanged("FreeSpace");
             OnPropertyChanged("PrettyFreeSpace");
             OnPropertyChanged("FreeSpacePerc");

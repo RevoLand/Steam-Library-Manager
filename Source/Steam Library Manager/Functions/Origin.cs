@@ -179,7 +179,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.Libraries.Add(newLibrary);
 
-                await Task.Run(() => newLibrary.Origin.UpdateAppList());
+                await Task.Run(() => newLibrary.Origin.UpdateAppList()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
