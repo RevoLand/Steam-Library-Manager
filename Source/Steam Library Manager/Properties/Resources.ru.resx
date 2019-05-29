@@ -214,7 +214,7 @@
     <value>Тип резервного копирования</value>
   </data>
   <data name="Enums_Compress" xml:space="preserve">
-    <value>Сжатие</value>
+    <value>Сжать</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
     <value>Копировать</value>
@@ -424,7 +424,7 @@
     <value>Пользовательская Тема</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
-    <value>НЕ Сжимать</value>
+    <value>Не сжимать</value>
   </data>
   <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
     <value>НЕ удалять</value>
@@ -757,7 +757,7 @@
 {CurrentAppName}</value>
   </data>
   <data name="Steam_CheckForBackupUpdates_UpdateFound" xml:space="preserve">
-    <value>[{CurrentTime}] Доступно обновление для: {CurrentAppName} - Старое время резервной копии: {CurrentAppLastUpdatedOn} - Обновлено: {NewAppLastUpdatedOn} - Цель: {CurrentAppSteamFullPath} - Источник: {NewAppSteamFullPath}</value>
+    <value>[{CurrentTime}] Доступно обновление для: {CurrentAppName} - Старое время резервная копия: {CurrentAppLastUpdatedOn} - Обновлено: {NewAppLastUpdatedOn} - Цель: {CurrentAppSteamFullPath} - Источник: {NewAppSteamFullPath}</value>
   </data>
   <data name="Steam_NeedsToBeClosed" xml:space="preserve">
     <value>Steam должен быть закрыт</value>
@@ -835,7 +835,7 @@
     <comment>Available variables: Percentage, TransferredBytes, TotalBytes</comment>
   </data>
   <data name="TaskStatus_Decompress" xml:space="preserve">
-    <value>Декомпрессация: {NewFileName} ({NewFileSize})</value>
+    <value>Распаковка: {NewFileName} ({NewFileSize})</value>
   </data>
   <data name="TaskStatus_DeletingDirectory" xml:space="preserve">
     <value>Удаление каталога: {DirectoryName}</value>
