@@ -23,42 +23,66 @@ namespace Steam_Library_Manager
 
         public readonly IProgress<Definitions.Library> LibraryChange = new Progress<Definitions.Library>(library =>
         {
-            if (library == null)
-                return;
-
-            var search = Properties.Settings.Default.includeSearchResults ? Properties.Settings.Default.SearchText : null;
-            if (Definitions.List.Libraries.Count(x => x == library) == 0 || !library.DirectoryInfo.Exists)
+            try
             {
-                FormAccessor.AppView.AppPanel.ItemsSource = null;
-                return;
+                if (library == null)
+                    return;
+
+                var search = Properties.Settings.Default.includeSearchResults
+                    ? Properties.Settings.Default.SearchText
+                    : null;
+                if (Definitions.List.Libraries.Count(x => x == library) == 0 || !library.DirectoryInfo.Exists)
+                {
+                    FormAccessor.AppView.AppPanel.ItemsSource = null;
+                    return;
+                }
+
+                var sortingMethod = Functions.SLM.Settings.GetSortingMethod(library);
+
+                switch (library.Type)
+                {
+                    case Definitions.Enums.LibraryType.Steam:
+                    case Definitions.Enums.LibraryType.SLM:
+                        FormAccessor.AppView.AppPanel.ItemsSource =
+                            Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk"
+                            || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated"
+                            || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed"
+                                ? string.IsNullOrEmpty(search)
+                                    ? library.Steam.Apps.OrderByDescending(sortingMethod).ToList()
+                                    : library.Steam.Apps.Where(
+                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
+                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                    ).OrderByDescending(sortingMethod).ToList()
+                                : string.IsNullOrEmpty(search)
+                                    ? library.Steam.Apps.OrderBy(sortingMethod).ToList()
+                                    : library.Steam.Apps.Where(
+                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
+                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                    ).OrderBy(sortingMethod).ToList();
+                        break;
+
+                    case Definitions.Enums.LibraryType.Origin:
+                        FormAccessor.AppView.AppPanel.ItemsSource =
+                            Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk"
+                            || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated"
+                                ? string.IsNullOrEmpty(search)
+                                    ? library.Origin.Apps.OrderByDescending(sortingMethod).ToList()
+                                    : library.Origin.Apps.Where(
+                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
+                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                    ).OrderByDescending(sortingMethod).ToList()
+                                : string.IsNullOrEmpty(search)
+                                    ? library.Origin.Apps.OrderBy(sortingMethod).ToList()
+                                    : library.Origin.Apps.Where(
+                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
+                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                    ).OrderBy(sortingMethod).ToList();
+                        break;
+                }
             }
-
-            var sortingMethod = Functions.SLM.Settings.GetSortingMethod(library);
-
-            switch (library.Type)
+            catch (Exception ex)
             {
-                case Definitions.Enums.LibraryType.Steam:
-                case Definitions.Enums.LibraryType.SLM:
-                    FormAccessor.AppView.AppPanel.ItemsSource = Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed" ?
-                        string.IsNullOrEmpty(search) ?
-                            library.Steam.Apps.OrderByDescending(sortingMethod).ToList() : library.Steam.Apps.Where(
-                                y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
-                            ).OrderByDescending(sortingMethod).ToList() :
-                        string.IsNullOrEmpty(search) ? library.Steam.Apps.OrderBy(sortingMethod).ToList() : library.Steam.Apps.Where(
-                            y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
-                        ).OrderBy(sortingMethod).ToList();
-                    break;
-
-                case Definitions.Enums.LibraryType.Origin:
-                    FormAccessor.AppView.AppPanel.ItemsSource = Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" ?
-                        string.IsNullOrEmpty(search) ?
-                            library.Origin.Apps.OrderByDescending(sortingMethod).ToList() : library.Origin.Apps.Where(
-                                y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
-                            ).OrderByDescending(sortingMethod).ToList() :
-                        string.IsNullOrEmpty(search) ? library.Origin.Apps.OrderBy(sortingMethod).ToList() : library.Origin.Apps.Where(
-                            y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
-                        ).OrderBy(sortingMethod).ToList();
-                    break;
+                FormAccessor.TmLogs.Report(ex.ToString());
             }
         });
 

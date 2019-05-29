@@ -23,7 +23,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                        if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
                             var steamPathSelector = new OpenFileDialog()
                             {
@@ -278,13 +278,13 @@ namespace Steam_Library_Manager.Functions
                 var ActiveSteamPath = GetActiveSteamProcessPath();
                 if (!string.IsNullOrEmpty(ActiveSteamPath))
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
                         if (File.Exists(ActiveSteamPath))
                         {
                             Process.Start(ActiveSteamPath, "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
                             foreach (var SteamProcess in Process.GetProcessesByName("Steam"))
                             {
@@ -301,7 +301,7 @@ namespace Steam_Library_Manager.Functions
                         throw new OperationCanceledException(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed_UserCancelled)));
                     }
 
-                    await Task.Delay(6000).ConfigureAwait(false);
+                    await Task.Delay(6000).ConfigureAwait(true);
                 }
             }
             catch (OperationCanceledException)
@@ -318,9 +318,9 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_Start)), SLM.Translate(nameof(Properties.Resources.Steam_StartMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_Start)), SLM.Translate(nameof(Properties.Resources.Steam_StartMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        await CloseSteamAsync().ConfigureAwait(false);
+                        await CloseSteamAsync().ConfigureAwait(true);
 
                         if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
                         {
@@ -331,7 +331,7 @@ namespace Steam_Library_Manager.Functions
                     {
                         throw new OperationCanceledException(SLM.Translate(nameof(Properties.Resources.Steam_Start_UserCancelled)));
                     }
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -352,7 +352,7 @@ namespace Steam_Library_Manager.Functions
                     // If we are not creating a backup library
                     if (!Backup)
                     {
-                        await CloseSteamAsync().ConfigureAwait(false);
+                        await CloseSteamAsync().ConfigureAwait(true);
 
                         // Define steam dll paths for better looking
                         string SteamDLLPath = Path.Combine(NewLibraryPath, "Steam.dll");
@@ -413,8 +413,8 @@ namespace Steam_Library_Manager.Functions
                 {
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                      {
-                         await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessExceptionMessage)), new { NewLibraryPath, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false);
-                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                         await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessExceptionMessage)), new { NewLibraryPath, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true);
+                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
 
                     logger.Fatal(ex);
                 }
@@ -433,7 +433,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(false);
+                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(true);
                     ProgressInformationMessage.SetIndeterminate();
 
                     foreach (var CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
@@ -469,7 +469,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    await ProgressInformationMessage.CloseAsync().ConfigureAwait(false);
+                    await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                 }
                 catch (Exception ex)
@@ -492,8 +492,8 @@ namespace Steam_Library_Manager.Functions
 
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
-                    await Task.Run(() => newLibrary.Steam.UpdateAppListAsync()).ConfigureAwait(false);
-                    await Task.Run(() => newLibrary.Steam.UpdateJunks()).ConfigureAwait(false);
+                    await Task.Run(() => newLibrary.Steam.UpdateAppListAsync()).ConfigureAwait(true);
+                    await Task.Run(() => newLibrary.Steam.UpdateJunks()).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {

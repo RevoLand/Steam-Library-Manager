@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Definitions
                     await Functions.App.AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value),
                         KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value,
                         KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value),
-                        Convert.ToInt64(KeyValReader["LastUpdated"].Value), false).ConfigureAwait(false);
+                        Convert.ToInt64(KeyValReader["LastUpdated"].Value), false).ConfigureAwait(true);
                 }
                 //);
 
@@ -115,7 +115,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value) && x.IsSteamBackup) > 0)
                                 continue;
 
-                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true).ConfigureAwait(false);
+                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true).ConfigureAwait(true);
 
                             if (AppNames.Length > 1)
                                 i++;
@@ -132,15 +132,15 @@ namespace Steam_Library_Manager.Definitions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)), new { FullPath, ExceptionMessage = uaex.Message })).ConfigureAwait(false);
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)), new { FullPath, ExceptionMessage = uaex.Message })).ConfigureAwait(true);
+                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
             }
             catch (DirectoryNotFoundException dnfex)
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)), new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message })).ConfigureAwait(false);
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)), new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message })).ConfigureAwait(true);
+                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -208,18 +208,18 @@ namespace Steam_Library_Manager.Definitions
 
                     if (IsMain)
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DeleteMainSteamLibrary)), Functions.SLM.Translate(nameof(Properties.Resources.DeleteMainSteamLibraryMessage)), MessageDialogStyle.Affirmative).ConfigureAwait(false);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DeleteMainSteamLibrary)), Functions.SLM.Translate(nameof(Properties.Resources.DeleteMainSteamLibraryMessage)), MessageDialogStyle.Affirmative).ConfigureAwait(true);
                         return;
                     }
 
                     MessageDialogResult MoveGamesBeforeDeletion = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibrary)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibraryMessage)), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                     {
                         FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.DeleteLibraryWithoutMovingGames))
-                    }).ConfigureAwait(false);
+                    }).ConfigureAwait(true);
 
                     if (MoveGamesBeforeDeletion == MessageDialogResult.Affirmative)
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmError)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmErrorMessage)), MessageDialogStyle.Affirmative).ConfigureAwait(false);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmError)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmErrorMessage)), MessageDialogStyle.Affirmative).ConfigureAwait(true);
                     }
                     else if (MoveGamesBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
@@ -232,9 +232,9 @@ namespace Steam_Library_Manager.Definitions
 
                     foreach (SteamAppInfo App in Apps.ToList())
                     {
-                        if (!await App.DeleteFilesAsync().ConfigureAwait(false))
+                        if (!await App.DeleteFilesAsync().ConfigureAwait(true))
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.SteamApp_RemovingError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamApp_RemovingErrorMessage)), new { FullPath }), MessageDialogStyle.Affirmative).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.SteamApp_RemovingError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamApp_RemovingErrorMessage)), new { FullPath }), MessageDialogStyle.Affirmative).ConfigureAwait(true);
 
                             return;
                         }
@@ -242,7 +242,7 @@ namespace Steam_Library_Manager.Definitions
 
                     Functions.SLM.Library.UpdateLibraryVisual();
 
-                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibrary)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibraryMessage)), new { LibraryFullPath = FullPath }), MessageDialogStyle.Affirmative).ConfigureAwait(false);
+                    await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibrary)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibraryMessage)), new { LibraryFullPath = FullPath }), MessageDialogStyle.Affirmative).ConfigureAwait(true);
                     break;
             }
         }
@@ -251,7 +251,7 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                await Functions.Steam.CloseSteamAsync().ConfigureAwait(false);
+                await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
                 // Make a KeyValue reader
                 Framework.KeyValue Key = new Framework.KeyValue();
@@ -286,17 +286,17 @@ namespace Steam_Library_Manager.Definitions
             {
                 if (SteamAppsFolder.Exists)
                 {
-                    await Task.Run(() => SteamAppsFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => SteamAppsFolder.Delete(true)).ConfigureAwait(true);
                 }
 
                 if (WorkshopFolder.Exists)
                 {
-                    await Task.Run(() => WorkshopFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => WorkshopFolder.Delete(true)).ConfigureAwait(true);
                 }
 
                 if (DownloadFolder.Exists)
                 {
-                    await Task.Run(() => DownloadFolder.Delete(true)).ConfigureAwait(false);
+                    await Task.Run(() => DownloadFolder.Delete(true)).ConfigureAwait(true);
                 }
             }
             catch (Exception ex)
@@ -316,7 +316,7 @@ namespace Steam_Library_Manager.Definitions
 
                 List.Libraries.Remove(Library);
 
-                await Functions.Steam.CloseSteamAsync().ConfigureAwait(false);
+                await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
                 // Make a KeyValue reader
                 Framework.KeyValue KeyValReader = new Framework.KeyValue();
