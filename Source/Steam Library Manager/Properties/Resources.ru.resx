@@ -406,7 +406,7 @@
     <value>Очистить кэш изображений заголовка</value>
   </data>
   <data name="Forms_Settings_Compress" xml:space="preserve">
-    <value>Сжатие</value>
+    <value>Сжать</value>
   </data>
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Сжимать файлы</value>
