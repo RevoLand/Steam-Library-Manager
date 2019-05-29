@@ -39,9 +39,9 @@
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
-                                        <!--<DataTrigger Binding="{Binding Library.Type}" Value="SLM">
-                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_SLM}" />
-                                        </DataTrigger>-->
+                                        <DataTrigger Binding="{Binding IsCompacted}" Value="true">
+                                            <Setter Property="Text" Value="Compacted" />
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
                                             <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
                                         </DataTrigger>
@@ -78,6 +78,9 @@
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompacted}" Value="true">
+                                        <Setter Property="Text" Value="Compacted" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
                                         <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
                                     </DataTrigger>
@@ -121,6 +124,17 @@
 
                     <!-- App Info Grid -->
                     <Grid VerticalAlignment="Bottom" Margin="125,0,0,5">
+                        <TextBlock Margin="0,-17,0,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
+                            <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompacted}" Value="true">
+                                        <Setter Property="Text" Value="Compacted" />
+                                    </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
                         <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
@@ -142,6 +156,18 @@
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
+                    
+                    <TextBlock Margin="0,0,60,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
+                            <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompacted}" Value="true">
+                                        <Setter Property="Text" Value="Compacted" />
+                                    </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
 
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">

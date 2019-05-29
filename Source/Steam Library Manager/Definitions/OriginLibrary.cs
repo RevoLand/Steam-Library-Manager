@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,17 +12,13 @@ using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class OriginLibrary : INotifyPropertyChanged
+    public class OriginLibrary
     {
         public Library Library;
         public bool IsMain { get; set; }
         public string FullPath { get; set; }
-        public Framework.AsyncObservableCollection<OriginAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<OriginAppInfo>();
+        public ObservableCollection<OriginAppInfo> Apps { get; set; } = new ObservableCollection<OriginAppInfo>();
         public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 
         //-----
         public OriginLibrary(string _FullPath, Library library, bool _IsMain = false)
@@ -38,8 +34,6 @@ namespace Steam_Library_Manager.Definitions
             {
                 Apps.Clear();
 
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
                 if (Directory.Exists(FullPath))
                 {
                     List<KeyValuePair<string, string>> AppIds = new List<KeyValuePair<string, string>>();
@@ -71,8 +65,6 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (new FileInfo(OriginApp).Directory.Parent.Parent.Name != new DirectoryInfo(FullPath).Name)
                             continue;
-
-                        //Debug.WriteLine(OriginApp);
 
                         string installerLog = Path.Combine(Directory.GetParent(OriginApp).FullName, "InstallLog.txt");
                         string installedLocale = "en_US";
@@ -133,11 +125,11 @@ namespace Steam_Library_Manager.Definitions
                         {
                             var appId = AppIds.First(x => x.Key == originApp.InstallationDirectory.Name);
 
-                            dynamic appLocalData = GetGameLocalData(appId.Value);
+                            JObject appLocalData = GetGameLocalData(appId.Value);
 
                             if (appLocalData != null)
                             {
-                                originApp.GameHeaderImage = appLocalData.customAttributes.imageServer + appLocalData.localizableAttributes.packArtLarge;
+                                originApp.GameHeaderImage = string.Concat(appLocalData["customAttributes"]["imageServer"], appLocalData["localizableAttributes"]["packArtLarge"]);
                             }
                         }
 
@@ -148,7 +140,6 @@ namespace Steam_Library_Manager.Definitions
                 {
                     MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.OriginDirectoryNotExists)));
                 }
-                stopwatch.Stop();
             }
             catch (Exception ex)
             {
@@ -162,10 +153,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 WebClient client = new WebClient();
 
-                Debug.WriteLine($"https://api1.origin.com/ecommerce2/public/{gameId}/en_US");
-
-                string myJSON = client.DownloadString($"https://api1.origin.com/ecommerce2/public/{gameId}/en_US");
-                return JObject.Parse(myJSON);
+                return JObject.Parse(client.DownloadString($"https://api1.origin.com/ecommerce2/public/{gameId}/en_US"));
             }
             catch (Exception ex)
             {

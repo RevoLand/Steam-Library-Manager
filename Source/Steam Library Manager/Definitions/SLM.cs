@@ -4,7 +4,5 @@
     public static class SLM
     {
         public static Library CurrentSelectedLibrary;
-
-        //public static int NetworkBuffer = 4096 * 1024;
     }
 }

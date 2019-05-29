@@ -25,15 +25,15 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative) == MessageDialogResult.Affirmative)
                         {
-                            OpenFileDialog SteamPathSelector = new OpenFileDialog()
+                            var steamPathSelector = new OpenFileDialog()
                             {
-                                Filter = "Steam (Steam.exe)|Steam.exe"
+                                Filter = "Steam Executable (Steam.exe)|Steam.exe"
                             };
 
-                            if (SteamPathSelector.ShowDialog() == true)
+                            if (steamPathSelector.ShowDialog() == true)
                             {
-                                if (Directory.Exists(Path.GetDirectoryName(SteamPathSelector.FileName)))
-                                    Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(SteamPathSelector.FileName);
+                                if (Directory.Exists(Path.GetDirectoryName(steamPathSelector.FileName)))
+                                    Properties.Settings.Default.steamInstallationPath = Path.GetDirectoryName(steamPathSelector.FileName);
                             }
                         }
                     }
@@ -150,10 +150,22 @@ namespace Steam_Library_Manager.Functions
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Compress)),
                 Action = "Compress",
                 LibraryType = Definitions.Enums.LibraryType.Steam,
-                ShowToCompressed = false,
+                ShowToCompressed = true,
                 ShowToSteamBackup = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
             });
+
+            // Compact
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Compact",
+                Action = "compact",
+                LibraryType = Definitions.Enums.LibraryType.Steam,
+                ShowToCompressed = false,
+                ShowToSteamBackup = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+            });
+
             // Separator
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
@@ -441,7 +453,7 @@ namespace Steam_Library_Manager.Functions
                                 {
                                     var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (Framework.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
+                                    if (Functions.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {
@@ -449,8 +461,8 @@ namespace Steam_Library_Manager.Functions
                                             TargetLibrary = CurrentApp.Library
                                         };
 
-                                        Framework.TaskManager.AddTask(NewTask);
-                                        Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
+                                        Functions.TaskManager.AddTask(NewTask);
+                                        Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
                                     }
                                 }
                             }
@@ -458,7 +470,7 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     await ProgressInformationMessage.CloseAsync();
-                    Main.FormAccessor.TaskManager_Logs.Add(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
+                    Main.FormAccessor.TaskManager_Logs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                 }
                 catch (Exception ex)
                 {
@@ -480,7 +492,7 @@ namespace Steam_Library_Manager.Functions
 
                     Definitions.List.Libraries.Add(newLibrary);
 
-                    await Task.Run(() => newLibrary.Steam.UpdateAppList());
+                    await Task.Run(() => newLibrary.Steam.UpdateAppListAsync());
                     await Task.Run(() => newLibrary.Steam.UpdateJunks());
                 }
                 catch (Exception ex)
@@ -508,7 +520,7 @@ namespace Steam_Library_Manager.Functions
                                 foreach (var app in appsPath.Children)
                                 {
                                     var lastPlayed = app["LastPlayed"].Value;
-                                    if (lastPlayed != null)
+                                    if (lastPlayed != null && !Definitions.List.SteamApps_LastPlayedDic.ContainsKey(Convert.ToInt32(app.Name)))
                                     {
                                         Definitions.List.SteamApps_LastPlayedDic.Add(Convert.ToInt32(app.Name), new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(lastPlayed)));
                                     }

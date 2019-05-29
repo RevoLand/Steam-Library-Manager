@@ -12,21 +12,15 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void AddSteamApp(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
+        public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
                 // Make a new definition for app
-                Definitions.SteamAppInfo App = new Definitions.SteamAppInfo()
+                var App = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(InstallationPath))
                 {
-                    // Set game appID
-                    AppID = AppID,
-
                     // Set game name
                     AppName = AppName,
-
-                    Library = Library,
-                    InstallationDirectory = new DirectoryInfo(InstallationPath),
 
                     // Define it is an archive
                     IsCompressed = IsCompressed,
@@ -42,7 +36,7 @@ namespace Steam_Library_Manager.Functions
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
                 if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.IsSteamBackup)
                 {
-                    Definitions.List.LCItems.Add(new Definitions.List.JunkInfo
+                    Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
                         FSInfo = new FileInfo(App.FullAcfPath.FullName),
                         Size = App.FullAcfPath.Length,
@@ -95,6 +89,8 @@ namespace Steam_Library_Manager.Functions
                     }
                 }
 
+                App.IsCompacted = await App.CompactStatus().ConfigureAwait(false);
+
                 // Add our game details to global list
                 Library.Steam.Apps.Add(App);
 
@@ -134,7 +130,7 @@ namespace Steam_Library_Manager.Functions
                                 continue;
                             }
 
-                            AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true);
+                            await AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true);
                         }
                     }
                 }
@@ -177,67 +173,6 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateAppPanel(Definitions.Library Library)
-        {
-            try
-            {
-                if (Library == null)
-                    return;
-
-                string Search = (Properties.Settings.Default.includeSearchResults) ? Properties.Settings.Default.SearchText : null;
-
-                if (Main.FormAccessor.AppView.AppPanel.Dispatcher.CheckAccess())
-                {
-                    if (Definitions.List.Libraries.Count(x => x == Library) == 0 || !Library.DirectoryInfo.Exists)
-                    {
-                        Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
-                        return;
-                    }
-
-                    Func<dynamic, object> Sort = SLM.Settings.GetSortingMethod(Library);
-
-                    switch (Library.Type)
-                    {
-                        case Definitions.Enums.LibraryType.Steam:
-                        case Definitions.Enums.LibraryType.SLM:
-                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated" || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed") ?
-                                ((string.IsNullOrEmpty(Search)) ?
-                                Library.Steam.Apps.OrderByDescending(Sort).ToList() : Library.Steam.Apps.Where(
-                                    y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderByDescending(Sort).ToList()
-                                ) :
-                                ((string.IsNullOrEmpty(Search)) ? Library.Steam.Apps.OrderBy(Sort).ToList() : Library.Steam.Apps.Where(
-                                y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderBy(Sort).ToList()
-                                );
-                            break;
-
-                        case Definitions.Enums.LibraryType.Origin:
-                            Main.FormAccessor.AppView.AppPanel.ItemsSource = (Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk" || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated") ?
-                                ((string.IsNullOrEmpty(Search)) ?
-                                Library.Origin.Apps.OrderByDescending(Sort).ToList() : Library.Origin.Apps.Where(
-                                    y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderByDescending(Sort).ToList()
-                                ) :
-                                ((string.IsNullOrEmpty(Search)) ? Library.Origin.Apps.OrderBy(Sort).ToList() : Library.Origin.Apps.Where(
-                                y => y.AppName.IndexOf(Search, StringComparison.InvariantCultureIgnoreCase) >= 0 || y.AppID.ToString().Contains(Search) // Search by app ID
-                                ).OrderBy(Sort).ToList()
-                                );
-                            break;
-                    }
-                }
-                else
-                {
-                    Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
-                    {
-                        UpdateAppPanel(Library);
-                    }, System.Windows.Threading.DispatcherPriority.Normal);
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-            }
-        }
+        public static void UpdateAppPanel(Definitions.Library Library) => Main.FormAccessor.LibraryChange.Report(Library);
     }
 }

@@ -25,20 +25,20 @@ namespace Steam_Library_Manager.Forms
                 {
                     case "Start":
                     default:
-                        Framework.TaskManager.Start();
+                        Functions.TaskManager.Start();
                         Button_StartTaskManager.IsEnabled = false;
                         Button_PauseTaskManager.IsEnabled = true;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
 
                     case "Pause":
-                        Framework.TaskManager.Pause();
+                        Functions.TaskManager.Pause();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
 
                     case "Stop":
-                        Framework.TaskManager.Stop();
+                        Functions.TaskManager.Stop();
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = false;
                         break;
@@ -48,16 +48,16 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "ClearCompleted":
-                        if (Framework.TaskManager.TaskList.Count == 0)
+                        if (Functions.TaskManager.TaskList.Count == 0)
                         {
                             return;
                         }
 
-                        foreach (Definitions.List.TaskInfo CurrentTask in Framework.TaskManager.TaskList.ToList())
+                        foreach (Definitions.List.TaskInfo CurrentTask in Functions.TaskManager.TaskList.ToList())
                         {
                             if (CurrentTask.Completed)
                             {
-                                Framework.TaskManager.TaskList.Remove(CurrentTask);
+                                Functions.TaskManager.TaskList.Remove(CurrentTask);
                             }
                         }
                         break;
@@ -65,7 +65,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                
+                logger.Fatal(ex);
             }
         }
 
@@ -73,24 +73,38 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
+                if (TaskPanel.SelectedItems.Count == 0)
+                {
+                    return;
+                }
                 switch ((sender as MenuItem)?.Tag)
                 {
                     default:
-                        if (TaskPanel.SelectedItems.Count == 0)
-                        {
-                            return;
-                        }
 
                         foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
                         {
-                            if (CurrentTask.Active && Framework.TaskManager.Status && !CurrentTask.Completed)
+                            if (CurrentTask.Active && Functions.TaskManager.Status && !CurrentTask.Completed)
                             {
                                 await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { AppName = CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName }));
                             }
                             else
                             {
-                                Framework.TaskManager.RemoveTask(CurrentTask);
+                                Functions.TaskManager.RemoveTask(CurrentTask);
                             }
+                        }
+                        break;
+
+                    case "ToggleCompress":
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        {
+                            CurrentTask.Compress = !CurrentTask.Compress;
+                        }
+                        break;
+
+                    case "ToggleRemoveFiles":
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        {
+                            CurrentTask.RemoveOldFiles = !CurrentTask.RemoveOldFiles;
                         }
                         break;
                 }
@@ -99,7 +113,6 @@ namespace Steam_Library_Manager.Forms
             {
                 MessageBox.Show(ex.ToString());
                 logger.Fatal(ex);
-                
             }
         }
 
@@ -118,21 +131,14 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private bool AutoScroll = true;
-
         private void TaskManager_LogsView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             try
             {
                 var scrollViewer = ((ScrollViewer)e.OriginalSource);
-                // User scroll event : set or unset autoscroll mode
-                if (e.ExtentHeightChange == 0)
-                {
-                    AutoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
-                }
 
                 // Content scroll event : autoscroll eventually
-                if (AutoScroll && e.ExtentHeightChange != 0)
+                if (Properties.Settings.Default.TaskManager_Logs_AutoScroll && e.ExtentHeightChange != 0)
                 {
                     scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
                 }

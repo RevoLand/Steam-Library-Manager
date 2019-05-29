@@ -48,6 +48,14 @@ namespace Steam_Library_Manager.Definitions.Enums
         NoCompression = 2
     }
 
+    public enum CompactLevel
+    {
+        XPRESS4K,
+        XPRESS8K,
+        XPRESS16K,
+        LZX
+    }
+
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum LibraryStyle
     {
@@ -83,7 +91,9 @@ namespace Steam_Library_Manager.Definitions.Enums
         Delete,
 
         [LocalizedDescription("Enums_Compress")]
-        Compress
+        Compress,
+
+        Compact
     }
 
     public enum ThemeAccents
@@ -120,9 +130,6 @@ namespace Steam_Library_Manager.Definitions.Enums
         BaseLight,
 
         [LocalizedDescription("Enums_Dark")]
-        BaseDark,
-
-        [LocalizedDescription("Enums_Custom")]
-        CustomTheme
+        BaseDark
     }
 }

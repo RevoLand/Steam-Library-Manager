@@ -83,6 +83,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto Updater.
+        /// </summary>
+        internal static string AutoUpdater {
+            get {
+                return ResourceManager.GetString("AutoUpdater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{AppName}] An error related to file system is happened while compressing files.
         ///
         ///Error: {ExceptionMessage}.
@@ -2115,6 +2124,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string UnauthorizedAccessExceptionMessage {
             get {
                 return ResourceManager.GetString("UnauthorizedAccessExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are using the latest version of SLM..
+        /// </summary>
+        internal static string Updater_LatestVersionMessage {
+            get {
+                return ResourceManager.GetString("Updater_LatestVersionMessage", resourceCulture);
             }
         }
     }

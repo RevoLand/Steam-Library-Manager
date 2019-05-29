@@ -4,31 +4,86 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [1.5.1.5] - 2019-05-28
+
+### Changed
+
+- Compact task (compression) improvements such as compressing all files, reporting task status, handling task cancellation etc.
+
+### Fixed
+
+- SLM finds an update of the current version upon manual check (Issue #44)
+
+## [1.5.1.4] - 2019-05-21
+
+### Added
+
+- New Task Type: Compact - Windows compact function (Beta, please report errors you encounter)
+  - Compress/Uncompress
+  - Show compact status
+- Russian language (Credits to MrDubstep863, thank you!)
+- [CliWrap](https://github.com/Tyrrrz/CliWrap)
+
+### Changed
+
+- Task Manager UI tweaked
+
+## [1.5.1.3] - 2019-04-27
+
+### Fixed
+
+- No button to decompress a game after it was compressed. (Issue: #41)
+- Incorrect task status message on game compressing.
+
+## [1.5.1.2] - 2019-04-24
+
+### Fixed
+
+- System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+  - Steam_Library_Manager.Functions.App.AddSteamApp
+  - Steam_Library_Manager.Definitions.SteamLibrary.UpdateJunks() (Issue: #40)
+
+## [1.5.1.1] - 2019-04-19
+
+### Added
+
+- Task Manager Logs Auto Scroll on/off switch
+
+### Fixed
+
+- (Task Manager) Tasked item crashes with error: System.IndexOutOfRangeException: Index was outside the bounds of the array.
+- RuntimeBinderException
+
+## [1.5.1.0] - 2019-04-06
 
 ### Added
 
 - Localization support
   - Supported Languages: English, Turkish (Help us [Translate!](https://crowdin.com/project/steam-library-manager))
 - Language selector
-- Steam UserID selector
-- Auto Scrolling for logs in the Task Manager tab
-- Order by Last Play time for Steam games.
-- Supporters tab.
+- Steam UserID selector (to fetch Last Play time)
+- Auto Scrolling for logs in the Task Manager tab *(Use with caution on games with lots of small files)*
+- Order by Last Play time for Steam games
+- Include Supporters list
+- Number of "Pending, Completed, Total" tasks in Task Manager
+- Ability to change task options at once for multiple tasks in Task Manager (Compress / Remove Original Files)
 
 ### Changed
 
 - Target framework version changed to 4.6.2 from 4.5 ([NET Framework Web Installer](https://www.microsoft.com/en-us/download/details.aspx?id=53345))
+- Minor tweaks on Task Manager UI for both Grid & List view
 
-### Deprecated
+### Fixed
 
-- Custom theming support
+- Broken Task Manager UI on Deleting Origin games with Task Manager option
 
 ### Removed
 
 - Suggestion form button, use Discord if needed.
 - Unused networking code
+- Custom theming support
 - [SharpRaven](https://github.com/getsentry/raven-csharp)
+- [ColorPickerLib](https://github.com/Dirkster99/ColorPickerLib)
 
 ## [1.5.0.15] - 2019-01-03
 
@@ -51,7 +106,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
--  [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) to use for file copying.
+- [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) to use for file copying.
 
 ### Fixed
 
@@ -117,7 +172,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- NLog (https://github.com/NLog/NLog)
+- NLog (<https://github.com/NLog/NLog)>
 
 ### Changed
 

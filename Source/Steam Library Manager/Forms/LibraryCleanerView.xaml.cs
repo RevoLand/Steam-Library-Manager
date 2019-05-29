@@ -71,7 +71,6 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                
                 logger.Fatal(ex);
             }
         }
@@ -218,7 +217,6 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                
                 logger.Fatal(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)

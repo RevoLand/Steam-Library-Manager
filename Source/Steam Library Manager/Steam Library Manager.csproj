@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.3.3.2\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.3.2\build\Costura.Fody.props')" />
+  <Import Project="..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" />
+  <Import Project="..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props')" />
+  <Import Project="..\packages\Resource.Embedder.2.0.0\build\Resource.Embedder.props" Condition="Exists('..\packages\Resource.Embedder.2.0.0\build\Resource.Embedder.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -72,17 +74,17 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="AutoUpdater.NET, Version=1.5.0.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autoupdater.NET.Official.1.5.0\lib\net40\AutoUpdater.NET.dll</HintPath>
+    <Reference Include="AutoUpdater.NET, Version=1.5.1.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll</HintPath>
     </Reference>
-    <Reference Include="ColorPickerLib, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dirkster.ColorPickerLib.1.5.0\lib\net4\ColorPickerLib.dll</HintPath>
+    <Reference Include="CliWrap, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CliWrap.2.2.2\lib\net45\CliWrap.dll</HintPath>
     </Reference>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="Costura, Version=3.3.2.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Costura.Fody.3.3.2\lib\net40\Costura.dll</HintPath>
+    <Reference Include="Costura, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.4.0.0\lib\net40\Costura.dll</HintPath>
     </Reference>
     <Reference Include="FileCopyLib, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FileCopyLib.1.1.0.0\lib\net45\FileCopyLib.dll</HintPath>
@@ -90,8 +92,8 @@
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net46\GongSolutions.Wpf.DragDrop.dll</HintPath>
+    <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.2.0.1\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
     </Reference>
     <Reference Include="Gu.Localization, Version=6.4.3.0, Culture=neutral, PublicKeyToken=63b557f19697202e, processorArchitecture=MSIL">
       <HintPath>..\packages\Gu.Localization.6.4.3.0\lib\net45\Gu.Localization.dll</HintPath>
@@ -102,24 +104,34 @@
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.6.3\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NumericUpDownLib, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dirkster.ColorPickerLib.1.5.0\lib\net4\NumericUpDownLib.dll</HintPath>
+    <Reference Include="NumericUpDownLib, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dirkster.NumericUpDownLib.2.3.0\lib\net4\NumericUpDownLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged, Version=3.0.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.3.0.1\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -163,12 +175,11 @@
     <Compile Include="Forms\TaskManagerView.xaml.cs">
       <DependentUpon>TaskManagerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Framework\AsyncObservableCollection.cs" />
     <Compile Include="Framework\CachedImage\FileCache.cs" />
     <Compile Include="Framework\CachedImage\Image.cs" />
     <Compile Include="Framework\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Framework\SteamIDConvert.cs" />
-    <Compile Include="Framework\TaskManager.cs" />
+    <Compile Include="Functions\TaskManager.cs" />
     <Compile Include="Framework\StringFormat.cs" />
     <Compile Include="Framework\WPF\EnumBindingSourceExtension.cs" />
     <Compile Include="Framework\WPF\EnumDescriptionTypeConverter.cs" />
@@ -242,6 +253,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Properties\Resources.ru.resx" />
     <EmbeddedResource Include="Properties\Resources.tr.resx" />
   </ItemGroup>
   <ItemGroup>
@@ -251,7 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Compile Include="Functions\Updater.cs" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -296,12 +307,12 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Costura.Fody.3.3.2\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.3.2\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.4.0.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.0.2\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Resource.Embedder.1.2.8\build\Resource.Embedder.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Resource.Embedder.1.2.8\build\Resource.Embedder.targets'))" />
+    <Error Condition="!Exists('..\packages\Resource.Embedder.2.0.0\build\Resource.Embedder.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Resource.Embedder.2.0.0\build\Resource.Embedder.props'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.0.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Fody.5.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.0.6\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props'))" />
   </Target>
-  <Import Project="..\packages\Fody.4.0.2\build\Fody.targets" Condition="Exists('..\packages\Fody.4.0.2\build\Fody.targets')" />
-  <Import Project="..\packages\Resource.Embedder.1.2.8\build\Resource.Embedder.targets" Condition="Exists('..\packages\Resource.Embedder.1.2.8\build\Resource.Embedder.targets')" />
+  <Import Project="..\packages\Fody.5.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.6\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

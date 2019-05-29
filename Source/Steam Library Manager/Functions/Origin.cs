@@ -51,6 +51,16 @@ namespace Steam_Library_Manager.Functions
                 ShowToCompressed = false
             });
 
+            // Compact
+            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            {
+                Header = "Compact",
+                Action = "compact",
+                LibraryType = Definitions.Enums.LibraryType.Origin,
+                ShowToCompressed = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+            });
+
             // Separator
             Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
             {
@@ -143,7 +153,7 @@ namespace Steam_Library_Manager.Functions
                         }
                         else
                         {
-                            MessageBox.Show(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = OriginConfigKeys["DownloadInPlaceDir"] }));
+                            logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = OriginConfigKeys["DownloadInPlaceDir"] }));
                         }
                     }
                 }

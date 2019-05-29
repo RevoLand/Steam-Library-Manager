@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
+             xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
@@ -15,6 +16,9 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -34,6 +38,7 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
+                
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
@@ -64,11 +69,20 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="220,0,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                    <WrapPanel Margin="0,35,0,0" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding SteamApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
+                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" />
+                    </WrapPanel>
+                    
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" Height="20"/>
 
-                        <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
+                        <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -76,42 +90,59 @@
                                             <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                            <Setter Property="Text" Value="Compact" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        
+                        <!-- Checkboxes -->
+                        <WrapPanel Margin="55,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                            </WrapPanel>
+                        </WrapPanel>
 
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-68,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TaskProgressInfo}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,-35,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
-
-                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
-                        </Grid>
+                        <WrapPanel HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding TaskProgressInfo}" />
+                            <TextBlock Margin="10,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" />
+                        </WrapPanel>
                     </Grid>
                 </Grid>
             </Grid>
@@ -122,6 +153,9 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -140,6 +174,7 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
+                
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
                         <CachedImage:Image.Style>
@@ -152,6 +187,7 @@
                             </Style>
                         </CachedImage:Image.Style>
                     </CachedImage:Image>
+                    
                     <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -164,54 +200,80 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
+                
                 <Grid>
                     <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
-                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                    
+                    <WrapPanel HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding SteamApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
+                    </WrapPanel>
+                    
+                    <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
+                        <TextBlock Text="{Binding SteamApp.AppID}" Height="20" HorizontalAlignment="Left" />
 
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                        <WrapPanel HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding TaskStatusInfo}" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                        </WrapPanel>
 
-                        <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
-                                            <Setter Property="FontWeight" Value="SemiBold" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
-                        </Grid>
+                        <WrapPanel Margin="55,0,0,0">
+                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Height="20">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
+                                                <Setter Property="FontWeight" Value="SemiBold" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Text" Value="Compact" />
+                                                <Setter Property="FontWeight" Value="SemiBold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+                                <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                            </WrapPanel>
+                        </WrapPanel>
                     </Grid>
                 </Grid>
             </Grid>
@@ -222,6 +284,8 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -241,7 +305,7 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
-                <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
+                <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
                             <CachedImage:Image.Effect>
@@ -270,12 +334,13 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
+                
                 <Grid>
-                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="220,1,0,0" TextWrapping="Wrap" FontSize="14" />
-                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,0">
-                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
-
-                        <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion -->
+                    <TextBlock Text="{Binding OriginApp.AppName}" Margin="126,0,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                    
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="126,0,0,5" Height="163">
+                        <TextBlock Margin="0,75,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -283,57 +348,75 @@
                                             <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                            <Setter Property="Text" Value="Compact" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,-68,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TaskProgressInfo}" Margin="0,-35,40,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,-35,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,1,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" Margin="0, 0, 1, 0" />
-
-                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <ComboBox HorizontalAlignment="Left" Height="15"
-                                      Margin="455,0,0,0" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
+                        
+                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Margin="0,95,0,0" />
+                        
+                        <WrapPanel Margin="0,115,0,0" HorizontalAlignment="Left">
+                            <TextBlock Text="{Binding OriginApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
+                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="{Binding OriginApp.PrettyGameSize}" />
+                        </WrapPanel>
+                        
+                        <!-- Checkboxes -->
+                        <WrapPanel VerticalAlignment="Bottom">
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}"/>
+                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
+                                      Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
                                       ItemsSource="{Binding OriginApp.Locales}" />
-                        </Grid>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                            </WrapPanel>
+                        </WrapPanel>
                     </Grid>
+                    
+                    <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,5">
+                        <TextBlock Text="{Binding TaskProgressInfo}" />
+                        <TextBlock Margin="10,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" />
+                    </WrapPanel>
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -343,6 +426,8 @@
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -388,55 +473,74 @@
                 <Grid>
                     <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
-                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" Margin="0,-20,0,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding OriginApp.AppID}" Height="20" HorizontalAlignment="Left" />
+                        
+                        <WrapPanel Margin="0,-20,0,0" HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding OriginApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
+                        </WrapPanel>
 
-                        <TextBlock Text="{Binding TaskStatusInfo}" Margin="0,0,40,0" Padding="0,0,70,0" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" Margin="0,0,70,0" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                        <TextBlock Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                        <WrapPanel HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding TaskStatusInfo}" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                        </WrapPanel>
 
-                        <TextBlock HorizontalAlignment="Right" Margin="0,-20,0,0">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
-                                            <Setter Property="FontWeight" Value="SemiBold" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" Margin="55,0,0,0" />
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" Margin="205,0,0,0" />
-                        </Grid>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" Margin="360,0,0,0" />
-                        </Grid>
-
-                        <ComboBox HorizontalAlignment="Left" Height="15"
-                                      Margin="460,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
-                                      ItemsSource="{Binding OriginApp.Locales}" />
+                        <WrapPanel Margin="55,0,0,0">
+                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Height="20">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
+                                                <Setter Property="FontWeight" Value="SemiBold" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Text" Value="Compact" />
+                                                <Setter Property="FontWeight" Value="SemiBold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
+                                <ComboBox HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}" ItemsSource="{Binding OriginApp.Locales}"/>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <WrapPanel.Style>
+                                    <Style TargetType="{x:Type WrapPanel}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </WrapPanel.Style>
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                            </WrapPanel>
+                        </WrapPanel>
                     </Grid>
                 </Grid>
             </Grid>
@@ -444,7 +548,7 @@
     </UserControl.Resources>
     <Grid>
         <!-- ListView: Task Manager Tasks -->
-        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,305" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">
@@ -503,24 +607,34 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Margin="0,0,0,255" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+        <WrapPanel Margin="0, 0, 0, 265" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click"  Margin="0,0,105,0" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" />
+            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
 
-            <Button x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="150,0,0,0" />
+            <Button Margin="5,0,0,0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
 
             <!-- Button: Stop Task Manager -->
-            <Button x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" HorizontalAlignment="Left" Width="140" Height="45" VerticalAlignment="Bottom" Margin="300,0,0,0" />
+            <Button Margin="5,0,0,0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45"/>
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click"  Margin="450,0,0,0" HorizontalAlignment="Left" Width="180" Height="45" VerticalAlignment="Bottom" />
+            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45" />
 
             <!-- Button: Check for Backup Updates -->
-            <Button Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click"  Margin="640,0,0,0" HorizontalAlignment="Left" Width="200" Height="45" VerticalAlignment="Bottom" />
-        </Grid>
+            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45"  />
+        </WrapPanel>
+        <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 228" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}"/>
+            <TextBlock Text="  |  "/>
+            <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}"/>
+            <TextBlock Text="  |  "/>
+            <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
+            <TextBlock Text="  |  "/>
+            <TextBlock Text="Logs Auto Scroll: "/>
+            <Controls:ToggleSwitch Margin="0" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+        </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->
-        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="240" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
+        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

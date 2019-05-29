@@ -1,7 +1,7 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class SteamLibrary : INotifyPropertyChanged
+    public class SteamLibrary
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -32,7 +32,7 @@ namespace Steam_Library_Manager.Definitions
         public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
 
         public string FullPath { get; set; }
-        public Framework.AsyncObservableCollection<SteamAppInfo> Apps { get; set; } = new Framework.AsyncObservableCollection<SteamAppInfo>();
+        public ObservableCollection<SteamAppInfo> Apps { get; set; } = new ObservableCollection<SteamAppInfo>();
 
         public SteamLibrary(string fullPath, Library library, bool _IsMain = false)
         {
@@ -41,7 +41,7 @@ namespace Steam_Library_Manager.Definitions
             Library = library;
         }
 
-        public void UpdateAppList()
+        public async Task UpdateAppListAsync()
         {
             try
             {
@@ -65,10 +65,11 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Foreach *.acf file found in library
-                Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList(), AcfFile =>
+                foreach (var AcfFile in SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList())
+                //Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly), async AcfFile =>
                 {
                     // Define a new value and call KeyValue
-                    Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                    var KeyValReader = new Framework.KeyValue();
 
                     // Read the *.acf file as text
                     KeyValReader.ReadFileAsText(AcfFile.FullName);
@@ -76,7 +77,7 @@ namespace Steam_Library_Manager.Definitions
                     // If key doesn't contains a child (value in acf file)
                     if (KeyValReader.Children.Count == 0)
                     {
-                        List.LCItems.Add(new List.JunkInfo
+                        List.LCProgress.Report(new List.JunkInfo
                         {
                             FSInfo = new FileInfo(AcfFile.FullName),
                             Size = AcfFile.Length,
@@ -86,8 +87,12 @@ namespace Steam_Library_Manager.Definitions
                         return;
                     }
 
-                    Functions.App.AddSteamApp(Convert.ToInt32(KeyValReader["appID"].Value), KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), false);
-                });
+                    await Functions.App.AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value),
+                        KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value,
+                        KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value),
+                        Convert.ToInt64(KeyValReader["LastUpdated"].Value), false).ConfigureAwait(false);
+                }
+                //);
 
                 // Do a loop for each *.zip file in library
                 Parallel.ForEach(Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly).ToList(), ArchiveFile => Functions.App.ReadDetailsFromZip(ArchiveFile, Library));
@@ -110,7 +115,7 @@ namespace Steam_Library_Manager.Definitions
                             if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value) && x.IsSteamBackup) > 0)
                                 continue;
 
-                            Functions.App.AddSteamApp(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);
+                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true);
 
                             if (AppNames.Length > 1)
                                 i++;
@@ -125,14 +130,14 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (UnauthorizedAccessException uaex)
             {
-                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)), new { FullPath, ExceptionMessage = uaex.Message }));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
             }
             catch (DirectoryNotFoundException dnfex)
             {
-                Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
                     await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)), new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message }));
                 }, System.Windows.Threading.DispatcherPriority.Normal);
@@ -357,7 +362,7 @@ namespace Steam_Library_Manager.Definitions
                     foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().ToList().Where(
                         x => Apps.Count(y => string.Equals(y.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)) == 0
                         && x.Name != "241100" // Steam controller configs
-                        && Framework.TaskManager.TaskList.Count(
+                        && Functions.TaskManager.TaskList.Count(
                             z => string.Equals(z.SteamApp.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)
                             && z.TargetLibrary == Library
                             ) == 0
@@ -372,7 +377,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
-                            List.LCItems.Add(Junk);
+                            List.LCProgress.Report(Junk);
                         }
                     }
                 }
@@ -384,7 +389,7 @@ namespace Steam_Library_Manager.Definitions
                         x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && !string.Equals(x.Name, "appworkshop_241100.acf" // Steam Controller Configs
 , StringComparison.InvariantCultureIgnoreCase) // Steam Controller Configs
-                        && Framework.TaskManager.TaskList.Count(
+                        && Functions.TaskManager.TaskList.Count(
                             z => string.Equals(z.SteamApp.WorkShopAcfName, x.Name
 , StringComparison.InvariantCultureIgnoreCase)
                             && z.TargetLibrary == Library
@@ -400,7 +405,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                         {
-                            List.LCItems.Add(Junk);
+                            List.LCProgress.Report(Junk);
                         }
                     }
 
@@ -409,7 +414,7 @@ namespace Steam_Library_Manager.Definitions
                         foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().ToList().Where(
                             x => Apps.Count(y => y.AppID.ToString() == x.Name) == 0
                             && x.Name != "241100" // Steam controller configs
-                            && Framework.TaskManager.TaskList.Count(
+                            && Functions.TaskManager.TaskList.Count(
                                 z => string.Equals(z.SteamApp.WorkShopPath.Name, x.Name
 , StringComparison.InvariantCultureIgnoreCase)
                                 && z.TargetLibrary == Library
@@ -425,7 +430,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
-                                List.LCItems.Add(Junk);
+                                List.LCProgress.Report(Junk);
                             }
                         }
                     }
@@ -445,7 +450,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (List.LCItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
                             {
-                                List.LCItems.Add(Junk);
+                                List.LCProgress.Report(Junk);
                             }
                         }
                     }
@@ -456,9 +461,5 @@ namespace Steam_Library_Manager.Definitions
                 logger.Fatal(ex);
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
     }
 }

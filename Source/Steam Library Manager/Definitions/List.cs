@@ -10,15 +10,17 @@ namespace Steam_Library_Manager.Definitions
     public static class List
     {
         // Make a new list for Library details
-        public static Framework.AsyncObservableCollection<Library> Libraries = new Framework.AsyncObservableCollection<Library>();
+        public static ObservableCollection<Library> Libraries { get; set; } = new ObservableCollection<Library>();
 
-        public static Framework.AsyncObservableCollection<JunkInfo> LCItems { get; set; } = new Framework.AsyncObservableCollection<JunkInfo>();
+        public static ObservableCollection<JunkInfo> LCItems { get; set; } = new ObservableCollection<JunkInfo>();
 
-        public static ObservableCollection<ContextMenuItem> LibraryCMenuItems = new ObservableCollection<ContextMenuItem>();
-        public static ObservableCollection<ContextMenuItem> AppCMenuItems = new ObservableCollection<ContextMenuItem>();
+        public static IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(Junk => LCItems.Add(Junk));
 
-        public static List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
-        public static Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
+        public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
+        public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
+
+        public static readonly List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
+        public static readonly Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
 
         public class TaskInfo : INotifyPropertyChanged
         {
@@ -26,90 +28,66 @@ namespace Steam_Library_Manager.Definitions
             public SteamAppInfo SteamApp { get; set; }
             public OriginAppInfo OriginApp { get; set; }
             public Library TargetLibrary { get; set; }
+            public Enums.CompactLevel CompactLevel { get; set; } = (Enums.CompactLevel)Enum.Parse(typeof(Enums.CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
+            public bool Compact { get; set; } = true;
+            public bool ForceCompact { get; set; }
 
             public bool ErrorHappened, Active;
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
-            public ManualResetEvent mre = new ManualResetEvent(!Framework.TaskManager.Paused);
+            public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 
-            private double _TotalFileCount = 100;
-            private long _MovedFileSize, _TotalFileSize;
-            private bool _Completed;
-            private string _TaskStatusInfo;
+            private long _movedFileSize;
+            public string TaskProgressInfo => (_movedFileSize == 0) ? "" : $"{_movedFileSize / 1024000} MB / {TotalFileSize / 1024000} MB";
 
-            public string TaskProgressInfo => (_MovedFileSize == 0) ? "" : $"{_MovedFileSize / 1024000} MB / {_TotalFileSize / 1024000} MB";
+            public string TaskStatusInfo { get; set; }
 
-            public string TaskStatusInfo
-            {
-                get => _TaskStatusInfo;
-                set
-                {
-                    _TaskStatusInfo = value;
-                    OnPropertyChanged("TaskStatusInfo");
-                }
-            }
-
-            public double TotalFileCount
-            {
-                get => _TotalFileCount;
-                set
-                {
-                    _TotalFileCount = value;
-                    OnPropertyChanged("TotalFileCount");
-                }
-            }
+            public double TotalFileCount { get; set; }
 
             public long MovedFileSize
             {
-                get => _MovedFileSize;
+                get => _movedFileSize;
                 set
                 {
-                    _MovedFileSize = value;
+                    _movedFileSize = value;
                     OnPropertyChanged("MovedFileSize");
                     OnPropertyChanged("ProgressBarPerc");
                     OnPropertyChanged("TaskProgressInfo");
                 }
             }
 
-            public long TotalFileSize
-            {
-                get => _TotalFileSize;
-                set
-                {
-                    _TotalFileSize = value;
-                    OnPropertyChanged("TotalFileSize");
-                }
-            }
+            public long TotalFileSize { get; set; }
 
             public double ProgressBarPerc
             {
                 get
                 {
                     double perc = 0;
-                    if (_MovedFileSize != 0)
+                    if (_movedFileSize != 0)
                     {
-                        perc = Math.Floor((double)(100 * _MovedFileSize) / _TotalFileSize);
+                        perc = Math.Floor((double)(100 * _movedFileSize) / TotalFileSize);
                     }
 
-                    return _MovedFileSize == 0 ? 0 : perc;
+                    return _movedFileSize == 0 ? 0 : perc;
                 }
             }
 
-            public bool Completed
-            {
-                get => _Completed;
-                set
-                {
-                    _Completed = value;
-                    OnPropertyChanged("Completed");
-                }
-            }
+            public bool Completed { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
+
+        public class TmInfo : INotifyPropertyChanged
+        {
+            public int PendingTasks { get; set; }
+            public int CompletedTasks { get; set; }
+            public int TotalTasks { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
         }
 
         public class JunkInfo

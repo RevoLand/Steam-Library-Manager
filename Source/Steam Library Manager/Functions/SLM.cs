@@ -132,7 +132,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LoadSteam()
+        private static void LoadSteam()
         {
             try
             {
@@ -148,7 +148,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void LoadOrigin()
+        private static void LoadOrigin()
         {
             try
             {
@@ -242,7 +242,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync());
                         await Task.Run(() => Library.Steam.UpdateJunks());
                     }
                 }
@@ -273,7 +273,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (Library.Steam != null)
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppList());
+                        await Task.Run(() => Library.Steam.UpdateAppListAsync());
                         await Task.Run(() => Library.Steam.UpdateJunks());
                     }
                 }
