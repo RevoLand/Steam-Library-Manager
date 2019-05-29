@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Произошла ошибка при перемещении файлов игры. Время истекло: {ElapsedTime}</value>
   </data>
@@ -127,6 +127,9 @@
 {ExceptionMessage}
 
 Хотите удалить файлы которые уже перемещены из целевой библиотеки?</value>
+  </data>
+  <data name="AutoUpdater" xml:space="preserve">
+    <value>Auto Updater</value>
   </data>
   <data name="CompressArchive_FileNotFoundEx" xml:space="preserve">
     <value>[{AppName}] При сжатии файлов произошла ошибка связанная с файловой системой.
@@ -211,7 +214,7 @@
     <value>Тип резервного копирования</value>
   </data>
   <data name="Enums_Compress" xml:space="preserve">
-    <value>Сжатие</value>
+    <value>Сжать</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
     <value>Копировать</value>
@@ -397,13 +400,13 @@
     <value>Проверить наличие обновлений</value>
   </data>
   <data name="Forms_Settings_CheckForUpdatesOnStartup" xml:space="preserve">
-    <value>Проверить обновления при запуске</value>
+    <value>Проверять обновление при запуске</value>
   </data>
   <data name="Forms_Settings_ClearHeaderİmageCache" xml:space="preserve">
     <value>Очистить кэш изображений заголовка</value>
   </data>
   <data name="Forms_Settings_Compress" xml:space="preserve">
-    <value>Сжатие</value>
+    <value>Сжать</value>
   </data>
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Сжимать файлы</value>
@@ -421,7 +424,7 @@
     <value>Пользовательская Тема</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
-    <value>НЕ Сжимать</value>
+    <value>Не сжимать</value>
   </data>
   <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
     <value>НЕ удалять</value>
@@ -466,7 +469,7 @@
     <value>Сообщить о перемещении файла</value>
   </data>
   <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
-    <value>Продолжайть поиск при изменении библиотеки</value>
+    <value>Продолжать поиск при изменении библиотеки</value>
   </data>
   <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
     <value>Метод расчета для игр</value>
@@ -754,7 +757,7 @@
 {CurrentAppName}</value>
   </data>
   <data name="Steam_CheckForBackupUpdates_UpdateFound" xml:space="preserve">
-    <value>[{CurrentTime}] Доступно обновление для: {CurrentAppName} - Старое время резервной копии: {CurrentAppLastUpdatedOn} - Обновлено: {NewAppLastUpdatedOn} - Цель: {CurrentAppSteamFullPath} - Источник: {NewAppSteamFullPath}</value>
+    <value>[{CurrentTime}] Доступно обновление для: {CurrentAppName} - Старое время резервная копия: {CurrentAppLastUpdatedOn} - Обновлено: {NewAppLastUpdatedOn} - Цель: {CurrentAppSteamFullPath} - Источник: {NewAppSteamFullPath}</value>
   </data>
   <data name="Steam_NeedsToBeClosed" xml:space="preserve">
     <value>Steam должен быть закрыт</value>
@@ -832,7 +835,7 @@
     <comment>Available variables: Percentage, TransferredBytes, TotalBytes</comment>
   </data>
   <data name="TaskStatus_Decompress" xml:space="preserve">
-    <value>Декомпрессация: {NewFileName} ({NewFileSize})</value>
+    <value>Распаковка: {NewFileName} ({NewFileSize})</value>
   </data>
   <data name="TaskStatus_DeletingDirectory" xml:space="preserve">
     <value>Удаление каталога: {DirectoryName}</value>
@@ -855,5 +858,8 @@
     <value>[{FullPath}] Произошла ошибка связанная с правами доступа к папке во время создания содержимого библиотеки. Запуск SLM от имени администратора может помочь.
 
 Ошибка: {ExceptionMessage}</value>
+  </data>
+  <data name="Updater_LatestVersionMessage" xml:space="preserve">
+    <value>You are using the latest version of SLM.</value>
   </data>
 </root>
