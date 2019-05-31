@@ -128,7 +128,7 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "compress":
-                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compress && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new List.TaskInfo
                             {
@@ -141,7 +141,7 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "compact":
-                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.SteamApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new List.TaskInfo
                             {
@@ -289,6 +289,8 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                CommonFolder.Refresh();
+
                 if (!CommonFolder.Exists)
                     return false;
 
@@ -318,6 +320,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
+                Logger.Fatal(ex);
                 LogToTM(ex.ToString());
                 Debug.WriteLine(ex);
 
@@ -483,7 +486,7 @@ namespace Steam_Library_Manager.Definitions
 
                                 string FileNameInArchive = currentFile.FullName.Substring(Library.Steam.SteamAppsFolder.FullName.Length + 1);
 
-                                CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CompressingFile)), new { FileName = currentFile.Name, FormattedFileSize = Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length) });
+                                CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CompressingFile)), new { CurrentFileName = currentFile.Name, FileSize = Functions.FileSystem.FormatBytes(((FileInfo)currentFile).Length) });
 
                                 Archive.CreateEntryFromFile(currentFile.FullName, FileNameInArchive, Properties.Settings.Default.CompressionLevel.ParseEnum<CompressionLevel>());
                                 CurrentTask.MovedFileSize += ((FileInfo)currentFile).Length;

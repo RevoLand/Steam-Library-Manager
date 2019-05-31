@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [UNRELEASED]
+
+## [1.5.1.7] - 2019-05-31
+
+### Fixed
+
+- 'The given key was not present in the dictionary' on compress tasks. (Issue: #50)
+- Task Manager UI for compression related tasks.
+- Can't task an item for compact if the item is already tasked for compression (and vice-versa)
+
 ## [1.5.1.6] - 2019-05-31
 
 ### Added

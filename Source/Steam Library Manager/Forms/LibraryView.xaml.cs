@@ -50,7 +50,7 @@ namespace Steam_Library_Manager.Forms
                                 continue;
                             }
 
-                            if (Functions.TaskManager.TaskList.ToList().Count(x => x.SteamApp == App && x.TargetLibrary == Library) == 0)
+                            if (Functions.TaskManager.TaskList.ToList().Count(x => x.SteamApp == App && x.TargetLibrary == Library && !x.Completed) == 0)
                             {
                                 Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                                 {
@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Forms
                         if (Library == App.Library || Library.Type != Definitions.Enums.LibraryType.Origin)
                             continue;
 
-                        if (Functions.TaskManager.TaskList.ToList().Count(x => x.OriginApp == App && x.TargetLibrary == Library) == 0)
+                        if (Functions.TaskManager.TaskList.ToList().Count(x => x.OriginApp == App && x.TargetLibrary == Library && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
