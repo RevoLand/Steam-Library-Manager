@@ -1,1 +1,1 @@
-1.5.1.6|Compact improvements
+1.5.1.6|Minor fixes
