@@ -882,4 +882,10 @@ Hata: {ExceptionMessage}</value>
   <data name="Forms_LibraryView_CloseLibraryText2" xml:space="preserve">
     <value>Only available for (non-main) Origin and SLM libraries.</value>
   </data>
+  <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
+    <value>Auto Scroll Logs</value>
+  </data>
+  <data name="TaskManagerView_AutoClearCompletedTasks" xml:space="preserve">
+    <value>Auto Clear Completed Tasks</value>
+  </data>
 </root>
