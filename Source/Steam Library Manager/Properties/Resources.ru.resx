@@ -229,7 +229,7 @@
     <value>Удалить</value>
   </data>
   <data name="Enums_GridView" xml:space="preserve">
-    <value>Вид сетки</value>
+    <value>Сетка</value>
   </data>
   <data name="Enums_LastPlayed" xml:space="preserve">
     <value>Последняя игра</value>
@@ -403,7 +403,7 @@
     <value>Проверять обновление при запуске</value>
   </data>
   <data name="Forms_Settings_ClearHeaderİmageCache" xml:space="preserve">
-    <value>Очистить кэш изображений заголовка</value>
+    <value>Очистить кэш изображений</value>
   </data>
   <data name="Forms_Settings_Compress" xml:space="preserve">
     <value>Сжать</value>
@@ -427,7 +427,7 @@
     <value>Не сжимать</value>
   </data>
   <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
-    <value>НЕ удалять</value>
+    <value>Не удалять</value>
   </data>
   <data name="Forms_Settings_GameListMethod" xml:space="preserve">
     <value>Game listing method</value>
