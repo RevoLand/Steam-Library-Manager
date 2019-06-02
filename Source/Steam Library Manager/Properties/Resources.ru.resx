@@ -877,4 +877,7 @@
   <data name="Forms_LibraryView_RefreshLibraryText" xml:space="preserve">
     <value>Refreshes the current status of selected library.</value>
   </data>
+  <data name="Forms_LibraryView_CloseLibraryText2" xml:space="preserve">
+    <value>Only available for (non-main) Origin and SLM libraries.</value>
+  </data>
 </root>
