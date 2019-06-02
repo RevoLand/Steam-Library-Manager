@@ -668,6 +668,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only available for (non-main) Origin and SLM libraries..
+        /// </summary>
+        internal static string Forms_LibraryView_CloseLibraryText2 {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_CloseLibraryText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Library.
         /// </summary>
         internal static string Forms_LibraryView_CreateLibrary {

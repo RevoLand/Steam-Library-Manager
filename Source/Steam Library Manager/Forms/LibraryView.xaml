@@ -260,6 +260,7 @@
                         <StackPanel>
                             <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryView_CloseLibrary}" />
                             <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_CloseLibraryText}" />
+                            <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_CloseLibraryText2}" />
                         </StackPanel>
                     </ToolTip>
                 </Button.ToolTip>
