@@ -864,4 +864,22 @@ Hata: {ExceptionMessage}</value>
   <data name="Updater_LatestVersionMessage" xml:space="preserve">
     <value>You are using the latest version of SLM.</value>
   </data>
+  <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
+    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+  </data>
+  <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
+    <value>Close Library</value>
+  </data>
+  <data name="Forms_LibraryView_RefreshLibrary" xml:space="preserve">
+    <value>Refresh Library</value>
+  </data>
+  <data name="Forms_LibraryView_CloseLibraryText" xml:space="preserve">
+    <value>Removes the selected library from SLM without touching files inside.</value>
+  </data>
+  <data name="Forms_LibraryView_RefreshLibraryText" xml:space="preserve">
+    <value>Refreshes the current status of selected library.</value>
+  </data>
+  <data name="Forms_LibraryView_CloseLibraryText2" xml:space="preserve">
+    <value>Only available for (non-main) Origin and SLM libraries.</value>
+  </data>
 </root>
