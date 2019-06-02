@@ -258,7 +258,7 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "remove":
-                        if (Definitions.SLM.CurrentSelectedLibrary != null && (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM || Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Origin) && Functions.TaskManager.TaskList.Count(x =>
+                        if (Definitions.SLM.CurrentSelectedLibrary != null && (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM || (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Origin && !Definitions.SLM.CurrentSelectedLibrary.Origin.IsMain)) && Functions.TaskManager.TaskList.Count(x =>
                                x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary
                                || x.SteamApp?.Library == Definitions.SLM.CurrentSelectedLibrary
                                || x.OriginApp?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
