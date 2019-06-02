@@ -264,7 +264,7 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static async void UpdateBackupLibrary(Definitions.Library Library)
+            public static async void UpdateLibrary(Definitions.Library Library)
             {
                 try
                 {

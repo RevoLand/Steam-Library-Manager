@@ -206,7 +206,7 @@ namespace Steam_Library_Manager.Forms
 
                 if (Definitions.SLM.CurrentSelectedLibrary.Type != Definitions.Enums.LibraryType.Steam && Directory.Exists(Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.FullName) && !Definitions.SLM.CurrentSelectedLibrary.DirectoryInfo.Exists)
                 {
-                    Functions.SLM.Library.UpdateBackupLibrary(Definitions.SLM.CurrentSelectedLibrary);
+                    Functions.SLM.Library.UpdateLibrary(Definitions.SLM.CurrentSelectedLibrary);
                 }
 
                 // Update games list from current selection
@@ -241,14 +241,49 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private async void CreateLibraryButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void LibraryActionButtons_ClickAsync(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            try
             {
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                switch (((Button)sender).Tag)
                 {
-                    await CreateLibraryAsync(dialog.SelectedPath).ConfigureAwait(false);
+                    case "create":
+                        using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                        {
+                            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            {
+                                await CreateLibraryAsync(dialog.SelectedPath).ConfigureAwait(false);
+                            }
+                        }
+                        break;
+
+                    case "remove":
+                        if (Definitions.SLM.CurrentSelectedLibrary != null && (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM || Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Origin) && Functions.TaskManager.TaskList.Count(x =>
+                               x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary
+                               || x.SteamApp?.Library == Definitions.SLM.CurrentSelectedLibrary
+                               || x.OriginApp?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
+                        {
+                            Definitions.List.Libraries.Remove(Definitions.SLM.CurrentSelectedLibrary);
+
+                            Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
+                        }
+                        break;
+
+                    case "refresh":
+                        if (Definitions.SLM.CurrentSelectedLibrary != null && Functions.TaskManager.TaskList.Count(x =>
+                                      x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary
+                                      || x.SteamApp?.Library == Definitions.SLM.CurrentSelectedLibrary
+                                      || x.OriginApp?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
+                        {
+                            Functions.SLM.Library.UpdateLibrary(Definitions.SLM.CurrentSelectedLibrary);
+                        }
+                        break;
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+                Debug.WriteLine(ex);
             }
         }
     }

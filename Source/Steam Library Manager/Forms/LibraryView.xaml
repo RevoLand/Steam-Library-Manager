@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d">
     <UserControl.Resources>
         <!-- Library: Steam -->
@@ -242,6 +243,37 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button x:Name="CreateLibraryButton" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="{l:Static p:Resources.Forms_LibraryView_CreateLibrary}" Width="200" Height="40" Margin="0, 0, 0, 5" Click="CreateLibraryButton_ClickAsync" />
+        <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,5" ItemWidth="66.6666666666667" ItemHeight="45">
+            <Button Click="LibraryActionButtons_ClickAsync" Tag="create" fa:Awesome.Content="Folder" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryView_CreateLibrary}" />
+                            <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_CreateLibraryText}" />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Click="LibraryActionButtons_ClickAsync" Tag="remove" fa:Awesome.Content="Remove" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryView_CloseLibrary}" />
+                            <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_CloseLibraryText}" />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Click="LibraryActionButtons_ClickAsync" Tag="refresh" fa:Awesome.Content="Refresh" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryView_RefreshLibrary}" />
+                            <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_RefreshLibraryText}" />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+        </WrapPanel>
     </Grid>
 </UserControl>

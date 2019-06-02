@@ -650,6 +650,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close Library.
+        /// </summary>
+        internal static string Forms_LibraryView_CloseLibrary {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_CloseLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the selected library from SLM without touching files inside..
+        /// </summary>
+        internal static string Forms_LibraryView_CloseLibraryText {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_CloseLibraryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Library.
         /// </summary>
         internal static string Forms_LibraryView_CreateLibrary {
@@ -659,11 +677,38 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected directory..
+        /// </summary>
+        internal static string Forms_LibraryView_CreateLibraryText {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_CreateLibraryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offline.
         /// </summary>
         internal static string Forms_LibraryView_Offline {
             get {
                 return ResourceManager.GetString("Forms_LibraryView_Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh Library.
+        /// </summary>
+        internal static string Forms_LibraryView_RefreshLibrary {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_RefreshLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshes the current status of selected library..
+        /// </summary>
+        internal static string Forms_LibraryView_RefreshLibraryText {
+            get {
+                return ResourceManager.GetString("Forms_LibraryView_RefreshLibraryText", resourceCulture);
             }
         }
         
