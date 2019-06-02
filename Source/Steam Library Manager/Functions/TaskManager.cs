@@ -18,6 +18,8 @@ namespace Steam_Library_Manager.Functions
         public static Definitions.List.TaskInfo ActiveTask;
         public static Definitions.List.TmInfo TMInfo { get; } = new Definitions.List.TmInfo();
 
+        private static readonly IProgress<Definitions.List.TaskInfo> RemoveTaskProgress = new Progress<Definitions.List.TaskInfo>(task => TaskList.Remove(task));
+
         private static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
         {
             try
@@ -142,6 +144,11 @@ namespace Steam_Library_Manager.Functions
                         Steam.RestartSteamAsync();
                         IsRestartRequired = false;
                     }
+                }
+
+                if (Properties.Settings.Default.TaskManager_AutoClear && !CurrentTask.ErrorHappened)
+                {
+                    RemoveTaskProgress.Report(CurrentTask);
                 }
 
                 SLM.Library.UpdateLibraryVisual();

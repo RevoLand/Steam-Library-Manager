@@ -2088,6 +2088,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto Clear Completed Tasks.
+        /// </summary>
+        internal static string TaskManagerView_AutoClearCompletedTasks {
+            get {
+                return ResourceManager.GetString("TaskManagerView_AutoClearCompletedTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Scroll Logs.
+        /// </summary>
+        internal static string TaskManagerView_AutoScrollLogs {
+            get {
+                return ResourceManager.GetString("TaskManagerView_AutoScrollLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         internal static string TaskStatus_Completed {

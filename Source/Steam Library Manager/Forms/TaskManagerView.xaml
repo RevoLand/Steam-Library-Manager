@@ -635,8 +635,8 @@
             <TextBlock Text="  |  "/>
             <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
             <TextBlock Text="  |  "/>
-            <TextBlock Text="Logs Auto Scroll: "/>
-            <Controls:ToggleSwitch Margin="0" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+            <CheckBox Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" />
+            <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}" />
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->

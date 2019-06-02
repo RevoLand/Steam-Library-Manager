@@ -358,5 +358,18 @@ namespace Steam_Library_Manager.Properties {
                 this["AdvancedCompactSizeDetection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool TaskManager_AutoClear {
+            get {
+                return ((bool)(this["TaskManager_AutoClear"]));
+            }
+            set {
+                this["TaskManager_AutoClear"] = value;
+            }
+        }
     }
 }
