@@ -10,14 +10,14 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class App
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
                 // Make a new definition for app
-                var App = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(InstallationPath))
+                var appInfo = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationPath)))
                 {
                     // Set game name
                     AppName = AppName,
@@ -30,16 +30,16 @@ namespace Steam_Library_Manager.Functions
 
                 if (Definitions.List.SteamApps_LastPlayedDic.ContainsKey(AppID))
                 {
-                    App.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
+                    appInfo.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
                 }
 
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
-                if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.IsSteamBackup)
+                if (!appInfo.InstallationDirectory.Exists && !appInfo.DownloadFolder.Exists && !appInfo.IsCompressed && !appInfo.IsSteamBackup)
                 {
                     Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
-                        FSInfo = new FileInfo(App.FullAcfPath.FullName),
-                        Size = App.FullAcfPath.Length,
+                        FSInfo = new FileInfo(appInfo.FullAcfPath.FullName),
+                        Size = appInfo.FullAcfPath.Length,
                         Library = Library
                     });
 
@@ -52,22 +52,22 @@ namespace Steam_Library_Manager.Functions
                     if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
                     {
                         // Open archive to read
-                        using (ZipArchive Archive = ZipFile.OpenRead(App.CompressedArchiveName.FullName))
+                        using (ZipArchive Archive = ZipFile.OpenRead(appInfo.CompressedArchivePath.FullName))
                         {
                             // For each file in archive
                             foreach (ZipArchiveEntry Entry in Archive.Entries)
                             {
                                 // Add file size to sizeOnDisk
-                                App.SizeOnDisk += Entry.Length;
+                                appInfo.SizeOnDisk += Entry.Length;
                             }
                         }
                     }
                     else
                     {
-                        App.CompressedArchiveName.Refresh();
+                        appInfo.CompressedArchivePath.Refresh();
 
                         // And set archive size as game size
-                        App.SizeOnDisk = App.CompressedArchiveName?.Length ?? 0;
+                        appInfo.SizeOnDisk = appInfo.CompressedArchivePath?.Length ?? 0;
                     }
                 }
                 else
@@ -75,24 +75,24 @@ namespace Steam_Library_Manager.Functions
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
-                        List<FileInfo> GameFiles = App.GetFileList();
-                        long GameSize = 0;
+                        List<FileInfo> gameFiles = appInfo.GetFileList();
+                        long gameSize = 0;
 
-                        System.Threading.Tasks.Parallel.ForEach(GameFiles, File => Interlocked.Add(ref GameSize, File.Length));
+                        System.Threading.Tasks.Parallel.ForEach(gameFiles, file => Interlocked.Add(ref gameSize, file.Length));
 
-                        App.SizeOnDisk = GameSize;
+                        appInfo.SizeOnDisk = gameSize;
                     }
                     else
                     {
                         // Else set game size to size in acf
-                        App.SizeOnDisk = SizeOnDisk;
+                        appInfo.SizeOnDisk = SizeOnDisk;
                     }
                 }
 
-                App.IsCompacted = await App.CompactStatus().ConfigureAwait(false);
+                appInfo.IsCompacted = await appInfo.CompactStatus().ConfigureAwait(false);
 
                 // Add our game details to global list
-                Library.Steam.Apps.Add(App);
+                Library.Steam.Apps.Add(appInfo);
 
                 if (Definitions.SLM.CurrentSelectedLibrary == Library)
                 {
@@ -101,7 +101,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Steam_Library_Manager.Functions
                 }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                logger.Fatal(IEx);
+                Logger.Fatal(IEx);
             }
             catch (InvalidDataException IEx)
             {
@@ -165,11 +165,11 @@ namespace Steam_Library_Manager.Functions
                 }).ConfigureAwait(false);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                logger.Fatal(IEx);
+                Logger.Fatal(IEx);
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 

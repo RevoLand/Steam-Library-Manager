@@ -227,6 +227,11 @@ namespace Steam_Library_Manager.Functions
                     if (string.IsNullOrEmpty(LibraryPath))
                         return;
 
+                    if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        LibraryPath += Path.DirectorySeparatorChar;
+                    }
+
                     Definitions.Library Library = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
@@ -278,7 +283,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (Library.Origin != null)
                     {
-                        await Task.Run(() => Library.Origin.UpdateAppList()).ConfigureAwait(true);
+                        await Task.Run(() => Library.Origin.UpdateAppListAsync()).ConfigureAwait(true);
                     }
 
                     Library.UpdateDiskDetails();

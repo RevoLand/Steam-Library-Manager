@@ -644,7 +644,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="ReadZip_DontDelete" xml:space="preserve">
     <value>Don't delete the archive file</value>
   </data>
-  <data name="ReadZip_InvalidDataException" xml:space="preserve">
+  <data name="An_error_happened_while_parsing_zip_file" xml:space="preserve">
     <value>An error happened while parsing zip file</value>
   </data>
   <data name="ReadZip_InvalidDataExceptionMessage" xml:space="preserve">

@@ -51,13 +51,13 @@ namespace Steam_Library_Manager
                                     ? library.Steam.Apps.OrderByDescending(sortingMethod).ToList()
                                     : library.Steam.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderByDescending(sortingMethod).ToList()
                                 : string.IsNullOrEmpty(search)
                                     ? library.Steam.Apps.OrderBy(sortingMethod).ToList()
                                     : library.Steam.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderBy(sortingMethod).ToList();
                         break;
 
@@ -69,13 +69,13 @@ namespace Steam_Library_Manager
                                     ? library.Origin.Apps.OrderByDescending(sortingMethod).ToList()
                                     : library.Origin.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderByDescending(sortingMethod).ToList()
                                 : string.IsNullOrEmpty(search)
                                     ? library.Origin.Apps.OrderBy(sortingMethod).ToList()
                                     : library.Origin.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppID.ToString().Contains(search) // Search by app ID
+                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderBy(sortingMethod).ToList();
                         break;
                 }

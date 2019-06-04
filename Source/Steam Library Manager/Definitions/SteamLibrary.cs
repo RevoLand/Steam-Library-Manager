@@ -1,47 +1,29 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class SteamLibrary
+    public class SteamLibrary : LibraryBase
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
-        public Library Library;
-
-        public bool IsMain { get; set; }
-
         public DirectoryInfo SteamAppsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamApps"));
-
         public DirectoryInfo SteamBackupsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamBackups"));
-
         public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "common"));
-
         public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "downloading"));
-
         public DirectoryInfo WorkshopFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "workshop"));
 
-        public List<FrameworkElement> ContextMenu => GenerateCMenuItems();
-
-        public string FullPath { get; set; }
-        public ObservableCollection<SteamAppInfo> Apps { get; set; } = new ObservableCollection<SteamAppInfo>();
-
-        public SteamLibrary(string fullPath, Library library, bool _IsMain = false)
+        public SteamLibrary(string fullPath, Library library, bool isMain = false)
         {
             FullPath = fullPath;
-            IsMain = _IsMain;
+            IsMain = isMain;
             Library = library;
         }
 
-        public async Task UpdateAppListAsync()
+        public override async void UpdateAppListAsync()
         {
             try
             {
@@ -65,32 +47,32 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Foreach *.acf file found in library
-                foreach (var AcfFile in SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList())
+                foreach (var acfFile in SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly).ToList())
                 //Parallel.ForEach(SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly), async AcfFile =>
                 {
                     // Define a new value and call KeyValue
-                    var KeyValReader = new Framework.KeyValue();
+                    var keyValReader = new Framework.KeyValue();
 
                     // Read the *.acf file as text
-                    KeyValReader.ReadFileAsText(AcfFile.FullName);
+                    keyValReader.ReadFileAsText(acfFile.FullName);
 
                     // If key doesn't contains a child (value in acf file)
-                    if (KeyValReader.Children.Count == 0)
+                    if (keyValReader.Children.Count == 0)
                     {
                         List.LCProgress.Report(new List.JunkInfo
                         {
-                            FSInfo = new FileInfo(AcfFile.FullName),
-                            Size = AcfFile.Length,
+                            FSInfo = new FileInfo(acfFile.FullName),
+                            Size = acfFile.Length,
                             Library = Library
                         });
 
                         return;
                     }
 
-                    await Functions.App.AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value),
-                        KeyValReader["name"].Value ?? KeyValReader["UserConfig"]["name"].Value,
-                        KeyValReader["installdir"].Value, Library, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value),
-                        Convert.ToInt64(KeyValReader["LastUpdated"].Value), false).ConfigureAwait(true);
+                    await Functions.App.AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value),
+                        keyValReader["name"].Value ?? keyValReader["UserConfig"]["name"].Value,
+                        keyValReader["installdir"].Value, Library, Convert.ToInt64(keyValReader["SizeOnDisk"].Value),
+                        Convert.ToInt64(keyValReader["LastUpdated"].Value), false).ConfigureAwait(true);
                 }
                 //);
 
@@ -100,24 +82,24 @@ namespace Steam_Library_Manager.Definitions
                 SteamBackupsFolder.Refresh();
                 if (Library.Type == Enums.LibraryType.SLM && SteamBackupsFolder.Exists)
                 {
-                    foreach (FileInfo SkuFile in SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories).ToList())
+                    foreach (var skuFile in SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories).ToList())
                     {
-                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                        var keyValReader = new Framework.KeyValue();
 
-                        KeyValReader.ReadFileAsText(SkuFile.FullName);
+                        keyValReader.ReadFileAsText(skuFile.FullName);
 
-                        string[] AppNames = System.Text.RegularExpressions.Regex.Split(KeyValReader["name"].Value, " and ");
+                        var appNames = System.Text.RegularExpressions.Regex.Split(keyValReader["name"].Value, " and ");
 
-                        int i = 0;
-                        long AppSize = Functions.FileSystem.GetDirectorySize(SkuFile.Directory, true);
-                        foreach (Framework.KeyValue App in KeyValReader["apps"].Children)
+                        var i = 0;
+                        var appSize = Functions.FileSystem.GetDirectorySize(skuFile.Directory, true);
+                        foreach (var app in keyValReader["apps"].Children)
                         {
-                            if (Apps.Count(x => x.AppID == Convert.ToInt32(App.Value) && x.IsSteamBackup) > 0)
+                            if (Apps.Count(x => x.AppId == Convert.ToInt32(app.Value) && x.IsSteamBackup) > 0)
                                 continue;
 
-                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(App.Value), AppNames[i], SkuFile.DirectoryName, Library, AppSize, SkuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true).ConfigureAwait(true);
+                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(app.Value), appNames[i], skuFile.DirectoryName, Library, appSize, skuFile.LastWriteTimeUtc.ToUnixTimestamp(), false, true).ConfigureAwait(true);
 
-                            if (AppNames.Length > 1)
+                            if (appNames.Length > 1)
                                 i++;
                         }
                     }
@@ -145,55 +127,13 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public List<FrameworkElement> GenerateCMenuItems()
+        public override async void ParseMenuItemActionAsync(string action)
         {
-            var CMenu = new List<FrameworkElement>();
-            try
-            {
-                foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.ToList().Where(x => x.IsActive && x.LibraryType == Enums.LibraryType.Steam))
-                {
-                    if (!CMenuItem.ShowToNormal)
-                    {
-                        continue;
-                    }
-
-                    if (CMenuItem.IsSeparator)
-                    {
-                        CMenu.Add(new Separator());
-                    }
-                    else
-                    {
-                        MenuItem SLMItem = new MenuItem()
-                        {
-                            Tag = CMenuItem.Action,
-                            Header = Framework.StringFormat.Format(CMenuItem.Header, new { LibraryFullPath = Library.DirectoryInfo.FullName, FreeDiskSpace = Library.PrettyFreeSpace }),
-                            Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
-                            HorizontalContentAlignment = HorizontalAlignment.Left,
-                            VerticalContentAlignment = VerticalAlignment.Center
-                        };
-
-                        SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
-
-                        CMenu.Add(SLMItem);
-                    }
-                }
-
-                return CMenu;
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FormatException)), new { ExceptionMessage = ex.Message }));
-                return CMenu;
-            }
-        }
-
-        public async void ParseMenuItemActionAsync(string Action)
-        {
-            switch (Action.ToLowerInvariant())
+            switch (action.ToLowerInvariant())
             {
                 // Opens game installation path in explorer
                 case "disk":
@@ -212,16 +152,16 @@ namespace Steam_Library_Manager.Definitions
                         return;
                     }
 
-                    MessageDialogResult MoveGamesBeforeDeletion = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibrary)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibraryMessage)), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
+                    var moveGamesBeforeDeletion = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibrary)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesInLibraryMessage)), MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings
                     {
                         FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.DeleteLibraryWithoutMovingGames))
                     }).ConfigureAwait(true);
 
-                    if (MoveGamesBeforeDeletion == MessageDialogResult.Affirmative)
+                    if (moveGamesBeforeDeletion == MessageDialogResult.Affirmative)
                     {
                         await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmError)), Functions.SLM.Translate(nameof(Properties.Resources.MoveGamesConfirmErrorMessage)), MessageDialogStyle.Affirmative).ConfigureAwait(true);
                     }
-                    else if (MoveGamesBeforeDeletion == MessageDialogResult.FirstAuxiliary)
+                    else if (moveGamesBeforeDeletion == MessageDialogResult.FirstAuxiliary)
                     {
                         RemoveLibraryAsync(true);
                     }
@@ -276,7 +216,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -301,15 +241,15 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public async void RemoveLibraryAsync(bool ShouldDeleteFiles)
+        public override async void RemoveLibraryAsync(bool withFiles)
         {
             try
             {
-                if (ShouldDeleteFiles)
+                if (withFiles)
                 {
                     DeleteFilesAsync();
                 }
@@ -319,23 +259,23 @@ namespace Steam_Library_Manager.Definitions
                 await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
                 // Make a KeyValue reader
-                Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                var keyValReader = new Framework.KeyValue();
 
                 // Read vdf file
-                KeyValReader.ReadFileAsText(Global.Steam.vdfFilePath);
+                keyValReader.ReadFileAsText(Global.Steam.vdfFilePath);
 
                 // Remove old library
-                KeyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
+                keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
 
-                int i = 1;
-                foreach (Framework.KeyValue Key in KeyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                var i = 1;
+                foreach (var key in keyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
                 {
-                    Key.Name = $"BaseInstallFolder_{i}";
+                    key.Name = $"BaseInstallFolder_{i}";
                     i++;
                 }
 
                 // Update libraryFolders.vdf file with changes
-                KeyValReader.SaveToFile(Global.Steam.vdfFilePath, false);
+                keyValReader.SaveToFile(Global.Steam.vdfFilePath, false);
 
                 // Since this file started to interrupt us?
                 // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.
@@ -348,7 +288,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -359,7 +299,7 @@ namespace Steam_Library_Manager.Definitions
                 CommonFolder.Refresh();
                 if (CommonFolder.Exists)
                 {
-                    foreach (DirectoryInfo DirInfo in CommonFolder.GetDirectories().ToList().Where(
+                    foreach (var dirInfo in CommonFolder.GetDirectories().ToList().Where(
                         x => Apps.Count(y => string.Equals(y.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Functions.TaskManager.TaskList.Count(
@@ -368,16 +308,16 @@ namespace Steam_Library_Manager.Definitions
                             ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
-                        List.JunkInfo Junk = new List.JunkInfo
+                        var junk = new List.JunkInfo
                         {
-                            FSInfo = DirInfo,
-                            Size = Functions.FileSystem.GetDirectorySize(DirInfo, true),
+                            FSInfo = dirInfo,
+                            Size = Functions.FileSystem.GetDirectorySize(dirInfo, true),
                             Library = Library
                         };
 
-                        if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                         {
-                            List.LCProgress.Report(Junk);
+                            List.LCProgress.Report(junk);
                         }
                     }
                 }
@@ -385,7 +325,7 @@ namespace Steam_Library_Manager.Definitions
                 WorkshopFolder.Refresh();
                 if (WorkshopFolder.Exists)
                 {
-                    foreach (FileInfo FileDetails in WorkshopFolder.EnumerateFiles("appworkshop_*.acf", SearchOption.TopDirectoryOnly).ToList().Where(
+                    foreach (var fileDetails in WorkshopFolder.EnumerateFiles("appworkshop_*.acf", SearchOption.TopDirectoryOnly).ToList().Where(
                         x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
                         && !string.Equals(x.Name, "appworkshop_241100.acf" // Steam Controller Configs
 , StringComparison.InvariantCultureIgnoreCase) // Steam Controller Configs
@@ -396,23 +336,23 @@ namespace Steam_Library_Manager.Definitions
                             ) == 0
                         ))
                     {
-                        List.JunkInfo Junk = new List.JunkInfo
+                        var junk = new List.JunkInfo
                         {
-                            FSInfo = FileDetails,
-                            Size = FileDetails.Length,
+                            FSInfo = fileDetails,
+                            Size = fileDetails.Length,
                             Library = Library
                         };
 
-                        if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                        if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                         {
-                            List.LCProgress.Report(Junk);
+                            List.LCProgress.Report(junk);
                         }
                     }
 
                     if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "content")))
                     {
-                        foreach (DirectoryInfo DirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().ToList().Where(
-                            x => Apps.Count(y => y.AppID.ToString() == x.Name) == 0
+                        foreach (var dirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().ToList().Where(
+                            x => Apps.Count(y => y.AppId.ToString() == x.Name) == 0
                             && x.Name != "241100" // Steam controller configs
                             && Functions.TaskManager.TaskList.Count(
                                 z => string.Equals(z.SteamApp.WorkShopPath.Name, x.Name
@@ -421,36 +361,36 @@ namespace Steam_Library_Manager.Definitions
                             ) == 0
                             ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                         {
-                            List.JunkInfo Junk = new List.JunkInfo
+                            var junk = new List.JunkInfo
                             {
-                                FSInfo = DirInfo,
-                                Size = Functions.FileSystem.GetDirectorySize(DirInfo, true),
+                                FSInfo = dirInfo,
+                                Size = Functions.FileSystem.GetDirectorySize(dirInfo, true),
                                 Library = Library
                             };
 
-                            if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                             {
-                                List.LCProgress.Report(Junk);
+                                List.LCProgress.Report(junk);
                             }
                         }
                     }
 
                     if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "downloads")))
                     {
-                        foreach (FileInfo FileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).ToList().Where(
-                            x => Apps.Count(y => x.Name.Contains($"state_{y.AppID}_")) == 0
+                        foreach (var fileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).ToList().Where(
+                            x => Apps.Count(y => x.Name.Contains($"state_{y.AppId}_")) == 0
                             ))
                         {
-                            List.JunkInfo Junk = new List.JunkInfo
+                            var junk = new List.JunkInfo
                             {
-                                FSInfo = FileDetails,
-                                Size = FileDetails.Length,
+                                FSInfo = fileDetails,
+                                Size = fileDetails.Length,
                                 Library = Library
                             };
 
-                            if (List.LcItems.ToList().Count(x => x.FSInfo.FullName == Junk.FSInfo.FullName) == 0)
+                            if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                             {
-                                List.LCProgress.Report(Junk);
+                                List.LCProgress.Report(junk);
                             }
                         }
                     }
@@ -458,7 +398,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
     }

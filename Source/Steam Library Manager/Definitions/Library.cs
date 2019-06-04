@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Definitions
             }
             else if (Type == Enums.LibraryType.Origin)
             {
-                Origin.ParseMenuItemAction(Action);
+                Origin.ParseMenuItemActionAsync(Action);
             }
         }
 

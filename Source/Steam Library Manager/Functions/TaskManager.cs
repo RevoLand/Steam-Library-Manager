@@ -84,7 +84,7 @@ namespace Steam_Library_Manager.Functions
                             break;
 
                         case Definitions.Enums.TaskType.Delete:
-                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            await CurrentTask.OriginApp.DeleteFilesAsync(CurrentTask);
 
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
                             break;
@@ -100,7 +100,7 @@ namespace Steam_Library_Manager.Functions
                         {
                             Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
 
-                            CurrentTask.OriginApp.DeleteFiles(CurrentTask);
+                            await CurrentTask.OriginApp.DeleteFilesAsync(CurrentTask);
                             CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
 
                             Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
@@ -110,11 +110,11 @@ namespace Steam_Library_Manager.Functions
                         CurrentTask.Active = false;
                         CurrentTask.Completed = true;
 
-                        CurrentTask.TargetLibrary?.Origin.UpdateAppList();
+                        CurrentTask.TargetLibrary?.Origin.UpdateAppListAsync();
 
                         if (CurrentTask.Compress)
                         {
-                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppID == CurrentTask.OriginApp.AppID)?.InstallAsync();
+                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppId == CurrentTask.OriginApp.AppId)?.InstallAsync();
                         }
 
                         // Update library details

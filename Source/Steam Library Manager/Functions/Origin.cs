@@ -169,6 +169,11 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    LibraryPath += Path.DirectorySeparatorChar;
+                }
+
                 var newLibrary = new Definitions.Library
                 {
                     Type = Definitions.Enums.LibraryType.Origin,
@@ -179,7 +184,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
-                await Task.Run(() => newLibrary.Origin.UpdateAppList()).ConfigureAwait(false);
+                await Task.Run(() => newLibrary.Origin.UpdateAppListAsync()).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

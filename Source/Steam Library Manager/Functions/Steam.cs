@@ -449,11 +449,11 @@ namespace Steam_Library_Manager.Functions
                             {
                                 ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = CurrentApp.AppName }));
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
+                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
                                 {
-                                    var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppID == CurrentApp.AppID && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
+                                    var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (Functions.TaskManager.TaskList.Count(x => x.SteamApp.AppID == CurrentApp.AppID && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
+                                    if (Functions.TaskManager.TaskList.Count(x => x.SteamApp.AppId == CurrentApp.AppId && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
                                     {
                                         Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
                                         {

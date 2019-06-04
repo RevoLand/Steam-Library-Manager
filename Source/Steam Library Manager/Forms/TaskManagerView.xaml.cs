@@ -120,9 +120,9 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && ((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.CommonFolder.Exists == true)
+                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && ((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.InstallationDirectory.Exists == true)
                 {
-                    Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.CommonFolder.FullName);
+                    Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.InstallationDirectory.FullName);
                 }
             }
             catch (Exception ex)

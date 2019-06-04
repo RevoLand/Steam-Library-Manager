@@ -151,9 +151,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Definitions\AppBase.cs" />
     <Compile Include="Definitions\ContextMenuItem.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Global.cs" />
+    <Compile Include="Definitions\LibraryBase.cs" />
     <Compile Include="Definitions\Library.cs" />
     <Compile Include="Definitions\OriginAppInfo.cs" />
     <Compile Include="Definitions\OriginLibrary.cs" />
