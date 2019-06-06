@@ -24,15 +24,14 @@ namespace Steam_Library_Manager.Definitions
             Library = library;
         }
 
-        [MethodTimer.Time]
         public override async void UpdateAppListAsync()
         {
             try
             {
-                if (UpdatingAppList)
+                if (IsUpdatingAppList)
                     return;
 
-                UpdatingAppList = true;
+                IsUpdatingAppList = true;
 
                 SteamAppsFolder.Refresh();
 
@@ -125,7 +124,7 @@ namespace Steam_Library_Manager.Definitions
                     Functions.App.UpdateAppPanel(Library);
                 }
 
-                UpdatingAppList = false;
+                IsUpdatingAppList = false;
             }
             catch (UnauthorizedAccessException uaex)
             {
@@ -139,7 +138,7 @@ namespace Steam_Library_Manager.Definitions
                                     .UnauthorizedAccessExceptionMessage)),
                                 new { FullPath, ExceptionMessage = uaex.Message })).ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-                UpdatingAppList = false;
+                IsUpdatingAppList = false;
             }
             catch (DirectoryNotFoundException dnfex)
             {
@@ -154,13 +153,13 @@ namespace Steam_Library_Manager.Definitions
                                     new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message }))
                             .ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-                UpdatingAppList = false;
+                IsUpdatingAppList = false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 Logger.Fatal(ex);
-                UpdatingAppList = false;
+                IsUpdatingAppList = false;
             }
         }
 
@@ -329,7 +328,7 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                while (UpdatingAppList)
+                while (IsUpdatingAppList)
                 {
                     Task.Delay(5000);
                 }

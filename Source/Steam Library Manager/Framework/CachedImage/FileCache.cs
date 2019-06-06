@@ -30,12 +30,13 @@ namespace Steam_Library_Manager.Framework.CachedImage
         /// </summary>
         public static CacheMode AppCacheMode { get; set; }
 
-        public static async Task<MemoryStream> HitAsync(string url)
+        public static async Task<MemoryStream> HitAsync(string url, string filename = null)
         {
             if (!Directory.Exists(Definitions.Directories.SLM.Cache))
             {
                 Directory.CreateDirectory(Definitions.Directories.SLM.Cache);
             }
+
             var uri = new Uri(url);
             var fileNameBuilder = new StringBuilder();
             using (var sha1 = new SHA1Managed())
@@ -48,7 +49,27 @@ namespace Steam_Library_Manager.Framework.CachedImage
             }
 
             var fileName = fileNameBuilder.ToString();
-            var localFile = (!url.Contains("origin")) ? $"{Definitions.Directories.SLM.Cache}\\{uri.Segments[3].Replace("/", "")}.jpg" : $"{Definitions.Directories.SLM.Cache}\\{uri.Segments.Last()}";
+            string localFile;
+            if (string.IsNullOrEmpty(filename))
+            {
+                if (url.Contains("origin"))
+                {
+                    localFile = $"{Definitions.Directories.SLM.Cache}\\{uri.Segments[2].Replace("/", "")}.jpg";
+                }
+                else if (url.Contains("http"))
+                {
+                    localFile = $"{Definitions.Directories.SLM.Cache}\\{uri.Segments[3].Replace("/", "")}.jpg";
+                }
+                else
+                {
+                    localFile = uri.LocalPath;
+                }
+            }
+            else
+            {
+                localFile = $"{Definitions.Directories.SLM.Cache}\\{filename}.jpg";
+            }
+
             var memoryStream = new MemoryStream();
 
             FileStream fileStream = null;

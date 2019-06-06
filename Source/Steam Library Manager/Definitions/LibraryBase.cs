@@ -11,7 +11,7 @@ namespace Steam_Library_Manager.Definitions
         public readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public Library Library { get; set; }
         public bool IsMain { get; set; }
-        public bool UpdatingAppList { get; set; }
+        public bool IsUpdatingAppList { get; set; }
         public string FullPath { get; set; }
         public System.Collections.ObjectModel.ObservableCollection<dynamic> Apps { get; set; } = new System.Collections.ObjectModel.ObservableCollection<dynamic>();
 
