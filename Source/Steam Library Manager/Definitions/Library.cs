@@ -21,42 +21,42 @@ namespace Steam_Library_Manager.Definitions
         {
             get
             {
-                var CMenu = new List<FrameworkElement>();
+                var cMenu = new List<FrameworkElement>();
                 try
                 {
-                    foreach (ContextMenuItem CMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))
+                    foreach (var cMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))
                     {
-                        if (!CMenuItem.ShowToNormal && !CMenuItem.ShowToSLMBackup)
+                        if (!cMenuItem.ShowToNormal && !cMenuItem.ShowToSLMBackup)
                         {
                             continue;
                         }
 
-                        if (CMenuItem.IsSeparator)
+                        if (cMenuItem.IsSeparator)
                         {
-                            CMenu.Add(new Separator());
+                            cMenu.Add(new Separator());
                         }
                         else
                         {
                             MenuItem SLMItem = new MenuItem()
                             {
-                                Tag = CMenuItem.Action,
-                                Header = Framework.StringFormat.Format(CMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
-                                Icon = Functions.FAwesome.GetAwesomeIcon(CMenuItem.Icon, CMenuItem.IconColor),
+                                Tag = cMenuItem.Action,
+                                Header = Framework.StringFormat.Format(cMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
+                                Icon = Functions.FAwesome.GetAwesomeIcon(cMenuItem.Icon, cMenuItem.IconColor),
                                 HorizontalContentAlignment = HorizontalAlignment.Left,
                                 VerticalContentAlignment = VerticalAlignment.Center
                             };
 
                             SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
 
-                            CMenu.Add(SLMItem);
+                            cMenu.Add(SLMItem);
                         }
                     }
 
-                    return CMenu;
+                    return cMenu;
                 }
                 catch (FormatException)
                 {
-                    return CMenu;
+                    return cMenu;
                 }
             }
         }

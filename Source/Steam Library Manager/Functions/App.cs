@@ -105,32 +105,32 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void ReadDetailsFromZip(string ZipPath, Definitions.Library targetLibrary)
+        public static async void ReadDetailsFromZip(string zipPath, Definitions.Library targetLibrary)
         {
             try
             {
                 // Open archive for read
-                using (ZipArchive Archive = ZipFile.OpenRead(ZipPath))
+                using (var archive = ZipFile.OpenRead(zipPath))
                 {
-                    if (Archive.Entries.Count > 0)
+                    if (archive.Entries.Count > 0)
                     {
                         // For each file in opened archive
-                        foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                        foreach (var acfEntry in archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
                         {
                             // If it contains
                             // Define a KeyValue reader
-                            Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                            var keyValReader = new Framework.KeyValue();
 
                             // Open .acf file from archive as text
-                            KeyValReader.ReadAsText(AcfEntry.Open());
+                            keyValReader.ReadAsText(acfEntry.Open());
 
                             // If acf file has no children, skip this archive
-                            if (KeyValReader.Children.Count == 0)
+                            if (keyValReader.Children.Count == 0)
                             {
                                 continue;
                             }
 
-                            await AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
+                            await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
                         }
                     }
                 }
@@ -139,14 +139,14 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
+                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
                     }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
-                        File.Delete(ZipPath);
+                        File.Delete(zipPath);
                     }
-                }).ConfigureAwait(false);
+                }).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.Fatal(IEx);
@@ -155,14 +155,14 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
+                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
                     }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
-                        File.Delete(ZipPath);
+                        File.Delete(zipPath);
                     }
-                }).ConfigureAwait(false);
+                }).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.Fatal(IEx);

@@ -482,6 +482,11 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
+                    if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        LibraryPath += Path.DirectorySeparatorChar;
+                    }
+
                     var newLibrary = new Definitions.Library
                     {
                         Type = Definitions.Enums.LibraryType.Steam,
