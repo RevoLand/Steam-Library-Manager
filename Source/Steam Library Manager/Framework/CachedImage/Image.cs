@@ -78,7 +78,12 @@ namespace Steam_Library_Manager.Framework.CachedImage
         {
             if (string.IsNullOrEmpty(url))
             {
-                return img.FailedImage;
+                return (string)img.Tag == "origin"
+                    ? new BitmapImage(new Uri(
+                        "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                        UriKind.Absolute))
+                    : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                        UriKind.Absolute));
             }
 
             var bitmapImage = new BitmapImage();
@@ -110,7 +115,13 @@ namespace Steam_Library_Manager.Framework.CachedImage
                         if (memoryStream == null)
                         {
                             Debug.WriteLine("No hit for URL " + url);
-                            return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif", UriKind.Absolute));
+
+                            return (string)img.Tag == "origin"
+                                ? new BitmapImage(new Uri(
+                                    "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                                    UriKind.Absolute))
+                                : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                                    UriKind.Absolute));
                         }
 
                         bitmapImage.BeginInit();
@@ -131,7 +142,12 @@ namespace Steam_Library_Manager.Framework.CachedImage
                     {
                         // ignored, in case the downloaded file is a broken or not an image.
                         Debug.WriteLine($"Image with url {url} failed to load.");
-                        return img.FailedImage;
+                        return (string)img.Tag == "origin"
+                            ? new BitmapImage(new Uri(
+                                "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                                UriKind.Absolute))
+                            : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                                UriKind.Absolute));
                     }
 
                 default:

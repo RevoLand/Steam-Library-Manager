@@ -105,16 +105,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap compressedLibraryIcon {
-            get {
-                object obj = ResourceManager.GetObject("compressedLibraryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Steam Library Manager.
         /// </summary>
         internal static string CreateLibrary_Exists {

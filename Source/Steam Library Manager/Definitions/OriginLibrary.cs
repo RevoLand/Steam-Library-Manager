@@ -73,7 +73,7 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     if (!line.Contains("Install Locale:")) continue;
 
-                                    installedLocale = line.Split(new string[] {"Install Locale:"},
+                                    installedLocale = line.Split(new string[] { "Install Locale:" },
                                         StringSplitOptions.None)[1];
                                     break;
                                 }
@@ -132,7 +132,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 MessageBox.Show(Framework.StringFormat.Format(
                                     Functions.SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)),
-                                    new {ManifestVersion = manifestVersion, OriginApp = originApp}));
+                                    new { ManifestVersion = manifestVersion, OriginApp = originApp }));
                                 return;
                             }
 
@@ -146,12 +146,12 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     await Framework.CachedImage.FileCache.HitAsync(string.Concat(appLocalData["customAttributes"]["imageServer"],
                                             appLocalData["localizableAttributes"]["packArtLarge"])
-                                        , originAppInfo.AppId.ToString())
+                                        , $"{originAppInfo.AppId}_o")
                                         .ConfigureAwait(false);
                                 }
                             }
 
-                            originAppInfo.GameHeaderImage = $"{Directories.SLM.Cache}\\{originAppInfo.AppId}.jpg";
+                            originAppInfo.GameHeaderImage = $"{Directories.SLM.Cache}\\{originAppInfo.AppId}_o.jpg";
 
                             Apps.Add(originAppInfo);
                         });

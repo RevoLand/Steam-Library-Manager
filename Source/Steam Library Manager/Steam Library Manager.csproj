@@ -251,22 +251,28 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.en.resx" />
+    <EmbeddedResource Include="Properties\Resources.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Properties\Resources.ru.resx" />
-    <EmbeddedResource Include="Properties\Resources.tr.resx" />
+    <EmbeddedResource Include="Properties\Resources.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.tr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\compressedLibraryIcon.png" />
     <Resource Include="Resources\no_image_available.gif" />
     <Resource Include="Resources\steam-icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\no_image_available_origin.jpg" />
     <None Include="app.config" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

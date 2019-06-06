@@ -313,7 +313,7 @@
                 </Controls:MetroProgressBar>
                 <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
+                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}" Tag="origin">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -453,7 +453,7 @@
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
+                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}" Tag="origin">
                         <CachedImage:Image.Style>
                             <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>

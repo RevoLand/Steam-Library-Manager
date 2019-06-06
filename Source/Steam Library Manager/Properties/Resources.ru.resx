@@ -138,9 +138,6 @@
 
 Хотите удалить архивный файл сгенерированным SLM?</value>
   </data>
-  <data name="compressedLibraryIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\compressedLibraryIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CreateLibraryDialog" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
   </data>
@@ -644,7 +641,7 @@
   <data name="ReadZip_DontDelete" xml:space="preserve">
     <value>Не удалять файл архива</value>
   </data>
-  <data name="An_error_happened_while_parsing_zip_file" xml:space="preserve">
+  <data name="ReadZip_InvalidDataException" xml:space="preserve">
     <value>Произошла ошибка при разборе zip-файла</value>
   </data>
   <data name="ReadZip_InvalidDataExceptionMessage" xml:space="preserve">
