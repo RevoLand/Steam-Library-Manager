@@ -19,11 +19,14 @@
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid>
-                            <TextBlock Text="{Binding FSInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
-                            <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
+                            <TextBlock Text="{Binding FSInfo.Name}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding JunkReason}" HorizontalAlignment="Right"/>
+                            <Grid VerticalAlignment="Bottom" Margin="0,25,0,0">
                                 <TextBlock Text="{Binding FSInfo.FullName}" HorizontalAlignment="Left" />
-                                <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat=Last Write Time: \{0\}}" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                                <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
+                                <WrapPanel HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat=Last Write Time: \{0\}}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding PrettyFolderSize}" Margin="10, 0, 0, 0" />
+                                </WrapPanel>
                             </Grid>
                         </Grid>
                     </Grid>
