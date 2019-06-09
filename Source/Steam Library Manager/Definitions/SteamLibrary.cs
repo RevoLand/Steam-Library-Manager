@@ -99,8 +99,7 @@ namespace Steam_Library_Manager.Definitions
 
                             keyValReader.ReadFileAsText(skuFile.FullName);
 
-                            var appNames =
-                                System.Text.RegularExpressions.Regex.Split(keyValReader["name"].Value, " and ");
+                            var appNames = System.Text.RegularExpressions.Regex.Split(keyValReader["name"].Value, " and ");
 
                             var i = 0;
                             var appSize = Functions.FileSystem.GetDirectorySize(skuFile.Directory, true);

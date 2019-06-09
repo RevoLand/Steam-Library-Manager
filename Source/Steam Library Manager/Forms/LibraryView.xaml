@@ -19,13 +19,15 @@
                 <!-- TextBlock: Library Path -->
                 <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
-                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
                     <!-- TextBlock: Library Type -->
                     <TextBlock Text="{l:Static p:Resources.Forms_Steam}" />
+                    
+                    <Image Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
 
                     <!-- TextBlock: App count -->
                     <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
-                </Grid>
+                </WrapPanel>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
 
@@ -70,7 +72,7 @@
                 <!-- TextBlock: Library Path -->
                 <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
-                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
                     <!-- TextBlock: Library Type -->
                     <TextBlock Text="{l:Static p:Resources.Forms_Origin}">
                         <TextBlock.Style>
@@ -87,6 +89,8 @@
                         </TextBlock.Style>
                     </TextBlock>
 
+                    <Image Source="/Steam Library Manager;component/Resources/origin-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
+
                     <!-- TextBlock: App count -->
                     <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
@@ -102,7 +106,7 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                </Grid>
+                </WrapPanel>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
                     <Grid.Style>
@@ -159,7 +163,7 @@
                 <!-- TextBlock: Library Path -->
                 <TextBlock Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
-                <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 28">
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
                     <!-- TextBlock: Library Type -->
                     <TextBlock Text="{l:Static p:Resources.Forms_SLM}">
                         <TextBlock.Style>
@@ -176,6 +180,8 @@
                         </TextBlock.Style>
                     </TextBlock>
 
+                    <Image Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
+
                     <!-- TextBlock: App count -->
                     <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
@@ -191,7 +197,7 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                </Grid>
+                </WrapPanel>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
                     <Grid.Style>

@@ -272,6 +272,7 @@
     <Resource Include="Resources\steam-icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\origin-icon.ico" />
     <Resource Include="Resources\no_image_available_origin.jpg" />
     <None Include="app.config" />
     <Content Include="NLog.config">
