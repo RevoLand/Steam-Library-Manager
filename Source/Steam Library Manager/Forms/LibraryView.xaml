@@ -13,11 +13,11 @@
         <DataTemplate x:Key="Library_Steam">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding Steam.ContextMenu}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenu}" />
                 </Grid.ContextMenu>
 
                 <!-- TextBlock: Library Path -->
-                <TextBlock Text="{Binding Steam.FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding FullPath}" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
                     <!-- TextBlock: Library Type -->
@@ -26,7 +26,7 @@
                     <Image Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
+                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right" />
                 </WrapPanel>
 
                 <Grid Height="20" Margin="0,0,0,3" VerticalAlignment="Bottom">
@@ -44,7 +44,7 @@
         <DataTemplate x:Key="Library_Origin">
             <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding Origin.ContextMenu}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenu}" />
                 </Grid.ContextMenu>
 
                 <!-- TextBlock: Offline text -->
@@ -92,7 +92,7 @@
                     <Image Source="/Steam Library Manager;component/Resources/origin-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Origin.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -183,7 +183,7 @@
                     <Image Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0"/>
 
                     <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Steam.Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>

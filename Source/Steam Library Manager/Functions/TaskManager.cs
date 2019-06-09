@@ -29,99 +29,51 @@ namespace Steam_Library_Manager.Functions
                 ActiveTask = CurrentTask;
                 CurrentTask.Active = true;
 
-                if (CurrentTask.SteamApp != null)
+                switch (CurrentTask.TaskType)
                 {
-                    switch (CurrentTask.TaskType)
-                    {
-                        default:
-                            await CurrentTask.SteamApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
-                            break;
+                    default:
+                        await CurrentTask.App.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
+                        break;
 
-                        case Definitions.Enums.TaskType.Delete:
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
-                            CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
-                            break;
+                    case Definitions.Enums.TaskType.Delete:
+                        await CurrentTask.App.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
+                        CurrentTask.App.Library.Apps.Remove(CurrentTask.App);
+                        break;
 
-                        case Definitions.Enums.TaskType.Compact:
-                            await CurrentTask.SteamApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
-                            break;
-                    }
-
-                    if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
-                    {
-                        if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
-                        {
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
-                            await CurrentTask.SteamApp.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
-                            CurrentTask.SteamApp.Library.Steam.Apps.Remove(CurrentTask.SteamApp);
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.SteamApp.AppName }));
-                        }
-
-                        if (CurrentTask.TargetLibrary?.Type == Definitions.Enums.LibraryType.Steam)
-                        {
-                            IsRestartRequired = true;
-                        }
-
-                        CurrentTask.TaskStatusInfo = SLM.Translate(nameof(Properties.Resources.TaskStatus_Completed));
-                        CurrentTask.Active = false;
-                        CurrentTask.Completed = true;
-
-                        CurrentTask.TargetLibrary?.Steam.UpdateAppListAsync();
-
-                        // Update library details
-                        if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.SteamApp.Library)
-                        {
-                            App.UpdateAppPanel(CurrentTask.SteamApp.Library);
-                        }
-                    }
+                    case Definitions.Enums.TaskType.Compact:
+                        await CurrentTask.App.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
+                        break;
                 }
-                else if (CurrentTask.OriginApp != null)
+
+                if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                 {
-                    switch (CurrentTask.TaskType)
+                    if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
                     {
-                        default:
-                            await CurrentTask.OriginApp.CopyFilesAsync(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
-                            break;
-
-                        case Definitions.Enums.TaskType.Delete:
-                            await CurrentTask.OriginApp.DeleteFilesAsync(CurrentTask);
-
-                            CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
-                            break;
-
-                        case Definitions.Enums.TaskType.Compact:
-                            await CurrentTask.OriginApp.CompactTask(CurrentTask, CancellationToken.Token).ConfigureAwait(false);
-                            break;
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(
+                            SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)),
+                            new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
+                        await CurrentTask.App.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
+                        CurrentTask.App.Library.Apps.Remove(CurrentTask.App);
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(
+                            SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)),
+                            new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
                     }
 
-                    if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
+                    if (CurrentTask.TargetLibrary?.Type == Definitions.Enums.LibraryType.Steam)
                     {
-                        if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
-                        {
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
+                        IsRestartRequired = true;
+                    }
 
-                            await CurrentTask.OriginApp.DeleteFilesAsync(CurrentTask);
-                            CurrentTask.OriginApp.Library.Origin.Apps.Remove(CurrentTask.OriginApp);
+                    CurrentTask.TaskStatusInfo = SLM.Translate(nameof(Properties.Resources.TaskStatus_Completed));
+                    CurrentTask.Active = false;
+                    CurrentTask.Completed = true;
 
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.OriginApp.AppName }));
-                        }
+                    CurrentTask.TargetLibrary?.UpdateAppListAsync();
 
-                        CurrentTask.TaskStatusInfo = SLM.Translate(nameof(Properties.Resources.TaskStatus_Completed));
-                        CurrentTask.Active = false;
-                        CurrentTask.Completed = true;
-
-                        CurrentTask.TargetLibrary?.Origin.UpdateAppListAsync();
-
-                        if (CurrentTask.Compress)
-                        {
-                            await CurrentTask.TargetLibrary?.Origin.Apps.FirstOrDefault(x => x.AppId == CurrentTask.OriginApp.AppId)?.InstallAsync();
-                        }
-
-                        // Update library details
-                        if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.OriginApp.Library)
-                        {
-                            App.UpdateAppPanel(CurrentTask.OriginApp.Library);
-                        }
+                    // Update library details
+                    if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.App.Library)
+                    {
+                        App.UpdateAppPanel(CurrentTask.App.Library);
                     }
                 }
 

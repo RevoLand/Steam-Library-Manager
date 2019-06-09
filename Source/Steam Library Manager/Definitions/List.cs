@@ -26,8 +26,7 @@ namespace Steam_Library_Manager.Definitions
         public class TaskInfo : INotifyPropertyChanged
         {
             public Enums.TaskType TaskType { get; set; }
-            public SteamAppInfo SteamApp { get; set; }
-            public OriginAppInfo OriginApp { get; set; }
+            public App App { get; set; }
             public Library TargetLibrary { get; set; }
             public Enums.CompactLevel CompactLevel { get; set; } = (Enums.CompactLevel)Enum.Parse(typeof(Enums.CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
             public bool Compact { get; set; } = true;
@@ -97,6 +96,7 @@ namespace Steam_Library_Manager.Definitions
             public Library Library { get; set; }
             public long Size { get; set; }
             public string PrettyFolderSize => Functions.FileSystem.FormatBytes(Size);
+            public string JunkReason { get; set; }
         }
     }
 }

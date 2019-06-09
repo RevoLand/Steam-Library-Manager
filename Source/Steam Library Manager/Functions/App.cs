@@ -12,12 +12,12 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
+        public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, int StateFlag, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
                 // Make a new definition for app
-                var appInfo = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(Path.Combine(Library.Steam.CommonFolder.FullName, InstallationPath)))
+                var appInfo = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(Path.Combine(Library.DirectoryList["Common"].FullName, InstallationPath)))
                 {
                     // Set game name
                     AppName = AppName,
@@ -34,13 +34,16 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
-                if (!appInfo.InstallationDirectory.Exists && !appInfo.DownloadFolder.Exists && !appInfo.IsCompressed && !appInfo.IsSteamBackup)
+                if (!appInfo.InstallationDirectory.Exists && StateFlag == 4 && !appInfo.IsCompressed && !appInfo.IsSteamBackup)
                 {
+                    var acfFile = new FileInfo(Path.Combine(Library.DirectoryList["SteamApps"].FullName, $"appmanifest_{appInfo.AppId}.acf"));
+
                     Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
-                        FSInfo = new FileInfo(appInfo.FullAcfPath.FullName),
-                        Size = appInfo.FullAcfPath.Length,
-                        Library = Library
+                        FSInfo = acfFile,
+                        Size = acfFile.Length,
+                        Library = Library,
+                        JunkReason = "Installation not found and StateFlag equals to 4"
                     });
 
                     return; // Do not add pre-loads to list
@@ -75,7 +78,7 @@ namespace Steam_Library_Manager.Functions
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
-                        List<FileInfo> gameFiles = appInfo.GetFileList();
+                        var gameFiles = appInfo.GetFileList();
                         long gameSize = 0;
 
                         System.Threading.Tasks.Parallel.ForEach(gameFiles, file => Interlocked.Add(ref gameSize, file.Length));
@@ -92,7 +95,7 @@ namespace Steam_Library_Manager.Functions
                 appInfo.IsCompacted = await appInfo.CompactStatus().ConfigureAwait(false);
 
                 // Add our game details to global list
-                Library.Steam.Apps.Add(appInfo);
+                Library.Apps.Add(appInfo);
 
                 if (Definitions.SLM.CurrentSelectedLibrary == Library)
                 {
@@ -130,7 +133,7 @@ namespace Steam_Library_Manager.Functions
                                 continue;
                             }
 
-                            await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
+                            await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value), targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
                         }
                     }
                 }

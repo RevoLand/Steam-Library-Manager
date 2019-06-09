@@ -11,13 +11,12 @@ using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class OriginLibrary : LibraryBase
+    public class OriginLibrary : Library
     {
-        public OriginLibrary(string fullPath, Library library, bool isMain = false)
+        public OriginLibrary(string fullPath, bool isMain = false)
         {
             FullPath = fullPath;
             IsMain = isMain;
-            Library = library;
         }
 
         public override async void UpdateAppListAsync()
@@ -92,7 +91,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (manifestVersion == new Version("4.0"))
                             {
-                                originAppInfo = new OriginAppInfo(Library,
+                                originAppInfo = new OriginAppInfo(this,
                                     xml.Root.Element("gameTitles")?.Elements("gameTitle")
                                         ?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
                                     Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements()
@@ -116,7 +115,7 @@ namespace Steam_Library_Manager.Definitions
                                     locales.Add(locale.Value);
                                 }
 
-                                originAppInfo = new OriginAppInfo(Library,
+                                originAppInfo = new OriginAppInfo(this,
                                     xml.Root.Element("metadata")?.Elements("localeInfo")
                                         ?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
                                     Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value
@@ -156,9 +155,9 @@ namespace Steam_Library_Manager.Definitions
                             Apps.Add(originAppInfo);
                         });
 
-                if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == Library)
+                if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)
                 {
-                    Functions.App.UpdateAppPanel(Library);
+                    Functions.App.UpdateAppPanel(this);
                 }
             }
             catch (Exception ex)
@@ -192,7 +191,7 @@ namespace Steam_Library_Manager.Definitions
             }
             else
             {
-                List.Libraries.Remove(Library);
+                List.Libraries.Remove(this);
             }
         }
 
@@ -210,6 +209,11 @@ namespace Steam_Library_Manager.Definitions
                 Debug.WriteLine(ex);
                 return null;
             }
+        }
+
+        public override void UpdateJunks()
+        {
+            throw new NotImplementedException();
         }
     }
 }

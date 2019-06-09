@@ -82,9 +82,9 @@ namespace Steam_Library_Manager.Forms
             {
                 if ((string)(sender as Button)?.Tag == "Refresh")
                 {
-                    foreach (Definitions.Library Library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
+                    foreach (var Library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
                     {
-                        Library.Steam.UpdateJunks();
+                        Library.UpdateJunks();
                     }
                 }
 
@@ -130,7 +130,7 @@ namespace Steam_Library_Manager.Forms
                                 {
                                     foreach (FileInfo currentFile in ((DirectoryInfo)Junk.FSInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
                                     {
-                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.Steam.SteamAppsFolder.FullName, TargetFolderBrowser.SelectedPath));
+                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.DirectoryList["SteamApps"].FullName, TargetFolderBrowser.SelectedPath));
 
                                         if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                                         {

@@ -9,19 +9,18 @@ using System.Windows;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class SteamLibrary : LibraryBase
+    public class SteamLibrary : Library
     {
-        public DirectoryInfo SteamAppsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamApps"));
-        public DirectoryInfo SteamBackupsFolder => new DirectoryInfo(Path.Combine(FullPath, "SteamBackups"));
-        public DirectoryInfo CommonFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "common"));
-        public DirectoryInfo DownloadFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "downloading"));
-        public DirectoryInfo WorkshopFolder => new DirectoryInfo(Path.Combine(SteamAppsFolder.FullName, "workshop"));
-
-        public SteamLibrary(string fullPath, Library library, bool isMain = false)
+        public SteamLibrary(string fullPath, bool isMain = false)
         {
             FullPath = fullPath;
             IsMain = isMain;
-            Library = library;
+
+            DirectoryList.Add("SteamApps", new DirectoryInfo(Path.Combine(FullPath, "SteamApps")));
+            DirectoryList.Add("SteamBackups", new DirectoryInfo(Path.Combine(FullPath, "SteamBackups")));
+            DirectoryList.Add("Common", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "common")));
+            DirectoryList.Add("Download", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "downloading")));
+            DirectoryList.Add("Workshop", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "workshop")));
         }
 
         public override async void UpdateAppListAsync()
@@ -33,18 +32,18 @@ namespace Steam_Library_Manager.Definitions
 
                 IsUpdatingAppList = true;
 
-                SteamAppsFolder.Refresh();
+                DirectoryList["SteamApps"].Refresh();
 
-                if (!SteamAppsFolder.Exists)
+                if (!DirectoryList["SteamApps"].Exists)
                 {
-                    SteamAppsFolder.Create();
-                    SteamAppsFolder.Refresh();
+                    DirectoryList["SteamApps"].Create();
+                    DirectoryList["SteamApps"].Refresh();
 
-                    if (!SteamAppsFolder.Exists)
+                    if (!DirectoryList["SteamApps"].Exists)
                     {
                         MessageBox.Show(Framework.StringFormat.Format(
                             Functions.SLM.Translate(nameof(Properties.Resources.SteamLibrary_CantCreate)),
-                            new { SteamAppsFolderFullPath = SteamAppsFolder.FullName }));
+                            new { SteamAppsFolderFullPath = DirectoryList["SteamApps"].FullName }));
                         return;
                     }
                 }
@@ -55,7 +54,7 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Foreach *.acf file found in library
-                await SteamAppsFolder.EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly)
+                await DirectoryList["SteamApps"].EnumerateFiles("appmanifest_*.acf", SearchOption.TopDirectoryOnly)
                     .ParallelForEachAsync(
                         async acfFile =>
                         {
@@ -72,27 +71,28 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     FSInfo = new FileInfo(acfFile.FullName),
                                     Size = acfFile.Length,
-                                    Library = Library
+                                    Library = this,
+                                    JunkReason = "Broken(?) acf file - no childs found"
                                 });
 
                                 return;
                             }
 
-                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value),
+                            await Functions.App.AddSteamAppAsync(Convert.ToInt32(keyValReader["appid"].Value),
                                 keyValReader["name"].Value ?? keyValReader["UserConfig"]["name"].Value,
-                                keyValReader["installdir"].Value, Library,
-                                Convert.ToInt64(keyValReader["SizeOnDisk"].Value),
+                                keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value),
+                                this, Convert.ToInt64(keyValReader["SizeOnDisk"].Value),
                                 Convert.ToInt64(keyValReader["LastUpdated"].Value), false).ConfigureAwait(false);
                         });
 
                 // Do a loop for each *.zip file in library
-                await Directory.EnumerateFiles(SteamAppsFolder.FullName, "*.zip", SearchOption.TopDirectoryOnly)
-                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, Library)); });
+                await Directory.EnumerateFiles(DirectoryList["SteamApps"].FullName, "*.zip", SearchOption.TopDirectoryOnly)
+                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, this)); });
 
-                SteamBackupsFolder.Refresh();
-                if (Library.Type == Enums.LibraryType.SLM && SteamBackupsFolder.Exists)
+                DirectoryList["SteamBackups"].Refresh();
+                if (Type == Enums.LibraryType.SLM && DirectoryList["SteamBackups"].Exists)
                 {
-                    await SteamBackupsFolder.EnumerateFiles("*.sis", SearchOption.AllDirectories).ParallelForEachAsync(
+                    await DirectoryList["SteamBackups"].EnumerateFiles("*.sis", SearchOption.AllDirectories).ParallelForEachAsync(
                         async skuFile =>
                         {
                             var keyValReader = new Framework.KeyValue();
@@ -109,7 +109,7 @@ namespace Steam_Library_Manager.Definitions
                                     continue;
 
                                 await Functions.App.AddSteamAppAsync(Convert.ToInt32(app.Value), appNames[i],
-                                    skuFile.DirectoryName, Library, appSize, skuFile.LastWriteTimeUtc.ToUnixTimestamp(),
+                                    skuFile.DirectoryName, 4, this, appSize, skuFile.LastWriteTimeUtc.ToUnixTimestamp(),
                                     false, true).ConfigureAwait(false);
 
                                 if (appNames.Length > 1)
@@ -118,9 +118,9 @@ namespace Steam_Library_Manager.Definitions
                         });
                 }
 
-                if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == Library)
+                if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)
                 {
-                    Functions.App.UpdateAppPanel(Library);
+                    Functions.App.UpdateAppPanel(this);
                 }
 
                 IsUpdatingAppList = false;
@@ -168,9 +168,9 @@ namespace Steam_Library_Manager.Definitions
             {
                 // Opens game installation path in explorer
                 case "disk":
-                    if (SteamAppsFolder.Exists)
+                    if (DirectoryList["SteamApps"].Exists)
                     {
-                        Process.Start(SteamAppsFolder.FullName);
+                        Process.Start(DirectoryList["SteamApps"].FullName);
                     }
 
                     break;
@@ -255,19 +255,19 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
-                if (SteamAppsFolder.Exists)
+                if (DirectoryList["SteamApps"].Exists)
                 {
-                    await Task.Run(() => SteamAppsFolder.Delete(true)).ConfigureAwait(true);
+                    await Task.Run(() => DirectoryList["SteamApps"].Delete(true)).ConfigureAwait(true);
                 }
 
-                if (WorkshopFolder.Exists)
+                if (DirectoryList["Workshop"].Exists)
                 {
-                    await Task.Run(() => WorkshopFolder.Delete(true)).ConfigureAwait(true);
+                    await Task.Run(() => DirectoryList["Workshop"].Delete(true)).ConfigureAwait(true);
                 }
 
-                if (DownloadFolder.Exists)
+                if (DirectoryList["Download"].Exists)
                 {
-                    await Task.Run(() => DownloadFolder.Delete(true)).ConfigureAwait(true);
+                    await Task.Run(() => DirectoryList["Download"].Delete(true)).ConfigureAwait(true);
                 }
             }
             catch (Exception ex)
@@ -285,7 +285,7 @@ namespace Steam_Library_Manager.Definitions
                     DeleteFilesAsync();
                 }
 
-                List.Libraries.Remove(Library);
+                List.Libraries.Remove(this);
 
                 await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
@@ -323,7 +323,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        public void UpdateJunks()
+        public override void UpdateJunks()
         {
             try
             {
@@ -332,15 +332,15 @@ namespace Steam_Library_Manager.Definitions
                     Task.Delay(5000);
                 }
 
-                CommonFolder.Refresh();
-                if (CommonFolder.Exists)
+                DirectoryList["Common"].Refresh();
+                if (DirectoryList["Common"].Exists)
                 {
-                    foreach (var dirInfo in CommonFolder.GetDirectories().ToList().Where(
+                    foreach (var dirInfo in DirectoryList["Common"].GetDirectories().ToList().Where(
                         x => Apps.Count(y => string.Equals(y.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)) == 0
                         && x.Name != "241100" // Steam controller configs
                         && Functions.TaskManager.TaskList.Count(
-                            z => string.Equals(z.SteamApp.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)
-                            && z.TargetLibrary == Library
+                            z => string.Equals(z.App.InstallationDirectory.Name, x.Name, StringComparison.InvariantCultureIgnoreCase)
+                            && z.TargetLibrary == this
                             ) == 0
                         ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
                     {
@@ -348,7 +348,8 @@ namespace Steam_Library_Manager.Definitions
                         {
                             FSInfo = dirInfo,
                             Size = Functions.FileSystem.GetDirectorySize(dirInfo, true),
-                            Library = Library
+                            Library = this,
+                            JunkReason = "Headless folder (No corresponding acf file)"
                         };
 
                         if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
@@ -358,62 +359,12 @@ namespace Steam_Library_Manager.Definitions
                     }
                 }
 
-                WorkshopFolder.Refresh();
-                if (WorkshopFolder.Exists)
+                DirectoryList["Workshop"].Refresh();
+                if (DirectoryList["Workshop"].Exists)
                 {
-                    foreach (var fileDetails in WorkshopFolder.EnumerateFiles("appworkshop_*.acf", SearchOption.TopDirectoryOnly).ToList().Where(
-                        x => Apps.Count(y => x.Name == y.WorkShopAcfName) == 0
-                        && !string.Equals(x.Name, "appworkshop_241100.acf" // Steam Controller Configs
-, StringComparison.InvariantCultureIgnoreCase) // Steam Controller Configs
-                        && Functions.TaskManager.TaskList.Count(
-                            z => string.Equals(z.SteamApp.WorkShopAcfName, x.Name
-, StringComparison.InvariantCultureIgnoreCase)
-                            && z.TargetLibrary == Library
-                            ) == 0
-                        ))
+                    if (Directory.Exists(Path.Combine(DirectoryList["Workshop"].FullName, "downloads")))
                     {
-                        var junk = new List.JunkInfo
-                        {
-                            FSInfo = fileDetails,
-                            Size = fileDetails.Length,
-                            Library = Library
-                        };
-
-                        if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
-                        {
-                            List.LCProgress.Report(junk);
-                        }
-                    }
-
-                    if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "content")))
-                    {
-                        foreach (var dirInfo in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "content")).GetDirectories().ToList().Where(
-                            x => Apps.Count(y => y.AppId.ToString() == x.Name) == 0
-                            && x.Name != "241100" // Steam controller configs
-                            && Functions.TaskManager.TaskList.Count(
-                                z => string.Equals(z.SteamApp.WorkShopPath.Name, x.Name
-, StringComparison.InvariantCultureIgnoreCase)
-                                && z.TargetLibrary == Library
-                            ) == 0
-                            ).OrderByDescending(x => Functions.FileSystem.GetDirectorySize(x, true)))
-                        {
-                            var junk = new List.JunkInfo
-                            {
-                                FSInfo = dirInfo,
-                                Size = Functions.FileSystem.GetDirectorySize(dirInfo, true),
-                                Library = Library
-                            };
-
-                            if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
-                            {
-                                List.LCProgress.Report(junk);
-                            }
-                        }
-                    }
-
-                    if (Directory.Exists(Path.Combine(WorkshopFolder.FullName, "downloads")))
-                    {
-                        foreach (var fileDetails in new DirectoryInfo(Path.Combine(WorkshopFolder.FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).ToList().Where(
+                        foreach (var fileDetails in new DirectoryInfo(Path.Combine(DirectoryList["Workshop"].FullName, "downloads")).EnumerateFiles("*.patch", SearchOption.TopDirectoryOnly).ToList().Where(
                             x => Apps.Count(y => x.Name.Contains($"state_{y.AppId}_")) == 0
                             ))
                         {
@@ -421,7 +372,8 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 FSInfo = fileDetails,
                                 Size = fileDetails.Length,
-                                Library = Library
+                                Library = this,
+                                JunkReason = "Headless file (No corresponding installation)"
                             };
 
                             if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)

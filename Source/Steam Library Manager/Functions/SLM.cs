@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Functions
                     System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.Origin.IsMain).ToList())
+                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.IsMain).ToList())
                     {
                         if (BackupDirs.Contains(Library.DirectoryInfo.FullName))
                             continue;
@@ -232,20 +232,18 @@ namespace Steam_Library_Manager.Functions
                         LibraryPath += Path.DirectorySeparatorChar;
                     }
 
-                    Definitions.Library Library = new Definitions.Library
+                    Definitions.SteamLibrary Library = new Definitions.SteamLibrary(LibraryPath)
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
                         DirectoryInfo = new DirectoryInfo(LibraryPath)
                     };
 
-                    Library.Steam = new Definitions.SteamLibrary(LibraryPath, Library);
-
                     Definitions.List.LibraryProgress.Report(Library);
 
-                    if (Library.Steam != null && Directory.Exists(LibraryPath))
+                    if (Directory.Exists(LibraryPath))
                     {
-                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(true);
-                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(true);
+                        await Task.Run(() => Library.UpdateAppListAsync()).ConfigureAwait(true);
+                        await Task.Run(() => Library.UpdateJunks()).ConfigureAwait(true);
                     }
                 }
                 catch (Exception ex)
@@ -275,16 +273,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     Library.DirectoryInfo.Refresh();
 
-                    if (Library.Steam != null)
-                    {
-                        await Task.Run(() => Library.Steam.UpdateAppListAsync()).ConfigureAwait(true);
-                        await Task.Run(() => Library.Steam.UpdateJunks()).ConfigureAwait(true);
-                    }
-
-                    if (Library.Origin != null)
-                    {
-                        await Task.Run(() => Library.Origin.UpdateAppListAsync()).ConfigureAwait(true);
-                    }
+                    await Task.Run(Library.UpdateAppListAsync).ConfigureAwait(true);
 
                     Library.UpdateDiskDetails();
                 }

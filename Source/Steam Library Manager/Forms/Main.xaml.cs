@@ -41,39 +41,20 @@ namespace Steam_Library_Manager
 
                 switch (library.Type)
                 {
-                    case Definitions.Enums.LibraryType.Steam:
-                    case Definitions.Enums.LibraryType.SLM:
+                    default:
                         FormAccessor.AppView.AppPanel.ItemsSource =
                             Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk"
                             || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated"
                             || Properties.Settings.Default.defaultGameSortingMethod == "LastPlayed"
                                 ? string.IsNullOrEmpty(search)
-                                    ? library.Steam.Apps.OrderByDescending(sortingMethod).ToList()
-                                    : library.Steam.Apps.Where(
+                                    ? library.Apps.OrderByDescending(sortingMethod).ToList()
+                                    : library.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
                                              >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderByDescending(sortingMethod).ToList()
                                 : string.IsNullOrEmpty(search)
-                                    ? library.Steam.Apps.OrderBy(sortingMethod).ToList()
-                                    : library.Steam.Apps.Where(
-                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
-                                    ).OrderBy(sortingMethod).ToList();
-                        break;
-
-                    case Definitions.Enums.LibraryType.Origin:
-                        FormAccessor.AppView.AppPanel.ItemsSource =
-                            Properties.Settings.Default.defaultGameSortingMethod == "sizeOnDisk"
-                            || Properties.Settings.Default.defaultGameSortingMethod == "LastUpdated"
-                                ? string.IsNullOrEmpty(search)
-                                    ? library.Origin.Apps.OrderByDescending(sortingMethod).ToList()
-                                    : library.Origin.Apps.Where(
-                                        y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
-                                             >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
-                                    ).OrderByDescending(sortingMethod).ToList()
-                                : string.IsNullOrEmpty(search)
-                                    ? library.Origin.Apps.OrderBy(sortingMethod).ToList()
-                                    : library.Origin.Apps.Where(
+                                    ? library.Apps.OrderBy(sortingMethod).ToList()
+                                    : library.Apps.Where(
                                         y => y.AppName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase)
                                              >= 0 || y.AppId.ToString().Contains(search) // Search by app ID
                                     ).OrderBy(sortingMethod).ToList();
@@ -167,19 +148,14 @@ namespace Steam_Library_Manager
             Application.Current.Shutdown();
         }
 
-        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext).ParseMenuItemAction((string)(sender as MenuItem)?.Tag);
+        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
 
         public void AppCMenuItem_Click(object sender, RoutedEventArgs e)
         {
             switch (Definitions.SLM.CurrentSelectedLibrary.Type)
             {
-                case Definitions.Enums.LibraryType.Steam:
-                case Definitions.Enums.LibraryType.SLM:
-                    ((Definitions.SteamAppInfo)(sender as MenuItem)?.DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
-                    break;
-
-                case Definitions.Enums.LibraryType.Origin:
-                    ((Definitions.OriginAppInfo)(sender as MenuItem)?.DataContext).ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
+                default:
+                    ((Definitions.App) (sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string) ((MenuItem) sender)?.Tag);
                     break;
             }
         }

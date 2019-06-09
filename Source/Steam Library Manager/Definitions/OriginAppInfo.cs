@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class OriginAppInfo : AppBase
+    public class OriginAppInfo : App
     {
         public string[] Locales { get; set; }
 
@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Definitions
             IsCompacted = CompactStatus().Result;
         }
 
-        public async void ParseMenuItemActionAsync(string action)
+        public override async void ParseMenuItemActionAsync(string action)
         {
             try
             {
@@ -53,11 +53,11 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "compact":
-                        if (Functions.TaskManager.TaskList.Count(x => x.OriginApp == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.App == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compact) == 0)
                         {
                             Functions.TaskManager.AddTask(new List.TaskInfo
                             {
-                                OriginApp = this,
+                                App = this,
                                 TargetLibrary = Library,
                                 TaskType = Enums.TaskType.Compact
                             });
@@ -79,7 +79,7 @@ namespace Steam_Library_Manager.Definitions
                     case "deleteappfiles":
                         await Task.Run(async () => await DeleteFilesAsync()).ConfigureAwait(false);
 
-                        Library.Origin.Apps.Remove(this);
+                        Library.Apps.Remove(this);
                         if (SLM.CurrentSelectedLibrary == Library)
                             Functions.App.UpdateAppPanel(Library);
 
@@ -88,7 +88,7 @@ namespace Steam_Library_Manager.Definitions
                     case "deleteappfilestm":
                         Functions.TaskManager.AddTask(new List.TaskInfo
                         {
-                            OriginApp = this,
+                            App = this,
                             TargetLibrary = Library,
                             TaskType = Enums.TaskType.Delete
                         });

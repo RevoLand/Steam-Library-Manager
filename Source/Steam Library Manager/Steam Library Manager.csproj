@@ -136,6 +136,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll</HintPath>
@@ -154,11 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Definitions\AppBase.cs" />
+    <Compile Include="Definitions\App.cs" />
     <Compile Include="Definitions\ContextMenuItem.cs" />
     <Compile Include="Definitions\Enums\Enums.cs" />
     <Compile Include="Definitions\Global.cs" />
-    <Compile Include="Definitions\LibraryBase.cs" />
     <Compile Include="Definitions\Library.cs" />
     <Compile Include="Definitions\OriginAppInfo.cs" />
     <Compile Include="Definitions\OriginLibrary.cs" />

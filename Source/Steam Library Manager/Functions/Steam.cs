@@ -59,63 +59,77 @@ namespace Steam_Library_Manager.Functions
             #region Library Context Menu Item Definitions
 
             // Open library in explorer ({0})
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            var menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_Open)),
                 Action = "Disk",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToOffline = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 IsSeparator = true,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToOffline = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             // Remove library & files
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSteam)),
                 Action = "deleteLibrary",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToOffline = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             // Delete games in library
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_DeleteGames)),
                 Action = "deleteLibrarySLM",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToOffline = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 IsSeparator = true,
                 ShowToNormal = false,
-                LibraryType = Definitions.Enums.LibraryType.SLM,
                 ShowToOffline = false,
                 ShowToSLMBackup = true
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             // Remove from SLM
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSLM)),
                 Action = "RemoveFromList",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Minus,
-                LibraryType = Definitions.Enums.LibraryType.SLM,
-                ShowToNormal = false,
                 ShowToSLMBackup = true
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             #endregion Library Context Menu Item Definitions
         }
@@ -125,133 +139,174 @@ namespace Steam_Library_Manager.Functions
             #region App Context Menu Item Definitions
 
             // Run
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            var menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Play)),
                 Action = "steam://run/{0}",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToSteamBackup = false,
                 ShowToCompressed = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 ShowToCompressed = false,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 IsSeparator = true,
                 ShowToSteamBackup = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Compress
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Compress)),
                 Action = "Compress",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = true,
                 ShowToSteamBackup = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Compact
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = "Compact",
                 Action = "compact",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = false,
                 ShowToSteamBackup = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 ShowToCompressed = false,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 IsSeparator = true,
                 ShowToSteamBackup = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Show on disk
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DiskInfo)),
                 Action = "Disk",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = true,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // View ACF
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewACF)),
                 Action = "acffile",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.PencilSquareOutline,
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 ShowToCompressed = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Game hub
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GameHub)),
                 Action = "steam://url/GameHub/{0}",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Book
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 IsSeparator = true
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Workshop
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Workshop)),
                 Action = "steam://url/SteamWorkshopPage/{0}",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Subscribed Workshop Items
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_SubscribedWorkshopItems)),
                 Action = "https://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Cogs
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 IsSeparator = true,
-                LibraryType = Definitions.Enums.LibraryType.Steam
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Delete files (using Task Manager)
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Delete files (using Task Manager)
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
-                LibraryType = Definitions.Enums.LibraryType.Steam,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             #endregion App Context Menu Item Definitions
         }
@@ -438,30 +493,30 @@ namespace Steam_Library_Manager.Functions
 
                     foreach (var CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
                     {
-                        if (CurrentLibrary.Steam.Apps.Count == 0)
+                        if (CurrentLibrary.Apps.Count == 0)
                         {
                             continue;
                         }
 
                         foreach (var LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (var CurrentApp in CurrentLibrary.Steam.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
+                            foreach (var CurrentApp in CurrentLibrary.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
                             {
                                 ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = CurrentApp.AppName }));
 
-                                if (LibraryToCheck.Steam.Apps.Count(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
+                                if (LibraryToCheck.Apps.Count(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
                                 {
-                                    var LatestApp = LibraryToCheck.Steam.Apps.First(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
+                                    var LatestApp = LibraryToCheck.Apps.First(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (Functions.TaskManager.TaskList.Count(x => x.SteamApp.AppId == CurrentApp.AppId && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
+                                    if (TaskManager.TaskList.Count(x => x.App.AppId == CurrentApp.AppId && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
                                     {
-                                        Definitions.List.TaskInfo NewTask = new Definitions.List.TaskInfo
+                                        Definitions.List.TaskInfo newTask = new Definitions.List.TaskInfo
                                         {
-                                            SteamApp = LatestApp,
+                                            App = LatestApp,
                                             TargetLibrary = CurrentApp.Library
                                         };
 
-                                        Functions.TaskManager.AddTask(NewTask);
+                                        TaskManager.AddTask(newTask);
                                         Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
                                     }
                                 }
@@ -487,18 +542,16 @@ namespace Steam_Library_Manager.Functions
                         LibraryPath += Path.DirectorySeparatorChar;
                     }
 
-                    var newLibrary = new Definitions.Library
+                    var newLibrary = new Definitions.SteamLibrary(LibraryPath, IsMainLibrary)
                     {
                         Type = Definitions.Enums.LibraryType.Steam,
                         DirectoryInfo = new DirectoryInfo(LibraryPath)
                     };
 
-                    newLibrary.Steam = new Definitions.SteamLibrary(LibraryPath, newLibrary, IsMainLibrary);
-
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
-                    await Task.Run(() => newLibrary.Steam.UpdateAppListAsync()).ConfigureAwait(true);
-                    await Task.Run(() => newLibrary.Steam.UpdateJunks()).ConfigureAwait(true);
+                    await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run(newLibrary.UpdateJunks).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
@@ -589,11 +642,11 @@ namespace Steam_Library_Manager.Functions
 
                     return Definitions.List.Libraries.Any(x =>
                      x.Type == Definitions.Enums.LibraryType.Steam
-                     && (x.Steam.FullPath.ToLowerInvariant() == NewLibraryPath
-                     || x.Steam.CommonFolder.FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.Steam.DownloadFolder.FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.Steam.WorkshopFolder.FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.Steam.SteamAppsFolder.FullName.ToLowerInvariant() == NewLibraryPath)
+                     && (x.FullPath.ToLowerInvariant() == NewLibraryPath
+                     || x.DirectoryList["Common"].FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.DirectoryList["Download"].FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.DirectoryList["Workshop"].FullName.ToLowerInvariant() == NewLibraryPath
+                     || x.DirectoryList["SteamApps"].FullName.ToLowerInvariant() == NewLibraryPath)
                     );
                 }
                 // In any error return true to prevent possible bugs

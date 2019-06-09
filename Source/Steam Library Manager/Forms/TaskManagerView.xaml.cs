@@ -85,7 +85,7 @@ namespace Steam_Library_Manager.Forms
                         {
                             if (CurrentTask.Active && Functions.TaskManager.Status && !CurrentTask.Completed)
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { AppName = CurrentTask.SteamApp?.AppName ?? CurrentTask.OriginApp?.AppName })).ConfigureAwait(true);
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { CurrentTask.App?.AppName })).ConfigureAwait(true);
                             }
                             else
                             {
@@ -120,9 +120,9 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && ((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.InstallationDirectory.Exists == true)
+                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && ((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.App.InstallationDirectory.Exists == true)
                 {
-                    Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.SteamApp.InstallationDirectory.FullName);
+                    Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.App.InstallationDirectory.FullName);
                 }
             }
             catch (Exception ex)

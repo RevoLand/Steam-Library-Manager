@@ -1,116 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Steam_Library_Manager.Definitions
 {
-    public class Library : INotifyPropertyChanged
+    public abstract class Library : INotifyPropertyChanged
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
+        public readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public Enums.LibraryType Type { get; set; }
-        public System.IO.DirectoryInfo DirectoryInfo { get; set; }
-        public SteamLibrary Steam { get; set; }
-        public OriginLibrary Origin { get; set; }
+        public bool IsMain { get; set; }
+        public bool IsUpdatingAppList { get; set; }
+        public DirectoryInfo DirectoryInfo { get; set; }
+        public string FullPath { get; set; }
+        public System.Collections.ObjectModel.ObservableCollection<dynamic> Apps { get; set; } = new System.Collections.ObjectModel.ObservableCollection<dynamic>();
+        public Dictionary<string, System.IO.DirectoryInfo> DirectoryList { get; set; } = new Dictionary<string, System.IO.DirectoryInfo>();
 
-        public List<FrameworkElement> ContextMenu
+        public long FreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName) : 0;
+        public long TotalSize => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName) : 0;
+        public string PrettyFreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}" : "";
+        public int FreeSpacePerc => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName))) : 0;
+
+
+        public List<FrameworkElement> ContextMenu => _contextMenuElements ?? (_contextMenuElements = GenerateCMenuItems());
+        private List<FrameworkElement> _contextMenuElements;
+
+        public List<FrameworkElement> GenerateCMenuItems()
         {
-            get
+            var cMenu = new List<FrameworkElement>();
+            try
             {
-                var cMenu = new List<FrameworkElement>();
-                try
+                foreach (var cMenuItem in List.LibraryCMenuItems.ToList().Where(x => x.IsActive && x.AllowedLibraryTypes.Contains(Type)))
                 {
-                    foreach (var cMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.ShowToSLMBackup))
+                    if (!cMenuItem.ShowToNormal)
                     {
-                        if (!cMenuItem.ShowToNormal && !cMenuItem.ShowToSLMBackup)
-                        {
-                            continue;
-                        }
-
-                        if (cMenuItem.IsSeparator)
-                        {
-                            cMenu.Add(new Separator());
-                        }
-                        else
-                        {
-                            MenuItem SLMItem = new MenuItem()
-                            {
-                                Tag = cMenuItem.Action,
-                                Header = Framework.StringFormat.Format(cMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
-                                Icon = Functions.FAwesome.GetAwesomeIcon(cMenuItem.Icon, cMenuItem.IconColor),
-                                HorizontalContentAlignment = HorizontalAlignment.Left,
-                                VerticalContentAlignment = VerticalAlignment.Center
-                            };
-
-                            SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
-
-                            cMenu.Add(SLMItem);
-                        }
+                        continue;
                     }
 
-                    return cMenu;
+                    if (cMenuItem.IsSeparator)
+                    {
+                        cMenu.Add(new Separator());
+                    }
+                    else
+                    {
+                        MenuItem SLMItem = new MenuItem()
+                        {
+                            Tag = cMenuItem.Action,
+                            Header = Framework.StringFormat.Format(cMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
+                            Icon = Functions.FAwesome.GetAwesomeIcon(cMenuItem.Icon, cMenuItem.IconColor),
+                            HorizontalContentAlignment = HorizontalAlignment.Left,
+                            VerticalContentAlignment = VerticalAlignment.Center
+                        };
+
+                        SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
+
+                        cMenu.Add(SLMItem);
+                    }
                 }
-                catch (FormatException)
-                {
-                    return cMenu;
-                }
+
+                return cMenu;
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FormatException)), new { ExceptionMessage = ex.Message }));
+                return cMenu;
             }
         }
 
-        public void ParseMenuItemAction(string Action)
-        {
-            if (Type == Enums.LibraryType.SLM)
-            {
-                switch (Action.ToLowerInvariant())
-                {
-                    // Opens game installation path in explorer
-                    case "disk":
-                        if (DirectoryInfo.Exists)
-                        {
-                            Process.Start(DirectoryInfo.FullName);
-                        }
+        public abstract void UpdateAppListAsync();
 
-                        break;
-                    // Removes a backup library from list
-                    case "removefromlist":
-                        try
-                        {
-                            if (Type == Enums.LibraryType.SLM)
-                            {
-                                List.Libraries.Remove(this);
+        public abstract void ParseMenuItemActionAsync(string action);
 
-                                if (SLM.CurrentSelectedLibrary == this)
-                                    Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.Fatal(ex);
-                        }
-                        break;
-                }
-            }
-            else if (Type == Enums.LibraryType.Steam)
-            {
-                Steam.ParseMenuItemActionAsync(Action);
-            }
-            else if (Type == Enums.LibraryType.Origin)
-            {
-                Origin.ParseMenuItemActionAsync(Action);
-            }
-        }
+        public abstract void RemoveLibraryAsync(bool withFiles);
 
-        public long FreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName) : 0;
-
-        public long TotalSize => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName) : 0;
-
-        public string PrettyFreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}" : "";
-
-        public int FreeSpacePerc => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(System.IO.Path.DirectorySeparatorChar.ToString()) ? 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName))) : 0;
+        public abstract void UpdateJunks();
 
         public void UpdateDiskDetails()
         {
