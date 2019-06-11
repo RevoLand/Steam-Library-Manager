@@ -476,7 +476,7 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
     <value>Oyunları buna göre sırala</value>
   </data>
-  <data name="Forms_Settings_StartTaskManagerOnStartup" xml:space="preserve">
+  <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
     <value>Program başlangıcında Görev Yöneticisini başlat</value>
   </data>
   <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">

@@ -20,7 +20,7 @@
                         </Grid.ContextMenu>
                         <Grid>
                             <TextBlock Text="{Binding FSInfo.Name}" TextWrapping="Wrap" />
-                            <TextBlock Text="{Binding JunkReason}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding JunkReason}" HorizontalAlignment="Right" />
                             <Grid VerticalAlignment="Bottom" Margin="0,25,0,0">
                                 <TextBlock Text="{Binding FSInfo.FullName}" HorizontalAlignment="Left" />
                                 <WrapPanel HorizontalAlignment="Right">
@@ -32,15 +32,49 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
 
         <!-- Button: Delete All-->
-        <Button Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Delete All Items" />
+                        <TextBlock Text="Attempts to delete every folder/file in the given list." />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
 
         <!-- Button: Move All-->
-        <Button Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+        <Button Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Move All Items" />
+                        <TextBlock Text="Moves every folder/file in the given list to selected path." />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
 
         <!-- Button: Refresh All-->
-        <Button Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Refresh Items" />
+                        <TextBlock Text="Refreshes the junk list for Steam libraries." />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
     </Grid>
 </UserControl>

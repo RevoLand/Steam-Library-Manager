@@ -1126,11 +1126,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start Task Manager on Startup.
+        ///   Looks up a localized string similar to Start Task Manager at Startup.
         /// </summary>
-        internal static string Forms_Settings_StartTaskManagerOnStartup {
+        internal static string Forms_Settings_StartTaskManagerAtStartup {
             get {
-                return ResourceManager.GetString("Forms_Settings_StartTaskManagerOnStartup", resourceCulture);
+                return ResourceManager.GetString("Forms_Settings_StartTaskManagerAtStartup", resourceCulture);
             }
         }
         

@@ -611,22 +611,74 @@
                     </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking on a task will open it's location in file explorer." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
 
         <WrapPanel Margin="0, 0, 0, 265" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
+            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Start Task Manager" />
+                            <TextBlock Text="Will start the task manager. Task Manager will process the queued items or wait for new items." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
-            <Button Margin="5,0,0,0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
+            <Button Margin="5,0,0,0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Pause Task Manager" />
+                            <TextBlock Text="Pauses task processing and active tasks." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Stop Task Manager -->
-            <Button Margin="5,0,0,0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45"/>
+            <Button Margin="5,0,0,0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Stop Task Manager" />
+                            <TextBlock Text="Stops the task manager and cancel the active task." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45" />
+            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Clear Completed Tasks" />
+                            <TextBlock Text="Will remove the completed tasks from the task list." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Check for Backup Updates -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45"  />
+            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Check for Backup Updates" />
+                            <TextBlock Text="Will compare the games in SLM libraries with Steam libraries to find if there is any update available." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
         </WrapPanel>
         <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 228" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}"/>
@@ -635,8 +687,26 @@
             <TextBlock Text="  |  "/>
             <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
             <TextBlock Text="  |  "/>
-            <CheckBox Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" />
-            <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}" />
+            <CheckBox Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Auto Scroll Logs Window" />
+                            <TextBlock Text="SLM will auto-scroll the logs in the logs window. It may freeze the ui if a lot of small files moved." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Auto Clear Completed Tasks" />
+                            <TextBlock Text="SLM will remove the completed tasks from task manager." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->

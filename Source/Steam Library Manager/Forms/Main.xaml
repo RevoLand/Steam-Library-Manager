@@ -17,9 +17,36 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click" />
-            <Button Content="{l:Static p:Resources.Forms_Main_Translate}" Click="RightWindowCommands_TranslateFormButton_Click" />
-            <Button Content="{l:Static p:Resources.Forms_Main_Discord}" Click="RightWindowCommands_DiscordButton_Click" />
+            <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Donate" />
+                            <TextBlock Text="Opens a webpage with available donation methods. Thank you for your support!" />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="{l:Static p:Resources.Forms_Main_Translate}" Click="RightWindowCommands_TranslateFormButton_Click">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Translate SLM" />
+                            <TextBlock Text="Opens Crowdin project page of SLM which you can contribute to translation of SLM." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="{l:Static p:Resources.Forms_Main_Discord}" Click="RightWindowCommands_DiscordButton_Click">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Discord Group" />
+                            <TextBlock Text="Opens the invitation link for SLM's Discord Group on your favorite web browser." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid Margin="5, 10, 0, 5">
@@ -39,6 +66,14 @@
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </ComboBox.ItemContainerStyle>
+                <ComboBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Sorting Method for Game Panel" />
+                            <TextBlock Text="Lets you select a sorting method for the game panel." />
+                        </StackPanel>
+                    </ToolTip>
+                </ComboBox.ToolTip>
             </ComboBox>
 
             <!-- App listing method -->
@@ -48,6 +83,14 @@
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </ComboBox.ItemContainerStyle>
+                <ComboBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="View Method for Game Panel" />
+                            <TextBlock Text="Lets you switch between Grid and List View for Game Panel" />
+                        </StackPanel>
+                    </ToolTip>
+                </ComboBox.ToolTip>
             </ComboBox>
         </Grid>
 
@@ -59,9 +102,18 @@
 
                     <!-- ListView: App Panel -->
                     <Forms:AppView x:Name="AppView" />
-                    
+
                     <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" />
+                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged">
+                        <TextBox.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="Search for..." />
+                                    <TextBlock Text="Lets you search for a game with it's name or appid." />
+                                </StackPanel>
+                            </ToolTip>
+                        </TextBox.ToolTip>
+                    </TextBox>
                 </Grid>
             </Controls:MetroTabItem>
             <!-- Tab: Task Manager -->

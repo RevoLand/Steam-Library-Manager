@@ -17,18 +17,17 @@ namespace Steam_Library_Manager.Definitions
         public DirectoryInfo DirectoryInfo { get; set; }
         public string FullPath { get; set; }
         public System.Collections.ObjectModel.ObservableCollection<dynamic> Apps { get; set; } = new System.Collections.ObjectModel.ObservableCollection<dynamic>();
-        public Dictionary<string, System.IO.DirectoryInfo> DirectoryList { get; set; } = new Dictionary<string, System.IO.DirectoryInfo>();
+        public Dictionary<string, DirectoryInfo> DirectoryList { get; set; } = new Dictionary<string, DirectoryInfo>();
 
         public long FreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableFreeSpace(DirectoryInfo.FullName) : 0;
         public long TotalSize => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName) : 0;
         public string PrettyFreeSpace => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? $"{Functions.FileSystem.FormatBytes(FreeSpace)} / {Functions.FileSystem.FormatBytes(TotalSize)}" : "";
         public int FreeSpacePerc => DirectoryInfo.Exists && !DirectoryInfo.FullName.StartsWith(Path.DirectorySeparatorChar.ToString()) ? 100 - ((int)Math.Round((double)(100 * FreeSpace) / Functions.FileSystem.GetAvailableTotalSpace(DirectoryInfo.FullName))) : 0;
 
-
         public List<FrameworkElement> ContextMenu => _contextMenuElements ?? (_contextMenuElements = GenerateCMenuItems());
         private List<FrameworkElement> _contextMenuElements;
 
-        public List<FrameworkElement> GenerateCMenuItems()
+        private List<FrameworkElement> GenerateCMenuItems()
         {
             var cMenu = new List<FrameworkElement>();
             try
@@ -46,7 +45,7 @@ namespace Steam_Library_Manager.Definitions
                     }
                     else
                     {
-                        MenuItem SLMItem = new MenuItem()
+                        var menuItem = new MenuItem()
                         {
                             Tag = cMenuItem.Action,
                             Header = Framework.StringFormat.Format(cMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
@@ -55,9 +54,9 @@ namespace Steam_Library_Manager.Definitions
                             VerticalContentAlignment = VerticalAlignment.Center
                         };
 
-                        SLMItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
+                        menuItem.Click += Main.FormAccessor.LibraryCMenuItem_Click;
 
-                        cMenu.Add(SLMItem);
+                        cMenu.Add(menuItem);
                     }
                 }
 

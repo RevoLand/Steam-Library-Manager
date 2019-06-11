@@ -243,6 +243,15 @@
                     </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                        <TextBlock Text="To copy/move a game to another library, simply drag-drop the item to the targeted library." />
+                        <TextBlock Text="Multiple selection/tasking are allowed." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
     </Grid>
 </UserControl>

@@ -474,7 +474,7 @@
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
     <value>Сортировать игры по</value>
   </data>
-  <data name="Forms_Settings_StartTaskManagerOnStartup" xml:space="preserve">
+  <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
     <value>Запустить менеджер задач при запуске</value>
   </data>
   <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">
