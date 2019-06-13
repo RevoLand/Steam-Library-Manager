@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+## [1.5.1.8] - 2019-06-13
+
+### Added
+
+- Auto clear completed tasks
+
+### Changed
+
+- UI Improvements:
+  - Tooltips
+  - Library Cleaner: Reason why junk
+  - Library type logo in library panel
+  - Replace "Create Library" button with "Create Library / Remove Library / Refresh Library" buttons
+- Loading of Origin header images (Load from/save as "appid".jpg rather than a complicated store page id or whatsoever)
+
 ## [1.5.1.7] - 2019-05-31
 
 ### Fixed
