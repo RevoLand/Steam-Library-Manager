@@ -14,7 +14,7 @@
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
                 <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
@@ -66,7 +66,7 @@
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
@@ -104,7 +104,7 @@
         <DataTemplate x:Key="Gamelibrary_GridviewOrigin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
                 <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
@@ -149,7 +149,7 @@
         <DataTemplate x:Key="Gamelibrary_ListviewOrigin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="origin" />
@@ -179,9 +179,9 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+        <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                               Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
-                              Padding="0, -2, 0, 0" dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
+                              dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

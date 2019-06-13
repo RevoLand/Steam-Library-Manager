@@ -92,6 +92,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculation method for games.
+        /// </summary>
+        internal static string Calculation_method_for_games {
+            get {
+                return ResourceManager.GetString("Calculation_method_for_games", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compress.
+        /// </summary>
+        internal static string Compress {
+            get {
+                return ResourceManager.GetString("Compress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{AppName}] An error related to file system is happened while compressing files.
         ///
         ///Error: {ExceptionMessage}.
@@ -119,15 +137,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string CreateLibrary_ExistsMessage {
             get {
                 return ResourceManager.GetString("CreateLibrary_ExistsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam Library Manager.
-        /// </summary>
-        internal static string CreateLibrary_RootError {
-            get {
-                return ResourceManager.GetString("CreateLibrary_RootError", resourceCulture);
             }
         }
         
@@ -303,15 +312,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compress.
-        /// </summary>
-        internal static string Enums_Compress {
-            get {
-                return ResourceManager.GetString("Enums_Compress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         internal static string Enums_Copy {
@@ -474,15 +474,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Updated on: {0}.
-        /// </summary>
-        internal static string Forms_AppView_LastUpdate {
-            get {
-                return ResourceManager.GetString("Forms_AppView_LastUpdate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Forms_Cancel {
@@ -557,15 +548,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Write Time: {0}.
-        /// </summary>
-        internal static string Forms_LibraryCleaner_LastWriteTime {
-            get {
-                return ResourceManager.GetString("Forms_LibraryCleaner_LastWriteTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Move All.
         /// </summary>
         internal static string Forms_LibraryCleaner_MoveAll {
@@ -627,15 +609,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string Forms_LibraryCleaner_RootPathSelectedMessage {
             get {
                 return ResourceManager.GetString("Forms_LibraryCleaner_RootPathSelectedMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to App(s): {0}.
-        /// </summary>
-        internal static string Forms_LibraryView_AppCount {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_AppCount", resourceCulture);
             }
         }
         
@@ -739,15 +712,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suggestion Form.
-        /// </summary>
-        internal static string Forms_Main_SuggestionForm {
-            get {
-                return ResourceManager.GetString("Forms_Main_SuggestionForm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Library.
         /// </summary>
         internal static string Forms_Main_TabHeader_Library {
@@ -838,42 +802,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Background.
-        /// </summary>
-        internal static string Forms_Settings_Background {
-            get {
-                return ResourceManager.GetString("Forms_Settings_Background", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Button BG.
-        /// </summary>
-        internal static string Forms_Settings_ButtonBG {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ButtonBG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Button Click.
-        /// </summary>
-        internal static string Forms_Settings_ButtonClick {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ButtonClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Button Hover.
-        /// </summary>
-        internal static string Forms_Settings_ButtonHover {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ButtonHover", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Calculation method for archive size.
         /// </summary>
         internal static string Forms_Settings_CalculationMethodForArchiveSize {
@@ -937,33 +865,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Context Menu.
-        /// </summary>
-        internal static string Forms_Settings_ContextMenu {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ContextMenu", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Control BG.
-        /// </summary>
-        internal static string Forms_Settings_ControlBG {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ControlBG", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom Theme.
-        /// </summary>
-        internal static string Forms_Settings_CustomTheme {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CustomTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Do NOT Compress.
         /// </summary>
         internal static string Forms_Settings_DoNOTCompress {
@@ -996,24 +897,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string Forms_Settings_GeneralSettings {
             get {
                 return ResourceManager.GetString("Forms_Settings_GeneralSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GrayBrush1.
-        /// </summary>
-        internal static string Forms_Settings_GrayBrush1 {
-            get {
-                return ResourceManager.GetString("Forms_Settings_GrayBrush1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GrayBrush2.
-        /// </summary>
-        internal static string Forms_Settings_GrayBrush2 {
-            get {
-                return ResourceManager.GetString("Forms_Settings_GrayBrush2", resourceCulture);
             }
         }
         
@@ -1090,33 +973,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report File Movement.
-        /// </summary>
-        internal static string Forms_Settings_ReportFileMovement {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ReportFileMovement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Keep searching on library change.
-        /// </summary>
-        internal static string Forms_Settings_SearchOnLibraryChange {
-            get {
-                return ResourceManager.GetString("Forms_Settings_SearchOnLibraryChange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Calculation method for games.
-        /// </summary>
-        internal static string Forms_Settings_SizeCalculationMethod {
-            get {
-                return ResourceManager.GetString("Forms_Settings_SizeCalculationMethod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sort games by.
         /// </summary>
         internal static string Forms_Settings_SortGamesBy {
@@ -1135,29 +991,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TabItem Text Color.
-        /// </summary>
-        internal static string Forms_Settings_TabItemTextColor {
-            get {
-                return ResourceManager.GetString("Forms_Settings_TabItemTextColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Task Manager Default Settings.
         /// </summary>
         internal static string Forms_Settings_TaskManagerDefaults {
             get {
                 return ResourceManager.GetString("Forms_Settings_TaskManagerDefaults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Text Color:.
-        /// </summary>
-        internal static string Forms_Settings_TextColor {
-            get {
-                return ResourceManager.GetString("Forms_Settings_TextColor", resourceCulture);
             }
         }
         
@@ -1176,24 +1014,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string Forms_Settings_ThemeBase {
             get {
                 return ResourceManager.GetString("Forms_Settings_ThemeBase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TransparentWhite.
-        /// </summary>
-        internal static string Forms_Settings_TransparentWhite {
-            get {
-                return ResourceManager.GetString("Forms_Settings_TransparentWhite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Window BG.
-        /// </summary>
-        internal static string Forms_Settings_WindowBG {
-            get {
-                return ResourceManager.GetString("Forms_Settings_WindowBG", resourceCulture);
             }
         }
         
@@ -1279,15 +1099,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}%.
-        /// </summary>
-        internal static string Forms_TaskManager_ProgressBarPerc {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_ProgressBarPerc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove Original Files.
         /// </summary>
         internal static string Forms_TaskManager_RemoveFiles {
@@ -1333,11 +1144,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target: {0}.
+        ///   Looks up a localized string similar to Keep searching on library change.
         /// </summary>
-        internal static string Forms_TaskManager_TargetLibrary {
+        internal static string Keep_searching_on_library_change {
             get {
-                return ResourceManager.GetString("Forms_TaskManager_TargetLibrary", resourceCulture);
+                return ResourceManager.GetString("Keep_searching_on_library_change", resourceCulture);
             }
         }
         
@@ -1471,15 +1282,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string OriginAppInfo_FormatException {
             get {
                 return ResourceManager.GetString("OriginAppInfo_FormatException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Origin game installation directory is not exists?!.
-        /// </summary>
-        internal static string OriginDirectoryNotExists {
-            get {
-                return ResourceManager.GetString("OriginDirectoryNotExists", resourceCulture);
             }
         }
         
@@ -1649,6 +1451,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report File Movement.
+        /// </summary>
+        internal static string Report_File_Movement {
+            get {
+                return ResourceManager.GetString("Report_File_Movement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking for backup updates as you have requested..
         /// </summary>
         internal static string Steam_CheckForBackupUpdates {
@@ -1683,6 +1494,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string Steam_CheckForBackupUpdates_UpdateFound {
             get {
                 return ResourceManager.GetString("Steam_CheckForBackupUpdates_UpdateFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Library Manager.
+        /// </summary>
+        internal static string Steam_Library_Manager {
+            get {
+                return ResourceManager.GetString("Steam_Library_Manager", resourceCulture);
             }
         }
         
@@ -1860,19 +1680,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error happened while populating files at common directory for game: {AppName} - Directory:
-        ///{CommonFolderFullPath}
-        ///
-        ///Error:
-        ///{ExceptionMessage}.
-        /// </summary>
-        internal static string SteamApp_GetCommonFilesError {
-            get {
-                return ResourceManager.GetString("SteamApp_GetCommonFilesError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Steam Library Manager.
         /// </summary>
         internal static string SteamApp_RemovingError {
@@ -1972,15 +1779,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string SteamLibrary_CMenu_RemoveFromSteam {
             get {
                 return ResourceManager.GetString("SteamLibrary_CMenu_RemoveFromSteam", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam Library Manager.
-        /// </summary>
-        internal static string SteamLibraryManager {
-            get {
-                return ResourceManager.GetString("SteamLibraryManager", resourceCulture);
             }
         }
         

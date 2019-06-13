@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Definitions
         public string Header;
         public string Action;
         public FontAwesome.WPF.FontAwesomeIcon Icon;
-        public Brush IconColor = Brushes.Black;
+        public Brush IconColor = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(System.Windows.Application.Current).Item2.Resources["AccentColor"]);
         public bool ShowToNormal = true;
         public bool ShowToSLMBackup = true;
         public bool ShowToSteamBackup = true;

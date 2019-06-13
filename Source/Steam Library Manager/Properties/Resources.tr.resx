@@ -151,7 +151,7 @@ SLM tarafından oluşturulan arşiv dosyasının kaldırılmasını ister misini
   <data name="CreateLibrary_ExistsMessage" xml:space="preserve">
     <value>{LibraryPath} konumunda kütüphane zaten mevcut</value>
   </data>
-  <data name="CreateLibrary_RootError" xml:space="preserve">
+  <data name="Steam_Library_Manager" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
   </data>
   <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
@@ -212,7 +212,7 @@ Hata: {ExceptionMessage}</value>
   <data name="Enums_BackupType" xml:space="preserve">
     <value>Yedekleme türü</value>
   </data>
-  <data name="Enums_Compress" xml:space="preserve">
+  <data name="Compress" xml:space="preserve">
     <value>Sıkıştır</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
@@ -274,9 +274,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Forms_AppView_LastUpdate" xml:space="preserve">
-    <value>Güncellenme tarihi: {0}</value>
-  </data>
   <data name="Forms_Cancel" xml:space="preserve">
     <value>İptal</value>
   </data>
@@ -303,9 +300,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
 
 {DirectoryFullPath}</value>
   </data>
-  <data name="Forms_LibraryCleaner_LastWriteTime" xml:space="preserve">
-    <value>Son yazma zamanı: {0}</value>
-  </data>
   <data name="Forms_LibraryCleaner_MoveAll" xml:space="preserve">
     <value>Tümünü Taşı</value>
   </data>
@@ -329,9 +323,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_LibraryCleaner_RootPathSelectedMessage" xml:space="preserve">
     <value>Çöp dosyaların kök dizine taşınmasını istediğine emin misiniz?</value>
   </data>
-  <data name="Forms_LibraryView_AppCount" xml:space="preserve">
-    <value>Uygulamalar: {0}</value>
-  </data>
   <data name="Forms_LibraryView_CreateLibrary" xml:space="preserve">
     <value>Kütüphane Oluştur</value>
   </data>
@@ -346,9 +337,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   </data>
   <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
     <value>Seçili kütüphanede ara</value>
-  </data>
-  <data name="Forms_Main_SuggestionForm" xml:space="preserve">
-    <value>Öneri Formu</value>
   </data>
   <data name="Forms_Main_TabHeader_Library" xml:space="preserve">
     <value>Kütüphane</value>
@@ -380,18 +368,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
     <value>Gelişmiş loglama (Yeniden başlatma gerektirir)</value>
   </data>
-  <data name="Forms_Settings_Background" xml:space="preserve">
-    <value>Arkaplan</value>
-  </data>
-  <data name="Forms_Settings_ButtonBG" xml:space="preserve">
-    <value>Button BG</value>
-  </data>
-  <data name="Forms_Settings_ButtonClick" xml:space="preserve">
-    <value>Button Click</value>
-  </data>
-  <data name="Forms_Settings_ButtonHover" xml:space="preserve">
-    <value>Button Hover</value>
-  </data>
   <data name="Forms_Settings_CalculationMethodForArchiveSize" xml:space="preserve">
     <value>Arşiv boyutu hesaplama yöntemi</value>
   </data>
@@ -413,15 +389,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_CompressionType" xml:space="preserve">
     <value>Sıkıştırma Türü</value>
   </data>
-  <data name="Forms_Settings_ContextMenu" xml:space="preserve">
-    <value>Sağ-tık Menüsü</value>
-  </data>
-  <data name="Forms_Settings_ControlBG" xml:space="preserve">
-    <value>Control BG</value>
-  </data>
-  <data name="Forms_Settings_CustomTheme" xml:space="preserve">
-    <value>Özel Tema</value>
-  </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Sıkıştırma yapma</value>
   </data>
@@ -433,12 +400,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   </data>
   <data name="Forms_Settings_GeneralSettings" xml:space="preserve">
     <value>Genel Ayarlar</value>
-  </data>
-  <data name="Forms_Settings_GrayBrush1" xml:space="preserve">
-    <value>GrayBrush1</value>
-  </data>
-  <data name="Forms_Settings_GrayBrush2" xml:space="preserve">
-    <value>GrayBrush2</value>
   </data>
   <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
@@ -464,13 +425,13 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_RemoveFiles" xml:space="preserve">
     <value>Kaynak dizindeki dosyaları kaldır</value>
   </data>
-  <data name="Forms_Settings_ReportFileMovement" xml:space="preserve">
+  <data name="Report_File_Movement" xml:space="preserve">
     <value>Dosya taşımasını raporla</value>
   </data>
-  <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
+  <data name="Keep_searching_on_library_change" xml:space="preserve">
     <value>Kütüphane değişiminde aramaya devam et</value>
   </data>
-  <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
+  <data name="Calculation_method_for_games" xml:space="preserve">
     <value>Oyun dosya boyutu hesaplama yöntemi</value>
   </data>
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
@@ -479,26 +440,14 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
     <value>Program başlangıcında Görev Yöneticisini başlat</value>
   </data>
-  <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">
-    <value>TabItem Metin Rengi</value>
-  </data>
   <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
     <value>Görev Yöneticisi Varsayılan Ayarlar</value>
-  </data>
-  <data name="Forms_Settings_TextColor" xml:space="preserve">
-    <value>Metin Rengi:</value>
   </data>
   <data name="Forms_Settings_ThemeAccent" xml:space="preserve">
     <value>Tema Aksanı</value>
   </data>
   <data name="Forms_Settings_ThemeBase" xml:space="preserve">
     <value>Tema Temeli</value>
-  </data>
-  <data name="Forms_Settings_TransparentWhite" xml:space="preserve">
-    <value>SaydamBeyaz</value>
-  </data>
-  <data name="Forms_Settings_WindowBG" xml:space="preserve">
-    <value>Window BG</value>
   </data>
   <data name="Forms_SLM" xml:space="preserve">
     <value>SLM</value>
@@ -527,10 +476,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_TaskManager_Pause" xml:space="preserve">
     <value>Duraklat</value>
   </data>
-  <data name="Forms_TaskManager_ProgressBarPerc" xml:space="preserve">
-    <value>%{0}</value>
-    <comment>ProgressBarPerc</comment>
-  </data>
   <data name="Forms_TaskManager_RemoveFiles" xml:space="preserve">
     <value>Orijinal Dosyaları kaldır</value>
   </data>
@@ -545,10 +490,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   </data>
   <data name="Forms_TaskManager_Stop" xml:space="preserve">
     <value>Durdur</value>
-  </data>
-  <data name="Forms_TaskManager_TargetLibrary" xml:space="preserve">
-    <value>Hedef: {0}</value>
-    <comment>TargetLibrary.FullPath</comment>
   </data>
   <data name="MoveGamesConfirmError" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
@@ -587,9 +528,6 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   </data>
   <data name="OriginApp_CMenu_Run" xml:space="preserve">
     <value>Çalıştır (Mevcut değil)</value>
-  </data>
-  <data name="OriginDirectoryNotExists" xml:space="preserve">
-    <value>Origin oyun kurulum dizini mevcut değil?!</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Origin Uygulama Kurulumu</value>
@@ -711,21 +649,11 @@ Dosyanın gerçekten bozuk olup olmadığını görmek adına dosyayı elle kont
   <data name="SteamApp_CMenu_Workshop" xml:space="preserve">
     <value>Atölye</value>
   </data>
-  <data name="SteamApp_GetCommonFilesError" xml:space="preserve">
-    <value>{AppName} adlı oyunun "common" dizinindeki dosyaları alınırken bir hata oluştu. Dizin:
-{CommonFolderFullPath}
-
-Hata:
-{ExceptionMessage}</value>
-  </data>
   <data name="SteamApp_RemovingError" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
   </data>
   <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
     <value>Uygulama dosyaları kaldırılırken bir hata oluştu. {FullPath}</value>
-  </data>
-  <data name="SteamLibraryManager" xml:space="preserve">
-    <value>Steam Kütüphane Yöneticisi</value>
   </data>
   <data name="SteamLibrary_CantCreate" xml:space="preserve">
     <value>Steam Kütüphane dosyası oluşturulamıyor: {SteamAppsFolderFullPath}

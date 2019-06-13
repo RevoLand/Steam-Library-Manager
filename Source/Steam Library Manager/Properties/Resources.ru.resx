@@ -151,7 +151,7 @@
   <data name="CreateLibrary_ExistsMessage" xml:space="preserve">
     <value>Библиотека уже существует в {LibraryPath}</value>
   </data>
-  <data name="CreateLibrary_RootError" xml:space="preserve">
+  <data name="Steam_Library_Manager" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
   </data>
   <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
@@ -210,7 +210,7 @@
   <data name="Enums_BackupType" xml:space="preserve">
     <value>Тип резервного копирования</value>
   </data>
-  <data name="Enums_Compress" xml:space="preserve">
+  <data name="Compress" xml:space="preserve">
     <value>Сжать</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
@@ -272,9 +272,6 @@
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Forms_AppView_LastUpdate" xml:space="preserve">
-    <value>Обновлено: {0}</value>
-  </data>
   <data name="Forms_Cancel" xml:space="preserve">
     <value>Отменить</value>
   </data>
@@ -301,9 +298,6 @@
 
 {DirectoryFullPath}</value>
   </data>
-  <data name="Forms_LibraryCleaner_LastWriteTime" xml:space="preserve">
-    <value>Время последней записи: {0}</value>
-  </data>
   <data name="Forms_LibraryCleaner_MoveAll" xml:space="preserve">
     <value>Переместить все</value>
   </data>
@@ -327,9 +321,6 @@
   <data name="Forms_LibraryCleaner_RootPathSelectedMessage" xml:space="preserve">
     <value>Вы уверены что хотите переместить мусор в корень диска?</value>
   </data>
-  <data name="Forms_LibraryView_AppCount" xml:space="preserve">
-    <value>Приложение: {0}</value>
-  </data>
   <data name="Forms_LibraryView_CreateLibrary" xml:space="preserve">
     <value>Создать библиотеку</value>
   </data>
@@ -344,9 +335,6 @@
   </data>
   <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
     <value>Поиск в выбранной библиотеке</value>
-  </data>
-  <data name="Forms_Main_SuggestionForm" xml:space="preserve">
-    <value>Форма предложения</value>
   </data>
   <data name="Forms_Main_TabHeader_Library" xml:space="preserve">
     <value>Библиотека</value>
@@ -378,18 +366,6 @@
   <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
     <value>Расширенный лог (требуется перезапуск)</value>
   </data>
-  <data name="Forms_Settings_Background" xml:space="preserve">
-    <value>Фон</value>
-  </data>
-  <data name="Forms_Settings_ButtonBG" xml:space="preserve">
-    <value>Кнопка фона</value>
-  </data>
-  <data name="Forms_Settings_ButtonClick" xml:space="preserve">
-    <value>Кнопка клика</value>
-  </data>
-  <data name="Forms_Settings_ButtonHover" xml:space="preserve">
-    <value>Кнопка при наведении</value>
-  </data>
   <data name="Forms_Settings_CalculationMethodForArchiveSize" xml:space="preserve">
     <value>Метод расчета для размера архива</value>
   </data>
@@ -411,15 +387,6 @@
   <data name="Forms_Settings_CompressionType" xml:space="preserve">
     <value>Тип сжатия</value>
   </data>
-  <data name="Forms_Settings_ContextMenu" xml:space="preserve">
-    <value>Контекстное меню</value>
-  </data>
-  <data name="Forms_Settings_ControlBG" xml:space="preserve">
-    <value>Управление фоном</value>
-  </data>
-  <data name="Forms_Settings_CustomTheme" xml:space="preserve">
-    <value>Пользовательская Тема</value>
-  </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Не сжимать</value>
   </data>
@@ -431,12 +398,6 @@
   </data>
   <data name="Forms_Settings_GeneralSettings" xml:space="preserve">
     <value>Общие настройки</value>
-  </data>
-  <data name="Forms_Settings_GrayBrush1" xml:space="preserve">
-    <value>GrayBrush1</value>
-  </data>
-  <data name="Forms_Settings_GrayBrush2" xml:space="preserve">
-    <value>GrayBrush2</value>
   </data>
   <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
@@ -462,13 +423,13 @@
   <data name="Forms_Settings_RemoveFiles" xml:space="preserve">
     <value>Удалить файлы в исходном каталоге</value>
   </data>
-  <data name="Forms_Settings_ReportFileMovement" xml:space="preserve">
+  <data name="Report_File_Movement" xml:space="preserve">
     <value>Сообщить о перемещении файла</value>
   </data>
-  <data name="Forms_Settings_SearchOnLibraryChange" xml:space="preserve">
+  <data name="Keep_searching_on_library_change" xml:space="preserve">
     <value>Продолжать поиск при изменении библиотеки</value>
   </data>
-  <data name="Forms_Settings_SizeCalculationMethod" xml:space="preserve">
+  <data name="Calculation_method_for_games" xml:space="preserve">
     <value>Метод расчета для игр</value>
   </data>
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
@@ -477,26 +438,14 @@
   <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
     <value>Запустить менеджер задач при запуске</value>
   </data>
-  <data name="Forms_Settings_TabItemTextColor" xml:space="preserve">
-    <value>Цвет текста вкладки</value>
-  </data>
   <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
     <value>Настройки менеджера задач по умолчанию</value>
-  </data>
-  <data name="Forms_Settings_TextColor" xml:space="preserve">
-    <value>Цвет текста:</value>
   </data>
   <data name="Forms_Settings_ThemeAccent" xml:space="preserve">
     <value>Акцент темы</value>
   </data>
   <data name="Forms_Settings_ThemeBase" xml:space="preserve">
     <value>Основная тема</value>
-  </data>
-  <data name="Forms_Settings_TransparentWhite" xml:space="preserve">
-    <value>Прозрачный белый</value>
-  </data>
-  <data name="Forms_Settings_WindowBG" xml:space="preserve">
-    <value>Окно фона</value>
   </data>
   <data name="Forms_SLM" xml:space="preserve">
     <value>SLM</value>
@@ -525,10 +474,6 @@
   <data name="Forms_TaskManager_Pause" xml:space="preserve">
     <value>Пауза</value>
   </data>
-  <data name="Forms_TaskManager_ProgressBarPerc" xml:space="preserve">
-    <value>{0}%</value>
-    <comment>ProgressBarPerc</comment>
-  </data>
   <data name="Forms_TaskManager_RemoveFiles" xml:space="preserve">
     <value>Удалить исходные файлы</value>
   </data>
@@ -543,10 +488,6 @@
   </data>
   <data name="Forms_TaskManager_Stop" xml:space="preserve">
     <value>Остановить</value>
-  </data>
-  <data name="Forms_TaskManager_TargetLibrary" xml:space="preserve">
-    <value>Цель: {0}</value>
-    <comment>TargetLibrary.FullPath</comment>
   </data>
   <data name="MoveGamesConfirmError" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
@@ -585,9 +526,6 @@
   </data>
   <data name="OriginApp_CMenu_Run" xml:space="preserve">
     <value>Запуск (Недоступен)</value>
-  </data>
-  <data name="OriginDirectoryNotExists" xml:space="preserve">
-    <value>Каталог установки исходной игры не существует?!</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Установка исходного приложения</value>
@@ -709,21 +647,11 @@
   <data name="SteamApp_CMenu_Workshop" xml:space="preserve">
     <value>Мастерская Steam</value>
   </data>
-  <data name="SteamApp_GetCommonFilesError" xml:space="preserve">
-    <value>Произошла ошибка при заполнении файлов в общей директории для игры: {AppName} - Каталог:
-{CommonFolderFullPath}
-
-Ошибка:
-{ExceptionMessage}</value>
-  </data>
   <data name="SteamApp_RemovingError" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
   </data>
   <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
     <value>Произошла неизвестная ошибка при удалении файлов приложения. {FullPath}</value>
-  </data>
-  <data name="SteamLibraryManager" xml:space="preserve">
-    <value>Менеджер библиотеки Steam</value>
   </data>
   <data name="SteamLibrary_CantCreate" xml:space="preserve">
     <value>Невозможно создать папку Steam библиотеки в: {SteamAppsFolderFullPath}

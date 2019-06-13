@@ -13,7 +13,7 @@
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Height="800" Width="930" MinHeight="800" MinWidth="930"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
-    ShowTitleBar="False" GlowBrush="{DynamicResource AccentColorBrush}" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
+    ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -49,18 +49,20 @@
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid Margin="5, 10, 0, 5">
-        <Grid Margin="15, 0, 0, 0">
+    <Grid>
+        <Grid Margin="15, 0, 0, 0" Panel.ZIndex="1">
             <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
-            <TextBlock Margin="50, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">
+            <TextBlock Margin="55, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">
             Steam Library Manager
             </TextBlock>
         </Grid>
 
         <!-- Grid: Quick settings -->
-        <Grid x:Name="QuickSettings" Margin="0,0,10,0">
+        <WrapPanel x:Name="QuickSettings" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" Panel.ZIndex="1">
             <!-- App Sorting Method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" Margin="0,0,155,0" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged">
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
+                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="140" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" Margin="5, 0"
+                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -77,7 +79,9 @@
             </ComboBox>
 
             <!-- App listing method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="150" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}">
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
+                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" 
+                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}" BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -92,9 +96,9 @@
                     </ToolTip>
                 </ComboBox.ToolTip>
             </ComboBox>
-        </Grid>
+        </WrapPanel>
 
-        <Controls:MetroTabControl Controls:TabControlHelper.Underlined="TabPanel" Margin="10, 50, 10, 0">
+        <Controls:MetroTabControl Controls:TabControlHelper.Underlined="TabPanel" Margin="10, 30, 10, 10" Panel.ZIndex="0">
             <!-- Tab: Library -->
             <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>
@@ -104,7 +108,9 @@
                     <Forms:AppView x:Name="AppView" />
 
                     <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged">
+                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" 
+                             Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" 
+                             Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                         <TextBox.ToolTip>
                             <ToolTip>
                                 <StackPanel>

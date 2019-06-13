@@ -16,7 +16,7 @@
             <UniformGrid Columns="2" HorizontalAlignment="Left">
                 <WrapPanel Orientation="Vertical">
                     <!-- Application sorting method -->
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}">
                         <ComboBox.ToolTip>
@@ -30,7 +30,7 @@
                     </ComboBox>
 
                     <!-- Application size calculation method -->
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SizeCalculationMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Calculation_method_for_games}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_AppSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}">
@@ -46,7 +46,7 @@
                     </ComboBox>
 
                     <!-- Archive size calculation method -->
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}">
@@ -62,7 +62,7 @@
                     </ComboBox>
 
                     <!-- Compression method -->
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionType}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionType}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_CompressionLevel}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:CompressionLevel}}">
@@ -77,7 +77,7 @@
                     </ComboBox>
 
                     <!-- File size to start move synchronously (MB) -->
-                    <Controls:NumericUpDown Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                    <Controls:NumericUpDown BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
                                                     HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
                                                     Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB">
                         <Controls:NumericUpDown.ToolTip>
@@ -90,7 +90,7 @@
                         </Controls:NumericUpDown.ToolTip>
                     </Controls:NumericUpDown>
 
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}">
                         <ComboBox.ToolTip>
@@ -103,7 +103,7 @@
                         </ComboBox.ToolTip>
                         </ComboBox>
 
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_BaseTheme}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}">
                         <ComboBox.ToolTip>
@@ -146,7 +146,7 @@
                     </Controls:ToggleSwitch>
 
                     <!-- Keep searching while switching library -->
-                    <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_SearchOnLibraryChange}" OnLabel="Yes" OffLabel="No"
+                    <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Keep_searching_on_library_change}" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                         <Controls:ToggleSwitch.ToolTip>
@@ -174,7 +174,7 @@
                     </Controls:ToggleSwitch>
                 </WrapPanel>
                 <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_compactLevel}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
                         <ComboBox.ToolTip>
@@ -192,7 +192,7 @@
                         </ComboBox.ToolTip>
                     </ComboBox>
 
-                    <ComboBox Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged">
                         <ComboBox.ToolTip>
@@ -205,7 +205,7 @@
                         </ComboBox.ToolTip>
                     </ComboBox>
 
-                    <ComboBox Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64 to use with SLM" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False" Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64 to use with SLM" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" ItemsSource="{Binding}"
                               SelectedValue="{SLM:SettingBinding SteamID64}" DisplayMemberPath="Item1" SelectedValuePath="Item2">
                         <ComboBox.ToolTip>
@@ -219,7 +219,7 @@
                     </ComboBox>
 
                     <!-- Button: Open Logs Folder -->
-                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -231,7 +231,7 @@
                     </Button>
 
                     <!-- Button: Check for Updates -->
-                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -243,7 +243,7 @@
                     </Button>
 
                     <!-- Button: Clear image cache-->
-                    <Button Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
+                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -307,7 +307,7 @@
                 </Controls:ToggleSwitch>
 
                 <!-- Report File Movement -->
-                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Forms_Settings_ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
+                <Controls:ToggleSwitch Margin="5" Header="{l:Static p:Resources.Report_File_Movement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                     <Controls:ToggleSwitch.ToolTip>
                         <ToolTip>

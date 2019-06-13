@@ -15,8 +15,8 @@
         <DataTemplate x:Key="Tasklibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                    <ContextMenu BorderThickness="0">
+                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
@@ -155,8 +155,8 @@
         <DataTemplate x:Key="Tasklibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                    <ContextMenu BorderThickness="0">
+                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
@@ -289,7 +289,7 @@
         <DataTemplate x:Key="Tasklibrary_Gridview_Origin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
@@ -431,7 +431,7 @@
         <DataTemplate x:Key="Tasklibrary_Listview_Origin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator/>
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
@@ -554,7 +554,7 @@
     </UserControl.Resources>
     <Grid>
         <!-- ListView: Task Manager Tasks -->
-        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">
@@ -622,7 +622,7 @@
 
         <WrapPanel Margin="0, 0, 0, 265" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button x:Name="Button_StartTaskManager" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -633,7 +633,7 @@
                 </Button.ToolTip>
             </Button>
 
-            <Button Margin="5,0,0,0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -645,7 +645,7 @@
             </Button>
 
             <!-- Button: Stop Task Manager -->
-            <Button Margin="5,0,0,0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -657,7 +657,7 @@
             </Button>
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -669,7 +669,7 @@
             </Button>
 
             <!-- Button: Check for Backup Updates -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -687,7 +687,7 @@
             <TextBlock Text="  |  "/>
             <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
             <TextBlock Text="  |  "/>
-            <CheckBox Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -697,7 +697,7 @@
                     </ToolTip>
                 </CheckBox.ToolTip>
             </CheckBox>
-            <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -710,7 +710,7 @@
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->
-        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
+        <ListView BorderBrush="{DynamicResource AccentColorBrush}" x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>

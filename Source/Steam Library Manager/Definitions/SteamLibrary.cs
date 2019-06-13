@@ -133,8 +133,7 @@ namespace Steam_Library_Manager.Definitions
                         await Main.FormAccessor.ShowMessageAsync(
                             Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)),
                             Framework.StringFormat.Format(
-                                Functions.SLM.Translate(nameof(Properties.Resources
-                                    .UnauthorizedAccessExceptionMessage)),
+                                Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)),
                                 new { FullPath, ExceptionMessage = uaex.Message })).ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 IsUpdatingAppList = false;
@@ -147,8 +146,7 @@ namespace Steam_Library_Manager.Definitions
                         await Main.FormAccessor.ShowMessageAsync(
                                 Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)),
                                 Framework.StringFormat.Format(
-                                    Functions.SLM.Translate(nameof(Properties.Resources
-                                        .DirectoryNotFoundExceptionMessage)),
+                                    Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)),
                                     new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message }))
                             .ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);

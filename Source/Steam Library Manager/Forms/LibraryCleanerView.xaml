@@ -8,12 +8,12 @@
              mc:Ignorable="d">
     <Grid>
         <!-- ListView: Library Cleaner -->
-        <ListView x:Name="LibraryCleaner" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,0,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="LibraryCleaner" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                    <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                         <Grid.ContextMenu>
-                            <ContextMenu>
+                            <ContextMenu BorderThickness="0">
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                             </ContextMenu>
@@ -40,9 +40,9 @@
                 </ToolTip>
             </ListView.ToolTip>
         </ListView>
-
+    <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="300">
         <!-- Button: Delete All-->
-        <Button Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom">
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Click="LibraryCleaner_ButtonClick">
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -54,7 +54,7 @@
         </Button>
 
         <!-- Button: Move All-->
-        <Button Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Click="LibraryCleaner_ButtonClick">
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -66,7 +66,7 @@
         </Button>
 
         <!-- Button: Refresh All-->
-        <Button Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom">
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="LibraryCleaner_ButtonClick" >
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
@@ -76,5 +76,6 @@
                 </ToolTip>
             </Button.ToolTip>
         </Button>
+</WrapPanel>
     </Grid>
 </UserControl>

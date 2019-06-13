@@ -146,7 +146,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
@@ -164,7 +164,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
@@ -182,7 +182,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
