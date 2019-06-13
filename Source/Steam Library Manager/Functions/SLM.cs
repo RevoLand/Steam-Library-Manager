@@ -20,6 +20,7 @@ namespace Steam_Library_Manager.Functions
         {
             public static Func<dynamic, object> GetSortingMethod(Definitions.Library Library)
             {
+                System.Diagnostics.Debug.WriteLine(Properties.Settings.Default.defaultGameSortingMethod);
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
                     case "appName":
@@ -27,7 +28,7 @@ namespace Steam_Library_Manager.Functions
                         return x => x.AppName;
 
                     case "appID":
-                        return x => x.AppID;
+                        return x => x.AppId;
 
                     case "sizeOnDisk":
                         return x => x.SizeOnDisk;

@@ -101,7 +101,7 @@
                         
                         <!-- Checkboxes -->
                         <WrapPanel Margin="55,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -116,8 +116,8 @@
                                     </Style>
                                 </WrapPanel.Style>
                                 
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -135,9 +135,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -240,7 +240,7 @@
                                 </TextBlock.Style>
                             </TextBlock>
                             
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -255,8 +255,8 @@
                                     </Style>
                                 </WrapPanel.Style>
                                 
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
-                                <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -274,9 +274,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -378,7 +378,7 @@
                         
                         <!-- Checkboxes -->
                         <WrapPanel VerticalAlignment="Bottom">
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -392,9 +392,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}"/>
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}"/>
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
                                       Width="80" SelectedItem="{Binding App.InstalledLocale}"
                                       ItemsSource="{Binding App.Locales}" />
                             </WrapPanel>
@@ -411,9 +411,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -510,7 +510,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -524,9 +524,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}"/>
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -541,9 +541,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>

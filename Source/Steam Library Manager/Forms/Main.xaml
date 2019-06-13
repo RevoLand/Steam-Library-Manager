@@ -62,7 +62,7 @@
             <!-- App Sorting Method -->
             <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="140" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" Margin="5, 0"
-                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False">
+                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
@@ -81,7 +81,7 @@
             <!-- App listing method -->
             <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" 
-                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}" BorderBrush="{DynamicResource AccentColorBrush}" Focusable="False">
+                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Height" Value="30" />
