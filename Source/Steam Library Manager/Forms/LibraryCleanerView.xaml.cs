@@ -13,11 +13,13 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for LibraryCleanerView.xaml
     /// </summary>
-    public partial class LibraryCleanerView : UserControl
+    public partial class LibraryCleanerView
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public LibraryCleanerView() => InitializeComponent();
+
+        private bool toggleItemList = false;
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -28,50 +30,95 @@ namespace Steam_Library_Manager.Forms
                     return;
                 }
 
-                foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList())
+                foreach (var junk in LibraryCleaner.SelectedItems.OfType<Definitions.List.JunkInfo>().ToList())
                 {
-                    if ((string)(sender as MenuItem)?.Tag == "Explorer")
+                    switch ((string)(sender as MenuItem)?.Tag)
                     {
-                        Junk.FSInfo.Refresh();
+                        default:
+                        case "Explorer":
+                            junk.FSInfo.Refresh();
 
-                        if (Junk.FSInfo.Exists)
-                            Process.Start(Junk.FSInfo.FullName);
-                    }
-                    else
-                    {
-                        Junk.FSInfo.Refresh();
+                            if (junk.FSInfo.Exists)
+                                Process.Start(junk.FSInfo.FullName);
+                            break;
 
-                        if (Junk.FSInfo is FileInfo)
-                        {
-                            if (Junk.FSInfo.Exists)
+                        case "Delete":
+                            junk.FSInfo.Refresh();
+
+                            if (junk.FSInfo is FileInfo)
                             {
-                                File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
+                                if (junk.FSInfo.Exists)
+                                {
+                                    File.SetAttributes(junk.FSInfo.FullName, FileAttributes.Normal);
+                                    await Task.Run(() => junk.FSInfo.Delete()).ConfigureAwait(true);
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (((DirectoryInfo)Junk.FSInfo).Exists)
+                            else
                             {
-                                await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(true);
+                                if (((DirectoryInfo)junk.FSInfo).Exists)
+                                {
+                                    await Task.Run(() => ((DirectoryInfo)junk.FSInfo).Delete(true)).ConfigureAwait(true);
+                                }
                             }
-                        }
 
-                        Definitions.List.LcItems.Remove(Junk);
+                            Definitions.List.LcItems.Remove(junk);
+                            break;
+
+                        case "Ignore":
+                            if (Properties.Settings.Default.IgnoredJunks == null)
+                            {
+                                Properties.Settings.Default.IgnoredJunks = new System.Collections.Specialized.StringCollection();
+                            }
+
+                            Properties.Settings.Default.IgnoredJunks.Add(junk.FSInfo.FullName);
+                            Definitions.List.LcItems.Remove(junk);
+                            break;
                     }
                 }
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
-            catch (UnauthorizedAccessException ex)
+        }
+
+        private void IgnoredItems_ContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                logger.Fatal(ex);
+                foreach (var junk in IgnoredItems.SelectedItems.OfType<string>().ToList())
+                {
+                    switch ((string)(sender as MenuItem)?.Tag)
+                    {
+                        case "Explorer":
+                            if (File.Exists(junk) || Directory.Exists(junk))
+                                Process.Start(junk);
+                            break;
+
+                        case "Ignore":
+                            Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                            break;
+
+                        case "Delete":
+                            if (File.Exists(junk))
+                            {
+                                File.Delete(junk);
+                            }
+                            else if (Directory.Exists(junk))
+                            {
+                                Directory.Delete(junk, true);
+                            }
+
+                            Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                            break;
+                    }
+                }
+
+                IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -82,9 +129,9 @@ namespace Steam_Library_Manager.Forms
             {
                 if ((string)(sender as Button)?.Tag == "Refresh")
                 {
-                    foreach (var Library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
                     {
-                        Library.UpdateJunks();
+                        library.UpdateJunks();
                     }
                 }
 
@@ -190,10 +237,28 @@ namespace Steam_Library_Manager.Forms
                         await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
                     }
                 }
+                else if ((string)(sender as Button)?.Tag == "ToggleIgnoredItems")
+                {
+                    if (toggleItemList)
+                    {
+                        toggleItemList = false;
+
+                        IgnoredItems.Visibility = Visibility.Collapsed;
+                        LibraryCleaner.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        toggleItemList = true;
+
+                        IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
+                        IgnoredItems.Visibility = Visibility.Visible;
+                        LibraryCleaner.Visibility = Visibility.Collapsed;
+                    }
+                }
             }
             catch (IOException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
@@ -205,7 +270,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (UnauthorizedAccessException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
@@ -217,7 +282,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
 
                 if (Main.FormAccessor.IsAnyDialogOpen)
                 {
@@ -237,10 +302,15 @@ namespace Steam_Library_Manager.Forms
                 {
                     Process.Start(((sender as Grid)?.DataContext as Definitions.List.JunkInfo)?.FSInfo.FullName);
                 }
+
+                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && (File.Exists((sender as Grid)?.DataContext as string) || Directory.Exists((sender as Grid)?.DataContext as string)))
+                {
+                    Process.Start((sender as Grid)?.DataContext as string);
+                }
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
             }
         }
     }

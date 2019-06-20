@@ -181,11 +181,11 @@
                                 <StackPanel>
                                     <TextBlock FontWeight="Bold" Text="Default Compact Level" />
                                     <TextBlock Text="Default selection for compact level option in task manager." />
-                                    <Separator/>
-                                    <TextBlock Text="XPRESS4K = Fastest but weakest"/>
-                                    <TextBlock Text="XPRESS8K = Balanced"/>
-                                    <TextBlock Text="XPRESS16K = Slower but more efficient"/>
-                                    <TextBlock Text="LZX = Slowest, most efficient with high overhead"/>
+                                    <Separator />
+                                    <TextBlock Text="XPRESS4K = Fastest but weakest" />
+                                    <TextBlock Text="XPRESS8K = Balanced" />
+                                    <TextBlock Text="XPRESS16K = Slower but more efficient" />
+                                    <TextBlock Text="LZX = Slowest, most efficient with high overhead" />
                                 </StackPanel>
                             </ToolTip>
                         </ComboBox.ToolTip>

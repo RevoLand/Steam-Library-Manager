@@ -156,7 +156,7 @@
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
-                    
+
                     <TextBlock Margin="0,0,60,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
                             <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -184,7 +184,7 @@
                               dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
+                    <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>

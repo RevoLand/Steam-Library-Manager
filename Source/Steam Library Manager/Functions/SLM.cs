@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class SLM
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static string Translate(string key)
         {
@@ -20,7 +20,6 @@ namespace Steam_Library_Manager.Functions
         {
             public static Func<dynamic, object> GetSortingMethod(Definitions.Library Library)
             {
-                System.Diagnostics.Debug.WriteLine(Properties.Settings.Default.defaultGameSortingMethod);
                 switch (Properties.Settings.Default.defaultGameSortingMethod)
                 {
                     case "appName":
@@ -40,69 +39,68 @@ namespace Steam_Library_Manager.Functions
                         return x => x.LastUpdated;
 
                     case "LastPlayed":
-
                         return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.LastPlayed;
                 }
             }
 
-            public static void UpdateBackupDirectories()
+            private static void UpdateSlmLibraries()
             {
                 try
                 {
                     // Define a new string collection to update backup library settings
-                    System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
+                    var backupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM).ToList())
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM).ToList())
                     {
-                        if (BackupDirs.Contains(Library.DirectoryInfo.FullName))
+                        if (backupDirs.Contains(library.DirectoryInfo.FullName))
                             continue;
 
                         // then add this library path to new defined string collection
-                        BackupDirs.Add(Library.DirectoryInfo.FullName);
+                        backupDirs.Add(library.DirectoryInfo.FullName);
                     }
 
                     // change our current backup directories setting with new defined string collection
-                    Properties.Settings.Default.backupDirectories = BackupDirs;
+                    Properties.Settings.Default.backupDirectories = backupDirs;
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
 
-            public static void UpdateOriginBackupDirectories()
+            private static void UpdateOriginLibraries()
             {
                 try
                 {
                     // Define a new string collection to update backup library settings
-                    System.Collections.Specialized.StringCollection BackupDirs = new System.Collections.Specialized.StringCollection();
+                    var backupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (var Library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.IsMain).ToList())
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.IsMain).ToList())
                     {
-                        if (BackupDirs.Contains(Library.DirectoryInfo.FullName))
+                        if (backupDirs.Contains(library.DirectoryInfo.FullName))
                             continue;
 
                         // then add this library path to new defined string collection
-                        BackupDirs.Add(Library.DirectoryInfo.FullName);
+                        backupDirs.Add(library.DirectoryInfo.FullName);
                     }
 
                     // change our current backup directories setting with new defined string collection
-                    Properties.Settings.Default.OriginLibraries = BackupDirs;
+                    Properties.Settings.Default.OriginLibraries = backupDirs;
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
 
             public static void SaveSettings()
             {
-                UpdateBackupDirectories();
-                UpdateOriginBackupDirectories();
+                UpdateSlmLibraries();
+                UpdateOriginLibraries();
             }
         }
 
@@ -129,7 +127,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -145,7 +143,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -161,7 +159,7 @@ namespace Steam_Library_Manager.Functions
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -171,13 +169,14 @@ namespace Steam_Library_Manager.Functions
             NLog.LogManager.Shutdown();
         }
 
+        // SLM Library
         public static class Library
         {
             public static void GenerateLibraryList()
             {
                 try
                 {
-                    // If we have a backup library(s)
+                    // If we don't have any SLM libraries available
                     if (Properties.Settings.Default.backupDirectories == null)
                         return;
 
@@ -185,14 +184,14 @@ namespace Steam_Library_Manager.Functions
                         return;
 
                     // for each backup library we have, do a loop
-                    foreach (string BackupPath in Properties.Settings.Default.backupDirectories)
+                    foreach (var backupPath in Properties.Settings.Default.backupDirectories)
                     {
-                        AddNewAsync(BackupPath);
+                        AddNewAsync(backupPath);
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
@@ -201,7 +200,7 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    // If we have a backup library(s)
+                    // If we don't have any SLM libraries available
                     if (Properties.Settings.Default.OriginLibraries == null)
                         return;
 
@@ -209,78 +208,77 @@ namespace Steam_Library_Manager.Functions
                         return;
 
                     // for each backup library we have, do a loop
-                    foreach (string BackupPath in Properties.Settings.Default.OriginLibraries)
+                    foreach (var backupPath in Properties.Settings.Default.OriginLibraries)
                     {
-                        Origin.AddNewAsync(BackupPath);
+                        Origin.AddNewAsync(backupPath);
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
 
-            public static async void AddNewAsync(string LibraryPath)
+            public static async void AddNewAsync(string libraryPath)
             {
                 try
                 {
-                    if (string.IsNullOrEmpty(LibraryPath))
+                    if (string.IsNullOrEmpty(libraryPath))
                         return;
 
-                    if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                     {
-                        LibraryPath += Path.DirectorySeparatorChar;
+                        libraryPath += Path.DirectorySeparatorChar;
                     }
 
-                    Definitions.SteamLibrary Library = new Definitions.SteamLibrary(LibraryPath)
+                    var library = new Definitions.SteamLibrary(libraryPath)
                     {
                         Type = Definitions.Enums.LibraryType.SLM,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath)
+                        DirectoryInfo = new DirectoryInfo(libraryPath)
                     };
 
-                    Definitions.List.LibraryProgress.Report(Library);
+                    Definitions.List.LibraryProgress.Report(library);
 
-                    if (Directory.Exists(LibraryPath))
-                    {
-                        await Task.Run(() => Library.UpdateAppListAsync()).ConfigureAwait(true);
-                        await Task.Run(() => Library.UpdateJunks()).ConfigureAwait(true);
-                    }
+                    if (!Directory.Exists(libraryPath)) return;
+
+                    await Task.Run(() => library.UpdateAppListAsync()).ConfigureAwait(true);
+                    await Task.Run(() => library.UpdateJunks()).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                 }
             }
 
-            public static bool IsLibraryExists(string NewLibraryPath)
+            public static bool IsLibraryExists(string newLibraryPath)
             {
                 try
                 {
-                    return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0 && Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, NewLibraryPath, StringComparison.InvariantCultureIgnoreCase));
+                    return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0 && Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, newLibraryPath, StringComparison.InvariantCultureIgnoreCase));
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                     MessageBox.Show(ex.ToString());
                     return true;
                 }
             }
 
-            public static async void UpdateLibrary(Definitions.Library Library)
+            public static async void UpdateLibrary(Definitions.Library library)
             {
                 try
                 {
-                    Library.DirectoryInfo.Refresh();
+                    library.DirectoryInfo.Refresh();
 
-                    await Task.Run(Library.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run(library.UpdateAppListAsync).ConfigureAwait(true);
 
-                    Library.UpdateDiskDetails();
+                    library.UpdateDiskDetails();
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
 
@@ -288,11 +286,11 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    Parallel.ForEach(Definitions.List.Libraries, LibraryToUpdate => LibraryToUpdate.UpdateDiskDetails());
+                    Parallel.ForEach(Definitions.List.Libraries, libraryToUpdate => libraryToUpdate.UpdateDiskDetails());
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
         }

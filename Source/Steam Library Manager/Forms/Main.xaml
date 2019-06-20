@@ -60,7 +60,7 @@
         <!-- Grid: Quick settings -->
         <WrapPanel x:Name="QuickSettings" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" Panel.ZIndex="1">
             <!-- App Sorting Method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="140" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" Margin="5, 0"
                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
@@ -79,8 +79,8 @@
             </ComboBox>
 
             <!-- App listing method -->
-            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right" 
-                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}" 
+            <ComboBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" Controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
+                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}"
                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
@@ -108,8 +108,8 @@
                     <Forms:AppView x:Name="AppView" />
 
                     <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True" 
-                             Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom" 
+                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True"
+                             Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom"
                              Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                         <TextBox.ToolTip>
                             <ToolTip>

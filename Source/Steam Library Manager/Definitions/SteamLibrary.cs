@@ -67,6 +67,11 @@ namespace Steam_Library_Manager.Definitions
                             // If key doesn't contains a child (value in acf file)
                             if (keyValReader.Children.Count == 0)
                             {
+                                if (Properties.Settings.Default.IgnoredJunks != null &&
+                                    Properties.Settings.Default.IgnoredJunks.Contains(acfFile.FullName))
+                                {
+                                    return;
+                                }
                                 List.LCProgress.Report(new List.JunkInfo
                                 {
                                     FSInfo = new FileInfo(acfFile.FullName),
@@ -83,11 +88,11 @@ namespace Steam_Library_Manager.Definitions
                                 keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value),
                                 this, Convert.ToInt64(keyValReader["SizeOnDisk"].Value),
                                 Convert.ToInt64(keyValReader["LastUpdated"].Value), false).ConfigureAwait(false);
-                        });
+                        }).ConfigureAwait(false);
 
                 // Do a loop for each *.zip file in library
                 await Directory.EnumerateFiles(DirectoryList["SteamApps"].FullName, "*.zip", SearchOption.TopDirectoryOnly)
-                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, this)); });
+                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, this)); }).ConfigureAwait(false);
 
                 DirectoryList["SteamBackups"].Refresh();
                 if (Type == Enums.LibraryType.SLM && DirectoryList["SteamBackups"].Exists)
@@ -115,7 +120,7 @@ namespace Steam_Library_Manager.Definitions
                                 if (appNames.Length > 1)
                                     i++;
                             }
-                        });
+                        }).ConfigureAwait(false);
                 }
 
                 if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)
@@ -352,6 +357,12 @@ namespace Steam_Library_Manager.Definitions
 
                         if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                         {
+                            if (Properties.Settings.Default.IgnoredJunks != null &&
+                                Properties.Settings.Default.IgnoredJunks.Contains(dirInfo.FullName))
+                            {
+                                continue;
+                            }
+
                             List.LCProgress.Report(junk);
                         }
                     }
@@ -376,6 +387,11 @@ namespace Steam_Library_Manager.Definitions
 
                             if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                             {
+                                if (Properties.Settings.Default.IgnoredJunks != null &&
+                                    Properties.Settings.Default.IgnoredJunks.Contains(fileDetails.FullName))
+                                {
+                                    continue;
+                                }
                                 List.LCProgress.Report(junk);
                             }
                         }

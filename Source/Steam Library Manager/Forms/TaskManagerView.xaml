@@ -18,7 +18,7 @@
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -38,7 +38,7 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
-                
+
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
@@ -73,14 +73,14 @@
                     <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
                     <WrapPanel Margin="0,35,0,0" HorizontalAlignment="Right">
                         <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="  |  " />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="  |  " />
                         <TextBlock Text="{Binding App.PrettyGameSize}" />
                     </WrapPanel>
-                    
+
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" Height="20"/>
+                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" Height="20" />
 
                         <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
@@ -98,7 +98,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        
+
                         <!-- Checkboxes -->
                         <WrapPanel Margin="55,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
@@ -115,7 +115,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                
+
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
                             </WrapPanel>
@@ -158,7 +158,7 @@
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -177,7 +177,7 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
-                
+
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                         <CachedImage:Image.Style>
@@ -190,7 +190,7 @@
                             </Style>
                         </CachedImage:Image.Style>
                     </CachedImage:Image>
-                    
+
                     <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -203,16 +203,16 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
-                
+
                 <Grid>
                     <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
-                    
+
                     <WrapPanel HorizontalAlignment="Right">
                         <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="  |  " />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
                     </WrapPanel>
-                    
+
                     <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
                         <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
 
@@ -239,7 +239,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            
+
                             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -254,8 +254,8 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
                             </WrapPanel>
                             <WrapPanel>
@@ -291,7 +291,7 @@
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -340,11 +340,11 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
-                
+
                 <Grid>
                     <TextBlock Text="{Binding App.AppName}" Margin="126,0,0,0" TextWrapping="Wrap" FontSize="14" />
                     <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                    
+
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="126,0,0,5" Height="163">
                         <TextBlock Margin="0,75,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
@@ -365,17 +365,17 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        
+
                         <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Margin="0,95,0,0" />
-                        
+
                         <WrapPanel Margin="0,115,0,0" HorizontalAlignment="Left">
                             <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="  |  " />
                             <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="  |  " />
                             <TextBlock Text="{Binding App.PrettyGameSize}" />
                         </WrapPanel>
-                        
+
                         <!-- Checkboxes -->
                         <WrapPanel VerticalAlignment="Bottom">
                             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
@@ -393,7 +393,7 @@
                                     </Style>
                                 </WrapPanel.Style>
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
                                 <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
                                       Width="80" SelectedItem="{Binding App.InstalledLocale}"
                                       ItemsSource="{Binding App.Locales}" />
@@ -418,7 +418,7 @@
                             </WrapPanel>
                         </WrapPanel>
                     </Grid>
-                    
+
                     <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,5">
                         <TextBlock Text="{Binding TaskProgressInfo}" />
                         <TextBlock Margin="10,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" />
@@ -433,7 +433,7 @@
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -480,10 +480,10 @@
                     <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
                         <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
-                        
+
                         <WrapPanel Margin="0,-20,0,0" HorizontalAlignment="Right">
                             <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="  |  " />
                             <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
                         </WrapPanel>
 
@@ -524,9 +524,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}"/>
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -681,12 +681,12 @@
             </Button>
         </WrapPanel>
         <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 228" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-            <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}"/>
-            <TextBlock Text="  |  "/>
-            <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}"/>
-            <TextBlock Text="  |  "/>
-            <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
-            <TextBlock Text="  |  "/>
+            <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}" />
+            <TextBlock Text="  |  " />
+            <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}" />
+            <TextBlock Text="  |  " />
+            <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}" />
+            <TextBlock Text="  |  " />
             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
                 <CheckBox.ToolTip>
                     <ToolTip>
@@ -713,7 +713,7 @@
         <ListView BorderBrush="{DynamicResource AccentColorBrush}" x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
+                    <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>

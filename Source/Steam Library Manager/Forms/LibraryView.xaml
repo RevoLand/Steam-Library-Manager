@@ -85,21 +85,21 @@
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Steam"/>
+                                            <Condition Binding="{Binding Type}" Value="Steam" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico"/>
+                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="SLM"/>
+                                            <Condition Binding="{Binding Type}" Value="SLM" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico"/>
+                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Origin"/>
+                                            <Condition Binding="{Binding Type}" Value="Origin" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/origin-icon.ico"/>
+                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/origin-icon.ico" />
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -141,7 +141,7 @@
                     <Controls:MetroProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
 
                     <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
                 </Grid>
             </Grid>
         </DataTemplate>

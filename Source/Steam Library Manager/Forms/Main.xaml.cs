@@ -155,7 +155,7 @@ namespace Steam_Library_Manager
             switch (Definitions.SLM.CurrentSelectedLibrary.Type)
             {
                 default:
-                    ((Definitions.App) (sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string) ((MenuItem) sender)?.Tag);
+                    ((Definitions.App)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)((MenuItem)sender)?.Tag);
                     break;
             }
         }

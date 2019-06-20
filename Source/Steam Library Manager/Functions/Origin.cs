@@ -9,7 +9,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Origin
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static void PopulateLibraryCMenuItems()
         {
@@ -168,33 +168,32 @@ namespace Steam_Library_Manager.Functions
                 // If local.xml exists
                 if (File.Exists(Definitions.Global.Origin.ConfigFilePath))
                 {
-                    var OriginConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root?.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
+                    var originConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root?.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
 
-                    if (OriginConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
+                    if (originConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
-                        logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
+                        Logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
                     }
                     else
                     {
-                        if (Directory.Exists(OriginConfigKeys["DownloadInPlaceDir"]))
+                        if (Directory.Exists(originConfigKeys["DownloadInPlaceDir"]))
                         {
-                            AddNewAsync(OriginConfigKeys["DownloadInPlaceDir"], true);
+                            AddNewAsync(originConfigKeys["DownloadInPlaceDir"], true);
                         }
                         else
                         {
-                            logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = OriginConfigKeys["DownloadInPlaceDir"] }));
+                            Logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = originConfigKeys["DownloadInPlaceDir"] }));
                         }
                     }
                 }
-                else { /* Could not locate local.xml */ }
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public static async void AddNewAsync(string libraryPath, bool IsMainLibrary = false)
+        public static async void AddNewAsync(string libraryPath, bool isMainLibrary = false)
         {
             try
             {
@@ -203,7 +202,7 @@ namespace Steam_Library_Manager.Functions
                     libraryPath += Path.DirectorySeparatorChar;
                 }
 
-                var newLibrary = new Definitions.OriginLibrary(libraryPath, IsMainLibrary)
+                var newLibrary = new Definitions.OriginLibrary(libraryPath, isMainLibrary)
                 {
                     Type = Definitions.Enums.LibraryType.Origin,
                     DirectoryInfo = new DirectoryInfo(libraryPath)
@@ -215,7 +214,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 

@@ -15,6 +15,7 @@
                         <Grid.ContextMenu>
                             <ContextMenu BorderThickness="0">
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                <MenuItem Header="Ignore Selected Item(s)" Tag="Ignore" Click="LibraryCleaner_ContextMenuItem_Click" />
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                             </ContextMenu>
                         </Grid.ContextMenu>
@@ -40,7 +41,33 @@
                 </ToolTip>
             </ListView.ToolTip>
         </ListView>
-    <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="300">
+        <ListView x:Name="IgnoredItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" Visibility="Collapsed">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                        <Grid.ContextMenu>
+                            <ContextMenu BorderThickness="0">
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="IgnoredItems_ContextMenuItem_Click" />
+                                <MenuItem Header="Remove Selected Item(s) from Ignore List" Tag="Ignore" Click="IgnoredItems_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="IgnoredItems_ContextMenuItem_Click" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
+                        <Grid>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                            <TextBlock Text="Ignored" HorizontalAlignment="Right" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
+        </ListView>
+    <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
         <!-- Button: Delete All-->
         <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Click="LibraryCleaner_ButtonClick">
             <Button.ToolTip>
@@ -66,12 +93,24 @@
         </Button>
 
         <!-- Button: Refresh All-->
-        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="LibraryCleaner_ButtonClick" >
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="LibraryCleaner_ButtonClick">
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
                         <TextBlock FontWeight="Bold" Text="Refresh Items" />
                         <TextBlock Text="Refreshes the junk list for Steam libraries." />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
+
+        <!-- Button: View Ignored Items-->
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="ToggleIgnoredItems" FontSize="13" Content="Toggle Item List" Click="LibraryCleaner_ButtonClick">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Toggle Item List" />
+                        <TextBlock Text="Toggles item list between junk items and ignored items." />
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>

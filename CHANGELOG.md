@@ -6,11 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.5.1.8] - 2019-06-13
+## [1.5.1.8] - 2019-06-21
 
 ### Added
 
 - Auto clear completed tasks
+- Ability to Ignore Junks (Library Cleaner Items)
 
 ### Changed
 
