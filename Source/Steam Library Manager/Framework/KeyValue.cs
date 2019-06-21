@@ -477,10 +477,10 @@ namespace Steam_Library_Manager.Framework
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
@@ -724,9 +724,9 @@ namespace Steam_Library_Manager.Framework
         }
 
         /// <summary>
-        /// Saves this instance to a given <see cref="System.IO.Stream"/>.
+        /// Saves this instance to a given <see cref="Stream"/>.
         /// </summary>
-        /// <param name="stream">The <see cref="System.IO.Stream"/> to save to.</param>
+        /// <param name="stream">The <see cref="Stream"/> to save to.</param>
         /// <param name="asBinary">If set to <c>true</c>, saves this instance as binary.</param>
         public void SaveToStream(Stream stream, bool asBinary)
         {

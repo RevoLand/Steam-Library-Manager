@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,14 +9,14 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class App
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
+        public static async System.Threading.Tasks.Task AddSteamAppAsync(int AppID, string AppName, string InstallationPath, int StateFlag, Definitions.Library Library, long SizeOnDisk, long LastUpdated, bool IsCompressed, bool IsSteamBackup = false)
         {
             try
             {
                 // Make a new definition for app
-                var App = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(InstallationPath))
+                var appInfo = new Definitions.SteamAppInfo(AppID, Library, new DirectoryInfo(Path.Combine(Library.DirectoryList["Common"].FullName, InstallationPath)))
                 {
                     // Set game name
                     AppName = AppName,
@@ -30,17 +29,26 @@ namespace Steam_Library_Manager.Functions
 
                 if (Definitions.List.SteamApps_LastPlayedDic.ContainsKey(AppID))
                 {
-                    App.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
+                    appInfo.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
                 }
 
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip
-                if (!App.CommonFolder.Exists && !App.DownloadFolder.Exists && !App.IsCompressed && !App.IsSteamBackup)
+                if (!appInfo.InstallationDirectory.Exists && StateFlag == 4 && !appInfo.IsCompressed && !appInfo.IsSteamBackup)
                 {
+                    var acfFile = new FileInfo(Path.Combine(Library.DirectoryList["SteamApps"].FullName, $"appmanifest_{appInfo.AppId}.acf"));
+
+                    if (Properties.Settings.Default.IgnoredJunks != null &&
+                        Properties.Settings.Default.IgnoredJunks.Contains(acfFile.FullName))
+                    {
+                        return;
+                    }
+
                     Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
-                        FSInfo = new FileInfo(App.FullAcfPath.FullName),
-                        Size = App.FullAcfPath.Length,
-                        Library = Library
+                        FSInfo = acfFile,
+                        Size = acfFile.Length,
+                        Library = Library,
+                        JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.InstallationNotFoundButStateFlagEqualsTo4))
                     });
 
                     return; // Do not add pre-loads to list
@@ -52,22 +60,22 @@ namespace Steam_Library_Manager.Functions
                     if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
                     {
                         // Open archive to read
-                        using (ZipArchive Archive = ZipFile.OpenRead(App.CompressedArchiveName.FullName))
+                        using (ZipArchive Archive = ZipFile.OpenRead(appInfo.CompressedArchivePath.FullName))
                         {
                             // For each file in archive
                             foreach (ZipArchiveEntry Entry in Archive.Entries)
                             {
                                 // Add file size to sizeOnDisk
-                                App.SizeOnDisk += Entry.Length;
+                                appInfo.SizeOnDisk += Entry.Length;
                             }
                         }
                     }
                     else
                     {
-                        App.CompressedArchiveName.Refresh();
+                        appInfo.CompressedArchivePath.Refresh();
 
                         // And set archive size as game size
-                        App.SizeOnDisk = App.CompressedArchiveName?.Length ?? 0;
+                        appInfo.SizeOnDisk = appInfo.CompressedArchivePath?.Length ?? 0;
                     }
                 }
                 else
@@ -75,24 +83,24 @@ namespace Steam_Library_Manager.Functions
                     // If SizeOnDisk value from .ACF file is not equals to 0
                     if (Properties.Settings.Default.gameSizeCalculationMethod != "ACF")
                     {
-                        List<FileInfo> GameFiles = App.GetFileList();
-                        long GameSize = 0;
+                        var gameFiles = appInfo.GetFileList();
+                        long gameSize = 0;
 
-                        System.Threading.Tasks.Parallel.ForEach(GameFiles, File => Interlocked.Add(ref GameSize, File.Length));
+                        System.Threading.Tasks.Parallel.ForEach(gameFiles, file => Interlocked.Add(ref gameSize, file.Length));
 
-                        App.SizeOnDisk = GameSize;
+                        appInfo.SizeOnDisk = gameSize;
                     }
                     else
                     {
                         // Else set game size to size in acf
-                        App.SizeOnDisk = SizeOnDisk;
+                        appInfo.SizeOnDisk = SizeOnDisk;
                     }
                 }
 
-                App.IsCompacted = await App.CompactStatus().ConfigureAwait(false);
+                appInfo.IsCompacted = await appInfo.CompactStatus().ConfigureAwait(false);
 
                 // Add our game details to global list
-                Library.Steam.Apps.Add(App);
+                Library.Apps.Add(appInfo);
 
                 if (Definitions.SLM.CurrentSelectedLibrary == Library)
                 {
@@ -101,36 +109,36 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public static async void ReadDetailsFromZip(string ZipPath, Definitions.Library targetLibrary)
+        public static async void ReadDetailsFromZip(string zipPath, Definitions.Library targetLibrary)
         {
             try
             {
                 // Open archive for read
-                using (ZipArchive Archive = ZipFile.OpenRead(ZipPath))
+                using (var archive = ZipFile.OpenRead(zipPath))
                 {
-                    if (Archive.Entries.Count > 0)
+                    if (archive.Entries.Count > 0)
                     {
                         // For each file in opened archive
-                        foreach (ZipArchiveEntry AcfEntry in Archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                        foreach (var acfEntry in archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
                         {
                             // If it contains
                             // Define a KeyValue reader
-                            Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                            var keyValReader = new Framework.KeyValue();
 
                             // Open .acf file from archive as text
-                            KeyValReader.ReadAsText(AcfEntry.Open());
+                            keyValReader.ReadAsText(acfEntry.Open());
 
                             // If acf file has no children, skip this archive
-                            if (KeyValReader.Children.Count == 0)
+                            if (keyValReader.Children.Count == 0)
                             {
                                 continue;
                             }
 
-                            await AddSteamAppAsync(Convert.ToInt32(KeyValReader["appID"].Value), !string.IsNullOrEmpty(KeyValReader["name"].Value) ? KeyValReader["name"].Value : KeyValReader["UserConfig"]["name"].Value, KeyValReader["installdir"].Value, targetLibrary, Convert.ToInt64(KeyValReader["SizeOnDisk"].Value), Convert.ToInt64(KeyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
+                            await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value), targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
                         }
                     }
                 }
@@ -139,40 +147,40 @@ namespace Steam_Library_Manager.Functions
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
+                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
                     }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
-                        File.Delete(ZipPath);
+                        File.Delete(zipPath);
                     }
-                }).ConfigureAwait(false);
+                }).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                logger.Fatal(IEx);
+                Logger.Fatal(IEx);
             }
             catch (InvalidDataException IEx)
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
-                        NegativeButtonText = SLM.Translate(Properties.Resources.ReadZip_DontDelete)
+                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
                     }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                     {
-                        File.Delete(ZipPath);
+                        File.Delete(zipPath);
                     }
-                }).ConfigureAwait(false);
+                }).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
-                logger.Fatal(IEx);
+                Logger.Fatal(IEx);
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public static void UpdateAppPanel(Definitions.Library Library) => Main.FormAccessor.LibraryChange.Report(Library);
+        public static void UpdateAppPanel(Definitions.Library library) => Main.FormAccessor.LibraryChange.Report(library);
     }
 }

@@ -8,36 +8,113 @@
              mc:Ignorable="d">
     <Grid>
         <!-- ListView: Library Cleaner -->
-        <ListView x:Name="LibraryCleaner" BorderThickness="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,0,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="LibraryCleaner" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                    <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                         <Grid.ContextMenu>
-                            <ContextMenu>
+                            <ContextMenu BorderThickness="0">
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.IgnoreSelectedItems}" Tag="Ignore" Click="LibraryCleaner_ContextMenuItem_Click" />
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid>
-                            <TextBlock Text="{Binding FSInfo.Name}" Padding="0,0,0,0" TextWrapping="Wrap" />
-                            <Grid VerticalAlignment="Bottom" Margin="0,20,0,0">
+                            <TextBlock Text="{Binding FSInfo.Name}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding JunkReason}" HorizontalAlignment="Right" />
+                            <Grid VerticalAlignment="Bottom" Margin="0,25,0,0">
                                 <TextBlock Text="{Binding FSInfo.FullName}" HorizontalAlignment="Left" />
-                                <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat=Last Write Time: \{0\}}" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                                <TextBlock Text="{Binding PrettyFolderSize}" HorizontalAlignment="Right" Margin="0,-20,0,0" />
+                                <WrapPanel HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding FSInfo.LastWriteTime, StringFormat=Last Write Time: \{0\}}" HorizontalAlignment="Right" TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding PrettyFolderSize}" Margin="10, 0, 0, 0" />
+                                </WrapPanel>
                             </Grid>
                         </Grid>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
-
+        <ListView x:Name="IgnoredItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True" Visibility="Collapsed">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+                        <Grid.ContextMenu>
+                            <ContextMenu BorderThickness="0">
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="IgnoredItems_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.RemoveSelectedItemSFromIgnoreList}" Tag="Ignore" Click="IgnoredItems_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="IgnoredItems_ContextMenuItem_Click" />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
+                        <Grid>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                            <TextBlock Text="{l:Static p:Resources.Ignored}" HorizontalAlignment="Right" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
+        </ListView>
+    <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
         <!-- Button: Delete All-->
-        <Button Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Margin="10,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Click="LibraryCleaner_ButtonClick">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.DeleteAllItems}" />
+                        <TextBlock Text="{l:Static p:Resources.DeleteAllItems_Description}" />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
 
         <!-- Button: Move All-->
-        <Button Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Margin="305,0,0,10" Click="LibraryCleaner_ButtonClick" Width="275" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Click="LibraryCleaner_ButtonClick">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.LibraryCleanerView_MoveAllItems}" />
+                        <TextBlock Text="{l:Static p:Resources.MoveAllItems_Description}" />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
 
         <!-- Button: Refresh All-->
-        <Button Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Margin="600,0,0,10" HorizontalAlignment="Left" Width="275" Click="LibraryCleaner_ButtonClick" Height="40" VerticalAlignment="Bottom" />
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="Refresh" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="LibraryCleaner_ButtonClick">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RefreshItems}" />
+                        <TextBlock Text="{l:Static p:Resources.RefreshItems_Description}" />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
+
+        <!-- Button: View Ignored Items-->
+        <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="ToggleIgnoredItems" FontSize="13" Content="Toggle Item List" Click="LibraryCleaner_ButtonClick">
+            <Button.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.ToggleItemList}" />
+                        <TextBlock Text="{l:Static p:Resources.ToggleItemList_Description}" />
+                    </StackPanel>
+                </ToolTip>
+            </Button.ToolTip>
+        </Button>
+</WrapPanel>
     </Grid>
 </UserControl>

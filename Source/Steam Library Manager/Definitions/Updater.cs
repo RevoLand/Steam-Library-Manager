@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Steam_Library_Manager.Definitions
+﻿namespace Steam_Library_Manager.Definitions
 {
     internal static class Updater
     {

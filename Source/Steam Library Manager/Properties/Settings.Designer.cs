@@ -371,5 +371,30 @@ namespace Steam_Library_Manager.Properties {
                 this["TaskManager_AutoClear"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Collections.Specialized.StringCollection IgnoredJunks {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["IgnoredJunks"]));
+            }
+            set {
+                this["IgnoredJunks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool CompactDetection {
+            get {
+                return ((bool)(this["CompactDetection"]));
+            }
+            set {
+                this["CompactDetection"] = value;
+            }
+        }
     }
 }

@@ -9,30 +9,36 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Origin
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static void PopulateLibraryCMenuItems()
         {
             #region App Context Menu Item Definitions
 
-            // Open library in explorer ({0})
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            var menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_Open)),
                 Action = "Disk",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
-                LibraryType = Definitions.Enums.LibraryType.Origin
-            });
+                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
+            };
 
-            Definitions.List.LibraryCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+
+            // Open library in explorer ({0})
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
+
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_RemoveFromSLM)),
                 Action = "remove",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 ShowToNormal = false,
                 ShowToSLMBackup = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+
+            Definitions.List.LibraryCMenuItems.Add(menuItem);
 
             #endregion App Context Menu Item Definitions
         }
@@ -42,92 +48,115 @@ namespace Steam_Library_Manager.Functions
             #region App Context Menu Item Definitions
 
             // Run
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            var menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Run)),
                 Action = "steam://run/{0}", // TO-DO
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 ShowToCompressed = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Compact
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = "Compact",
                 Action = "compact",
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 ShowToCompressed = false,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 ShowToCompressed = false,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 IsSeparator = true
-            });
+            };
 
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Install
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Install)),
                 Action = "install",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Gear,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 ShowToCompressed = false
-            });
+            };
 
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Repair
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Repair)),
                 Action = "repair",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Gears,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 ShowToCompressed = false
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 ShowToCompressed = false,
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 IsSeparator = true
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Show on disk
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DiskInfo)),
                 Action = "Disk",
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Separator
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
-                IsSeparator = true,
-                LibraryType = Definitions.Enums.LibraryType.Origin
-            });
+                ShowToCompressed = false,
+                IsSeparator = true
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Delete files (using SLM)
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             // Delete files (using Task Manager)
-            Definitions.List.AppCMenuItems.Add(new Definitions.ContextMenuItem
+            menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
-                LibraryType = Definitions.Enums.LibraryType.Origin,
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
-            });
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
 
             #endregion App Context Menu Item Definitions
         }
@@ -139,64 +168,66 @@ namespace Steam_Library_Manager.Functions
                 // If local.xml exists
                 if (File.Exists(Definitions.Global.Origin.ConfigFilePath))
                 {
-                    var OriginConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
+                    var originConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root?.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
 
-                    if (OriginConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
+                    if (originConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
-                        logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
+                        Logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
                     }
                     else
                     {
-                        if (Directory.Exists(OriginConfigKeys["DownloadInPlaceDir"]))
+                        if (Directory.Exists(originConfigKeys["DownloadInPlaceDir"]))
                         {
-                            AddNewAsync(OriginConfigKeys["DownloadInPlaceDir"], true);
+                            AddNewAsync(originConfigKeys["DownloadInPlaceDir"], true);
                         }
                         else
                         {
-                            logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = OriginConfigKeys["DownloadInPlaceDir"] }));
+                            Logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = originConfigKeys["DownloadInPlaceDir"] }));
                         }
                     }
                 }
-                else { /* Could not locate local.xml */ }
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public static async void AddNewAsync(string LibraryPath, bool IsMainLibrary = false)
+        public static async void AddNewAsync(string libraryPath, bool isMainLibrary = false)
         {
             try
             {
-                var newLibrary = new Definitions.Library
+                if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    libraryPath += Path.DirectorySeparatorChar;
+                }
+
+                var newLibrary = new Definitions.OriginLibrary(libraryPath, isMainLibrary)
                 {
                     Type = Definitions.Enums.LibraryType.Origin,
-                    DirectoryInfo = new DirectoryInfo(LibraryPath)
+                    DirectoryInfo = new DirectoryInfo(libraryPath)
                 };
-
-                newLibrary.Origin = new Definitions.OriginLibrary(LibraryPath, newLibrary, IsMainLibrary);
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
-                await Task.Run(() => newLibrary.Origin.UpdateAppList()).ConfigureAwait(false);
+                await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
-        public static bool IsLibraryExists(string NewLibraryPath)
+        public static bool IsLibraryExists(string newLibraryPath)
         {
             try
             {
-                NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+                newLibraryPath = newLibraryPath.ToLowerInvariant();
 
                 return Definitions.List.Libraries.Count(x =>
                  x.Type == Definitions.Enums.LibraryType.Origin
                  && (
-                     x.Origin.FullPath.ToLowerInvariant() == NewLibraryPath
+                     x.FullPath.ToLowerInvariant() == newLibraryPath
                  )
                 ) > 0;
             }

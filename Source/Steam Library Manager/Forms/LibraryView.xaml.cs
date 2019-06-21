@@ -12,7 +12,7 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for LibraryView.xaml
     /// </summary>
-    public partial class LibraryView : UserControl
+    public partial class LibraryView
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                Definitions.Library Library = ((Grid)sender).DataContext as Definitions.Library;
+                var Library = ((Grid)sender).DataContext as Definitions.Library;
 
                 if (Main.FormAccessor.AppView.AppPanel.SelectedItems.Count == 0 || Library == null)
                 {
@@ -35,7 +35,7 @@ namespace Steam_Library_Manager.Forms
                     return;
                 }
 
-                foreach (dynamic App in Main.FormAccessor.AppView.AppPanel.SelectedItems.Cast<dynamic>().ToList())
+                foreach (var App in Main.FormAccessor.AppView.AppPanel.SelectedItems.Cast<dynamic>().ToList())
                 {
                     if (App is Definitions.SteamAppInfo)
                     {
@@ -50,11 +50,11 @@ namespace Steam_Library_Manager.Forms
                                 continue;
                             }
 
-                            if (Functions.TaskManager.TaskList.ToList().Count(x => x.SteamApp == App && x.TargetLibrary == Library && !x.Completed) == 0)
+                            if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library && !x.Completed) == 0)
                             {
                                 Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                                 {
-                                    SteamApp = App,
+                                    App = App,
                                     TargetLibrary = Library,
                                     TaskType = Definitions.Enums.TaskType.Copy
                                 });
@@ -70,11 +70,11 @@ namespace Steam_Library_Manager.Forms
                         if (Library == App.Library || Library.Type != Definitions.Enums.LibraryType.Origin)
                             continue;
 
-                        if (Functions.TaskManager.TaskList.ToList().Count(x => x.OriginApp == App && x.TargetLibrary == Library && !x.Completed) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
-                                OriginApp = App,
+                                App = App,
                                 TargetLibrary = Library,
                                 TaskType = Definitions.Enums.TaskType.Copy
                             });
@@ -101,14 +101,14 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                string[] DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                var DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
                 if (DroppedItems == null)
                 {
                     return;
                 }
 
-                foreach (string DroppedItem in DroppedItems)
+                foreach (var DroppedItem in DroppedItems)
                 {
                     var Info = new DirectoryInfo(DroppedItem);
 
@@ -146,7 +146,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
@@ -164,7 +164,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
@@ -182,7 +182,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootError)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
                         }
                     }
                     else
@@ -224,14 +224,9 @@ namespace Steam_Library_Manager.Forms
             {
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
                 {
-                    if (((sender as Grid)?.DataContext as Definitions.Library)?.Steam != null && ((sender as Grid)?.DataContext as Definitions.Library)?.Steam.SteamAppsFolder.Exists == true)
+                    if (((sender as Grid)?.DataContext as Definitions.Library) != null && Directory.Exists(((sender as Grid)?.DataContext as Definitions.Library)?.FullPath))
                     {
-                        Process.Start(((sender as Grid)?.DataContext as Definitions.Library)?.Steam.SteamAppsFolder.FullName);
-                    }
-
-                    if (((sender as Grid)?.DataContext as Definitions.Library)?.Origin != null && Directory.Exists(((sender as Grid)?.DataContext as Definitions.Library)?.Origin.FullPath))
-                    {
-                        Process.Start(((sender as Grid)?.DataContext as Definitions.Library)?.Origin.FullPath);
+                        Process.Start(((sender as Grid)?.DataContext as Definitions.Library)?.FullPath);
                     }
                 }
             }
@@ -258,10 +253,7 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "remove":
-                        if (Definitions.SLM.CurrentSelectedLibrary != null && (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.SLM || (Definitions.SLM.CurrentSelectedLibrary.Type == Definitions.Enums.LibraryType.Origin && !Definitions.SLM.CurrentSelectedLibrary.Origin.IsMain)) && Functions.TaskManager.TaskList.Count(x =>
-                               x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary
-                               || x.SteamApp?.Library == Definitions.SLM.CurrentSelectedLibrary
-                               || x.OriginApp?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
+                        if (Definitions.SLM.CurrentSelectedLibrary != null && !Definitions.SLM.CurrentSelectedLibrary.IsMain && Functions.TaskManager.TaskList.Count(x => x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary || x.App?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
                         {
                             Definitions.List.Libraries.Remove(Definitions.SLM.CurrentSelectedLibrary);
 
@@ -272,8 +264,7 @@ namespace Steam_Library_Manager.Forms
                     case "refresh":
                         if (Definitions.SLM.CurrentSelectedLibrary != null && Functions.TaskManager.TaskList.Count(x =>
                                       x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary
-                                      || x.SteamApp?.Library == Definitions.SLM.CurrentSelectedLibrary
-                                      || x.OriginApp?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
+                                      || x.App?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
                         {
                             Functions.SLM.Library.UpdateLibrary(Definitions.SLM.CurrentSelectedLibrary);
                         }

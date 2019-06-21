@@ -14,7 +14,7 @@
         <DataTemplate x:Key="Gamelibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
                 <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
@@ -54,7 +54,7 @@
                         </TextBlock>
 
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
+                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" FontSize="13" />
                         <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold" />
                     </Grid>
                     <!-- /App Info Grid -->
@@ -66,7 +66,7 @@
         <DataTemplate x:Key="Gamelibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
@@ -93,7 +93,7 @@
                     </TextBlock>
 
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
@@ -104,12 +104,12 @@
         <DataTemplate x:Key="Gamelibrary_GridviewOrigin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
                 <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
+                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="origin">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -137,7 +137,7 @@
                         </TextBlock>
 
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" FontSize="13" />
+                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" FontSize="13" />
                         <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold" />
                     </Grid>
                     <!-- /App Info Grid -->
@@ -149,14 +149,14 @@
         <DataTemplate x:Key="Gamelibrary_ListviewOrigin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuItems}" />
+                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
+                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="origin" />
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
-                    
+
                     <TextBlock Margin="0,0,60,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
                             <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -171,7 +171,7 @@
                     <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
 
                     <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding AppID}" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" />
                         <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
@@ -179,12 +179,12 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <ListView BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+        <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                               Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
-                              Padding="0, -2, 0, 0" dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
+                              dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
+                    <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
@@ -243,6 +243,15 @@
                     </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                        <TextBlock Text="To copy/move a game to another library, simply drag-drop the item to the targeted library." />
+                        <TextBlock Text="Multiple selection/tasking are allowed." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
     </Grid>
 </UserControl>

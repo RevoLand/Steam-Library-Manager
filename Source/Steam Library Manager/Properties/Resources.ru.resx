@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,6 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Произошла ошибка при перемещении файлов игры. Время истекло: {ElapsedTime}</value>
   </data>
@@ -151,7 +152,7 @@
     <value>Библиотека уже существует в {LibraryPath}</value>
   </data>
   <data name="Steam_Library_Manager" xml:space="preserve">
-    <value>Steam Library Manager</value>
+    <value>Менеджер библиотеки Steam</value>
   </data>
   <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
     <value>Библиотеки не могут быть созданы в корне</value>
@@ -210,7 +211,7 @@
     <value>Тип резервного копирования</value>
   </data>
   <data name="Compress" xml:space="preserve">
-    <value>Compress</value>
+    <value>Сжать</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
     <value>Копировать</value>
@@ -430,13 +431,19 @@
     <value>Keep searching on library change</value>
   </data>
   <data name="Calculation_method_for_games" xml:space="preserve">
-    <value>Calculation method for games</value>
+    <value>Сообщить о перемещении файла</value>
+  </data>
+  <data name="Keep_searching_on_library_change" xml:space="preserve">
+    <value>Продолжать поиск при изменении библиотеки</value>
+  </data>
+  <data name="Calculation_method_for_games" xml:space="preserve">
+    <value>Метод расчета для игр</value>
   </data>
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
     <value>Сортировать игры по</value>
   </data>
   <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
-    <value>Start Task Manager at Startup</value>
+    <value>Запустить менеджер задач при запуске</value>
   </data>
   <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
     <value>Настройки менеджера задач по умолчанию</value>
@@ -505,7 +512,7 @@
     <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AppInfoFormatException" xml:space="preserve">
-    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
+    <value>Произошла ошибка при анализе контекстного меню, скорее всего произошло совместный тип на имя цвета.
 
 {ExceptionMessage}</value>
   </data>

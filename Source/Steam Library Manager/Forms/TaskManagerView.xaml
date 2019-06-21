@@ -15,10 +15,10 @@
         <DataTemplate x:Key="Tasklibrary_Gridview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                    <ContextMenu BorderThickness="0">
+                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -38,10 +38,10 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
-                
+
                 <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
+                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -69,18 +69,18 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="220,0,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding App.AppName}" Padding="220,0,0,0" TextWrapping="Wrap" FontSize="14" />
                     <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
                     <WrapPanel Margin="0,35,0,0" HorizontalAlignment="Right">
-                        <TextBlock Text="{Binding SteamApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                        <TextBlock Text="  |  " />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
-                        <TextBlock Text="{Binding SteamApp.PrettyGameSize}" />
+                        <TextBlock Text="  |  " />
+                        <TextBlock Text="{Binding App.PrettyGameSize}" />
                     </WrapPanel>
-                    
+
                     <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
-                        <TextBlock Text="{Binding SteamApp.AppID}" HorizontalAlignment="Left" Height="20"/>
+                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" Height="20" />
 
                         <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
@@ -98,10 +98,10 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        
+
                         <!-- Checkboxes -->
                         <WrapPanel Margin="55,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -115,9 +115,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
+
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -135,9 +135,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -155,10 +155,10 @@
         <DataTemplate x:Key="Tasklibrary_Listview">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{l:Static p:Resources.Enums_Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                    <ContextMenu BorderThickness="0">
+                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -177,9 +177,9 @@
                         </Style>
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
-                
+
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding SteamApp.GameHeaderImage}">
+                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                         <CachedImage:Image.Style>
                             <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>
@@ -190,7 +190,7 @@
                             </Style>
                         </CachedImage:Image.Style>
                     </CachedImage:Image>
-                    
+
                     <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
@@ -203,23 +203,23 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
-                
+
                 <Grid>
-                    <TextBlock Text="{Binding SteamApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
-                    
+                    <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
+
                     <WrapPanel HorizontalAlignment="Right">
-                        <TextBlock Text="{Binding SteamApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                        <TextBlock Text="  |  "/>
+                        <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                        <TextBlock Text="  |  " />
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
                     </WrapPanel>
-                    
+
                     <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
-                        <TextBlock Text="{Binding SteamApp.AppID}" Height="20" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
 
                         <WrapPanel HorizontalAlignment="Right">
                             <TextBlock Text="{Binding TaskStatusInfo}" />
                             <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding SteamApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
                         </WrapPanel>
 
                         <WrapPanel Margin="55,0,0,0">
@@ -239,8 +239,8 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -254,9 +254,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
-                                <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
+
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -274,9 +274,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -289,9 +289,9 @@
         <DataTemplate x:Key="Tasklibrary_Gridview_Origin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -313,7 +313,7 @@
                 </Controls:MetroProgressBar>
                 <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
+                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" Tag="origin">
                             <CachedImage:Image.Effect>
                                 <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
                             </CachedImage:Image.Effect>
@@ -340,11 +340,11 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </Grid>
-                
+
                 <Grid>
-                    <TextBlock Text="{Binding OriginApp.AppName}" Margin="126,0,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding App.AppName}" Margin="126,0,0,0" TextWrapping="Wrap" FontSize="14" />
                     <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                    
+
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="126,0,0,5" Height="163">
                         <TextBlock Margin="0,75,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> <!-- Task type, Deletion / Compact -->
                             <TextBlock.Style>
@@ -365,20 +365,20 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        
-                        <TextBlock Text="{Binding OriginApp.AppID}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Margin="0,95,0,0" />
-                        
+
+                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Margin="0,95,0,0" />
+
                         <WrapPanel Margin="0,115,0,0" HorizontalAlignment="Left">
-                            <TextBlock Text="{Binding OriginApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                            <TextBlock Text="  |  " />
                             <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
-                            <TextBlock Text="{Binding OriginApp.PrettyGameSize}" />
+                            <TextBlock Text="  |  " />
+                            <TextBlock Text="{Binding App.PrettyGameSize}" />
                         </WrapPanel>
-                        
+
                         <!-- Checkboxes -->
                         <WrapPanel VerticalAlignment="Bottom">
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -392,11 +392,11 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}"/>
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
-                                      Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}"
-                                      ItemsSource="{Binding OriginApp.Locales}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
+                                      Width="80" SelectedItem="{Binding App.InstalledLocale}"
+                                      ItemsSource="{Binding App.Locales}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -411,14 +411,14 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
                     </Grid>
-                    
+
                     <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,5">
                         <TextBlock Text="{Binding TaskProgressInfo}" />
                         <TextBlock Margin="10,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" />
@@ -431,9 +431,9 @@
         <DataTemplate x:Key="Tasklibrary_Listview_Origin">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator/>
+                        <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
@@ -453,7 +453,7 @@
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding OriginApp.GameHeaderImage}">
+                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" Tag="origin">
                         <CachedImage:Image.Style>
                             <Style TargetType="{x:Type Image}">
                                 <Style.Triggers>
@@ -477,20 +477,20 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding OriginApp.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
                     <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
-                        <TextBlock Text="{Binding OriginApp.AppID}" Height="20" HorizontalAlignment="Left" />
-                        
+                        <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
+
                         <WrapPanel Margin="0,-20,0,0" HorizontalAlignment="Right">
-                            <TextBlock Text="{Binding OriginApp.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  "/>
+                            <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
+                            <TextBlock Text="  |  " />
                             <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
                         </WrapPanel>
 
                         <WrapPanel HorizontalAlignment="Right">
                             <TextBlock Text="{Binding TaskStatusInfo}" />
                             <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding OriginApp.PrettyGameSize}" HorizontalAlignment="Right" />
+                            <TextBlock Margin="5,0,0,0" Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
                         </WrapPanel>
 
                         <WrapPanel Margin="55,0,0,0">
@@ -510,7 +510,7 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <CheckBox Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -524,9 +524,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
-                                <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding OriginApp.InstalledLocale}" ItemsSource="{Binding OriginApp.Locales}"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -541,9 +541,9 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
                                           ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
@@ -554,7 +554,7 @@
     </UserControl.Resources>
     <Grid>
         <!-- ListView: Task Manager Tasks -->
-        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".6" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">
@@ -611,39 +611,109 @@
                     </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ToolTip>
+                <ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="Double-clicking on a task will open it's location in file explorer." />
+                    </StackPanel>
+                </ToolTip>
+            </ListView.ToolTip>
         </ListView>
 
         <WrapPanel Margin="0, 0, 0, 265" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
+            <Button x:Name="Button_StartTaskManager" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_TaskManager_Start}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Start Task Manager" />
+                            <TextBlock Text="Will start the task manager. Task Manager will process the queued items or wait for new items." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
-            <Button Margin="5,0,0,0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45" />
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Pause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Pause Task Manager" />
+                            <TextBlock Text="Pauses task processing and active tasks." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Stop Task Manager -->
-            <Button Margin="5,0,0,0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45"/>
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.Forms_TaskManager_Stop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Stop Task Manager" />
+                            <TextBlock Text="Stops the task manager and cancel the active task." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45" />
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.Forms_TaskManager_ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Clear Completed Tasks" />
+                            <TextBlock Text="Will remove the completed tasks from the task list." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
 
             <!-- Button: Check for Backup Updates -->
-            <Button Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45"  />
+            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.Forms_TaskManager_CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Check for Backup Updates" />
+                            <TextBlock Text="Will compare the games in SLM libraries with Steam libraries to find if there is any update available." />
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
         </WrapPanel>
         <WrapPanel Name="TaskManagerInformation" Margin="0, 0, 0, 228" Orientation="Horizontal" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-            <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}"/>
-            <TextBlock Text="  |  "/>
-            <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}"/>
-            <TextBlock Text="  |  "/>
-            <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}"/>
-            <TextBlock Text="  |  "/>
-            <CheckBox Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}" />
-            <CheckBox Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}" />
+            <TextBlock Text="{Binding PendingTasks, Mode=OneWay, StringFormat=Pending: \{0\}}" />
+            <TextBlock Text="  |  " />
+            <TextBlock Text="{Binding CompletedTasks, Mode=OneWay, StringFormat=Completed: \{0\}}" />
+            <TextBlock Text="  |  " />
+            <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}" />
+            <TextBlock Text="  |  " />
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Auto Scroll Logs Window" />
+                            <TextBlock Text="SLM will auto-scroll the logs in the logs window. It may freeze the ui if a lot of small files moved." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Auto Clear Completed Tasks" />
+                            <TextBlock Text="SLM will remove the completed tasks from task manager." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->
-        <ListView x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
+        <ListView BorderBrush="{DynamicResource AccentColorBrush}" x:Name="TaskManager_LogsView" Margin="0,0,0,10" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="220" VerticalAlignment="Bottom" ScrollViewer.ScrollChanged="TaskManager_LogsView_ScrollChanged" ScrollViewer.CanContentScroll="True" ScrollViewer.IsDeferredScrollingEnabled="True"  VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
+                    <VirtualizingStackPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>

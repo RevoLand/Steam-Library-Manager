@@ -22,9 +22,9 @@ namespace Steam_Library_Manager.Forms
                 {
                     if ((sender as Grid)?.DataContext is Definitions.SteamAppInfo)
                     {
-                        if (((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.CommonFolder.Exists == true)
+                        if (((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.InstallationDirectory.Exists == true)
                         {
-                            Process.Start(((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.CommonFolder.FullName);
+                            Process.Start(((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.InstallationDirectory.FullName);
                         }
                     }
                     else if ((sender as Grid)?.DataContext is Definitions.OriginAppInfo)
