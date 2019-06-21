@@ -504,7 +504,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="no_image_available" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OriginAppInfo_FormatException" xml:space="preserve">
+  <data name="AppInfoFormatException" xml:space="preserve">
     <value>An error happened while parsing context menu, most likely happened duo typo on color name.
 
 {ExceptionMessage}</value>

@@ -330,20 +330,20 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                var ActiveSteamPath = GetActiveSteamProcessPath();
-                if (!string.IsNullOrEmpty(ActiveSteamPath))
+                var activeSteamPath = GetActiveSteamProcessPath();
+                if (!string.IsNullOrEmpty(activeSteamPath))
                 {
                     if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
-                        if (File.Exists(ActiveSteamPath))
+                        if (File.Exists(activeSteamPath))
                         {
-                            Process.Start(ActiveSteamPath, "-shutdown");
+                            Process.Start(activeSteamPath, "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath = activeSteamPath }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                         {
-                            foreach (var SteamProcess in Process.GetProcessesByName("Steam"))
+                            foreach (var steamProcess in Process.GetProcessesByName("Steam"))
                             {
-                                SteamProcess.Kill();
+                                steamProcess.Kill();
                             }
                         }
                         else
@@ -488,43 +488,44 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(true);
-                    ProgressInformationMessage.SetIndeterminate();
+                    var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(true);
+                    progressInformationMessage.SetIndeterminate();
 
-                    foreach (var CurrentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
+                    foreach (var currentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM && x.DirectoryInfo.Exists).ToList())
                     {
-                        if (CurrentLibrary.Apps.Count == 0)
+                        if (currentLibrary.Apps.Count == 0)
                         {
                             continue;
                         }
 
-                        foreach (var LibraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
+                        foreach (var libraryToCheck in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Steam))
                         {
-                            foreach (var CurrentApp in CurrentLibrary.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
+                            foreach (var currentApp in currentLibrary.Apps.Where(x => !x.IsSteamBackup && !x.IsCompressed).ToList())
                             {
-                                ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = CurrentApp.AppName }));
+                                progressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = currentApp.AppName }));
 
-                                if (LibraryToCheck.Apps.Count(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup) > 0)
+                                if (libraryToCheck.Apps.Count(x => x.AppId == currentApp.AppId && x.LastUpdated > currentApp.LastUpdated && !x.IsSteamBackup) > 0)
                                 {
-                                    var LatestApp = LibraryToCheck.Apps.First(x => x.AppId == CurrentApp.AppId && x.LastUpdated > CurrentApp.LastUpdated && !x.IsSteamBackup);
+                                    var latestApp = libraryToCheck.Apps.First(x => x.AppId == currentApp.AppId && x.LastUpdated > currentApp.LastUpdated && !x.IsSteamBackup);
 
-                                    if (TaskManager.TaskList.Count(x => x.App.AppId == CurrentApp.AppId && !x.Completed && (x.TargetLibrary == LatestApp.Library || x.TargetLibrary == CurrentApp.Library)) == 0)
+                                    if (TaskManager.TaskList.Count(x => x.App.AppId == currentApp.AppId && !x.Completed && (x.TargetLibrary == latestApp.Library || x.TargetLibrary == currentApp.Library)) == 0)
                                     {
-                                        Definitions.List.TaskInfo newTask = new Definitions.List.TaskInfo
+                                        var newTask = new Definitions.List.TaskInfo
                                         {
-                                            App = LatestApp,
-                                            TargetLibrary = CurrentApp.Library
+                                            App = latestApp,
+                                            TargetLibrary = currentApp.Library,
+                                            TaskType = (currentApp.IsCompressed) ? Definitions.Enums.TaskType.Compress : Definitions.Enums.TaskType.Copy
                                         };
 
                                         TaskManager.AddTask(newTask);
-                                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = CurrentApp.AppName, NewAppLastUpdatedOn = LatestApp.LastUpdated, CurrentAppLastUpdatedOn = CurrentApp.LastUpdated, CurrentAppSteamFullPath = CurrentApp.Library.Steam.FullPath, NewAppSteamFullPath = LatestApp.Library.Steam.FullPath }));
+                                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = currentApp.AppName, NewAppLastUpdatedOn = latestApp.LastUpdated, CurrentAppLastUpdatedOn = currentApp.LastUpdated, CurrentAppSteamFullPath = currentApp.Library.FullPath, NewAppSteamFullPath = latestApp.Library.FullPath }));
                                     }
                                 }
                             }
                         }
                     }
 
-                    await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
+                    await progressInformationMessage.CloseAsync().ConfigureAwait(true);
                     Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                 }
                 catch (Exception ex)

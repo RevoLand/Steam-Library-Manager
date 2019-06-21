@@ -77,7 +77,7 @@ namespace Steam_Library_Manager.Definitions
                                     FSInfo = new FileInfo(acfFile.FullName),
                                     Size = acfFile.Length,
                                     Library = this,
-                                    JunkReason = "Broken(?) acf file - no childs found"
+                                    JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.CorruptedAcfFile))
                                 });
 
                                 return;
@@ -92,7 +92,7 @@ namespace Steam_Library_Manager.Definitions
 
                 // Do a loop for each *.zip file in library
                 await Directory.EnumerateFiles(DirectoryList["SteamApps"].FullName, "*.zip", SearchOption.TopDirectoryOnly)
-                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, this)); }).ConfigureAwait(false);
+                    .ParallelForEachAsync(async archive => { await Task.Run(() => Functions.App.ReadDetailsFromZip(archive, this)).ConfigureAwait(false); }).ConfigureAwait(false);
 
                 DirectoryList["SteamBackups"].Refresh();
                 if (Type == Enums.LibraryType.SLM && DirectoryList["SteamBackups"].Exists)
@@ -228,7 +228,7 @@ namespace Steam_Library_Manager.Definitions
                 await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
                 // Make a KeyValue reader
-                Framework.KeyValue Key = new Framework.KeyValue();
+                var Key = new Framework.KeyValue();
 
                 // Read vdf file
                 Key.ReadFileAsText(Global.Steam.vdfFilePath);
@@ -352,7 +352,7 @@ namespace Steam_Library_Manager.Definitions
                             FSInfo = dirInfo,
                             Size = Functions.FileSystem.GetDirectorySize(dirInfo, true),
                             Library = this,
-                            JunkReason = "Headless folder (No corresponding acf file)"
+                            JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.HeadlessFolderNoCorrespondingAcfFile))
                         };
 
                         if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
@@ -382,7 +382,7 @@ namespace Steam_Library_Manager.Definitions
                                 FSInfo = fileDetails,
                                 Size = fileDetails.Length,
                                 Library = this,
-                                JunkReason = "Headless file (No corresponding installation)"
+                                JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.HeadlessFileNoCorrespondingİnstallation))
                             };
 
                             if (List.LcItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)

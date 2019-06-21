@@ -83,6 +83,17 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error happened while parsing context menu, most likely happened duo typo on color name.
+        ///
+        ///{ExceptionMessage}.
+        /// </summary>
+        internal static string AppInfoFormatException {
+            get {
+                return ResourceManager.GetString("AppInfoFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Updater.
         /// </summary>
         internal static string AutoUpdater {
@@ -119,6 +130,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string CompressArchive_FileNotFoundEx {
             get {
                 return ResourceManager.GetString("CompressArchive_FileNotFoundEx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corrupted acf file.
+        /// </summary>
+        internal static string CorruptedAcfFile {
+            get {
+                return ResourceManager.GetString("CorruptedAcfFile", resourceCulture);
             }
         }
         
@@ -209,6 +229,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete All Items.
+        /// </summary>
+        internal static string DeleteAllItems {
+            get {
+                return ResourceManager.GetString("DeleteAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempts to delete every folder/file in the given list..
+        /// </summary>
+        internal static string DeleteAllItems_Description {
+            get {
+                return ResourceManager.GetString("DeleteAllItems_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete library without moving games.
         /// </summary>
         internal static string DeleteLibraryWithoutMovingGames {
@@ -272,6 +310,33 @@ namespace Steam_Library_Manager.Properties {
         internal static string DirectoryNotFoundExceptionMessage {
             get {
                 return ResourceManager.GetString("DirectoryNotFoundExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        internal static string Disabled {
+            get {
+                return ResourceManager.GetString("Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double-clicking to an item will open it&apos;s location in file explorer..
+        /// </summary>
+        internal static string DoubleClickingToAnItemWillOpenItSLocationInFileExplorer {
+            get {
+                return ResourceManager.GetString("DoubleClickingToAnItemWillOpenItSLocationInFileExplorer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        internal static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
             }
         }
         
@@ -1144,11 +1209,74 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Headless file (No corresponding installation).
+        /// </summary>
+        internal static string HeadlessFileNoCorrespondingİnstallation {
+            get {
+                return ResourceManager.GetString("HeadlessFileNoCorrespondingİnstallation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headless folder (No corresponding acf file).
+        /// </summary>
+        internal static string HeadlessFolderNoCorrespondingAcfFile {
+            get {
+                return ResourceManager.GetString("HeadlessFolderNoCorrespondingAcfFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignored.
+        /// </summary>
+        internal static string Ignored {
+            get {
+                return ResourceManager.GetString("Ignored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore Selected Item(s).
+        /// </summary>
+        internal static string IgnoreSelectedItems {
+            get {
+                return ResourceManager.GetString("IgnoreSelectedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation not found but StateFlag equals to 4.
+        /// </summary>
+        internal static string InstallationNotFoundButStateFlagEqualsTo4 {
+            get {
+                return ResourceManager.GetString("InstallationNotFoundButStateFlagEqualsTo4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep searching on library change.
         /// </summary>
         internal static string Keep_searching_on_library_change {
             get {
                 return ResourceManager.GetString("Keep_searching_on_library_change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move All Items.
+        /// </summary>
+        internal static string LibraryCleanerView_MoveAllItems {
+            get {
+                return ResourceManager.GetString("LibraryCleanerView_MoveAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moves every folder/file in the given list to selected path..
+        /// </summary>
+        internal static string MoveAllItems_Description {
+            get {
+                return ResourceManager.GetString("MoveAllItems_Description", resourceCulture);
             }
         }
         
@@ -1271,17 +1399,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string OriginApp_CMenu_Run {
             get {
                 return ResourceManager.GetString("OriginApp_CMenu_Run", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error happened while parsing context menu, most likely happened duo typo on color name.
-        ///
-        ///{ExceptionMessage}.
-        /// </summary>
-        internal static string OriginAppInfo_FormatException {
-            get {
-                return ResourceManager.GetString("OriginAppInfo_FormatException", resourceCulture);
             }
         }
         
@@ -1442,11 +1559,38 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh Items.
+        /// </summary>
+        internal static string RefreshItems {
+            get {
+                return ResourceManager.GetString("RefreshItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshes the junk list for Steam libraries..
+        /// </summary>
+        internal static string RefreshItems_Description {
+            get {
+                return ResourceManager.GetString("RefreshItems_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove moved files?.
         /// </summary>
         internal static string RemoveMovedFiles {
             get {
                 return ResourceManager.GetString("RemoveMovedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Selected Item(s) from Ignore List.
+        /// </summary>
+        internal static string RemoveSelectedItemSFromIgnoreList {
+            get {
+                return ResourceManager.GetString("RemoveSelectedItemSFromIgnoreList", resourceCulture);
             }
         }
         
@@ -1964,6 +2108,24 @@ namespace Steam_Library_Manager.Properties {
         internal static string TM_TaskActiveErrorMessage {
             get {
                 return ResourceManager.GetString("TM_TaskActiveErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Item List.
+        /// </summary>
+        internal static string ToggleItemList {
+            get {
+                return ResourceManager.GetString("ToggleItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggles item list between junk items and ignored items..
+        /// </summary>
+        internal static string ToggleItemList_Description {
+            get {
+                return ResourceManager.GetString("ToggleItemList_Description", resourceCulture);
             }
         }
         

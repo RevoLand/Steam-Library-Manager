@@ -19,7 +19,7 @@ namespace Steam_Library_Manager.Forms
 
         public LibraryCleanerView() => InitializeComponent();
 
-        private bool toggleItemList = false;
+        private bool _toggleItemList;
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -239,16 +239,16 @@ namespace Steam_Library_Manager.Forms
                 }
                 else if ((string)(sender as Button)?.Tag == "ToggleIgnoredItems")
                 {
-                    if (toggleItemList)
+                    if (_toggleItemList)
                     {
-                        toggleItemList = false;
+                        _toggleItemList = false;
 
                         IgnoredItems.Visibility = Visibility.Collapsed;
                         LibraryCleaner.Visibility = Visibility.Visible;
                     }
                     else
                     {
-                        toggleItemList = true;
+                        _toggleItemList = true;
 
                         IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
                         IgnoredItems.Visibility = Visibility.Visible;

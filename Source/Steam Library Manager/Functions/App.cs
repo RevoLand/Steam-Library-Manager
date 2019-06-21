@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace Steam_Library_Manager.Functions
                         FSInfo = acfFile,
                         Size = acfFile.Length,
                         Library = Library,
-                        JunkReason = "Installation not found and StateFlag equals to 4"
+                        JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.InstallationNotFoundButStateFlagEqualsTo4))
                     });
 
                     return; // Do not add pre-loads to list
@@ -182,6 +181,6 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void UpdateAppPanel(Definitions.Library Library) => Main.FormAccessor.LibraryChange.Report(Library);
+        public static void UpdateAppPanel(Definitions.Library library) => Main.FormAccessor.LibraryChange.Report(library);
     }
 }

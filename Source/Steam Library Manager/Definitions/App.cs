@@ -70,7 +70,7 @@ namespace Steam_Library_Manager.Definitions
                 }
                 catch (FormatException ex)
                 {
-                    MessageBox.Show(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginAppInfo_FormatException)), ex));
+                    MessageBox.Show(string.Format(Functions.SLM.Translate(nameof(Properties.Resources.AppInfoFormatException)), ex));
 
                     return rightClickMenu;
                 }
@@ -204,6 +204,11 @@ namespace Steam_Library_Manager.Definitions
 
         public async Task<bool> CompactStatus()
         {
+            if (!Properties.Settings.Default.CompactDetection)
+            {
+                return false;
+            }
+
             try
             {
                 if (!InstallationDirectory.Exists)
@@ -226,7 +231,6 @@ namespace Steam_Library_Manager.Definitions
                     if (sizeAfterCompact != 0)
                     {
                         SizeOnDisk = sizeAfterCompact;
-                        System.Diagnostics.Debug.WriteLine($"SizeOnDisk updated for game: {AppName} - new size: {SizeOnDisk}");
                     }
                 }
 

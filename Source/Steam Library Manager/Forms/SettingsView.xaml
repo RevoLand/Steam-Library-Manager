@@ -117,7 +117,7 @@
 
                     <!-- Advanced Logging (Requires restart) -->
                     <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_AdvancedLogging}"
-                                                   IsChecked="{SLM:SettingBinding Advanced_Logging}" HorizontalAlignment="Left"
+                                                   IsChecked="{SLM:SettingBinding Advanced_Logging}" HorizontalAlignment="Left" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                         <Controls:ToggleSwitch.ToolTip>
                             <ToolTip>
@@ -158,7 +158,20 @@
                         </Controls:ToggleSwitch.ToolTip>
                     </Controls:ToggleSwitch>
 
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Advanced Compact Size Detection" OnLabel="On" OffLabel="Off"
+                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Compact Status Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
+                                           IsChecked="{SLM:SettingBinding CompactDetection}"
+                                           HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                        <Controls:ToggleSwitch.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="Compact Status Detection" />
+                                    <TextBlock Text="Gets the compact status for installed games." />
+                                </StackPanel>
+                            </ToolTip>
+                        </Controls:ToggleSwitch.ToolTip>
+                    </Controls:ToggleSwitch>
+
+                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Advanced Compact Size Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                            IsChecked="{SLM:SettingBinding AdvancedCompactSizeDetection}"
                                            HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                         <Controls:ToggleSwitch.ToolTip>

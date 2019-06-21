@@ -15,7 +15,7 @@
                         <Grid.ContextMenu>
                             <ContextMenu BorderThickness="0">
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
-                                <MenuItem Header="Ignore Selected Item(s)" Tag="Ignore" Click="LibraryCleaner_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.IgnoreSelectedItems}" Tag="Ignore" Click="LibraryCleaner_ContextMenuItem_Click" />
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
                             </ContextMenu>
                         </Grid.ContextMenu>
@@ -36,7 +36,7 @@
             <ListView.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                        <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
                     </StackPanel>
                 </ToolTip>
             </ListView.ToolTip>
@@ -48,13 +48,13 @@
                         <Grid.ContextMenu>
                             <ContextMenu BorderThickness="0">
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="IgnoredItems_ContextMenuItem_Click" />
-                                <MenuItem Header="Remove Selected Item(s) from Ignore List" Tag="Ignore" Click="IgnoredItems_ContextMenuItem_Click" />
+                                <MenuItem Header="{l:Static p:Resources.RemoveSelectedItemSFromIgnoreList}" Tag="Ignore" Click="IgnoredItems_ContextMenuItem_Click" />
                                 <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="IgnoredItems_ContextMenuItem_Click" />
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid>
                             <TextBlock Text="{Binding}" TextWrapping="Wrap" />
-                            <TextBlock Text="Ignored" HorizontalAlignment="Right" />
+                            <TextBlock Text="{l:Static p:Resources.Ignored}" HorizontalAlignment="Right" />
                         </Grid>
                     </Grid>
                 </DataTemplate>
@@ -62,7 +62,7 @@
             <ListView.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
+                        <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
                     </StackPanel>
                 </ToolTip>
             </ListView.ToolTip>
@@ -73,8 +73,8 @@
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Delete All Items" />
-                        <TextBlock Text="Attempts to delete every folder/file in the given list." />
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.DeleteAllItems}" />
+                        <TextBlock Text="{l:Static p:Resources.DeleteAllItems_Description}" />
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>
@@ -85,8 +85,8 @@
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Move All Items" />
-                        <TextBlock Text="Moves every folder/file in the given list to selected path." />
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.LibraryCleanerView_MoveAllItems}" />
+                        <TextBlock Text="{l:Static p:Resources.MoveAllItems_Description}" />
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>
@@ -97,8 +97,8 @@
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Refresh Items" />
-                        <TextBlock Text="Refreshes the junk list for Steam libraries." />
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RefreshItems}" />
+                        <TextBlock Text="{l:Static p:Resources.RefreshItems_Description}" />
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>
@@ -109,8 +109,8 @@
             <Button.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Toggle Item List" />
-                        <TextBlock Text="Toggles item list between junk items and ignored items." />
+                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.ToggleItemList}" />
+                        <TextBlock Text="{l:Static p:Resources.ToggleItemList_Description}" />
                     </StackPanel>
                 </ToolTip>
             </Button.ToolTip>

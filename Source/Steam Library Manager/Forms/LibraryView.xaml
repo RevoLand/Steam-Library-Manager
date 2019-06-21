@@ -13,138 +13,138 @@
                   HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                   SelectionChanged="LibraryGrid_MouseDown">
             <ListView.ItemTemplate>
-        <DataTemplate>
-            <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
-                <Grid.ContextMenu>
-                    <ContextMenu BorderThickness="0" ItemsSource="{Binding ContextMenu}" />
-                </Grid.ContextMenu>
+                <DataTemplate>
+                    <Grid Height="110" Background="Transparent" DragEnter="LibraryGrid_DragEnter" Drop="LibraryGrid_Drop" AllowDrop="True" MouseDown="Grid_MouseDown" Cursor="Hand">
+                        <Grid.ContextMenu>
+                            <ContextMenu BorderThickness="0" ItemsSource="{Binding ContextMenu}" />
+                        </Grid.ContextMenu>
 
-                <!-- TextBlock: Offline text -->
-                <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_Offline}" Margin="50,50,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" FontSize="20">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="true" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                        <!-- TextBlock: Library Path -->
+                        <TextBlock Margin="3" Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-                <!-- TextBlock: Library Path -->
-                <TextBlock Margin="3" Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" />
-
-                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">
-                    <!-- TextBlock: Library Type -->
-                    <TextBlock>
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="SLM" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_SLM}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Steam" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Origin" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_Origin}" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <Image Width="24" Height="24" HorizontalAlignment="Left" Margin="10, 0">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Steam" />
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30" Height="30">
+                            <!-- TextBlock: Library Type -->
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="SLM" />
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="SLM" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Type}" Value="Origin" />
+                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_SLM}" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="Steam" />
                                                 </MultiDataTrigger.Conditions>
-                                        <Setter Property="Source" Value="/Steam Library Manager;component/Resources/origin-icon.ico" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                        </Image>
+                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="Origin" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_Origin}" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                    <!-- TextBlock: App count -->
-                    <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </WrapPanel>
+                            <Image Width="24" Height="24" HorizontalAlignment="Left" Margin="4, -2, 4, 0">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="Steam" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="SLM" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="Origin" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/origin-icon.ico" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
 
-                <Grid Height="20" Margin="3, 5" VerticalAlignment="Bottom">
-                    <Grid.Style>
-                        <Style TargetType="{x:Type Grid}">
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+                            <!-- TextBlock: App count -->
+                            <TextBlock Text="{Binding Apps.Count, StringFormat=App(s): \{0\}}" HorizontalAlignment="Right">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </WrapPanel>
 
-                    <!-- ProgressBar: Available free space -->
-                    <Controls:MetroProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+                        <!-- TextBlock: Offline text -->
+                        <TextBlock Text="{l:Static p:Resources.Forms_LibraryView_Offline}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding DirectoryInfo.Exists}" Value="true" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                    <!-- TextBlock: Free space text -->
-                    <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
-                </Grid>
-            </Grid>
-        </DataTemplate>
+                        <Grid Height="20" Margin="3, 5" VerticalAlignment="Bottom">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <!-- ProgressBar: Available free space -->
+                            <Controls:MetroProgressBar Height="20" Value="{Binding FreeSpacePerc, Mode=OneWay}" />
+
+                            <!-- TextBlock: Free space text -->
+                            <TextBlock Text="{Binding PrettyFreeSpace}" HorizontalAlignment="Center" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ToolTip>
                 <ToolTip>
