@@ -271,6 +271,7 @@ Hata: {ExceptionMessage}
 
 Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -806,5 +807,65 @@ Hata: {ExceptionMessage}</value>
   </data>
   <data name="Forms_LibraryView_CloseLibraryText2" xml:space="preserve">
     <value>Only available for (non-main) Origin and SLM libraries.</value>
+  </data>
+  <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
+    <value>Auto Scroll Logs</value>
+  </data>
+  <data name="TaskManagerView_AutoClearCompletedTasks" xml:space="preserve">
+    <value>Auto Clear Completed Tasks</value>
+  </data>
+  <data name="RemoveSelectedItemSFromIgnoreList" xml:space="preserve">
+    <value>Remove Selected Item(s) from Ignore List</value>
+  </data>
+  <data name="Ignored" xml:space="preserve">
+    <value>Ignored</value>
+  </data>
+  <data name="DoubleClickingToAnItemWillOpenItSLocationInFileExplorer" xml:space="preserve">
+    <value>Double-clicking to an item will open it's location in file explorer.</value>
+  </data>
+  <data name="DeleteAllItems" xml:space="preserve">
+    <value>Delete All Items</value>
+  </data>
+  <data name="DeleteAllItems_Description" xml:space="preserve">
+    <value>Attempts to delete every folder/file in the given list.</value>
+  </data>
+  <data name="LibraryCleanerView_MoveAllItems" xml:space="preserve">
+    <value>Move All Items</value>
+  </data>
+  <data name="MoveAllItems_Description" xml:space="preserve">
+    <value>Moves every folder/file in the given list to selected path.</value>
+  </data>
+  <data name="RefreshItems" xml:space="preserve">
+    <value>Refresh Items</value>
+  </data>
+  <data name="RefreshItems_Description" xml:space="preserve">
+    <value>Refreshes the junk list for Steam libraries.</value>
+  </data>
+  <data name="ToggleItemList" xml:space="preserve">
+    <value>Toggle Item List</value>
+  </data>
+  <data name="ToggleItemList_Description" xml:space="preserve">
+    <value>Toggles item list between junk items and ignored items.</value>
+  </data>
+  <data name="IgnoreSelectedItems" xml:space="preserve">
+    <value>Ignore Selected Item(s)</value>
+  </data>
+  <data name="CorruptedAcfFile" xml:space="preserve">
+    <value>Corrupted acf file</value>
+  </data>
+  <data name="HeadlessFolderNoCorrespondingAcfFile" xml:space="preserve">
+    <value>Headless folder (No corresponding acf file)</value>
+  </data>
+  <data name="HeadlessFileNoCorrespondingİnstallation" xml:space="preserve">
+    <value>Headless file (No corresponding installation)</value>
+  </data>
+  <data name="InstallationNotFoundButStateFlagEqualsTo4" xml:space="preserve">
+    <value>Installation not found but StateFlag equals to 4</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
   </data>
 </root>
