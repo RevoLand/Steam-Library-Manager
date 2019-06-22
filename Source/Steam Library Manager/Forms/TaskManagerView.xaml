@@ -43,7 +43,7 @@
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                             <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                                <DropShadowEffect Direction="130" ShadowDepth="1" BlurRadius="3" />
                             </CachedImage:Image.Effect>
                             <CachedImage:Image.Style>
                                 <Style TargetType="{x:Type Image}">
@@ -315,7 +315,7 @@
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" Tag="origin">
                             <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                                <DropShadowEffect Direction="130" ShadowDepth="1" BlurRadius="3" />
                             </CachedImage:Image.Effect>
                             <CachedImage:Image.Style>
                                 <Style TargetType="{x:Type Image}">
