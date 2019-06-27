@@ -17,19 +17,19 @@
                     <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
-                <CachedImage:Image HorizontalAlignment="Left" Margin="2" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="slm">
+                <CachedImage:Image HorizontalAlignment="Left" Margin="2" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
                     <CachedImage:Image.Effect>
                         <DropShadowEffect Direction="130" ShadowDepth="1" BlurRadius="3" />
                     </CachedImage:Image.Effect>
                     <CachedImage:Image.Style>
                         <Style TargetType="CachedImage:Image">
-                            <Setter Property="Width" Value="230px"></Setter>
-                            <Setter Property="Height" Value="107px"></Setter>
+                            <Setter Property="Width" Value="230px" />
+                            <Setter Property="Height" Value="107px" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
-                                    <Setter Property="Tag" Value="origin"></Setter>
-                                    <Setter Property="Width" Value="116px"></Setter>
-                                    <Setter Property="Height" Value="163px"></Setter>
+                                    <Setter Property="Tag" Value="origin" />
+                                    <Setter Property="Width" Value="116px" />
+                                    <Setter Property="Height" Value="163px" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -40,14 +40,15 @@
                 <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Margin" Value="240, 0, 0, 0"></Setter>
+                            <Setter Property="Margin" Value="240, 0, 0, 0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
-                                    <Setter Property="Margin" Value="125, 0, 0, 0"></Setter>
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
+
                     <!-- App Name -->
                     <TextBlock Text="{Binding AppName}" TextWrapping="Wrap" FontSize="14" />
 
@@ -142,18 +143,12 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
+                                    <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid">
                                         <Setter Property="ContentTemplate" Value="{StaticResource GridView}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview">
                                         <Setter Property="ContentTemplate" Value="{StaticResource ListView}" />
-                                    </MultiDataTrigger>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </ContentControl.Style>

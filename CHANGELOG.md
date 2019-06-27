@@ -4,23 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
-
-## [1.5.1.8] - 2019-06-21
+## [1.5.1.8] - 2019-06-27
 
 ### Added
 
 - Auto clear completed tasks
-- Ability to Ignore Junks (Library Cleaner Items)
+- Ability to Ignore Junks (in Library Cleaner)
+- Compact Status Detection On/Off switch (default off for better performance)
 
 ### Changed
 
 - UI Improvements:
-  - Tooltips
+  - Tooltips (Translation keys for tooltips will be added later.)
   - Library Cleaner: Reason why junk
   - Library type logo in library panel
   - Replace "Create Library" button with "Create Library / Remove Library / Refresh Library" buttons
 - Loading of Origin header images (Load from/save as "appid".jpg rather than a complicated store page id or whatsoever)
+- Updated translations ([Crowdin](https://crowdin.com/project/steam-library-manager) for translation)
 
 ## [1.5.1.7] - 2019-05-31
 

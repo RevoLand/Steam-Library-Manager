@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,7 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Произошла ошибка при перемещении файлов игры. Время истекло: {ElapsedTime}</value>
   </data>
@@ -129,7 +128,7 @@
 Хотите удалить файлы которые уже перемещены из целевой библиотеки?</value>
   </data>
   <data name="AutoUpdater" xml:space="preserve">
-    <value>Auto Updater</value>
+    <value>Автообновление</value>
   </data>
   <data name="CompressArchive_FileNotFoundEx" xml:space="preserve">
     <value>[{AppName}] При сжатии файлов произошла ошибка связанная с файловой системой.
@@ -395,7 +394,7 @@
     <value>Не удалять</value>
   </data>
   <data name="Forms_Settings_GameListMethod" xml:space="preserve">
-    <value>Game listing method</value>
+    <value>Способ отображения игр</value>
   </data>
   <data name="Forms_Settings_GeneralSettings" xml:space="preserve">
     <value>Общие настройки</value>
@@ -425,12 +424,6 @@
     <value>Удалить файлы в исходном каталоге</value>
   </data>
   <data name="Report_File_Movement" xml:space="preserve">
-    <value>Report File Movement</value>
-  </data>
-  <data name="Keep_searching_on_library_change" xml:space="preserve">
-    <value>Keep searching on library change</value>
-  </data>
-  <data name="Calculation_method_for_games" xml:space="preserve">
     <value>Сообщить о перемещении файла</value>
   </data>
   <data name="Keep_searching_on_library_change" xml:space="preserve">
@@ -640,7 +633,7 @@
     <value>{AppName} ({SizeOnDisk})</value>
   </data>
   <data name="SteamApp_CMenu_GameHub" xml:space="preserve">
-    <value>Game Hub</value>
+    <value>Игровое сообщество</value>
   </data>
   <data name="SteamApp_CMenu_Play" xml:space="preserve">
     <value>Играть</value>
@@ -792,84 +785,84 @@
 Ошибка: {ExceptionMessage}</value>
   </data>
   <data name="Updater_LatestVersionMessage" xml:space="preserve">
-    <value>You are using the latest version of SLM.</value>
+    <value>Вы используете последнюю версию SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+    <value>Создайте библиотеку Steam, Origin или SLM в выбранном каталоге.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
-    <value>Close Library</value>
+    <value>Закрыть библиотеку</value>
   </data>
   <data name="Forms_LibraryView_RefreshLibrary" xml:space="preserve">
-    <value>Refresh Library</value>
+    <value>Обновить библиотеку</value>
   </data>
   <data name="Forms_LibraryView_CloseLibraryText" xml:space="preserve">
-    <value>Removes the selected library from SLM without touching files inside.</value>
+    <value>Удаляет выбранную библиотеку из SLM без касания файлов внутри.</value>
   </data>
   <data name="Forms_LibraryView_RefreshLibraryText" xml:space="preserve">
-    <value>Refreshes the current status of selected library.</value>
+    <value>Обновляет текущий статус выбранной библиотеки.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibraryText2" xml:space="preserve">
-    <value>Only available for (non-main) Origin and SLM libraries.</value>
+    <value>Доступно только для (не главной) библиотек Origin и SLM.</value>
   </data>
   <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
-    <value>Auto Scroll Logs</value>
+    <value>Автопрокрутка лога</value>
   </data>
   <data name="TaskManagerView_AutoClearCompletedTasks" xml:space="preserve">
-    <value>Auto Clear Completed Tasks</value>
+    <value>Автоочистка завершенных задач</value>
   </data>
   <data name="RemoveSelectedItemSFromIgnoreList" xml:space="preserve">
-    <value>Remove Selected Item(s) from Ignore List</value>
+    <value>Удалить выбранный элемент(ы) из списка Ignore</value>
   </data>
   <data name="Ignored" xml:space="preserve">
-    <value>Ignored</value>
+    <value>Игнорировано</value>
   </data>
   <data name="DoubleClickingToAnItemWillOpenItSLocationInFileExplorer" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Двойное нажатие на элемент откроет его местоположение в обозревателе файлов.</value>
   </data>
   <data name="DeleteAllItems" xml:space="preserve">
-    <value>Delete All Items</value>
+    <value>Удалить все элементы</value>
   </data>
   <data name="DeleteAllItems_Description" xml:space="preserve">
-    <value>Attempts to delete every folder/file in the given list.</value>
+    <value>Попытки удалить каждую папку/файл в данном списке.</value>
   </data>
   <data name="LibraryCleanerView_MoveAllItems" xml:space="preserve">
-    <value>Move All Items</value>
+    <value>Переместить все элементы</value>
   </data>
   <data name="MoveAllItems_Description" xml:space="preserve">
-    <value>Moves every folder/file in the given list to selected path.</value>
+    <value>Перемещает каждую папку/файл в заданном списке в выбранный путь.</value>
   </data>
   <data name="RefreshItems" xml:space="preserve">
-    <value>Refresh Items</value>
+    <value>Обновить элементы</value>
   </data>
   <data name="RefreshItems_Description" xml:space="preserve">
-    <value>Refreshes the junk list for Steam libraries.</value>
+    <value>Обновляет список мусорных файлов для Steam библиотек.</value>
   </data>
   <data name="ToggleItemList" xml:space="preserve">
-    <value>Toggle Item List</value>
+    <value>Переключить список элементов</value>
   </data>
   <data name="ToggleItemList_Description" xml:space="preserve">
-    <value>Toggles item list between junk items and ignored items.</value>
+    <value>Переключает список элементов между мусорным элементом и игнорируемыми элементами.</value>
   </data>
   <data name="IgnoreSelectedItems" xml:space="preserve">
-    <value>Ignore Selected Item(s)</value>
+    <value>Игнорировать выбранный пункт(ы)</value>
   </data>
   <data name="CorruptedAcfFile" xml:space="preserve">
-    <value>Corrupted acf file</value>
+    <value>Повреждённый acf файл</value>
   </data>
   <data name="HeadlessFolderNoCorrespondingAcfFile" xml:space="preserve">
-    <value>Headless folder (No corresponding acf file)</value>
+    <value>Папка без заголовка (нет соответствующего acf файла)</value>
   </data>
   <data name="HeadlessFileNoCorrespondingİnstallation" xml:space="preserve">
-    <value>Headless file (No corresponding installation)</value>
+    <value>Файл без заголовка (Не соответствует установке)</value>
   </data>
   <data name="InstallationNotFoundButStateFlagEqualsTo4" xml:space="preserve">
-    <value>Installation not found but StateFlag equals to 4</value>
+    <value>Установка не найдена но StateFlag равен 4</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Включено</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Отключено</value>
   </data>
 </root>

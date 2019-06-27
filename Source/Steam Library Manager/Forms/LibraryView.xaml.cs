@@ -22,15 +22,13 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                var Library = ((Grid)sender).DataContext as Definitions.Library;
-
-                if (Main.FormAccessor.AppView.AppPanel.SelectedItems.Count == 0 || Library == null)
+                if (Main.FormAccessor.AppView.AppPanel.SelectedItems.Count == 0 || !(((Grid)sender).DataContext is Definitions.Library library))
                 {
                     return;
                 }
 
-                Library.DirectoryInfo.Refresh();
-                if (!Library.DirectoryInfo.Exists)
+                library.DirectoryInfo.Refresh();
+                if (!library.DirectoryInfo.Exists)
                 {
                     return;
                 }
@@ -45,43 +43,43 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            if (Library == App.Library || Library.Type == Definitions.Enums.LibraryType.Origin)
+                            if (library == App.Library || library.Type == Definitions.Enums.LibraryType.Origin)
                             {
                                 continue;
                             }
 
-                            if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library && !x.Completed) == 0)
+                            if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == library && !x.Completed) == 0)
                             {
                                 Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                                 {
                                     App = App,
-                                    TargetLibrary = Library,
+                                    TargetLibrary = library,
                                     TaskType = Definitions.Enums.TaskType.Copy
                                 });
                             }
                             else
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName })).ConfigureAwait(false);
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(false);
                             }
                         }
                     }
                     else if (App is Definitions.OriginAppInfo)
                     {
-                        if (Library == App.Library || Library.Type != Definitions.Enums.LibraryType.Origin)
+                        if (library == App.Library || library.Type != Definitions.Enums.LibraryType.Origin)
                             continue;
 
-                        if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == Library && !x.Completed) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == library && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
                                 App = App,
-                                TargetLibrary = Library,
+                                TargetLibrary = library,
                                 TaskType = Definitions.Enums.TaskType.Copy
                             });
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = Library.DirectoryInfo.FullName })).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(false);
                         }
                     }
                 }
@@ -101,20 +99,20 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                var DroppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                var droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-                if (DroppedItems == null)
+                if (droppedItems == null)
                 {
                     return;
                 }
 
-                foreach (var DroppedItem in DroppedItems)
+                foreach (var droppedItem in droppedItems)
                 {
-                    var Info = new DirectoryInfo(DroppedItem);
+                    var info = new DirectoryInfo(droppedItem);
 
-                    if ((Info.Attributes & FileAttributes.Directory) != 0)
+                    if ((info.Attributes & FileAttributes.Directory) != 0)
                     {
-                        await CreateLibraryAsync(Info.FullName).ConfigureAwait(false);
+                        await CreateLibraryAsync(info.FullName).ConfigureAwait(false);
                     }
                 }
             }
@@ -124,9 +122,9 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private async System.Threading.Tasks.Task CreateLibraryAsync(string LibraryPath)
+        private async System.Threading.Tasks.Task CreateLibraryAsync(string libraryPath)
         {
-            var LibraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), new { LibraryPath }), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
+            var libraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), new { LibraryPath = libraryPath }), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
             {
                 AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Steam)),
                 NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
@@ -134,15 +132,15 @@ namespace Steam_Library_Manager.Forms
                 SecondAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
             }).ConfigureAwait(false);
 
-            switch (LibraryDialog)
+            switch (libraryDialog)
             {
                 // Steam
                 case MessageDialogResult.Affirmative:
-                    if (!Functions.Steam.Library.IsLibraryExists(LibraryPath))
+                    if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
                     {
-                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
                         {
-                            Functions.Steam.Library.CreateNew(LibraryPath, false);
+                            Functions.Steam.Library.CreateNew(libraryPath, false);
                         }
                         else
                         {
@@ -151,16 +149,16 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
                     }
                     break;
                 // SLM
                 case MessageDialogResult.Negative:
-                    if (!Functions.SLM.Library.IsLibraryExists(LibraryPath))
+                    if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
                     {
-                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
                         {
-                            Functions.SLM.Library.AddNewAsync(LibraryPath);
+                            Functions.SLM.Library.AddNewAsync(libraryPath);
                         }
                         else
                         {
@@ -169,16 +167,16 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
                     }
                     break;
                 // Origin
                 case MessageDialogResult.FirstAuxiliary:
-                    if (!Functions.Origin.IsLibraryExists(LibraryPath))
+                    if (!Functions.Origin.IsLibraryExists(libraryPath))
                     {
-                        if (Directory.GetDirectoryRoot(LibraryPath) != LibraryPath)
+                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
                         {
-                            Functions.Origin.AddNewAsync(LibraryPath);
+                            Functions.Origin.AddNewAsync(libraryPath);
                         }
                         else
                         {
@@ -187,7 +185,7 @@ namespace Steam_Library_Manager.Forms
                     }
                     else
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath })).ConfigureAwait(false);
+                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
                     }
                     break;
             }
@@ -209,7 +207,7 @@ namespace Steam_Library_Manager.Forms
                     Functions.SLM.Library.UpdateLibrary(Definitions.SLM.CurrentSelectedLibrary);
                 }
 
-                // Update games list from current selection
+                // Update app panel with selected library
                 Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
             }
             catch (Exception ex)
