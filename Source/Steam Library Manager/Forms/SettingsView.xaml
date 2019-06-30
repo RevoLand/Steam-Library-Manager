@@ -280,10 +280,11 @@
                                     </Button.ToolTip>
                                 </Button>
                                 <Separator />
-                                <TextBlock Text="Mike Burkart (Paypal)" />
-                                <TextBlock Text="Marisa Smith (Paypal)" />
-                                <TextBlock Text="Ken Tittle (Patreon)" />
-                                <TextBlock Text="DigitalBirdie (Paypal)" />
+                                <TextBlock Text="Mike Burkart" />
+                                <TextBlock Text="Marisa Smith" />
+                                <TextBlock Text="Ken Tittle" />
+                                <TextBlock Text="DigitalBirdie" />
+                                <TextBlock Text="Hotobu" />
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>
