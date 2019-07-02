@@ -285,6 +285,7 @@
                                 <TextBlock Text="Ken Tittle" />
                                 <TextBlock Text="DigitalBirdie" />
                                 <TextBlock Text="Hotobu" />
+                                <TextBlock Text="Carlo Bensi" />
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>
