@@ -333,6 +333,19 @@
                     </Controls:ToggleSwitch.ToolTip>
                 </Controls:ToggleSwitch>
 
+                <!-- Async File Transfers -->
+                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Async File Transfers" IsChecked="{SLM:SettingBinding AsyncFileTransfers}" 
+                                       Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Async" OffLabel="Sync">
+                    <Controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="Async File Transfers" />
+                                <TextBlock Text="Toggle between doing file transfers asynchronously or synchronously as default option." />
+                            </StackPanel>
+                        </ToolTip>
+                    </Controls:ToggleSwitch.ToolTip>
+                </Controls:ToggleSwitch>
+
                 <!-- Start Task Manager on Startup -->
                 <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">

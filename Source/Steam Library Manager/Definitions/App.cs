@@ -480,7 +480,7 @@ namespace Steam_Library_Manager.Definitions
                     void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
                     pOptions.MaxDegreeOfParallelism = 1;
 
-                    Parallel.ForEach(appFiles.Where(x => (x).Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), pOptions, currentFile =>
+                    Parallel.ForEach(appFiles.Where(x => currentTask.AsyncFileTransfers ? x.Length > Properties.Settings.Default.ParallelAfterSize * 1000000 : true).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), pOptions, currentFile =>
                     {
                         try
                         {
@@ -559,6 +559,9 @@ namespace Steam_Library_Manager.Definitions
                             }, System.Windows.Threading.DispatcherPriority.Normal);
                         }
                     });
+
+                    if (!currentTask.AsyncFileTransfers)
+                        goto TaskEnd;
 
                     pOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
 
@@ -642,6 +645,8 @@ namespace Steam_Library_Manager.Definitions
                         }
                     });
                 }
+
+            TaskEnd:
 
                 currentTask.ElapsedTime.Stop();
                 currentTask.MovedFileSize = totalFileSize;

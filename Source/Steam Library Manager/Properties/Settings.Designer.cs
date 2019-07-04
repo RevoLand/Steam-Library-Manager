@@ -396,5 +396,18 @@ namespace Steam_Library_Manager.Properties {
                 this["CompactDetection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool AsyncFileTransfers {
+            get {
+                return ((bool)(this["AsyncFileTransfers"]));
+            }
+            set {
+                this["AsyncFileTransfers"] = value;
+            }
+        }
     }
 }

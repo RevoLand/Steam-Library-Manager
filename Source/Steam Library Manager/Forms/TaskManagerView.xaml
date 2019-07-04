@@ -116,6 +116,7 @@
                                     </Style>
                                 </WrapPanel.Style>
 
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Async File Transfer" IsChecked="{Binding AsyncFileTransfers}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
                             </WrapPanel>
@@ -255,6 +256,7 @@
                                     </Style>
                                 </WrapPanel.Style>
 
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Async File Transfer" IsChecked="{Binding AsyncFileTransfers}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
                             </WrapPanel>
@@ -379,6 +381,7 @@
                         <!-- Checkboxes -->
                         <WrapPanel VerticalAlignment="Bottom">
                             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Async File Transfer" IsChecked="{Binding AsyncFileTransfers}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
@@ -511,6 +514,7 @@
                                 </TextBlock.Style>
                             </TextBlock>
                             <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
+                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Async File Transfer" IsChecked="{Binding AsyncFileTransfers}" />
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
