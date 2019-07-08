@@ -36,7 +36,7 @@ namespace Steam_Library_Manager.Definitions
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
-            public bool AsyncFileTransfers { get; set; } = Properties.Settings.Default.AsyncFileTransfers;
+            public bool ParallelFileTransfers { get; set; } = Properties.Settings.Default.ParallelFileTransfers;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
             public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 

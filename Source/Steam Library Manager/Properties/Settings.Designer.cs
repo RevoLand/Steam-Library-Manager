@@ -401,12 +401,12 @@ namespace Steam_Library_Manager.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public bool AsyncFileTransfers {
+        public bool ParallelFileTransfers {
             get {
-                return ((bool)(this["AsyncFileTransfers"]));
+                return ((bool)(this["ParallelFileTransfers"]));
             }
             set {
-                this["AsyncFileTransfers"] = value;
+                this["ParallelFileTransfers"] = value;
             }
         }
     }

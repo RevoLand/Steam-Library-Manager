@@ -95,14 +95,14 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "ToggleCompress":
-                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
                         {
                             CurrentTask.Compress = !CurrentTask.Compress;
                         }
                         break;
 
                     case "ToggleRemoveFiles":
-                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
                         {
                             CurrentTask.RemoveOldFiles = !CurrentTask.RemoveOldFiles;
                         }

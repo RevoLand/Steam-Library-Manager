@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.5.1.9] - 2019-07-09
+
+### Added
+
+- Ability to disable parallel file transfers per-task. (#64)
+
+### Fixed
+
+- A crucial bug which could potentially lead to losing game files with compact task.
+
 ## [1.5.1.8] - 2019-06-27
 
 ### Added
