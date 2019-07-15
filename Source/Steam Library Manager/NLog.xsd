@@ -352,6 +352,7 @@
           <xs:element name="asyncFlush" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="condition" minOccurs="0" maxOccurs="1" type="Condition" />
           <xs:element name="name" minOccurs="0" maxOccurs="1" type="xs:string" />
+          <xs:element name="flushOnConditionOnly" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="optimizeBufferReuse" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="asyncFlush" type="xs:boolean">
@@ -367,6 +368,11 @@
         <xs:attribute name="name" type="xs:string">
           <xs:annotation>
             <xs:documentation>Name of the target.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="flushOnConditionOnly" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Only flush when LogEvent matches condition. Ignore explicit-flush, config-reload-flush and shutdown-flush</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="optimizeBufferReuse" type="xs:boolean">

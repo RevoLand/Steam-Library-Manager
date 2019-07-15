@@ -116,7 +116,7 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
-                        var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Start)), new { AppName })).ConfigureAwait(true);
+                        var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Start)), new { AppName })).ConfigureAwait(false);
                         progressInformationMessage.SetIndeterminate();
 
                         var process = Process.Start(TouchupFile.FullName, ((repair) ? RepairParameter : InstallationParameter).Replace("{locale}", InstalledLocale).Replace("{installLocation}", InstallationDirectory.FullName));
@@ -137,7 +137,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             var installerResult = installLog.FirstOrDefault(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1);
 
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Completed)), new { installerResult })).ConfigureAwait(true);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Completed)), new { installerResult })).ConfigureAwait(false);
                         }
                     }).ConfigureAwait(false);
                 }
