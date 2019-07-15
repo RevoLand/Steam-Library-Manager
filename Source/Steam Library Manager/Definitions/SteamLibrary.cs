@@ -218,6 +218,17 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibrary)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.DeleteSteamLibraryMessage)), new { LibraryFullPath = FullPath }), MessageDialogStyle.Affirmative).ConfigureAwait(true);
                     break;
+
+                case "removefromlist":
+                    if (Functions.TaskManager.TaskList.Count(x => x.TargetLibrary == this || x.App?.Library == this) == 0)
+                    {
+                        RemoveLibraryAsync(false);
+                    }
+                    else
+                    {
+                        await Main.FormAccessor.ShowMessageAsync("Library is in use", "You have to remove the tasks related to this library before removing it from SLM.", MessageDialogStyle.Affirmative).ConfigureAwait(true);
+                    }
+                    break;
             }
         }
 
@@ -290,35 +301,38 @@ namespace Steam_Library_Manager.Definitions
 
                 List.Libraries.Remove(this);
 
-                await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
-
-                // Make a KeyValue reader
-                var keyValReader = new Framework.KeyValue();
-
-                // Read vdf file
-                keyValReader.ReadFileAsText(Global.Steam.vdfFilePath);
-
-                // Remove old library
-                keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
-
-                var i = 1;
-                foreach (var key in keyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                if (Type == Enums.LibraryType.Steam)
                 {
-                    key.Name = $"BaseInstallFolder_{i}";
-                    i++;
+                    await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
+
+                    // Make a KeyValue reader
+                    var keyValReader = new Framework.KeyValue();
+
+                    // Read vdf file
+                    keyValReader.ReadFileAsText(Global.Steam.vdfFilePath);
+
+                    // Remove old library
+                    keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
+
+                    var i = 1;
+                    foreach (var key in keyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
+                    {
+                        key.Name = $"BaseInstallFolder_{i}";
+                        i++;
+                    }
+
+                    // Update libraryFolders.vdf file with changes
+                    keyValReader.SaveToFile(Global.Steam.vdfFilePath, false);
+
+                    // Since this file started to interrupt us?
+                    // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.
+                    if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
+                    {
+                        File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+                    }
+
+                    Functions.Steam.RestartSteamAsync();
                 }
-
-                // Update libraryFolders.vdf file with changes
-                keyValReader.SaveToFile(Global.Steam.vdfFilePath, false);
-
-                // Since this file started to interrupt us?
-                // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.
-                if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
-                {
-                    File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
-                }
-
-                Functions.Steam.RestartSteamAsync();
             }
             catch (Exception ex)
             {
