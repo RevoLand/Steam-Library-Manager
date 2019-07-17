@@ -339,8 +339,8 @@
                     <Controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Async File Transfers" />
-                                <TextBlock Text="Toggle between doing file transfers asynchronously or synchronously as default option." />
+                                <TextBlock FontWeight="Bold" Text="Parallel File Transfers" />
+                                <TextBlock Text="Toggle between doing file transfers parallelly or sequentially as default option." />
                             </StackPanel>
                         </ToolTip>
                     </Controls:ToggleSwitch.ToolTip>
