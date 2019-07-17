@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Threading error with Origin installations (InvalidOperationException)
 - Context Menu Item is not working with SLM libraries (Remove from SLM)
+- Compact tasks getting deleted at the end if "Remove Files at Source directory" option enabled in global task options
+- Compact size detection for some locales
 
 ## [1.5.1.9] - 2019-07-09
 
