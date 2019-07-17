@@ -47,7 +47,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (!CancellationToken.IsCancellationRequested && !CurrentTask.ErrorHappened)
                 {
-                    if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete)
+                    if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete && CurrentTask.TaskType != Definitions.Enums.TaskType.Compact)
                     {
                         Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(
                             SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)),
