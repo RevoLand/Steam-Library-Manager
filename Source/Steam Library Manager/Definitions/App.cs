@@ -226,7 +226,7 @@ namespace Steam_Library_Manager.Definitions
                         StringSplitOptions.RemoveEmptyEntries);
 
                     var sizeBeforeCompact = noutput[0];
-                    var sizeAfterCompact = Convert.ToInt64(noutput[1].Replace(" bytes.", "").Replace(".", ""));
+                    var sizeAfterCompact = Convert.ToInt64(noutput[1].Replace(" bytes.", "").Replace(".", "").Replace(",", ""));
 
                     if (sizeAfterCompact != 0)
                     {
@@ -240,6 +240,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
+                Logger.Fatal(ex);
 
                 return false;
             }
