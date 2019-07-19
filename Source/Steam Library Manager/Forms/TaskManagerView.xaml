@@ -716,7 +716,18 @@
                     <ToolTip>
                         <StackPanel>
                             <TextBlock FontWeight="Bold" Text="Continue on Error" />
-                            <TextBlock Text="If active, SLM will move to the next task in the list on error." />
+                            <TextBlock Text="If active, SLM will move to the next task in the list in case of an error with the active task." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Skip Steam Restart Dialog" IsChecked="{SLM:SettingBinding TaskManager_SteamRestartSkip}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Skip Steam Restart Dialog" />
+                            <TextBlock Text="If active, SLM will not ask to restart Steam on Steam library related tasks." />
+                            <TextBlock FontWeight="Bold" Text="However running Steam apps/games without restarting Steam may damage app/game installations and require manual processing!" />
                         </StackPanel>
                     </ToolTip>
                 </CheckBox.ToolTip>

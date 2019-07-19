@@ -91,7 +91,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    if (IsRestartRequired)
+                    if (IsRestartRequired && !Properties.Settings.Default.TaskManager_SteamRestartSkip)
                     {
                         Steam.RestartSteamAsync();
                         IsRestartRequired = false;

@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [UNRELEASED]
+
 ## [1.5.1.11] - 2019-07-19
+### Added
+
+- Ability to continue on error for task manager tasks (#68)
+- Ability to skip restart warning for Steam library related tasks (#69)
 
 ### Changed
 
