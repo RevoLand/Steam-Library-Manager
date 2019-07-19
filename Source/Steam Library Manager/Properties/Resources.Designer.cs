@@ -1842,6 +1842,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View on Youtube.
+        /// </summary>
+        internal static string SteamApp_CMenu_YoutubeSearch {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_YoutubeSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steam Library Manager.
         /// </summary>
         internal static string SteamApp_RemovingError {

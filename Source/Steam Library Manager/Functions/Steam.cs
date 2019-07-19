@@ -248,6 +248,14 @@ namespace Steam_Library_Manager.Functions
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Google
             };
 
+            // Google Search
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_YoutubeSearch)),
+                Action = "youtube",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Youtube
+            };
+
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
             Definitions.List.AppCMenuItems.Add(menuItem);
