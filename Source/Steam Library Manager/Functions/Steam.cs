@@ -232,7 +232,7 @@ namespace Steam_Library_Manager.Functions
             menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewStore)),
-                Action = "https://store.steampowered.com/app/{0}",
+                Action = "steam://store/{0}",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
             };
 
