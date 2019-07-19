@@ -711,6 +711,16 @@
                     </ToolTip>
                 </CheckBox.ToolTip>
             </CheckBox>
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Continue on Error" IsChecked="{SLM:SettingBinding TaskManager_ContinueOnError}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Continue on Error" />
+                            <TextBlock Text="If active, SLM will move to the next task in the list on error." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
         </WrapPanel>
 
         <!-- ListBox: Task Manager Logs -->

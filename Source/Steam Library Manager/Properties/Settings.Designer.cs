@@ -409,5 +409,31 @@ namespace Steam_Library_Manager.Properties {
                 this["ParallelFileTransfers"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool TaskManager_ContinueOnError {
+            get {
+                return ((bool)(this["TaskManager_ContinueOnError"]));
+            }
+            set {
+                this["TaskManager_ContinueOnError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool TaskManager_SteamRestartSkip {
+            get {
+                return ((bool)(this["TaskManager_SteamRestartSkip"]));
+            }
+            set {
+                this["TaskManager_SteamRestartSkip"] = value;
+            }
+        }
     }
 }

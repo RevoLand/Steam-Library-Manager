@@ -324,7 +324,10 @@ namespace Steam_Library_Manager.Definitions
                 if (!currentTask.ErrorHappened)
                 {
                     currentTask.ErrorHappened = true;
-                    Functions.TaskManager.Stop();
+
+                    if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                        Functions.TaskManager.Stop();
+
                     currentTask.Active = false;
                     currentTask.Completed = true;
 
@@ -427,7 +430,10 @@ namespace Steam_Library_Manager.Definitions
                         catch (FileNotFoundException ex)
                         {
                             currentTask.ErrorHappened = true;
-                            Functions.TaskManager.Stop();
+
+                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                                Functions.TaskManager.Stop();
+
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
@@ -530,7 +536,10 @@ namespace Steam_Library_Manager.Definitions
                         catch (PathTooLongException ex)
                         {
                             currentTask.ErrorHappened = true;
-                            Functions.TaskManager.Stop();
+
+                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                                Functions.TaskManager.Stop();
+
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
@@ -548,7 +557,10 @@ namespace Steam_Library_Manager.Definitions
                         catch (IOException ex)
                         {
                             currentTask.ErrorHappened = true;
-                            Functions.TaskManager.Stop();
+
+                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                                Functions.TaskManager.Stop();
+
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
@@ -615,7 +627,10 @@ namespace Steam_Library_Manager.Definitions
                         catch (PathTooLongException ex)
                         {
                             currentTask.ErrorHappened = true;
-                            Functions.TaskManager.Stop();
+
+                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                                Functions.TaskManager.Stop();
+
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
@@ -633,7 +648,10 @@ namespace Steam_Library_Manager.Definitions
                         catch (IOException ex)
                         {
                             currentTask.ErrorHappened = true;
-                            Functions.TaskManager.Stop();
+
+                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                                Functions.TaskManager.Stop();
+
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
@@ -674,7 +692,10 @@ namespace Steam_Library_Manager.Definitions
                 if (!currentTask.ErrorHappened)
                 {
                     currentTask.ErrorHappened = true;
-                    Functions.TaskManager.Stop();
+
+                    if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                        Functions.TaskManager.Stop();
+
                     currentTask.Active = false;
                     currentTask.Completed = true;
 
@@ -693,7 +714,10 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 currentTask.ErrorHappened = true;
-                Functions.TaskManager.Stop();
+
+                if (!Properties.Settings.Default.TaskManager_ContinueOnError)
+                    Functions.TaskManager.Stop();
+
                 currentTask.Active = false;
                 currentTask.Completed = true;
 
