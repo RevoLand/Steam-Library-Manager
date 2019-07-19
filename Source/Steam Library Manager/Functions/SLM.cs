@@ -272,7 +272,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     library.DirectoryInfo.Refresh();
 
-                    await Task.Run(library.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run((Action)library.UpdateAppListAsync).ConfigureAwait(true);
 
                     library.UpdateDiskDetails();
                 }

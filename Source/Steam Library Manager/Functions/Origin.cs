@@ -210,7 +210,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
-                await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                await Task.Run((Action) newLibrary.UpdateAppListAsync).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

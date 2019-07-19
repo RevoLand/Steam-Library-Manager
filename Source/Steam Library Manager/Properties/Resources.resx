@@ -865,4 +865,13 @@ Error: {ExceptionMessage}</value>
   <data name="Disabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
+    <value>View Store Page</value>
+  </data>
+  <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
+    <value>Google Search</value>
+  </data>
+  <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
+    <value>View on Youtube</value>
+  </data>
 </root>

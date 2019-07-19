@@ -1788,6 +1788,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Search.
+        /// </summary>
+        internal static string SteamApp_CMenu_GoogleSearch {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_GoogleSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play.
         /// </summary>
         internal static string SteamApp_CMenu_Play {
@@ -1815,11 +1824,29 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Store Page.
+        /// </summary>
+        internal static string SteamApp_CMenu_ViewStore {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_ViewStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Workshop.
         /// </summary>
         internal static string SteamApp_CMenu_Workshop {
             get {
                 return ResourceManager.GetString("SteamApp_CMenu_Workshop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View on Youtube.
+        /// </summary>
+        internal static string SteamApp_CMenu_YoutubeSearch {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_YoutubeSearch", resourceCulture);
             }
         }
         
