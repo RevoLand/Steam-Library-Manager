@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 foreach (var cMenuItem in List.LibraryCMenuItems.ToList().Where(x => x.IsActive && x.AllowedLibraryTypes.Contains(Type)))
                 {
-                    if (!cMenuItem.ShowToNormal)
+                    if (!cMenuItem.ShowToNormal && IsMain)
                     {
                         continue;
                     }

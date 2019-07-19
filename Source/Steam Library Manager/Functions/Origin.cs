@@ -32,8 +32,7 @@ namespace Steam_Library_Manager.Functions
                 Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_RemoveFromSLM)),
                 Action = "remove",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
-                ShowToNormal = false,
-                ShowToSLMBackup = false
+                ShowToNormal = false
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);

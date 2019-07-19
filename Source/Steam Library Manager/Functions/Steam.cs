@@ -228,12 +228,24 @@ namespace Steam_Library_Manager.Functions
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
             Definitions.List.AppCMenuItems.Add(menuItem);
 
+            // Separator
+            menuItem = new Definitions.ContextMenuItem
+            {
+                ShowToCompressed = false,
+                IsSeparator = true,
+                ShowToSteamBackup = false
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
             // View Store Page
             menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewStore)),
                 Action = "steam://store/{0}",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Steam
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -251,7 +263,7 @@ namespace Steam_Library_Manager.Functions
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
             Definitions.List.AppCMenuItems.Add(menuItem);
 
-            // Google Search
+            // Youtube Search
             menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_YoutubeSearch)),

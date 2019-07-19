@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [UNRELEASED]
+## [1.5.1.11] - 2019-07-19
+
+### Fixed
+
+- "Remove from SLM" Context Menu Item not working with created Origin libraries
+
 ## [1.5.1.10] - 2019-07-17
 
 ### Fixed
 
 - Threading error with Origin installations (InvalidOperationException)
-- Context Menu Item is not working with SLM libraries (Remove from SLM)
+- "Remove from SLM" Context Menu Item not working with SLM libraries
 - Compact tasks getting deleted at the end if "Remove Files at Source directory" option enabled in global task options
 - Compact size detection for some locales
 
