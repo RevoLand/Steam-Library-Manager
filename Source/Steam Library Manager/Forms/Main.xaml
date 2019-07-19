@@ -50,6 +50,36 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
+        <Controls:FlyoutsControl Panel.ZIndex="2">
+            <Controls:Flyout x:Name="createLibraryFlyout" Header="Create Library" Theme="Adapt" Position="Left" Width="300" IsOpen="False" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0.4" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5"/>
+                    <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5"/>
+                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="Select" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}"/>
+                    
+                    <ComboBox Name="createLibrary_Type" Controls:TextBoxHelper.Watermark="Library Type" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Stretch" Height="40" Margin="0, 10"
+                              ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryType}}" BorderBrush="{DynamicResource AccentColorBrush}" SelectionChanged="CreateLibrary_Type_SelectionChanged">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ComboBoxItem}">
+                                <Setter Property="Height" Value="30" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBox.ToolTip>
+                            <ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" Text="Library Type" />
+                                    <TextBlock Text="Select a library type you would like to create of." />
+                                </StackPanel>
+                            </ToolTip>
+                        </ComboBox.ToolTip>
+                    </ComboBox>
+                    <TextBlock Text="Selected Library Type:" HorizontalAlignment="Stretch" Margin="0,5"/>
+                    <TextBlock x:Name="createLibrary_TypeText" HorizontalAlignment="Stretch" Margin="0,5"/>
+                    <Button Click="CreateLibraryButton_Click" Content="Create Library" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}"/>
+                    <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10"/>
+                </StackPanel>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
         <Grid Margin="15, 0, 0, 0" Panel.ZIndex="1">
             <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
             <TextBlock Margin="55, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">

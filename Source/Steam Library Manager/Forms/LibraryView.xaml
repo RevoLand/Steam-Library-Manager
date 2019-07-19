@@ -9,7 +9,7 @@
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <Grid>
-        <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" Drop="LibraryPanel_Drop" SelectionMode="Single" MaxWidth="200" Margin="0,10,0,50"
+        <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" SelectionMode="Single" MaxWidth="200" Margin="0,10,0,50"
                   HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                   SelectionChanged="LibraryGrid_MouseDown">
             <ListView.ItemTemplate>
@@ -155,7 +155,7 @@
             </ListView.ToolTip>
         </ListView>
         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0, 0, 0, 10" ItemWidth="66.6666666666667" ItemHeight="35">
-            <Button BorderThickness="0" Width="60" Style="{DynamicResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_ClickAsync" Tag="create" fa:Awesome.Content="Folder" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{DynamicResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="create" fa:Awesome.Content="Folder" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -165,7 +165,7 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_ClickAsync" Tag="remove" fa:Awesome.Content="Remove" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="remove" fa:Awesome.Content="Remove" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -176,7 +176,7 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_ClickAsync" Tag="refresh" fa:Awesome.Content="Refresh" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="refresh" fa:Awesome.Content="Refresh" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>

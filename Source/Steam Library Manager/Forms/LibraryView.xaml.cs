@@ -95,102 +95,6 @@ namespace Steam_Library_Manager.Forms
             e.Effects = DragDropEffects.Move;
         }
 
-        private async void LibraryPanel_Drop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                var droppedItems = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-                if (droppedItems == null)
-                {
-                    return;
-                }
-
-                foreach (var droppedItem in droppedItems)
-                {
-                    var info = new DirectoryInfo(droppedItem);
-
-                    if ((info.Attributes & FileAttributes.Directory) != 0)
-                    {
-                        await CreateLibraryAsync(info.FullName).ConfigureAwait(false);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-            }
-        }
-
-        private async System.Threading.Tasks.Task CreateLibraryAsync(string libraryPath)
-        {
-            var libraryDialog = await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialog)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryDialogMessage)), new { LibraryPath = libraryPath }), MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary, new MetroDialogSettings
-            {
-                AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Steam)),
-                NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_SLM)),
-                FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Origin)),
-                SecondAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-            }).ConfigureAwait(false);
-
-            switch (libraryDialog)
-            {
-                // Steam
-                case MessageDialogResult.Affirmative:
-                    if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
-                    {
-                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                        {
-                            Functions.Steam.Library.CreateNew(libraryPath, false);
-                        }
-                        else
-                        {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
-                        }
-                    }
-                    else
-                    {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
-                    }
-                    break;
-                // SLM
-                case MessageDialogResult.Negative:
-                    if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
-                    {
-                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                        {
-                            Functions.SLM.Library.AddNewAsync(libraryPath);
-                        }
-                        else
-                        {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
-                        }
-                    }
-                    else
-                    {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
-                    }
-                    break;
-                // Origin
-                case MessageDialogResult.FirstAuxiliary:
-                    if (!Functions.Origin.IsLibraryExists(libraryPath))
-                    {
-                        if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                        {
-                            Functions.Origin.AddNewAsync(libraryPath);
-                        }
-                        else
-                        {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Steam_Library_Manager)), Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage))).ConfigureAwait(false);
-                        }
-                    }
-                    else
-                    {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_Exists)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath })).ConfigureAwait(false);
-                    }
-                    break;
-            }
-        }
-
         private void LibraryGrid_MouseDown(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -234,20 +138,14 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private async void LibraryActionButtons_ClickAsync(object sender, RoutedEventArgs e)
+        private void LibraryActionButtons_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 switch (((Button)sender).Tag)
                 {
                     case "create":
-                        using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
-                        {
-                            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                            {
-                                await CreateLibraryAsync(dialog.SelectedPath).ConfigureAwait(false);
-                            }
-                        }
+                        Main.FormAccessor.createLibraryFlyout.IsOpen = true;
                         break;
 
                     case "remove":

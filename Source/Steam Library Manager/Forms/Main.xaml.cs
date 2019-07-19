@@ -4,6 +4,7 @@ using NLog.Targets.Wrappers;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ namespace Steam_Library_Manager
     {
         public static Main FormAccessor;
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
+        private Definitions.Enums.LibraryType libraryType;
 
         public readonly IProgress<string> TmLogs = new Progress<string>(log => FormAccessor.TmViewLogs.Add(log));
 
@@ -138,7 +140,7 @@ namespace Steam_Library_Manager
                     {
                         AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
                         NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-                    }).ConfigureAwait(false) != MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
                 {
                     return;
                 }
@@ -194,6 +196,139 @@ namespace Steam_Library_Manager
         {
             // hack because of this: https://github.com/dotnet/corefx/issues/10361
             Process.Start(new ProcessStartInfo("cmd", $"/c start https://crowdin.com/project/steam-library-manager") { CreateNoWindow = true });
+        }
+
+        private void CreateLibrary_PathSelectionButtonClick(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    createLibrary_Path.Text = dialog.SelectedPath;
+                }
+            }
+        }
+
+        private void CreateLibrary_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (createLibrary_Type.SelectedItem == null)
+                    return;
+
+                libraryType = (Definitions.Enums.LibraryType)createLibrary_Type.SelectedItem;
+                createLibrary_TypeText.Text = libraryType.ToString();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                TmLogs.Report(ex.ToString());
+            }
+        }
+
+        private void CreateLibraryButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var libraryPath = createLibrary_Path.Text;
+
+                if (string.IsNullOrEmpty(libraryPath))
+                {
+                    createLibrary_ResultText.Text = "Directory is not selected for library creation.";
+                    return;
+                }
+
+                if (createLibrary_Type.SelectedItem == null)
+                {
+                    createLibrary_ResultText.Text = "Library type is not selected for library creation.";
+                    return;
+                }
+
+                if (!Directory.Exists(libraryPath))
+                {
+                    createLibrary_ResultText.Text = $"Selected directory does not exists: \"{libraryPath}\"";
+                    return;
+                }
+                switch (libraryType)
+                {
+                    case Definitions.Enums.LibraryType.Steam:
+                        if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
+                        {
+                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                            {
+                                Functions.Steam.Library.CreateNew(libraryPath, false);
+                                createLibraryFlyout.IsOpen = false;
+                            }
+                            else
+                            {
+                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            }
+                        }
+                        else
+                        {
+                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                        }
+                        break;
+
+                    case Definitions.Enums.LibraryType.SLM:
+                        if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
+                        {
+                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                            {
+                                Functions.SLM.Library.AddNewAsync(libraryPath);
+                                createLibraryFlyout.IsOpen = false;
+                            }
+                            else
+                            {
+                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            }
+                        }
+                        else
+                        {
+                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                        }
+                        break;
+
+                    case Definitions.Enums.LibraryType.Origin:
+                        if (!Functions.Origin.IsLibraryExists(libraryPath))
+                        {
+                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                            {
+                                Functions.Origin.AddNewAsync(libraryPath);
+                                createLibraryFlyout.IsOpen = false;
+                            }
+                            else
+                            {
+                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            }
+                        }
+                        else
+                        {
+                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                        }
+                        break;
+
+                    case Definitions.Enums.LibraryType.Uplay:
+                        createLibrary_ResultText.Text = "Selected library type is not implemented yet.";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                TmLogs.Report(ex.ToString());
+            }
+        }
+
+        private void CreateLibraryFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            if (!createLibraryFlyout.IsOpen)
+            {
+                createLibrary_ResultText.Text = "";
+                createLibrary_Path.Text = "";
+                createLibrary_TypeText.Text = "";
+                createLibrary_Type.SelectedItem = null;
+            }
         }
     }
 }

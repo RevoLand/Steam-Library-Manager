@@ -7,9 +7,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [UNRELEASED]
 ## [1.5.1.11] - 2019-07-19
 
+### Changed
+
+- Library Creation dialog is replaced with a flyout panel which clears the path for supporting more library types. (#63 #65)
+
 ### Fixed
 
 - "Remove from SLM" Context Menu Item not working with created Origin libraries
+- Checking for library existence for SLM libraries not working as intended.
 
 ## [1.5.1.10] - 2019-07-17
 
