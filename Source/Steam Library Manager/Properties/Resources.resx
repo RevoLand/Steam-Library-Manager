@@ -865,4 +865,7 @@ Error: {ExceptionMessage}</value>
   <data name="Disabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
+    <value>View Store Page</value>
+  </data>
 </root>

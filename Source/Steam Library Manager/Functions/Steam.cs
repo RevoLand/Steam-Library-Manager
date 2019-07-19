@@ -228,6 +228,18 @@ namespace Steam_Library_Manager.Functions
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
             Definitions.List.AppCMenuItems.Add(menuItem);
 
+            // View Store Page
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewStore)),
+                Action = "https://store.steampowered.com/app/{0}",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
             // Game hub
             menuItem = new Definitions.ContextMenuItem
             {
@@ -551,8 +563,8 @@ namespace Steam_Library_Manager.Functions
 
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
-                    await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
-                    await Task.Run(newLibrary.UpdateJunks).ConfigureAwait(true);
+                    await Task.Run((Action)newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run((Action)newLibrary.UpdateJunks).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
