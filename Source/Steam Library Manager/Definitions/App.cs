@@ -91,7 +91,10 @@ namespace Steam_Library_Manager.Definitions
 
                         System.Diagnostics.Process.Start(string.Format(action, AppId, Properties.Settings.Default.SteamID64));
                         break;
-
+                    case "google":
+                        var url = string.Format(@"https://www.google.com/search?q={0}+pc", System.Uri.EscapeUriString(AppName));
+                        System.Diagnostics.Process.Start(url);
+                        break;
                     case "compress":
                         if (Functions.TaskManager.TaskList.Count(x => x.App == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compress && !x.Completed) == 0)
                         {

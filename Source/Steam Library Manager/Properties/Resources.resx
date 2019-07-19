@@ -868,4 +868,7 @@ Error: {ExceptionMessage}</value>
   <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
     <value>View Store Page</value>
   </data>
+  <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
+    <value>Google Search</value>
+  </data>
 </root>
