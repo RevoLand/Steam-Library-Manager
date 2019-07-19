@@ -874,4 +874,7 @@ Error: {ExceptionMessage}</value>
   <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
     <value>View on Youtube</value>
   </data>
+  <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
+    <value>Verify Files</value>
+  </data>
 </root>

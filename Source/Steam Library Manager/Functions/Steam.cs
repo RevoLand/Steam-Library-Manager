@@ -255,6 +255,17 @@ namespace Steam_Library_Manager.Functions
             // Google Search
             menuItem = new Definitions.ContextMenuItem
             {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_VerifyFiles)),
+                Action = "verify",
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Check
+            };
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Google Search
+            menuItem = new Definitions.ContextMenuItem
+            {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GoogleSearch)),
                 Action = "google",
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Google

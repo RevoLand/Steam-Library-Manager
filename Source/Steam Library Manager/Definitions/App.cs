@@ -92,6 +92,13 @@ namespace Steam_Library_Manager.Definitions
                         System.Diagnostics.Process.Start(string.Format(action, AppId, Properties.Settings.Default.SteamID64));
                         break;
 
+                    case "verify":
+                        {
+                            var url = string.Format(@"steam://validate/{0}", AppId);
+                            System.Diagnostics.Process.Start(url);
+                        }
+                        break;
+
                     case "google":
                         {
                             var url = string.Format(@"https://www.google.com/search?q={0}+pc", Uri.EscapeUriString(AppName));
