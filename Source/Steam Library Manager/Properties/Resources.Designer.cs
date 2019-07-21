@@ -1815,6 +1815,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verify Files.
+        /// </summary>
+        internal static string SteamApp_CMenu_VerifyFiles {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_VerifyFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View ACF File.
         /// </summary>
         internal static string SteamApp_CMenu_ViewACF {
