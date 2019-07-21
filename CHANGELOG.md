@@ -4,22 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [UNRELEASED]
+## [Unreleased]
 
 ## [1.5.1.11] - 2019-07-19
+
 ### Added
 
 - Ability to continue on error for task manager tasks (#68)
 - Ability to skip restart warning for Steam library related tasks (#69)
+- Icons!
 
 ### Changed
 
 - Library Creation dialog is replaced with a flyout panel which clears the path for supporting more library types. (#63 #65)
+- Unified Task Manager's List View for Steam & Origin games for easier editing in future.
+- Tweaked Task Manager UI a little bit
 
 ### Fixed
 
 - "Remove from SLM" Context Menu Item not working with created Origin libraries
 - Checking for library existence for SLM libraries not working as intended.
+- Showing Steam failover images for Origin games in List View if the image is not loaded correctly.
 
 ## [1.5.1.10] - 2019-07-17
 

@@ -441,7 +441,7 @@ namespace Steam_Library_Manager.Definitions
                              {
                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CompressArchive_FileNotFoundEx)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                  {
-                                     Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                     Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                  }
                              }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
 
@@ -547,7 +547,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -568,7 +568,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -581,7 +581,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FilePermissionRelatedError_DeleteFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
                         }
@@ -638,7 +638,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -659,7 +659,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -672,7 +672,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FilePermissionRelatedError_DeleteFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                                 {
-                                    Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                                    Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
                             }, System.Windows.Threading.DispatcherPriority.Normal);
                         }
@@ -703,7 +703,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCancelled_RemoveFiles)), new { AppName }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                         {
-                            Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                            Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                         }
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
 
@@ -725,7 +725,7 @@ namespace Steam_Library_Manager.Definitions
                  {
                      if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.AnyException_RemoveFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
                      {
-                         Functions.FileSystem.RemoveGivenFiles(copiedFiles, createdDirectories, currentTask);
+                         Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                      }
                  }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(false);
 

@@ -32,7 +32,9 @@ namespace Steam_Library_Manager.Definitions
             public bool Compact { get; set; } = true;
             public bool ForceCompact { get; set; }
 
-            public bool ErrorHappened, Active;
+            public bool ErrorHappened { get; set; }
+            public bool Active { get; set; }
+            public bool Completed { get; set; }
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
@@ -74,8 +76,6 @@ namespace Steam_Library_Manager.Definitions
                     return _movedFileSize == 0 ? 0 : perc;
                 }
             }
-
-            public bool Completed { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 

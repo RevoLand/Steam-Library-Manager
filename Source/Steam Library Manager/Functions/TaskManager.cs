@@ -153,6 +153,7 @@ namespace Steam_Library_Manager.Functions
             else if (Paused)
             {
                 Paused = false;
+                ActiveTask.Active = true;
                 ActiveTask.mre.Set();
 
                 Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
@@ -190,6 +191,7 @@ namespace Steam_Library_Manager.Functions
                     });
 
                     Paused = true;
+                    ActiveTask.Active = false;
                     ActiveTask.mre.Reset();
 
                     Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Paused)), new { CurrentTime = DateTime.Now }));

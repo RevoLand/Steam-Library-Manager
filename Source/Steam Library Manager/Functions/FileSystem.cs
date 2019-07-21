@@ -10,10 +10,15 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void RemoveGivenFiles(IEnumerable<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
+        public static async Task RemoveGivenFilesAsync(IEnumerable<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
             try
             {
+                if (CurrentTask != null)
+                {
+                    await Task.Delay(5000);
+                }
+
                 Parallel.ForEach(FileList, currentFile =>
                 {
                     FileInfo File = new FileInfo(currentFile);
