@@ -114,7 +114,7 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 LoadSteam();
-                LoadOrigin();
+                LoadOriginAsync();
 
                 // SLM Libraries
                 Library.GenerateLibraryList();
@@ -147,14 +147,14 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        private static void LoadOrigin()
+        private static async Task LoadOriginAsync()
         {
             try
             {
                 Origin.PopulateLibraryCMenuItems();
                 Origin.PopulateAppCMenuItems();
 
-                Origin.GenerateLibraryList();
+                await Origin.GenerateLibraryListAsync();
             }
             catch (Exception ex)
             {
@@ -210,7 +210,7 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have, do a loop
                     foreach (var backupPath in Properties.Settings.Default.OriginLibraries)
                     {
-                        Origin.AddNewAsync(backupPath);
+                        Origin.AddNewLibraryAsync(backupPath);
                     }
                 }
                 catch (Exception ex)
@@ -272,7 +272,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     library.DirectoryInfo.Refresh();
 
-                    await Task.Run((Action)library.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run(library.UpdateAppListAsync).ConfigureAwait(true);
 
                     library.UpdateDiskDetails();
                 }

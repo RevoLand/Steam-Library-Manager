@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Async;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -23,146 +22,47 @@ namespace Steam_Library_Manager.Definitions
         {
             try
             {
+                if (IsUpdatingAppList)
+                    return;
+
+                IsUpdatingAppList = true;
+
                 Apps.Clear();
 
                 if (!Directory.Exists(FullPath)) return;
-
-                var appIds = new List<KeyValuePair<string, string>>();
-
-                if (Directory.Exists(Directories.Origin.LocalContentDirectoy))
-                {
-                    //foreach (var originApp in Directory.EnumerateFiles(Directories.Origin.LocalContentDirectoy, "*.mfst", SearchOption.AllDirectories))
-                    await Directory.EnumerateFiles(Directories.Origin.LocalContentDirectoy, "*.mfst",
-                        SearchOption.AllDirectories).ParallelForEachAsync(
-                        async originApp =>
-                        {
-                            var appId = Path.GetFileNameWithoutExtension(originApp);
-
-                            if (!appId.StartsWith("Origin"))
-                            {
-                                // Get game id by fixing file via adding : before integer part of the name
-                                // for example OFB-EAST52017 converts to OFB-EAST:52017
-                                var match = System.Text.RegularExpressions.Regex.Match(appId, @"^(.*?)(\d+)$");
-                                if (!match.Success)
-                                {
-                                    return;
-                                }
-
-                                appId = match.Groups[1].Value + ":" + match.Groups[2].Value;
-                            }
-
-                            appIds.Add(new KeyValuePair<string, string>(new FileInfo(originApp).Directory.Name, appId));
-                        });
-                }
 
                 await Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories)
                     .ParallelForEachAsync(
                         async originApp =>
                         {
-                            if (new FileInfo(originApp).Directory.Parent.Parent.Name !=
-                                new DirectoryInfo(FullPath).Name)
-                                return;
-
-                            var installerLog = Path.Combine(Directory.GetParent(originApp).FullName, "InstallLog.txt");
-                            var installedLocale = "en_US";
-
-                            if (File.Exists(installerLog))
-                            {
-                                foreach (var line in File.ReadAllLines(installerLog))
-                                {
-                                    if (!line.Contains("Install Locale:")) continue;
-
-                                    installedLocale = line.Split(new string[] { "Install Locale:" },
-                                        StringSplitOptions.None)[1];
-                                    break;
-                                }
-
-                                installedLocale = installedLocale.Replace(" ", "");
-                            }
-
-                            var xml = XDocument.Load(originApp);
-                            var manifestVersion = new Version((xml.Root.Name.LocalName == "game")
-                                ? xml.Root.Attribute("manifestVersion").Value
-                                : ((xml.Root.Name.LocalName == "DiPManifest")
-                                    ? xml.Root.Attribute("version").Value
-                                    : "1.0"));
-
-                            OriginAppInfo originAppInfo = null;
-
-                            if (manifestVersion == new Version("4.0"))
-                            {
-                                originAppInfo = new OriginAppInfo(this,
-                                    xml.Root.Element("gameTitles")?.Elements("gameTitle")
-                                        ?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
-                                    Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements()
-                                        .FirstOrDefault(x => int.TryParse(x.Value, out int appId))?.Value),
-                                    new FileInfo(originApp).Directory.Parent,
-                                    new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")
-                                        ?.Attribute("version")?.Value),
-                                    xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
-                                    installedLocale,
-                                    xml.Root.Element("touchup")?.Element("filePath")?.Value,
-                                    xml.Root.Element("touchup")?.Element("parameters")?.Value,
-                                    xml.Root.Element("touchup")?.Element("updateParameters")?.Value,
-                                    xml.Root.Element("touchup")?.Element("repairParameters")?.Value);
-                            }
-                            else if (manifestVersion >= new Version("1.1") && manifestVersion <= new Version("3.0"))
-                            {
-                                var locales = new List<string>();
-                                foreach (var locale in xml.Root.Element("metadata")?.Elements("localeInfo")
-                                    ?.Attributes()?.Where(x => x.Name == "locale"))
-                                {
-                                    locales.Add(locale.Value);
-                                }
-
-                                originAppInfo = new OriginAppInfo(this,
-                                    xml.Root.Element("metadata")?.Elements("localeInfo")
-                                        ?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
-                                    Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value
-                                        .Replace("EAX", "")),
-                                    new FileInfo(originApp).Directory.Parent,
-                                    new Version(xml.Root.Attribute("gameVersion").Value),
-                                    locales.ToArray(),
-                                    installedLocale,
-                                    xml.Root.Element("executable")?.Element("filePath")?.Value,
-                                    xml.Root.Element("executable")?.Element("parameters")?.Value);
-                            }
-                            else
-                            {
-                                MessageBox.Show(Framework.StringFormat.Format(
-                                    Functions.SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)),
-                                    new { ManifestVersion = manifestVersion, OriginApp = originApp }));
-                                return;
-                            }
-
-                            if (appIds.Count(x => x.Key == originAppInfo.InstallationDirectory.Name) > 0)
-                            {
-                                var appId = appIds.First(x => x.Key == originAppInfo.InstallationDirectory.Name);
-
-                                var appLocalData = GetGameLocalData(appId.Value);
-
-                                if (appLocalData != null)
-                                {
-                                    await Framework.CachedImage.FileCache.HitAsync(string.Concat(appLocalData["customAttributes"]["imageServer"],
-                                            appLocalData["localizableAttributes"]["packArtLarge"])
-                                        , $"{originAppInfo.AppId}_o")
-                                        .ConfigureAwait(false);
-                                }
-                            }
-
-                            originAppInfo.GameHeaderImage = $"{Directories.SLM.Cache}\\{originAppInfo.AppId}_o.jpg";
-
-                            Apps.Add(originAppInfo);
+                            await Functions.Origin.ParseAppDetailsAsync(new StreamReader(originApp).BaseStream, originApp, this);
                         });
+
+                await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async originCompressedArchive =>
+                {
+                    using (var archive = ZipFile.OpenRead(originCompressedArchive))
+                    {
+                        if (archive.Entries.Count > 0)
+                        {
+                            foreach (var archiveEntry in archive.Entries.Where(x => x.Name.Contains("installerdata.xml")))
+                            {
+                                await Functions.Origin.ParseAppDetailsAsync(archiveEntry.Open(), originCompressedArchive, this, true);
+                            }
+                        }
+                    }
+                });
 
                 if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)
                 {
                     Functions.App.UpdateAppPanel(this);
                 }
+
+                IsUpdatingAppList = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show($"An error happened while updating game list for Origin library: {FullPath}\n{ex}");
+                Logger.Fatal(ex);
             }
         }
 
@@ -195,7 +95,7 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        private JObject GetGameLocalData(string gameId)
+        public JObject GetGameLocalData(string gameId)
         {
             try
             {

@@ -338,6 +338,7 @@
                 </Grid>
 
                 <Grid>
+                    <!-- icons! -->
                     <WrapPanel Margin="75,0,0,0">
                         <iconPacks:PackIconFontAwesome Kind="SpinnerSolid" Spin="True" Margin="0, 5, 5, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
                             <iconPacks:PackIconFontAwesome.Style>
@@ -468,6 +469,7 @@
                         </WrapPanel>
 
                         <WrapPanel Margin="50,0,0,0">
+                            <!-- task type text -->
                             <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0">
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -507,18 +509,19 @@
                                 
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Parallel File Transfer" IsChecked="{Binding ParallelFileTransfers}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}"/>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" IsChecked="{Binding Compress}" Margin="5,0,0,0">
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0"/>
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Auto Install" IsChecked="{Binding AutoInstall}">
                                     <CheckBox.Style>
                                         <Style TargetType="CheckBox" BasedOn="{StaticResource MetroCheckBox}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding App.Library.Type}" Value="Steam">
-                                                    <Setter Property="Content" Value="{l:Static p:Resources.Forms_TaskManager_Compress}" />
+                                                    <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding App.Library.Type}" Value="SLM">
-                                                    <Setter Property="Content" Value="{l:Static p:Resources.Forms_TaskManager_Compress}" />
+                                                    <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding App.Library.Type}" Value="Origin">
-                                                    <Setter Property="Content" Value="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" />
+                                                    <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -626,6 +629,7 @@
                 </Grid>
 
                 <Grid>
+                    <!-- icons! -->
                     <WrapPanel Margin="126,0,0,0">
                         <iconPacks:PackIconFontAwesome Kind="SpinnerSolid" Spin="True" Margin="0, 5, 10, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
                             <iconPacks:PackIconFontAwesome.Style>
@@ -754,6 +758,10 @@
                                             <Setter Property="Text" Value="Compact" />
                                             <Setter Property="FontWeight" Value="SemiBold" />
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding TaskType}" Value="Compress">
+                                            <Setter Property="Text" Value="Compress" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding TaskType}" Value="Copy">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
@@ -789,11 +797,11 @@
                                         </Style.Triggers>
                                     </Style>
                                 </WrapPanel.Style>
+                                <!-- {l:Static p:Resources.Forms_TaskManager_AutoInstall} -->
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
-                                      Width="80" SelectedItem="{Binding App.InstalledLocale}"
-                                      ItemsSource="{Binding App.Locales}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Compress" IsChecked="{Binding Compress}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Auto Install" IsChecked="{Binding AutoInstall}" />
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
@@ -803,6 +811,9 @@
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compress">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </DataTrigger>
                                         </Style.Triggers>

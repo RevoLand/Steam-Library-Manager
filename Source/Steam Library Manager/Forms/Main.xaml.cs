@@ -294,7 +294,7 @@ namespace Steam_Library_Manager
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
                             {
-                                Functions.Origin.AddNewAsync(libraryPath);
+                                Functions.Origin.AddNewLibraryAsync(libraryPath);
                                 createLibraryFlyout.IsOpen = false;
                             }
                             else

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Async;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,6 +56,18 @@ namespace Steam_Library_Manager.Functions
                 Action = "steam://run/{0}", // TO-DO
                 Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
                 ShowToCompressed = false
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Compress
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = "Compress",
+                Action = "compress",
+                ShowToCompressed = false,
+                Icon = FontAwesome.WPF.FontAwesomeIcon.Compress
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -160,7 +175,7 @@ namespace Steam_Library_Manager.Functions
             #endregion App Context Menu Item Definitions
         }
 
-        public static void GenerateLibraryList()
+        public static async Task GenerateLibraryListAsync()
         {
             try
             {
@@ -177,13 +192,38 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (Directory.Exists(originConfigKeys["DownloadInPlaceDir"]))
                         {
-                            AddNewAsync(originConfigKeys["DownloadInPlaceDir"], true);
+                            AddNewLibraryAsync(originConfigKeys["DownloadInPlaceDir"], true);
                         }
                         else
                         {
                             Logger.Info(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_DirectoryNotExists)), new { NotFoundDirectoryFullPath = originConfigKeys["DownloadInPlaceDir"] }));
                         }
                     }
+                }
+
+                if (Directory.Exists(Definitions.Directories.Origin.LocalContentDirectoy))
+                {
+                    await Directory.EnumerateFiles(Definitions.Directories.Origin.LocalContentDirectoy, "*.mfst",
+                        SearchOption.AllDirectories).ParallelForEachAsync(
+                        async originApp =>
+                        {
+                            var appId = Path.GetFileNameWithoutExtension(originApp);
+
+                            if (!appId.StartsWith("Origin"))
+                            {
+                                // Get game id by fixing file via adding : before integer part of the name
+                                // for example OFB-EAST52017 converts to OFB-EAST:52017
+                                var match = System.Text.RegularExpressions.Regex.Match(appId, @"^(.*?)(\d+)$");
+                                if (!match.Success)
+                                {
+                                    return;
+                                }
+
+                                appId = match.Groups[1].Value + ":" + match.Groups[2].Value;
+                            }
+
+                            Definitions.Global.Origin.AppIds.Add(new KeyValuePair<string, string>(new FileInfo(originApp).Directory.Name, appId));
+                        });
                 }
             }
             catch (Exception ex)
@@ -192,7 +232,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static async void AddNewAsync(string libraryPath, bool isMainLibrary = false)
+        public static async void AddNewLibraryAsync(string libraryPath, bool isMainLibrary = false)
         {
             try
             {
@@ -209,7 +249,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
-                await Task.Run((Action) newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -235,6 +275,111 @@ namespace Steam_Library_Manager.Functions
             {
                 MessageBox.Show(ex.ToString());
                 return true;
+            }
+        }
+
+        public static async Task ParseAppDetailsAsync(Stream fileStream, string installerFilePath, Definitions.OriginLibrary library, bool isCompressed = false)
+        {
+            try
+            {
+                if (!isCompressed && new FileInfo(installerFilePath).Directory.Parent.Parent.Name != new DirectoryInfo(library.FullPath).Name)
+                    return;
+
+                var installerLog = Path.Combine(Directory.GetParent(installerFilePath).FullName, "InstallLog.txt");
+                var installedLocale = "en_US";
+
+                if (!isCompressed && File.Exists(installerLog))
+                {
+                    foreach (var line in File.ReadAllLines(installerLog))
+                    {
+                        if (!line.Contains("Install Locale:")) continue;
+
+                        installedLocale = line.Split(new string[] { "Install Locale:" },
+                            StringSplitOptions.None)[1];
+                        break;
+                    }
+
+                    installedLocale = installedLocale.Replace(" ", "");
+                }
+
+                var xml = XDocument.Load(fileStream);
+                var manifestVersion = new Version((xml.Root.Name.LocalName == "game")
+                    ? xml.Root.Attribute("manifestVersion").Value
+                    : ((xml.Root.Name.LocalName == "DiPManifest")
+                        ? xml.Root.Attribute("version").Value
+                        : "1.0"));
+
+                Definitions.OriginAppInfo originAppInfo = null;
+
+                if (manifestVersion == new Version("4.0"))
+                {
+                    originAppInfo = new Definitions.OriginAppInfo(library,
+                        xml.Root.Element("gameTitles")?.Elements("gameTitle")
+                            ?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
+                        Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements()
+                            .FirstOrDefault(x => int.TryParse(x.Value, out int appId))?.Value),
+                        (isCompressed) ? new FileInfo(installerFilePath).Directory :new FileInfo(installerFilePath).Directory.Parent,
+                        new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")
+                            ?.Attribute("version")?.Value),
+                        xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),
+                        installedLocale,
+                        isCompressed,
+                        xml.Root.Element("touchup")?.Element("filePath")?.Value,
+                        xml.Root.Element("touchup")?.Element("parameters")?.Value,
+                        xml.Root.Element("touchup")?.Element("updateParameters")?.Value,
+                        xml.Root.Element("touchup")?.Element("repairParameters")?.Value);
+                }
+                else if (manifestVersion >= new Version("1.1") && manifestVersion <= new Version("3.0"))
+                {
+                    var locales = new List<string>();
+                    foreach (var locale in xml.Root.Element("metadata")?.Elements("localeInfo")
+                        ?.Attributes()?.Where(x => x.Name == "locale"))
+                    {
+                        locales.Add(locale.Value);
+                    }
+
+                    originAppInfo = new Definitions.OriginAppInfo(library,
+                        xml.Root.Element("metadata")?.Elements("localeInfo")
+                            ?.First(x => x.Attribute("locale").Value == "en_US")?.Element("title").Value,
+                        Convert.ToInt32(xml.Root.Element("contentIDs")?.Element("contentID")?.Value
+                            .Replace("EAX", "")),
+                        (isCompressed) ? new FileInfo(installerFilePath).Directory : new FileInfo(installerFilePath).Directory.Parent,
+                        new Version(xml.Root.Attribute("gameVersion").Value),
+                        locales.ToArray(),
+                        installedLocale,
+                        isCompressed,
+                        xml.Root.Element("executable")?.Element("filePath")?.Value,
+                        xml.Root.Element("executable")?.Element("parameters")?.Value);
+                }
+                else
+                {
+                    MessageBox.Show(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.OriginUnknownManifestFile)), new { ManifestVersion = manifestVersion, OriginApp = installerFilePath }));
+                    return;
+                }
+
+                if (Definitions.Global.Origin.AppIds.Count(x => x.Key == originAppInfo.InstallationDirectory.Name) > 0)
+                {
+                    var appId = Definitions.Global.Origin.AppIds.First(x => x.Key == originAppInfo.InstallationDirectory.Name);
+
+                    var appLocalData = library.GetGameLocalData(appId.Value);
+
+                    if (appLocalData != null)
+                    {
+                        await Framework.CachedImage.FileCache.HitAsync(string.Concat(appLocalData["customAttributes"]["imageServer"],
+                                appLocalData["localizableAttributes"]["packArtLarge"])
+                            , $"{originAppInfo.AppId}_o")
+                            .ConfigureAwait(false);
+                    }
+                }
+
+                originAppInfo.GameHeaderImage = $"{Definitions.Directories.SLM.Cache}\\{originAppInfo.AppId}_o.jpg";
+
+                library.Apps.Add(originAppInfo);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                Logger.Error(ex);
             }
         }
     }

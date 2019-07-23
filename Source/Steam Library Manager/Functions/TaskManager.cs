@@ -49,14 +49,10 @@ namespace Steam_Library_Manager.Functions
                 {
                     if (CurrentTask.RemoveOldFiles && CurrentTask.TaskType != Definitions.Enums.TaskType.Delete && CurrentTask.TaskType != Definitions.Enums.TaskType.Compact)
                     {
-                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(
-                            SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)),
-                            new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFiles)), new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
                         await CurrentTask.App.DeleteFilesAsync(CurrentTask).ConfigureAwait(false);
                         CurrentTask.App.Library.Apps.Remove(CurrentTask.App);
-                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(
-                            SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)),
-                            new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_RemoveOldFilesCompleted)), new { CurrentTime = DateTime.Now, CurrentTask.App.AppName }));
                     }
 
                     if (CurrentTask.TargetLibrary?.Type == Definitions.Enums.LibraryType.Steam)
@@ -69,6 +65,26 @@ namespace Steam_Library_Manager.Functions
                     CurrentTask.Completed = true;
 
                     CurrentTask.TargetLibrary?.UpdateAppListAsync();
+
+                    if (CurrentTask.AutoInstall && !CurrentTask.Compress)
+                    {
+                        while (CurrentTask.TargetLibrary.IsUpdatingAppList)
+                        {
+                            await Task.Delay(100);
+                        }
+
+                        switch (CurrentTask.TargetLibrary.Type)
+                        {
+                            case Definitions.Enums.LibraryType.Steam:
+                            case Definitions.Enums.LibraryType.SLM:
+                                // Not available
+                                break;
+
+                            case Definitions.Enums.LibraryType.Origin:
+                                CurrentTask.TargetLibrary.Apps.First(x => x.AppId == CurrentTask.App.AppId && x.IsCompressed == CurrentTask.Compress)?.InstallAsync();
+                                break;
+                        }
+                    }
 
                     // Update library details
                     if (Definitions.SLM.CurrentSelectedLibrary == CurrentTask.App.Library)

@@ -35,6 +35,7 @@ namespace Steam_Library_Manager.Definitions
             public bool ErrorHappened { get; set; }
             public bool Active { get; set; }
             public bool Completed { get; set; }
+            public bool AutoInstall { get; set; }
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
