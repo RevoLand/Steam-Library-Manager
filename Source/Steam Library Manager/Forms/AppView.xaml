@@ -140,7 +140,7 @@
     </UserControl.Resources>
     <Grid>
         <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                              Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
+                              Margin="260,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
                               dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

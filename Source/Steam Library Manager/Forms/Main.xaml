@@ -11,7 +11,7 @@
     xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
-    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Height="800" Width="930" MinHeight="800" MinWidth="930"
+    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Height="800" Width="985" MinHeight="500" MinWidth="600"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
     ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
@@ -50,7 +50,7 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <Controls:FlyoutsControl Panel.ZIndex="2">
+        <Controls:FlyoutsControl Panel.ZIndex="3">
             <Controls:Flyout x:Name="createLibraryFlyout" Header="Create Library" Theme="Adapt" Position="Left" Width="300" IsOpen="False" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0.4" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
                 <StackPanel Orientation="Vertical" Margin="10">
                     <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5"/>

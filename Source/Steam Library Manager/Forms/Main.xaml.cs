@@ -1,6 +1,8 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using NLog;
 using NLog.Targets.Wrappers;
+using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -19,7 +21,7 @@ namespace Steam_Library_Manager
     {
         public static Main FormAccessor;
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
-        private Definitions.Enums.LibraryType libraryType;
+        private LibraryType libraryType;
 
         public readonly IProgress<string> TmLogs = new Progress<string>(log => FormAccessor.TmViewLogs.Add(log));
 
@@ -98,7 +100,13 @@ namespace Steam_Library_Manager
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 
-                LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                LibraryView.HamburgerLibraryTypes.ItemClick += (sender, args) =>
+                {
+                    var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
+                    if (clickedItemTag == null) return;
+
+                    UpdateLibraryList(clickedItemTag);
+                };
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
@@ -107,6 +115,25 @@ namespace Steam_Library_Manager
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LcItems;
 
                 SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public void UpdateLibraryList(object targetLibraryType)
+        {
+            try
+            {
+                if (Enum.TryParse<LibraryType>(targetLibraryType.ToString(), out var libraryTypeEnum))
+                {
+                    LibraryView.LibraryPanel.ItemsSource = libraryTypeEnum == LibraryType.Steam ? Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum || x.Type == LibraryType.SLM) : Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum);
+                }
+                else if (targetLibraryType.ToString() == "All")
+                {
+                    LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                }
             }
             catch (Exception ex)
             {
@@ -216,7 +243,7 @@ namespace Steam_Library_Manager
                 if (createLibrary_Type.SelectedItem == null)
                     return;
 
-                libraryType = (Definitions.Enums.LibraryType)createLibrary_Type.SelectedItem;
+                libraryType = (LibraryType)createLibrary_Type.SelectedItem;
                 createLibrary_TypeText.Text = libraryType.ToString();
             }
             catch (Exception ex)
