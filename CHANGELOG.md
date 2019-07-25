@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Ability to continue on error for task manager tasks (#68)
 - Ability to skip restart warning for Steam library related tasks (#69)
 - Icons! [(Have a sneak-peak)](https://dl.dropboxusercontent.com/s/e9ruwj4f11yg5pn/21-Sunday-vB67mD7A1020.gif)
+- Ability to Compress Origin games
+  - And 'Auto Install' for Origin related tasks
 
 ### Changed
 

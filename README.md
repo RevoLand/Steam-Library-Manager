@@ -27,3 +27,9 @@
 # Steam Library Manager
 
 Head over to [Wiki](https://github.com/RevoLand/Steam-Library-Manager/wiki) for [FAQ](https://github.com/RevoLand/Steam-Library-Manager/wiki/FAQ), [Credits](https://github.com/RevoLand/Steam-Library-Manager/wiki/Credits) and more!
+
+<p align="center">
+	<a href="https://www.jetbrains.com/?from=SteamLibraryManager">
+		<img src="/Extras/Icons/resharper.png?raw=true" width="128px" height="128px" alt="Steam Library Manager" />
+	</a>
+</p>
