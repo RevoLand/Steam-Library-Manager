@@ -67,7 +67,7 @@
     <StartupObject>Steam_Library_Manager.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\steam-icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\slm-icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -170,6 +170,9 @@
     <Compile Include="Forms\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\HamburgerMenuControl.xaml.cs">
+      <DependentUpon>HamburgerMenuControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\LibraryCleanerView.xaml.cs">
       <DependentUpon>LibraryCleanerView.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,7 @@
     <Compile Include="Functions\Origin.cs" />
     <Compile Include="Functions\SLM.cs" />
     <Compile Include="Functions\Steam.cs" />
+    <Compile Include="Functions\Uplay.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -212,6 +216,10 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Page Include="Forms\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\HamburgerMenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,9 +279,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\no_image_available.gif" />
-    <Resource Include="Resources\steam-icon.ico" />
+    <Resource Include="Resources\slm-icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\steam-icon.ico" />
+    <Resource Include="Resources\uplay-icon.ico" />
     <Resource Include="Resources\origin-icon.ico" />
     <Resource Include="Resources\no_image_available_origin.jpg" />
     <None Include="app.config" />

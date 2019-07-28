@@ -318,7 +318,7 @@ namespace Steam_Library_Manager.Functions
                             ?.First(x => x.Attribute("locale").Value == "en_US")?.Value,
                         Convert.ToInt32(xml.Root.Element("contentIDs")?.Elements()
                             .FirstOrDefault(x => int.TryParse(x.Value, out int appId))?.Value),
-                        (isCompressed) ? new FileInfo(installerFilePath).Directory :new FileInfo(installerFilePath).Directory.Parent,
+                        (isCompressed) ? new FileInfo(installerFilePath).Directory : new FileInfo(installerFilePath).Directory.Parent,
                         new Version(xml.Root.Element("buildMetaData")?.Element("gameVersion")
                             ?.Attribute("version")?.Value),
                         xml.Root.Element("installMetaData")?.Element("locales")?.Value.Split(','),

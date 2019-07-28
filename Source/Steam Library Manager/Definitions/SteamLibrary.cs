@@ -242,13 +242,13 @@ namespace Steam_Library_Manager.Definitions
                 var Key = new Framework.KeyValue();
 
                 // Read vdf file
-                Key.ReadFileAsText(Global.Steam.vdfFilePath);
+                Key.ReadFileAsText(Global.Steam.VdfFilePath);
 
                 // Change old library path with new one
                 Key["Software"]["Valve"]["Steam"].Children.Find(key => key.Value.Contains(FullPath)).Value = NewLibraryPath;
 
                 // Update config.vdf file with changes
-                Key.SaveToFile(Global.Steam.vdfFilePath, false);
+                Key.SaveToFile(Global.Steam.VdfFilePath, false);
 
                 // Since this file started to interrupt us?
                 // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.
@@ -309,7 +309,7 @@ namespace Steam_Library_Manager.Definitions
                     var keyValReader = new Framework.KeyValue();
 
                     // Read vdf file
-                    keyValReader.ReadFileAsText(Global.Steam.vdfFilePath);
+                    keyValReader.ReadFileAsText(Global.Steam.VdfFilePath);
 
                     // Remove old library
                     keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
@@ -322,7 +322,7 @@ namespace Steam_Library_Manager.Definitions
                     }
 
                     // Update libraryFolders.vdf file with changes
-                    keyValReader.SaveToFile(Global.Steam.vdfFilePath, false);
+                    keyValReader.SaveToFile(Global.Steam.VdfFilePath, false);
 
                     // Since this file started to interrupt us?
                     // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.

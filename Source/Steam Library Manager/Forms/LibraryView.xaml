@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Steam_Library_Manager.Forms.LibraryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,71 +8,9 @@
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
              xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
     <Grid>
-        <Grid.Resources>
-            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuIconItem}">
-                <Grid Height="64">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <ContentControl Grid.Column="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Content="{Binding Icon}"
-                                    Foreground="{DynamicResource TextBrush}"
-                                    Focusable="False"/>
-                    <TextBlock Grid.Column="1"
-                               VerticalAlignment="Center"
-                               FontSize="16"
-                               Foreground="{DynamicResource TextBrush}"
-                               Text="{Binding Label}" />
-                </Grid>
-            </DataTemplate>
-        </Grid.Resources>
-        <controls:HamburgerMenu x:Name="HamburgerLibraryTypes"
-                                PaneBackground="{DynamicResource AccentColorBrush}"
-                                Foreground="{DynamicResource TextBrush}"
-                                IsPaneOpen="False"
-                                ItemTemplate="{StaticResource MenuItemTemplate}"
-                                Margin="3,10,0,50" HamburgerVisibility="Visible" DisplayMode="CompactOverlay" Panel.ZIndex="2"
-        >
-            <controls:HamburgerMenu.ItemsSource>
-                <controls:HamburgerMenuItemCollection>
-                    <controls:HamburgerMenuIconItem Label="All" Tag="All">
-                        <controls:HamburgerMenuIconItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="LibraryBooks" Width="24" Height="24" />
-                        </controls:HamburgerMenuIconItem.Icon>
-                    </controls:HamburgerMenuIconItem>
-                    <controls:HamburgerMenuIconItem Label="Steam - SLM">
-                        <controls:HamburgerMenuIconItem.Icon>
-                            <iconPacks:PackIconSimpleIcons Kind="Steam" Width="24" Height="24" />
-                        </controls:HamburgerMenuIconItem.Icon>
-                        <controls:HamburgerMenuIconItem.Tag>
-                            <enums:LibraryType>Steam</enums:LibraryType>
-                        </controls:HamburgerMenuIconItem.Tag>
-                    </controls:HamburgerMenuIconItem>
-                    <controls:HamburgerMenuIconItem Label="Origin">
-                        <controls:HamburgerMenuIconItem.Icon>
-                            <iconPacks:PackIconSimpleIcons Kind="Origin" Width="24" Height="24" />
-                        </controls:HamburgerMenuIconItem.Icon>
-                        <controls:HamburgerMenuIconItem.Tag>
-                            <enums:LibraryType>Origin</enums:LibraryType>
-                        </controls:HamburgerMenuIconItem.Tag>
-                    </controls:HamburgerMenuIconItem>
-                    <controls:HamburgerMenuIconItem Label="Uplay">
-                        <controls:HamburgerMenuIconItem.Icon>
-                            <iconPacks:PackIconSimpleIcons Kind="Steam" Width="24" Height="24" />
-                        </controls:HamburgerMenuIconItem.Icon>
-                        <controls:HamburgerMenuIconItem.Tag>
-                            <enums:LibraryType>Uplay</enums:LibraryType>
-                        </controls:HamburgerMenuIconItem.Tag>
-                    </controls:HamburgerMenuIconItem>
-                </controls:HamburgerMenuItemCollection>
-            </controls:HamburgerMenu.ItemsSource>
-        </controls:HamburgerMenu>
-
         <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" SelectionMode="Single" MaxWidth="200" Margin="55,10,0,50"
                   HorizontalAlignment="Left" Width="200" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                   SelectionChanged="LibraryGrid_MouseDown">
@@ -89,38 +26,7 @@
 
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30" Height="30">
                             <!-- TextBlock: Library Type -->
-                            <TextBlock>
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding DirectoryInfo.Exists}" Value="false" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Type}" Value="SLM" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_SLM}" />
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Type}" Value="Steam" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Type}" Value="Origin" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_Origin}" />
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                            <TextBlock Text="{Binding Type}" />
 
                             <Image Width="24" Height="24" HorizontalAlignment="Left" Margin="4, -2, 4, 0">
                                 <Image.Style>
@@ -136,13 +42,19 @@
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding Type}" Value="SLM" />
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/steam-icon.ico" />
+                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/slm-icon.ico" />
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding Type}" Value="Origin" />
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Source" Value="/Steam Library Manager;component/Resources/origin-icon.ico" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Type}" Value="Uplay" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Source" Value="/Steam Library Manager;component/Resources/uplay-icon.ico" />
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>

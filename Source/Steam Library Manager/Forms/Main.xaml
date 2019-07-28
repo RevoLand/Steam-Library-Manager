@@ -11,7 +11,7 @@
     xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
-    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/steam-icon.ico" Height="800" Width="985" MinHeight="500" MinWidth="600"
+    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="500" MinWidth="600"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
     ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
@@ -53,10 +53,10 @@
         <Controls:FlyoutsControl Panel.ZIndex="3">
             <Controls:Flyout x:Name="createLibraryFlyout" Header="Create Library" Theme="Adapt" Position="Left" Width="300" IsOpen="False" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0.4" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5"/>
-                    <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5"/>
-                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="Select" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}"/>
-                    
+                    <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="Select" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}" />
+
                     <ComboBox Name="createLibrary_Type" Controls:TextBoxHelper.Watermark="Library Type" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Stretch" Height="40" Margin="0, 10"
                               ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryType}}" BorderBrush="{DynamicResource AccentColorBrush}" SelectionChanged="CreateLibrary_Type_SelectionChanged">
                         <ComboBox.ItemContainerStyle>
@@ -73,15 +73,15 @@
                             </ToolTip>
                         </ComboBox.ToolTip>
                     </ComboBox>
-                    <TextBlock Text="Selected Library Type:" HorizontalAlignment="Stretch" Margin="0,5"/>
-                    <TextBlock x:Name="createLibrary_TypeText" HorizontalAlignment="Stretch" Margin="0,5"/>
-                    <Button Click="CreateLibraryButton_Click" Content="Create Library" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}"/>
-                    <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10"/>
+                    <TextBlock Text="Selected Library Type:" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <TextBlock x:Name="createLibrary_TypeText" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <Button Click="CreateLibraryButton_Click" Content="Create Library" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" />
+                    <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10" />
                 </StackPanel>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
         <Grid Margin="15, 0, 0, 0" Panel.ZIndex="1">
-            <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/steam-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+            <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/slm-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBlock Margin="55, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">
             Steam Library Manager
             </TextBlock>
@@ -132,24 +132,30 @@
             <!-- Tab: Library -->
             <Controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>
-                    <Forms:LibraryView x:Name="LibraryView" />
+                    <Forms:HamburgerMenuControl x:Name="HamburgerMenuControl" Panel.ZIndex="2" />
+                    <Grid Name="HomeContent" Panel.ZIndex="0">
+                        <WebBrowser Source="https://revoland.github.io/Steam-Library-Manager/home/index" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="55,10,0,0" />
+                    </Grid>
+                    <Grid Name="LibraryTabContent" Visibility="Collapsed">
+                        <Forms:LibraryView x:Name="LibraryView" />
 
-                    <!-- ListView: App Panel -->
-                    <Forms:AppView x:Name="AppView" />
+                        <!-- ListView: App Panel -->
+                        <Forms:AppView x:Name="AppView" />
 
-                    <!-- TextBox: Search -->
-                    <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True"
+                        <!-- TextBox: Search -->
+                        <TextBox Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" Controls:TextBoxHelper.UseFloatingWatermark="True"
                              Controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom"
                              Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
-                        <TextBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Search for..." />
-                                    <TextBlock Text="Lets you search for a game with it's name or appid." />
-                                </StackPanel>
-                            </ToolTip>
-                        </TextBox.ToolTip>
-                    </TextBox>
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Search for..." />
+                                        <TextBlock Text="Lets you search for a game by it's name or appid." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                    </Grid>
                 </Grid>
             </Controls:MetroTabItem>
             <!-- Tab: Task Manager -->

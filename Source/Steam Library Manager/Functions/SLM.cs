@@ -104,7 +104,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void OnLoad()
+        public static async Task OnLoadAsync()
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Steam_Library_Manager.Functions
                 }
 
                 LoadSteam();
-                LoadOriginAsync();
+                await LoadOriginAsync();
 
                 // SLM Libraries
                 Library.GenerateLibraryList();

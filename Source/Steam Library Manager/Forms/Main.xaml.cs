@@ -21,7 +21,7 @@ namespace Steam_Library_Manager
     {
         public static Main FormAccessor;
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
-        private LibraryType libraryType;
+        private LibraryType _libraryType;
 
         public readonly IProgress<string> TmLogs = new Progress<string>(log => FormAccessor.TmViewLogs.Add(log));
 
@@ -68,6 +68,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 FormAccessor.TmLogs.Report(ex.ToString());
+                library.Logger.Fatal(ex);
             }
         });
 
@@ -82,7 +83,7 @@ namespace Steam_Library_Manager
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
         }
 
-        private void SetNLogConfig()
+        private static void SetNLogConfig()
         {
             var config = new NLog.Config.LoggingConfiguration();
             var asyncWrapper = new AsyncTargetWrapper(new NLog.Targets.FileTarget() { ArchiveAboveSize = 10000000, FileName = "${basedir}/logs/${shortdate}.log", Name = "f", Layout = "${longdate} ${uppercase:${level}} ${message}" });
@@ -100,13 +101,22 @@ namespace Steam_Library_Manager
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 
-                LibraryView.HamburgerLibraryTypes.ItemClick += (sender, args) =>
+                HamburgerMenuControl.Control.ItemClick += (sender, args) =>
                 {
                     var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
                     if (clickedItemTag == null) return;
 
                     UpdateLibraryList(clickedItemTag);
                 };
+                HamburgerMenuControl.Control.OptionsItemClick += (sender, args) =>
+                {
+                    var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
+                    if (clickedItemTag == null) return;
+
+                    UpdateLibraryList(clickedItemTag);
+                };
+
+                HamburgerMenuControl.Control.SelectedOptionsIndex = 0;
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
@@ -130,10 +140,27 @@ namespace Steam_Library_Manager
                 {
                     LibraryView.LibraryPanel.ItemsSource = libraryTypeEnum == LibraryType.Steam ? Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum || x.Type == LibraryType.SLM) : Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum);
                 }
-                else if (targetLibraryType.ToString() == "All")
+                else
                 {
-                    LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                    switch (targetLibraryType.ToString())
+                    {
+                        case "Home":
+                            LibraryTabContent.Visibility = Visibility.Collapsed;
+                            HomeContent.Visibility = Visibility.Visible;
+                            return;
+
+                        case "All":
+                            LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                            break;
+
+                        case "Settings":
+                            TabItem_Settings.IsSelected = true;
+                            break;
+                    }
                 }
+
+                HomeContent.Visibility = Visibility.Collapsed;
+                LibraryTabContent.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
@@ -141,9 +168,9 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void MainForm_Loaded(object sender, RoutedEventArgs e)
+        private async void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            Functions.SLM.OnLoad();
+            await Functions.SLM.OnLoadAsync();
 
             SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
             QuickSettings.DataContext = SettingsView.GeneralSettingsGroupBox.DataContext;
@@ -243,8 +270,8 @@ namespace Steam_Library_Manager
                 if (createLibrary_Type.SelectedItem == null)
                     return;
 
-                libraryType = (LibraryType)createLibrary_Type.SelectedItem;
-                createLibrary_TypeText.Text = libraryType.ToString();
+                _libraryType = (LibraryType)createLibrary_Type.SelectedItem;
+                createLibrary_TypeText.Text = _libraryType.ToString();
             }
             catch (Exception ex)
             {
@@ -276,7 +303,7 @@ namespace Steam_Library_Manager
                     createLibrary_ResultText.Text = $"Selected directory does not exists: \"{libraryPath}\"";
                     return;
                 }
-                switch (libraryType)
+                switch (_libraryType)
                 {
                     case Definitions.Enums.LibraryType.Steam:
                         if (!Functions.Steam.Library.IsLibraryExists(libraryPath))

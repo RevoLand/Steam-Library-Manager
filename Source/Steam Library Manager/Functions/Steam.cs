@@ -40,7 +40,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (!string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                        Definitions.Global.Steam.VdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
                     }
                 }
             }
@@ -489,13 +489,13 @@ namespace Steam_Library_Manager.Functions
                             Framework.KeyValue Key = new Framework.KeyValue();
 
                             // Read vdf file as text
-                            Key.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
+                            Key.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
 
                             // Add our new library to vdf file so steam will know we have a new library
                             Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => x.Type == Definitions.Enums.LibraryType.Steam).Count()), NewLibraryPath));
 
                             // Save vdf file
-                            Key.SaveToFile(Definitions.Global.Steam.vdfFilePath, false);
+                            Key.SaveToFile(Definitions.Global.Steam.VdfFilePath, false);
 
                             // Show a messagebox to user about process
                             MessageBox.Show(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_Created)));
@@ -652,13 +652,13 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     // If config.vdf exists
-                    if (File.Exists(Definitions.Global.Steam.vdfFilePath))
+                    if (File.Exists(Definitions.Global.Steam.VdfFilePath))
                     {
                         // Make a KeyValue reader
                         Framework.KeyValue KeyValReader = new Framework.KeyValue();
 
                         // Read our vdf file as text
-                        KeyValReader.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
+                        KeyValReader.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
 
                         KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
                         if (KeyValReader?.Children.Count > 0)
