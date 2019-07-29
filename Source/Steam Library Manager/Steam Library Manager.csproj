@@ -96,7 +96,7 @@
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.2.0.3\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
+      <HintPath>..\packages\gong-wpf-dragdrop.2.0.4\lib\net46\GongSolutions.WPF.DragDrop.dll</HintPath>
     </Reference>
     <Reference Include="Gu.Localization, Version=6.4.3.0, Culture=neutral, PublicKeyToken=63b557f19697202e, processorArchitecture=MSIL">
       <HintPath>..\packages\Gu.Localization.6.4.3.0\lib\net45\Gu.Localization.dll</HintPath>
@@ -119,8 +119,8 @@
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NumericUpDownLib, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dirkster.NumericUpDownLib.2.3.0\lib\net4\NumericUpDownLib.dll</HintPath>
+    <Reference Include="NumericUpDownLib, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dirkster.NumericUpDownLib.2.3.1\lib\net4\NumericUpDownLib.dll</HintPath>
     </Reference>
     <Reference Include="PropertyChanged, Version=3.0.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.0.1\lib\net452\PropertyChanged.dll</HintPath>

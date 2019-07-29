@@ -48,7 +48,7 @@ namespace Steam_Library_Manager.Functions
                         FSInfo = acfFile,
                         Size = acfFile.Length,
                         Library = Library,
-                        JunkReason = Functions.SLM.Translate(nameof(Properties.Resources.InstallationNotFoundButStateFlagEqualsTo4))
+                        JunkReason = SLM.Translate(nameof(Properties.Resources.InstallationNotFoundButStateFlagEqualsTo4))
                     });
 
                     return; // Do not add pre-loads to list

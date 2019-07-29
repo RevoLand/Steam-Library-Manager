@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -116,7 +117,24 @@ namespace Steam_Library_Manager
                     UpdateLibraryList(clickedItemTag);
                 };
 
-                HamburgerMenuControl.Control.SelectedOptionsIndex = 0;
+                if (string.IsNullOrEmpty(Properties.Settings.Default.LastUserVersion))
+                {
+                    Properties.Settings.Default.LastUserVersion = "1.0";
+                }
+
+                var lastVersion = Version.Parse(Properties.Settings.Default.LastUserVersion);
+
+                if (lastVersion < Assembly.GetExecutingAssembly().GetName().Version)
+                {
+                    HamburgerMenuControl.Control.SelectedOptionsIndex = 0;
+                    HomeContent.Visibility = Visibility.Visible;
+                    Properties.Settings.Default.LastUserVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                }
+                else
+                {
+                    LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
+                    LibraryTabContent.Visibility = Visibility.Visible;
+                }
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
@@ -161,6 +179,7 @@ namespace Steam_Library_Manager
 
                 HomeContent.Visibility = Visibility.Collapsed;
                 LibraryTabContent.Visibility = Visibility.Visible;
+                HamburgerMenuControl.Control.IsPaneOpen = false;
             }
             catch (Exception ex)
             {
@@ -168,9 +187,9 @@ namespace Steam_Library_Manager
             }
         }
 
-        private async void MainForm_Loaded(object sender, RoutedEventArgs e)
+        private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            await Functions.SLM.OnLoadAsync();
+            _ = Functions.SLM.OnLoadAsync();
 
             SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
             QuickSettings.DataContext = SettingsView.GeneralSettingsGroupBox.DataContext;
@@ -204,7 +223,7 @@ namespace Steam_Library_Manager
             Application.Current.Shutdown();
         }
 
-        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)(sender as MenuItem)?.Tag);
+        public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)((MenuItem)sender)?.Tag);
 
         public void AppCMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -305,7 +324,7 @@ namespace Steam_Library_Manager
                 }
                 switch (_libraryType)
                 {
-                    case Definitions.Enums.LibraryType.Steam:
+                    case LibraryType.Steam:
                         if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -324,7 +343,7 @@ namespace Steam_Library_Manager
                         }
                         break;
 
-                    case Definitions.Enums.LibraryType.SLM:
+                    case LibraryType.SLM:
                         if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -343,7 +362,7 @@ namespace Steam_Library_Manager
                         }
                         break;
 
-                    case Definitions.Enums.LibraryType.Origin:
+                    case LibraryType.Origin:
                         if (!Functions.Origin.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -362,7 +381,7 @@ namespace Steam_Library_Manager
                         }
                         break;
 
-                    case Definitions.Enums.LibraryType.Uplay:
+                    case LibraryType.Uplay:
                         createLibrary_ResultText.Text = "Selected library type is not implemented yet.";
                         break;
                 }
@@ -376,13 +395,12 @@ namespace Steam_Library_Manager
 
         private void CreateLibraryFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
         {
-            if (!createLibraryFlyout.IsOpen)
-            {
-                createLibrary_ResultText.Text = "";
-                createLibrary_Path.Text = "";
-                createLibrary_TypeText.Text = "";
-                createLibrary_Type.SelectedItem = null;
-            }
+            if (createLibraryFlyout.IsOpen) return;
+
+            createLibrary_ResultText.Text = "";
+            createLibrary_Path.Text = "";
+            createLibrary_TypeText.Text = "";
+            createLibrary_Type.SelectedItem = null;
         }
     }
 }
