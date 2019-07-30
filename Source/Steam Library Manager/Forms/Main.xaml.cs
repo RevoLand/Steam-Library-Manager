@@ -221,6 +221,7 @@ namespace Steam_Library_Manager
 
             Functions.SLM.OnClosing();
             Application.Current.Shutdown();
+            Environment.Exit(0);
         }
 
         public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)((MenuItem)sender)?.Tag);

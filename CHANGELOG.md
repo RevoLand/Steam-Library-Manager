@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - "Remove from SLM" Context Menu Item not working with created Origin libraries
 - Checking for library existence for SLM libraries not working as intended.
 - Showing Steam failover images for Origin games in List View if the image is not loaded correctly.
+- Disk Space with Mounted Volumes ([#72](https://github.com/RevoLand/Steam-Library-Manager/issues/72))
 
 ## [1.5.1.10] - 2019-07-17
 
