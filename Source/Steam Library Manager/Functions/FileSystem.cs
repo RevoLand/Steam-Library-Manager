@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
@@ -161,42 +162,22 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static long GetAvailableFreeSpace(string TargetFolder)
+        // Pinvoke for API function
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+            out ulong lpFreeBytesAvailable,
+            out ulong lpTotalNumberOfBytes,
+            out ulong lpTotalNumberOfFreeBytes);
+
+        public static bool DriveUsageStatistics(string folderName, out ulong availableFreeSpace, out ulong totalSpace, out ulong totalFreeSpace)
         {
-            try
+            if (!folderName.EndsWith("\\"))
             {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.AvailableFreeSpace ?? 0;
+                folderName += '\\';
             }
-            catch (ArgumentException ae)
-            {
-                logger.Fatal(ae);
 
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-                return 0;
-            }
-        }
-
-        public static long GetAvailableTotalSpace(string TargetFolder)
-        {
-            try
-            {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.TotalSize ?? 0;
-            }
-            catch (ArgumentException ae)
-            {
-                logger.Fatal(ae);
-
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-                return 0;
-            }
+            return GetDiskFreeSpaceEx(folderName, out availableFreeSpace, out totalSpace, out totalFreeSpace);
         }
     }
 }

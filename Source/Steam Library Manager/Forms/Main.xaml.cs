@@ -187,9 +187,9 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void MainForm_Loaded(object sender, RoutedEventArgs e)
+        private async void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            _ = Functions.SLM.OnLoadAsync();
+            await Functions.SLM.OnLoadAsync();
 
             SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
             QuickSettings.DataContext = SettingsView.GeneralSettingsGroupBox.DataContext;

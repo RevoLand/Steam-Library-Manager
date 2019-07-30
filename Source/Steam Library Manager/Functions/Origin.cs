@@ -184,15 +184,15 @@ namespace Steam_Library_Manager.Functions
                 {
                     var originConfigKeys = XDocument.Load(Definitions.Global.Origin.ConfigFilePath).Root?.Elements().ToDictionary(a => (string)a.Attribute("key"), a => (string)a.Attribute("value"));
 
-                    if (originConfigKeys.Count(x => x.Key == "DownloadInPlaceDir") == 0)
+                    if (originConfigKeys?.Count(x => x.Key == "DownloadInPlaceDir") == 0)
                     {
                         Logger.Log(NLog.LogLevel.Error, Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Origin_MissingKey)), new { OriginConfigFilePath = Definitions.Global.Origin.ConfigFilePath }));
                     }
                     else
                     {
-                        if (Directory.Exists(originConfigKeys["DownloadInPlaceDir"]))
+                        if (Directory.Exists(originConfigKeys?["DownloadInPlaceDir"]))
                         {
-                            AddNewLibraryAsync(originConfigKeys["DownloadInPlaceDir"], true);
+                            AddNewLibraryAsync(originConfigKeys?["DownloadInPlaceDir"], true);
                         }
                         else
                         {
@@ -203,9 +203,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (Directory.Exists(Definitions.Directories.Origin.LocalContentDirectoy))
                 {
-                    await Directory.EnumerateFiles(Definitions.Directories.Origin.LocalContentDirectoy, "*.mfst",
-                        SearchOption.AllDirectories).ParallelForEachAsync(
-                        async originApp =>
+                    await Directory.EnumerateFiles(Definitions.Directories.Origin.LocalContentDirectoy, "*.mfst", SearchOption.AllDirectories).ParallelForEachAsync(originApp =>
                         {
                             var appId = Path.GetFileNameWithoutExtension(originApp);
 
@@ -216,13 +214,15 @@ namespace Steam_Library_Manager.Functions
                                 var match = System.Text.RegularExpressions.Regex.Match(appId, @"^(.*?)(\d+)$");
                                 if (!match.Success)
                                 {
-                                    return;
+                                    return Task.CompletedTask;
                                 }
 
                                 appId = match.Groups[1].Value + ":" + match.Groups[2].Value;
                             }
 
                             Definitions.Global.Origin.AppIds.Add(new KeyValuePair<string, string>(new FileInfo(originApp).Directory.Name, appId));
+
+                            return Task.CompletedTask;
                         });
                 }
             }
@@ -241,11 +241,7 @@ namespace Steam_Library_Manager.Functions
                     libraryPath += Path.DirectorySeparatorChar;
                 }
 
-                var newLibrary = new Definitions.OriginLibrary(libraryPath, isMainLibrary)
-                {
-                    Type = Definitions.Enums.LibraryType.Origin,
-                    DirectoryInfo = new DirectoryInfo(libraryPath)
-                };
+                var newLibrary = new Definitions.OriginLibrary(libraryPath, isMainLibrary);
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
@@ -261,14 +257,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                newLibraryPath = newLibraryPath.ToLowerInvariant();
-
-                return Definitions.List.Libraries.Count(x =>
-                 x.Type == Definitions.Enums.LibraryType.Origin
-                 && (
-                     x.FullPath.ToLowerInvariant() == newLibraryPath
-                 )
-                ) > 0;
+                return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.Origin && string.Equals(x.FullPath, newLibraryPath, StringComparison.InvariantCultureIgnoreCase)) > 0;
             }
             // In any error return true to prevent possible bugs
             catch (Exception ex)

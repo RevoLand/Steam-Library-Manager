@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace Steam_Library_Manager.Definitions
 {
     internal static class Global
@@ -15,6 +16,12 @@ namespace Steam_Library_Manager.Definitions
         {
             public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Origin", "local.xml");
             public static List<KeyValuePair<string, string>> AppIds = new List<KeyValuePair<string, string>>();
+        }
+
+        public static class Uplay
+        {
+            // AppData\Local\Ubisoft Game Launcher\settings.yml
+            public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "Ubisoft Game Launcher", "settings.yml");
         }
     }
 }

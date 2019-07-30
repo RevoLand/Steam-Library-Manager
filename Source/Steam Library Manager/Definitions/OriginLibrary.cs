@@ -16,6 +16,8 @@ namespace Steam_Library_Manager.Definitions
         {
             FullPath = fullPath;
             IsMain = isMain;
+            Type = Enums.LibraryType.Origin;
+            DirectoryInfo = new DirectoryInfo(fullPath);
         }
 
         public override async void UpdateAppListAsync()
@@ -33,9 +35,9 @@ namespace Steam_Library_Manager.Definitions
 
                 await Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories)
                     .ParallelForEachAsync(
-                        async originApp =>
+                        async filePath =>
                         {
-                            await Functions.Origin.ParseAppDetailsAsync(new StreamReader(originApp).BaseStream, originApp, this);
+                            await Functions.Origin.ParseAppDetailsAsync(new StreamReader(filePath).BaseStream, filePath, this);
                         });
 
                 await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async originCompressedArchive =>

@@ -115,6 +115,7 @@ namespace Steam_Library_Manager.Functions
 
                 LoadSteam();
                 await LoadOriginAsync();
+                LoadUplay();
 
                 // SLM Libraries
                 Library.GenerateLibraryList();
@@ -155,6 +156,22 @@ namespace Steam_Library_Manager.Functions
                 Origin.PopulateAppCMenuItems();
 
                 await Origin.GenerateLibraryListAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Logger.Fatal(ex);
+            }
+        }
+
+        private static void LoadUplay()
+        {
+            try
+            {
+                Uplay.PopulateLibraryCMenuItems();
+
+
+                Uplay.GenerateLibraryListAsync();
             }
             catch (Exception ex)
             {
@@ -211,6 +228,30 @@ namespace Steam_Library_Manager.Functions
                     foreach (var backupPath in Properties.Settings.Default.OriginLibraries)
                     {
                         Origin.AddNewLibraryAsync(backupPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+            public static void GenerateUplayLibraryList()
+            {
+                try
+                {
+                    // If we don't have any SLM libraries available
+                    if (Properties.Settings.Default.UplayLibraries == null)
+                        return;
+
+                    if (Properties.Settings.Default.UplayLibraries.Count == 0)
+                        return;
+
+                    // for each backup library we have, do a loop
+                    foreach (var backupPath in Properties.Settings.Default.UplayLibraries)
+                    {
+                        //Origin.AddNewLibraryAsync(backupPath);
                     }
                 }
                 catch (Exception ex)
