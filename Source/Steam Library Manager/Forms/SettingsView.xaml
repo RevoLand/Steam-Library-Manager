@@ -10,9 +10,9 @@
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
-    <Grid>
-        <GroupBox x:Name="GeneralSettingsGroupBox" Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}" Margin="0,5,360,5">
-            <UniformGrid Columns="2" HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5, 10">
+        <GroupBox x:Name="GeneralSettingsGroupBox" Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}">
+            <UniformGrid Columns="2">
                 <WrapPanel Orientation="Vertical">
                     <!-- Application sorting method -->
                     <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
@@ -185,7 +185,7 @@
                         </Controls:ToggleSwitch.ToolTip>
                     </Controls:ToggleSwitch>
                 </WrapPanel>
-                <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
+                <WrapPanel Orientation="Vertical" Margin="3,0,0,0">
                     <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_compactLevel}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
@@ -292,7 +292,8 @@
                 </WrapPanel>
             </UniformGrid>
         </GroupBox>
-        <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
+        <StackPanel Margin="10,0,0,0">
+        <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}">
             <StackPanel>
                 <!-- Remove Source Files -->
                 <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_RemoveFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
@@ -373,5 +374,40 @@
                 </Controls:ToggleSwitch>
             </StackPanel>
         </GroupBox>
-    </Grid>
+        <GroupBox Header="Library Settings" Margin="0,10,0,0">
+            <StackPanel>
+                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Steam Library Support" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <Controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="Steam Library Support" />
+                                <TextBlock Text="Enables/Disables Steam Library functionality for SLM" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Controls:ToggleSwitch.ToolTip>
+                </Controls:ToggleSwitch>
+                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Origin Library Support" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <Controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="Origin Library Support" />
+                                <TextBlock Text="Enables/Disables Origin Library functionality for SLM" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Controls:ToggleSwitch.ToolTip>
+                </Controls:ToggleSwitch>
+                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Uplay Library Support" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <Controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="Uplay Library Support" />
+                                <TextBlock Text="Enables/Disables Uplay Library functionality for SLM" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Controls:ToggleSwitch.ToolTip>
+                </Controls:ToggleSwitch>
+            </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

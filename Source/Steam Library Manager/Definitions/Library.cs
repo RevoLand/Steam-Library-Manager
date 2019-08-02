@@ -46,7 +46,7 @@ namespace Steam_Library_Manager.Definitions
             var cMenu = new List<FrameworkElement>();
             try
             {
-                foreach (var cMenuItem in List.LibraryCMenuItems.ToList().Where(x => x.IsActive && x.AllowedLibraryTypes.Contains(Type)))
+                foreach (var cMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.AllowedLibraryTypes.Contains(Type)).ToList())
                 {
                     if (!cMenuItem.ShowToNormal && IsMain)
                     {

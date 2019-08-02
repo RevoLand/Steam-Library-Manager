@@ -68,7 +68,7 @@ namespace Steam_Library_Manager.Definitions
                             // If key doesn't contains a child (value in acf file)
                             if (keyValReader.Children.Count == 0)
                             {
-                                if (Definitions.List.IgnoredJunkItems.Contains(acfFile.FullName))
+                                if (List.IgnoredJunkItems.Contains(acfFile.FullName))
                                 {
                                     return;
                                 }
@@ -371,7 +371,7 @@ namespace Steam_Library_Manager.Definitions
 
                         if (List.JunkItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                         {
-                            if (Definitions.List.IgnoredJunkItems.Contains(dirInfo.FullName))
+                            if (List.IgnoredJunkItems.Contains(dirInfo.FullName))
                             {
                                 continue;
                             }
@@ -400,7 +400,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (List.JunkItems.Count(x => x.FSInfo.FullName == junk.FSInfo.FullName) == 0)
                             {
-                                if (Definitions.List.IgnoredJunkItems.Contains(fileDetails.FullName))
+                                if (List.IgnoredJunkItems.Contains(fileDetails.FullName))
                                 {
                                     continue;
                                 }

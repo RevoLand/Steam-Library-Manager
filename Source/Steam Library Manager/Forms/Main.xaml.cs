@@ -325,9 +325,16 @@ namespace Steam_Library_Manager
                     createLibrary_ResultText.Text = $"Selected directory does not exists: \"{libraryPath}\"";
                     return;
                 }
+
                 switch (_libraryType)
                 {
                     case LibraryType.Steam:
+                        if (!Properties.Settings.Default.Steam_IsEnabled)
+                        {
+                            createLibrary_ResultText.Text = "Steam Library support must be enabled for this action.";
+                            return;
+                        }
+
                         if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -347,6 +354,12 @@ namespace Steam_Library_Manager
                         break;
 
                     case LibraryType.SLM:
+                        if (!Properties.Settings.Default.Steam_IsEnabled)
+                        {
+                            createLibrary_ResultText.Text = "Steam Library support must be enabled for this action.";
+                            return;
+                        }
+
                         if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -366,6 +379,12 @@ namespace Steam_Library_Manager
                         break;
 
                     case LibraryType.Origin:
+                        if (!Properties.Settings.Default.Origin_IsEnabled)
+                        {
+                            createLibrary_ResultText.Text = "Origin Library support must be enabled for this action.";
+                            return;
+                        }
+
                         if (!Functions.Origin.IsLibraryExists(libraryPath))
                         {
                             if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
@@ -385,7 +404,28 @@ namespace Steam_Library_Manager
                         break;
 
                     case LibraryType.Uplay:
-                        createLibrary_ResultText.Text = "Selected library type is not implemented yet.";
+                        if (!Properties.Settings.Default.Uplay_IsEnabled)
+                        {
+                            createLibrary_ResultText.Text = "Uplay Library support must be enabled for this action.";
+                            return;
+                        }
+
+                        if (!Functions.Uplay.IsLibraryExists(libraryPath))
+                        {
+                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                            {
+                                Functions.Uplay.AddNewLibraryAsync(libraryPath);
+                                createLibraryFlyout.IsOpen = false;
+                            }
+                            else
+                            {
+                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                            }
+                        }
+                        else
+                        {
+                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                        }
                         break;
                 }
             }

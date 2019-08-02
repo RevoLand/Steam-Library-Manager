@@ -460,5 +460,44 @@ namespace Steam_Library_Manager.Properties {
                 this["UplayLibraries"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool Steam_IsEnabled {
+            get {
+                return ((bool)(this["Steam_IsEnabled"]));
+            }
+            set {
+                this["Steam_IsEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool Origin_IsEnabled {
+            get {
+                return ((bool)(this["Origin_IsEnabled"]));
+            }
+            set {
+                this["Origin_IsEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public bool Uplay_IsEnabled {
+            get {
+                return ((bool)(this["Uplay_IsEnabled"]));
+            }
+            set {
+                this["Uplay_IsEnabled"] = value;
+            }
+        }
     }
 }
