@@ -23,7 +23,7 @@ namespace Steam_Library_Manager.Definitions
             set
             {
                 _fullPath = value;
-                Functions.FileSystem.DriveUsageStatistics(_fullPath, out var freeSpace, out var totalSpace, out var totalFreeSpace);
+                Functions.FileSystem.GetDiskFreeSpaceEx(_fullPath, out var freeSpace, out var totalSpace, out var totalFreeSpace);
 
                 FreeSpace = (long)freeSpace;
                 TotalSize = (long)totalSpace;
@@ -90,6 +90,8 @@ namespace Steam_Library_Manager.Definitions
         public abstract void RemoveLibraryAsync(bool withFiles);
 
         public abstract void UpdateJunks();
+
+        public abstract void UpdateDupes();
 
         public void UpdateDiskDetails()
         {

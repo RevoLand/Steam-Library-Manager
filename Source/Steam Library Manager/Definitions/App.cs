@@ -587,11 +587,11 @@ namespace Steam_Library_Manager.Definitions
                             currentTask.Active = false;
                             currentTask.Completed = true;
 
-                            _ = Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                               {
-                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                   {
-                                      Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
+                                      await Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                   }
                               }, System.Windows.Threading.DispatcherPriority.Normal);
 
@@ -610,7 +610,7 @@ namespace Steam_Library_Manager.Definitions
 
                             Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                             {
-                                if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                                if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError_DeleteMovedFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                 {
                                     await Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                 }
@@ -621,11 +621,11 @@ namespace Steam_Library_Manager.Definitions
                         }
                         catch (UnauthorizedAccessException ex)
                         {
-                            _ = Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                               {
-                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FilePermissionRelatedError_DeleteFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FilePermissionRelatedError_DeleteFiles)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                                   {
-                                      Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
+                                      await Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
                                   }
                               }, System.Windows.Threading.DispatcherPriority.Normal);
                         }
@@ -723,7 +723,7 @@ namespace Steam_Library_Manager.Definitions
                     });
                 }
 
-            TaskEnd:
+                TaskEnd:
 
                 currentTask.ElapsedTime.Stop();
                 currentTask.MovedFileSize = totalFileSize;

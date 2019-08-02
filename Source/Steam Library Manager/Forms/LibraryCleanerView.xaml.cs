@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -18,8 +19,6 @@ namespace Steam_Library_Manager.Forms
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public LibraryCleanerView() => InitializeComponent();
-
-        private bool _toggleItemList;
 
         private async void LibraryCleaner_ContextMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -61,7 +60,7 @@ namespace Steam_Library_Manager.Forms
                                 }
                             }
 
-                            Definitions.List.LcItems.Remove(junk);
+                            Definitions.List.JunkItems.Remove(junk);
                             break;
 
                         case "Ignore":
@@ -71,7 +70,7 @@ namespace Steam_Library_Manager.Forms
                             }
 
                             Properties.Settings.Default.IgnoredJunks.Add(junk.FSInfo.FullName);
-                            Definitions.List.LcItems.Remove(junk);
+                            Definitions.List.JunkItems.Remove(junk);
                             break;
                     }
                 }
@@ -127,133 +126,114 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                if ((string)(sender as Button)?.Tag == "Refresh")
-                {
-                    foreach (var library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == Definitions.Enums.LibraryType.Steam || x.Type == Definitions.Enums.LibraryType.SLM)))
-                    {
-                        library.UpdateJunks();
-                    }
-                }
-
                 if (LibraryCleaner.Items.Count == 0)
                 {
                     return;
                 }
 
-                if ((string)(sender as Button)?.Tag == "MoveAll")
+                switch ((string)(sender as Button)?.Tag)
                 {
-                    var TargetFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
-                    System.Windows.Forms.DialogResult TargetFolderDialogResult = TargetFolderBrowser.ShowDialog();
-
-                    if (TargetFolderDialogResult == System.Windows.Forms.DialogResult.OK)
-                    {
-                        if (Directory.GetDirectoryRoot(TargetFolderBrowser.SelectedPath) == TargetFolderBrowser.SelectedPath
-                            && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) != MessageDialogResult.Affirmative)
+                    case "MoveAll":
                         {
-                            return;
-                        }
+                            var targetFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+                            var targetFolderDialogResult = targetFolderBrowser.ShowDialog();
 
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFiles))).ConfigureAwait(true);
-                        ProgressInformationMessage.SetIndeterminate();
+                            if (targetFolderDialogResult != System.Windows.Forms.DialogResult.OK) return;
 
-                        foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
-                        {
-                            if (Junk.FSInfo is FileInfo)
+                            if (Directory.GetDirectoryRoot(targetFolderBrowser.SelectedPath) == targetFolderBrowser.SelectedPath
+                                && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) != MessageDialogResult.Affirmative)
                             {
-                                Junk.FSInfo.Refresh();
-                                if (Junk.FSInfo.Exists)
+                                return;
+                            }
+
+                            var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFiles))).ConfigureAwait(true);
+                            progressInformationMessage.SetIndeterminate();
+
+                            foreach (var junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
+                            {
+                                if (junk.FSInfo is FileInfo)
                                 {
-                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = Junk.FSInfo.FullName }));
-                                    ((FileInfo)Junk.FSInfo).CopyTo(Path.Combine(TargetFolderBrowser.SelectedPath, Junk.FSInfo.Name), true);
+                                    junk.FSInfo.Refresh();
+                                    if (junk.FSInfo.Exists)
+                                    {
+                                        progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = junk.FSInfo.FullName }));
+                                        ((FileInfo)junk.FSInfo).CopyTo(Path.Combine(targetFolderBrowser.SelectedPath, junk.FSInfo.Name), true);
+                                    }
+
+                                    File.SetAttributes(junk.FSInfo.FullName, FileAttributes.Normal);
+                                    await Task.Run(() => junk.FSInfo.Delete()).ConfigureAwait(true);
+                                }
+                                else
+                                {
+                                    junk.FSInfo.Refresh();
+                                    if (junk.FSInfo.Exists)
+                                    {
+                                        foreach (FileInfo currentFile in ((DirectoryInfo)junk.FSInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                        {
+                                            var newFile = new FileInfo(currentFile.FullName.Replace(junk.Library.DirectoryList["SteamApps"].FullName, targetFolderBrowser.SelectedPath));
+
+                                            if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
+                                            {
+                                                if (!newFile.Directory.Exists)
+                                                {
+                                                    newFile.Directory.Create();
+                                                }
+
+                                                progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = currentFile.FullName }));
+                                                await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(true);
+                                            }
+                                        }
+
+                                        progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = junk.FSInfo.FullName }));
+                                        await Task.Run(() => (junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(true);
+                                    }
                                 }
 
-                                File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
+                                Definitions.List.JunkItems.Remove(junk);
                             }
-                            else
+
+                            await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+                            targetFolderBrowser.Dispose();
+                            break;
+                        }
+
+                    case "DeleteAll":
+                        {
+                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                             {
-                                Junk.FSInfo.Refresh();
-                                if (Junk.FSInfo.Exists)
+                                var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_Delete)), true).ConfigureAwait(true);
+                                progressInformationMessage.SetIndeterminate();
+
+                                foreach (var junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
                                 {
-                                    foreach (FileInfo currentFile in ((DirectoryInfo)Junk.FSInfo).EnumerateFileSystemInfos("*", SearchOption.AllDirectories).Where(x => x is FileInfo).ToList())
+                                    if (junk.FSInfo is FileInfo)
                                     {
-                                        FileInfo newFile = new FileInfo(currentFile.FullName.Replace(Junk.Library.DirectoryList["SteamApps"].FullName, TargetFolderBrowser.SelectedPath));
-
-                                        if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
+                                        junk.FSInfo.Refresh();
+                                        if (junk.FSInfo.Exists)
                                         {
-                                            if (!newFile.Directory.Exists)
-                                            {
-                                                newFile.Directory.Create();
-                                            }
-
-                                            ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = currentFile.FullName }));
-                                            await Task.Run(() => currentFile.CopyTo(newFile.FullName, true)).ConfigureAwait(true);
+                                            File.SetAttributes(junk.FSInfo.FullName, FileAttributes.Normal);
+                                            progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = junk.FSInfo.FullName }));
+                                            await Task.Run(() => junk.FSInfo.Delete()).ConfigureAwait(true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        junk.FSInfo.Refresh();
+                                        if (junk.FSInfo.Exists)
+                                        {
+                                            progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = junk.FSInfo.FullName }));
+                                            await Task.Run(() => ((DirectoryInfo)junk.FSInfo).Delete(true)).ConfigureAwait(true);
                                         }
                                     }
 
-                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => (Junk.FSInfo as DirectoryInfo)?.Delete(true)).ConfigureAwait(true);
+                                    Definitions.List.JunkItems.Remove(junk);
                                 }
+
+                                await progressInformationMessage.CloseAsync().ConfigureAwait(true);
                             }
 
-                            Definitions.List.LcItems.Remove(Junk);
+                            break;
                         }
-
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
-                    }
-                }
-                else if ((string)(sender as Button)?.Tag == "DeleteAll")
-                {
-                    if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                    {
-                        var ProgressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_Delete)), true).ConfigureAwait(true);
-                        ProgressInformationMessage.SetIndeterminate();
-
-                        foreach (Definitions.List.JunkInfo Junk in LibraryCleaner.ItemsSource.OfType<Definitions.List.JunkInfo>().ToList())
-                        {
-                            if (Junk.FSInfo is FileInfo)
-                            {
-                                Junk.FSInfo.Refresh();
-                                if (Junk.FSInfo.Exists)
-                                {
-                                    File.SetAttributes(Junk.FSInfo.FullName, FileAttributes.Normal);
-                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => Junk.FSInfo.Delete()).ConfigureAwait(true);
-                                }
-                            }
-                            else
-                            {
-                                Junk.FSInfo.Refresh();
-                                if (Junk.FSInfo.Exists)
-                                {
-                                    ProgressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeletingDirectory)), new { DirectoryFullPath = Junk.FSInfo.FullName }));
-                                    await Task.Run(() => ((DirectoryInfo)Junk.FSInfo).Delete(true)).ConfigureAwait(true);
-                                }
-                            }
-
-                            Definitions.List.LcItems.Remove(Junk);
-                        }
-
-                        await ProgressInformationMessage.CloseAsync().ConfigureAwait(true);
-                    }
-                }
-                else if ((string)(sender as Button)?.Tag == "ToggleIgnoredItems")
-                {
-                    if (_toggleItemList)
-                    {
-                        _toggleItemList = false;
-
-                        IgnoredItems.Visibility = Visibility.Collapsed;
-                        LibraryCleaner.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        _toggleItemList = true;
-
-                        IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
-                        IgnoredItems.Visibility = Visibility.Visible;
-                        LibraryCleaner.Visibility = Visibility.Collapsed;
-                    }
                 }
             }
             catch (IOException ex)
@@ -311,6 +291,164 @@ namespace Steam_Library_Manager.Forms
             catch (Exception ex)
             {
                 Logger.Error(ex);
+            }
+        }
+
+        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RefreshItems((string)((Button)sender).Tag);
+        }
+
+        public void RefreshItems(string target)
+        {
+            try
+            {
+                switch (target)
+                {
+                    default:
+                    case "Junks":
+
+                        foreach (var library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == LibraryType.Steam || x.Type == LibraryType.SLM)))
+                        {
+                            library.UpdateJunks();
+                        }
+                        break;
+
+                    case "DupeItems":
+                        foreach (var library in Definitions.List.Libraries.Where(x => x.DirectoryInfo.Exists && (x.Type == LibraryType.Steam || x.Type == LibraryType.SLM)))
+                        {
+                            library.UpdateDupes();
+                        }
+                        break;
+
+                    case "IgnoredItems":
+                        IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
+                Debug.WriteLine(ex);
+            }
+        }
+
+        private void DupeItem_OpenButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var senderBtn = sender as Button;
+                var senderDupe = (Definitions.List.DupeInfo)senderBtn.DataContext;
+
+                if ((string)senderBtn.Tag == "App1")
+                {
+                    if (senderDupe.App1.InstallationDirectory.Exists)
+                    {
+                        Process.Start(senderDupe.App1.InstallationDirectory.FullName);
+                    }
+                    else
+                    {
+                        Logger.Warn($"Tried to open a non existing directory: {senderDupe.App1.AppName} - {senderDupe.App1.InstallationDirectory.FullName}");
+                    }
+                }
+                else
+                {
+                    if (senderDupe.App2.InstallationDirectory.Exists)
+                    {
+                        Process.Start(senderDupe.App2.InstallationDirectory.FullName);
+                    }
+                    else
+                    {
+                        Logger.Warn($"Tried to open a non existing directory: {senderDupe.App2.AppName} - {senderDupe.App2.InstallationDirectory.FullName}");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+        }
+
+        private async void DupeItem_DeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var senderBtn = sender as Button;
+                var senderDupe = (Definitions.List.DupeInfo)senderBtn.DataContext;
+
+                if ((string)senderBtn.Tag == "App1")
+                {
+                    if (await senderDupe.App1.DeleteFilesAsync())
+                    {
+                        senderDupe.App1.Library.Apps.Remove(senderDupe.App1);
+                        Functions.SLM.Library.UpdateLibraryVisual();
+
+                        if (Definitions.SLM.CurrentSelectedLibrary == senderDupe.App1.Library)
+                            Functions.App.UpdateAppPanel(senderDupe.App1.Library);
+
+                        Definitions.List.DupeItems.Remove(senderDupe);
+                    }
+                    else
+                    {
+                        Logger.Warn($"An error happened while deleting files for: {senderDupe.App1.AppName} - {senderDupe.App1.InstallationDirectory.FullName}");
+                    }
+                }
+                else
+                {
+                    if (await senderDupe.App2.DeleteFilesAsync())
+                    {
+                        senderDupe.App2.Library.Apps.Remove(senderDupe.App2);
+                        Functions.SLM.Library.UpdateLibraryVisual();
+
+                        if (Definitions.SLM.CurrentSelectedLibrary == senderDupe.App2.Library)
+                            Functions.App.UpdateAppPanel(senderDupe.App2.Library);
+
+                        Definitions.List.DupeItems.Remove(senderDupe);
+                    }
+                    else
+                    {
+                        Logger.Warn($"An error happened while deleting files for: {senderDupe.App2.AppName} - {senderDupe.App2.InstallationDirectory.FullName}");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception);
+            }
+        }
+
+        private void IgnoredItems_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                foreach (var junk in IgnoredItems.Items.OfType<string>().ToArray())
+                {
+                    switch ((string)(sender as Button)?.Tag)
+                    {
+                        case "remove":
+
+                            break;
+
+                        case "delete":
+                            if (File.Exists(junk))
+                            {
+                                File.Delete(junk);
+                            }
+                            else if (Directory.Exists(junk))
+                            {
+                                Directory.Delete(junk, true);
+                            }
+                            break;
+                    }
+
+                    Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                }
+
+                IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks.Count == 0 ? null : Properties.Settings.Default.IgnoredJunks;
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
             }
         }
     }

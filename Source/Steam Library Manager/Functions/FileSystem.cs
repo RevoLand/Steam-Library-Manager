@@ -169,15 +169,5 @@ namespace Steam_Library_Manager.Functions
             out ulong lpFreeBytesAvailable,
             out ulong lpTotalNumberOfBytes,
             out ulong lpTotalNumberOfFreeBytes);
-
-        public static bool DriveUsageStatistics(string folderName, out ulong availableFreeSpace, out ulong totalSpace, out ulong totalFreeSpace)
-        {
-            if (!folderName.EndsWith("\\"))
-            {
-                folderName += '\\';
-            }
-
-            return GetDiskFreeSpaceEx(folderName, out availableFreeSpace, out totalSpace, out totalFreeSpace);
-        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
-using NLog.Targets.Wrappers;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Collections.ObjectModel;
@@ -87,7 +86,7 @@ namespace Steam_Library_Manager
         private static void SetNLogConfig()
         {
             var config = new NLog.Config.LoggingConfiguration();
-            var asyncWrapper = new AsyncTargetWrapper(new NLog.Targets.FileTarget() { ArchiveAboveSize = 10000000, FileName = "${basedir}/logs/${shortdate}.log", Name = "f", Layout = "${longdate} ${uppercase:${level}} ${message}" });
+            var asyncWrapper = new NLog.Targets.Wrappers.AsyncTargetWrapper(new NLog.Targets.FileTarget() { ArchiveAboveSize = 10000000, FileName = "${basedir}/logs/${shortdate}.log", Name = "f", Layout = "${longdate} ${uppercase:${level}} ${message}" });
 
             config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Debug, asyncWrapper));
             LogManager.Configuration = config;
@@ -140,7 +139,10 @@ namespace Steam_Library_Manager
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TmViewLogs;
 
-                LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.LcItems;
+                // Library Cleaner View
+                LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.JunkItems;
+                LibraryCleanerView.DupeItems.ItemsSource = Definitions.List.DupeItems;
+                LibraryCleanerView.IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
 
                 SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
             }

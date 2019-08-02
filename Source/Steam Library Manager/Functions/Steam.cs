@@ -592,25 +592,26 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static async void AddNew(string LibraryPath, bool IsMainLibrary = false)
+            public static async void AddNew(string libraryPath, bool isMainLibrary = false)
             {
                 try
                 {
-                    if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                     {
-                        LibraryPath += Path.DirectorySeparatorChar;
+                        libraryPath += Path.DirectorySeparatorChar;
                     }
 
-                    var newLibrary = new Definitions.SteamLibrary(LibraryPath, IsMainLibrary)
+                    var newLibrary = new Definitions.SteamLibrary(libraryPath, isMainLibrary)
                     {
                         Type = Definitions.Enums.LibraryType.Steam,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath)
+                        DirectoryInfo = new DirectoryInfo(libraryPath)
                     };
 
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
                     await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
                     await Task.Run(newLibrary.UpdateJunks).ConfigureAwait(true);
+                    await Task.Run(newLibrary.UpdateDupes).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {

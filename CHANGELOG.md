@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.5.1.11] - 2019-07-25
+## [1.5.1.11] - 2019-08-02
 
 ### Added
 
@@ -14,14 +14,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Ability to skip restart warning for Steam library related tasks (#69)
 - Icons! [(Have a sneak-peek)](https://dl.dropboxusercontent.com/s/e9ruwj4f11yg5pn/21-Sunday-vB67mD7A1020.gif)
 - Ability to Compress Origin games
-  - And 'Auto Install' for Origin related tasks
+- And ability to 'Auto Install' for Origin tasks
 - HamburgerMenu Addition to Library Panel for library type switching (#71)
+- Duplicate Game Finder/Cleaner for Steam libraries ([#73](https://github.com/RevoLand/Steam-Library-Manager/issues/73))
 
 ### Changed
 
 - Library Creation dialog is replaced with a flyout panel which clears the path for supporting more library types. (#63 #65)
 - Unified Task Manager's List View for Steam & Origin games for easier editing in future.
 - Tweaked Task Manager UI a little bit
+- Library Cleaner ui improved
 
 ### Fixed
 

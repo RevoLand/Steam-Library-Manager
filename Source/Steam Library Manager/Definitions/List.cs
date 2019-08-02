@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steam_Library_Manager.Definitions.Enums;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,10 +13,12 @@ namespace Steam_Library_Manager.Definitions
         // Make a new list for Library details
         public static ObservableCollection<Library> Libraries { get; set; } = new ObservableCollection<Library>();
 
-        public static ObservableCollection<JunkInfo> LcItems { get; set; } = new ObservableCollection<JunkInfo>();
+        public static ObservableCollection<JunkInfo> JunkItems { get; set; } = new ObservableCollection<JunkInfo>();
+        public static ObservableCollection<DupeInfo> DupeItems { get; set; } = new ObservableCollection<DupeInfo>();
 
         public static readonly IProgress<Library> LibraryProgress = new Progress<Library>(library => Libraries.Add(library));
-        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => LcItems.Add(junk));
+
+        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => JunkItems.Add(junk));
 
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
@@ -96,9 +99,16 @@ namespace Steam_Library_Manager.Definitions
         {
             public System.IO.FileSystemInfo FSInfo { get; set; }
             public Library Library { get; set; }
-            public long Size { get; set; }
-            public string PrettyFolderSize => Functions.FileSystem.FormatBytes(Size);
-            public string JunkReason { get; set; }
+            public App App { get; set; }
+            public string Size { get; set; }
+            public JunkType Tag { get; set; }
+        }
+
+        public class DupeInfo
+        {
+            public App App1 { get; set; }
+            public App App2 { get; set; }
+            public string Size { get; set; }
         }
     }
 }

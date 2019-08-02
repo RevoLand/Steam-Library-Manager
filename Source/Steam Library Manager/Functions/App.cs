@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -46,9 +47,9 @@ namespace Steam_Library_Manager.Functions
                     Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
                     {
                         FSInfo = acfFile,
-                        Size = acfFile.Length,
+                        Size = FileSystem.FormatBytes(acfFile.Length),
                         Library = Library,
-                        JunkReason = SLM.Translate(nameof(Properties.Resources.InstallationNotFoundButStateFlagEqualsTo4))
+                        Tag = JunkType.HeadlessDataFile
                     });
 
                     return; // Do not add pre-loads to list
@@ -60,13 +61,13 @@ namespace Steam_Library_Manager.Functions
                     if (Properties.Settings.Default.archiveSizeCalculationMethod.StartsWith("Uncompressed"))
                     {
                         // Open archive to read
-                        using (ZipArchive Archive = ZipFile.OpenRead(appInfo.CompressedArchivePath.FullName))
+                        using (var archive = ZipFile.OpenRead(appInfo.CompressedArchivePath.FullName))
                         {
                             // For each file in archive
-                            foreach (ZipArchiveEntry Entry in Archive.Entries)
+                            foreach (var entry in archive.Entries)
                             {
                                 // Add file size to sizeOnDisk
-                                appInfo.SizeOnDisk += Entry.Length;
+                                appInfo.SizeOnDisk += entry.Length;
                             }
                         }
                     }
@@ -120,26 +121,25 @@ namespace Steam_Library_Manager.Functions
                 // Open archive for read
                 using (var archive = ZipFile.OpenRead(zipPath))
                 {
-                    if (archive.Entries.Count > 0)
+                    if (archive.Entries.Count <= 0) return;
+
+                    // For each file in opened archive
+                    foreach (var acfEntry in archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
                     {
-                        // For each file in opened archive
-                        foreach (var acfEntry in archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                        // If it contains
+                        // Define a KeyValue reader
+                        var keyValReader = new Framework.KeyValue();
+
+                        // Open .acf file from archive as text
+                        keyValReader.ReadAsText(acfEntry.Open());
+
+                        // If acf file has no children, skip this archive
+                        if (keyValReader.Children.Count == 0)
                         {
-                            // If it contains
-                            // Define a KeyValue reader
-                            var keyValReader = new Framework.KeyValue();
-
-                            // Open .acf file from archive as text
-                            keyValReader.ReadAsText(acfEntry.Open());
-
-                            // If acf file has no children, skip this archive
-                            if (keyValReader.Children.Count == 0)
-                            {
-                                continue;
-                            }
-
-                            await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value), targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(false);
+                            continue;
                         }
+
+                        await AddSteamAppAsync(Convert.ToInt32(keyValReader["appID"].Value), !string.IsNullOrEmpty(keyValReader["name"].Value) ? keyValReader["name"].Value : keyValReader["UserConfig"]["name"].Value, keyValReader["installdir"].Value, Convert.ToInt32(keyValReader["StateFlags"].Value), targetLibrary, Convert.ToInt64(keyValReader["SizeOnDisk"].Value), Convert.ToInt64(keyValReader["LastUpdated"].Value), true).ConfigureAwait(true);
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
-                    }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
                         File.Delete(zipPath);
                     }
@@ -166,7 +166,7 @@ namespace Steam_Library_Manager.Functions
                     if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                     {
                         NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
-                    }).ConfigureAwait(false) == MessageDialogResult.Affirmative)
+                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
                     {
                         File.Delete(zipPath);
                     }

@@ -285,6 +285,7 @@ namespace Steam_Library_Manager.Functions
 
                     await Task.Run(() => library.UpdateAppListAsync()).ConfigureAwait(true);
                     await Task.Run(() => library.UpdateJunks()).ConfigureAwait(true);
+                    await Task.Run(() => library.UpdateDupes()).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {

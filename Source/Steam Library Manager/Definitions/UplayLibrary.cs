@@ -99,5 +99,10 @@ namespace Steam_Library_Manager.Definitions
         {
             throw new NotImplementedException();
         }
+
+        public override void UpdateDupes()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
