@@ -95,6 +95,11 @@ namespace Steam_Library_Manager.Definitions
 
         public void UpdateDiskDetails()
         {
+            Functions.FileSystem.GetDiskFreeSpaceEx(_fullPath, out var freeSpace, out var totalSpace, out var totalFreeSpace);
+
+            FreeSpace = (long)freeSpace;
+            TotalSize = (long)totalSpace;
+
             OnPropertyChanged("DirectoryInfo");
             OnPropertyChanged("FreeSpace");
             OnPropertyChanged("PrettyFreeSpace");
