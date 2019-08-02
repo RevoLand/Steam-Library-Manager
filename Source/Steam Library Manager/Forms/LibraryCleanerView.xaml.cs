@@ -64,12 +64,7 @@ namespace Steam_Library_Manager.Forms
                             break;
 
                         case "Ignore":
-                            if (Properties.Settings.Default.IgnoredJunks == null)
-                            {
-                                Properties.Settings.Default.IgnoredJunks = new System.Collections.Specialized.StringCollection();
-                            }
-
-                            Properties.Settings.Default.IgnoredJunks.Add(junk.FSInfo.FullName);
+                            Definitions.List.IgnoredJunkItems.Add(junk.FSInfo.FullName);
                             Definitions.List.JunkItems.Remove(junk);
                             break;
                     }
@@ -112,8 +107,6 @@ namespace Steam_Library_Manager.Forms
                             break;
                     }
                 }
-
-                IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
             }
             catch (Exception ex)
             {
@@ -322,7 +315,7 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "IgnoredItems":
-                        IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
+                        IgnoredItems.ItemsSource = Definitions.List.IgnoredJunkItems;
                         break;
                 }
             }
@@ -421,7 +414,7 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                foreach (var junk in IgnoredItems.Items.OfType<string>().ToArray())
+                foreach (var junk in Definitions.List.IgnoredJunkItems.ToList())
                 {
                     switch ((string)(sender as Button)?.Tag)
                     {
@@ -441,10 +434,8 @@ namespace Steam_Library_Manager.Forms
                             break;
                     }
 
-                    Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                    Definitions.List.IgnoredJunkItems.Remove(junk);
                 }
-
-                IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks.Count == 0 ? null : Properties.Settings.Default.IgnoredJunks;
             }
             catch (Exception ex)
             {

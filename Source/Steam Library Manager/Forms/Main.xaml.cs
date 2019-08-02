@@ -142,7 +142,7 @@ namespace Steam_Library_Manager
                 // Library Cleaner View
                 LibraryCleanerView.LibraryCleaner.ItemsSource = Definitions.List.JunkItems;
                 LibraryCleanerView.DupeItems.ItemsSource = Definitions.List.DupeItems;
-                LibraryCleanerView.IgnoredItems.ItemsSource = Properties.Settings.Default.IgnoredJunks;
+                LibraryCleanerView.IgnoredItems.ItemsSource = Definitions.List.IgnoredJunkItems;
 
                 SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
             }

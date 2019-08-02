@@ -38,8 +38,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     var acfFile = new FileInfo(Path.Combine(Library.DirectoryList["SteamApps"].FullName, $"appmanifest_{appInfo.AppId}.acf"));
 
-                    if (Properties.Settings.Default.IgnoredJunks != null &&
-                        Properties.Settings.Default.IgnoredJunks.Contains(acfFile.FullName))
+                    if (Definitions.List.IgnoredJunkItems.Contains(acfFile.FullName))
                     {
                         return;
                     }

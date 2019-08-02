@@ -9,7 +9,7 @@
              xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
              mc:Ignorable="d">
     <controls:MetroTabControl>
-        <controls:MetroTabItem Header="Junks">
+        <controls:MetroTabItem Header="Junk">
             <Grid Margin="3">
                 <!-- ListView: Library Cleaner -->
                 <ListView x:Name="LibraryCleaner" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
@@ -84,7 +84,7 @@
                 </WrapPanel>
             </Grid>
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="Dupes">
+        <controls:MetroTabItem Header="Duplicates">
             <Grid Margin="3">
                 <ListView x:Name="DupeItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                     <ListView.ItemTemplate>

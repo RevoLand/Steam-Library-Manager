@@ -97,10 +97,66 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
+            private static void UpdateUplayLibraries()
+            {
+                try
+                {
+                    // Define a new string collection to update backup library settings
+                    var backupDirs = new System.Collections.Specialized.StringCollection();
+
+                    // foreach defined library in library list
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Uplay && !x.IsMain).ToList())
+                    {
+                        if (backupDirs.Contains(library.DirectoryInfo.FullName))
+                            continue;
+
+                        // then add this library path to new defined string collection
+                        backupDirs.Add(library.DirectoryInfo.FullName);
+                    }
+
+                    // change our current backup directories setting with new defined string collection
+                    Properties.Settings.Default.UplayLibraries = backupDirs;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+            private static void UpdateJunkItems()
+            {
+                try
+                {
+                    // Define a new string collection to update backup library settings
+                    var ignoredJunks = new System.Collections.Specialized.StringCollection();
+
+                    // foreach defined library in library list
+                    foreach (var junk in Definitions.List.IgnoredJunkItems.ToList())
+                    {
+                        if (ignoredJunks.Contains(junk))
+                            continue;
+
+                        // then add this library path to new defined string collection
+                        ignoredJunks.Add(junk);
+                    }
+
+                    // change our current backup directories setting with new defined string collection
+                    Properties.Settings.Default.IgnoredJunks = ignoredJunks;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
             public static void SaveSettings()
             {
                 UpdateSlmLibraries();
                 UpdateOriginLibraries();
+                UpdateUplayLibraries();
+                UpdateJunkItems();
             }
         }
 
@@ -120,6 +176,9 @@ namespace Steam_Library_Manager.Functions
                 // SLM Libraries
                 Library.GenerateLibraryList();
                 Library.GenerateOriginLibraryList();
+                Library.GenerateUplayLibraryList();
+
+                GenerateJunkList();
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 {
@@ -170,7 +229,6 @@ namespace Steam_Library_Manager.Functions
             {
                 Uplay.PopulateLibraryCMenuItems();
 
-
                 Uplay.GenerateLibraryListAsync();
             }
             catch (Exception ex)
@@ -184,6 +242,30 @@ namespace Steam_Library_Manager.Functions
         {
             Settings.SaveSettings();
             NLog.LogManager.Shutdown();
+        }
+
+        public static void GenerateJunkList()
+        {
+            try
+            {
+                // If we don't have any SLM libraries available
+                if (Properties.Settings.Default.IgnoredJunks == null)
+                    return;
+
+                if (Properties.Settings.Default.IgnoredJunks.Count == 0)
+                    return;
+
+                // for each backup library we have, do a loop
+                foreach (var ignoredJunk in Properties.Settings.Default.IgnoredJunks)
+                {
+                    Definitions.List.IgnoredJunkItems.Add(ignoredJunk);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         // SLM Library
@@ -251,7 +333,7 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have, do a loop
                     foreach (var backupPath in Properties.Settings.Default.UplayLibraries)
                     {
-                        //Origin.AddNewLibraryAsync(backupPath);
+                        Uplay.AddNewLibraryAsync(backupPath);
                     }
                 }
                 catch (Exception ex)

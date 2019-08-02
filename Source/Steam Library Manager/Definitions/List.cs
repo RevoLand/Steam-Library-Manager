@@ -15,6 +15,7 @@ namespace Steam_Library_Manager.Definitions
 
         public static ObservableCollection<JunkInfo> JunkItems { get; set; } = new ObservableCollection<JunkInfo>();
         public static ObservableCollection<DupeInfo> DupeItems { get; set; } = new ObservableCollection<DupeInfo>();
+        public static ObservableCollection<string> IgnoredJunkItems { get; set; } = new ObservableCollection<string>();
 
         public static readonly IProgress<Library> LibraryProgress = new Progress<Library>(library => Libraries.Add(library));
 
