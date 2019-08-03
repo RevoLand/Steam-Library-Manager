@@ -24,6 +24,8 @@
                         <!-- TextBlock: Library Path -->
                         <TextBlock Margin="3" Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
+                        <controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}" Height="16" Width="16" HorizontalAlignment="Right" VerticalAlignment="Top" IsActive="{Binding IsUpdatingAppList}"/>
+
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30" Height="30">
                             <!-- TextBlock: Library Type -->
                             <TextBlock Text="{Binding Type}" />

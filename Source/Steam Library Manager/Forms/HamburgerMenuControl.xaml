@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              mc:Ignorable="d">
     <Grid>
@@ -65,8 +66,7 @@
                                 Margin="3,10,0,50" DisplayMode="CompactInline" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="200" Content="" ContentTemplate="{StaticResource HamburgerContentTemplate}">
             <Controls:HamburgerMenu.ItemsSource>
                 <Controls:HamburgerMenuItemCollection>
-                    <Controls:HamburgerMenuIconItem Label="All Available" Tag="All" Icon="/Steam Library Manager;component/Resources/slm-icon.ico">
-                    </Controls:HamburgerMenuIconItem>
+                    <Controls:HamburgerMenuIconItem Label="All Available" Tag="All" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" />
                     <Controls:HamburgerMenuIconItem Label="Steam - SLM" Icon="/Steam Library Manager;component/Resources/steam-icon.ico">
                         <Controls:HamburgerMenuIconItem.Tag>
                             <enums:LibraryType>Steam</enums:LibraryType>
