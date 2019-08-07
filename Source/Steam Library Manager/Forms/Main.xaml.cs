@@ -20,6 +20,7 @@ namespace Steam_Library_Manager
     public partial class Main
     {
         public static Main FormAccessor;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
         private LibraryType _libraryType;
 
@@ -74,11 +75,10 @@ namespace Steam_Library_Manager
 
         public Main()
         {
+            SetNLogConfig();
             Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
 
             InitializeComponent();
-
-            SetNLogConfig();
             UpdateBindings();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
         }
@@ -149,6 +149,7 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -186,55 +187,77 @@ namespace Steam_Library_Manager
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                Logger.Error(ex);
             }
         }
 
         private async void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
-            await Functions.SLM.OnLoadAsync();
-
-            SettingsView.GeneralSettingsGroupBox.DataContext = new Definitions.Settings();
-            QuickSettings.DataContext = SettingsView.GeneralSettingsGroupBox.DataContext;
-
-            if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
+            try
             {
-                Functions.TaskManager.Start();
+                await Functions.SLM.OnLoadAsync();
+
+                SettingsView.SettingsPanel.DataContext = new Definitions.Settings();
+                QuickSettings.DataContext = SettingsView.SettingsPanel.DataContext;
+
+                if (Properties.Settings.Default.Global_StartTaskManagerOnStartup)
+                {
+                    Functions.TaskManager.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                Logger.Fatal(ex);
             }
         }
 
         private async void MainForm_ClosingAsync(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (e.Cancel) return;
-            if (Functions.TaskManager.TaskList.Count(x => x.Active) > 0)
+            try
             {
-                e.Cancel = true;
-
-                if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
-                    Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
-                    MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
-                    {
-                        AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
-                        NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-                    }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
+                if (e.Cancel) return;
+                if (Functions.TaskManager.TaskList.Count(x => x.Active) > 0)
                 {
-                    return;
-                }
-            }
+                    e.Cancel = true;
 
-            Functions.SLM.OnClosing();
-            Application.Current.Shutdown();
-            Environment.Exit(0);
+                    if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
+                        Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
+                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                        {
+                            AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
+                            NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
+                        }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
+                    {
+                        return;
+                    }
+                }
+
+                Functions.SLM.OnClosing();
+                Application.Current.Shutdown();
+                Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                Logger.Fatal(ex);
+                Application.Current.Shutdown();
+                Environment.Exit(0);
+            }
         }
 
         public void LibraryCMenuItem_Click(object sender, RoutedEventArgs e) => ((Definitions.Library)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)((MenuItem)sender)?.Tag);
 
         public void AppCMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            switch (Definitions.SLM.CurrentSelectedLibrary.Type)
+            try
             {
-                default:
-                    ((Definitions.App)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync((string)((MenuItem)sender)?.Tag);
-                    break;
+                ((Definitions.App)(sender as MenuItem)?.DataContext)?.ParseMenuItemActionAsync(
+                    (string)((MenuItem)sender)?.Tag);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 

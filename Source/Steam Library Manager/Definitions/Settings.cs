@@ -47,7 +47,7 @@ namespace Steam_Library_Manager.Definitions
             set => Properties.Settings.Default.BaseTheme = value.ToString();
         }
 
-        public CompactLevel Setting_compactLevel
+        public CompactLevel Setting_CompactLevel
         {
             get => (CompactLevel)Enum.Parse(typeof(CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
             set => Properties.Settings.Default.DefaultCompactLevel = value.ToString();

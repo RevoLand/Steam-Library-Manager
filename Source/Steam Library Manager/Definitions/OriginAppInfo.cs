@@ -31,7 +31,7 @@ namespace Steam_Library_Manager.Definitions
             UpdateParameter = updateParameter;
             RepairParameter = repairParameter;
             AppVersion = appVersion;
-            LastUpdated = InstallationDirectory.LastWriteTimeUtc;
+            LastUpdated = InstallationDirectory.LastWriteTime;
             IsCompressed = isCompressed;
             CompressedArchivePath = new FileInfo(Path.Combine(Library.FullPath, AppId + ".zip"));
             SizeOnDisk = (!IsCompressed) ? Functions.FileSystem.GetDirectorySize(InstallationDirectory, true) : CompressedArchivePath.Length;

@@ -257,6 +257,11 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
+                if (!newLibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    newLibraryPath += Path.DirectorySeparatorChar;
+                }
+
                 return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.Origin && string.Equals(x.FullPath, newLibraryPath, StringComparison.InvariantCultureIgnoreCase)) > 0;
             }
             // In any error return true to prevent possible bugs

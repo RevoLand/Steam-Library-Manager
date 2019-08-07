@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -35,10 +36,8 @@ namespace Steam_Library_Manager
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            string errorMessage = $"An unhandled exception occurred: {e.Exception.Message}";
-            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            // OR whatever you want like logging etc. MessageBox it's just example
-            // for quick debugging etc.
+            Debug.WriteLine(e.Exception);
+            Debug.WriteLine(Environment.StackTrace);
             e.Handled = true;
         }
     }

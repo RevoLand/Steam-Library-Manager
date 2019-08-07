@@ -18,6 +18,7 @@ namespace Steam_Library_Manager.Functions
         public static Definitions.List.TaskInfo ActiveTask;
         public static Definitions.List.TmInfo TMInfo { get; } = new Definitions.List.TmInfo();
 
+        private static readonly IProgress<Definitions.List.TaskInfo> addTaskProgress = new Progress<Definitions.List.TaskInfo>(task => TaskList.Add(task));
         private static readonly IProgress<Definitions.List.TaskInfo> RemoveTaskProgress = new Progress<Definitions.List.TaskInfo>(task => TaskList.Remove(task));
 
         private static async Task ProcessTaskAsync(Definitions.List.TaskInfo CurrentTask)
@@ -252,11 +253,11 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static void AddTask(Definitions.List.TaskInfo Task)
+        public static void AddTask(Definitions.List.TaskInfo task)
         {
             try
             {
-                TaskList.Add(Task);
+                addTaskProgress.Report(task);
 
                 TmInfoUpdate();
             }

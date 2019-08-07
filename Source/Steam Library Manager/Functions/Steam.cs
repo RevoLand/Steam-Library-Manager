@@ -628,7 +628,7 @@ namespace Steam_Library_Manager.Functions
                         var localConfigFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "userdata", Framework.SteamIDConvert.Steam64ToSteam32(Convert.ToInt64(Properties.Settings.Default.SteamID64)).Split(':').Last(), "config", "localconfig.vdf");
                         if (File.Exists(localConfigFilePath))
                         {
-                            Framework.KeyValue configFile = new Framework.KeyValue();
+                            var configFile = new Framework.KeyValue();
                             configFile.ReadFileAsText(localConfigFilePath);
 
                             var appsPath = configFile["Software"]["Valve"]["Steam"]["apps"];
@@ -656,37 +656,40 @@ namespace Steam_Library_Manager.Functions
                     if (File.Exists(Definitions.Global.Steam.VdfFilePath))
                     {
                         // Make a KeyValue reader
-                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                        var keyValReader = new Framework.KeyValue();
 
                         // Read our vdf file as text
-                        KeyValReader.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
+                        keyValReader.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
 
-                        KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
-                        if (KeyValReader?.Children.Count > 0)
+                        keyValReader = keyValReader["Software"]["Valve"]["Steam"];
+                        if (keyValReader?.Children.Count > 0)
                         {
-                            foreach (var key in KeyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
+                            foreach (var key in keyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
                             {
                                 AddNew(key.Value);
                             }
 
-                            if (KeyValReader["Accounts"]?.Children.Count > 0)
+                            if (keyValReader["Accounts"]?.Children.Count > 0)
                             {
-                                foreach (var account in KeyValReader["Accounts"].Children)
+                                foreach (var account in keyValReader["Accounts"].Children)
                                 {
-                                    var steamID = account.Children.SingleOrDefault(x => x.Name == "SteamID");
-                                    if (steamID == null)
+                                    var steamId = account.Children.SingleOrDefault(x => x.Name == "SteamID");
+                                    if (steamId == null)
                                     {
                                         continue;
                                     }
 
-                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamID.Value));
+                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamId.Value));
                                 }
 
                                 Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIDList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
                             }
                         }
                     }
-                    else { /* Could not locate LibraryFolders.vdf */ }
+                    else
+                    {
+                        logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.VdfFilePath}");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -694,19 +697,24 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static bool IsLibraryExists(string NewLibraryPath)
+            public static bool IsLibraryExists(string newLibraryPath)
             {
                 try
                 {
-                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+                    newLibraryPath = newLibraryPath.ToLowerInvariant();
+
+                    if (!newLibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        newLibraryPath += Path.DirectorySeparatorChar;
+                    }
 
                     return Definitions.List.Libraries.Any(x =>
                      x.Type == Definitions.Enums.LibraryType.Steam
-                     && (x.FullPath.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Common"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Download"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Workshop"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["SteamApps"].FullName.ToLowerInvariant() == NewLibraryPath)
+                     && (x.FullPath.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Common"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Download"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Workshop"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["SteamApps"].FullName.ToLowerInvariant() == newLibraryPath)
                     );
                 }
                 // In any error return true to prevent possible bugs

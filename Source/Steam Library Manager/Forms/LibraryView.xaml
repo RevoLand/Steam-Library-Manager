@@ -6,9 +6,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
-             xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
     <Grid>
         <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="LibraryPanel" AllowDrop="True" SelectionMode="Single" MaxWidth="200" Margin="55,10,0,50"
@@ -24,7 +22,7 @@
                         <!-- TextBlock: Library Path -->
                         <TextBlock Margin="3" Text="{Binding DirectoryInfo.FullName}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-                        <controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}" Height="16" Width="16" HorizontalAlignment="Right" VerticalAlignment="Top" IsActive="{Binding IsUpdatingAppList}"/>
+                        <controls:ProgressRing Foreground="{DynamicResource AccentColorBrush}" Height="16" Width="16" HorizontalAlignment="Right" VerticalAlignment="Top" IsActive="{Binding IsUpdatingAppList}" />
 
                         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30" Height="30">
                             <!-- TextBlock: Library Type -->

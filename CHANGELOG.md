@@ -10,12 +10,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Ability to continue on error for task manager tasks (#68)
-- Ability to skip restart warning for Steam library related tasks (#69)
+- Ability to continue on error for task manager tasks ([#68](https://github.com/RevoLand/Steam-Library-Manager/issues/68))
+- Ability to skip restart warning for Steam library related tasks ([#69](https://github.com/RevoLand/Steam-Library-Manager/issues/69))
 - Icons! [(Have a sneak-peek)](https://dl.dropboxusercontent.com/s/e9ruwj4f11yg5pn/21-Sunday-vB67mD7A1020.gif)
 - Ability to Compress Origin games
-- And ability to 'Auto Install' for Origin tasks
-- HamburgerMenu Addition to Library Panel for library type switching (#71)
+- Ability to 'Auto Installation' for Origin related tasks
+- HamburgerMenu Addition to Library Panel for library type switching ([#71](https://github.com/RevoLand/Steam-Library-Manager/issues/71))
 - Duplicate Game Finder/Cleaner for Steam libraries ([#73](https://github.com/RevoLand/Steam-Library-Manager/issues/73))
 - Ability to Enable/Disable Library Support (Steam, Origin, Uplay) - ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
 - Library loading indicator ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
@@ -30,7 +30,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - "Remove from SLM" Context Menu Item not working with created Origin libraries
-- Checking for library existence for SLM libraries not working as intended.
+- Checking for library existence for libraries not working as intended.
 - Showing Steam failover images for Origin games in List View if the image is not loaded correctly.
 - Disk Space with Mounted Volumes ([#72](https://github.com/RevoLand/Steam-Library-Manager/issues/72))
 

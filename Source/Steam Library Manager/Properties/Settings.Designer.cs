@@ -499,5 +499,18 @@ namespace Steam_Library_Manager.Properties {
                 this["Uplay_IsEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string UplayExePath {
+            get {
+                return ((string)(this["UplayExePath"]));
+            }
+            set {
+                this["UplayExePath"] = value;
+            }
+        }
     }
 }

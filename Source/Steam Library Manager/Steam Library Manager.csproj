@@ -168,6 +168,7 @@
     <Compile Include="Definitions\SteamAppInfo.cs" />
     <Compile Include="Definitions\SteamLibrary.cs" />
     <Compile Include="Definitions\UplayAppInfo.cs" />
+    <Compile Include="Definitions\UplayConfigurationDb.cs" />
     <Compile Include="Definitions\UplayLibrary.cs" />
     <Compile Include="Forms\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
@@ -284,6 +285,7 @@
     <Resource Include="Resources\slm-icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\configurations" />
     <Resource Include="Resources\steam-icon.ico" />
     <Resource Include="Resources\uplay-icon.ico" />
     <Resource Include="Resources\origin-icon.ico" />

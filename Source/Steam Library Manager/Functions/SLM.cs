@@ -195,7 +195,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (Properties.Settings.Default.Uplay_IsEnabled)
                 {
-                    LoadUplay();
+                    LoadUplayAsync();
                 }
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
@@ -369,7 +369,7 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static bool LoadUplay()
+        public static async Task<bool> LoadUplayAsync()
         {
             try
             {
@@ -380,7 +380,7 @@ namespace Steam_Library_Manager.Functions
 
                 Uplay.PopulateLibraryCMenuItems();
 
-                Uplay.GenerateLibraryListAsync();
+                await Uplay.GenerateLibraryListAsync();
 
                 Library.GenerateUplayLibraryList();
 

@@ -386,7 +386,7 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Dosyaları Sıkıştır</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
     <value>Sıkıştırma Türü</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">

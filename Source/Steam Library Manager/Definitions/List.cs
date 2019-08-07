@@ -24,6 +24,7 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
+        public static readonly List<UplayConfigurationDb> UplayConfigurations = new List<UplayConfigurationDb>();
         public static readonly List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
         public static readonly Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
 

@@ -2,8 +2,6 @@
 using System.Collections.Async;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Windows;
 
 namespace Steam_Library_Manager.Definitions
@@ -16,6 +14,8 @@ namespace Steam_Library_Manager.Definitions
             IsMain = isMain;
             Type = Enums.LibraryType.Uplay;
             DirectoryInfo = new DirectoryInfo(fullPath);
+
+            AllowedAppTypes.Add(Enums.LibraryType.Uplay);
         }
 
         public override async void UpdateAppListAsync()
@@ -31,25 +31,17 @@ namespace Steam_Library_Manager.Definitions
 
                 if (!Directory.Exists(FullPath)) return;
 
-                await Directory.EnumerateFiles(FullPath, "uplay_install.state", SearchOption.AllDirectories)
+                await Directory.EnumerateDirectories(FullPath, "*", SearchOption.TopDirectoryOnly)
                     .ParallelForEachAsync(
-                        async filePath =>
+                        async directoryPath =>
                         {
-                            await Functions.Uplay.ParseAppDetailsAsync(new StreamReader(filePath).BaseStream, filePath, this);
+                            var dirInfo = new DirectoryInfo(directoryPath);
+                            Functions.Uplay.ParseAppDetails(dirInfo.Name, dirInfo, this);
                         });
 
                 await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async originCompressedArchive =>
                 {
-                    using (var archive = ZipFile.OpenRead(originCompressedArchive))
-                    {
-                        if (archive.Entries.Count > 0)
-                        {
-                            foreach (var archiveEntry in archive.Entries.Where(x => x.Name.Contains("uplay_install.state")))
-                            {
-                                await Functions.Uplay.ParseAppDetailsAsync(archiveEntry.Open(), originCompressedArchive, this, true);
-                            }
-                        }
-                    }
+                    Functions.Uplay.ParseAppDetails(originCompressedArchive.Replace(".zip", ""), new DirectoryInfo(originCompressedArchive), this, true);
                 });
 
                 if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)

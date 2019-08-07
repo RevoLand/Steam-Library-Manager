@@ -852,10 +852,10 @@
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
+                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Uplay" />
+                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
+                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview_Origin}" />
                                     </MultiDataTrigger>
                                     <!-- Steam -->
                                     <MultiDataTrigger>
@@ -864,13 +864,6 @@
                                             <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
                                     </MultiDataTrigger>
                                     <!-- SLM -->
                                     <MultiDataTrigger>
@@ -882,7 +875,6 @@
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
                                             <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />

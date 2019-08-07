@@ -14,7 +14,7 @@ namespace Steam_Library_Manager.Forms
     /// </summary>
     public partial class LibraryView
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public LibraryView() => InitializeComponent();
 
@@ -33,60 +33,39 @@ namespace Steam_Library_Manager.Forms
                     return;
                 }
 
-                foreach (var App in Main.FormAccessor.AppView.AppPanel.SelectedItems.Cast<dynamic>().ToList())
+                foreach (var app in Main.FormAccessor.AppView.AppPanel.SelectedItems.Cast<dynamic>().ToList())
                 {
-                    if (App is Definitions.SteamAppInfo)
+                    if (app is Definitions.SteamAppInfo && app.IsSteamBackup)
                     {
-                        if (App.IsSteamBackup)
-                        {
-                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{App.InstallationDirectory}\"");
-                        }
-                        else
-                        {
-                            if (library == App.Library || library.Type == Definitions.Enums.LibraryType.Origin)
-                            {
-                                continue;
-                            }
-
-                            if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == library && !x.Completed) == 0)
-                            {
-                                Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
-                                {
-                                    App = App,
-                                    TargetLibrary = library,
-                                    TaskType = Definitions.Enums.TaskType.Copy
-                                });
-                            }
-                            else
-                            {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(false);
-                            }
-                        }
+                        Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe"), $"-install \"{app.InstallationDirectory}\"");
                     }
-                    else if (App is Definitions.OriginAppInfo)
+                    else
                     {
-                        if (library == App.Library || library.Type != Definitions.Enums.LibraryType.Origin)
+                        if (library == app.Library || !library.AllowedAppTypes.Contains(app.Library.Type))
+                        {
+                            Logger.Warn($"Tried to move an app to the same library OR a library that doesn't support the current app type. App Library: {app.Library.FullPath} - Target Library: {library.FullPath} - App Type: {app.Library.Type} - Target Library Type: {library.Type}");
                             continue;
+                        }
 
-                        if (Functions.TaskManager.TaskList.Count(x => x.App == App && x.TargetLibrary == library && !x.Completed) == 0)
+                        if (Functions.TaskManager.TaskList.Count(x => x.App == app && x.TargetLibrary == library && !x.Completed) == 0)
                         {
                             Functions.TaskManager.AddTask(new Definitions.List.TaskInfo
                             {
-                                App = App,
+                                App = app,
                                 TargetLibrary = library,
                                 TaskType = Definitions.Enums.TaskType.Copy
                             });
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { App.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(false);
+                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { app.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(true);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -116,7 +95,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -134,7 +113,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
             }
         }
 
@@ -169,7 +148,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
                 Debug.WriteLine(ex);
             }
         }

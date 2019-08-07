@@ -18,6 +18,8 @@ namespace Steam_Library_Manager.Definitions
             IsMain = isMain;
             Type = Enums.LibraryType.Origin;
             DirectoryInfo = new DirectoryInfo(fullPath);
+
+            AllowedAppTypes.Add(Enums.LibraryType.Origin);
         }
 
         public override async void UpdateAppListAsync()

@@ -31,6 +31,11 @@
                                     <Setter Property="Width" Value="116px" />
                                     <Setter Property="Height" Value="163px" />
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
+                                    <Setter Property="Tag" Value="uplay" />
+                                    <Setter Property="Width" Value="116px" />
+                                    <Setter Property="Height" Value="163px" />
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </CachedImage:Image.Style>
@@ -43,6 +48,9 @@
                             <Setter Property="Margin" Value="240, 0, 0, 0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
                                     <Setter Property="Margin" Value="125, 0, 0, 0" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -99,6 +107,9 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
                                         <Setter Property="Tag" Value="origin" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
+                                        <Setter Property="Tag" Value="uplay" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

@@ -11,10 +11,10 @@
     xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
     mc:Ignorable="d"
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
-    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="500" MinWidth="600"
+    Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="800" MinWidth="985"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
     ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
-    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" FontSize="13px">
+    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click">
@@ -50,9 +50,9 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <controls:FlyoutsControl Panel.ZIndex="3">
-            <controls:Flyout x:Name="createLibraryFlyout" Header="Create Library" Theme="Adapt" Position="Left" Width="300" IsOpen="False" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0.4" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
-                <StackPanel Orientation="Vertical" Margin="10">
+        <controls:FlyoutsControl Panel.ZIndex="3" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-30,0,0">
+            <controls:Flyout x:Name="createLibraryFlyout" Position="Left" Width="300" IsOpen="False" Theme="Adapt" Header="Create Library" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
+                <StackPanel Orientation="Vertical" Margin="15">
                     <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5" />
                     <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5" />
                     <Button Click="CreateLibrary_PathSelectionButtonClick" Content="Select" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}" />
@@ -80,9 +80,8 @@
                 </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
-        <Grid Margin="15, 0, 0, 0" Panel.ZIndex="1">
-            <Image Margin="0, -15, 0, 0 " Source="/Steam Library Manager;component/Resources/slm-icon.ico" Width="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBlock Margin="55, -20, 0, 0" FontSize="35" Width="350" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="ExtraLight" Background="Transparent">
+        <Grid Margin="15, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Margin="0, -20, 0, 0" FontSize="40"  FontWeight="Light" Foreground="{DynamicResource AccentColorBrush}">
             Steam Library Manager
             </TextBlock>
         </Grid>
@@ -128,7 +127,7 @@
             </ComboBox>
         </WrapPanel>
 
-        <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" Margin="10, 30, 10, 10" Panel.ZIndex="0">
+        <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}" Margin="10, 40, 10, 10" Panel.ZIndex="0">
             <!-- Tab: Library -->
             <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>

@@ -22,6 +22,9 @@ namespace Steam_Library_Manager.Definitions
             DirectoryList.Add("Common", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "common")));
             DirectoryList.Add("Download", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "downloading")));
             DirectoryList.Add("Workshop", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "workshop")));
+
+            AllowedAppTypes.Add(LibraryType.Steam);
+            AllowedAppTypes.Add(LibraryType.SLM);
         }
 
         public override async void UpdateAppListAsync()
@@ -425,7 +428,7 @@ namespace Steam_Library_Manager.Definitions
                     Task.Delay(5000);
                 }
 
-                foreach (var library in List.Libraries.Where(x => x.Type == LibraryType.Steam && x != this))
+                foreach (var library in List.Libraries.ToList().Where(x => x.Type == LibraryType.Steam && x != this))
                 {
                     foreach (var targetApp in library.Apps.Where(x => !x.IsCompressed))
                     {

@@ -921,11 +921,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compression Type.
+        ///   Looks up a localized string similar to Compression Level.
         /// </summary>
-        internal static string Forms_Settings_CompressionType {
+        internal static string Forms_Settings_CompressionLevel {
             get {
-                return ResourceManager.GetString("Forms_Settings_CompressionType", resourceCulture);
+                return ResourceManager.GetString("Forms_Settings_CompressionLevel", resourceCulture);
             }
         }
         
@@ -993,7 +993,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move files synchronously if bigger than.
+        ///   Looks up a localized string similar to Move files sequentially if bigger than.
         /// </summary>
         internal static string Forms_Settings_MoveFilesSyncBySize {
             get {

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Steam_Library_Manager.Definitions.Enums;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -32,6 +33,7 @@ namespace Steam_Library_Manager.Definitions
 
         public System.Collections.ObjectModel.ObservableCollection<dynamic> Apps { get; set; } = new System.Collections.ObjectModel.ObservableCollection<dynamic>();
         public Dictionary<string, DirectoryInfo> DirectoryList { get; set; } = new Dictionary<string, DirectoryInfo>();
+        public List<Enums.LibraryType> AllowedAppTypes = new List<LibraryType>();
 
         public long FreeSpace { get; set; }
         public long TotalSize { get; set; }

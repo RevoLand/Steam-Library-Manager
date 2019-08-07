@@ -8,16 +8,48 @@ namespace Steam_Library_Manager.Definitions
 {
     public class UplayAppInfo : App
     {
-        public UplayAppInfo(Library library, string appName, int appId, DirectoryInfo installationDirectory, bool isCompressed)
+        public string SpaceId { get; set; }
+
+        public UplayAppInfo(Library library, string appName, string spaceId, DirectoryInfo installationDirectory, string headerImage, bool isCompressed)
         {
             Library = library;
             AppName = appName;
-            AppId = appId;
+            SpaceId = spaceId;
             InstallationDirectory = installationDirectory;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayExePath))
+            {
+                var fileInfo = new FileInfo(Properties.Settings.Default.UplayExePath);
+
+                if (fileInfo.Exists)
+                {
+                    var assetsDirectoryInfo = new DirectoryInfo(Path.Combine(fileInfo.DirectoryName, "cache", "assets"));
+
+                    if (assetsDirectoryInfo.Exists)
+                    {
+                        Framework.CachedImage.FileCache.HitAsync(Path.Combine(assetsDirectoryInfo.FullName, headerImage), $"{headerImage.Replace(".jpg", "")}_u")
+                            .ConfigureAwait(false);
+
+                        GameHeaderImage = $"{Directories.SLM.Cache}\\{headerImage.Replace(".jpg", "")}_u.jpg";
+                    }
+                    else
+                    {
+                        Logger.Warn($"Cache/Assets directory doesn't exists: {assetsDirectoryInfo.FullName}");
+                    }
+                }
+                else
+                {
+                    Logger.Warn($"Uplay Executable Path doesn't exists: {Properties.Settings.Default.UplayExePath}");
+                }
+            }
+            else
+            {
+                Logger.Warn($"Uplay Executable Path not set.");
+            }
             IsCompressed = isCompressed;
 
-            LastUpdated = InstallationDirectory.LastWriteTimeUtc;
-            CompressedArchivePath = new FileInfo(Path.Combine(Library.FullPath, AppId + ".zip"));
+            LastUpdated = InstallationDirectory.LastWriteTime;
+            CompressedArchivePath = new FileInfo(Path.Combine(Library.FullPath, AppName + ".zip"));
             SizeOnDisk = (!IsCompressed) ? Functions.FileSystem.GetDirectorySize(InstallationDirectory, true) : CompressedArchivePath.Length;
             IsCompacted = CompactStatus().Result;
         }

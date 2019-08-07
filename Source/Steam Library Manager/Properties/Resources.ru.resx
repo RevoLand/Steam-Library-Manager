@@ -384,7 +384,7 @@
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Сжимать файлы</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
     <value>Тип сжатия</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">

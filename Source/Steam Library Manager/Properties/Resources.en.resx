@@ -384,7 +384,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Compress Files</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
     <value>Compression Type</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">

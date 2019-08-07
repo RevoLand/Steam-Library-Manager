@@ -8,7 +8,7 @@
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
              mc:Ignorable="d">
-    <controls:MetroTabControl>
+    <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}">
         <controls:MetroTabItem Header="Junk">
             <Grid Margin="3">
                 <!-- ListView: Library Cleaner -->
@@ -106,8 +106,8 @@
                                         <TextBlock Text="{Binding App1.InstallationDirectory.LastWriteTime}" Margin="5" TextWrapping="Wrap" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App1" Click="DupeItem_OpenButtonClick"/>
-                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App1" Click="DupeItem_DeleteButtonClick"/>
+                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App1" Click="DupeItem_OpenButtonClick" />
+                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App1" Click="DupeItem_DeleteButtonClick" />
                                     </StackPanel>
                                 </WrapPanel>
                                 <WrapPanel HorizontalAlignment="Right" Orientation="Vertical">
@@ -118,8 +118,8 @@
                                         <TextBlock Text="{Binding App2.InstallationDirectory.LastWriteTime}" Margin="5" TextWrapping="Wrap" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App2" Click="DupeItem_OpenButtonClick"/>
-                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App2" Click="DupeItem_DeleteButtonClick"/>
+                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App2" Click="DupeItem_OpenButtonClick" />
+                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App2" Click="DupeItem_DeleteButtonClick" />
                                     </StackPanel>
                                 </WrapPanel>
                             </Grid>

@@ -81,30 +81,30 @@ namespace Steam_Library_Manager.Forms
                 {
                     default:
 
-                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
+                        foreach (var currentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().ToList())
                         {
-                            if (CurrentTask.Active && Functions.TaskManager.Status && !CurrentTask.Completed)
+                            if (currentTask.Active && Functions.TaskManager.Status && !currentTask.Completed)
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { CurrentTask.App?.AppName })).ConfigureAwait(true);
+                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { currentTask.App?.AppName })).ConfigureAwait(true);
                             }
                             else
                             {
-                                Functions.TaskManager.RemoveTask(CurrentTask);
+                                Functions.TaskManager.RemoveTask(currentTask);
                             }
                         }
                         break;
 
                     case "ToggleCompress":
-                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
+                        foreach (var currentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
                         {
-                            CurrentTask.Compress = !CurrentTask.Compress;
+                            currentTask.Compress = !currentTask.Compress;
                         }
                         break;
 
                     case "ToggleRemoveFiles":
-                        foreach (var CurrentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
+                        foreach (var currentTask in TaskPanel.SelectedItems?.OfType<Definitions.List.TaskInfo>().Where(x => x.TaskType == Definitions.Enums.TaskType.Copy || x.TaskType == Definitions.Enums.TaskType.Compress).ToList())
                         {
-                            CurrentTask.RemoveOldFiles = !CurrentTask.RemoveOldFiles;
+                            currentTask.RemoveOldFiles = !currentTask.RemoveOldFiles;
                         }
                         break;
                 }

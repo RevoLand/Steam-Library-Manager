@@ -384,8 +384,8 @@ Would you like to remove files that already moved from target library?</value>
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Compress Files</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
-    <value>Compression Type</value>
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
+    <value>Compression Level</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Do NOT Compress</value>
@@ -409,7 +409,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Language</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
-    <value>Move files synchronously if bigger than</value>
+    <value>Move files sequentially if bigger than</value>
   </data>
   <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
     <value>Open Logs Folder</value>
