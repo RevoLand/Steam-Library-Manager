@@ -46,6 +46,7 @@ namespace Steam_Library_Manager.Definitions
             {
                 Logger.Warn($"Uplay Executable Path not set.");
             }
+
             IsCompressed = isCompressed;
 
             LastUpdated = InstallationDirectory.LastWriteTime;

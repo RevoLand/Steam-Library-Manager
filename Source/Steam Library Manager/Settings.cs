@@ -98,7 +98,7 @@ namespace Steam_Library_Manager.Properties
                     {
                         if ((bool)e.NewValue)
                         {
-                            Functions.SLM.LoadUplayAsync();
+                            await Functions.SLM.LoadUplayAsync();
                         }
                         else
                         {

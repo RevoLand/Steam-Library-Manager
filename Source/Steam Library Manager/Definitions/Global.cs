@@ -25,7 +25,6 @@ namespace Steam_Library_Manager.Definitions
         public static class Uplay
         {
             public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "Ubisoft Game Launcher", "settings.yml");
-            public static string CacheDirectoryPath;
 
             public static bool IsStateChanging;
         }

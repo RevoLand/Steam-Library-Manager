@@ -39,9 +39,10 @@ namespace Steam_Library_Manager.Definitions
                             Functions.Uplay.ParseAppDetails(dirInfo.Name, dirInfo, this);
                         });
 
-                await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async originCompressedArchive =>
+                await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async uplayCompressedArchive =>
                 {
-                    Functions.Uplay.ParseAppDetails(originCompressedArchive.Replace(".zip", ""), new DirectoryInfo(originCompressedArchive), this, true);
+                    var fileInfo = new FileInfo(uplayCompressedArchive);
+                    Functions.Uplay.ParseAppDetails(fileInfo.Name.Replace(".zip", ""), fileInfo.Directory, this, true);
                 });
 
                 if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)

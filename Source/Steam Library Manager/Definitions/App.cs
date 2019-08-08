@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 Header = Framework.StringFormat.Format(cItem.Header, new { AppName, AppId, SizeOnDisk = Functions.FileSystem.FormatBytes(SizeOnDisk) }),
                                 Tag = cItem.Action,
-                                Icon = Functions.FAwesome.GetAwesomeIcon(cItem.Icon, cItem.IconColor),
+                                Icon = cItem.Icon,
                                 HorizontalContentAlignment = HorizontalAlignment.Left,
                                 VerticalContentAlignment = VerticalAlignment.Center
                             };
@@ -396,6 +396,10 @@ namespace Steam_Library_Manager.Definitions
                         case Enums.LibraryType.Origin:
                             CompressedArchivePath = new FileInfo(Path.Combine(currentTask.TargetLibrary.FullPath, AppId + ".zip"));
                             break;
+
+                        case Enums.LibraryType.Uplay:
+                            CompressedArchivePath = new FileInfo(Path.Combine(currentTask.TargetLibrary.FullPath, AppName + ".zip"));
+                            break;
                     }
 
                     CompressedArchivePath.Refresh();
@@ -435,6 +439,7 @@ namespace Steam_Library_Manager.Definitions
                                         break;
 
                                     case Enums.LibraryType.Origin:
+                                    case Enums.LibraryType.Uplay:
                                         fileNameInArchive = currentFile.FullName.Substring(Library.FullPath.Length);
                                         break;
                                 }
@@ -498,6 +503,7 @@ namespace Steam_Library_Manager.Definitions
                                     break;
 
                                 case Enums.LibraryType.Origin:
+                                case Enums.LibraryType.Uplay:
                                     newFile = new FileInfo(Path.Combine(currentTask.TaskType == Enums.TaskType.Compress ? Library.FullPath : currentTask.TargetLibrary.FullPath, currentFile.FullName));
                                     break;
                             }

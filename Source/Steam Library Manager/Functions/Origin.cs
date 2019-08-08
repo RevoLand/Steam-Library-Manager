@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.IconPacks;
+using System;
 using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace Steam_Library_Manager.Functions
@@ -22,7 +24,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_Open)),
                 Action = "Disk",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -34,7 +36,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginLibrary_CMenu_RemoveFromSLM)),
                 Action = "remove",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Remove,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  },
                 ShowToNormal = false
             };
 
@@ -54,7 +56,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Run)),
                 Action = "steam://run/{0}", // TO-DO
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  },
                 ShowToCompressed = false
             };
 
@@ -67,7 +69,7 @@ namespace Steam_Library_Manager.Functions
                 Header = "Compress",
                 Action = "compress",
                 ShowToCompressed = false,
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Compress
+                Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -79,7 +81,7 @@ namespace Steam_Library_Manager.Functions
                 Header = "Compact",
                 Action = "compact",
                 ShowToCompressed = false,
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -100,7 +102,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Install)),
                 Action = "install",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Gear,
+                Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  },
                 ShowToCompressed = false
             };
 
@@ -112,7 +114,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Repair)),
                 Action = "repair",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Gears,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileCheck, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  },
                 ShowToCompressed = false
             };
 
@@ -134,7 +136,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DiskInfo)),
                 Action = "Disk",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -155,7 +157,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);
@@ -166,7 +168,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"])  }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Origin);

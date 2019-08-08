@@ -1,4 +1,4 @@
-﻿using System.Windows.Media;
+﻿using ControlzEx;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -8,8 +8,7 @@ namespace Steam_Library_Manager.Definitions
         public bool IsActive = true;
         public string Header;
         public string Action;
-        public FontAwesome.WPF.FontAwesomeIcon Icon;
-        public Brush IconColor = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(System.Windows.Application.Current).Item2.Resources["AccentColor"]);
+        public PackIconBase Icon;
         public bool ShowToNormal = true;
         public bool ShowToSLMBackup = true;
         public bool ShowToSteamBackup = true;

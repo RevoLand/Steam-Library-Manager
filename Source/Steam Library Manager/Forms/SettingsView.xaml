@@ -9,6 +9,7 @@
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel Name="SettingsPanel" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5, 10">
@@ -199,6 +200,38 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
 
+                        <!-- File size to start move synchronously (MB) -->
+                        <Controls:NumericUpDown BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
+                                        Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB">
+                            <Controls:NumericUpDown.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Move files bigger than (X) MB sequentially" />
+                                        <TextBlock Text="SLM moves files parallelly for the best performance but for bigger files it may downgrade the performance and may be best to move sequentially." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:NumericUpDown.ToolTip>
+                        </Controls:NumericUpDown>
+
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                          VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_CompactLevel}"
+                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Default Compact Level" />
+                                        <TextBlock Text="Default selection for compact level option in task manager." />
+                                        <Separator />
+                                        <TextBlock Text="XPRESS4K = Fastest but weakest" />
+                                        <TextBlock Text="XPRESS8K = Balanced" />
+                                        <TextBlock Text="XPRESS16K = Slower but more efficient" />
+                                        <TextBlock Text="LZX = Slowest, most efficient with high overhead" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+
                         <!-- Button: Open Logs Folder -->
                         <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
                             <Button.ToolTip>
@@ -341,38 +374,6 @@
                                 </ToolTip>
                             </Controls:ToggleSwitch.ToolTip>
                         </Controls:ToggleSwitch>
-
-                        <!-- File size to start move synchronously (MB) -->
-                        <Controls:NumericUpDown BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
-                                        HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
-                                        Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB">
-                            <Controls:NumericUpDown.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="Move files bigger than (X) MB sequentially" />
-                                        <TextBlock Text="SLM moves files parallelly for the best performance but for bigger files it may downgrade the performance and may be best to move sequentially." />
-                                    </StackPanel>
-                                </ToolTip>
-                            </Controls:NumericUpDown.ToolTip>
-                        </Controls:NumericUpDown>
-
-                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                          VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_CompactLevel}"
-                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
-                            <ComboBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="Default Compact Level" />
-                                        <TextBlock Text="Default selection for compact level option in task manager." />
-                                        <Separator />
-                                        <TextBlock Text="XPRESS4K = Fastest but weakest" />
-                                        <TextBlock Text="XPRESS8K = Balanced" />
-                                        <TextBlock Text="XPRESS16K = Slower but more efficient" />
-                                        <TextBlock Text="LZX = Slowest, most efficient with high overhead" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Library Settings" Margin="0,10,0,0">
@@ -407,9 +408,14 @@
                                 </ToolTip>
                             </Controls:ToggleSwitch.ToolTip>
                         </Controls:ToggleSwitch>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="40" Margin="0, 5, 0, 0">
-                            <TextBox Width="210" Text="{SLM:SettingBinding UplayExePath}" IsReadOnly="True" Controls:TextBoxHelper.Watermark="Uplay Executable Path" Controls:TextBoxHelper.UseFloatingWatermark="True" />
-                            <Button Name="UplayExecutablePathSelector" Click="UplayExecutablePathSelector_OnClick" Margin="5,0,0,0" Width="40" Content="..." />
+                        <StackPanel Orientation="Horizontal" Height="40" Margin="0, 5, 0, 0">
+                            <TextBox Width="185" Text="{SLM:SettingBinding UplayExePath}" IsReadOnly="True" Controls:TextBoxHelper.Watermark="Uplay Executable Path" Controls:TextBoxHelper.UseFloatingWatermark="True" />
+                            <Button Name="UplayExecutablePathSelector" Click="UplayExecutablePathSelector_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=FileFind}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="40" Margin="0, 5, 0, 0">
+                            <TextBox Width="185" Text="{SLM:SettingBinding UplayDbPath}" IsReadOnly="True" Controls:TextBoxHelper.Watermark="Uplay Database File Path" Controls:TextBoxHelper.UseFloatingWatermark="True" />
+                            <Button Name="UplayDbPathSelector" Click="UplayDbPathSelector_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=FileFind}" />
+                            <Button Name="UplayDbPathClearButton" Click="UplayDbPathClearButton_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=Close}" />
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>

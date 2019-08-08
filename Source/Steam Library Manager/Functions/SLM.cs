@@ -380,6 +380,8 @@ namespace Steam_Library_Manager.Functions
 
                 Uplay.PopulateLibraryCMenuItems();
 
+                Uplay.PopulateAppCMenuItems();
+
                 await Uplay.GenerateLibraryListAsync();
 
                 Library.GenerateUplayLibraryList();

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Support for more library types: Uplay (#23, #65, #71)
 - Ability to continue on error for task manager tasks ([#68](https://github.com/RevoLand/Steam-Library-Manager/issues/68))
 - Ability to skip restart warning for Steam library related tasks ([#69](https://github.com/RevoLand/Steam-Library-Manager/issues/69))
 - Icons! [(Have a sneak-peek)](https://dl.dropboxusercontent.com/s/e9ruwj4f11yg5pn/21-Sunday-vB67mD7A1020.gif)
@@ -33,6 +34,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Checking for library existence for libraries not working as intended.
 - Showing Steam failover images for Origin games in List View if the image is not loaded correctly.
 - Disk Space with Mounted Volumes ([#72](https://github.com/RevoLand/Steam-Library-Manager/issues/72))
+
+### Removed
+- Unused libraries (NumericUpDownLib & FontAwesome)
 
 ## [1.5.1.10] - 2019-07-17
 

@@ -20,7 +20,7 @@ namespace Steam_Library_Manager
     public partial class Main
     {
         public static Main FormAccessor;
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
         private LibraryType _libraryType;
 

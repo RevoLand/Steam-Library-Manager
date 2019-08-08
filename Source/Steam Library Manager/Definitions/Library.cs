@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Steam_Library_Manager.Definitions.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Steam_Library_Manager.Definitions.Enums;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -65,7 +65,7 @@ namespace Steam_Library_Manager.Definitions
                         {
                             Tag = cMenuItem.Action,
                             Header = Framework.StringFormat.Format(cMenuItem.Header, new { LibraryFullPath = DirectoryInfo.FullName, FreeDiskSpace = PrettyFreeSpace }),
-                            Icon = Functions.FAwesome.GetAwesomeIcon(cMenuItem.Icon, cMenuItem.IconColor),
+                            Icon = cMenuItem.Icon,
                             HorizontalContentAlignment = HorizontalAlignment.Left,
                             VerticalContentAlignment = VerticalAlignment.Center
                         };

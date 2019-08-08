@@ -512,5 +512,18 @@ namespace Steam_Library_Manager.Properties {
                 this["UplayExePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public string UplayDbPath {
+            get {
+                return ((string)(this["UplayDbPath"]));
+            }
+            set {
+                this["UplayDbPath"] = value;
+            }
+        }
     }
 }
