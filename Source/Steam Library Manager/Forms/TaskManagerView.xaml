@@ -84,7 +84,7 @@
                 <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Margin" Value="220, 0, 0, 0" />
+                            <Setter Property="Margin" Value="240, 0, 0, 0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding App.Library.Type}" Value="Origin">
                                     <Setter Property="Margin" Value="125, 0, 0, 0" />
