@@ -788,7 +788,7 @@ Error: {ExceptionMessage}</value>
     <value>You are using the latest version of SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+    <value>Create a Steam, Origin or SLM library at selected folder.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
     <value>Close Library</value>

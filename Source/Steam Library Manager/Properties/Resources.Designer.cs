@@ -714,7 +714,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected directory..
+        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected folder..
         /// </summary>
         internal static string Forms_LibraryView_CreateLibraryText {
             get {

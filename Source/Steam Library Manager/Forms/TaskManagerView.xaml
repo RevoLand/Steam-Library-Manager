@@ -58,7 +58,7 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding App.Library.Type}" Value="Uplay">
                                             <Setter Property="Tag" Value="uplay" />
-                                            <Setter Property="Width" Value="116px" />
+                                            <Setter Property="Width" Value="140px" />
                                             <Setter Property="Height" Value="163px" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Completed}" Value="true">
@@ -90,7 +90,7 @@
                                     <Setter Property="Margin" Value="125, 0, 0, 0" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding App.Library.Type}" Value="Uplay">
-                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                    <Setter Property="Margin" Value="149, 0, 0, 0" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

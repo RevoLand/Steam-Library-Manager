@@ -165,7 +165,7 @@ namespace Steam_Library_Manager.Functions
             #endregion App Context Menu Item Definitions
         }
 
-        public static async Task GenerateLibraryListAsync()
+        public static void GenerateLibraryList()
         {
             if (File.Exists(Definitions.Global.Uplay.ConfigFilePath))
             {
@@ -179,7 +179,6 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (Directory.Exists(newLine[0]))
                         {
-                            await InitializeUplayDb();
                             AddNewLibraryAsync(newLine[0], true);
                         }
                         else
@@ -227,8 +226,7 @@ namespace Steam_Library_Manager.Functions
 
         public static async Task InitializeUplayDb()
         {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayDbPath) &&
-                File.Exists(Properties.Settings.Default.UplayDbPath))
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayDbPath) && File.Exists(Properties.Settings.Default.UplayDbPath))
             {
                 await InitializeUplayDb(File.OpenText(Properties.Settings.Default.UplayDbPath));
             }
@@ -294,20 +292,18 @@ namespace Steam_Library_Manager.Functions
 
                             if (identifier.Length > 1)
                             {
-                                uplayDbEntry.Name = identifier[1];
+                                uplayDbEntry.Name = identifier[1].Replace("\"", "");
                             }
                         }
 
                         // thumb_image:
-                        if (line.Contains("THUMBIMAGE: "))
+                        if (!string.IsNullOrEmpty(uplayDbEntry.ThumbImage) && (!uplayDbEntry.ThumbImage.Contains(".jpg") || !uplayDbEntry.ThumbImage.Contains(".png")) && line.Contains(uplayDbEntry.ThumbImage))
                         {
-                            var thumbImage = line.Split(new[] { "    THUMBIMAGE: " },
-                                StringSplitOptions.RemoveEmptyEntries);
+                            var thumbImage = line.Split(new[] { $"{uplayDbEntry.ThumbImage}:" }, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (thumbImage.Length > 0 &&
-                                (thumbImage[0].Contains(".jpg") || thumbImage[0].Contains(".png")))
+                            if (thumbImage.Length > 1 && (thumbImage[1].Contains(".jpg") || thumbImage[1].Contains(".png")))
                             {
-                                uplayDbEntry.ThumbImage = thumbImage[0].Replace(" ", "");
+                                uplayDbEntry.ThumbImage = thumbImage[1].Replace(" ", "");
                             }
                         }
 
@@ -315,10 +311,13 @@ namespace Steam_Library_Manager.Functions
                         {
                             var thumbImage = line.Split(new[] { "thumb_image:" }, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (thumbImage.Length > 1 &&
-                                (thumbImage[1].Contains(".jpg") || thumbImage[1].Contains(".png")))
+                            if (thumbImage.Length > 1 && (thumbImage[1].Contains(".jpg") || thumbImage[1].Contains(".png")))
                             {
                                 uplayDbEntry.ThumbImage = thumbImage[1].Replace(" ", "");
+                            }
+                            else
+                            {
+                                uplayDbEntry.ThumbImage = thumbImage[1];
                             }
                         }
 
@@ -333,8 +332,7 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    Debug.WriteLine(
-                        $"Total Entries in Uplay Configuration DB: {Definitions.List.UplayConfigurations.Count}");
+                    Debug.WriteLine($"Total Entries in Uplay Configuration DB: {Definitions.List.UplayConfigurations.Count}");
                 }
             }
             catch (Exception ex)
@@ -393,6 +391,10 @@ namespace Steam_Library_Manager.Functions
                 if (gameDetails != null)
                 {
                     library.Apps.Add(new Definitions.UplayAppInfo(library, gameDetails.Name, gameDetails.SpaceId, installationDirectory, gameDetails.ThumbImage, isCompressed));
+                }
+                else
+                {
+                    MessageBox.Show($"No db entry found for uplay game folder: {name}\nTest1: {Definitions.List.UplayConfigurations.Count(x => x.Name == name)} - Test2: {Definitions.List.UplayConfigurations.Count(x => x.Name.ToLowerInvariant() == name.ToLowerInvariant())}");
                 }
             }
             catch (Exception ex)

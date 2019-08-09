@@ -389,7 +389,9 @@ namespace Steam_Library_Manager.Functions
 
                 Uplay.UpdateInstallationPath();
 
-                await Uplay.GenerateLibraryListAsync();
+                await Uplay.InitializeUplayDb();
+
+                Uplay.GenerateLibraryList();
 
                 Library.GenerateUplayLibraryList();
 

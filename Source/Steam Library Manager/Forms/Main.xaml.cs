@@ -169,6 +169,11 @@ namespace Steam_Library_Manager
             {
                 if (Enum.TryParse<LibraryType>(targetLibraryType.ToString(), out var libraryTypeEnum))
                 {
+                    if (Definitions.SLM.CurrentSelectedLibrary != null && Definitions.SLM.CurrentSelectedLibrary.Type != libraryTypeEnum)
+                    {
+                        AppView.AppPanel.ItemsSource = null;
+                    }
+
                     LibraryView.LibraryPanel.ItemsSource = libraryTypeEnum == LibraryType.Steam ? Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum || x.Type == LibraryType.SLM) : Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum);
                 }
                 else
