@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,7 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AnyError_ElapsedTime" xml:space="preserve">
     <value>[{AppName}] Oyun dosyaları taşınırken bir hata oluştu. Geçen süre: {ElapsedTime}</value>
   </data>
@@ -129,7 +128,7 @@
 Şuana kadar taşınan dosyaların hedef kütüphaneden kaldırılmasını ister misiniz?</value>
   </data>
   <data name="AutoUpdater" xml:space="preserve">
-    <value>Auto Updater</value>
+    <value>Otomatik Güncelleyici</value>
   </data>
   <data name="CompressArchive_FileNotFoundEx" xml:space="preserve">
     <value>[{AppName}] Dosyalar sıkıştırılırken dosya sistemiyle ilgili bir hata oluştu.
@@ -152,7 +151,7 @@ SLM tarafından oluşturulan arşiv dosyasının kaldırılmasını ister misini
     <value>{LibraryPath} konumunda kütüphane zaten mevcut</value>
   </data>
   <data name="Steam_Library_Manager" xml:space="preserve">
-    <value>Steam Kütüphane Yöneticisi</value>
+    <value>Steam Library Manager</value>
   </data>
   <data name="CreateLibrary_RootErrorMessage" xml:space="preserve">
     <value>Kütüphaneler kök dizinde oluşturulamaz</value>
@@ -213,7 +212,7 @@ Hata: {ExceptionMessage}</value>
     <value>Yedekleme türü</value>
   </data>
   <data name="Compress" xml:space="preserve">
-    <value>Sıkıştır</value>
+    <value>Compress</value>
   </data>
   <data name="Enums_Copy" xml:space="preserve">
     <value>Kopyala</value>
@@ -255,21 +254,21 @@ Hata: {ExceptionMessage}</value>
     <value>[{AppName}] Kopyalanan dosya: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] Dosya taşınması sırasında dosya izinleriyle ilgili bir hata oluştu. SLM'yi yönetici olarak çalıştırmak sorunun çözülmesine yardımcı olabilir.
+    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
 
-Hata mesajı: {ExceptionMessage}
+Error: {ExceptionMessage}.
 
-Şuana kadar taşınmış dosyaların hedef kütüphaneden kaldırılmasını ister misiniz?</value>
+Would you like to remove files that already moved from target library?</value>
   </data>
   <data name="FileSystemRelatedError" xml:space="preserve">
     <value>[{AppName}] Dosya taşınırken, dosya sistemiyle ilgili bir hata oluştu: Hata: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] Oyun dosyaları taşınırken dosya sistemiyle ilgili bir hata oluştu.
+    <value>[{AppName}] An error related to file system is happened while moving files.
 
-Hata: {ExceptionMessage}
+Error: {ExceptionMessage}
 
-Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</value>
+Would you like to remove files that already moved from target library?</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -387,8 +386,8 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Dosyaları Sıkıştır</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
-    <value>Sıkıştırma Türü</value>
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
+    <value>Compression Level</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Sıkıştırma yapma</value>
@@ -412,7 +411,7 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
     <value>Dil</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
-    <value>Dosyalar şundan büyük ise senkronize olarak kopyala</value>
+    <value>Move files sequentially if bigger than</value>
   </data>
   <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
     <value>Log Klasörünü Aç</value>
@@ -427,19 +426,19 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
     <value>Kaynak dizindeki dosyaları kaldır</value>
   </data>
   <data name="Report_File_Movement" xml:space="preserve">
-    <value>Dosya taşımasını raporla</value>
+    <value>Report File Movement</value>
   </data>
   <data name="Keep_searching_on_library_change" xml:space="preserve">
-    <value>Kütüphane değişiminde aramaya devam et</value>
+    <value>Keep searching on library change</value>
   </data>
   <data name="Calculation_method_for_games" xml:space="preserve">
-    <value>Oyun dosya boyutu hesaplama yöntemi</value>
+    <value>Calculation method for games</value>
   </data>
   <data name="Forms_Settings_SortGamesBy" xml:space="preserve">
     <value>Oyunları buna göre sırala</value>
   </data>
   <data name="Forms_Settings_StartTaskManagerAtStartup" xml:space="preserve">
-    <value>Program başlangıcında Görev Yöneticisini başlat</value>
+    <value>Start Task Manager at Startup</value>
   </data>
   <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
     <value>Görev Yöneticisi Varsayılan Ayarlar</value>
@@ -508,7 +507,7 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
     <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AppInfoFormatException" xml:space="preserve">
-    <value>Sağ tık menüsü ayrıştırılırken bir hata oluştu.
+    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
 
 {ExceptionMessage}</value>
   </data>
@@ -791,7 +790,7 @@ Hata: {ExceptionMessage}</value>
     <value>You are using the latest version of SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+    <value>Create a Steam, Origin or SLM library at selected folder.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
     <value>Close Library</value>
@@ -866,6 +865,18 @@ Hata: {ExceptionMessage}</value>
     <value>Enabled</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Devre Dışı</value>
+  </data>
+  <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
+    <value>View Store Page</value>
+  </data>
+  <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
+    <value>Google Search</value>
+  </data>
+  <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
+    <value>View on Youtube</value>
+  </data>
+  <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
+    <value>Verify Files</value>
   </data>
 </root>
