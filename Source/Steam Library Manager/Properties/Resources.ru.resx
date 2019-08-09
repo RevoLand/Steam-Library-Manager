@@ -252,21 +252,21 @@
     <value>[{AppName}] Файл скопирован: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] Произошла ошибка связанная с разрешениями на файл во время перемещения. Запуск SLM в качестве Администратора должен помочь.
+    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
 
-Ошибка: {ExceptionMessage}.
+Error: {ExceptionMessage}.
 
-Хотите удалить файлы которые уже перемещены из целевой библиотеки?</value>
+Would you like to remove files that already moved from target library?</value>
   </data>
   <data name="FileSystemRelatedError" xml:space="preserve">
     <value>[{AppName}] При перемещении файлов произошла ошибка связанная с файловой системой. Ошибка: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] При перемещении файлов произошла ошибка отсоединенная к файловой системе.
+    <value>[{AppName}] An error related to file system is happened while moving files.
 
-Ошибка: {ExceptionMessage}
+Error: {ExceptionMessage}
 
-Хотите удалить файлы которые уже были перемещены из целевой библиотеки?</value>
+Would you like to remove files that already moved from target library?</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -352,7 +352,7 @@
     <value>Перевести</value>
   </data>
   <data name="Forms_Origin" xml:space="preserve">
-    <value>Оригинал</value>
+    <value>Origin</value>
   </data>
   <data name="Forms_Quit" xml:space="preserve">
     <value>Выход</value>
@@ -409,7 +409,7 @@
     <value>Язык</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
-    <value>Переместить файлы синхронно, если больше чем</value>
+    <value>Move files sequentially if bigger than</value>
   </data>
   <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
     <value>Открыть папку логов</value>
@@ -864,5 +864,17 @@
   </data>
   <data name="Disabled" xml:space="preserve">
     <value>Отключено</value>
+  </data>
+  <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
+    <value>View Store Page</value>
+  </data>
+  <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
+    <value>Google Search</value>
+  </data>
+  <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
+    <value>View on Youtube</value>
+  </data>
+  <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
+    <value>Verify Files</value>
   </data>
 </root>

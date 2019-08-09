@@ -252,7 +252,7 @@ Error: {ExceptionMessage}</value>
     <value>[{AppName}] File copied: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
 
 Error: {ExceptionMessage}.
 
@@ -262,7 +262,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>[{AppName}] An error related to file system is happened while moving files. Error: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file system is happened while moving files.
+    <value>[{AppName}] An error related to file system is happened while moving files.
 
 Error: {ExceptionMessage}
 
@@ -384,8 +384,8 @@ Would you like to remove files that already moved from target library?</value>
   <data name="Forms_Settings_CompressFiles" xml:space="preserve">
     <value>Compress Files</value>
   </data>
-  <data name="Forms_Settings_CompressionType" xml:space="preserve">
-    <value>Compression Type</value>
+  <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
+    <value>Compression Level</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Do NOT Compress</value>
@@ -409,7 +409,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Language</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
-    <value>Move files synchronously if bigger than</value>
+    <value>Move files sequentially if bigger than</value>
   </data>
   <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
     <value>Open Logs Folder</value>
@@ -788,7 +788,7 @@ Error: {ExceptionMessage}</value>
     <value>You are using the latest version of SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+    <value>Create a Steam, Origin or SLM library at selected folder.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
     <value>Close Library</value>
@@ -864,5 +864,17 @@ Error: {ExceptionMessage}</value>
   </data>
   <data name="Disabled" xml:space="preserve">
     <value>Disabled</value>
+  </data>
+  <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
+    <value>View Store Page</value>
+  </data>
+  <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
+    <value>Google Search</value>
+  </data>
+  <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
+    <value>View on Youtube</value>
+  </data>
+  <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
+    <value>Verify Files</value>
   </data>
 </root>

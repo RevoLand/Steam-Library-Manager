@@ -67,38 +67,38 @@
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -252,7 +252,7 @@ Error: {ExceptionMessage}</value>
     <value>[{AppName}] File copied: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
 
 Error: {ExceptionMessage}.
 
@@ -262,7 +262,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>[{AppName}] An error related to file system is happened while moving files. Error: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file system is happened while moving files.
+    <value>[{AppName}] An error related to file system is happened while moving files.
 
 Error: {ExceptionMessage}
 
@@ -385,7 +385,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Compress Files</value>
   </data>
   <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
-    <value>Compression Type</value>
+    <value>Compression Level</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Do NOT Compress</value>
@@ -409,7 +409,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Language</value>
   </data>
   <data name="Forms_Settings_MoveFilesSyncBySize" xml:space="preserve">
-    <value>Move files synchronously if bigger than</value>
+    <value>Move files sequentially if bigger than</value>
   </data>
   <data name="Forms_Settings_OpenLogsFolder" xml:space="preserve">
     <value>Open Logs Folder</value>
@@ -788,7 +788,7 @@ Error: {ExceptionMessage}</value>
     <value>You are using the latest version of SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected directory.</value>
+    <value>Create a Steam, Origin or SLM library at selected folder.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
     <value>Close Library</value>
