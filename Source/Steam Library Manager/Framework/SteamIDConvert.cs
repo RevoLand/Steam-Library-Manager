@@ -101,7 +101,7 @@ namespace Steam_Library_Manager.Framework
         public static long Steam32ToSteam64(string input)
         {
             long steam32 = Convert.ToInt64(input.Substring(4));
-            if (steam32 < 1L || !Regex.IsMatch("U:1:" + steam32.ToString((IFormatProvider)CultureInfo.InvariantCulture), "^U:1:([0-9]{1,10})$"))
+            if (steam32 < 1L || !Regex.IsMatch("U:1:" + steam32.ToString(CultureInfo.InvariantCulture), "^U:1:([0-9]{1,10})$"))
             {
                 return 0;
             }
@@ -115,7 +115,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>String.empty if error, else the string SteamID2(STEAM_0:1:000000)</returns>
         public static string Steam64ToSteam2(long communityId)
         {
-            if (communityId < 76561197960265729L || !Regex.IsMatch(communityId.ToString((IFormatProvider)CultureInfo.InvariantCulture), "^7656119([0-9]{10})$"))
+            if (communityId < 76561197960265729L || !Regex.IsMatch(communityId.ToString(CultureInfo.InvariantCulture), "^7656119([0-9]{10})$"))
                 return string.Empty;
             communityId -= 76561197960265728L;
             long num = communityId % 2L;
@@ -149,7 +149,7 @@ namespace Steam_Library_Manager.Framework
         /// <returns>Returns a <see cref="AuthIdType.AuthId_Steam3"/> string</returns>
         public static string Steam64ToSteam32(long communityId)
         {
-            if (communityId < 76561197960265729L || !Regex.IsMatch(communityId.ToString((IFormatProvider)CultureInfo.InvariantCulture), "^7656119([0-9]{10})$"))
+            if (communityId < 76561197960265729L || !Regex.IsMatch(communityId.ToString(CultureInfo.InvariantCulture), "^7656119([0-9]{10})$"))
             {
                 return string.Empty;
             }

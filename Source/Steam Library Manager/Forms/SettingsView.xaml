@@ -9,354 +9,393 @@
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d">
-    <Grid>
-        <GroupBox x:Name="GeneralSettingsGroupBox" Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}" Margin="0,5,360,5">
-            <UniformGrid Columns="2" HorizontalAlignment="Left">
-                <WrapPanel Orientation="Vertical">
-                    <!-- Application sorting method -->
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Name="SettingsPanel" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5, 10">
+            <GroupBox Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}">
+                <UniformGrid Columns="2">
+                    <WrapPanel Orientation="Vertical">
+                        <!-- Application sorting method -->
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_AppSortingMethod}"
                                       ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:AppSortingMethod}}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Sorting Method for Game Panel" />
-                                    <TextBlock Text="Lets you select a sorting method for the game panel." />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Sorting Method for Game Panel" />
+                                        <TextBlock Text="Lets you select a sorting method for the game panel." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
 
-                    <!-- Application size calculation method -->
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Calculation_method_for_games}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                        <!-- Application size calculation method -->
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Calculation_method_for_games}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_AppSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSizeCalculationMethod}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Size Calculation Method for Games" />
-                                    <TextBlock Text="ACF uses the size information provided by the app manifest file" />
-                                    <TextBlock Text="Enumeration, enumarates every file and folder to get the correct size information (SLOW)" />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Size Calculation Method for Games" />
+                                        <TextBlock Text="ACF uses the size information provided by the app manifest file" />
+                                        <TextBlock Text="Enumeration, enumarates every file and folder to get the correct size information (SLOW)" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
 
-                    <!-- Archive size calculation method -->
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                        <!-- Archive size calculation method -->
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CalculationMethodForArchiveSize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_ArchiveSizeCalculationMethod}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ArchiveSizeCalculationMethod}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Size Calculation Method for Compressed Archives" />
-                                    <TextBlock Text="Archive Size uses the size of the compressed archive." />
-                                    <TextBlock Text="File Size in Archive enumarates each file in the archive to get the correct size information (SLOW)" />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Size Calculation Method for Compressed Archives" />
+                                        <TextBlock Text="Archive Size uses the size of the compressed archive." />
+                                        <TextBlock Text="File Size in Archive enumarates each file in the archive to get the correct size information (SLOW)" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
 
-                    <!-- Compression method -->
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionType}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                        <!-- Compression method -->
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_CompressionLevel}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_CompressionLevel}"
                                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:CompressionLevel}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Default Compression Level" />
-                                    <TextBlock Text="Compression Level to use while compressing game files." />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-
-                    <!-- File size to start move synchronously (MB) -->
-                    <Controls:NumericUpDown BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
-                                                    HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
-                                                    Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB">
-                        <Controls:NumericUpDown.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Move files bigger than (X) MB synchronously" />
-                                    <TextBlock Text="SLM moves files asynchronously for the best performance but for bigger files it may downgrade the performance and may be best to move synchronously." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:NumericUpDown.ToolTip>
-                    </Controls:NumericUpDown>
-
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent}"
-                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Theme Accent" />
-                                    <TextBlock Text="Preferred Theme Accent to use with SLM." />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Default Compression Level" />
+                                        <TextBlock Text="Compression Level to use while compressing game files." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
                         </ComboBox>
 
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent}"
+                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}">
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Theme Accent" />
+                                        <TextBlock Text="Preferred Theme Accent to use with SLM." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Setting_BaseTheme}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Theme Base" />
-                                    <TextBlock Text="Preferred Base Theme Colors to use with SLM." />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Theme Base" />
+                                        <TextBlock Text="Preferred Base Theme Colors to use with SLM." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
 
-                    <!-- Advanced Logging (Requires restart) -->
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_AdvancedLogging}"
-                                                   IsChecked="{SLM:SettingBinding Advanced_Logging}" HorizontalAlignment="Left" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                        <Controls:ToggleSwitch.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Advanced Logging" />
-                                    <TextBlock Text="Logs everything (including file movement details and exceptions) to file under /logs/ folder." />
-                                    <TextBlock Text="Requires a restart for changes to be applied." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:ToggleSwitch.ToolTip>
-                    </Controls:ToggleSwitch>
-
-                    <!-- Check for Updates at Startup -->
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" OnLabel="Yes" OffLabel="No"
+                        <!-- Check for Updates at Startup -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                        <Controls:ToggleSwitch.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Check for Updates at Startup" />
-                                    <TextBlock Text="Attempts for a new version control at startup." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:ToggleSwitch.ToolTip>
-                    </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Check for Updates at Startup" />
+                                        <TextBlock Text="Attempts for a new version control at startup." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                    <!-- Keep searching while switching library -->
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Keep_searching_on_library_change}" OnLabel="Yes" OffLabel="No"
+                        <!-- Keep searching while switching library -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Keep_searching_on_library_change}" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults}"
                                                    HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                        <Controls:ToggleSwitch.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Keep Search Text on Library Switch" />
-                                    <TextBlock Text="Keeps the searching text and search for the text in the new selected library if active." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:ToggleSwitch.ToolTip>
-                    </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Keep Search Text on Library Switch" />
+                                        <TextBlock Text="Keeps the searching text and search for the text in the new selected library if active." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Compact Status Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Compact Status Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                            IsChecked="{SLM:SettingBinding CompactDetection}"
                                            HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                        <Controls:ToggleSwitch.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Compact Status Detection" />
-                                    <TextBlock Text="Gets the compact status for installed games." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:ToggleSwitch.ToolTip>
-                    </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Compact Status Detection" />
+                                        <TextBlock Text="Gets the compact status for installed games." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                    <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Advanced Compact Size Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Advanced Compact Size Detection" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                            IsChecked="{SLM:SettingBinding AdvancedCompactSizeDetection}"
                                            HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                        <Controls:ToggleSwitch.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Advanced Compact Size Detection" />
-                                    <TextBlock Text="Gets the correct size in disk by running compact command on folders." />
-                                    <TextBlock Text="Huge performance impact!" />
-                                </StackPanel>
-                            </ToolTip>
-                        </Controls:ToggleSwitch.ToolTip>
-                    </Controls:ToggleSwitch>
-                </WrapPanel>
-                <WrapPanel Orientation="Vertical" Margin="5,0,0,0">
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
-                                      VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_compactLevel}"
-                                      ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Default Compact Level" />
-                                    <TextBlock Text="Default selection for compact level option in task manager." />
-                                    <Separator />
-                                    <TextBlock Text="XPRESS4K = Fastest but weakest" />
-                                    <TextBlock Text="XPRESS8K = Balanced" />
-                                    <TextBlock Text="XPRESS16K = Slower but more efficient" />
-                                    <TextBlock Text="LZX = Slowest, most efficient with high overhead" />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Advanced Compact Size Detection" />
+                                        <TextBlock Text="Gets the correct size in disk by running compact command on folders." />
+                                        <TextBlock Text="Huge performance impact!" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+                    </WrapPanel>
+                    <WrapPanel Orientation="Vertical" Margin="3,0,0,0">
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
                                       SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Language" />
-                                    <TextBlock Text="Default Language to use with SLM." />
-                                </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Language" />
+                                        <TextBlock Text="Default Language to use with SLM." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
 
-                    <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64 to use with SLM" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Name="SteamUserIDList" Margin="5" Controls:TextBoxHelper.Watermark="Steam UserID64 to use with SLM" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" ItemsSource="{Binding}"
                               SelectedValue="{SLM:SettingBinding SteamID64}" DisplayMemberPath="Item1" SelectedValuePath="Item2">
-                        <ComboBox.ToolTip>
-                            <ToolTip>
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="SteamID64 to use with SLM" />
+                                        <TextBlock Text="If selected, SLM will attempt to get latest play date information for games from config file of Steam." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+
+                        <!-- File size to start move synchronously (MB) -->
+                        <Controls:NumericUpDown BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_MoveFilesSyncBySize}" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Left" Height="40" VerticalAlignment="Top" Width="240" Minimum="1" Maximum="1024"
+                                        Value="{SLM:SettingBinding ParallelAfterSize}" StringFormat="{}{0:N0} MB">
+                            <Controls:NumericUpDown.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Move files bigger than (X) MB sequentially" />
+                                        <TextBlock Text="SLM moves files parallelly for the best performance but for bigger files it may downgrade the performance and may be best to move sequentially." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:NumericUpDown.ToolTip>
+                        </Controls:NumericUpDown>
+
+                        <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" Controls:TextBoxHelper.Watermark="Default Compact Level" Controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                          VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_CompactLevel}"
+                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}">
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Default Compact Level" />
+                                        <TextBlock Text="Default selection for compact level option in task manager." />
+                                        <Separator />
+                                        <TextBlock Text="XPRESS4K = Fastest but weakest" />
+                                        <TextBlock Text="XPRESS8K = Balanced" />
+                                        <TextBlock Text="XPRESS16K = Slower but more efficient" />
+                                        <TextBlock Text="LZX = Slowest, most efficient with high overhead" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
+
+                        <!-- Button: Open Logs Folder -->
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Open Logs Folder" />
+                                        <TextBlock Text="SLM will attempt to open /logs/ folder if exists." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <!-- Button: Check for Updates -->
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Check for Updates" />
+                                        <TextBlock Text="SLM will attempt to check for updates to see if there is newer version available." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <!-- Button: Clear image cache-->
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Clear Game Image Cache" />
+                                        <TextBlock Text="SLM will attempt to clear cache for game header images available in /.slmcache/ folder" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+
+                        <GroupBox Margin="5" Header="Supporters" MaxHeight="300">
+                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="SteamID64 to use with SLM" />
-                                    <TextBlock Text="If selected, SLM will attempt to get latest play date information for games from config file of Steam." />
+                                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35">
+                                        <Button.ToolTip>
+                                            <ToolTip>
+                                                <StackPanel>
+                                                    <TextBlock FontWeight="Bold" Text="Donate" />
+                                                    <TextBlock Text="Opens a webpage with available donation methods. Thank you for your support!" />
+                                                </StackPanel>
+                                            </ToolTip>
+                                        </Button.ToolTip>
+                                    </Button>
+                                    <Separator />
+                                    <TextBlock Text="Mike Burkart" />
+                                    <TextBlock Text="Marisa Smith" />
+                                    <TextBlock Text="Ken Tittle" />
+                                    <TextBlock Text="DigitalBirdie" />
+                                    <TextBlock Text="Hotobu" />
+                                    <TextBlock Text="Carlo Bensi" />
                                 </StackPanel>
-                            </ToolTip>
-                        </ComboBox.ToolTip>
-                    </ComboBox>
-
-                    <!-- Button: Open Logs Folder -->
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
-                        <Button.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Open Logs Folder" />
-                                    <TextBlock Text="SLM will attempt to open /logs/ folder if exists." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Button.ToolTip>
-                    </Button>
-
-                    <!-- Button: Check for Updates -->
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
-                        <Button.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Check for Updates" />
-                                    <TextBlock Text="SLM will attempt to check for updates to see if there is newer version available." />
-                                </StackPanel>
-                            </ToolTip>
-                        </Button.ToolTip>
-                    </Button>
-
-                    <!-- Button: Clear image cache-->
-                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Settings_ClearHeaderİmageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
-                        <Button.ToolTip>
-                            <ToolTip>
-                                <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Clear Game Image Cache" />
-                                    <TextBlock Text="SLM will attempt to clear cache for game header images available in /.slmcache/ folder" />
-                                </StackPanel>
-                            </ToolTip>
-                        </Button.ToolTip>
-                    </Button>
-
-                    <GroupBox Margin="5" Header="Supporters" MaxHeight="300">
-                        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                            <StackPanel>
-                                <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Forms_Main_Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35">
-                                    <Button.ToolTip>
-                                        <ToolTip>
-                                            <StackPanel>
-                                                <TextBlock FontWeight="Bold" Text="Donate" />
-                                                <TextBlock Text="Opens a webpage with available donation methods. Thank you for your support!" />
-                                            </StackPanel>
-                                        </ToolTip>
-                                    </Button.ToolTip>
-                                </Button>
-                                <Separator />
-                                <TextBlock Text="Mike Burkart (Paypal)" />
-                                <TextBlock Text="Marisa Smith (Paypal)" />
-                                <TextBlock Text="Ken Tittle (Patreon)" />
-                                <TextBlock Text="DigitalBirdie (Paypal)" />
-                            </StackPanel>
-                        </ScrollViewer>
-                    </GroupBox>
-                </WrapPanel>
-            </UniformGrid>
-        </GroupBox>
-        <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}" Margin="0,5,0,5" HorizontalAlignment="Right" Width="355">
-            <StackPanel>
-                <!-- Remove Source Files -->
-                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_RemoveFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
+                            </ScrollViewer>
+                        </GroupBox>
+                    </WrapPanel>
+                </UniformGrid>
+            </GroupBox>
+            <StackPanel Margin="10,0,0,0">
+                <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}">
+                    <StackPanel>
+                        <!-- Remove Source Files -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_RemoveFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                    <Controls:ToggleSwitch.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Remove Already Copied Files" />
-                                <TextBlock Text="If selected and task is completed successfully (copy-first then remove), SLM will remove the copied files from source. This option can be change per-task." />
-                            </StackPanel>
-                        </ToolTip>
-                    </Controls:ToggleSwitch.ToolTip>
-                </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Remove Already Copied Files" />
+                                        <TextBlock Text="If selected and task is completed successfully (copy-first then remove), SLM will remove the copied files from source. This option can be change per-task." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                <!-- Compress Files -->
-                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
+                        <!-- Compress Files -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                    <Controls:ToggleSwitch.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Compress Files" />
-                                <TextBlock Text="If selected, SLM will compress files. This option can be changed per-task." />
-                            </StackPanel>
-                        </ToolTip>
-                    </Controls:ToggleSwitch.ToolTip>
-                </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Compress Files" />
+                                        <TextBlock Text="If selected, SLM will compress files. This option can be changed per-task." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                <!-- Report File Movement -->
-                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Report_File_Movement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
+                        <!-- Report File Movement -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Report_File_Movement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                    <Controls:ToggleSwitch.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Report File Movement" />
-                                <TextBlock Text="If selected, SLM will report file movement status to log view in the task manager. This option can be changed per-task." />
-                            </StackPanel>
-                        </ToolTip>
-                    </Controls:ToggleSwitch.ToolTip>
-                </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Report File Movement" />
+                                        <TextBlock Text="If selected, SLM will report file movement status to log view in the task manager. This option can be changed per-task." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                <!-- Start Task Manager on Startup -->
-                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                    <Controls:ToggleSwitch.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Start Task Manager at startup" />
-                                <TextBlock Text="If enabled, Task Manager will be started at startup." />
-                            </StackPanel>
-                        </ToolTip>
-                    </Controls:ToggleSwitch.ToolTip>
-                </Controls:ToggleSwitch>
+                        <!-- Async File Transfers -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Parallel File Transfers" IsChecked="{SLM:SettingBinding ParallelFileTransfers}"
+                                       Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" OnLabel="Parallel" OffLabel="Sequential">
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Parallel File Transfers" />
+                                        <TextBlock Text="Toggle between doing file transfers parallelly or sequentially as default option." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
 
-                <!-- Play a sound on completion-->
-                <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
+                        <!-- Start Task Manager on Startup -->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                    <Controls:ToggleSwitch.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="Play a Sound on Task Manager Queue Completion" />
-                                <TextBlock Text="SLM will attempt to play a sound (Windows exclamation or the file in CustomSoundFile setting key) on the queue of task manager gets completed." />
-                            </StackPanel>
-                        </ToolTip>
-                    </Controls:ToggleSwitch.ToolTip>
-                </Controls:ToggleSwitch>
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Start Task Manager at startup" />
+                                        <TextBlock Text="If enabled, Task Manager will be started at startup." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+
+                        <!-- Play a sound on completion-->
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
+                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Play a Sound on Task Manager Queue Completion" />
+                                        <TextBlock Text="SLM will attempt to play a sound (Windows exclamation or the file in CustomSoundFile setting key) on the queue of task manager gets completed." />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Library Settings" Margin="0,10,0,0">
+                    <StackPanel>
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Steam Library Support" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Steam Library Support" />
+                                        <TextBlock Text="Enables/Disables Steam Library functionality for SLM" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Origin Library Support" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Origin Library Support" />
+                                        <TextBlock Text="Enables/Disables Origin Library functionality for SLM" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Uplay Library Support" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                            <Controls:ToggleSwitch.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="Uplay Library Support" />
+                                        <TextBlock Text="Enables/Disables Uplay Library functionality for SLM" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Controls:ToggleSwitch.ToolTip>
+                        </Controls:ToggleSwitch>
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
-        </GroupBox>
-    </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

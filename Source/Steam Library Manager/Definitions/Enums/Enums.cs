@@ -74,13 +74,6 @@ namespace Steam_Library_Manager.Definitions.Enums
         SLM
     }
 
-    public enum GameType
-    {
-        Steam,
-        Origin,
-        Uplay
-    }
-
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum TaskType
     {
@@ -94,6 +87,15 @@ namespace Steam_Library_Manager.Definitions.Enums
         Compress,
 
         Compact
+    }
+
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
+    public enum JunkType
+    {
+        HeadlessFolder,
+        HeadlessWorkshopFolder,
+        CorruptedDataFile,
+        HeadlessDataFile
     }
 
     public enum ThemeAccents

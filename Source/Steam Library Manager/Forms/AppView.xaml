@@ -10,30 +10,58 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <!-- App Library: GridView: Steam & SLM -->
-        <DataTemplate x:Key="Gamelibrary_Gridview">
+        <!-- App Library: GridView -->
+        <DataTemplate x:Key="GridView">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <!-- App Header Image -->
-                <Grid Width="230px" Height="107px" Margin="2" HorizontalAlignment="Left">
-                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
-                            <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
-                            </CachedImage:Image.Effect>
-                        </CachedImage:Image>
-                    </Border>
-                </Grid>
+                <CachedImage:Image HorizontalAlignment="Left" Margin="2" Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
+                    <CachedImage:Image.Effect>
+                        <DropShadowEffect Direction="130" ShadowDepth="1" BlurRadius="3" />
+                    </CachedImage:Image.Effect>
+                    <CachedImage:Image.Style>
+                        <Style TargetType="CachedImage:Image">
+                            <Setter Property="Width" Value="230px" />
+                            <Setter Property="Height" Value="107px" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
+                                    <Setter Property="Tag" Value="origin" />
+                                    <Setter Property="Width" Value="116" />
+                                    <Setter Property="Height" Value="163" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
+                                    <Setter Property="Tag" Value="uplay" />
+                                    <Setter Property="Width" Value="140" />
+                                    <Setter Property="Height" Value="163" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CachedImage:Image.Style>
+                </CachedImage:Image>
                 <!-- /App Header Image -->
 
                 <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="240, 0, 0, 0" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" /> <!-- 9? -->
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
+                                    <Setter Property="Margin" Value="149, 0, 0, 0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
                     <!-- App Name -->
-                    <TextBlock Text="{Binding AppName}" Padding="240,4,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <TextBlock Text="{Binding AppName}" TextWrapping="Wrap" FontSize="14" />
 
                     <!-- App Info Grid -->
-                    <Grid VerticalAlignment="Bottom" Margin="240,0,0,5">
+                    <Grid VerticalAlignment="Bottom" Margin="0, 0, 0, 5">
                         <!-- Backup Type Text -->
                         <TextBlock Margin="0,-17,0,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
                             <TextBlock.Style>
@@ -42,9 +70,13 @@
                                         <DataTrigger Binding="{Binding IsCompacted}" Value="true">
                                             <Setter Property="Text" Value="Compacted" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Library.Type}" Value="SLM" />
+                                                <Condition Binding="{Binding IsSteamBackup}" Value="true" />
+                                            </MultiDataTrigger.Conditions>
                                             <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
-                                        </DataTrigger>
+                                        </MultiDataTrigger>
                                         <DataTrigger Binding="{Binding IsCompressed}" Value="true">
                                             <Setter Property="Text" Value="{l:Static p:Resources.Forms_Compressed}" />
                                         </DataTrigger>
@@ -62,14 +94,27 @@
             </Grid>
         </DataTemplate>
 
-        <!-- App Library: ListView: Steam & SLM -->
-        <DataTemplate x:Key="Gamelibrary_Listview">
+        <!-- App Library: ListView -->
+        <DataTemplate x:Key="ListView">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
                 </Grid.ContextMenu>
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" />
+                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}">
+                        <CachedImage:Image.Style>
+                            <Style TargetType="CachedImage:Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
+                                        <Setter Property="Tag" Value="origin" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
+                                        <Setter Property="Tag" Value="uplay" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CachedImage:Image.Style>
+                    </CachedImage:Image>
                 </Grid>
                 <Grid>
                     <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
@@ -81,9 +126,13 @@
                                     <DataTrigger Binding="{Binding IsCompacted}" Value="true">
                                         <Setter Property="Text" Value="Compacted" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsSteamBackup}" Value="true">
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Library.Type}" Value="SLM" />
+                                            <Condition Binding="{Binding IsSteamBackup}" Value="true" />
+                                        </MultiDataTrigger.Conditions>
                                         <Setter Property="Text" Value="{l:Static p:Resources.Forms_Steam}" />
-                                    </DataTrigger>
+                                    </MultiDataTrigger>
                                     <DataTrigger Binding="{Binding IsCompressed}" Value="true">
                                         <Setter Property="Text" Value="{l:Static p:Resources.Forms_Compressed}" />
                                     </DataTrigger>
@@ -99,88 +148,10 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-
-        <!-- App Library: GridView: Origin -->
-        <DataTemplate x:Key="Gamelibrary_GridviewOrigin">
-            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
-                <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
-                </Grid.ContextMenu>
-                <!-- App Header Image -->
-                <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
-                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="origin">
-                            <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
-                            </CachedImage:Image.Effect>
-                        </CachedImage:Image>
-                    </Border>
-                </Grid>
-                <!-- /App Header Image -->
-
-                <Grid>
-                    <!-- App Name -->
-                    <TextBlock Text="{Binding AppName}" Padding="125,4,0,0" TextWrapping="Wrap" FontSize="14" />
-
-                    <!-- App Info Grid -->
-                    <Grid VerticalAlignment="Bottom" Margin="125,0,0,5">
-                        <TextBlock Margin="0,-17,0,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
-                            <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsCompacted}" Value="true">
-                                        <Setter Property="Text" Value="Compacted" />
-                                    </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Left" Margin="0,-17,0,0" FontFamily="Segoe UI Light" />
-                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" FontSize="13" />
-                        <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold" />
-                    </Grid>
-                    <!-- /App Info Grid -->
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
-        <!-- App Library: ListView: Origin-->
-        <DataTemplate x:Key="Gamelibrary_ListviewOrigin">
-            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
-                <Grid.ContextMenu>
-                    <ContextMenu ItemsSource="{Binding ContextMenuElements}" BorderThickness="0" />
-                </Grid.ContextMenu>
-                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding GameHeaderImage}" Tag="origin" />
-                </Grid>
-                <Grid>
-                    <TextBlock Text="{Binding AppName}" Padding="74,5,0,0" TextWrapping="Wrap" />
-
-                    <TextBlock Margin="0,0,60,0" HorizontalAlignment="Right" FontSize="13" FontWeight="SemiBold">
-                            <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsCompacted}" Value="true">
-                                        <Setter Property="Text" Value="Compacted" />
-                                    </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    <TextBlock Text="{Binding PrettyGameSize}" HorizontalAlignment="Right" />
-
-                    <Grid VerticalAlignment="Bottom" Margin="74,0,0,5">
-                        <TextBlock Text="{Binding AppId}" HorizontalAlignment="Left" />
-                        <TextBlock Text="{Binding LastUpdated, StringFormat=Updated on: \{0\}}" HorizontalAlignment="Right" />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <ListView BorderThickness="0.8" BorderBrush="{DynamicResource AccentColorBrush}" x:Name="AppPanel" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                              Margin="205,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
+                              Margin="260,10,0,50" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
                               dd:DragDrop.IsDragSource="True" VirtualizingPanel.IsVirtualizing="True">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -193,50 +164,12 @@
                         <ContentControl.Style>
                             <Style TargetType="{x:Type ContentControl}">
                                 <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="Origin" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_GridviewOrigin}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="Origin" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_ListviewOrigin}" />
-                                    </MultiDataTrigger>
-                                    <!-- Steam -->
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="Steam" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="Steam" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
-                                    </MultiDataTrigger>
-                                    <!-- SLM -->
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="SLM" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Gridview}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Library.Type}" Value="SLM" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Gamelibrary_Listview}" />
-                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource GridView}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource ListView}" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </ContentControl.Style>
@@ -248,7 +181,7 @@
                     <StackPanel>
                         <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
                         <TextBlock Text="To copy/move a game to another library, simply drag-drop the item to the targeted library." />
-                        <TextBlock Text="Multiple selection/tasking are allowed." />
+                        <TextBlock Text="Multiple item selection/tasking is allowed." />
                     </StackPanel>
                 </ToolTip>
             </ListView.ToolTip>

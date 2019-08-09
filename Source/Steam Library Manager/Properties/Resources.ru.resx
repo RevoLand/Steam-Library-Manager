@@ -385,7 +385,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Сжимать файлы</value>
   </data>
   <data name="Forms_Settings_CompressionLevel" xml:space="preserve">
-    <value>Compression Level</value>
+    <value>Тип сжатия</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Не сжимать</value>
@@ -788,7 +788,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Вы используете последнюю версию SLM.</value>
   </data>
   <data name="Forms_LibraryView_CreateLibraryText" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected folder.</value>
+    <value>Создайте библиотеку Steam, Origin или SLM в выбранном каталоге.</value>
   </data>
   <data name="Forms_LibraryView_CloseLibrary" xml:space="preserve">
     <value>Закрыть библиотеку</value>

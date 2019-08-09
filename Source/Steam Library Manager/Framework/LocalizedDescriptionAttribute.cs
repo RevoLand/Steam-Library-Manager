@@ -4,10 +4,10 @@ namespace Steam_Library_Manager.Framework
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-        private readonly string resourceKey;
+        private readonly string _resourceKey;
 
-        public LocalizedDescriptionAttribute(string resourceKey) => this.resourceKey = resourceKey;
+        public LocalizedDescriptionAttribute(string resourceKey) => _resourceKey = resourceKey;
 
-        public override string Description => Functions.SLM.Translate(resourceKey);
+        public override string Description => Functions.SLM.Translate(_resourceKey);
     }
 }

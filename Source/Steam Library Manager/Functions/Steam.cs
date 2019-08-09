@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -40,7 +42,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (!string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        Definitions.Global.Steam.vdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+                        Definitions.Global.Steam.VdfFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
                     }
                 }
             }
@@ -63,7 +65,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_Open)),
                 Action = "Disk",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -87,7 +89,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSteam)),
                 Action = "deleteLibrary",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Trash,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteForever, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -99,7 +101,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_DeleteGames)),
                 Action = "deleteLibrarySLM",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -124,7 +126,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSLM)),
                 Action = "RemoveFromList",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Minus,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToSLMBackup = true
             };
 
@@ -143,7 +145,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Play)),
                 Action = "steam://run/{0}",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Play,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToSteamBackup = false,
                 ShowToCompressed = false
             };
@@ -169,7 +171,7 @@ namespace Steam_Library_Manager.Functions
                 Action = "Compress",
                 ShowToCompressed = true,
                 ShowToSteamBackup = false,
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FileZipOutline
+                Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -183,7 +185,7 @@ namespace Steam_Library_Manager.Functions
                 Action = "compact",
                 ShowToCompressed = false,
                 ShowToSteamBackup = false,
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FileArchiveOutline
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -208,7 +210,7 @@ namespace Steam_Library_Manager.Functions
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DiskInfo)),
                 Action = "Disk",
                 ShowToCompressed = true,
-                Icon = FontAwesome.WPF.FontAwesomeIcon.FolderOpen
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -220,8 +222,66 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewACF)),
                 Action = "acffile",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.PencilSquareOutline,
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocument, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Separator
+            menuItem = new Definitions.ContextMenuItem
+            {
+                ShowToCompressed = false,
+                IsSeparator = true,
+                ShowToSteamBackup = false
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // View Store Page
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewStore)),
+                Action = "steam://store/{0}",
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Steam, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Verify files
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_VerifyFiles)),
+                Action = "verify",
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CheckAll, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+            };
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Google Search
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GoogleSearch)),
+                Action = "google",
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Google, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+            };
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Youtube Search
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_YoutubeSearch)),
+                Action = "youtube",
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Youtube, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -233,7 +293,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GameHub)),
                 Action = "steam://url/GameHub/{0}",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Book
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.BookOpenPageVariant, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -255,7 +315,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Workshop)),
                 Action = "steam://url/SteamWorkshopPage/{0}",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Cog
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FormatListCheckbox, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -267,7 +327,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_SubscribedWorkshopItems)),
                 Action = "https://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Cogs
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistCheck, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -289,7 +349,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.TrashOutline
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -301,7 +361,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
-                Icon = FontAwesome.WPF.FontAwesomeIcon.Trash
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -316,7 +376,7 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 var activeSteamProcess = Process.GetProcessesByName("Steam").FirstOrDefault();
-                return activeSteamProcess?.MainModule.FileName;
+                return activeSteamProcess?.MainModule?.FileName;
             }
             catch (Exception ex)
             {
@@ -431,13 +491,13 @@ namespace Steam_Library_Manager.Functions
                             Framework.KeyValue Key = new Framework.KeyValue();
 
                             // Read vdf file as text
-                            Key.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
+                            Key.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
 
                             // Add our new library to vdf file so steam will know we have a new library
                             Key["Software"]["Valve"]["Steam"].Children.Add(new Framework.KeyValue(string.Format("BaseInstallFolder_{0}", Definitions.List.Libraries.Select(x => x.Type == Definitions.Enums.LibraryType.Steam).Count()), NewLibraryPath));
 
                             // Save vdf file
-                            Key.SaveToFile(Definitions.Global.Steam.vdfFilePath, false);
+                            Key.SaveToFile(Definitions.Global.Steam.VdfFilePath, false);
 
                             // Show a messagebox to user about process
                             MessageBox.Show(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_Created)));
@@ -534,25 +594,26 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static async void AddNew(string LibraryPath, bool IsMainLibrary = false)
+            public static async void AddNew(string libraryPath, bool isMainLibrary = false)
             {
                 try
                 {
-                    if (!LibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
                     {
-                        LibraryPath += Path.DirectorySeparatorChar;
+                        libraryPath += Path.DirectorySeparatorChar;
                     }
 
-                    var newLibrary = new Definitions.SteamLibrary(LibraryPath, IsMainLibrary)
+                    var newLibrary = new Definitions.SteamLibrary(libraryPath, isMainLibrary)
                     {
                         Type = Definitions.Enums.LibraryType.Steam,
-                        DirectoryInfo = new DirectoryInfo(LibraryPath)
+                        DirectoryInfo = new DirectoryInfo(libraryPath)
                     };
 
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
                     await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
                     await Task.Run(newLibrary.UpdateJunks).ConfigureAwait(true);
+                    await Task.Run(newLibrary.UpdateDupes).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
@@ -569,7 +630,7 @@ namespace Steam_Library_Manager.Functions
                         var localConfigFilePath = Path.Combine(Properties.Settings.Default.steamInstallationPath, "userdata", Framework.SteamIDConvert.Steam64ToSteam32(Convert.ToInt64(Properties.Settings.Default.SteamID64)).Split(':').Last(), "config", "localconfig.vdf");
                         if (File.Exists(localConfigFilePath))
                         {
-                            Framework.KeyValue configFile = new Framework.KeyValue();
+                            var configFile = new Framework.KeyValue();
                             configFile.ReadFileAsText(localConfigFilePath);
 
                             var appsPath = configFile["Software"]["Valve"]["Steam"]["apps"];
@@ -594,40 +655,43 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     // If config.vdf exists
-                    if (File.Exists(Definitions.Global.Steam.vdfFilePath))
+                    if (File.Exists(Definitions.Global.Steam.VdfFilePath))
                     {
                         // Make a KeyValue reader
-                        Framework.KeyValue KeyValReader = new Framework.KeyValue();
+                        var keyValReader = new Framework.KeyValue();
 
                         // Read our vdf file as text
-                        KeyValReader.ReadFileAsText(Definitions.Global.Steam.vdfFilePath);
+                        keyValReader.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
 
-                        KeyValReader = KeyValReader["Software"]["Valve"]["Steam"];
-                        if (KeyValReader?.Children.Count > 0)
+                        keyValReader = keyValReader["Software"]["Valve"]["Steam"];
+                        if (keyValReader?.Children.Count > 0)
                         {
-                            foreach (var key in KeyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
+                            foreach (var key in keyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
                             {
                                 AddNew(key.Value);
                             }
 
-                            if (KeyValReader["Accounts"]?.Children.Count > 0)
+                            if (keyValReader["Accounts"]?.Children.Count > 0)
                             {
-                                foreach (var account in KeyValReader["Accounts"].Children)
+                                foreach (var account in keyValReader["Accounts"].Children)
                                 {
-                                    var steamID = account.Children.SingleOrDefault(x => x.Name == "SteamID");
-                                    if (steamID == null)
+                                    var steamId = account.Children.SingleOrDefault(x => x.Name == "SteamID");
+                                    if (steamId == null)
                                     {
                                         continue;
                                     }
 
-                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamID.Value));
+                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamId.Value));
                                 }
 
                                 Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIDList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
                             }
                         }
                     }
-                    else { /* Could not locate LibraryFolders.vdf */ }
+                    else
+                    {
+                        logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.VdfFilePath}");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -635,19 +699,24 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
-            public static bool IsLibraryExists(string NewLibraryPath)
+            public static bool IsLibraryExists(string newLibraryPath)
             {
                 try
                 {
-                    NewLibraryPath = NewLibraryPath.ToLowerInvariant();
+                    newLibraryPath = newLibraryPath.ToLowerInvariant();
+
+                    if (!newLibraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        newLibraryPath += Path.DirectorySeparatorChar;
+                    }
 
                     return Definitions.List.Libraries.Any(x =>
                      x.Type == Definitions.Enums.LibraryType.Steam
-                     && (x.FullPath.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Common"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Download"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["Workshop"].FullName.ToLowerInvariant() == NewLibraryPath
-                     || x.DirectoryList["SteamApps"].FullName.ToLowerInvariant() == NewLibraryPath)
+                     && (x.FullPath.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Common"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Download"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["Workshop"].FullName.ToLowerInvariant() == newLibraryPath
+                     || x.DirectoryList["SteamApps"].FullName.ToLowerInvariant() == newLibraryPath)
                     );
                 }
                 // In any error return true to prevent possible bugs

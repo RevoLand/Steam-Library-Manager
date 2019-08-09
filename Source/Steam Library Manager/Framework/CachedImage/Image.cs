@@ -78,12 +78,22 @@ namespace Steam_Library_Manager.Framework.CachedImage
         {
             if (string.IsNullOrEmpty(url))
             {
-                return (string)img.Tag == "origin"
-                    ? new BitmapImage(new Uri(
-                        "pack://application:,,,/Resources/no_image_available_origin.jpg",
-                        UriKind.Absolute))
-                    : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
-                        UriKind.Absolute));
+                switch ((string)img.Tag)
+                {
+                    default:
+                        return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                            UriKind.Absolute));
+
+                    case "origin":
+                        return new BitmapImage(new Uri(
+                            "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                            UriKind.Absolute));
+
+                    case "uplay":
+                        return new BitmapImage(new Uri(
+                            "pack://application:,,,/Resources/no_image_available_uplay.jpg",
+                            UriKind.Absolute));
+                }
             }
 
             var bitmapImage = new BitmapImage();
@@ -116,12 +126,22 @@ namespace Steam_Library_Manager.Framework.CachedImage
                         {
                             Debug.WriteLine("No hit for URL " + url);
 
-                            return (string)img.Tag == "origin"
-                                ? new BitmapImage(new Uri(
-                                    "pack://application:,,,/Resources/no_image_available_origin.jpg",
-                                    UriKind.Absolute))
-                                : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
-                                    UriKind.Absolute));
+                            switch ((string)img.Tag)
+                            {
+                                default:
+                                    return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                                        UriKind.Absolute));
+
+                                case "origin":
+                                    return new BitmapImage(new Uri(
+                                        "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                                        UriKind.Absolute));
+
+                                case "uplay":
+                                    return new BitmapImage(new Uri(
+                                        "pack://application:,,,/Resources/no_image_available_uplay.jpg",
+                                        UriKind.Absolute));
+                            }
                         }
 
                         bitmapImage.BeginInit();
@@ -142,12 +162,22 @@ namespace Steam_Library_Manager.Framework.CachedImage
                     {
                         // ignored, in case the downloaded file is a broken or not an image.
                         Debug.WriteLine($"Image with url {url} failed to load.");
-                        return (string)img.Tag == "origin"
-                            ? new BitmapImage(new Uri(
-                                "pack://application:,,,/Resources/no_image_available_origin.jpg",
-                                UriKind.Absolute))
-                            : new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
-                                UriKind.Absolute));
+                        switch ((string)img.Tag)
+                        {
+                            default:
+                                return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available.gif",
+                                    UriKind.Absolute));
+
+                            case "origin":
+                                return new BitmapImage(new Uri(
+                                    "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                                    UriKind.Absolute));
+
+                            case "uplay":
+                                return new BitmapImage(new Uri(
+                                    "pack://application:,,,/Resources/no_image_available_uplay.jpg",
+                                    UriKind.Absolute));
+                        }
                     }
 
                 default:

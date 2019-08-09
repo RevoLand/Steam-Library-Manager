@@ -6,21 +6,75 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.5.1.8] - 2019-06-21
+## [1.6.0.0] - 2019-08-03
+
+### Added
+
+- Support for more library types: Uplay (#23, #65, #71)
+- Ability to continue on error for task manager tasks ([#68](https://github.com/RevoLand/Steam-Library-Manager/issues/68))
+- Ability to skip restart warning for Steam library related tasks ([#69](https://github.com/RevoLand/Steam-Library-Manager/issues/69))
+- Icons! [(Have a sneak-peek)](https://dl.dropboxusercontent.com/s/e9ruwj4f11yg5pn/21-Sunday-vB67mD7A1020.gif)
+- Ability to Compress Origin games
+- Ability to 'Auto Installation' for Origin related tasks
+- HamburgerMenu Addition to Library Panel for library type switching ([#71](https://github.com/RevoLand/Steam-Library-Manager/issues/71))
+- Duplicate Game Finder/Cleaner for Steam libraries ([#73](https://github.com/RevoLand/Steam-Library-Manager/issues/73))
+- Ability to Enable/Disable Library Support (Steam, Origin, Uplay) - ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
+- Library loading indicator ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
+- Installation Wizard ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
+
+### Changed
+
+- Library Creation dialog is replaced with a flyout panel which clears the path for supporting more library types. (#63 #65)
+- Unified Task Manager's List View for Steam & Origin games for easier editing in future.
+- Tweaked Task Manager UI a little bit
+- Library Cleaner ui improved
+
+### Fixed
+
+- "Remove from SLM" Context Menu Item not working with created Origin libraries
+- Checking for library existence for libraries not working as intended.
+- Showing Steam failover images for Origin games in List View if the image is not loaded correctly.
+- Disk Space with Mounted Volumes ([#72](https://github.com/RevoLand/Steam-Library-Manager/issues/72))
+
+### Removed
+- Unused libraries (NumericUpDownLib & FontAwesome)
+
+## [1.5.1.10] - 2019-07-17
+
+### Fixed
+
+- Threading error with Origin installations (InvalidOperationException)
+- "Remove from SLM" Context Menu Item not working with SLM libraries
+- Compact tasks getting deleted at the end if "Remove Files at Source directory" option enabled in global task options
+- Compact size detection for some locales
+
+## [1.5.1.9] - 2019-07-09
+
+### Added
+
+- Ability to disable parallel file transfers per-task. (#64)
+
+### Fixed
+
+- A crucial bug which could potentially lead to losing game files with compact task.
+
+## [1.5.1.8] - 2019-06-27
 
 ### Added
 
 - Auto clear completed tasks
-- Ability to Ignore Junks (Library Cleaner Items)
+- Ability to Ignore Junks (in Library Cleaner)
+- Compact Status Detection On/Off switch (default off for better performance)
 
 ### Changed
 
 - UI Improvements:
-  - Tooltips
+  - Tooltips (Translation keys for tooltips will be added later.)
   - Library Cleaner: Reason why junk
   - Library type logo in library panel
   - Replace "Create Library" button with "Create Library / Remove Library / Refresh Library" buttons
 - Loading of Origin header images (Load from/save as "appid".jpg rather than a complicated store page id or whatsoever)
+- Updated translations ([Crowdin](https://crowdin.com/project/steam-library-manager) for translation)
 
 ## [1.5.1.7] - 2019-05-31
 

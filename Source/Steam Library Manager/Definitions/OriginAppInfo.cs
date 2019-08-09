@@ -18,7 +18,7 @@ namespace Steam_Library_Manager.Definitions
         public string RepairParameter { get; set; }
         public Version AppVersion { get; set; }
 
-        public OriginAppInfo(Library library, string appName, int appId, DirectoryInfo installationDirectory, Version appVersion, string[] locales, string installedLocale, string touchupFile, string installationParameter, string updateParameter = null, string repairParameter = null)
+        public OriginAppInfo(Library library, string appName, int appId, DirectoryInfo installationDirectory, Version appVersion, string[] locales, string installedLocale, bool isCompressed, string touchupFile, string installationParameter, string updateParameter = null, string repairParameter = null)
         {
             Library = library;
             AppName = appName;
@@ -31,8 +31,10 @@ namespace Steam_Library_Manager.Definitions
             UpdateParameter = updateParameter;
             RepairParameter = repairParameter;
             AppVersion = appVersion;
-            SizeOnDisk = Functions.FileSystem.GetDirectorySize(InstallationDirectory, true);
-            LastUpdated = InstallationDirectory.LastWriteTimeUtc;
+            LastUpdated = InstallationDirectory.LastWriteTime;
+            IsCompressed = isCompressed;
+            CompressedArchivePath = new FileInfo(Path.Combine(Library.FullPath, AppId + ".zip"));
+            SizeOnDisk = (!IsCompressed) ? Functions.FileSystem.GetDirectorySize(InstallationDirectory, true) : CompressedArchivePath.Length;
             IsCompacted = CompactStatus().Result;
         }
 
@@ -50,6 +52,19 @@ namespace Steam_Library_Manager.Definitions
                             Process.Start(InstallationDirectory.FullName);
                         }
 
+                        break;
+
+                    case "compress":
+                        if (Functions.TaskManager.TaskList.Count(x => x.App == this && x.TargetLibrary == Library && x.TaskType == Enums.TaskType.Compress) == 0)
+                        {
+                            Functions.TaskManager.AddTask(new List.TaskInfo
+                            {
+                                App = this,
+                                TargetLibrary = Library,
+                                TaskType = Enums.TaskType.Compress,
+                                Compress = !IsCompressed
+                            });
+                        }
                         break;
 
                     case "compact":
@@ -127,10 +142,10 @@ namespace Steam_Library_Manager.Definitions
 
                         while (!process.HasExited)
                         {
-                            await Task.Delay(100).ConfigureAwait(false);
+                            await Task.Delay(100).ConfigureAwait(true);
                         }
 
-                        await progressInformationMessage.CloseAsync().ConfigureAwait(false);
+                        await progressInformationMessage.CloseAsync().ConfigureAwait(true);
 
                         var installLog = File.ReadAllLines(Path.Combine(InstallationDirectory.FullName, "__Installer", "InstallLog.txt")).Reverse().ToList();
                         if (installLog.Any(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1))
@@ -139,7 +154,7 @@ namespace Steam_Library_Manager.Definitions
 
                             await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Completed)), new { installerResult })).ConfigureAwait(true);
                         }
-                    }).ConfigureAwait(false);
+                    }).ConfigureAwait(true);
                 }
             }
             catch (Exception ex)

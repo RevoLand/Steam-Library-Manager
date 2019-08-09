@@ -494,7 +494,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+        ///   Looks up a localized string similar to [{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
         ///
         ///Error: {ExceptionMessage}.
         ///
@@ -516,7 +516,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] An error releated to file system is happened while moving files.
+        ///   Looks up a localized string similar to [{AppName}] An error related to file system is happened while moving files.
         ///
         ///Error: {ExceptionMessage}
         ///
@@ -714,7 +714,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected directory..
+        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected folder..
         /// </summary>
         internal static string Forms_LibraryView_CreateLibraryText {
             get {
@@ -921,11 +921,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compression Type.
+        ///   Looks up a localized string similar to Compression Level.
         /// </summary>
-        internal static string Forms_Settings_CompressionType {
+        internal static string Forms_Settings_CompressionLevel {
             get {
-                return ResourceManager.GetString("Forms_Settings_CompressionType", resourceCulture);
+                return ResourceManager.GetString("Forms_Settings_CompressionLevel", resourceCulture);
             }
         }
         
@@ -993,7 +993,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move files synchronously if bigger than.
+        ///   Looks up a localized string similar to Move files sequentially if bigger than.
         /// </summary>
         internal static string Forms_Settings_MoveFilesSyncBySize {
             get {
@@ -1788,6 +1788,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Search.
+        /// </summary>
+        internal static string SteamApp_CMenu_GoogleSearch {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_GoogleSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play.
         /// </summary>
         internal static string SteamApp_CMenu_Play {
@@ -1806,6 +1815,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verify Files.
+        /// </summary>
+        internal static string SteamApp_CMenu_VerifyFiles {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_VerifyFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View ACF File.
         /// </summary>
         internal static string SteamApp_CMenu_ViewACF {
@@ -1815,11 +1833,29 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Store Page.
+        /// </summary>
+        internal static string SteamApp_CMenu_ViewStore {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_ViewStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Workshop.
         /// </summary>
         internal static string SteamApp_CMenu_Workshop {
             get {
                 return ResourceManager.GetString("SteamApp_CMenu_Workshop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View on Youtube.
+        /// </summary>
+        internal static string SteamApp_CMenu_YoutubeSearch {
+            get {
+                return ResourceManager.GetString("SteamApp_CMenu_YoutubeSearch", resourceCulture);
             }
         }
         

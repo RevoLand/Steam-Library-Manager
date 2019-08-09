@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Steam_Library_Manager.Functions
@@ -10,10 +11,15 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static void RemoveGivenFiles(IEnumerable<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
+        public static async Task RemoveGivenFilesAsync(IEnumerable<string> FileList, List<string> DirectoryList = null, Definitions.List.TaskInfo CurrentTask = null)
         {
             try
             {
+                if (CurrentTask != null)
+                {
+                    await Task.Delay(5000);
+                }
+
                 Parallel.ForEach(FileList, currentFile =>
                 {
                     FileInfo File = new FileInfo(currentFile);
@@ -156,42 +162,12 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        public static long GetAvailableFreeSpace(string TargetFolder)
-        {
-            try
-            {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.AvailableFreeSpace ?? 0;
-            }
-            catch (ArgumentException ae)
-            {
-                logger.Fatal(ae);
-
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-                return 0;
-            }
-        }
-
-        public static long GetAvailableTotalSpace(string TargetFolder)
-        {
-            try
-            {
-                return new DriveInfo(Path.GetPathRoot(TargetFolder))?.TotalSize ?? 0;
-            }
-            catch (ArgumentException ae)
-            {
-                logger.Fatal(ae);
-
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                logger.Fatal(ex);
-                return 0;
-            }
-        }
+        // Pinvoke for API function
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+            out ulong lpFreeBytesAvailable,
+            out ulong lpTotalNumberOfBytes,
+            out ulong lpTotalNumberOfFreeBytes);
     }
 }

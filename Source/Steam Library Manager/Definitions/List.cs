@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steam_Library_Manager.Definitions.Enums;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,14 +13,18 @@ namespace Steam_Library_Manager.Definitions
         // Make a new list for Library details
         public static ObservableCollection<Library> Libraries { get; set; } = new ObservableCollection<Library>();
 
-        public static ObservableCollection<JunkInfo> LcItems { get; set; } = new ObservableCollection<JunkInfo>();
+        public static ObservableCollection<JunkInfo> JunkItems { get; set; } = new ObservableCollection<JunkInfo>();
+        public static ObservableCollection<DupeInfo> DupeItems { get; set; } = new ObservableCollection<DupeInfo>();
+        public static ObservableCollection<string> IgnoredJunkItems { get; set; } = new ObservableCollection<string>();
 
         public static readonly IProgress<Library> LibraryProgress = new Progress<Library>(library => Libraries.Add(library));
-        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => LcItems.Add(junk));
+
+        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => JunkItems.Add(junk));
 
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
+        public static readonly List<UplayConfigurationDb> UplayConfigurations = new List<UplayConfigurationDb>();
         public static readonly List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
         public static readonly Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
 
@@ -32,10 +37,14 @@ namespace Steam_Library_Manager.Definitions
             public bool Compact { get; set; } = true;
             public bool ForceCompact { get; set; }
 
-            public bool ErrorHappened, Active;
+            public bool ErrorHappened { get; set; }
+            public bool Active { get; set; }
+            public bool Completed { get; set; }
+            public bool AutoInstall { get; set; }
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
+            public bool ParallelFileTransfers { get; set; } = Properties.Settings.Default.ParallelFileTransfers;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
             public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 
@@ -74,8 +83,6 @@ namespace Steam_Library_Manager.Definitions
                 }
             }
 
-            public bool Completed { get; set; }
-
             public event PropertyChangedEventHandler PropertyChanged;
 
             protected void OnPropertyChanged(string info) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
@@ -94,9 +101,16 @@ namespace Steam_Library_Manager.Definitions
         {
             public System.IO.FileSystemInfo FSInfo { get; set; }
             public Library Library { get; set; }
-            public long Size { get; set; }
-            public string PrettyFolderSize => Functions.FileSystem.FormatBytes(Size);
-            public string JunkReason { get; set; }
+            public App App { get; set; }
+            public string Size { get; set; }
+            public JunkType Tag { get; set; }
+        }
+
+        public class DupeInfo
+        {
+            public App App1 { get; set; }
+            public App App2 { get; set; }
+            public string Size { get; set; }
         }
     }
 }

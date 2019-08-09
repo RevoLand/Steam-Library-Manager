@@ -8,15 +8,16 @@
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:CachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <UserControl.Resources>
         <!-- Task Manager: GridView -->
-        <DataTemplate x:Key="Tasklibrary_Gridview">
+        <DataTemplate x:Key="GridView">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
-                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" Header="{l:Static p:Resources.Forms_TaskManager_Compress}" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
@@ -39,15 +40,27 @@
                     </Controls:MetroProgressBar.Style>
                 </Controls:MetroProgressBar>
 
-                <Grid Width="210px" Height="87px" Margin="2" HorizontalAlignment="Left">
+                <Grid Margin="2" HorizontalAlignment="Left">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
                         <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                             <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
+                                <DropShadowEffect Direction="130" ShadowDepth="1" BlurRadius="3" />
                             </CachedImage:Image.Effect>
                             <CachedImage:Image.Style>
-                                <Style TargetType="{x:Type Image}">
+                                <Style TargetType="CachedImage:Image">
+                                    <Setter Property="Width" Value="230px" />
+                                    <Setter Property="Height" Value="107px" />
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding App.Library.Type}" Value="Origin">
+                                            <Setter Property="Tag" Value="origin" />
+                                            <Setter Property="Width" Value="116px" />
+                                            <Setter Property="Height" Value="163px" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding App.Library.Type}" Value="Uplay">
+                                            <Setter Property="Tag" Value="uplay" />
+                                            <Setter Property="Width" Value="140px" />
+                                            <Setter Property="Height" Value="163px" />
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding Completed}" Value="true">
                                             <Setter Property="Opacity" Value="0.4" />
                                         </DataTrigger>
@@ -69,7 +82,132 @@
                     </TextBlock>
                 </Grid>
                 <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="220,0,0,0" TextWrapping="Wrap" FontSize="14" />
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="240, 0, 0, 0" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding App.Library.Type}" Value="Origin">
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding App.Library.Type}" Value="Uplay">
+                                    <Setter Property="Margin" Value="149, 0, 0, 0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <WrapPanel>
+                        <iconPacks:PackIconFontAwesome Kind="SpinnerSolid" Spin="True" Margin="0, 5, 10, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconFontAwesome.Style>
+                                <Style TargetType="iconPacks:PackIconFontAwesome">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconFontAwesome.Style>
+                        </iconPacks:PackIconFontAwesome>
+                        <iconPacks:PackIconModern Kind="ControlPause" Margin="0, 5, 10, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconModern.Style>
+                                <Style TargetType="iconPacks:PackIconModern">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconModern.Style>
+                        </iconPacks:PackIconModern>
+                        <iconPacks:PackIconMaterial Kind="CheckCircle" Margin="0, 5, 10, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconMaterial.Style>
+                                <Style TargetType="iconPacks:PackIconMaterial">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconMaterial.Style>
+                        </iconPacks:PackIconMaterial>
+                        <iconPacks:PackIconFontAwesome Kind="ExclamationCircleSolid" Margin="0, 5, 10, 0" Height="16" Width="16" Foreground="{DynamicResource ValidationBrush5}">
+                            <iconPacks:PackIconFontAwesome.Style>
+                                <Style TargetType="iconPacks:PackIconFontAwesome">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconFontAwesome.Style>
+                        </iconPacks:PackIconFontAwesome>
+                        <TextBlock Text="{Binding App.AppName}" TextWrapping="Wrap" FontSize="14" />
+                    </WrapPanel>
                     <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
                     <WrapPanel Margin="0,35,0,0" HorizontalAlignment="Right">
                         <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
@@ -79,7 +217,7 @@
                         <TextBlock Text="{Binding App.PrettyGameSize}" />
                     </WrapPanel>
 
-                    <Grid VerticalAlignment="Bottom" Margin="220,0,0,5">
+                    <Grid VerticalAlignment="Bottom" Margin="0,0,0,5">
                         <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" Height="20" />
 
                         <TextBlock Margin="0,-20,0,0"> <!-- Task type, Deletion / Compact -->
@@ -116,21 +254,58 @@
                                     </Style>
                                 </WrapPanel.Style>
 
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Parallel File Transfer" IsChecked="{Binding ParallelFileTransfers}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Auto Install" IsChecked="{Binding AutoInstall}">
+                                    <CheckBox.Style>
+                                        <Style TargetType="CheckBox" BasedOn="{StaticResource MetroCheckBox}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Uplay" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </CheckBox.Style>
+                                </CheckBox>
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Width="80">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="ItemsSource" Value="{Binding App.Locales}" />
+                                                    <Setter Property="SelectedItem" Value="{Binding App.InstalledLocale}" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Compress">
-                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -152,19 +327,19 @@
         </DataTemplate>
 
         <!-- Task Manager: ListView -->
-        <DataTemplate x:Key="Tasklibrary_Listview">
-            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
+        <DataTemplate x:Key="ListView">
+            <Grid Margin="0,0,0,2" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
-                        <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" Header="{l:Static p:Resources.Forms_TaskManager_Compress}" />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
                         <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
                 </Grid.ContextMenu>
-                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
+                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}">
                     <Controls:MetroProgressBar.Style>
-                        <Style TargetType="{x:Type ProgressBar}">
+                        <Style TargetType="{x:Type Controls:MetroProgressBar}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Completed}" Value="false">
                                     <Setter Property="Opacity" Value="0.25" />
@@ -181,17 +356,20 @@
                 <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
                     <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}">
                         <CachedImage:Image.Style>
-                            <Style TargetType="{x:Type Image}">
+                            <Style TargetType="CachedImage:Image">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Completed}" Value="true">
                                         <Setter Property="Opacity" Value="0.4" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding App.Library.Type}" Value="Origin">
+                                        <Setter Property="Tag" Value="origin" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </CachedImage:Image.Style>
                     </CachedImage:Image>
 
-                    <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
@@ -205,7 +383,120 @@
                 </Grid>
 
                 <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
+                    <!-- icons! -->
+                    <WrapPanel Margin="75,0,0,0">
+                        <iconPacks:PackIconFontAwesome Kind="SpinnerSolid" Spin="True" Margin="0, 5, 5, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconFontAwesome.Style>
+                                <Style TargetType="iconPacks:PackIconFontAwesome">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconFontAwesome.Style>
+                        </iconPacks:PackIconFontAwesome>
+                        <iconPacks:PackIconModern Kind="ControlPause" Margin="3, 5, 8, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconModern.Style>
+                                <Style TargetType="iconPacks:PackIconModern">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Active}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconModern.Style>
+                        </iconPacks:PackIconModern>
+                        <iconPacks:PackIconMaterial Kind="CheckCircle" Margin="0, 5, 5, 0" Height="16" Width="16" Foreground="{DynamicResource HighlightBrush}">
+                            <iconPacks:PackIconMaterial.Style>
+                                <Style TargetType="iconPacks:PackIconMaterial">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Completed}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconMaterial.Style>
+                        </iconPacks:PackIconMaterial>
+                        <iconPacks:PackIconFontAwesome Kind="ExclamationCircleSolid" Margin="0, 5, 5, 0" Height="16" Width="16" Foreground="{DynamicResource ValidationBrush5}">
+                            <iconPacks:PackIconFontAwesome.Style>
+                                <Style TargetType="iconPacks:PackIconFontAwesome">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ErrorHappened}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </iconPacks:PackIconFontAwesome.Style>
+                        </iconPacks:PackIconFontAwesome>
+                        <TextBlock Text="{Binding App.AppName}" TextWrapping="Wrap" FontSize="14" />
+                    </WrapPanel>
 
                     <WrapPanel HorizontalAlignment="Right">
                         <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
@@ -213,27 +504,33 @@
                         <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
                     </WrapPanel>
 
-                    <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
-                        <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
+                    <Grid VerticalAlignment="Bottom" Margin="75,0,0,0">
+                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" Height="15" />
 
-                        <WrapPanel HorizontalAlignment="Right">
+                        <WrapPanel HorizontalAlignment="Right" Height="15">
                             <TextBlock Text="{Binding TaskStatusInfo}" />
                             <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
                             <TextBlock Margin="5,0,0,0" Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
                         </WrapPanel>
 
-                        <WrapPanel Margin="55,0,0,0">
-                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Height="20">
+                        <WrapPanel Margin="50,0,0,0">
+                            <!-- task type text -->
+                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0">
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
+                                                <Setter Property="Text" Value="Delete" />
                                                 <Setter Property="FontWeight" Value="SemiBold" />
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding TaskType}" Value="Compact">
                                                 <Setter Property="Text" Value="Compact" />
                                                 <Setter Property="FontWeight" Value="SemiBold" />
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -255,288 +552,58 @@
                                     </Style>
                                 </WrapPanel.Style>
 
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Parallel File Transfer" IsChecked="{Binding ParallelFileTransfers}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
-                            </WrapPanel>
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="{x:Type WrapPanel}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Compress">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
-                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
-                            </WrapPanel>
-                        </WrapPanel>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
-        <!-- Task Manager: GridView: Origin -->
-        <DataTemplate x:Key="Tasklibrary_Gridview_Origin">
-            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
-                <Grid.ContextMenu>
-                    <ContextMenu BorderThickness="0">
-                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator />
-                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
-                    </ContextMenu>
-                </Grid.ContextMenu>
-
-                <Controls:MetroProgressBar Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
-                    <Controls:MetroProgressBar.Style>
-                        <Style TargetType="{x:Type ProgressBar}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Completed}" Value="false">
-                                    <Setter Property="Opacity" Value="0.20" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Completed}" Value="true">
-                                    <Setter Property="Opacity" Value="0.70" />
-                                    <Setter Property="Foreground" Value="LightBlue" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Controls:MetroProgressBar.Style>
-                </Controls:MetroProgressBar>
-                <Grid Width="116px" Height="163px" Margin="2" HorizontalAlignment="Left">
-                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness=".7" CornerRadius="2">
-                        <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" Tag="origin">
-                            <CachedImage:Image.Effect>
-                                <DropShadowEffect Direction="130" ShadowDepth=".7" BlurRadius="3" />
-                            </CachedImage:Image.Effect>
-                            <CachedImage:Image.Style>
-                                <Style TargetType="{x:Type Image}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Completed}" Value="true">
-                                            <Setter Property="Opacity" Value="0.4" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </CachedImage:Image.Style>
-                        </CachedImage:Image>
-                    </Border>
-                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-
-                <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Margin="126,0,0,0" TextWrapping="Wrap" FontSize="14" />
-                    <TextBlock Text="{Binding TaskStatusInfo}" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" />
-
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="126,0,0,5" Height="163">
-                        <TextBlock Margin="0,75,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"> <!-- Task type, Deletion / Compact -->
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                            <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
-                                            <Setter Property="FontWeight" Value="SemiBold" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Compact">
-                                            <Setter Property="Text" Value="Compact" />
-                                            <Setter Property="FontWeight" Value="SemiBold" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TaskType}" Value="Copy">
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Auto Install" IsChecked="{Binding AutoInstall}">
+                                    <CheckBox.Style>
+                                        <Style TargetType="CheckBox" BasedOn="{StaticResource MetroCheckBox}">
                                             <Setter Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <TextBlock Text="{Binding App.AppId}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="20" Margin="0,95,0,0" />
-
-                        <WrapPanel Margin="0,115,0,0" HorizontalAlignment="Left">
-                            <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  " />
-                            <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  " />
-                            <TextBlock Text="{Binding App.PrettyGameSize}" />
-                        </WrapPanel>
-
-                        <!-- Checkboxes -->
-                        <WrapPanel VerticalAlignment="Bottom">
-                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="{x:Type WrapPanel}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Height="15"
-                                      Width="80" SelectedItem="{Binding App.InstalledLocale}"
-                                      ItemsSource="{Binding App.Locales}" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Uplay" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </CheckBox.Style>
+                                </CheckBox>
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Width="80">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding App.Library.Type}" Value="Origin" />
+                                                        <Condition Binding="{Binding TaskType}" Value="Copy" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="ItemsSource" Value="{Binding App.Locales}" />
+                                                    <Setter Property="SelectedItem" Value="{Binding App.InstalledLocale}" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
                             </WrapPanel>
                             <WrapPanel>
                                 <WrapPanel.Style>
                                     <Style TargetType="{x:Type WrapPanel}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Compact" IsChecked="{Binding Compact}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="Force Compress" IsChecked="{Binding ForceCompact}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
-                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
-                            </WrapPanel>
-                        </WrapPanel>
-                    </Grid>
-
-                    <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,5">
-                        <TextBlock Text="{Binding TaskProgressInfo}" />
-                        <TextBlock Margin="10,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" />
-                    </WrapPanel>
-                </Grid>
-            </Grid>
-        </DataTemplate>
-
-        <!-- Task Manager: ListView: Origin -->
-        <DataTemplate x:Key="Tasklibrary_Listview_Origin">
-            <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
-                <Grid.ContextMenu>
-                    <ContextMenu BorderThickness="0">
-                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
-                        <Separator />
-                        <MenuItem Header="{l:Static p:Resources.Forms_TaskManager_RemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
-                    </ContextMenu>
-                </Grid.ContextMenu>
-                <Controls:MetroProgressBar Margin="-3" Maximum="100" Value="{Binding ProgressBarPerc, Mode=OneWay}" VerticalAlignment="Stretch">
-                    <Controls:MetroProgressBar.Style>
-                        <Style TargetType="{x:Type ProgressBar}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Completed}" Value="false">
-                                    <Setter Property="Opacity" Value="0.25" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Completed}" Value="true">
-                                    <Setter Property="Opacity" Value="0.75" />
-                                    <Setter Property="Foreground" Value="LightBlue" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Controls:MetroProgressBar.Style>
-                </Controls:MetroProgressBar>
-                <Grid Width="64px" Height="32px" Margin="5" HorizontalAlignment="Left">
-                    <CachedImage:Image Stretch="Fill" ImageUrl="{Binding App.GameHeaderImage}" Tag="origin">
-                        <CachedImage:Image.Style>
-                            <Style TargetType="{x:Type Image}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Opacity" Value="0.4" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </CachedImage:Image.Style>
-                    </CachedImage:Image>
-                    <TextBlock FontWeight="Bold"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="11">
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Completed}" Value="true">
-                                        <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Completed}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-                <Grid>
-                    <TextBlock Text="{Binding App.AppName}" Padding="75,0,0,0" TextWrapping="Wrap" />
-                    <Grid VerticalAlignment="Bottom" Margin="74,20,0,5">
-                        <TextBlock Text="{Binding App.AppId}" Height="20" HorizontalAlignment="Left" />
-
-                        <WrapPanel Margin="0,-20,0,0" HorizontalAlignment="Right">
-                            <TextBlock Text="{Binding App.Library.DirectoryInfo.FullName, StringFormat=Source: \{0\}}" TextWrapping="Wrap" />
-                            <TextBlock Text="  |  " />
-                            <TextBlock Text="{Binding TargetLibrary.DirectoryInfo.FullName, StringFormat=Target: \{0\}}" TextWrapping="Wrap" />
-                        </WrapPanel>
-
-                        <WrapPanel HorizontalAlignment="Right">
-                            <TextBlock Text="{Binding TaskStatusInfo}" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding ProgressBarPerc, Mode=OneWay, StringFormat=\{0\}%}" HorizontalAlignment="Right" TextWrapping="Wrap" />
-                            <TextBlock Margin="5,0,0,0" Text="{Binding App.PrettyGameSize}" HorizontalAlignment="Right" />
-                        </WrapPanel>
-
-                        <WrapPanel Margin="55,0,0,0">
-                            <TextBlock HorizontalAlignment="Right" Margin="0,0,10,0" Height="20">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Text" Value="{l:Static p:Resources.Forms_TaskManager_Delete}" />
-                                                <Setter Property="FontWeight" Value="SemiBold" />
-                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding TaskType}" Value="Compact">
-                                                <Setter Property="Text" Value="Compact" />
-                                                <Setter Property="FontWeight" Value="SemiBold" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" IsChecked="{Binding ReportFileMovement}" />
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="{x:Type WrapPanel}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Compact">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </WrapPanel.Style>
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_RemoveFiles}" IsChecked="{Binding RemoveOldFiles}" />
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Forms_TaskManager_AutoInstall}" IsChecked="{Binding Compress}" />
-                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" HorizontalAlignment="Left" Height="23" Margin="5,0,0,0" VerticalAlignment="Top" Width="80" SelectedItem="{Binding App.InstalledLocale}" ItemsSource="{Binding App.Locales}" />
-                            </WrapPanel>
-                            <WrapPanel>
-                                <WrapPanel.Style>
-                                    <Style TargetType="{x:Type WrapPanel}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Delete">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TaskType}" Value="Copy">
-                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -554,7 +621,7 @@
     </UserControl.Resources>
     <Grid>
         <!-- ListView: Task Manager Tasks -->
-        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch"  BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
+        <ListView x:Name="TaskPanel" HorizontalContentAlignment="Stretch" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" VerticalContentAlignment="Stretch" Margin="0,10,0,315" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding}">
@@ -563,47 +630,15 @@
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
                                             <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview_Origin}" />
+                                        <Setter Property="ContentTemplate" Value="{StaticResource GridView}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Origin" />
                                             <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview_Origin}" />
-                                    </MultiDataTrigger>
-                                    <!-- Steam -->
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="Steam" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
-                                    </MultiDataTrigger>
-                                    <!-- SLM -->
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Gridview}" />
-                                    </MultiDataTrigger>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding TargetLibrary.Type}" Value="SLM" />
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="ContentTemplate" Value="{StaticResource Tasklibrary_Listview}" />
+                                        <Setter Property="ContentTemplate" Value="{StaticResource ListView}" />
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -703,6 +738,27 @@
                         <StackPanel>
                             <TextBlock FontWeight="Bold" Text="Auto Clear Completed Tasks" />
                             <TextBlock Text="SLM will remove the completed tasks from task manager." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Continue on Error" IsChecked="{SLM:SettingBinding TaskManager_ContinueOnError}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Continue on Error" />
+                            <TextBlock Text="If active, SLM will move to the next task in the list in case of an error with the active task." />
+                        </StackPanel>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="Skip Steam Restart Dialog" IsChecked="{SLM:SettingBinding TaskManager_SteamRestartSkip}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="Skip Steam Restart Dialog" />
+                            <TextBlock Text="If active, SLM will not ask to restart Steam on Steam library related tasks." />
+                            <TextBlock FontWeight="Bold" Text="However running Steam apps/games without restarting Steam may damage app/game installations and require manual processing!" />
                         </StackPanel>
                     </ToolTip>
                 </CheckBox.ToolTip>

@@ -14,6 +14,8 @@ namespace Steam_Library_Manager.Forms
     {
         public SettingsView() => InitializeComponent();
 
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
         {
             try

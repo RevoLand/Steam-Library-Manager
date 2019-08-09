@@ -1,4 +1,5 @@
 ﻿using Gu.Localization;
+using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.IO;
 using System.Linq;
@@ -33,13 +34,13 @@ namespace Steam_Library_Manager.Functions
                         return x => x.SizeOnDisk;
 
                     case "backupType":
-                        return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.IsCompressed;
+                        return x => (Library.Type == LibraryType.Origin) ? x.AppName : x.IsCompressed;
 
                     case "LastUpdated":
                         return x => x.LastUpdated;
 
                     case "LastPlayed":
-                        return x => (Library.Type == Definitions.Enums.LibraryType.Origin) ? x.AppName : x.LastPlayed;
+                        return x => (Library.Type == LibraryType.Origin) ? x.AppName : x.LastPlayed;
                 }
             }
 
@@ -51,7 +52,7 @@ namespace Steam_Library_Manager.Functions
                     var backupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.SLM).ToList())
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == LibraryType.SLM).ToList())
                     {
                         if (backupDirs.Contains(library.DirectoryInfo.FullName))
                             continue;
@@ -78,7 +79,7 @@ namespace Steam_Library_Manager.Functions
                     var backupDirs = new System.Collections.Specialized.StringCollection();
 
                     // foreach defined library in library list
-                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && !x.IsMain).ToList())
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == LibraryType.Origin && !x.IsMain).ToList())
                     {
                         if (backupDirs.Contains(library.DirectoryInfo.FullName))
                             continue;
@@ -97,14 +98,82 @@ namespace Steam_Library_Manager.Functions
                 }
             }
 
+            private static void UpdateUplayLibraries()
+            {
+                try
+                {
+                    // Define a new string collection to update backup library settings
+                    var backupDirs = new System.Collections.Specialized.StringCollection();
+
+                    // foreach defined library in library list
+                    foreach (var library in Definitions.List.Libraries.Where(x => x.Type == LibraryType.Uplay && !x.IsMain).ToList())
+                    {
+                        if (backupDirs.Contains(library.DirectoryInfo.FullName))
+                            continue;
+
+                        // then add this library path to new defined string collection
+                        backupDirs.Add(library.DirectoryInfo.FullName);
+                    }
+
+                    // change our current backup directories setting with new defined string collection
+                    Properties.Settings.Default.UplayLibraries = backupDirs;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+            private static void UpdateJunkItems()
+            {
+                try
+                {
+                    // Define a new string collection to update backup library settings
+                    var ignoredJunks = new System.Collections.Specialized.StringCollection();
+
+                    // foreach defined library in library list
+                    foreach (var junk in Definitions.List.IgnoredJunkItems.ToList())
+                    {
+                        if (ignoredJunks.Contains(junk))
+                            continue;
+
+                        // then add this library path to new defined string collection
+                        ignoredJunks.Add(junk);
+                    }
+
+                    // change our current backup directories setting with new defined string collection
+                    Properties.Settings.Default.IgnoredJunks = ignoredJunks;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
             public static void SaveSettings()
             {
-                UpdateSlmLibraries();
-                UpdateOriginLibraries();
+                if (Properties.Settings.Default.Steam_IsEnabled)
+                {
+                    UpdateSlmLibraries();
+                }
+
+                if (Properties.Settings.Default.Origin_IsEnabled)
+                {
+                    UpdateOriginLibraries();
+                }
+
+                if (Properties.Settings.Default.Uplay_IsEnabled)
+                {
+                    UpdateUplayLibraries();
+                }
+
+                UpdateJunkItems();
             }
         }
 
-        public static void OnLoad()
+        public static async Task OnLoadAsync()
         {
             try
             {
@@ -113,12 +182,21 @@ namespace Steam_Library_Manager.Functions
                     AutoUpdaterDotNET.AutoUpdater.Start(Definitions.Updater.VersionControlURL);
                 }
 
-                LoadSteam();
-                LoadOrigin();
+                if (Properties.Settings.Default.Steam_IsEnabled)
+                {
+                    LoadSteam();
+                    GenerateJunkList();
+                }
 
-                // SLM Libraries
-                Library.GenerateLibraryList();
-                Library.GenerateOriginLibraryList();
+                if (Properties.Settings.Default.Origin_IsEnabled)
+                {
+                    await LoadOriginAsync();
+                }
+
+                if (Properties.Settings.Default.Uplay_IsEnabled)
+                {
+                    LoadUplayAsync();
+                }
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
                 {
@@ -131,35 +209,204 @@ namespace Steam_Library_Manager.Functions
             }
         }
 
-        private static void LoadSteam()
+        public static bool LoadSteam()
         {
             try
             {
+                if (Definitions.Global.Steam.IsStateChanging || Definitions.Global.Steam.Loaded)
+                    return false;
+
+                Definitions.Global.Steam.IsStateChanging = true;
+
                 Steam.UpdateSteamInstallationPathAsync();
                 Steam.PopulateLibraryCMenuItems();
                 Steam.PopulateAppCMenuItems();
 
                 Steam.Library.GenerateLibraryList();
+
+                Library.GenerateLibraryList();
+
+                Definitions.Global.Steam.IsStateChanging = false;
+                Definitions.Global.Steam.Loaded = true;
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.Fatal(ex);
+                Definitions.Global.Steam.IsStateChanging = false;
+                return false;
             }
         }
 
-        private static void LoadOrigin()
+        public static bool UnloadLibrary(LibraryType targetLibraryType)
         {
             try
             {
-                Origin.PopulateLibraryCMenuItems();
-                Origin.PopulateAppCMenuItems();
+                switch (targetLibraryType)
+                {
+                    case LibraryType.Steam:
+                    case LibraryType.SLM:
+                        if (Definitions.Global.Steam.IsStateChanging)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            Definitions.Global.Steam.IsStateChanging = true;
+                            Definitions.Global.Steam.Loaded = false;
+                        }
+                        break;
 
-                Origin.GenerateLibraryList();
+                    case LibraryType.Origin:
+                        if (Definitions.Global.Origin.IsStateChanging)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            Definitions.Global.Origin.IsStateChanging = true;
+                            Definitions.Global.Origin.Loaded = false;
+                        }
+                        break;
+
+                    case LibraryType.Uplay:
+                        if (Definitions.Global.Uplay.IsStateChanging)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            Definitions.Global.Uplay.IsStateChanging = true;
+                            Definitions.Global.Uplay.Loaded = false;
+                        }
+                        break;
+                }
+
+                if (TaskManager.TaskList.Count(x => (x.App.Library.Type == targetLibraryType || x.TargetLibrary.Type == targetLibraryType) && !x.Completed) > 0)
+                {
+                    Logger.Warn($"Can't Unload {targetLibraryType} Libraries while there is an active task.");
+
+                    ToggleOffLibrarySwitchState(targetLibraryType);
+                    return false;
+                }
+
+                // Library Context Menu Items
+                foreach (var menuItem in Definitions.List.LibraryCMenuItems.Where(x => x.AllowedLibraryTypes.Contains(targetLibraryType)).ToList())
+                {
+                    Definitions.List.LibraryCMenuItems.Remove(menuItem);
+                }
+
+                // App Context Menu Items
+                foreach (var menuItem in Definitions.List.AppCMenuItems.Where(x => x.AllowedLibraryTypes.Contains(targetLibraryType)).ToList())
+                {
+                    Definitions.List.AppCMenuItems.Remove(menuItem);
+                }
+
+                foreach (var library in Definitions.List.Libraries.Where(x => x.Type == targetLibraryType).ToList())
+                {
+                    if (Definitions.SLM.CurrentSelectedLibrary == library)
+                    {
+                        Definitions.SLM.CurrentSelectedLibrary = null;
+                        Main.FormAccessor.AppView.AppPanel.ItemsSource = null;
+                    }
+
+                    Definitions.List.Libraries.Remove(library);
+                }
+
+                ToggleOffLibrarySwitchState(targetLibraryType);
+                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 Logger.Fatal(ex);
+
+                ToggleOffLibrarySwitchState(targetLibraryType);
+                return false;
+            }
+        }
+
+        private static void ToggleOffLibrarySwitchState(LibraryType targetLibraryType)
+        {
+            switch (targetLibraryType)
+            {
+                case LibraryType.Steam:
+                case LibraryType.SLM:
+                    Definitions.Global.Steam.IsStateChanging = false;
+                    break;
+
+                case LibraryType.Origin:
+                    Definitions.Global.Origin.IsStateChanging = false;
+                    break;
+
+                case LibraryType.Uplay:
+                    Definitions.Global.Uplay.IsStateChanging = false;
+                    break;
+            }
+        }
+
+        public static async Task<bool> LoadOriginAsync()
+        {
+            try
+            {
+                if (Definitions.Global.Origin.IsStateChanging || Definitions.Global.Origin.Loaded)
+                    return false;
+
+                Definitions.Global.Origin.IsStateChanging = true;
+
+                Origin.PopulateLibraryCMenuItems();
+                Origin.PopulateAppCMenuItems();
+
+                await Origin.GenerateLibraryListAsync();
+
+                Library.GenerateOriginLibraryList();
+
+                Definitions.Global.Origin.IsStateChanging = false;
+                Definitions.Global.Origin.Loaded = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Logger.Fatal(ex);
+                Definitions.Global.Origin.IsStateChanging = false;
+                return false;
+            }
+        }
+
+        public static async Task<bool> LoadUplayAsync()
+        {
+            try
+            {
+                if (Definitions.Global.Uplay.IsStateChanging || Definitions.Global.Uplay.Loaded)
+                    return false;
+
+                Definitions.Global.Uplay.IsStateChanging = true;
+
+                Uplay.PopulateLibraryCMenuItems();
+
+                Uplay.PopulateAppCMenuItems();
+
+                Uplay.UpdateInstallationPath();
+
+                await Uplay.InitializeUplayDb();
+
+                Uplay.GenerateLibraryList();
+
+                Library.GenerateUplayLibraryList();
+
+                Definitions.Global.Uplay.IsStateChanging = false;
+                Definitions.Global.Uplay.Loaded = true;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                Logger.Fatal(ex);
+                Definitions.Global.Uplay.IsStateChanging = false;
+
+                return false;
             }
         }
 
@@ -167,6 +414,28 @@ namespace Steam_Library_Manager.Functions
         {
             Settings.SaveSettings();
             NLog.LogManager.Shutdown();
+        }
+
+        public static void GenerateJunkList()
+        {
+            try
+            {
+                if (Properties.Settings.Default.IgnoredJunks == null)
+                    return;
+
+                if (Properties.Settings.Default.IgnoredJunks.Count == 0)
+                    return;
+
+                foreach (var ignoredJunk in Properties.Settings.Default.IgnoredJunks)
+                {
+                    Definitions.List.IgnoredJunkItems.Add(ignoredJunk);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         // SLM Library
@@ -210,7 +479,31 @@ namespace Steam_Library_Manager.Functions
                     // for each backup library we have, do a loop
                     foreach (var backupPath in Properties.Settings.Default.OriginLibraries)
                     {
-                        Origin.AddNewAsync(backupPath);
+                        Origin.AddNewLibraryAsync(backupPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Fatal(ex);
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+            public static void GenerateUplayLibraryList()
+            {
+                try
+                {
+                    // If we don't have any SLM libraries available
+                    if (Properties.Settings.Default.UplayLibraries == null)
+                        return;
+
+                    if (Properties.Settings.Default.UplayLibraries.Count == 0)
+                        return;
+
+                    // for each backup library we have, do a loop
+                    foreach (var backupPath in Properties.Settings.Default.UplayLibraries)
+                    {
+                        Uplay.AddNewLibraryAsync(backupPath);
                     }
                 }
                 catch (Exception ex)
@@ -234,7 +527,7 @@ namespace Steam_Library_Manager.Functions
 
                     var library = new Definitions.SteamLibrary(libraryPath)
                     {
-                        Type = Definitions.Enums.LibraryType.SLM,
+                        Type = LibraryType.SLM,
                         DirectoryInfo = new DirectoryInfo(libraryPath)
                     };
 
@@ -244,6 +537,7 @@ namespace Steam_Library_Manager.Functions
 
                     await Task.Run(() => library.UpdateAppListAsync()).ConfigureAwait(true);
                     await Task.Run(() => library.UpdateJunks()).ConfigureAwait(true);
+                    await Task.Run(() => library.UpdateDupes()).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
@@ -256,7 +550,7 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    return Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.SLM) > 0 && Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, newLibraryPath, StringComparison.InvariantCultureIgnoreCase));
+                    return Definitions.List.Libraries.Count(x => x.Type == LibraryType.SLM) > 0 || Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, newLibraryPath, StringComparison.InvariantCultureIgnoreCase));
                 }
                 catch (Exception ex)
                 {

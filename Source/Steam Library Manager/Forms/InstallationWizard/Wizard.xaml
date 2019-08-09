@@ -1,0 +1,26 @@
+﻿<mah:MetroWindow x:Class="Steam_Library_Manager.Forms.InstallationWizard.Wizard"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:local="clr-namespace:Steam_Library_Manager.Forms.InstallationWizard"
+                 xmlns:controls="clr-namespace:MvvmWizard.Controls;assembly=MvvmWizard"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 mc:Ignorable="d"
+                 MinHeight="650" MinWidth="500" Height="650" Width="500" Closing="Wizard_OnClosing"
+                 WindowStyle="None" ShowMaxRestoreButton="False" ShowTitleBar="True" ShowMinButton="False" WindowStartupLocation="CenterScreen"
+                 Title="Steam Library Manager: Installation Wizard" TitleCharacterCasing="Normal">
+    <controls:Wizard Name="WizardControl" SummaryVisibility="Visible" AllowNavigationOnSummaryItemClick="True" TransitionButtonsHorizontalAlignment="Center" SummaryHorizontalAlignment="Center" SummaryMargin="10,0">
+        <controls:WizardStep BackButtonVisibility="Collapsed">
+            <local:Welcome />
+        </controls:WizardStep>
+
+        <controls:WizardStep>
+            <local:Library />
+        </controls:WizardStep>
+
+        <controls:WizardStep SkipButtonVisibility="Collapsed" ForwardButtonVisibility="Collapsed">
+            <local:Final />
+        </controls:WizardStep>
+    </controls:Wizard>
+</mah:MetroWindow>

@@ -1,13 +1,15 @@
 ﻿using MahApps.Metro;
 using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Steam_Library_Manager
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -18,6 +20,8 @@ namespace Steam_Library_Manager
                                             ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
 
                 base.OnStartup(e);
+
+                Dispatcher.UnhandledException += OnDispatcherUnhandledException;
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -28,6 +32,13 @@ namespace Steam_Library_Manager
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Debug.WriteLine(e.Exception);
+            Debug.WriteLine(Environment.StackTrace);
+            e.Handled = true;
         }
     }
 }
