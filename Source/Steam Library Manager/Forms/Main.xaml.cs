@@ -79,6 +79,16 @@ namespace Steam_Library_Manager
             Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
 
             InitializeComponent();
+
+            if (!Properties.Settings.Default.InstallationWizardShown)
+            {
+                var installationWizard = new Forms.InstallationWizard.Wizard
+                {
+                    WizardControl = { DataContext = new Definitions.Settings() }
+                };
+                installationWizard.ShowDialog();
+            }
+
             UpdateBindings();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
         }

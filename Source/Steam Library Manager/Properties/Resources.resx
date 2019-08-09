@@ -252,7 +252,7 @@ Error: {ExceptionMessage}</value>
     <value>[{AppName}] File copied: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
 
 Error: {ExceptionMessage}.
 
@@ -262,7 +262,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>[{AppName}] An error related to file system is happened while moving files. Error: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] An error releated to file system is happened while moving files.
+    <value>[{AppName}] An error related to file system is happened while moving files.
 
 Error: {ExceptionMessage}
 

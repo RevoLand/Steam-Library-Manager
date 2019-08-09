@@ -14,7 +14,7 @@
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="800" MinWidth="985"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
     ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
-    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True">
+    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" WindowTransitionsEnabled="False">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click">

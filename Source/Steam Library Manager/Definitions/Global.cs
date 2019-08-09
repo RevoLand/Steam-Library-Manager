@@ -11,7 +11,7 @@ namespace Steam_Library_Manager.Definitions
 
             public static string VdfFilePath = System.IO.Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
 
-            public static bool IsStateChanging;
+            public static bool IsStateChanging, Loaded;
         }
 
         public static class Origin
@@ -19,14 +19,14 @@ namespace Steam_Library_Manager.Definitions
             public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Origin", "local.xml");
             public static List<KeyValuePair<string, string>> AppIds = new List<KeyValuePair<string, string>>();
 
-            public static bool IsStateChanging;
+            public static bool IsStateChanging, Loaded;
         }
 
         public static class Uplay
         {
             public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "Ubisoft Game Launcher", "settings.yml");
 
-            public static bool IsStateChanging;
+            public static bool IsStateChanging, Loaded;
         }
     }
 }

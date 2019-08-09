@@ -494,7 +494,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] An error releated to file permissions happened during file movement. Running SLM as Administrator might help.
+        ///   Looks up a localized string similar to [{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
         ///
         ///Error: {ExceptionMessage}.
         ///
@@ -516,7 +516,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] An error releated to file system is happened while moving files.
+        ///   Looks up a localized string similar to [{AppName}] An error related to file system is happened while moving files.
         ///
         ///Error: {ExceptionMessage}
         ///

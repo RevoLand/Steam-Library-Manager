@@ -103,21 +103,6 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
 
-                        <!-- Advanced Logging (Requires restart) -->
-                        <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_AdvancedLogging}"
-                                                   IsChecked="{SLM:SettingBinding Advanced_Logging}" HorizontalAlignment="Left" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <Controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="Advanced Logging" />
-                                        <TextBlock Text="Logs everything (including file movement details and exceptions) to file under /logs/ folder." />
-                                        <TextBlock Text="Requires a restart for changes to be applied." />
-                                    </StackPanel>
-                                </ToolTip>
-                            </Controls:ToggleSwitch.ToolTip>
-                        </Controls:ToggleSwitch>
-
                         <!-- Check for Updates at Startup -->
                         <Controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" OnLabel="Yes" OffLabel="No"
                                                    IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup}"

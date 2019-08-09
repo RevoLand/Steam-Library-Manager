@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Duplicate Game Finder/Cleaner for Steam libraries ([#73](https://github.com/RevoLand/Steam-Library-Manager/issues/73))
 - Ability to Enable/Disable Library Support (Steam, Origin, Uplay) - ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
 - Library loading indicator ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
+- Installation Wizard ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
 
 ### Changed
 

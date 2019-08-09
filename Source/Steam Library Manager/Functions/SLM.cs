@@ -213,7 +213,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.Global.Steam.IsStateChanging)
+                if (Definitions.Global.Steam.IsStateChanging || Definitions.Global.Steam.Loaded)
                     return false;
 
                 Definitions.Global.Steam.IsStateChanging = true;
@@ -227,6 +227,7 @@ namespace Steam_Library_Manager.Functions
                 Library.GenerateLibraryList();
 
                 Definitions.Global.Steam.IsStateChanging = false;
+                Definitions.Global.Steam.Loaded = true;
                 return true;
             }
             catch (Exception ex)
@@ -252,6 +253,7 @@ namespace Steam_Library_Manager.Functions
                         else
                         {
                             Definitions.Global.Steam.IsStateChanging = true;
+                            Definitions.Global.Steam.Loaded = false;
                         }
                         break;
 
@@ -263,6 +265,7 @@ namespace Steam_Library_Manager.Functions
                         else
                         {
                             Definitions.Global.Origin.IsStateChanging = true;
+                            Definitions.Global.Origin.Loaded = false;
                         }
                         break;
 
@@ -274,6 +277,7 @@ namespace Steam_Library_Manager.Functions
                         else
                         {
                             Definitions.Global.Uplay.IsStateChanging = true;
+                            Definitions.Global.Uplay.Loaded = false;
                         }
                         break;
                 }
@@ -345,7 +349,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.Global.Origin.IsStateChanging)
+                if (Definitions.Global.Origin.IsStateChanging || Definitions.Global.Origin.Loaded)
                     return false;
 
                 Definitions.Global.Origin.IsStateChanging = true;
@@ -358,6 +362,7 @@ namespace Steam_Library_Manager.Functions
                 Library.GenerateOriginLibraryList();
 
                 Definitions.Global.Origin.IsStateChanging = false;
+                Definitions.Global.Origin.Loaded = true;
                 return true;
             }
             catch (Exception ex)
@@ -373,7 +378,7 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Definitions.Global.Uplay.IsStateChanging)
+                if (Definitions.Global.Uplay.IsStateChanging || Definitions.Global.Uplay.Loaded)
                     return false;
 
                 Definitions.Global.Uplay.IsStateChanging = true;
@@ -387,6 +392,7 @@ namespace Steam_Library_Manager.Functions
                 Library.GenerateUplayLibraryList();
 
                 Definitions.Global.Uplay.IsStateChanging = false;
+                Definitions.Global.Uplay.Loaded = true;
 
                 return true;
             }
