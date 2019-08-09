@@ -1,6 +1,5 @@
 ﻿using AutoUpdaterDotNET;
 using MahApps.Metro.Controls.Dialogs;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -70,63 +69,6 @@ namespace Steam_Library_Manager.Forms
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Properties.Settings.Default.Language = Gu.Localization.Translator.CurrentCulture.TwoLetterISOLanguageName;
-        }
-
-        private void UplayExecutablePathSelector_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                using (var dialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    dialog.Filter = "Uplay executable file|Uplay.exe|All executable files (*.exe)|*.exe";
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        Properties.Settings.Default.UplayExePath = dialog.FileName;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private async void UplayDbPathSelector_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                using (var dialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    dialog.Filter = "Uplay Database File|configurations";
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        Properties.Settings.Default.UplayDbPath = dialog.FileName;
-
-                        if (File.Exists(Properties.Settings.Default.UplayDbPath))
-                        {
-                            await Functions.Uplay.InitializeUplayDb();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private async void UplayDbPathClearButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Properties.Settings.Default.UplayDbPath = string.Empty;
-
-                await Functions.Uplay.InitializeUplayDb();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
         }
     }
 }

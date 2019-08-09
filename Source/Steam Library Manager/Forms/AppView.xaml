@@ -28,13 +28,13 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
                                     <Setter Property="Tag" Value="origin" />
-                                    <Setter Property="Width" Value="116px" />
-                                    <Setter Property="Height" Value="163px" />
+                                    <Setter Property="Width" Value="116" />
+                                    <Setter Property="Height" Value="163" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
                                     <Setter Property="Tag" Value="uplay" />
-                                    <Setter Property="Width" Value="116px" />
-                                    <Setter Property="Height" Value="163px" />
+                                    <Setter Property="Width" Value="140" />
+                                    <Setter Property="Height" Value="163" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -48,10 +48,10 @@
                             <Setter Property="Margin" Value="240, 0, 0, 0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
-                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" /> <!-- 9? -->
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
-                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                    <Setter Property="Margin" Value="149, 0, 0, 0" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

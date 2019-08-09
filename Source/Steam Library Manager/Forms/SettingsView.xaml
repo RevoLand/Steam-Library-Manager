@@ -393,15 +393,6 @@
                                 </ToolTip>
                             </Controls:ToggleSwitch.ToolTip>
                         </Controls:ToggleSwitch>
-                        <StackPanel Orientation="Horizontal" Height="40" Margin="0, 5, 0, 0">
-                            <TextBox Width="185" Text="{SLM:SettingBinding UplayExePath}" IsReadOnly="True" Controls:TextBoxHelper.Watermark="Uplay Executable Path" Controls:TextBoxHelper.UseFloatingWatermark="True" />
-                            <Button Name="UplayExecutablePathSelector" Click="UplayExecutablePathSelector_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=FileFind}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Height="40" Margin="0, 5, 0, 0">
-                            <TextBox Width="185" Text="{SLM:SettingBinding UplayDbPath}" IsReadOnly="True" Controls:TextBoxHelper.Watermark="Uplay Database File Path" Controls:TextBoxHelper.UseFloatingWatermark="True" />
-                            <Button Name="UplayDbPathSelector" Click="UplayDbPathSelector_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=FileFind}" />
-                            <Button Name="UplayDbPathClearButton" Click="UplayDbPathClearButton_OnClick" Margin="5,0,0,0" Width="40" Content="{iconPacks:Material Kind=Close}" />
-                        </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

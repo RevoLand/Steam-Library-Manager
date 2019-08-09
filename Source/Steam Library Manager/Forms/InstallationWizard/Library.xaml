@@ -12,10 +12,6 @@
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Steam">
                 <WrapPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Height="50" Margin="0, 5, 0, 0">
-                        <TextBox Width="300" Text="{SLM:SettingBinding steamInstallationPath}" IsReadOnly="True" mah:TextBoxHelper.Watermark="Steam Installation Path" mah:TextBoxHelper.UseFloatingWatermark="True" />
-                        <Button Name="SteamInstallationPathSelector" Margin="5,0,0,0" Width="60" Content="{iconPacks:Material Kind=FolderOpen}" Click="SteamInstallationPathSelector_OnClick" />
-                    </StackPanel>
                     <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" Header="Steam Library Support" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                         <mah:ToggleSwitch.ToolTip>
                             <ToolTip>
@@ -42,15 +38,6 @@
             </GroupBox>
             <GroupBox Header="Uplay">
                 <WrapPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Height="50" Margin="0, 5, 0, 0">
-                        <TextBox Width="300" Text="{SLM:SettingBinding UplayExePath}" IsReadOnly="True" mah:TextBoxHelper.Watermark="Uplay Executable Path" mah:TextBoxHelper.UseFloatingWatermark="True" />
-                        <Button Name="UplayExecutablePathSelector" Margin="5,0,0,0" Width="60" Content="{iconPacks:Material Kind=FileFind}" Click="UplayExecutablePathSelector_OnClick" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Height="50" Margin="0, 5, 0, 0">
-                        <TextBox Width="300" Text="{SLM:SettingBinding UplayDbPath}" IsReadOnly="True" mah:TextBoxHelper.Watermark="Uplay Database File Path" mah:TextBoxHelper.UseFloatingWatermark="True" />
-                        <Button Name="UplayDbPathSelector"  Margin="5,0,0,0" Width="60" Content="{iconPacks:Material Kind=FileFind}" Click="UplayDbPathSelector_OnClick" />
-                        <Button Name="UplayDbPathClearButton"  Margin="5,0,0,0" Width="60" Content="{iconPacks:Material Kind=Close}" Click="UplayDbPathClearButton_OnClick" />
-                    </StackPanel>
                     <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="Uplay Library Support" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                         <mah:ToggleSwitch.ToolTip>
                             <ToolTip>

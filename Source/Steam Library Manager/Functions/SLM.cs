@@ -387,6 +387,8 @@ namespace Steam_Library_Manager.Functions
 
                 Uplay.PopulateAppCMenuItems();
 
+                Uplay.UpdateInstallationPath();
+
                 await Uplay.GenerateLibraryListAsync();
 
                 Library.GenerateUplayLibraryList();

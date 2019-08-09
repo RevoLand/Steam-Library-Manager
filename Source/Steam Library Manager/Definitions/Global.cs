@@ -24,6 +24,8 @@ namespace Steam_Library_Manager.Definitions
 
         public static class Uplay
         {
+            public static string RegistryKeyPath = @"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Ubisoft\Launcher";
+
             public static string ConfigFilePath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "Ubisoft Game Launcher", "settings.yml");
 
             public static bool IsStateChanging, Loaded;

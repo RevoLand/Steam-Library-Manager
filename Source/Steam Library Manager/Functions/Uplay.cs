@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.IconPacks;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -195,6 +196,32 @@ namespace Steam_Library_Manager.Functions
             else
             {
                 Logger.Info("Uplay config file is not found, skipping main uplay library detection.");
+            }
+        }
+
+        public static void UpdateInstallationPath()
+        {
+            try
+            {
+                Properties.Settings.Default.UplayExePath = Registry
+                    .GetValue(Definitions.Global.Uplay.RegistryKeyPath, "InstallDir", "").ToString()
+                    .Replace('/', Path.DirectorySeparatorChar);
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayExePath))
+                {
+                    if (!Properties.Settings.Default.UplayExePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        Properties.Settings.Default.UplayExePath += Path.DirectorySeparatorChar;
+                    }
+
+                    Properties.Settings.Default.UplayDbPath = Path.Combine(Properties.Settings.Default.UplayExePath, "cache", "configuration", "configurations");
+                    Properties.Settings.Default.UplayExePath += "Uplay.exe";
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                Debug.WriteLine(e);
             }
         }
 
