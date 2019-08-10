@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -254,7 +254,7 @@ Error: {ExceptionMessage}
 
 Would you like to remove files that already moved from target library?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -422,7 +422,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Start Task Manager at Startup</value>
   </data>
   <data name="TaskManager" xml:space="preserve">
-    <value>Görev Yöneticisi Varsayılan Ayarlar</value>
+    <value>Task Manager Default Settings</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
     <value>Theme Accent</value>
@@ -498,14 +498,11 @@ Would you like to remove files that already moved from target library?</value>
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
   </data>
-  <data name="Install" xml:space="preserve">
-    <value>Yükle</value>
-  </data>
   <data name="OriginApp_CMenu_Repair" xml:space="preserve">
     <value>Onar</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Run (Unavailable)</value>
+    <value>Run</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Origin Uygulama Kurulumu</value>
@@ -1192,15 +1189,38 @@ Hata: {ExceptionMessage}</value>
     <value>[{AppName}] Compact task completed in {TimeElapsed}</value>
   </data>
   <data name="OriginUpdateAppListException" xml:space="preserve">
-    <value>An error happened while updating game list for Origin library: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Origin library: {FullPath}
+    {ex}</value>
   </data>
   <data name="Uplay_UpdateAppListError" xml:space="preserve">
-    <value>An error happened while updating game list for Uplay library: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Uplay library: {FullPath}
+    {ex}</value>
   </data>
   <data name="CantUnloadLibraryWithActiveTask" xml:space="preserve">
     <value>Can't Unload {targetLibraryType} Libraries while there is an active task.</value>
   </data>
   <data name="Uplay_Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="SteamAppsFolderNotExists" xml:space="preserve">
+    <value>SteamApps Folder Doesn't Exists at: {SteamAppsFolderFullPath}</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionTitle" xml:space="preserve">
+    <value>UnauthorizedAccessException while Installing Uplay Game</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+
+SLM must be running as Administrator for this process.
+
+Alternatively; you can use the 'Locate Game' function of Uplay.
+{ExceptionMessage}
+</value>
+  </data>
+  <data name="LibrarySettings" xml:space="preserve">
+    <value>Library Settings</value>
   </data>
 </root>
