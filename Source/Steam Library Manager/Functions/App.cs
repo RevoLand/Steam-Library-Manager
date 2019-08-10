@@ -28,9 +28,9 @@ namespace Steam_Library_Manager.Functions
                     LastUpdated = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(LastUpdated)
                 };
 
-                if (Definitions.List.SteamApps_LastPlayedDic.ContainsKey(AppID))
+                if (Definitions.List.SteamAppsLastPlayedDic.ContainsKey(AppID))
                 {
-                    appInfo.LastPlayed = Definitions.List.SteamApps_LastPlayedDic[AppID];
+                    appInfo.LastPlayed = Definitions.List.SteamAppsLastPlayedDic[AppID];
                 }
 
                 // If app doesn't have a folder in "common" directory and "downloading" directory then skip

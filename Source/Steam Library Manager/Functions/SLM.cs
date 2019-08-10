@@ -179,7 +179,7 @@ namespace Steam_Library_Manager.Functions
             {
                 if (bool.Parse(Properties.Settings.Default.CheckforUpdatesAtStartup))
                 {
-                    AutoUpdaterDotNET.AutoUpdater.Start(Definitions.Updater.VersionControlURL);
+                    AutoUpdaterDotNET.AutoUpdater.Start(Definitions.Updater.VersionControlUrl);
                 }
 
                 if (Properties.Settings.Default.Steam_IsEnabled)
@@ -195,7 +195,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (Properties.Settings.Default.Uplay_IsEnabled)
                 {
-                    LoadUplayAsync();
+                    await LoadUplayAsync();
                 }
 
                 if (Properties.Settings.Default.ParallelAfterSize >= 20000000)
@@ -284,7 +284,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (TaskManager.TaskList.Count(x => (x.App.Library.Type == targetLibraryType || x.TargetLibrary.Type == targetLibraryType) && !x.Completed) > 0)
                 {
-                    Logger.Warn($"Can't Unload {targetLibraryType} Libraries while there is an active task.");
+                    Logger.Warn(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CantUnloadLibraryWithActiveTask)), new { targetLibraryType }));
 
                     ToggleOffLibrarySwitchState(targetLibraryType);
                     return false;
@@ -535,7 +535,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (!Directory.Exists(libraryPath)) return;
 
-                    await Task.Run(() => library.UpdateAppListAsync()).ConfigureAwait(true);
+                    await Task.Run(() => library.UpdateAppList()).ConfigureAwait(true);
                     await Task.Run(() => library.UpdateJunks()).ConfigureAwait(true);
                     await Task.Run(() => library.UpdateDupes()).ConfigureAwait(true);
                 }
@@ -566,7 +566,7 @@ namespace Steam_Library_Manager.Functions
                 {
                     library.DirectoryInfo.Refresh();
 
-                    await Task.Run(library.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run(library.UpdateAppList).ConfigureAwait(true);
 
                     library.UpdateDiskDetails();
                 }

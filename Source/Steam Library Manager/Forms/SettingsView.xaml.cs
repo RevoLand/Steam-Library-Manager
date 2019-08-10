@@ -1,5 +1,6 @@
 ﻿using AutoUpdaterDotNET;
 using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -20,16 +21,22 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                AutoUpdater.Start(Definitions.Updater.VersionControlURL, Application.ResourceAssembly);
+                AutoUpdater.Start(Definitions.Updater.VersionControlUrl, Application.ResourceAssembly);
                 AutoUpdater.CheckForUpdateEvent += async args =>
                 {
                     if (!args.IsUpdateAvailable)
                     {
-                        await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.AutoUpdater)), Functions.SLM.Translate(nameof(Properties.Resources.Updater_LatestVersionMessage))).ConfigureAwait(false);
+                        await Main.FormAccessor
+                            .ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.AutoUpdater)),
+                                Functions.SLM.Translate(nameof(Properties.Resources.Updater_LatestVersionMessage)))
+                            .ConfigureAwait(true);
                     }
                 };
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private void ViewLogsButton(object sender, RoutedEventArgs e)

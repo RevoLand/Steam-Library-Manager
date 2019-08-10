@@ -17,12 +17,12 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" WindowTransitionsEnabled="False">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Content="{l:Static p:Resources.Forms_Main_Donate}" Click="RightWindowCommands_DonateButton_Click">
+            <Button Content="{l:Static p:Resources.Donate}" Click="RightWindowCommands_DonateButton_Click">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="Donate" />
-                            <TextBlock Text="Opens a webpage with available donation methods. Thank you for your support!" />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Donate}" />
+                            <TextBlock Text="{l:Static p:Resources.Forms_Main_DonateDescription}" />
                         </StackPanel>
                     </ToolTip>
                 </Button.ToolTip>
@@ -31,8 +31,8 @@
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="Translate SLM" />
-                            <TextBlock Text="Opens Crowdin project page of SLM which you can contribute to translation of SLM." />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.TranslateSLM}" />
+                            <TextBlock Text="{l:Static p:Resources.TranslateSLMDescription}" />
                         </StackPanel>
                     </ToolTip>
                 </Button.ToolTip>
@@ -41,8 +41,8 @@
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="Discord Group" />
-                            <TextBlock Text="Opens the invitation link for SLM's Discord Group on your favorite web browser." />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Main_DiscordGroup}" />
+                            <TextBlock Text="{l:Static p:Resources.Main_DiscordGroupDescription}" />
                         </StackPanel>
                     </ToolTip>
                 </Button.ToolTip>
@@ -51,13 +51,13 @@
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
         <controls:FlyoutsControl Panel.ZIndex="3" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-30,0,0">
-            <controls:Flyout x:Name="createLibraryFlyout" Position="Left" Width="300" IsOpen="False" Theme="Adapt" Header="Create Library" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
+            <controls:Flyout x:Name="createLibraryFlyout" Position="Left" Width="300" IsOpen="False" Theme="Adapt" Header="{l:Static p:Resources.CreateLibrary_Tooltip}" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
                 <StackPanel Orientation="Vertical" Margin="15">
-                    <TextBlock Text="Selected Path:" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <TextBlock Text="{l:Static p:Resources.Main_SelectedPath}" HorizontalAlignment="Stretch" Margin="0,5" />
                     <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5" />
-                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="Select" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}" />
+                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="{l:Static p:Resources.Select}" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}" />
 
-                    <ComboBox Name="createLibrary_Type" controls:TextBoxHelper.Watermark="Library Type" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Stretch" Height="40" Margin="0, 10"
+                    <ComboBox Name="createLibrary_Type" controls:TextBoxHelper.Watermark="{l:Static p:Resources.LibraryType}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Stretch" Height="40" Margin="0, 10"
                               ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryType}}" BorderBrush="{DynamicResource AccentColorBrush}" SelectionChanged="CreateLibrary_Type_SelectionChanged">
                         <ComboBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ComboBoxItem}">
@@ -67,15 +67,15 @@
                         <ComboBox.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Library Type" />
-                                    <TextBlock Text="Select a library type you would like to create of." />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.LibraryType}" />
+                                    <TextBlock Text="{l:Static p:Resources.LibraryTypeDescription}" />
                                 </StackPanel>
                             </ToolTip>
                         </ComboBox.ToolTip>
                     </ComboBox>
-                    <TextBlock Text="Selected Library Type:" HorizontalAlignment="Stretch" Margin="0,5" />
+                    <TextBlock Text="{l:Static p:Resources.SelectedLibraryType}" HorizontalAlignment="Stretch" Margin="0,5" />
                     <TextBlock x:Name="createLibrary_TypeText" HorizontalAlignment="Stretch" Margin="0,5" />
-                    <Button Click="CreateLibraryButton_Click" Content="Create Library" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" />
+                    <Button Click="CreateLibraryButton_Click" Content="{l:Static p:Resources.CreateLibrary_Tooltip}" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" />
                     <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10" />
                 </StackPanel>
             </controls:Flyout>
@@ -89,7 +89,7 @@
         <!-- Grid: Quick settings -->
         <WrapPanel x:Name="QuickSettings" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" Panel.ZIndex="1">
             <!-- App Sorting Method -->
-            <ComboBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_SortGamesBy}" controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
+            <ComboBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.SortGamesBy}" controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="140" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" Margin="5, 0"
                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
@@ -100,8 +100,8 @@
                 <ComboBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="Sorting Method for Game Panel" />
-                            <TextBlock Text="Lets you select a sorting method for the game panel." />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.SortGamesBy_Tooltip}" />
+                            <TextBlock Text="{l:Static p:Resources.SortGamesBy_Tooltip2}" />
                         </StackPanel>
                     </ToolTip>
                 </ComboBox.ToolTip>
@@ -119,8 +119,8 @@
                 <ComboBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="View Method for Game Panel" />
-                            <TextBlock Text="Lets you switch between Grid and List View for Game Panel" />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.ViewMethodForGamePanel}" />
+                            <TextBlock Text="{l:Static p:Resources.ViewMethodForGamePanelDesc}" />
                         </StackPanel>
                     </ToolTip>
                 </ComboBox.ToolTip>
@@ -148,8 +148,8 @@
                             <TextBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="Search for..." />
-                                        <TextBlock Text="Lets you search for a game by it's name or appid." />
+                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.SearchFor}" />
+                                        <TextBlock Text="{l:Static p:Resources.SearchForDesc}" />
                                     </StackPanel>
                                 </ToolTip>
                             </TextBox.ToolTip>
@@ -166,7 +166,7 @@
                 <Forms:LibraryCleanerView x:Name="LibraryCleanerView" />
             </controls:MetroTabItem>
             <!-- Tab: Settings -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Settings}" Name="TabItem_Settings">
+            <controls:MetroTabItem Header="{l:Static p:Resources.Settings}" Name="TabItem_Settings">
                 <Forms:SettingsView x:Name="SettingsView" />
             </controls:MetroTabItem>
         </controls:MetroTabControl>

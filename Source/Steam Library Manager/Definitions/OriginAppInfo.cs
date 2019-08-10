@@ -81,18 +81,18 @@ namespace Steam_Library_Manager.Definitions
 
                     case "install":
 
-                        await InstallAsync().ConfigureAwait(false);
+                        await InstallAsync().ConfigureAwait(true);
 
                         break;
 
                     case "repair":
 
-                        await InstallAsync(true).ConfigureAwait(false);
+                        await InstallAsync(true).ConfigureAwait(true);
 
                         break;
 
                     case "deleteappfiles":
-                        await Task.Run(async () => await DeleteFilesAsync()).ConfigureAwait(false);
+                        await Task.Run(async () => await DeleteFilesAsync()).ConfigureAwait(true);
 
                         Library.Apps.Remove(this);
                         if (SLM.CurrentSelectedLibrary == Library)

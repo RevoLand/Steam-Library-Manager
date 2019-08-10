@@ -8,8 +8,6 @@
         public Library()
         {
             InitializeComponent();
-
-            Functions.Uplay.UpdateInstallationPath();
         }
     }
 }

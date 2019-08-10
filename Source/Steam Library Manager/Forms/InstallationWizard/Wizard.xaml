@@ -6,10 +6,12 @@
                  xmlns:local="clr-namespace:Steam_Library_Manager.Forms.InstallationWizard"
                  xmlns:controls="clr-namespace:MvvmWizard.Controls;assembly=MvvmWizard"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:l="http://gu.se/Localization"
+                 xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
                  mc:Ignorable="d"
                  MinHeight="650" MinWidth="500" Height="650" Width="500" Closing="Wizard_OnClosing"
                  WindowStyle="None" ShowMaxRestoreButton="False" ShowTitleBar="True" ShowMinButton="False" WindowStartupLocation="CenterScreen"
-                 Title="Steam Library Manager: Installation Wizard" TitleCharacterCasing="Normal">
+                 Title="{l:Static p:Resources.SteamLibraryManagerInstallationWizard}" TitleCharacterCasing="Normal">
     <controls:Wizard Name="WizardControl" SummaryVisibility="Visible" AllowNavigationOnSummaryItemClick="True" TransitionButtonsHorizontalAlignment="Center" SummaryHorizontalAlignment="Center" SummaryMargin="10,0">
         <controls:WizardStep BackButtonVisibility="Collapsed">
             <local:Welcome />

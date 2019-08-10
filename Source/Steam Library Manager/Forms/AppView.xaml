@@ -48,7 +48,8 @@
                             <Setter Property="Margin" Value="240, 0, 0, 0" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Origin">
-                                    <Setter Property="Margin" Value="125, 0, 0, 0" /> <!-- 9? -->
+                                    <Setter Property="Margin" Value="125, 0, 0, 0" />
+                                    <!-- +9 -->
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Library.Type}" Value="Uplay">
                                     <Setter Property="Margin" Value="149, 0, 0, 0" />
@@ -68,7 +69,7 @@
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsCompacted}" Value="true">
-                                            <Setter Property="Text" Value="Compacted" />
+                                            <Setter Property="Text" Value="{l:Static p:Resources.Compacted}" />
                                         </DataTrigger>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
@@ -124,7 +125,7 @@
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsCompacted}" Value="true">
-                                        <Setter Property="Text" Value="Compacted" />
+                                        <Setter Property="Text" Value="{l:Static p:Resources.Compacted}" />
                                     </DataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -179,9 +180,9 @@
             <ListView.ToolTip>
                 <ToolTip>
                     <StackPanel>
-                        <TextBlock Text="Double-clicking to an item will open it's location in file explorer." />
-                        <TextBlock Text="To copy/move a game to another library, simply drag-drop the item to the targeted library." />
-                        <TextBlock Text="Multiple item selection/tasking is allowed." />
+                        <TextBlock Text="{l:Static p:Resources.AppPanel_Desc1}" />
+                        <TextBlock Text="{l:Static p:Resources.AppPanel_Desc2}" />
+                        <TextBlock Text="{l:Static p:Resources.AppPanel_Desc3}" />
                     </StackPanel>
                 </ToolTip>
             </ListView.ToolTip>

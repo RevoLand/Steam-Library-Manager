@@ -20,7 +20,7 @@ namespace Steam_Library_Manager
     public partial class Main
     {
         public static Main FormAccessor;
-        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private ObservableCollection<string> TmViewLogs { get; } = new ObservableCollection<string>();
         private LibraryType _libraryType;
 
@@ -154,7 +154,7 @@ namespace Steam_Library_Manager
                 LibraryCleanerView.DupeItems.ItemsSource = Definitions.List.DupeItems;
                 LibraryCleanerView.IgnoredItems.ItemsSource = Definitions.List.IgnoredJunkItems;
 
-                SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIDList;
+                SettingsView.SteamUserIDList.ItemsSource = Definitions.List.SteamUserIdList;
             }
             catch (Exception ex)
             {
@@ -348,19 +348,19 @@ namespace Steam_Library_Manager
 
                 if (string.IsNullOrEmpty(libraryPath))
                 {
-                    createLibrary_ResultText.Text = "Directory is not selected for library creation.";
+                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation));
                     return;
                 }
 
                 if (createLibrary_Type.SelectedItem == null)
                 {
-                    createLibrary_ResultText.Text = "Library type is not selected for library creation.";
+                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation));
                     return;
                 }
 
                 if (!Directory.Exists(libraryPath))
                 {
-                    createLibrary_ResultText.Text = $"Selected directory does not exists: \"{libraryPath}\"";
+                    createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath)), new { libraryPath });
                     return;
                 }
 
@@ -369,7 +369,7 @@ namespace Steam_Library_Manager
                     case LibraryType.Steam:
                         if (!Properties.Settings.Default.Steam_IsEnabled)
                         {
-                            createLibrary_ResultText.Text = "Steam Library support must be enabled for this action.";
+                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
                             return;
                         }
 
@@ -394,7 +394,7 @@ namespace Steam_Library_Manager
                     case LibraryType.SLM:
                         if (!Properties.Settings.Default.Steam_IsEnabled)
                         {
-                            createLibrary_ResultText.Text = "Steam Library support must be enabled for this action.";
+                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
                             return;
                         }
 
@@ -419,7 +419,7 @@ namespace Steam_Library_Manager
                     case LibraryType.Origin:
                         if (!Properties.Settings.Default.Origin_IsEnabled)
                         {
-                            createLibrary_ResultText.Text = "Origin Library support must be enabled for this action.";
+                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction));
                             return;
                         }
 
@@ -444,7 +444,7 @@ namespace Steam_Library_Manager
                     case LibraryType.Uplay:
                         if (!Properties.Settings.Default.Uplay_IsEnabled)
                         {
-                            createLibrary_ResultText.Text = "Uplay Library support must be enabled for this action.";
+                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction));
                             return;
                         }
 

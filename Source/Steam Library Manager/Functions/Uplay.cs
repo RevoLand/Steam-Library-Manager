@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Functions
 
             var menuItem = new Definitions.ContextMenuItem
             {
-                Header = "Open",
+                Header = SLM.Translate(nameof(Properties.Resources.Uplay_Open)),
                 Action = "Disk",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -34,7 +34,7 @@ namespace Steam_Library_Manager.Functions
 
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = "Remove from SLM",
+                Header = Functions.SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
                 Action = "remove",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToNormal = false
@@ -54,7 +54,7 @@ namespace Steam_Library_Manager.Functions
             // Run
             var menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Run)),
+                Header = SLM.Translate(nameof(Properties.Resources.Run)),
                 Action = "steam://run/{0}", // TO-DO
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
@@ -66,9 +66,8 @@ namespace Steam_Library_Manager.Functions
             // Compress
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = "Compress",
+                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compress)),
                 Action = "compress",
-                ShowToCompressed = false,
                 Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
@@ -78,7 +77,7 @@ namespace Steam_Library_Manager.Functions
             // Compact
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = "Compact",
+                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
@@ -97,18 +96,6 @@ namespace Steam_Library_Manager.Functions
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
             Definitions.List.AppCMenuItems.Add(menuItem);
 
-            // Install
-            menuItem = new Definitions.ContextMenuItem
-            {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Install)),
-                Action = "install",
-                Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
-                ShowToCompressed = false
-            };
-
-            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
-            Definitions.List.AppCMenuItems.Add(menuItem);
-
             // Separator
             menuItem = new Definitions.ContextMenuItem
             {
@@ -122,7 +109,7 @@ namespace Steam_Library_Manager.Functions
             // Show on disk
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DiskInfo)),
+                Header = SLM.Translate(nameof(Properties.Resources.MenuDiskInfo)),
                 Action = "Disk",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -133,7 +120,6 @@ namespace Steam_Library_Manager.Functions
             // Separator
             menuItem = new Definitions.ContextMenuItem
             {
-                ShowToCompressed = false,
                 IsSeparator = true
             };
 
@@ -143,7 +129,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using SLM)
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesSLM)),
+                Header = SLM.Translate(nameof(Properties.Resources.DeleteFilesUsingSlm)),
                 Action = "deleteappfiles",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -154,7 +140,7 @@ namespace Steam_Library_Manager.Functions
             // Delete files (using Task Manager)
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_DeleteFilesTM)),
+                Header = SLM.Translate(nameof(Properties.Resources.DeleteFilesUsingTaskmanager)),
                 Action = "deleteappfilestm",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -355,7 +341,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.List.LibraryProgress.Report(newLibrary);
 
-                await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                await Task.Run(newLibrary.UpdateAppList).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -391,10 +377,6 @@ namespace Steam_Library_Manager.Functions
                 if (gameDetails != null)
                 {
                     library.Apps.Add(new Definitions.UplayAppInfo(library, gameDetails.Name, gameDetails.SpaceId, installationDirectory, gameDetails.ThumbImage, isCompressed));
-                }
-                else
-                {
-                    MessageBox.Show($"No db entry found for uplay game folder: {name}\nTest1: {Definitions.List.UplayConfigurations.Count(x => x.Name == name)} - Test2: {Definitions.List.UplayConfigurations.Count(x => x.Name.ToLowerInvariant() == name.ToLowerInvariant())}");
                 }
             }
             catch (Exception ex)

@@ -6,39 +6,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:localization="clr-namespace:Gu.Localization;assembly=Gu.Localization"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
-             xmlns:SLM="clr-namespace:Steam_Library_Manager"
-             xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
+             xmlns:slm="clr-namespace:Steam_Library_Manager"
+             xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="500">
-    <GroupBox Header="{l:Static p:Resources.Forms_Settings_GeneralSettings}">
+    <GroupBox Header="{l:Static p:Resources.GeneralSettings}">
         <WrapPanel>
-            <TextBlock TextWrapping="Wrap">This installation wizard will help you set basics of SLM for first time use. Please start with selecting a default language, theme base and accent.</TextBlock>
-            <TextBlock TextWrapping="Wrap">Alternatively, you can close this window to use SLM's default options.</TextBlock>
+            <TextBlock TextWrapping="Wrap" Text="{l:Static p:Resources.Welcome_Text}" />
+            <TextBlock TextWrapping="Wrap" Text="{l:Static p:Resources.Welcome_Text2}" />
             <Separator Width="20" Height="30" Background="Transparent" />
-            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="0, 0, 5, 0" mah:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeBase}" mah:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="50"
+            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="0, 0, 5, 0" mah:TextBoxHelper.Watermark="{l:Static p:Resources.ThemeBase}" mah:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="50"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                      SelectedItem="{Binding Setting_BaseTheme}" ItemsSource="{SLM:EnumBindingSource {x:Type Enums:BaseTheme}}">
+                      SelectedItem="{Binding Setting_BaseTheme}" ItemsSource="{slm:EnumBindingSource {x:Type enums:BaseTheme}}">
             </ComboBox>
 
-            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" mah:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_ThemeAccent}" mah:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="50"
+            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" mah:TextBoxHelper.Watermark="{l:Static p:Resources.ThemeAccent}" mah:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="50"
                                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ThemeAccent}"
-                                      ItemsSource="{SLM:EnumBindingSource {x:Type Enums:ThemeAccents}}">
+                                      ItemsSource="{slm:EnumBindingSource {x:Type enums:ThemeAccents}}">
             </ComboBox>
 
-            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" mah:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_Language}" mah:TextBoxHelper.UseFloatingWatermark="True"
+            <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" mah:TextBoxHelper.Watermark="{l:Static p:Resources.Language}" mah:TextBoxHelper.UseFloatingWatermark="True"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Height="50" Width="240"
                       SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="Selector_OnSelectionChanged">
             </ComboBox>
             <!-- Check for Updates at Startup -->
-            <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.Forms_Settings_CheckForUpdatesOnStartup}" OnLabel="Yes" OffLabel="No"
-                                   IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup}"
+            <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CheckForUpdatesAtStartup}" OnLabel="{l:Static p:Resources.Yes}" OffLabel="{l:Static p:Resources.No}"
+                                   IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup}"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
                 <mah:ToggleSwitch.ToolTip>
                     <ToolTip>
                         <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="Check for Updates at Startup" />
-                            <TextBlock Text="Attempts for a new version control at startup." />
+                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.CheckForUpdatesAtStartup}" />
+                            <TextBlock Text="{l:Static p:Resources.CheckForUpdatesAtStartup_Tooltip}" />
                         </StackPanel>
                     </ToolTip>
                 </mah:ToggleSwitch.ToolTip>

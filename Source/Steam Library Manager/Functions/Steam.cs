@@ -13,7 +13,7 @@ namespace Steam_Library_Manager.Functions
 {
     internal static class Steam
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static async void UpdateSteamInstallationPathAsync()
         {
@@ -48,11 +48,11 @@ namespace Steam_Library_Manager.Functions
             }
             catch (NullReferenceException ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -114,8 +114,7 @@ namespace Steam_Library_Manager.Functions
             {
                 IsSeparator = true,
                 ShowToNormal = false,
-                ShowToOffline = false,
-                ShowToSLMBackup = true
+                ShowToOffline = false
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
@@ -124,10 +123,9 @@ namespace Steam_Library_Manager.Functions
             // Remove from SLM
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSLM)),
+                Header = SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
                 Action = "RemoveFromList",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
-                ShowToSLMBackup = true
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
@@ -169,7 +167,6 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Compress)),
                 Action = "Compress",
-                ShowToCompressed = true,
                 ShowToSteamBackup = false,
                 Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -181,7 +178,7 @@ namespace Steam_Library_Manager.Functions
             // Compact
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = "Compact",
+                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
                 ShowToSteamBackup = false,
@@ -195,7 +192,6 @@ namespace Steam_Library_Manager.Functions
             // Separator
             menuItem = new Definitions.ContextMenuItem
             {
-                ShowToCompressed = false,
                 IsSeparator = true,
                 ShowToSteamBackup = false
             };
@@ -209,7 +205,6 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DiskInfo)),
                 Action = "Disk",
-                ShowToCompressed = true,
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
@@ -259,7 +254,8 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_VerifyFiles)),
                 Action = "verify",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CheckAll, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CheckAll, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                ShowToCompressed = false
             };
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
@@ -380,7 +376,7 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
 
                 return null;
             }
@@ -423,7 +419,7 @@ namespace Steam_Library_Manager.Functions
             { }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -451,7 +447,7 @@ namespace Steam_Library_Manager.Functions
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -531,11 +527,11 @@ namespace Steam_Library_Manager.Functions
                          await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessExceptionMessage)), new { NewLibraryPath, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true);
                      }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
 
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
 
@@ -590,7 +586,7 @@ namespace Steam_Library_Manager.Functions
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
 
@@ -611,13 +607,13 @@ namespace Steam_Library_Manager.Functions
 
                     Definitions.List.LibraryProgress.Report(newLibrary);
 
-                    await Task.Run(newLibrary.UpdateAppListAsync).ConfigureAwait(true);
+                    await Task.Run(newLibrary.UpdateAppList).ConfigureAwait(true);
                     await Task.Run(newLibrary.UpdateJunks).ConfigureAwait(true);
                     await Task.Run(newLibrary.UpdateDupes).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
 
@@ -640,9 +636,9 @@ namespace Steam_Library_Manager.Functions
                                 foreach (var app in appsPath.Children)
                                 {
                                     var lastPlayed = app["LastPlayed"].Value;
-                                    if (lastPlayed != null && !Definitions.List.SteamApps_LastPlayedDic.ContainsKey(Convert.ToInt32(app.Name)))
+                                    if (lastPlayed != null && !Definitions.List.SteamAppsLastPlayedDic.ContainsKey(Convert.ToInt32(app.Name)))
                                     {
-                                        Definitions.List.SteamApps_LastPlayedDic.Add(Convert.ToInt32(app.Name), new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(lastPlayed)));
+                                        Definitions.List.SteamAppsLastPlayedDic.Add(Convert.ToInt32(app.Name), new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Convert.ToInt64(lastPlayed)));
                                     }
                                 }
                             }
@@ -681,21 +677,21 @@ namespace Steam_Library_Manager.Functions
                                         continue;
                                     }
 
-                                    Definitions.List.SteamUserIDList.Add(new Tuple<string, string>(account.Name, steamId.Value));
+                                    Definitions.List.SteamUserIdList.Add(new Tuple<string, string>(account.Name, steamId.Value));
                                 }
 
-                                Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIDList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
+                                Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIdList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
                             }
                         }
                     }
                     else
                     {
-                        logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.VdfFilePath}");
+                        Logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.VdfFilePath}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.Fatal(ex);
+                    Logger.Fatal(ex);
                 }
             }
 

@@ -38,6 +38,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 - Unused libraries (NumericUpDownLib & FontAwesome)
+- Ability to disable parallel file transfers per-task. (#64)
 
 ## [1.5.1.10] - 2019-07-17
 

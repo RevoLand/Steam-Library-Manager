@@ -20,10 +20,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_DuplicateKeyHandling = Fail
-		RESX_ShowErrorsInErrorList = True
-		RESX_AutoCreateNewLanguageFiles = False
+		RESX_TaskErrorCategory = Warning
+		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"Functions.SLM.Translate(nameof(Properties.$File.$Key))|Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.$File.$Key)), new { })|$Key"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"{l:Static p:$File.$Key}|\"{l:Static p:$File.$Key}\""}]}
 		SolutionGuid = {BAC111FB-A259-47CA-987C-ECC3D96BDA53}
-		RESX_MoveToResources = {"Items":[{"Extensions":".cs,.vb","Patterns":"Functions.SLM.Translate(nameof(Properties.$File.$Key))|$Key"},{"Extensions":".cshtml,.vbhtml","Patterns":"@$Namespace.$File.$Key|@$File.$Key|@StringResourceKey.$Key|@$Namespace.StringResourceKey.$Key"},{"Extensions":".cpp,.c,.hxx,.h","Patterns":"$File::$Key"},{"Extensions":".aspx,.ascx","Patterns":"<%$ Resources:$File,$Key %>|<%= $File.$Key %>|<%= $Namespace.$File.$Key %>"},{"Extensions":".xaml","Patterns":"{l:Static p:$File.$Key}"}]}
+		RESX_AutoCreateNewLanguageFiles = False
+		RESX_ShowErrorsInErrorList = True
+		RESX_DuplicateKeyHandling = Fail
 	EndGlobalSection
 EndGlobal

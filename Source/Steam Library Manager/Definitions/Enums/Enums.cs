@@ -43,8 +43,13 @@ namespace Steam_Library_Manager.Definitions.Enums
 
     public enum CompressionLevel
     {
+        [LocalizedDescription("Enums_Optimal")]
         Optimal = 0,
+
+        [LocalizedDescription("Enums_Fastest")]
         Fastest = 1,
+
+        [LocalizedDescription("Enums_Store")]
         NoCompression = 2
     }
 
@@ -86,15 +91,23 @@ namespace Steam_Library_Manager.Definitions.Enums
         [LocalizedDescription("Enums_Compress")]
         Compress,
 
+        [LocalizedDescription("Enums_Compact")]
         Compact
     }
 
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum JunkType
     {
+        [LocalizedDescription("HeadlessFolder")]
         HeadlessFolder,
+
+        [LocalizedDescription("HeadlessWorkshopFolder")]
         HeadlessWorkshopFolder,
+
+        [LocalizedDescription("CorruptedDataFile")]
         CorruptedDataFile,
+
+        [LocalizedDescription("HeadlessDataFile")]
         HeadlessDataFile
     }
 

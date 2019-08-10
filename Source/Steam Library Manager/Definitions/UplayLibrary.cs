@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Async;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -18,7 +17,7 @@ namespace Steam_Library_Manager.Definitions
             AllowedAppTypes.Add(Enums.LibraryType.Uplay);
         }
 
-        public override async void UpdateAppListAsync()
+        public override void UpdateAppList()
         {
             try
             {
@@ -31,19 +30,18 @@ namespace Steam_Library_Manager.Definitions
 
                 if (!Directory.Exists(FullPath)) return;
 
-                await Directory.EnumerateDirectories(FullPath, "*", SearchOption.TopDirectoryOnly)
-                    .ParallelForEachAsync(
-                        async directoryPath =>
-                        {
-                            var dirInfo = new DirectoryInfo(directoryPath);
-                            Functions.Uplay.ParseAppDetails(dirInfo.Name, dirInfo, this);
-                        });
-
-                await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async uplayCompressedArchive =>
+                foreach (var directoryPath in Directory.EnumerateDirectories(FullPath, "*",
+                    SearchOption.TopDirectoryOnly))
                 {
-                    var fileInfo = new FileInfo(uplayCompressedArchive);
+                    var dirInfo = new DirectoryInfo(directoryPath);
+                    Functions.Uplay.ParseAppDetails(dirInfo.Name, dirInfo, this);
+                }
+
+                foreach (var archivePath in Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly))
+                {
+                    var fileInfo = new FileInfo(archivePath);
                     Functions.Uplay.ParseAppDetails(fileInfo.Name.Replace(".zip", ""), fileInfo.Directory, this, true);
-                });
+                }
 
                 if (SLM.CurrentSelectedLibrary != null && SLM.CurrentSelectedLibrary == this)
                 {
@@ -54,7 +52,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error happened while updating game list for Uplay library: {FullPath}\n{ex}");
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UpdateAppListError)), new { FullPath, ex }));
                 Logger.Fatal(ex);
             }
         }

@@ -11,9 +11,9 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for TaskManagerView.xaml
     /// </summary>
-    public partial class TaskManagerView : UserControl
+    public partial class TaskManagerView
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public TaskManagerView() => InitializeComponent();
 
@@ -48,24 +48,16 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "ClearCompleted":
-                        if (Functions.TaskManager.TaskList.Count == 0)
+                        foreach (var currentTask in Functions.TaskManager.TaskList.Where(x => x.Completed).ToList())
                         {
-                            return;
-                        }
-
-                        foreach (Definitions.List.TaskInfo CurrentTask in Functions.TaskManager.TaskList.ToList())
-                        {
-                            if (CurrentTask.Completed)
-                            {
-                                Functions.TaskManager.TaskList.Remove(CurrentTask);
-                            }
+                            Functions.TaskManager.TaskList.Remove(currentTask);
                         }
                         break;
                 }
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -112,7 +104,7 @@ namespace Steam_Library_Manager.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 
@@ -127,7 +119,7 @@ namespace Steam_Library_Manager.Forms
             }
             catch (Exception ex)
             {
-                logger.Fatal(ex);
+                Logger.Fatal(ex);
             }
         }
 

@@ -65,7 +65,7 @@ namespace Steam_Library_Manager.Functions
                     CurrentTask.Active = false;
                     CurrentTask.Completed = true;
 
-                    CurrentTask.TargetLibrary?.UpdateAppListAsync();
+                    CurrentTask.TargetLibrary?.UpdateAppList();
 
                     if (CurrentTask.AutoInstall && !CurrentTask.Compress)
                     {

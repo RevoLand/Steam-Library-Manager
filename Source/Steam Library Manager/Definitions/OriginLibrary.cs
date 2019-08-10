@@ -22,7 +22,7 @@ namespace Steam_Library_Manager.Definitions
             AllowedAppTypes.Add(Enums.LibraryType.Origin);
         }
 
-        public override async void UpdateAppListAsync()
+        public override async void UpdateAppList()
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error happened while updating game list for Origin library: {FullPath}\n{ex}");
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUpdateAppListException)), new { FullPath, ex }));
                 Logger.Fatal(ex);
             }
         }

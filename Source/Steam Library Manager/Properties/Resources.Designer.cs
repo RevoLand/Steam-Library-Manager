@@ -61,6 +61,33 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Compact Size Detection.
+        /// </summary>
+        internal static string AdvancedCompactSizeDetection {
+            get {
+                return ResourceManager.GetString("AdvancedCompactSizeDetection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets the correct size in disk by running compact command on folders..
+        /// </summary>
+        internal static string AdvancedCompactSizeDetection_Tooltip {
+            get {
+                return ResourceManager.GetString("AdvancedCompactSizeDetection_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Huge performance impact!.
+        /// </summary>
+        internal static string AdvancedCompactSizeDetection_Tooltip2 {
+            get {
+                return ResourceManager.GetString("AdvancedCompactSizeDetection_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [{AppName}] An error happened while moving game files. Time Elapsed: {ElapsedTime}.
         /// </summary>
         internal static string AnyError_ElapsedTime {
@@ -94,6 +121,42 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double-clicking to an item will open it&apos;s location in file explorer..
+        /// </summary>
+        internal static string AppPanel_Desc1 {
+            get {
+                return ResourceManager.GetString("AppPanel_Desc1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To copy/move a game to another library, simply drag-drop the item to the targeted library..
+        /// </summary>
+        internal static string AppPanel_Desc2 {
+            get {
+                return ResourceManager.GetString("AppPanel_Desc2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple item selection/tasking is allowed..
+        /// </summary>
+        internal static string AppPanel_Desc3 {
+            get {
+                return ResourceManager.GetString("AppPanel_Desc3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Install.
+        /// </summary>
+        internal static string AutoInstall {
+            get {
+                return ResourceManager.GetString("AutoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Updater.
         /// </summary>
         internal static string AutoUpdater {
@@ -103,11 +166,299 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculation method for archive size.
+        /// </summary>
+        internal static string CalculationMethodForArchiveSize {
+            get {
+                return ResourceManager.GetString("CalculationMethodForArchiveSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size Calculation Method for Compressed Archives.
+        /// </summary>
+        internal static string CalculationMethodForArchiveSize_Tooltip {
+            get {
+                return ResourceManager.GetString("CalculationMethodForArchiveSize_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archive Size uses the size of the compressed archive..
+        /// </summary>
+        internal static string CalculationMethodForArchiveSize_Tooltip2 {
+            get {
+                return ResourceManager.GetString("CalculationMethodForArchiveSize_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Size in Archive enumarates each file in the archive to get the correct size information (SLOW).
+        /// </summary>
+        internal static string CalculationMethodForArchiveSize_Tooltip3 {
+            get {
+                return ResourceManager.GetString("CalculationMethodForArchiveSize_Tooltip3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculation method for games.
         /// </summary>
-        internal static string Calculation_method_for_games {
+        internal static string CalculationMethodForGames {
             get {
-                return ResourceManager.GetString("Calculation_method_for_games", resourceCulture);
+                return ResourceManager.GetString("CalculationMethodForGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size Calculation Method for Games.
+        /// </summary>
+        internal static string CalculationMethodForGames_Tooltip {
+            get {
+                return ResourceManager.GetString("CalculationMethodForGames_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACF uses the size information provided by the app manifest file.
+        /// </summary>
+        internal static string CalculationMethodForGames_Tooltip2 {
+            get {
+                return ResourceManager.GetString("CalculationMethodForGames_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enumeration, enumarates every file and folder to get the correct size information (SLOW).
+        /// </summary>
+        internal static string CalculationMethodForGames_Tooltip3 {
+            get {
+                return ResourceManager.GetString("CalculationMethodForGames_Tooltip3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t Unload {targetLibraryType} Libraries while there is an active task..
+        /// </summary>
+        internal static string CantUnloadLibraryWithActiveTask {
+            get {
+                return ResourceManager.GetString("CantUnloadLibraryWithActiveTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Backup Updates.
+        /// </summary>
+        internal static string CheckForBackupUpdates {
+            get {
+                return ResourceManager.GetString("CheckForBackupUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will compare the games in SLM libraries with Steam libraries to find if there is any update available..
+        /// </summary>
+        internal static string CheckForBackupUpdates_Tooltip {
+            get {
+                return ResourceManager.GetString("CheckForBackupUpdates_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        internal static string CheckForUpdates {
+            get {
+                return ResourceManager.GetString("CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM will attempt to check for updates to see if there is newer version available..
+        /// </summary>
+        internal static string CheckForUpdates_Tooltip {
+            get {
+                return ResourceManager.GetString("CheckForUpdates_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates at Startup.
+        /// </summary>
+        internal static string CheckForUpdatesAtStartup {
+            get {
+                return ResourceManager.GetString("CheckForUpdatesAtStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempts for a new version control at startup..
+        /// </summary>
+        internal static string CheckForUpdatesAtStartup_Tooltip {
+            get {
+                return ResourceManager.GetString("CheckForUpdatesAtStartup_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Completed Tasks.
+        /// </summary>
+        internal static string ClearCompletedTasks {
+            get {
+                return ResourceManager.GetString("ClearCompletedTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will remove the completed tasks from the task list..
+        /// </summary>
+        internal static string ClearCompletedTasks_Tooltip {
+            get {
+                return ResourceManager.GetString("ClearCompletedTasks_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear header image cache.
+        /// </summary>
+        internal static string ClearHeaderImageCache {
+            get {
+                return ResourceManager.GetString("ClearHeaderImageCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM will attempt to clear the cache for game header images cached in /.slmcache/ folder.
+        /// </summary>
+        internal static string ClearHeaderImageCache_Tooltip {
+            get {
+                return ResourceManager.GetString("ClearHeaderImageCache_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Library.
+        /// </summary>
+        internal static string CloseLibrary_Tooltip {
+            get {
+                return ResourceManager.GetString("CloseLibrary_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the selected library from SLM without touching files inside..
+        /// </summary>
+        internal static string CloseLibrary_Tooltip2 {
+            get {
+                return ResourceManager.GetString("CloseLibrary_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only available for (non-main) Origin and SLM libraries..
+        /// </summary>
+        internal static string CloseLibrary_Tooltip3 {
+            get {
+                return ResourceManager.GetString("CloseLibrary_Tooltip3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        internal static string Compact {
+            get {
+                return ResourceManager.GetString("Compact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compressing file: {fileName}.
+        /// </summary>
+        internal static string Compact_CompressingFile {
+            get {
+                return ResourceManager.GetString("Compact_CompressingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{AppName}] Compact task completed in {TimeElapsed}.
+        /// </summary>
+        internal static string Compact_TaskCompletedIn {
+            get {
+                return ResourceManager.GetString("Compact_TaskCompletedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory doesn&apos;t exists !? - {DirectoryFullName}.
+        /// </summary>
+        internal static string CompactDirectoryNotExists {
+            get {
+                return ResourceManager.GetString("CompactDirectoryNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compacted.
+        /// </summary>
+        internal static string Compacted {
+            get {
+                return ResourceManager.GetString("Compacted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force Compress.
+        /// </summary>
+        internal static string CompactForceCompress {
+            get {
+                return ResourceManager.GetString("CompactForceCompress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact Status Detection.
+        /// </summary>
+        internal static string CompactStatusDetection {
+            get {
+                return ResourceManager.GetString("CompactStatusDetection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets the compact status for installed games..
+        /// </summary>
+        internal static string CompactStatusDetection_Tooltip {
+            get {
+                return ResourceManager.GetString("CompactStatusDetection_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to )} and the task is set to {(currentTask.Compact ? .
+        /// </summary>
+        internal static string CompactTask_AndTheTaskİsSetToCurrentTaskCompact {
+            get {
+                return ResourceManager.GetString("CompactTask_AndTheTaskİsSetToCurrentTaskCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current status of {AppName} is {(IsCompacted ? .
+        /// </summary>
+        internal static string CompactTask_CurrentStatusOfAppNameİsIsCompacted {
+            get {
+                return ResourceManager.GetString("CompactTask_CurrentStatusOfAppNameİsIsCompacted", resourceCulture);
             }
         }
         
@@ -134,20 +485,65 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Corrupted acf file.
+        ///   Looks up a localized string similar to {ArchiveFullPath} is in use. Delaying the task until archive gets free..
         /// </summary>
-        internal static string CorruptedAcfFile {
+        internal static string CompressedArchiveExistsAndInUse {
             get {
-                return ResourceManager.GetString("CorruptedAcfFile", resourceCulture);
+                return ResourceManager.GetString("CompressedArchiveExistsAndInUse", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Steam Library Manager.
+        ///   Looks up a localized string similar to Compress Files.
         /// </summary>
-        internal static string CreateLibrary_Exists {
+        internal static string CompressFiles {
             get {
-                return ResourceManager.GetString("CreateLibrary_Exists", resourceCulture);
+                return ResourceManager.GetString("CompressFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected, SLM will compress files. This option can be changed per-task..
+        /// </summary>
+        internal static string CompressFiles_Tooltip {
+            get {
+                return ResourceManager.GetString("CompressFiles_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compression Level.
+        /// </summary>
+        internal static string CompressionLevel {
+            get {
+                return ResourceManager.GetString("CompressionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compression Level to use for compressing game files..
+        /// </summary>
+        internal static string CompressionLevel_Tooltip {
+            get {
+                return ResourceManager.GetString("CompressionLevel_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corrupted Data File.
+        /// </summary>
+        internal static string CorruptedDataFile {
+            get {
+                return ResourceManager.GetString("CorruptedDataFile", resourceCulture);
             }
         }
         
@@ -170,21 +566,74 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Steam Library Manager.
+        ///   Looks up a localized string similar to Create Library.
         /// </summary>
-        internal static string CreateLibraryDialog {
+        internal static string CreateLibrary_Tooltip {
             get {
-                return ResourceManager.GetString("CreateLibraryDialog", resourceCulture);
+                return ResourceManager.GetString("CreateLibrary_Tooltip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Library type you want to create in folder:
-        ///{LibraryPath}.
+        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected folder..
         /// </summary>
-        internal static string CreateLibraryDialogMessage {
+        internal static string CreateLibrary_Tooltip2 {
             get {
-                return ResourceManager.GetString("CreateLibraryDialogMessage", resourceCulture);
+                return ResourceManager.GetString("CreateLibrary_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory is not selected for library creation..
+        /// </summary>
+        internal static string CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library type is not selected for library creation..
+        /// </summary>
+        internal static string CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin Library support must be enabled for this action..
+        /// </summary>
+        internal static string CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected directory does not exists: {libraryPath}.
+        /// </summary>
+        internal static string CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Library support must be enabled for this action..
+        /// </summary>
+        internal static string CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uplay Library support must be enabled for this action..
+        /// </summary>
+        internal static string CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction {
+            get {
+                return ResourceManager.GetString("CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction", resourceCulture);
             }
         }
         
@@ -229,20 +678,110 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete All Items.
+        ///   Looks up a localized string similar to Default Compact Level.
         /// </summary>
-        internal static string DeleteAllItems {
+        internal static string DefaultCompactLevel {
             get {
-                return ResourceManager.GetString("DeleteAllItems", resourceCulture);
+                return ResourceManager.GetString("DefaultCompactLevel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attempts to delete every folder/file in the given list..
+        ///   Looks up a localized string similar to Default compression level for compact tasks..
         /// </summary>
-        internal static string DeleteAllItems_Description {
+        internal static string DefaultCompactLevel_Tooltip {
             get {
-                return ResourceManager.GetString("DeleteAllItems_Description", resourceCulture);
+                return ResourceManager.GetString("DefaultCompactLevel_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XPRESS4K = Fastest but weakest.
+        /// </summary>
+        internal static string DefaultCompactLevel_Tooltip2 {
+            get {
+                return ResourceManager.GetString("DefaultCompactLevel_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XPRESS8K = Balanced.
+        /// </summary>
+        internal static string DefaultCompactLevel_Tooltip3 {
+            get {
+                return ResourceManager.GetString("DefaultCompactLevel_Tooltip3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XPRESS16K = Slower but more efficient.
+        /// </summary>
+        internal static string DefaultCompactLevel_Tooltip4 {
+            get {
+                return ResourceManager.GetString("DefaultCompactLevel_Tooltip4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LZX = Slowest, most efficient with high overhead.
+        /// </summary>
+        internal static string DefaultCompactLevel_Tooltip5 {
+            get {
+                return ResourceManager.GetString("DefaultCompactLevel_Tooltip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete All.
+        /// </summary>
+        internal static string DeleteAll {
+            get {
+                return ResourceManager.GetString("DeleteAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete All Items.
+        /// </summary>
+        internal static string DeleteAll_Tooltip {
+            get {
+                return ResourceManager.GetString("DeleteAll_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every item/folder listed here will be DELETED. Use it with caution!.
+        /// </summary>
+        internal static string DeleteAll_Tooltip2 {
+            get {
+                return ResourceManager.GetString("DeleteAll_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete files (using SLM).
+        /// </summary>
+        internal static string DeleteFilesUsingSlm {
+            get {
+                return ResourceManager.GetString("DeleteFilesUsingSlm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete files (using TaskManager).
+        /// </summary>
+        internal static string DeleteFilesUsingTaskmanager {
+            get {
+                return ResourceManager.GetString("DeleteFilesUsingTaskmanager", resourceCulture);
             }
         }
         
@@ -323,11 +862,20 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Double-clicking to an item will open it&apos;s location in file explorer..
+        ///   Looks up a localized string similar to Donate.
         /// </summary>
-        internal static string DoubleClickingToAnItemWillOpenItSLocationInFileExplorer {
+        internal static string Donate {
             get {
-                return ResourceManager.GetString("DoubleClickingToAnItemWillOpenItSLocationInFileExplorer", resourceCulture);
+                return ResourceManager.GetString("Donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate Items.
+        /// </summary>
+        internal static string DuplicateItems {
+            get {
+                return ResourceManager.GetString("DuplicateItems", resourceCulture);
             }
         }
         
@@ -377,6 +925,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compact.
+        /// </summary>
+        internal static string Enums_Compact {
+            get {
+                return ResourceManager.GetString("Enums_Compact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         internal static string Enums_Copy {
@@ -409,6 +966,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string Enums_Delete {
             get {
                 return ResourceManager.GetString("Enums_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fastest.
+        /// </summary>
+        internal static string Enums_Fastest {
+            get {
+                return ResourceManager.GetString("Enums_Fastest", resourceCulture);
             }
         }
         
@@ -467,11 +1033,47 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Optimal.
+        /// </summary>
+        internal static string Enums_Optimal {
+            get {
+                return ResourceManager.GetString("Enums_Optimal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Size on disk.
         /// </summary>
         internal static string Enums_SizeOnDisk {
             get {
                 return ResourceManager.GetString("Enums_SizeOnDisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store.
+        /// </summary>
+        internal static string Enums_Store {
+            get {
+                return ResourceManager.GetString("Enums_Store", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{AppName}] File compressed: {FileNameInArchive}.
+        /// </summary>
+        internal static string FileCompressed {
+            get {
+                return ResourceManager.GetString("FileCompressed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{AppName}] File decompressed: {NewFileFullPath}.
+        /// </summary>
+        internal static string FileDecompressed {
+            get {
+                return ResourceManager.GetString("FileDecompressed", resourceCulture);
             }
         }
         
@@ -529,12 +1131,32 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File Transfer Method.
+        /// </summary>
+        internal static string FileTransferMethod {
+            get {
+                return ResourceManager.GetString("FileTransferMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] FontAwesome {
             get {
                 object obj = ResourceManager.GetObject("FontAwesome", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error happened while parsing context menu, most likely happened duo typo on color name.
+        ///
+        ///{ExceptionMessage}.
+        /// </summary>
+        internal static string FormatException {
+            get {
+                return ResourceManager.GetString("FormatException", resourceCulture);
             }
         }
         
@@ -566,11 +1188,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete All.
+        ///   Looks up a localized string similar to Attempts to delete every folder/file in the given list..
         /// </summary>
-        internal static string Forms_LibraryCleaner_DeleteAll {
+        internal static string Forms_LibraryCleaner_DeleteAll_Tooltip2 {
             get {
-                return ResourceManager.GetString("Forms_LibraryCleaner_DeleteAll", resourceCulture);
+                return ResourceManager.GetString("Forms_LibraryCleaner_DeleteAll_Tooltip2", resourceCulture);
             }
         }
         
@@ -622,6 +1244,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move All Items.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_MoveAll_Tooltip {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_MoveAll_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moves every folder/file in the given list to selected path..
+        /// </summary>
+        internal static string Forms_LibraryCleaner_MoveAll_Tooltip2 {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_MoveAll_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Moving file:
         ///
         ///{FileFullName}.
@@ -660,6 +1300,24 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh Items.
+        /// </summary>
+        internal static string Forms_LibraryCleaner_RefreshList_Tooltip {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_RefreshList_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshes the junk list for Steam libraries..
+        /// </summary>
+        internal static string Forms_LibraryCleaner_RefreshList_Tooltip2 {
+            get {
+                return ResourceManager.GetString("Forms_LibraryCleaner_RefreshList_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Root path selected?.
         /// </summary>
         internal static string Forms_LibraryCleaner_RootPathSelected {
@@ -678,74 +1336,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close Library.
-        /// </summary>
-        internal static string Forms_LibraryView_CloseLibrary {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_CloseLibrary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Removes the selected library from SLM without touching files inside..
-        /// </summary>
-        internal static string Forms_LibraryView_CloseLibraryText {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_CloseLibraryText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only available for (non-main) Origin and SLM libraries..
-        /// </summary>
-        internal static string Forms_LibraryView_CloseLibraryText2 {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_CloseLibraryText2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create Library.
-        /// </summary>
-        internal static string Forms_LibraryView_CreateLibrary {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_CreateLibrary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create a Steam, Origin or SLM library at selected folder..
-        /// </summary>
-        internal static string Forms_LibraryView_CreateLibraryText {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_CreateLibraryText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Offline.
         /// </summary>
         internal static string Forms_LibraryView_Offline {
             get {
                 return ResourceManager.GetString("Forms_LibraryView_Offline", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh Library.
-        /// </summary>
-        internal static string Forms_LibraryView_RefreshLibrary {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_RefreshLibrary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refreshes the current status of selected library..
-        /// </summary>
-        internal static string Forms_LibraryView_RefreshLibraryText {
-            get {
-                return ResourceManager.GetString("Forms_LibraryView_RefreshLibraryText", resourceCulture);
             }
         }
         
@@ -759,11 +1354,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Donate.
+        ///   Looks up a localized string similar to Opens a webpage with available donation methods. Thank you for your support!.
         /// </summary>
-        internal static string Forms_Main_Donate {
+        internal static string Forms_Main_DonateDescription {
             get {
-                return ResourceManager.GetString("Forms_Main_Donate", resourceCulture);
+                return ResourceManager.GetString("Forms_Main_DonateDescription", resourceCulture);
             }
         }
         
@@ -795,15 +1390,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Forms_Main_TabHeader_Settings {
-            get {
-                return ResourceManager.GetString("Forms_Main_TabHeader_Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Task Manager.
         /// </summary>
         internal static string Forms_Main_TabHeader_TaskManager {
@@ -818,15 +1404,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string Forms_Main_Translate {
             get {
                 return ResourceManager.GetString("Forms_Main_Translate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Origin.
-        /// </summary>
-        internal static string Forms_Origin {
-            get {
-                return ResourceManager.GetString("Forms_Origin", resourceCulture);
             }
         }
         
@@ -867,65 +1444,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calculation method for archive size.
-        /// </summary>
-        internal static string Forms_Settings_CalculationMethodForArchiveSize {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CalculationMethodForArchiveSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check for Updates.
-        /// </summary>
-        internal static string Forms_Settings_CheckForUpdates {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CheckForUpdates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check for Updates on Startup.
-        /// </summary>
-        internal static string Forms_Settings_CheckForUpdatesOnStartup {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CheckForUpdatesOnStartup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear header image cache.
-        /// </summary>
-        internal static string Forms_Settings_ClearHeaderİmageCache {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ClearHeaderİmageCache", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Compress.
         /// </summary>
         internal static string Forms_Settings_Compress {
             get {
                 return ResourceManager.GetString("Forms_Settings_Compress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compress Files.
-        /// </summary>
-        internal static string Forms_Settings_CompressFiles {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CompressFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compression Level.
-        /// </summary>
-        internal static string Forms_Settings_CompressionLevel {
-            get {
-                return ResourceManager.GetString("Forms_Settings_CompressionLevel", resourceCulture);
             }
         }
         
@@ -957,15 +1480,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General Settings.
-        /// </summary>
-        internal static string Forms_Settings_GeneralSettings {
-            get {
-                return ResourceManager.GetString("Forms_Settings_GeneralSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Steam Library Manager.
         /// </summary>
         internal static string Forms_Settings_HeaderImageCache {
@@ -984,42 +1498,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language.
-        /// </summary>
-        internal static string Forms_Settings_Language {
-            get {
-                return ResourceManager.GetString("Forms_Settings_Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Move files sequentially if bigger than.
-        /// </summary>
-        internal static string Forms_Settings_MoveFilesSyncBySize {
-            get {
-                return ResourceManager.GetString("Forms_Settings_MoveFilesSyncBySize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Logs Folder.
-        /// </summary>
-        internal static string Forms_Settings_OpenLogsFolder {
-            get {
-                return ResourceManager.GetString("Forms_Settings_OpenLogsFolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Play a sound on completion.
-        /// </summary>
-        internal static string Forms_Settings_PlayASoundOnCompletion {
-            get {
-                return ResourceManager.GetString("Forms_Settings_PlayASoundOnCompletion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
         internal static string Forms_Settings_Remove {
@@ -1029,56 +1507,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove files at Source directory.
-        /// </summary>
-        internal static string Forms_Settings_RemoveFiles {
-            get {
-                return ResourceManager.GetString("Forms_Settings_RemoveFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sort games by.
-        /// </summary>
-        internal static string Forms_Settings_SortGamesBy {
-            get {
-                return ResourceManager.GetString("Forms_Settings_SortGamesBy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start Task Manager at Startup.
-        /// </summary>
-        internal static string Forms_Settings_StartTaskManagerAtStartup {
-            get {
-                return ResourceManager.GetString("Forms_Settings_StartTaskManagerAtStartup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Task Manager Default Settings.
         /// </summary>
         internal static string Forms_Settings_TaskManagerDefaults {
             get {
                 return ResourceManager.GetString("Forms_Settings_TaskManagerDefaults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme Accent.
-        /// </summary>
-        internal static string Forms_Settings_ThemeAccent {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ThemeAccent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme Base.
-        /// </summary>
-        internal static string Forms_Settings_ThemeBase {
-            get {
-                return ResourceManager.GetString("Forms_Settings_ThemeBase", resourceCulture);
             }
         }
         
@@ -1101,87 +1534,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto Install.
-        /// </summary>
-        internal static string Forms_TaskManager_AutoInstall {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_AutoInstall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Check for Backup Updates.
-        /// </summary>
-        internal static string Forms_TaskManager_CheckForBackupUpdates {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_CheckForBackupUpdates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Completed Tasks.
-        /// </summary>
-        internal static string Forms_TaskManager_ClearCompletedTasks {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_ClearCompletedTasks", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to COMPLETED.
-        /// </summary>
-        internal static string Forms_TaskManager_Completed {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_Completed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compress.
-        /// </summary>
-        internal static string Forms_TaskManager_Compress {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_Compress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
-        /// </summary>
-        internal static string Forms_TaskManager_Delete {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_Delete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pause.
-        /// </summary>
-        internal static string Forms_TaskManager_Pause {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_Pause", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove Original Files.
-        /// </summary>
-        internal static string Forms_TaskManager_RemoveFiles {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_RemoveFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove selected Game(s) from Queue.
-        /// </summary>
-        internal static string Forms_TaskManager_RemoveFromQueue {
-            get {
-                return ResourceManager.GetString("Forms_TaskManager_RemoveFromQueue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Report File Movement.
         /// </summary>
         internal static string Forms_TaskManager_ReportFileMovement {
@@ -1191,38 +1543,56 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
+        ///   Looks up a localized string similar to General Settings.
         /// </summary>
-        internal static string Forms_TaskManager_Start {
+        internal static string GeneralSettings {
             get {
-                return ResourceManager.GetString("Forms_TaskManager_Start", resourceCulture);
+                return ResourceManager.GetString("GeneralSettings", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop.
+        ///   Looks up a localized string similar to All Available.
         /// </summary>
-        internal static string Forms_TaskManager_Stop {
+        internal static string HamburgerMenuControl_AllAvailable {
             get {
-                return ResourceManager.GetString("Forms_TaskManager_Stop", resourceCulture);
+                return ResourceManager.GetString("HamburgerMenuControl_AllAvailable", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Headless file (No corresponding installation).
+        ///   Looks up a localized string similar to Headless Data File.
         /// </summary>
-        internal static string HeadlessFileNoCorrespondingİnstallation {
+        internal static string HeadlessDataFile {
             get {
-                return ResourceManager.GetString("HeadlessFileNoCorrespondingİnstallation", resourceCulture);
+                return ResourceManager.GetString("HeadlessDataFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Headless folder (No corresponding acf file).
+        ///   Looks up a localized string similar to Headless Folder.
         /// </summary>
-        internal static string HeadlessFolderNoCorrespondingAcfFile {
+        internal static string HeadlessFolder {
             get {
-                return ResourceManager.GetString("HeadlessFolderNoCorrespondingAcfFile", resourceCulture);
+                return ResourceManager.GetString("HeadlessFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headless Workshop Folder.
+        /// </summary>
+        internal static string HeadlessWorkshopFolder {
+            get {
+                return ResourceManager.GetString("HeadlessWorkshopFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        internal static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
@@ -1236,6 +1606,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignored Items.
+        /// </summary>
+        internal static string IgnoredItems {
+            get {
+                return ResourceManager.GetString("IgnoredItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignore Selected Item(s).
         /// </summary>
         internal static string IgnoreSelectedItems {
@@ -1245,38 +1624,155 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Installation not found but StateFlag equals to 4.
+        ///   Looks up a localized string similar to Installation is completed!.
         /// </summary>
-        internal static string InstallationNotFoundButStateFlagEqualsTo4 {
+        internal static string InstallationWizard_Completed {
             get {
-                return ResourceManager.GetString("InstallationNotFoundButStateFlagEqualsTo4", resourceCulture);
+                return ResourceManager.GetString("InstallationWizard_Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Junk Items.
+        /// </summary>
+        internal static string JunkItems {
+            get {
+                return ResourceManager.GetString("JunkItems", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Keep searching on library change.
         /// </summary>
-        internal static string Keep_searching_on_library_change {
+        internal static string KeepSearchingOnLibraryChange {
             get {
-                return ResourceManager.GetString("Keep_searching_on_library_change", resourceCulture);
+                return ResourceManager.GetString("KeepSearchingOnLibraryChange", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move All Items.
+        ///   Looks up a localized string similar to Keeps the searching text and search for the text in the new selected library if active..
         /// </summary>
-        internal static string LibraryCleanerView_MoveAllItems {
+        internal static string KeepSearchingOnLibraryChange_Tooltip {
             get {
-                return ResourceManager.GetString("LibraryCleanerView_MoveAllItems", resourceCulture);
+                return ResourceManager.GetString("KeepSearchingOnLibraryChange_Tooltip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Moves every folder/file in the given list to selected path..
+        ///   Looks up a localized string similar to Language.
         /// </summary>
-        internal static string MoveAllItems_Description {
+        internal static string Language {
             get {
-                return ResourceManager.GetString("MoveAllItems_Description", resourceCulture);
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Language to use with SLM..
+        /// </summary>
+        internal static string Language_Tooltip {
+            get {
+                return ResourceManager.GetString("Language_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double-clicking to an item will open it&apos;s location in file explorer..
+        /// </summary>
+        internal static string LibraryCleanerTooltip {
+            get {
+                return ResourceManager.GetString("LibraryCleanerTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double-clicking to an item will open it&apos;s location in file explorer..
+        /// </summary>
+        internal static string LibraryPanel_Tooltip {
+            get {
+                return ResourceManager.GetString("LibraryPanel_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library Type.
+        /// </summary>
+        internal static string LibraryType {
+            get {
+                return ResourceManager.GetString("LibraryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a library type you would like to create of..
+        /// </summary>
+        internal static string LibraryTypeDescription {
+            get {
+                return ResourceManager.GetString("LibraryTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord Group.
+        /// </summary>
+        internal static string Main_DiscordGroup {
+            get {
+                return ResourceManager.GetString("Main_DiscordGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opens the invitation link for SLM&apos;s Discord Group on your favorite web browser..
+        /// </summary>
+        internal static string Main_DiscordGroupDescription {
+            get {
+                return ResourceManager.GetString("Main_DiscordGroupDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Path:.
+        /// </summary>
+        internal static string Main_SelectedPath {
+            get {
+                return ResourceManager.GetString("Main_SelectedPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {AppName} ({SizeOnDisk}).
+        /// </summary>
+        internal static string MenuDiskInfo {
+            get {
+                return ResourceManager.GetString("MenuDiskInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move files sequentially if bigger than.
+        /// </summary>
+        internal static string MoveFilesSequentiallyIfBiggerThan {
+            get {
+                return ResourceManager.GetString("MoveFilesSequentiallyIfBiggerThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move files bigger than (X) MB sequentially.
+        /// </summary>
+        internal static string MoveFilesSequentiallyIfBiggerThan_Tooltip {
+            get {
+                return ResourceManager.GetString("MoveFilesSequentiallyIfBiggerThan_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM moves files parallelly for the best performance but for bigger files it may downgrade the performance and may be best to move sequentially..
+        /// </summary>
+        internal static string MoveFilesSequentiallyIfBiggerThan_Tooltip2 {
+            get {
+                return ResourceManager.GetString("MoveFilesSequentiallyIfBiggerThan_Tooltip2", resourceCulture);
             }
         }
         
@@ -1317,12 +1813,48 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap no_image_available {
             get {
                 object obj = ResourceManager.GetObject("no_image_available", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Logs Folder.
+        /// </summary>
+        internal static string OpenLogsFolder {
+            get {
+                return ResourceManager.GetString("OpenLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM will attempt to open /logs/ folder in the file explorer if exists..
+        /// </summary>
+        internal static string OpenLogsFolder_Tooltip {
+            get {
+                return ResourceManager.GetString("OpenLogsFolder_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin.
+        /// </summary>
+        internal static string Origin {
+            get {
+                return ResourceManager.GetString("Origin", resourceCulture);
             }
         }
         
@@ -1349,33 +1881,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete files (using SLM).
-        /// </summary>
-        internal static string OriginApp_CMenu_DeleteFilesSLM {
-            get {
-                return ResourceManager.GetString("OriginApp_CMenu_DeleteFilesSLM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete files (using TaskManager).
-        /// </summary>
-        internal static string OriginApp_CMenu_DeleteFilesTM {
-            get {
-                return ResourceManager.GetString("OriginApp_CMenu_DeleteFilesTM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {AppName} ({SizeOnDisk}).
-        /// </summary>
-        internal static string OriginApp_CMenu_DiskInfo {
-            get {
-                return ResourceManager.GetString("OriginApp_CMenu_DiskInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Install.
         /// </summary>
         internal static string OriginApp_CMenu_Install {
@@ -1390,15 +1895,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string OriginApp_CMenu_Repair {
             get {
                 return ResourceManager.GetString("OriginApp_CMenu_Repair", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Run (Unavailable).
-        /// </summary>
-        internal static string OriginApp_CMenu_Run {
-            get {
-                return ResourceManager.GetString("OriginApp_CMenu_Run", resourceCulture);
             }
         }
         
@@ -1462,11 +1958,38 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Origin Library Support.
+        /// </summary>
+        internal static string OriginLibrarySupport {
+            get {
+                return ResourceManager.GetString("OriginLibrarySupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables/Disables Origin Library functionality for SLM.
+        /// </summary>
+        internal static string OriginLibrarySupport_Tooltip {
+            get {
+                return ResourceManager.GetString("OriginLibrarySupport_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown Manifest Version from Origin game: {OriginApp} - {ManifestVersion}.
         /// </summary>
         internal static string OriginUnknownManifestFile {
             get {
                 return ResourceManager.GetString("OriginUnknownManifestFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error happened while updating game list for Origin library: {FullPath}\n{ex}.
+        /// </summary>
+        internal static string OriginUpdateAppListException {
+            get {
+                return ResourceManager.GetString("OriginUpdateAppListException", resourceCulture);
             }
         }
         
@@ -1480,6 +2003,51 @@ namespace Steam_Library_Manager.Properties {
         internal static string PathTooLongException {
             get {
                 return ResourceManager.GetString("PathTooLongException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause Task Manager.
+        /// </summary>
+        internal static string PauseTaskManager {
+            get {
+                return ResourceManager.GetString("PauseTaskManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pauses task processing and active tasks..
+        /// </summary>
+        internal static string PauseTaskManager_Tooltip {
+            get {
+                return ResourceManager.GetString("PauseTaskManager_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play a sound on completion.
+        /// </summary>
+        internal static string PlayASoundOnCompletion {
+            get {
+                return ResourceManager.GetString("PlayASoundOnCompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play a Sound on Task Manager Queue Completion.
+        /// </summary>
+        internal static string PlayASoundOnCompletion_Tooltip {
+            get {
+                return ResourceManager.GetString("PlayASoundOnCompletion_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM will attempt to play a sound (Windows exclamation or the file in CustomSoundFile setting key) on the queue of task manager gets completed..
+        /// </summary>
+        internal static string PlayASoundOnCompletion_Tooltip2 {
+            get {
+                return ResourceManager.GetString("PlayASoundOnCompletion_Tooltip2", resourceCulture);
             }
         }
         
@@ -1559,20 +2127,74 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh Items.
+        ///   Looks up a localized string similar to Refresh Library.
         /// </summary>
-        internal static string RefreshItems {
+        internal static string RefreshLibrary_Tooltip {
             get {
-                return ResourceManager.GetString("RefreshItems", resourceCulture);
+                return ResourceManager.GetString("RefreshLibrary_Tooltip", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refreshes the junk list for Steam libraries..
+        ///   Looks up a localized string similar to Refreshes the current status of selected library..
         /// </summary>
-        internal static string RefreshItems_Description {
+        internal static string RefreshLibrary_Tooltip2 {
             get {
-                return ResourceManager.GetString("RefreshItems_Description", resourceCulture);
+                return ResourceManager.GetString("RefreshLibrary_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove files at Source directory.
+        /// </summary>
+        internal static string RemoveFilesAtSourceDirectory {
+            get {
+                return ResourceManager.GetString("RemoveFilesAtSourceDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected and task is completed successfully (copy-first then remove), SLM will remove the copied files from source. This option can be change per-task..
+        /// </summary>
+        internal static string RemoveFilesAtSourceDirectory_Tooltip {
+            get {
+                return ResourceManager.GetString("RemoveFilesAtSourceDirectory_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from Ignore List.
+        /// </summary>
+        internal static string RemoveFromIgnoreList {
+            get {
+                return ResourceManager.GetString("RemoveFromIgnoreList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from Ignore List.
+        /// </summary>
+        internal static string RemoveFromIgnoreList_Tooltip {
+            get {
+                return ResourceManager.GetString("RemoveFromIgnoreList_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes listed items from the Ignore List.
+        /// </summary>
+        internal static string RemoveFromIgnoreList_Tooltip2 {
+            get {
+                return ResourceManager.GetString("RemoveFromIgnoreList_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from SLM.
+        /// </summary>
+        internal static string RemoveFromSlm {
+            get {
+                return ResourceManager.GetString("RemoveFromSlm", resourceCulture);
             }
         }
         
@@ -1582,6 +2204,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string RemoveMovedFiles {
             get {
                 return ResourceManager.GetString("RemoveMovedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Original Files.
+        /// </summary>
+        internal static string RemoveOriginalFiles {
+            get {
+                return ResourceManager.GetString("RemoveOriginalFiles", resourceCulture);
             }
         }
         
@@ -1597,9 +2228,135 @@ namespace Steam_Library_Manager.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Report File Movement.
         /// </summary>
-        internal static string Report_File_Movement {
+        internal static string ReportFileMovement {
             get {
-                return ResourceManager.GetString("Report_File_Movement", resourceCulture);
+                return ResourceManager.GetString("ReportFileMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected, SLM will report file movement status to log view in the task manager. This option can be changed per-task..
+        /// </summary>
+        internal static string ReportFileMovement_Tooltip {
+            get {
+                return ResourceManager.GetString("ReportFileMovement_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run (Unavailable).
+        /// </summary>
+        internal static string Run {
+            get {
+                return ResourceManager.GetString("Run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for....
+        /// </summary>
+        internal static string SearchFor {
+            get {
+                return ResourceManager.GetString("SearchFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lets you search for a game by it&apos;s name or appid..
+        /// </summary>
+        internal static string SearchForDesc {
+            get {
+                return ResourceManager.GetString("SearchForDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Library Type:.
+        /// </summary>
+        internal static string SelectedLibraryType {
+            get {
+                return ResourceManager.GetString("SelectedLibraryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort games by.
+        /// </summary>
+        internal static string SortGamesBy {
+            get {
+                return ResourceManager.GetString("SortGamesBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorting Method for Game Panel.
+        /// </summary>
+        internal static string SortGamesBy_Tooltip {
+            get {
+                return ResourceManager.GetString("SortGamesBy_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lets you select a sorting method for the game panel..
+        /// </summary>
+        internal static string SortGamesBy_Tooltip2 {
+            get {
+                return ResourceManager.GetString("SortGamesBy_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Task Manager.
+        /// </summary>
+        internal static string StartTaskManager {
+            get {
+                return ResourceManager.GetString("StartTaskManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Will start the task manager. Task Manager will process the queued items or wait for new items..
+        /// </summary>
+        internal static string StartTaskManager_Tooltip {
+            get {
+                return ResourceManager.GetString("StartTaskManager_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Task Manager at Startup.
+        /// </summary>
+        internal static string StartTaskManagerAtStartup {
+            get {
+                return ResourceManager.GetString("StartTaskManagerAtStartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled, Task Manager will be started at startup..
+        /// </summary>
+        internal static string StartTaskManagerAtStartup_Tooltip {
+            get {
+                return ResourceManager.GetString("StartTaskManagerAtStartup_Tooltip", resourceCulture);
             }
         }
         
@@ -1638,15 +2395,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string Steam_CheckForBackupUpdates_UpdateFound {
             get {
                 return ResourceManager.GetString("Steam_CheckForBackupUpdates_UpdateFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam Library Manager.
-        /// </summary>
-        internal static string Steam_Library_Manager {
-            get {
-                return ResourceManager.GetString("Steam_Library_Manager", resourceCulture);
             }
         }
         
@@ -1878,44 +2626,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {ArchiveFullPath} is in use. Delaying the task until archive gets free..
-        /// </summary>
-        internal static string SteamAppInfo_CompressedArchiveExistsAndInUse {
-            get {
-                return ResourceManager.GetString("SteamAppInfo_CompressedArchiveExistsAndInUse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] File compressed: {FileNameInArchive}.
-        /// </summary>
-        internal static string SteamAppInfo_FileCompressed {
-            get {
-                return ResourceManager.GetString("SteamAppInfo_FileCompressed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to [{AppName}] File decompressed: {NewFileFullPath}.
-        /// </summary>
-        internal static string SteamAppInfo_FileDecompressed {
-            get {
-                return ResourceManager.GetString("SteamAppInfo_FileDecompressed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error happened while parsing context menu, most likely happened duo typo on color name.
-        ///
-        ///{ExceptionMessage}.
-        /// </summary>
-        internal static string SteamAppInfo_FormatException {
-            get {
-                return ResourceManager.GetString("SteamAppInfo_FormatException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t create steam library folder at: {SteamAppsFolderFullPath}
         ///
         ///Try running SLM as administrator..
@@ -1945,20 +2655,83 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove from SLM.
-        /// </summary>
-        internal static string SteamLibrary_CMenu_RemoveFromSLM {
-            get {
-                return ResourceManager.GetString("SteamLibrary_CMenu_RemoveFromSLM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove library from Steam (/w files).
         /// </summary>
         internal static string SteamLibrary_CMenu_RemoveFromSteam {
             get {
                 return ResourceManager.GetString("SteamLibrary_CMenu_RemoveFromSteam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Library Manager: Installation Wizard.
+        /// </summary>
+        internal static string SteamLibraryManagerInstallationWizard {
+            get {
+                return ResourceManager.GetString("SteamLibraryManagerInstallationWizard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Library Support.
+        /// </summary>
+        internal static string SteamLibrarySupport {
+            get {
+                return ResourceManager.GetString("SteamLibrarySupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables/Disables Steam Library functionality for SLM.
+        /// </summary>
+        internal static string SteamLibrarySupport_Tooltip {
+            get {
+                return ResourceManager.GetString("SteamLibrarySupport_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam &amp; SLM.
+        /// </summary>
+        internal static string SteamSLM {
+            get {
+                return ResourceManager.GetString("SteamSLM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam UserID64 to use with SLM.
+        /// </summary>
+        internal static string SteamUserID64 {
+            get {
+                return ResourceManager.GetString("SteamUserID64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If selected, SLM will attempt to get latest play date information for games from config file of Steam..
+        /// </summary>
+        internal static string SteamUserID64_Tooltip {
+            get {
+                return ResourceManager.GetString("SteamUserID64_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Task Manager.
+        /// </summary>
+        internal static string StopTaskManager {
+            get {
+                return ResourceManager.GetString("StopTaskManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stops the task manager and cancels the active task..
+        /// </summary>
+        internal static string StopTaskManager_Tooltip {
+            get {
+                return ResourceManager.GetString("StopTaskManager_Tooltip", resourceCulture);
             }
         }
         
@@ -2056,6 +2829,51 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to COMPLETED.
+        /// </summary>
+        internal static string TaskManagerCompleted {
+            get {
+                return ResourceManager.GetString("TaskManagerCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        internal static string TaskManagerPause {
+            get {
+                return ResourceManager.GetString("TaskManagerPause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove selected Game(s) from Queue.
+        /// </summary>
+        internal static string TaskManagerRemoveFromQueue {
+            get {
+                return ResourceManager.GetString("TaskManagerRemoveFromQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string TaskManagerStart {
+            get {
+                return ResourceManager.GetString("TaskManagerStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string TaskManagerStop {
+            get {
+                return ResourceManager.GetString("TaskManagerStop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Clear Completed Tasks.
         /// </summary>
         internal static string TaskManagerView_AutoClearCompletedTasks {
@@ -2065,11 +2883,83 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SLM will remove the completed tasks from task manager..
+        /// </summary>
+        internal static string TaskManagerView_AutoClearCompletedTasks_Tooltip {
+            get {
+                return ResourceManager.GetString("TaskManagerView_AutoClearCompletedTasks_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Scroll Logs.
         /// </summary>
         internal static string TaskManagerView_AutoScrollLogs {
             get {
                 return ResourceManager.GetString("TaskManagerView_AutoScrollLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SLM will auto-scroll the logs in the logs window. It may freeze the ui if a lot of small files moved..
+        /// </summary>
+        internal static string TaskManagerView_AutoScrollLogs_Tooltip {
+            get {
+                return ResourceManager.GetString("TaskManagerView_AutoScrollLogs_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue on Error.
+        /// </summary>
+        internal static string TaskManagerView_ContinueOnError {
+            get {
+                return ResourceManager.GetString("TaskManagerView_ContinueOnError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If active, SLM will move to the next task in the list in case of an error with the active task..
+        /// </summary>
+        internal static string TaskManagerView_ContinueOnError_Tooltip {
+            get {
+                return ResourceManager.GetString("TaskManagerView_ContinueOnError_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip Steam Restart Dialog.
+        /// </summary>
+        internal static string TaskManagerView_SkipSteamRestartDialog {
+            get {
+                return ResourceManager.GetString("TaskManagerView_SkipSteamRestartDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If active, SLM will not ask to restart Steam on Steam library related tasks..
+        /// </summary>
+        internal static string TaskManagerView_SkipSteamRestartDialog_Tooltip {
+            get {
+                return ResourceManager.GetString("TaskManagerView_SkipSteamRestartDialog_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to However running Steam apps/games without restarting Steam may (and will) damage app/game installations and will require manual processing!.
+        /// </summary>
+        internal static string TaskManagerView_SkipSteamRestartDialog_Tooltip2 {
+            get {
+                return ResourceManager.GetString("TaskManagerView_SkipSteamRestartDialog_Tooltip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double-clicking on a task will open it&apos;s location in file explorer..
+        /// </summary>
+        internal static string TaskPanel_Tooltip {
+            get {
+                return ResourceManager.GetString("TaskPanel_Tooltip", resourceCulture);
             }
         }
         
@@ -2128,6 +3018,42 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme Accent.
+        /// </summary>
+        internal static string ThemeAccent {
+            get {
+                return ResourceManager.GetString("ThemeAccent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred Theme Accent to use with SLM..
+        /// </summary>
+        internal static string ThemeAccent_Tooltip {
+            get {
+                return ResourceManager.GetString("ThemeAccent_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme Base.
+        /// </summary>
+        internal static string ThemeBase {
+            get {
+                return ResourceManager.GetString("ThemeBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred Base Theme Colors to use with SLM..
+        /// </summary>
+        internal static string ThemeBase_Tooltip {
+            get {
+                return ResourceManager.GetString("ThemeBase_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steam Library Manager.
         /// </summary>
         internal static string TM_TaskActiveError {
@@ -2148,20 +3074,20 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle Item List.
+        ///   Looks up a localized string similar to Translate SLM.
         /// </summary>
-        internal static string ToggleItemList {
+        internal static string TranslateSLM {
             get {
-                return ResourceManager.GetString("ToggleItemList", resourceCulture);
+                return ResourceManager.GetString("TranslateSLM", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggles item list between junk items and ignored items..
+        ///   Looks up a localized string similar to Opens Crowdin project page of SLM which you can contribute to translation of SLM..
         /// </summary>
-        internal static string ToggleItemList_Description {
+        internal static string TranslateSLMDescription {
             get {
-                return ResourceManager.GetString("ToggleItemList_Description", resourceCulture);
+                return ResourceManager.GetString("TranslateSLMDescription", resourceCulture);
             }
         }
         
@@ -2191,6 +3117,96 @@ namespace Steam_Library_Manager.Properties {
         internal static string Updater_LatestVersionMessage {
             get {
                 return ResourceManager.GetString("Updater_LatestVersionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uplay.
+        /// </summary>
+        internal static string Uplay {
+            get {
+                return ResourceManager.GetString("Uplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        internal static string Uplay_Open {
+            get {
+                return ResourceManager.GetString("Uplay_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error happened while updating game list for Uplay library: {FullPath}\n{ex}.
+        /// </summary>
+        internal static string Uplay_UpdateAppListError {
+            get {
+                return ResourceManager.GetString("Uplay_UpdateAppListError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uplay Library Support.
+        /// </summary>
+        internal static string UplayLibrarySupport {
+            get {
+                return ResourceManager.GetString("UplayLibrarySupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables/Disables Uplay Library functionality for SLM.
+        /// </summary>
+        internal static string UplayLibrarySupport_Tooltip {
+            get {
+                return ResourceManager.GetString("UplayLibrarySupport_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Method for Game Panel.
+        /// </summary>
+        internal static string ViewMethodForGamePanel {
+            get {
+                return ResourceManager.GetString("ViewMethodForGamePanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lets you switch between Grid and List View for Game Panel.
+        /// </summary>
+        internal static string ViewMethodForGamePanelDesc {
+            get {
+                return ResourceManager.GetString("ViewMethodForGamePanelDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This installation wizard will help you set basics of SLM for first time use. Please start with selecting a default language, theme base and accent..
+        /// </summary>
+        internal static string Welcome_Text {
+            get {
+                return ResourceManager.GetString("Welcome_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alternatively, you can close this window to use SLM&apos;s default options..
+        /// </summary>
+        internal static string Welcome_Text2 {
+            get {
+                return ResourceManager.GetString("Welcome_Text2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

@@ -5,11 +5,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
-             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
     <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}">
-        <controls:MetroTabItem Header="Junk">
+        <controls:MetroTabItem Header="{l:Static p:Resources.JunkItems}">
             <Grid Margin="3">
                 <!-- ListView: Library Cleaner -->
                 <ListView x:Name="LibraryCleaner" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
@@ -40,19 +40,19 @@
                     <ListView.ToolTip>
                         <ToolTip>
                             <StackPanel>
-                                <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
+                                <TextBlock Text="{l:Static p:Resources.LibraryCleanerTooltip}" />
                             </StackPanel>
                         </ToolTip>
                     </ListView.ToolTip>
                 </ListView>
                 <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
                     <!-- Button: Delete All-->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll}" Click="LibraryCleaner_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="LibraryCleaner_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.DeleteAllItems}" />
-                                    <TextBlock Text="{l:Static p:Resources.DeleteAllItems_Description}" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.DeleteAll_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.Forms_LibraryCleaner_DeleteAll_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
@@ -63,8 +63,8 @@
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.LibraryCleanerView_MoveAllItems}" />
-                                    <TextBlock Text="{l:Static p:Resources.MoveAllItems_Description}" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
@@ -75,8 +75,8 @@
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RefreshItems}" />
-                                    <TextBlock Text="{l:Static p:Resources.RefreshItems_Description}" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
@@ -84,7 +84,7 @@
                 </WrapPanel>
             </Grid>
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="Duplicates">
+        <controls:MetroTabItem Header="{l:Static p:Resources.DuplicateItems}">
             <Grid Margin="3">
                 <ListView x:Name="DupeItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                     <ListView.ItemTemplate>
@@ -106,8 +106,8 @@
                                         <TextBlock Text="{Binding App1.InstallationDirectory.LastWriteTime}" Margin="5" TextWrapping="Wrap" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App1" Click="DupeItem_OpenButtonClick" />
-                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App1" Click="DupeItem_DeleteButtonClick" />
+                                        <Button Content="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App1" Click="DupeItem_OpenButtonClick" />
+                                        <Button Content="{l:Static p:Resources.Delete}" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App1" Click="DupeItem_DeleteButtonClick" />
                                     </StackPanel>
                                 </WrapPanel>
                                 <WrapPanel HorizontalAlignment="Right" Orientation="Vertical">
@@ -118,8 +118,8 @@
                                         <TextBlock Text="{Binding App2.InstallationDirectory.LastWriteTime}" Margin="5" TextWrapping="Wrap" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="Open in Explorer" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App2" Click="DupeItem_OpenButtonClick" />
-                                        <Button Content="Delete" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App2" Click="DupeItem_DeleteButtonClick" />
+                                        <Button Content="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Margin="0, 0, 5, 0" Tag="App2" Click="DupeItem_OpenButtonClick" />
+                                        <Button Content="{l:Static p:Resources.Delete}" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" Tag="App2" Click="DupeItem_DeleteButtonClick" />
                                     </StackPanel>
                                 </WrapPanel>
                             </Grid>
@@ -133,8 +133,8 @@
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RefreshItems}" />
-                                    <TextBlock Text="{l:Static p:Resources.RefreshItems_Description}" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
@@ -142,7 +142,7 @@
                 </WrapPanel>
             </Grid>
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="Ignored Items">
+        <controls:MetroTabItem Header="{l:Static p:Resources.IgnoredItems}">
             <Grid Margin="3">
                 <ListView x:Name="IgnoredItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                     <ListView.ItemTemplate>
@@ -164,40 +164,40 @@
                     </ListView.ItemTemplate>
                     <ListView.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="{l:Static p:Resources.DoubleClickingToAnItemWillOpenItSLocationInFileExplorer}" />
+                            <TextBlock Text="{l:Static p:Resources.LibraryCleanerTooltip}" />
                         </ToolTip>
                     </ListView.ToolTip>
                 </ListView>
                 <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="remove" FontSize="13" Content="Remove from Ignore List" Click="IgnoredItems_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="remove" FontSize="13" Content="{l:Static p:Resources.RemoveFromIgnoreList}" Click="IgnoredItems_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Remove from Ignore List" />
-                                    <TextBlock Text="Removes listed items from the Ignore List" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RemoveFromIgnoreList_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.RemoveFromIgnoreList_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
                     </Button>
 
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="delete" FontSize="13" Content="Delete All" Click="IgnoredItems_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="delete" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="IgnoredItems_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="Delete All Items" />
-                                    <TextBlock Text="Every item/folder listed here will be DELETED. Use it with caution!" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.DeleteAll_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.DeleteAll_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>
                     </Button>
 
                     <!-- Button: Refresh -->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="Refresh List" Click="RefreshButton_OnClick" Tag="IgnoredItems">
+                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="IgnoredItems">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
-                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RefreshItems}" />
-                                    <TextBlock Text="{l:Static p:Resources.RefreshItems_Description}" />
+                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip}" />
+                                    <TextBlock Text="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList_Tooltip2}" />
                                 </StackPanel>
                             </ToolTip>
                         </Button.ToolTip>

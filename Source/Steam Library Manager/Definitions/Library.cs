@@ -12,7 +12,7 @@ namespace Steam_Library_Manager.Definitions
     public abstract class Library : INotifyPropertyChanged
     {
         public readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-        public Enums.LibraryType Type { get; set; }
+        public LibraryType Type { get; set; }
         public bool IsMain { get; set; }
         public bool IsUpdatingAppList { get; set; }
         public DirectoryInfo DirectoryInfo { get; set; }
@@ -33,7 +33,7 @@ namespace Steam_Library_Manager.Definitions
 
         public System.Collections.ObjectModel.ObservableCollection<dynamic> Apps { get; set; } = new System.Collections.ObjectModel.ObservableCollection<dynamic>();
         public Dictionary<string, DirectoryInfo> DirectoryList { get; set; } = new Dictionary<string, DirectoryInfo>();
-        public List<Enums.LibraryType> AllowedAppTypes = new List<LibraryType>();
+        public List<LibraryType> AllowedAppTypes = new List<LibraryType>();
 
         public long FreeSpace { get; set; }
         public long TotalSize { get; set; }
@@ -51,6 +51,11 @@ namespace Steam_Library_Manager.Definitions
                 foreach (var cMenuItem in List.LibraryCMenuItems.Where(x => x.IsActive && x.AllowedLibraryTypes.Contains(Type)).ToList())
                 {
                     if (!cMenuItem.ShowToNormal && IsMain)
+                    {
+                        continue;
+                    }
+
+                    if (!DirectoryInfo.Exists && !cMenuItem.ShowToOffline)
                     {
                         continue;
                     }
@@ -80,12 +85,12 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (FormatException ex)
             {
-                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.SteamAppInfo_FormatException)), new { ExceptionMessage = ex.Message }));
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FormatException)), new { ExceptionMessage = ex.Message }));
                 return cMenu;
             }
         }
 
-        public abstract void UpdateAppListAsync();
+        public abstract void UpdateAppList();
 
         public abstract void ParseMenuItemActionAsync(string action);
 

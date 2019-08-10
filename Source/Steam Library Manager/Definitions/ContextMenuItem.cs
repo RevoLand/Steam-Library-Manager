@@ -10,7 +10,6 @@ namespace Steam_Library_Manager.Definitions
         public string Action;
         public PackIconBase Icon;
         public bool ShowToNormal = true;
-        public bool ShowToSLMBackup = true;
         public bool ShowToSteamBackup = true;
         public bool ShowToCompressed = true;
         public bool ShowToOffline = true;

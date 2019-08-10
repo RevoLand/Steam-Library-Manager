@@ -1,16 +1,18 @@
 ﻿<UserControl x:Class="Steam_Library_Manager.Forms.InstallationWizard.Final"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:l="http://gu.se/Localization"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="500">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
             <iconPacks:PackIconMaterial Kind="CheckAll" Height="48" Width="48" Margin="5, 0" />
-            <TextBlock TextWrapping="Wrap" FontSize="28">Installation is completed!</TextBlock>
+            <TextBlock TextWrapping="Wrap" FontSize="28" Text="{l:Static p:Resources.InstallationWizard_Completed}" />
         </StackPanel>
-        <Button Name="CloseButton" HorizontalAlignment="Stretch" Content="Close" Height="50" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" Click="CloseButton_OnClick" />
+        <Button Name="CloseButton" HorizontalAlignment="Stretch" Content="{l:Static p:Resources.Close}" Height="50" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" Click="CloseButton_OnClick" />
     </StackPanel>
 </UserControl>

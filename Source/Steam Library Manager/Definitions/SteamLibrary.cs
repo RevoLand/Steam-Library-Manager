@@ -27,7 +27,7 @@ namespace Steam_Library_Manager.Definitions
             AllowedAppTypes.Add(LibraryType.SLM);
         }
 
-        public override async void UpdateAppListAsync()
+        public override async void UpdateAppList()
         {
             try
             {
@@ -134,7 +134,7 @@ namespace Steam_Library_Manager.Definitions
 
                 IsUpdatingAppList = false;
             }
-            catch (UnauthorizedAccessException uaex)
+            catch (UnauthorizedAccessException ex)
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(
                     async delegate
@@ -143,11 +143,11 @@ namespace Steam_Library_Manager.Definitions
                             Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessException)),
                             Framework.StringFormat.Format(
                                 Functions.SLM.Translate(nameof(Properties.Resources.UnauthorizedAccessExceptionMessage)),
-                                new { FullPath, ExceptionMessage = uaex.Message })).ConfigureAwait(true);
+                                new { FullPath, ExceptionMessage = ex.Message })).ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 IsUpdatingAppList = false;
             }
-            catch (DirectoryNotFoundException dnfex)
+            catch (DirectoryNotFoundException ex)
             {
                 await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(
                     async delegate
@@ -156,7 +156,7 @@ namespace Steam_Library_Manager.Definitions
                                 Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundException)),
                                 Framework.StringFormat.Format(
                                     Functions.SLM.Translate(nameof(Properties.Resources.DirectoryNotFoundExceptionMessage)),
-                                    new { FolderfullPath = FullPath, ExceptionMessage = dnfex.Message }))
+                                    new { FolderfullPath = FullPath, ExceptionMessage = ex.Message }))
                             .ConfigureAwait(true);
                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
                 IsUpdatingAppList = false;

@@ -25,15 +25,15 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
         public static readonly List<UplayConfigurationDb> UplayConfigurations = new List<UplayConfigurationDb>();
-        public static readonly List<Tuple<string, string>> SteamUserIDList = new List<Tuple<string, string>>();
-        public static readonly Dictionary<int, DateTime> SteamApps_LastPlayedDic = new Dictionary<int, DateTime>();
+        public static readonly List<Tuple<string, string>> SteamUserIdList = new List<Tuple<string, string>>();
+        public static readonly Dictionary<int, DateTime> SteamAppsLastPlayedDic = new Dictionary<int, DateTime>();
 
         public class TaskInfo : INotifyPropertyChanged
         {
-            public Enums.TaskType TaskType { get; set; }
+            public TaskType TaskType { get; set; }
             public App App { get; set; }
             public Library TargetLibrary { get; set; }
-            public Enums.CompactLevel CompactLevel { get; set; } = (Enums.CompactLevel)Enum.Parse(typeof(Enums.CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
+            public CompactLevel CompactLevel { get; set; } = (CompactLevel)Enum.Parse(typeof(CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
             public bool Compact { get; set; } = true;
             public bool ForceCompact { get; set; }
 
@@ -44,7 +44,6 @@ namespace Steam_Library_Manager.Definitions
             public bool Compress { get; set; } = Properties.Settings.Default.Global_Compress;
             public bool RemoveOldFiles { get; set; } = Properties.Settings.Default.Global_RemoveOldFiles;
             public bool ReportFileMovement { get; set; } = Properties.Settings.Default.Global_ReportFileMovement;
-            public bool ParallelFileTransfers { get; set; } = Properties.Settings.Default.ParallelFileTransfers;
             public System.Diagnostics.Stopwatch ElapsedTime = new System.Diagnostics.Stopwatch();
             public ManualResetEvent mre = new ManualResetEvent(!Functions.TaskManager.Paused);
 
