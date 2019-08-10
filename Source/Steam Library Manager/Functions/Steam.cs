@@ -582,7 +582,6 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     await progressInformationMessage.CloseAsync().ConfigureAwait(true);
-                    Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                 }
                 catch (Exception ex)
                 {

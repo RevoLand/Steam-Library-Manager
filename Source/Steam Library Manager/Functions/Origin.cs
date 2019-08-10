@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.IconPacks;
+﻿using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.Async;
 using System.Collections.Generic;
@@ -374,6 +375,60 @@ namespace Steam_Library_Manager.Functions
             {
                 Debug.WriteLine(ex);
                 Logger.Error(ex);
+            }
+        }
+
+        public static async void CheckForBackupUpdatesAsync()
+        {
+            try
+            {
+                if (Definitions.List.Libraries.Count(x => x.Type == Definitions.Enums.LibraryType.Origin && x.DirectoryInfo.Exists) == 0)
+                {
+                    return;
+                }
+
+                var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(true);
+                progressInformationMessage.SetIndeterminate();
+
+                foreach (var currentLibrary in Definitions.List.Libraries.Where(x => x.Type == Definitions.Enums.LibraryType.Origin && x.DirectoryInfo.Exists).ToList())
+                {
+                    if (currentLibrary.Apps.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    foreach (var libraryToCheck in Definitions.List.Libraries.Where(x => x != currentLibrary && x.Type == Definitions.Enums.LibraryType.Origin))
+                    {
+                        foreach (var currentApp in currentLibrary.Apps.Where(x => !x.IsCompressed).ToList())
+                        {
+                            progressInformationMessage.SetMessage(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Progress)), new { CurrentAppName = currentApp.AppName }));
+
+                            foreach (var latestApp in libraryToCheck.Apps.Where(x => x.AppId == currentApp.AppId && x.LastUpdated > currentApp.LastUpdated && !x.IsCompressed))
+                            {
+                                if (TaskManager.TaskList.Count(x =>
+                                        x.App.AppId == currentApp.AppId && !x.Completed &&
+                                        (x.TargetLibrary == latestApp.Library ||
+                                         x.TargetLibrary == currentApp.Library)) != 0) continue;
+
+                                var newTask = new Definitions.List.TaskInfo
+                                {
+                                    App = latestApp,
+                                    TargetLibrary = currentApp.Library,
+                                    TaskType = Definitions.Enums.TaskType.Copy
+                                };
+
+                                TaskManager.AddTask(newTask);
+                                Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_UpdateFound)), new { CurrentTime = DateTime.Now, CurrentAppName = currentApp.AppName, NewAppLastUpdatedOn = latestApp.LastUpdated, CurrentAppLastUpdatedOn = currentApp.LastUpdated, CurrentAppSteamFullPath = currentApp.Library.FullPath, NewAppSteamFullPath = latestApp.Library.FullPath }));
+                            }
+                        }
+                    }
+                }
+
+                await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
             }
         }
     }

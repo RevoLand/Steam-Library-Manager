@@ -21,13 +21,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Ability to Enable/Disable Library Support (Steam, Origin, Uplay) - ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
 - Library loading indicator ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
 - Installation Wizard ([#63](https://github.com/RevoLand/Steam-Library-Manager/issues/63))
+- Check for backup updates: Origin & Uplay
 
 ### Changed
 
 - Library Creation dialog is replaced with a flyout panel which clears the path for supporting more library types. (#63 #65)
 - Unified Task Manager's List View for Steam & Origin games for easier editing in future.
 - Tweaked Task Manager UI a little bit
-- Library Cleaner ui improved
+- Library Cleaner UI improved
+- Settings UI improved
 
 ### Fixed
 

@@ -45,6 +45,9 @@ namespace Steam_Library_Manager.Forms
 
                     case "BackupUpdates":
                         Functions.Steam.Library.CheckForBackupUpdatesAsync();
+                        Functions.Origin.CheckForBackupUpdatesAsync();
+                        Functions.Uplay.CheckForBackupUpdatesAsync();
+                        Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates_Completed)), new { CurrentTime = DateTime.Now }));
                         break;
 
                     case "ClearCompleted":

@@ -253,7 +253,7 @@
                             </Button.ToolTip>
                         </Button>
 
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35">
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="40">
                             <Button.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
