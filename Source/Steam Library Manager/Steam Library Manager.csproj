@@ -77,8 +77,8 @@
     <Reference Include="AsyncEnumerable, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0426b068161bd1d1, processorArchitecture=MSIL">
       <HintPath>..\packages\AsyncEnumerator.2.2.2\lib\net45\AsyncEnumerable.dll</HintPath>
     </Reference>
-    <Reference Include="AutoUpdater.NET, Version=1.5.4.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autoupdater.NET.Official.1.5.4\lib\net40\AutoUpdater.NET.dll</HintPath>
+    <Reference Include="AutoUpdater.NET, Version=1.5.5.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autoupdater.NET.Official.1.5.5\lib\net40\AutoUpdater.NET.dll</HintPath>
     </Reference>
     <Reference Include="CliWrap, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CliWrap.2.3.1\lib\net45\CliWrap.dll</HintPath>
@@ -310,6 +310,7 @@
     <Resource Include="Resources\slm-icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\no_image_available_uplay.jpg" />
     <EmbeddedResource Include="Resources\configurations" />
     <Resource Include="Resources\steam-icon.ico" />
     <Resource Include="Resources\uplay-icon.ico" />

@@ -85,13 +85,11 @@ namespace Steam_Library_Manager.Framework.CachedImage
                             UriKind.Absolute));
 
                     case "origin":
-                        return new BitmapImage(new Uri(
-                            "pack://application:,,,/Resources/no_image_available_origin.jpg",
+                        return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available_origin.jpg",
                             UriKind.Absolute));
 
                     case "uplay":
-                        return new BitmapImage(new Uri(
-                            "pack://application:,,,/Resources/no_image_available_uplay.jpg",
+                        return new BitmapImage(new Uri("pack://application:,,,/Resources/no_image_available_uplay.jpg",
                             UriKind.Absolute));
                 }
             }
