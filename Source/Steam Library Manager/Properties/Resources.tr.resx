@@ -238,21 +238,21 @@ Hata: {ExceptionMessage}</value>
     <value>[{AppName}] Kopyalanan dosya: {NewFileName}</value>
   </data>
   <data name="FilePermissionRelatedError_DeleteFiles" xml:space="preserve">
-    <value>[{AppName}] An error related to file permissions happened during file movement. Running SLM as Administrator might help.
+    <value>[{AppName}] Dosya taşınması sırasında dosya izinleriyle ilgili bir hata oluştu. SLM'yi yönetici olarak çalıştırmak sorunun çözülmesine yardımcı olabilir.
 
-Error: {ExceptionMessage}.
+Hata mesajı: {ExceptionMessage}
 
-Would you like to remove files that already moved from target library?</value>
+Şuana kadar taşınmış dosyaların hedef kütüphaneden kaldırılmasını ister misiniz?</value>
   </data>
   <data name="FileSystemRelatedError" xml:space="preserve">
     <value>[{AppName}] Dosya taşınırken, dosya sistemiyle ilgili bir hata oluştu: Hata: {ExceptionMessage}</value>
   </data>
   <data name="FileSystemRelatedError_DeleteMovedFiles" xml:space="preserve">
-    <value>[{AppName}] An error related to file system is happened while moving files.
+    <value>[{AppName}] Oyun dosyaları taşınırken dosya sistemiyle ilgili bir hata oluştu.
 
-Error: {ExceptionMessage}
+Hata: {ExceptionMessage}
 
-Would you like to remove files that already moved from target library?</value>
+Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -268,7 +268,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Çöp dosyalar istenildiği üzere kaldırılıyor.</value>
   </data>
   <data name="DeleteAll" xml:space="preserve">
-    <value>Delete All</value>
+    <value>Tümünü Sil</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteSelectedFolders" xml:space="preserve">
     <value>Seçili klasörleri sil</value>
@@ -308,7 +308,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Çöp dosyaların kök dizine taşınmasını istediğine emin misiniz?</value>
   </data>
   <data name="CreateLibrary_Tooltip" xml:space="preserve">
-    <value>Create Library</value>
+    <value>Kütüphane Oluştur</value>
   </data>
   <data name="Forms_LibraryView_Offline" xml:space="preserve">
     <value>Çevrimdışı</value>
@@ -317,7 +317,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Discord</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Bağış yap</value>
   </data>
   <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
     <value>Seçili kütüphanede ara</value>
@@ -329,7 +329,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Kütüphane Temizleyici</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Ayarlar</value>
   </data>
   <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
     <value>Görev Yöneticisi</value>
@@ -338,7 +338,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Tercüme</value>
   </data>
   <data name="Origin" xml:space="preserve">
-    <value>Origin</value>
+    <value>Köken</value>
   </data>
   <data name="Forms_Quit" xml:space="preserve">
     <value>Çıkış</value>
@@ -350,13 +350,13 @@ Would you like to remove files that already moved from target library?</value>
     <value>Görev Yöneticisinde aktif görevler mevcut. SLM'den çıkış yapmak istediğinize emin misiniz? Bu durum veri kaybına yol açabilir!</value>
   </data>
   <data name="CalculationMethodForArchiveSize" xml:space="preserve">
-    <value>Calculation method for archive size</value>
+    <value>Dizin boyutu hesaplama yöntemi</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Check for Updates</value>
+    <value>Güncellemeleri Denetle</value>
   </data>
   <data name="CheckForUpdatesAtStartup" xml:space="preserve">
-    <value>Check for Updates at Startup</value>
+    <value>Başlangıçta güncellemeleri kontrol et</value>
   </data>
   <data name="ClearHeaderImageCache" xml:space="preserve">
     <value>Clear header image cache</value>
@@ -365,10 +365,10 @@ Would you like to remove files that already moved from target library?</value>
     <value>Sıkıştır</value>
   </data>
   <data name="CompressFiles" xml:space="preserve">
-    <value>Compress Files</value>
+    <value>Dosyaları Sıkıştır</value>
   </data>
   <data name="CompressionLevel" xml:space="preserve">
-    <value>Compression Level</value>
+    <value>Sıkıştırma düzeyi</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Sıkıştırma yapma</value>
@@ -380,7 +380,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Oyun Listeleme Yöntemi</value>
   </data>
   <data name="GeneralSettings" xml:space="preserve">
-    <value>General Settings</value>
+    <value>Genel Ayarlar</value>
   </data>
   <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
@@ -389,46 +389,46 @@ Would you like to remove files that already moved from target library?</value>
     <value>Oyun resim önbelleği temizlendi.</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Dil</value>
   </data>
   <data name="MoveFilesSequentiallyIfBiggerThan" xml:space="preserve">
-    <value>Move files sequentially if bigger than</value>
+    <value>Dosyalar şundan büyük ise sırayla kopyala</value>
   </data>
   <data name="OpenLogsFolder" xml:space="preserve">
-    <value>Open Logs Folder</value>
+    <value>Kayıt Klasörünü Aç</value>
   </data>
   <data name="PlayASoundOnCompletion" xml:space="preserve">
-    <value>Play a sound on completion</value>
+    <value>Tamamlandığında ses çal</value>
   </data>
   <data name="Forms_Settings_Remove" xml:space="preserve">
     <value>Kaldır</value>
   </data>
   <data name="RemoveFilesAtSourceDirectory" xml:space="preserve">
-    <value>Remove files at Source directory</value>
+    <value>Kaynak dizindeki dosyaları kaldır</value>
   </data>
   <data name="ReportFileMovement" xml:space="preserve">
-    <value>Report File Movement</value>
+    <value>Dosya Taşımasını Rapor Et</value>
   </data>
   <data name="KeepSearchingOnLibraryChange" xml:space="preserve">
     <value>Keep searching on library change</value>
   </data>
   <data name="CalculationMethodForGames" xml:space="preserve">
-    <value>Calculation method for games</value>
+    <value>Oyunlar için hesaplama yöntemi</value>
   </data>
   <data name="SortGamesBy" xml:space="preserve">
-    <value>Sort games by</value>
+    <value>Oyunları buna göre sırala</value>
   </data>
   <data name="StartTaskManagerAtStartup" xml:space="preserve">
-    <value>Start Task Manager at Startup</value>
+    <value>Başlangıçta Görev Yöneticisini Başlat</value>
   </data>
   <data name="TaskManager" xml:space="preserve">
     <value>Task Manager Default Settings</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
-    <value>Theme Accent</value>
+    <value>Tema Vurgu Rengi</value>
   </data>
   <data name="ThemeBase" xml:space="preserve">
-    <value>Theme Base</value>
+    <value>Tema Temeli</value>
   </data>
   <data name="Forms_SLM" xml:space="preserve">
     <value>SLM</value>
@@ -437,37 +437,37 @@ Would you like to remove files that already moved from target library?</value>
     <value>Steam</value>
   </data>
   <data name="CheckForBackupUpdates" xml:space="preserve">
-    <value>Check for Backup Updates</value>
+    <value>Yedekleme Güncellemelerini Kontrol Et</value>
   </data>
   <data name="ClearCompletedTasks" xml:space="preserve">
-    <value>Clear Completed Tasks</value>
+    <value>Tamamlanan Görevleri Temizle</value>
   </data>
   <data name="TaskManagerCompleted" xml:space="preserve">
-    <value>COMPLETED</value>
+    <value>TAMAMLANDI</value>
   </data>
   <data name="Compress" xml:space="preserve">
-    <value>Compress</value>
+    <value>Sıkıştır</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Sil</value>
   </data>
   <data name="TaskManagerPause" xml:space="preserve">
-    <value>Pause</value>
+    <value>Duraklat</value>
   </data>
   <data name="RemoveOriginalFiles" xml:space="preserve">
-    <value>Remove Original Files</value>
+    <value>Orijinal Dosyaları kaldır</value>
   </data>
   <data name="TaskManagerRemoveFromQueue" xml:space="preserve">
-    <value>Remove selected Game(s) from Queue</value>
+    <value>Seçili oyunları kuyruktan kaldır</value>
   </data>
   <data name="Forms_TaskManager_ReportFileMovement" xml:space="preserve">
     <value>Dosya taşımasını raporla</value>
   </data>
   <data name="TaskManagerStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Başlat</value>
   </data>
   <data name="TaskManagerStop" xml:space="preserve">
-    <value>Stop</value>
+    <value>Durdur</value>
   </data>
   <data name="MoveGamesConfirmError" xml:space="preserve">
     <value>Steam Kütüphane Yöneticisi</value>
@@ -485,15 +485,15 @@ Would you like to remove files that already moved from target library?</value>
     <value>..\Resources\no_image_available.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AppInfoFormatException" xml:space="preserve">
-    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
+    <value>Sağ tık menüsü ayrıştırılırken bir hata oluştu.
 
 {ExceptionMessage}</value>
   </data>
   <data name="DeleteFilesUsingSlm" xml:space="preserve">
-    <value>Delete files (using SLM)</value>
+    <value>Dosyaları sil (SLM ile)</value>
   </data>
   <data name="DeleteFilesUsingTaskmanager" xml:space="preserve">
-    <value>Delete files (using TaskManager)</value>
+    <value>Dosyaları sil (Görev Yöneticisi ile)</value>
   </data>
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
@@ -584,16 +584,16 @@ Dosyanın gerçekten bozuk olup olmadığını görmek adına dosyayı elle kont
     <value>Taşınan dosyaları kaldır?</value>
   </data>
   <data name="CompressedArchiveExistsAndInUse" xml:space="preserve">
-    <value>{ArchiveFullPath} is in use. Delaying the task until archive gets free.</value>
+    <value>{ArchiveFullPath} kullanımda. Görev, dizin boşalana kadar ertelenecek.</value>
   </data>
   <data name="FileCompressed" xml:space="preserve">
-    <value>[{AppName}] File compressed: {FileNameInArchive}</value>
+    <value>[{AppName}] Dosya sıkıştırıldı: {FileNameInArchive}</value>
   </data>
   <data name="FileDecompressed" xml:space="preserve">
-    <value>[{AppName}] File decompressed: {NewFileFullPath}</value>
+    <value>[{AppName}] Dosya ayrıştırıldı: {NewFileFullPath}</value>
   </data>
   <data name="FormatException" xml:space="preserve">
-    <value>An error happened while parsing context menu, most likely happened duo typo on color name.
+    <value>Bağlam menüsü ayrıştırılırken bir hata oluştu. Büyük ihtimalle renk ismindeki yazım hatasından kaynaklanıyor.
 
 {ExceptionMessage}</value>
   </data>
@@ -637,7 +637,7 @@ Dosyanın gerçekten bozuk olup olmadığını görmek adına dosyayı elle kont
     <value>Dosya gezgininde görüntüle ({LibraryFullPath})</value>
   </data>
   <data name="RemoveFromSlm" xml:space="preserve">
-    <value>Remove from SLM</value>
+    <value>SLM'den kaldır</value>
   </data>
   <data name="SteamLibrary_CMenu_RemoveFromSteam" xml:space="preserve">
     <value>Kütüphaneyi Steam'den kaldır (dosyalar ile)</value>
@@ -757,43 +757,43 @@ Lütfen öncelikle Görev Yöneticisi'ni durdurun.</value>
 Hata: {ExceptionMessage}</value>
   </data>
   <data name="Updater_LatestVersionMessage" xml:space="preserve">
-    <value>You are using the latest version of SLM.</value>
+    <value>SLM'in en güncel sürümünü kullanıyorsunuz.</value>
   </data>
   <data name="CreateLibrary_Tooltip2" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected folder.</value>
+    <value>Seçili dizinde Steam, Origin ya da SLM kütüphanesi oluştur.</value>
   </data>
   <data name="CloseLibrary_Tooltip" xml:space="preserve">
-    <value>Close Library</value>
+    <value>Kütüphaneyi Kapat</value>
   </data>
   <data name="RefreshLibrary_Tooltip" xml:space="preserve">
-    <value>Refresh Library</value>
+    <value>Kütüphaneyi Yenile</value>
   </data>
   <data name="CloseLibrary_Tooltip2" xml:space="preserve">
-    <value>Removes the selected library from SLM without touching files inside.</value>
+    <value>Seçili kütüphaneyi içindeki dosyalara dokunmadan SLM'den kaldır.</value>
   </data>
   <data name="RefreshLibrary_Tooltip2" xml:space="preserve">
-    <value>Refreshes the current status of selected library.</value>
+    <value>Seçili kütüphanenin durumunu yeniler.</value>
   </data>
   <data name="CloseLibrary_Tooltip3" xml:space="preserve">
     <value>Only available for (non-main) Origin and SLM libraries.</value>
   </data>
   <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
-    <value>Auto Scroll Logs</value>
+    <value>Kayıtları Otomatik Kaydır</value>
   </data>
   <data name="TaskManagerView_AutoClearCompletedTasks" xml:space="preserve">
-    <value>Auto Clear Completed Tasks</value>
+    <value>Tamamlanan Otomatik Olarak Temizle</value>
   </data>
   <data name="RemoveSelectedItemSFromIgnoreList" xml:space="preserve">
     <value>Remove Selected Item(s) from Ignore List</value>
   </data>
   <data name="Ignored" xml:space="preserve">
-    <value>Ignored</value>
+    <value>Reddedildi</value>
   </data>
   <data name="LibraryCleanerTooltip" xml:space="preserve">
     <value>Double-clicking to an item will open it's location in file explorer.</value>
   </data>
   <data name="DeleteAll_Tooltip" xml:space="preserve">
-    <value>Delete All Items</value>
+    <value>Bütün Öğeleri Sil</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteAll_Tooltip2" xml:space="preserve">
     <value>Attempts to delete every folder/file in the given list.</value>
@@ -805,7 +805,7 @@ Hata: {ExceptionMessage}</value>
     <value>Moves every folder/file in the given list to selected path.</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip" xml:space="preserve">
-    <value>Refresh Items</value>
+    <value>Öğeleri Yenile</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip2" xml:space="preserve">
     <value>Refreshes the junk list for Steam libraries.</value>
@@ -814,7 +814,7 @@ Hata: {ExceptionMessage}</value>
     <value>Ignore Selected Item(s)</value>
   </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Etkin</value>
   </data>
   <data name="Disabled" xml:space="preserve">
     <value>Devre Dışı</value>
@@ -823,13 +823,13 @@ Hata: {ExceptionMessage}</value>
     <value>View Store Page</value>
   </data>
   <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
-    <value>Google Search</value>
+    <value>Google Araması</value>
   </data>
   <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
-    <value>View on Youtube</value>
+    <value>Youtube'da Görüntüle</value>
   </data>
   <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
-    <value>Verify Files</value>
+    <value>Dosyaları Doğrula</value>
   </data>
   <data name="HeadlessFolder" xml:space="preserve">
     <value>Headless Folder</value>
@@ -847,10 +847,10 @@ Hata: {ExceptionMessage}</value>
     <value>Compact</value>
   </data>
   <data name="Enums_Optimal" xml:space="preserve">
-    <value>Optimal</value>
+    <value>İdeal</value>
   </data>
   <data name="Enums_Fastest" xml:space="preserve">
-    <value>Fastest</value>
+    <value>En Hızlı</value>
   </data>
   <data name="Enums_Store" xml:space="preserve">
     <value>Store</value>
@@ -862,7 +862,7 @@ Hata: {ExceptionMessage}</value>
     <value>Library type is not selected for library creation.</value>
   </data>
   <data name="CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath" xml:space="preserve">
-    <value>Selected directory does not exists: {libraryPath}</value>
+    <value>Seçili dizin mevcut değil: {libraryPath}</value>
   </data>
   <data name="CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
     <value>Steam Library support must be enabled for this action.</value>
@@ -877,31 +877,31 @@ Hata: {ExceptionMessage}</value>
     <value>Opens a webpage with available donation methods. Thank you for your support!</value>
   </data>
   <data name="TranslateSLM" xml:space="preserve">
-    <value>Translate SLM</value>
+    <value>SLM'i Çevir</value>
   </data>
   <data name="TranslateSLMDescription" xml:space="preserve">
     <value>Opens Crowdin project page of SLM which you can contribute to translation of SLM.</value>
   </data>
   <data name="Main_DiscordGroup" xml:space="preserve">
-    <value>Discord Group</value>
+    <value>Discord Grubu</value>
   </data>
   <data name="Main_DiscordGroupDescription" xml:space="preserve">
     <value>Opens the invitation link for SLM's Discord Group on your favorite web browser.</value>
   </data>
   <data name="Main_SelectedPath" xml:space="preserve">
-    <value>Selected Path:</value>
+    <value>Seçili Dizin:</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>Select</value>
+    <value>Seç</value>
   </data>
   <data name="LibraryType" xml:space="preserve">
-    <value>Library Type</value>
+    <value>Kütüphane Türü</value>
   </data>
   <data name="LibraryTypeDescription" xml:space="preserve">
     <value>Select a library type you would like to create of.</value>
   </data>
   <data name="SelectedLibraryType" xml:space="preserve">
-    <value>Selected Library Type:</value>
+    <value>Seçili Kütüphane Türü:</value>
   </data>
   <data name="SortGamesBy_Tooltip" xml:space="preserve">
     <value>Sorting Method for Game Panel</value>
@@ -916,7 +916,7 @@ Hata: {ExceptionMessage}</value>
     <value>Lets you switch between Grid and List View for Game Panel</value>
   </data>
   <data name="SearchFor" xml:space="preserve">
-    <value>Search for...</value>
+    <value>Şunun için Ara...</value>
   </data>
   <data name="SearchForDesc" xml:space="preserve">
     <value>Lets you search for a game by it's name or appid.</value>
@@ -943,7 +943,7 @@ Hata: {ExceptionMessage}</value>
     <value>Uplay</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Ana Sayfa</value>
   </data>
   <data name="JunkItems" xml:space="preserve">
     <value>Junk Items</value>
@@ -1000,10 +1000,10 @@ Hata: {ExceptionMessage}</value>
     <value>Attempts for a new version control at startup.</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Evet</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Hayır</value>
   </data>
   <data name="KeepSearchingOnLibraryChange_Tooltip" xml:space="preserve">
     <value>Keeps the searching text and search for the text in the new selected library if active.</value>
@@ -1087,19 +1087,19 @@ Hata: {ExceptionMessage}</value>
     <value>SLM will attempt to play a sound (Windows exclamation or the file in CustomSoundFile setting key) on the queue of task manager gets completed.</value>
   </data>
   <data name="SteamLibrarySupport" xml:space="preserve">
-    <value>Steam Library Support</value>
+    <value>Steam Kütüphane Desteği</value>
   </data>
   <data name="SteamLibrarySupport_Tooltip" xml:space="preserve">
     <value>Enables/Disables Steam Library functionality for SLM</value>
   </data>
   <data name="OriginLibrarySupport" xml:space="preserve">
-    <value>Origin Library Support</value>
+    <value>Origin Kütüphane Desteği</value>
   </data>
   <data name="OriginLibrarySupport_Tooltip" xml:space="preserve">
     <value>Enables/Disables Origin Library functionality for SLM</value>
   </data>
   <data name="UplayLibrarySupport" xml:space="preserve">
-    <value>Uplay Library Support</value>
+    <value>Uplay Kütüphane Desteği</value>
   </data>
   <data name="UplayLibrarySupport_Tooltip" xml:space="preserve">
     <value>Enables/Disables Uplay Library functionality for SLM</value>
@@ -1108,34 +1108,34 @@ Hata: {ExceptionMessage}</value>
     <value>Compact</value>
   </data>
   <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+    <value>Kopyala</value>
   </data>
   <data name="AutoInstall" xml:space="preserve">
-    <value>Auto Install</value>
+    <value>Otomatik Yükle</value>
   </data>
   <data name="CompactForceCompress" xml:space="preserve">
-    <value>Force Compress</value>
+    <value>Sıkıştırmaya Zorla</value>
   </data>
   <data name="TaskPanel_Tooltip" xml:space="preserve">
     <value>Double-clicking on a task will open it's location in file explorer.</value>
   </data>
   <data name="StartTaskManager" xml:space="preserve">
-    <value>Start Task Manager</value>
+    <value>Görev Yöneticisini Başlat</value>
   </data>
   <data name="StartTaskManager_Tooltip" xml:space="preserve">
     <value>Will start the task manager. Task Manager will process the queued items or wait for new items.</value>
   </data>
   <data name="PauseTaskManager" xml:space="preserve">
-    <value>Pause Task Manager</value>
+    <value>Görev Yöneticisini Duraklat</value>
   </data>
   <data name="PauseTaskManager_Tooltip" xml:space="preserve">
     <value>Pauses task processing and active tasks.</value>
   </data>
   <data name="StopTaskManager" xml:space="preserve">
-    <value>Stop Task Manager</value>
+    <value>Görev Yöneticisini Durdur</value>
   </data>
   <data name="StopTaskManager_Tooltip" xml:space="preserve">
-    <value>Stops the task manager and cancels the active task.</value>
+    <value>Görev yöneticisini kapatır ve aktif olan görevi iptal eder.</value>
   </data>
   <data name="ClearCompletedTasks_Tooltip" xml:space="preserve">
     <value>Will remove the completed tasks from the task list.</value>
@@ -1150,7 +1150,7 @@ Hata: {ExceptionMessage}</value>
     <value>SLM will remove the completed tasks from task manager.</value>
   </data>
   <data name="TaskManagerView_ContinueOnError" xml:space="preserve">
-    <value>Continue on Error</value>
+    <value>Hatada Devam Et</value>
   </data>
   <data name="TaskManagerView_ContinueOnError_Tooltip" xml:space="preserve">
     <value>If active, SLM will move to the next task in the list in case of an error with the active task.</value>
@@ -1177,13 +1177,13 @@ Hata: {ExceptionMessage}</value>
     <value>Installation is completed!</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Kapat</value>
   </data>
   <data name="CompactDirectoryNotExists" xml:space="preserve">
     <value>Directory doesn't exists !? - {DirectoryFullName}</value>
   </data>
   <data name="Compact_CompressingFile" xml:space="preserve">
-    <value>Compressing file: {fileName}</value>
+    <value>Dosya sıkıştırılıyor: {fileName}</value>
   </data>
   <data name="Compact_TaskCompletedIn" xml:space="preserve">
     <value>[{AppName}] Compact task completed in {TimeElapsed}</value>
@@ -1200,7 +1200,7 @@ Hata: {ExceptionMessage}</value>
     <value>Can't Unload {targetLibraryType} Libraries while there is an active task.</value>
   </data>
   <data name="Uplay_Open" xml:space="preserve">
-    <value>Open</value>
+    <value>Aç</value>
   </data>
   <data name="Install" xml:space="preserve">
     <value>Install</value>
