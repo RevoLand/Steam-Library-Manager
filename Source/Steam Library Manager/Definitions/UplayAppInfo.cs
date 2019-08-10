@@ -160,7 +160,7 @@ namespace Steam_Library_Manager.Definitions
                     {
                         if (appRegistry?.GetValue("InstallDir") != null)
                         {
-                            appRegistry.SetValue("InstallDir", InstallationDirectory.FullName);
+                            appRegistry.SetValue("InstallDir", !InstallationDirectory.FullName.EndsWith(Path.DirectorySeparatorChar.ToString()) ? string.Join("", InstallationDirectory.FullName, Path.DirectorySeparatorChar).Replace(Path.DirectorySeparatorChar, '/') : InstallationDirectory.FullName.Replace(Path.DirectorySeparatorChar, '/'));
                         }
                     }
                 }

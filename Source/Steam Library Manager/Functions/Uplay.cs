@@ -205,10 +205,13 @@ namespace Steam_Library_Manager.Functions
 
                         if (installDirValue == null) continue;
 
-                        var appNamesSplit = ((string)installDirValue).Split('/');
-                        var appName = appNamesSplit[appNamesSplit.Length - 2];
+                        var installDir = ((string)installDirValue);
 
-                        if (!Definitions.List.UplayAppIds.ContainsKey(appName))
+                        var appNamesSplit = (installDir.EndsWith(Path.DirectorySeparatorChar.ToString())) ? installDir.Split(Path.DirectorySeparatorChar) : installDir.Split('/');
+
+                        var appName = appNamesSplit.ElementAtOrDefault(appNamesSplit.Length - 2);
+
+                        if (appName != null && !Definitions.List.UplayAppIds.ContainsKey(appName))
                         {
                             Definitions.List.UplayAppIds.Add(appName, Convert.ToInt32(appId));
                         }
