@@ -24,9 +24,10 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
 
-        public static readonly List<UplayConfigurationDb> UplayConfigurations = new List<UplayConfigurationDb>();
         public static readonly List<Tuple<string, string>> SteamUserIdList = new List<Tuple<string, string>>();
         public static readonly Dictionary<int, DateTime> SteamAppsLastPlayedDic = new Dictionary<int, DateTime>();
+        public static readonly List<UplayConfigurationDb> UplayConfigurations = new List<UplayConfigurationDb>();
+        public static readonly Dictionary<string, int> UplayAppIds = new Dictionary<string, int>();
 
         public class TaskInfo : INotifyPropertyChanged
         {

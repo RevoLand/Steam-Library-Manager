@@ -55,7 +55,7 @@ namespace Steam_Library_Manager.Functions
             var menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.Run)),
-                Action = "steam://run/{0}", // TO-DO
+                Action = "uplay://launch/{0}",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
             };
@@ -96,22 +96,24 @@ namespace Steam_Library_Manager.Functions
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
             Definitions.List.AppCMenuItems.Add(menuItem);
 
-            // Separator
-            menuItem = new Definitions.ContextMenuItem
-            {
-                ShowToCompressed = false,
-                IsSeparator = true
-            };
-
-            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
-            Definitions.List.AppCMenuItems.Add(menuItem);
-
             // Show on disk
             menuItem = new Definitions.ContextMenuItem
             {
                 Header = SLM.Translate(nameof(Properties.Resources.MenuDiskInfo)),
                 Action = "Disk",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+            };
+
+            menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
+            Definitions.List.AppCMenuItems.Add(menuItem);
+
+            // Install
+            menuItem = new Definitions.ContextMenuItem
+            {
+                Header = SLM.Translate(nameof(Properties.Resources.Install)),
+                Action = "install",
+                Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                ShowToCompressed = false
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -189,8 +191,29 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 Properties.Settings.Default.UplayExePath = Registry
-                    .GetValue(Definitions.Global.Uplay.RegistryKeyPath, "InstallDir", "").ToString()
+                    .GetValue(Definitions.Global.Uplay.LauncherRegistryPath, "InstallDir", "").ToString()
                     .Replace('/', Path.DirectorySeparatorChar);
+
+                var installationsRegistry = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(Definitions.Global.Uplay.InstallationsRegistryPath) ?? RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(Definitions.Global.Uplay.InstallationsRegistryPath);
+
+                using (var appIdsRegistry = installationsRegistry)
+                {
+                    foreach (var appId in appIdsRegistry.GetSubKeyNames())
+                    {
+                        var appRegistryKey = appIdsRegistry.OpenSubKey(appId);
+                        var installDirValue = appRegistryKey?.GetValue("InstallDir");
+
+                        if (installDirValue == null) continue;
+
+                        var appNamesSplit = ((string)installDirValue).Split('/');
+                        var appName = appNamesSplit[appNamesSplit.Length - 2];
+
+                        if (!Definitions.List.UplayAppIds.ContainsKey(appName))
+                        {
+                            Definitions.List.UplayAppIds.Add(appName, Convert.ToInt32(appId));
+                        }
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayExePath))
                 {

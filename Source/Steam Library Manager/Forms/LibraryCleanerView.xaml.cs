@@ -90,7 +90,7 @@ namespace Steam_Library_Manager.Forms
                             break;
 
                         case "Ignore":
-                            Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                            Definitions.List.IgnoredJunkItems.Remove(junk);
                             break;
 
                         case "Delete":
@@ -103,7 +103,7 @@ namespace Steam_Library_Manager.Forms
                                 Directory.Delete(junk, true);
                             }
 
-                            Properties.Settings.Default.IgnoredJunks.Remove(junk);
+                            Definitions.List.IgnoredJunkItems.Remove(junk);
                             break;
                     }
                 }

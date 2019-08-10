@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -254,7 +254,7 @@ Error: {ExceptionMessage}
 
 Would you like to remove files that already moved from target library?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="FontAwesome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fa\FontAwesome.otf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -348,9 +348,6 @@ Would you like to remove files that already moved from target library?</value>
   </data>
   <data name="Forms_QuitSLMMessage" xml:space="preserve">
     <value>Görev Yöneticisinde aktif görevler mevcut. SLM'den çıkış yapmak istediğinize emin misiniz? Bu durum veri kaybına yol açabilir!</value>
-  </data>
-  <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
-    <value>Gelişmiş loglama (Yeniden başlatma gerektirir)</value>
   </data>
   <data name="CalculationMethodForArchiveSize" xml:space="preserve">
     <value>Calculation method for archive size</value>
@@ -501,7 +498,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
   </data>
-  <data name="OriginApp_CMenu_Install" xml:space="preserve">
+  <data name="Install" xml:space="preserve">
     <value>Yükle</value>
   </data>
   <data name="OriginApp_CMenu_Repair" xml:space="preserve">
@@ -635,11 +632,6 @@ Dosyanın gerçekten bozuk olup olmadığını görmek adına dosyayı elle kont
   </data>
   <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
     <value>Uygulama dosyaları kaldırılırken bir hata oluştu. {FullPath}</value>
-  </data>
-  <data name="SteamLibrary_CantCreate" xml:space="preserve">
-    <value>Steam Kütüphane dosyası oluşturulamıyor: {SteamAppsFolderFullPath}
-
-SLM'yi yönetici olarak çalıştırmayı deneyiniz.</value>
   </data>
   <data name="SteamLibrary_CMenu_DeleteGames" xml:space="preserve">
     <value>Kütüphanedeki oyunları sil</value>
@@ -1189,12 +1181,6 @@ Hata: {ExceptionMessage}</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
-  </data>
-  <data name="CompactTask_CurrentStatusOfAppNameİsIsCompacted" xml:space="preserve">
-    <value>Current status of {AppName} is {(IsCompacted ? </value>
-  </data>
-  <data name="CompactTask_AndTheTaskİsSetToCurrentTaskCompact" xml:space="preserve">
-    <value>)} and the task is set to {(currentTask.Compact ? </value>
   </data>
   <data name="CompactDirectoryNotExists" xml:space="preserve">
     <value>Directory doesn't exists !? - {DirectoryFullName}</value>

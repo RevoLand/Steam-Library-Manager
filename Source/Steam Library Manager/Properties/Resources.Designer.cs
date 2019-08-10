@@ -445,24 +445,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to )} and the task is set to {(currentTask.Compact ? .
-        /// </summary>
-        internal static string CompactTask_AndTheTaskİsSetToCurrentTaskCompact {
-            get {
-                return ResourceManager.GetString("CompactTask_AndTheTaskİsSetToCurrentTaskCompact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Current status of {AppName} is {(IsCompacted ? .
-        /// </summary>
-        internal static string CompactTask_CurrentStatusOfAppNameİsIsCompacted {
-            get {
-                return ResourceManager.GetString("CompactTask_CurrentStatusOfAppNameİsIsCompacted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Compress.
         /// </summary>
         internal static string Compress {
@@ -1435,15 +1417,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced Logging (Requires restart).
-        /// </summary>
-        internal static string Forms_Settings_AdvancedLogging {
-            get {
-                return ResourceManager.GetString("Forms_Settings_AdvancedLogging", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Compress.
         /// </summary>
         internal static string Forms_Settings_Compress {
@@ -1620,6 +1593,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string IgnoreSelectedItems {
             get {
                 return ResourceManager.GetString("IgnoreSelectedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install.
+        /// </summary>
+        internal static string Install {
+            get {
+                return ResourceManager.GetString("Install", resourceCulture);
             }
         }
         
@@ -1881,15 +1863,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Install.
-        /// </summary>
-        internal static string OriginApp_CMenu_Install {
-            get {
-                return ResourceManager.GetString("OriginApp_CMenu_Install", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Repair.
         /// </summary>
         internal static string OriginApp_CMenu_Repair {
@@ -1985,7 +1958,8 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error happened while updating game list for Origin library: {FullPath}\n{ex}.
+        ///   Looks up a localized string similar to An error happened while updating game list for Origin library: {FullPath}
+        ///    {ex}.
         /// </summary>
         internal static string OriginUpdateAppListException {
             get {
@@ -2244,7 +2218,7 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run (Unavailable).
+        ///   Looks up a localized string similar to Run.
         /// </summary>
         internal static string Run {
             get {
@@ -2626,13 +2600,11 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t create steam library folder at: {SteamAppsFolderFullPath}
-        ///
-        ///Try running SLM as administrator..
+        ///   Looks up a localized string similar to SteamApps Folder Doesn&apos;t Exists at: {SteamAppsFolderFullPath}.
         /// </summary>
-        internal static string SteamLibrary_CantCreate {
+        internal static string SteamAppsFolderNotExists {
             get {
-                return ResourceManager.GetString("SteamLibrary_CantCreate", resourceCulture);
+                return ResourceManager.GetString("SteamAppsFolderNotExists", resourceCulture);
             }
         }
         
@@ -3139,7 +3111,32 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error happened while updating game list for Uplay library: {FullPath}\n{ex}.
+        ///   Looks up a localized string similar to UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+        ///
+        ///SLM must be running as Administrator for this process.
+        ///
+        ///Alternatively; you can use the &apos;Locate Game&apos; function of Uplay.
+        ///{ExceptionMessage}
+        ///.
+        /// </summary>
+        internal static string Uplay_UnauthorizedAccessExceptionMessage {
+            get {
+                return ResourceManager.GetString("Uplay_UnauthorizedAccessExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnauthorizedAccessException while Installing Uplay Game.
+        /// </summary>
+        internal static string Uplay_UnauthorizedAccessExceptionTitle {
+            get {
+                return ResourceManager.GetString("Uplay_UnauthorizedAccessExceptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error happened while updating game list for Uplay library: {FullPath}
+        ///    {ex}.
         /// </summary>
         internal static string Uplay_UpdateAppListError {
             get {

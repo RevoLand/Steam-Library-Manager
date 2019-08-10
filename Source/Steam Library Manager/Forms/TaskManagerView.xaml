@@ -69,7 +69,7 @@
                             </cachedImage:Image.Style>
                         </cachedImage:Image>
                     </Border>
-                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30">
+                    <TextBlock FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Style.Triggers>

@@ -34,6 +34,24 @@ namespace Steam_Library_Manager.Definitions
                     SearchOption.TopDirectoryOnly))
                 {
                     var dirInfo = new DirectoryInfo(directoryPath);
+
+                    if (!File.Exists(Path.Combine(dirInfo.FullName, "uplay_install.state")))
+                    {
+                        if (List.IgnoredJunkItems.Contains(dirInfo.FullName))
+                        {
+                            continue;
+                        }
+
+                        List.LCProgress.Report(new List.JunkInfo
+                        {
+                            FSInfo = dirInfo,
+                            Size = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetDirectorySize(dirInfo, true)),
+                            Library = this,
+                            Tag = Enums.JunkType.HeadlessFolder
+                        });
+                        continue;
+                    }
+
                     Functions.Uplay.ParseAppDetails(dirInfo.Name, dirInfo, this);
                 }
 

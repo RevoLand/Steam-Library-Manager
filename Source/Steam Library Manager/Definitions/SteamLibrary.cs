@@ -46,7 +46,7 @@ namespace Steam_Library_Manager.Definitions
                     if (!DirectoryList["SteamApps"].Exists)
                     {
                         MessageBox.Show(Framework.StringFormat.Format(
-                            Functions.SLM.Translate(nameof(Properties.Resources.SteamLibrary_CantCreate)),
+                            Functions.SLM.Translate(nameof(Properties.Resources.SteamAppsFolderNotExists)),
                             new { SteamAppsFolderFullPath = DirectoryList["SteamApps"].FullName }));
                         return;
                     }

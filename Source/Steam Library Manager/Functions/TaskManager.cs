@@ -82,6 +82,7 @@ namespace Steam_Library_Manager.Functions
                                 break;
 
                             case Definitions.Enums.LibraryType.Origin:
+                            case Definitions.Enums.LibraryType.Uplay:
                                 CurrentTask.TargetLibrary.Apps.First(x => x.AppId == CurrentTask.App.AppId && x.IsCompressed == CurrentTask.Compress)?.InstallAsync();
                                 break;
                         }

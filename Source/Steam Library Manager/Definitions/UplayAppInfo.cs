@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,6 +18,13 @@ namespace Steam_Library_Manager.Definitions
             AppName = appName;
             SpaceId = spaceId;
             InstallationDirectory = installationDirectory;
+
+            if (List.UplayAppIds.ContainsKey(AppName))
+            {
+                AppId = List.UplayAppIds[AppName];
+
+                Debug.WriteLine($"AppId ({AppId}) set for Uplay game: {AppName}");
+            }
 
             if (!string.IsNullOrEmpty(Properties.Settings.Default.UplayExePath))
             {
@@ -61,6 +70,14 @@ namespace Steam_Library_Manager.Definitions
             {
                 switch (action.ToLowerInvariant())
                 {
+                    default:
+                        if (AppId != 0)
+                        {
+                            Process.Start(string.Format(action, AppId));
+                        }
+
+                        break;
+
                     case "disk":
                         InstallationDirectory.Refresh();
 
@@ -69,6 +86,10 @@ namespace Steam_Library_Manager.Definitions
                             Process.Start(InstallationDirectory.FullName);
                         }
 
+                        break;
+
+                    case "install":
+                        InstallAsync();
                         break;
 
                     case "compress":
@@ -118,6 +139,48 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 Logger.Error(ex);
+            }
+        }
+
+        public async Task InstallAsync()
+        {
+            try
+            {
+                if (AppId <= 0) return;
+
+                var installationsRegistry =
+                    RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+                        .OpenSubKey(Global.Uplay.InstallationsRegistryPath) ?? RegistryKey
+                        .OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                        .OpenSubKey(Global.Uplay.InstallationsRegistryPath);
+
+                using (var registry = installationsRegistry)
+                {
+                    using (var appRegistry = registry?.OpenSubKey(AppId.ToString()))
+                    {
+                        if (appRegistry?.GetValue("InstallDir") != null)
+                        {
+                            appRegistry.SetValue("InstallDir", InstallationDirectory.FullName);
+                        }
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                    {
+                        await Main.FormAccessor.ShowMessageAsync(
+                            Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionTitle)),
+                            Framework.StringFormat.Format(
+                                Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionMessage)),
+                                new { AppName, ExceptionMessage = ex.Message })).ConfigureAwait(true);
+                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
+
+                Logger.Fatal(ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.Fatal(ex);
             }
         }
     }

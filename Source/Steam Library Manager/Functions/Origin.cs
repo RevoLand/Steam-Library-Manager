@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Functions
             // Install
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = SLM.Translate(nameof(Properties.Resources.OriginApp_CMenu_Install)),
+                Header = SLM.Translate(nameof(Properties.Resources.Install)),
                 Action = "install",
                 Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
