@@ -1,1 +1,1 @@
-1.5.1.10|Minor bugfixes
+1.6.0.0|Uplay Support
