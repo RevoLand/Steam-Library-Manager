@@ -922,28 +922,28 @@
     <value>Метод просмотра для игровой панели</value>
   </data>
   <data name="ViewMethodForGamePanelDesc" xml:space="preserve">
-    <value>Lets you switch between Grid and List View for Game Panel</value>
+    <value>Позволяет переключаться между сеткой и списком для игровой панели</value>
   </data>
   <data name="SearchFor" xml:space="preserve">
-    <value>Search for...</value>
+    <value>Поиск...</value>
   </data>
   <data name="SearchForDesc" xml:space="preserve">
-    <value>Lets you search for a game by it's name or appid.</value>
+    <value>Позволяет искать игру по ее названию или приложению.</value>
   </data>
   <data name="Compacted" xml:space="preserve">
-    <value>Compacted</value>
+    <value>Компактный</value>
   </data>
   <data name="AppPanel_Desc1" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Двойное нажатие на элемент откроет его местоположение в обозревателе файлов.</value>
   </data>
   <data name="AppPanel_Desc2" xml:space="preserve">
-    <value>To copy/move a game to another library, simply drag-drop the item to the targeted library.</value>
+    <value>Чтобы скопировать/переместить игру в другую библиотеку, просто перетащите элемент в целевую библиотеку.</value>
   </data>
   <data name="AppPanel_Desc3" xml:space="preserve">
-    <value>Multiple item selection/tasking is allowed.</value>
+    <value>Можно выбрать/задавать несколько элементов.</value>
   </data>
   <data name="HamburgerMenuControl_AllAvailable" xml:space="preserve">
-    <value>All Available</value>
+    <value>Все доступные</value>
   </data>
   <data name="SteamSLM" xml:space="preserve">
     <value>Steam и SLM</value>
