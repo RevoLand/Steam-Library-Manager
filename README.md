@@ -25,7 +25,7 @@
 <p>All suggestions are welcome and will help further development of SLM.</p>
 <p>
     <em>Steam Library Manager (SLM) is not affiliated with, sponsored by, approved by, or otherwise related to Valve
-        Software, Steam, Electronic Arts, or UBISoft.
+        Software, Steam, Electronic Arts, or Ubisoft.
     </em>
 </p>
 <p align="center">
