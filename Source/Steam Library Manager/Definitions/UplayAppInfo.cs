@@ -156,7 +156,7 @@ namespace Steam_Library_Manager.Definitions
 
                 using (var registry = installationsRegistry)
                 {
-                    using (var appRegistry = registry?.OpenSubKey(AppId.ToString()))
+                    using (var appRegistry = registry?.OpenSubKey(AppId.ToString(), RegistryKeyPermissionCheck.ReadWriteSubTree))
                     {
                         if (appRegistry?.GetValue("InstallDir") != null)
                         {
