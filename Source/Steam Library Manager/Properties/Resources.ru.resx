@@ -347,9 +347,6 @@
   <data name="Forms_QuitSLMMessage" xml:space="preserve">
     <value>В менеджере задач есть активные задачи. Вы уверены что хотите выйти из SLM? Это может привести к потере данных.</value>
   </data>
-  <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
-    <value>Расширенный лог (требуется перезапуск)</value>
-  </data>
   <data name="CalculationMethodForArchiveSize" xml:space="preserve">
     <value>Метод расчета для размера архива</value>
   </data>
@@ -499,14 +496,11 @@
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
   </data>
-  <data name="OriginApp_CMenu_Install" xml:space="preserve">
-    <value>Установить</value>
-  </data>
   <data name="OriginApp_CMenu_Repair" xml:space="preserve">
     <value>Исправить</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Запуск (Недоступен)</value>
+    <value>Run</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Установка исходного приложения</value>
@@ -633,11 +627,6 @@
   </data>
   <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
     <value>Произошла неизвестная ошибка при удалении файлов приложения. {FullPath}</value>
-  </data>
-  <data name="SteamLibrary_CantCreate" xml:space="preserve">
-    <value>Невозможно создать папку Steam библиотеки в: {SteamAppsFolderFullPath}
-
-Попробуйте запустить SLM как администратора.</value>
   </data>
   <data name="SteamLibrary_CMenu_DeleteGames" xml:space="preserve">
     <value>Удалить игры в библиотеке</value>
@@ -1188,12 +1177,6 @@
   <data name="Close" xml:space="preserve">
     <value>Закрыть</value>
   </data>
-  <data name="CompactTask_CurrentStatusOfAppNameİsIsCompacted" xml:space="preserve">
-    <value>Текущий статус {AppName} {(IsCompacted ? </value>
-  </data>
-  <data name="CompactTask_AndTheTaskİsSetToCurrentTaskCompact" xml:space="preserve">
-    <value>)} и задача установлена на {(currentTask.Compact ? </value>
-  </data>
   <data name="CompactDirectoryNotExists" xml:space="preserve">
     <value>Каталог не существует !? - {DirectoryFullName}</value>
   </data>
@@ -1204,15 +1187,35 @@
     <value>[{AppName}] Компактная задача завершена в {TimeElapsed}</value>
   </data>
   <data name="OriginUpdateAppListException" xml:space="preserve">
-    <value>Произошла ошибка при обновлении списка игр для библиотеки Origin: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Origin library: {FullPath}
+    {ex}</value>
   </data>
   <data name="Uplay_UpdateAppListError" xml:space="preserve">
-    <value>Произошла ошибка при обновлении списка игр для Uplay библиотеки: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Uplay library: {FullPath}
+    {ex}</value>
   </data>
   <data name="CantUnloadLibraryWithActiveTask" xml:space="preserve">
     <value>Невозможно выгрузить библиотеки {targetLibraryType}, пока есть активная задача.</value>
   </data>
   <data name="Uplay_Open" xml:space="preserve">
     <value>Открыть</value>
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="SteamAppsFolderNotExists" xml:space="preserve">
+    <value>SteamApps Folder Doesn't Exists at: {SteamAppsFolderFullPath}</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionTitle" xml:space="preserve">
+    <value>UnauthorizedAccessException while Installing Uplay Game</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+
+SLM must be running as Administrator for this process.
+
+Alternatively; you can use the 'Locate Game' function of Uplay.
+{ExceptionMessage}
+</value>
   </data>
 </root>
