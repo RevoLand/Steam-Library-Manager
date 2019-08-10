@@ -9,7 +9,7 @@
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="800">
-    <GroupBox Header="Library Settings">
+    <GroupBox Header="{l:Static p:Resources.LibrarySettings}">
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Steam">
                 <WrapPanel Orientation="Vertical">

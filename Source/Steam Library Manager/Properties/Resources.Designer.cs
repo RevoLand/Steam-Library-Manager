@@ -1480,15 +1480,6 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task Manager Default Settings.
-        /// </summary>
-        internal static string Forms_Settings_TaskManagerDefaults {
-            get {
-                return ResourceManager.GetString("Forms_Settings_TaskManagerDefaults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SLM.
         /// </summary>
         internal static string Forms_SLM {
@@ -1674,6 +1665,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string LibraryPanel_Tooltip {
             get {
                 return ResourceManager.GetString("LibraryPanel_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Library Settings.
+        /// </summary>
+        internal static string LibrarySettings {
+            get {
+                return ResourceManager.GetString("LibrarySettings", resourceCulture);
             }
         }
         
@@ -2731,6 +2731,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string TaskCompleted {
             get {
                 return ResourceManager.GetString("TaskCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Manager Default Settings.
+        /// </summary>
+        internal static string TaskManager {
+            get {
+                return ResourceManager.GetString("TaskManager", resourceCulture);
             }
         }
         

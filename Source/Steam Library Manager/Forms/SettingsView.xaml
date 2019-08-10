@@ -10,10 +10,11 @@
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <StackPanel Name="SettingsPanel" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5, 10">
-            <GroupBox Header="{l:Static p:Resources.GeneralSettings}">
-                <UniformGrid Columns="2">
+    <controls:MetroTabControl Name="SettingsPanel" controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}" Panel.ZIndex="0">
+        <!-- Tab: Library -->
+        <controls:MetroTabItem Header="{l:Static p:Resources.GeneralSettings}" IsSelected="True">
+            <WrapPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0, 10">
+                <UniformGrid Columns="3">
                     <WrapPanel Orientation="Vertical">
                         <!-- Application sorting method -->
                         <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" controls:TextBoxHelper.Watermark="{l:Static p:Resources.SortGamesBy}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
@@ -252,136 +253,133 @@
                             </Button.ToolTip>
                         </Button>
 
-                        <GroupBox Margin="5" Header="Supporters" MaxHeight="300">
-                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-                                <StackPanel>
-                                    <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35">
-                                        <Button.ToolTip>
-                                            <ToolTip>
-                                                <StackPanel>
-                                                    <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Donate}" />
-                                                    <TextBlock Text="{l:Static p:Resources.Forms_Main_DonateDescription}" />
-                                                </StackPanel>
-                                            </ToolTip>
-                                        </Button.ToolTip>
-                                    </Button>
-                                    <Separator />
-                                    <TextBlock Text="Mike Burkart" />
-                                    <TextBlock Text="Marisa Smith" />
-                                    <TextBlock Text="Ken Tittle" />
-                                    <TextBlock Text="DigitalBirdie" />
-                                    <TextBlock Text="Hotobu" />
-                                    <TextBlock Text="Carlo Bensi" />
-                                </StackPanel>
-                            </ScrollViewer>
-                        </GroupBox>
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="35">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Donate}" />
+                                        <TextBlock Text="{l:Static p:Resources.Forms_Main_DonateDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
                     </WrapPanel>
+                    <GroupBox Margin="5" Header="Supporters">
+                        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Mike Burkart" />
+                                <TextBlock Text="Marisa Smith" />
+                                <TextBlock Text="Ken Tittle" />
+                                <TextBlock Text="DigitalBirdie" />
+                                <TextBlock Text="Hotobu" />
+                                <TextBlock Text="Carlo Bensi" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </GroupBox>
                 </UniformGrid>
-            </GroupBox>
-            <StackPanel Margin="10,0,0,0">
-                <GroupBox Header="{l:Static p:Resources.Forms_Settings_TaskManagerDefaults}">
-                    <StackPanel>
-                        <!-- Remove Source Files -->
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
+            </WrapPanel>
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="{l:Static p:Resources.TaskManager}">
+            <WrapPanel Orientation="Vertical" Margin="0, 10">
+                <!-- Remove Source Files -->
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" />
-                                        <TextBlock Text="{l:Static p:Resources.RemoveFilesAtSourceDirectory_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" />
+                                <TextBlock Text="{l:Static p:Resources.RemoveFilesAtSourceDirectory_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
 
-                        <!-- Compress Files -->
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
+                <!-- Compress Files -->
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.CompressFiles}" />
-                                        <TextBlock Text="{l:Static p:Resources.CompressFiles_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.CompressFiles}" />
+                                <TextBlock Text="{l:Static p:Resources.CompressFiles_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
 
-                        <!-- Report File Movement -->
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
+                <!-- Report File Movement -->
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" />
-                                        <TextBlock Text="{l:Static p:Resources.ReportFileMovement_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Forms_TaskManager_ReportFileMovement}" />
+                                <TextBlock Text="{l:Static p:Resources.ReportFileMovement_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
 
-                        <!-- Start Task Manager on Startup -->
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
+                <!-- Start Task Manager on Startup -->
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.StartTaskManagerAtStartup}" />
-                                        <TextBlock Text="{l:Static p:Resources.StartTaskManagerAtStartup_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.StartTaskManagerAtStartup}" />
+                                <TextBlock Text="{l:Static p:Resources.StartTaskManagerAtStartup_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
 
-                        <!-- Play a sound on completion-->
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
+                <!-- Play a sound on completion-->
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
                                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.PlayASoundOnCompletion_Tooltip}" />
-                                        <TextBlock Text="{l:Static p:Resources.PlayASoundOnCompletion_Tooltip2}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox Header="Library Settings" Margin="0,10,0,0">
-                    <StackPanel>
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.SteamLibrarySupport}" />
-                                        <TextBlock Text="{l:Static p:Resources.SteamLibrarySupport_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.OriginLibrarySupport}" />
-                                        <TextBlock Text="{l:Static p:Resources.OriginLibrarySupport_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                        <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
-                            <controls:ToggleSwitch.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.UplayLibrarySupport}" />
-                                        <TextBlock Text="{l:Static p:Resources.UplayLibrarySupport_Tooltip}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </controls:ToggleSwitch.ToolTip>
-                        </controls:ToggleSwitch>
-                    </StackPanel>
-                </GroupBox>
-            </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.PlayASoundOnCompletion_Tooltip}" />
+                                <TextBlock Text="{l:Static p:Resources.PlayASoundOnCompletion_Tooltip2}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
+            </WrapPanel>
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="{l:Static p:Resources.LibrarySettings}">
+            <WrapPanel Orientation="Vertical" Margin="0, 10">
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.SteamLibrarySupport}" />
+                                <TextBlock Text="{l:Static p:Resources.SteamLibrarySupport_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.OriginLibrarySupport}" />
+                                <TextBlock Text="{l:Static p:Resources.OriginLibrarySupport_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <controls:ToggleSwitch.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.UplayLibrarySupport}" />
+                                <TextBlock Text="{l:Static p:Resources.UplayLibrarySupport_Tooltip}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </controls:ToggleSwitch.ToolTip>
+                </controls:ToggleSwitch>
+            </WrapPanel>
+        </controls:MetroTabItem>
+    </controls:MetroTabControl>
 </UserControl>

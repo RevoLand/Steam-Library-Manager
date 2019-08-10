@@ -166,7 +166,7 @@
                 <Forms:LibraryCleanerView x:Name="LibraryCleanerView" />
             </controls:MetroTabItem>
             <!-- Tab: Settings -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Settings}" Name="TabItem_Settings">
+            <controls:MetroTabItem Header="{l:Static p:Resources.Settings}" Name="TabItemSettings">
                 <Forms:SettingsView x:Name="SettingsView" />
             </controls:MetroTabItem>
         </controls:MetroTabControl>

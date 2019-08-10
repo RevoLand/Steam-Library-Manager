@@ -421,7 +421,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="StartTaskManagerAtStartup" xml:space="preserve">
     <value>Start Task Manager at Startup</value>
   </data>
-  <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
+  <data name="TaskManager" xml:space="preserve">
     <value>Görev Yöneticisi Varsayılan Ayarlar</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">

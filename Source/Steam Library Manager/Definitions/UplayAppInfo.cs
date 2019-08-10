@@ -89,7 +89,7 @@ namespace Steam_Library_Manager.Definitions
                         break;
 
                     case "install":
-                        InstallAsync();
+                        await InstallAsync();
                         break;
 
                     case "compress":

@@ -190,7 +190,7 @@ namespace Steam_Library_Manager
                             break;
 
                         case "Settings":
-                            TabItem_Settings.IsSelected = true;
+                            TabItemSettings.IsSelected = true;
                             break;
                     }
                 }
