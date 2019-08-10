@@ -707,7 +707,7 @@
     <value>[{AppName}] Прошло времени: {ElapsedTime} — Средняя скорость: {AverageSpeed} MB/сек — Средний размер файла: {AverageFileSize}</value>
   </data>
   <data name="TaskManager_Active" xml:space="preserve">
-    <value>[{CurrentTime}] [TaskManager] Менеджер задач теперь активен и ждет задач...</value>
+    <value>[{CurrentTime}] [TaskManager] Менеджер задач запущен и ждет задач...</value>
   </data>
   <data name="TaskManager_AlreadyTasked" xml:space="preserve">
     <value>Менеджер библиотеки Steam</value>
@@ -781,10 +781,10 @@
     <value>Удаляет выбранную библиотеку из SLM без затрагиваний файлов внутри.</value>
   </data>
   <data name="RefreshLibrary_Tooltip2" xml:space="preserve">
-    <value>Refreshes the current status of selected library.</value>
+    <value>Обновляет текущий статус выбранной библиотеки.</value>
   </data>
   <data name="CloseLibrary_Tooltip3" xml:space="preserve">
-    <value>Only available for (non-main) Origin and SLM libraries.</value>
+    <value>Доступно только для (не главной) библиотек Origin и SLM.</value>
   </data>
   <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
     <value>Автопрокрутка лога</value>
@@ -799,25 +799,25 @@
     <value>Игнорировано</value>
   </data>
   <data name="LibraryCleanerTooltip" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Двойное нажатие на элемент откроет его местоположение в обозревателе файлов.</value>
   </data>
   <data name="DeleteAll_Tooltip" xml:space="preserve">
-    <value>Delete All Items</value>
+    <value>Удалить все элементы</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteAll_Tooltip2" xml:space="preserve">
-    <value>Attempts to delete every folder/file in the given list.</value>
+    <value>Попытки удалить каждую папку/файл в данном списке.</value>
   </data>
   <data name="Forms_LibraryCleaner_MoveAll_Tooltip" xml:space="preserve">
-    <value>Move All Items</value>
+    <value>Переместить все элементы</value>
   </data>
   <data name="Forms_LibraryCleaner_MoveAll_Tooltip2" xml:space="preserve">
-    <value>Moves every folder/file in the given list to selected path.</value>
+    <value>Перемещает каждую папку/файл в заданном списке в выбранный путь.</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip" xml:space="preserve">
-    <value>Refresh Items</value>
+    <value>Обновить элементы</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip2" xml:space="preserve">
-    <value>Refreshes the junk list for Steam libraries.</value>
+    <value>Обновляет список мусора для библиотек Steam.</value>
   </data>
   <data name="IgnoreSelectedItems" xml:space="preserve">
     <value>Игнорировать выбранный пункт(ы)</value>
@@ -829,97 +829,97 @@
     <value>Отключено</value>
   </data>
   <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
-    <value>View Store Page</value>
+    <value>Страница магазина</value>
   </data>
   <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
-    <value>Google Search</value>
+    <value>Поиск в Google</value>
   </data>
   <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
-    <value>View on Youtube</value>
+    <value>Просмотреть на Youtube</value>
   </data>
   <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
-    <value>Verify Files</value>
+    <value>Проверить файлы</value>
   </data>
   <data name="HeadlessFolder" xml:space="preserve">
-    <value>Headless Folder</value>
+    <value>Папка без заголовка</value>
   </data>
   <data name="HeadlessWorkshopFolder" xml:space="preserve">
-    <value>Headless Workshop Folder</value>
+    <value>Папка без заголовка Мастерской</value>
   </data>
   <data name="CorruptedDataFile" xml:space="preserve">
-    <value>Corrupted Data File</value>
+    <value>Повреждённый файл данных</value>
   </data>
   <data name="HeadlessDataFile" xml:space="preserve">
-    <value>Headless Data File</value>
+    <value>Файл без заголовка</value>
   </data>
   <data name="Enums_Compact" xml:space="preserve">
-    <value>Compact</value>
+    <value>Компактный</value>
   </data>
   <data name="Enums_Optimal" xml:space="preserve">
-    <value>Optimal</value>
+    <value>Оптимальный</value>
   </data>
   <data name="Enums_Fastest" xml:space="preserve">
-    <value>Fastest</value>
+    <value>Быстрый</value>
   </data>
   <data name="Enums_Store" xml:space="preserve">
-    <value>Store</value>
+    <value>Магазин</value>
   </data>
   <data name="CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation" xml:space="preserve">
-    <value>Directory is not selected for library creation.</value>
+    <value>Каталог не выбран для создания библиотеки.</value>
   </data>
   <data name="CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation" xml:space="preserve">
-    <value>Library type is not selected for library creation.</value>
+    <value>Тип библиотеки не выбран для создания библиотеки.</value>
   </data>
   <data name="CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath" xml:space="preserve">
-    <value>Selected directory does not exists: {libraryPath}</value>
+    <value>Выбранный каталог не существует: {libraryPath}</value>
   </data>
   <data name="CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Steam Library support must be enabled for this action.</value>
+    <value>Для этого действия должна быть включена поддержка Steam Library.</value>
   </data>
   <data name="CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Origin Library support must be enabled for this action.</value>
+    <value>Для этого действия должна быть включена поддержка Origin Library.</value>
   </data>
   <data name="CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Uplay Library support must be enabled for this action.</value>
+    <value>Для этого действия должна быть включена поддержка Uplay Library.</value>
   </data>
   <data name="Forms_Main_DonateDescription" xml:space="preserve">
-    <value>Opens a webpage with available donation methods. Thank you for your support!</value>
+    <value>Открывает веб-страницу с доступными методами пожертвования. Спасибо за вашу поддержку!</value>
   </data>
   <data name="TranslateSLM" xml:space="preserve">
-    <value>Translate SLM</value>
+    <value>Перевести SLM</value>
   </data>
   <data name="TranslateSLMDescription" xml:space="preserve">
-    <value>Opens Crowdin project page of SLM which you can contribute to translation of SLM.</value>
+    <value>Открывает страницу проекта Crowdin по SLM которую вы можете внести в перевод SLM.</value>
   </data>
   <data name="Main_DiscordGroup" xml:space="preserve">
-    <value>Discord Group</value>
+    <value>Группа Discord</value>
   </data>
   <data name="Main_DiscordGroupDescription" xml:space="preserve">
-    <value>Opens the invitation link for SLM's Discord Group on your favorite web browser.</value>
+    <value>Открывает ссылку приглашения для Discord Group в SLM в вашем любимом веб-браузере.</value>
   </data>
   <data name="Main_SelectedPath" xml:space="preserve">
-    <value>Selected Path:</value>
+    <value>Выбранный путь:</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>Select</value>
+    <value>Выбрать</value>
   </data>
   <data name="LibraryType" xml:space="preserve">
-    <value>Library Type</value>
+    <value>Тип библиотеки</value>
   </data>
   <data name="LibraryTypeDescription" xml:space="preserve">
-    <value>Select a library type you would like to create of.</value>
+    <value>Выберите тип библиотеки которую вы хотите создать.</value>
   </data>
   <data name="SelectedLibraryType" xml:space="preserve">
-    <value>Selected Library Type:</value>
+    <value>Выбранный тип библиотеки:</value>
   </data>
   <data name="SortGamesBy_Tooltip" xml:space="preserve">
-    <value>Sorting Method for Game Panel</value>
+    <value>Метод сортировки для игровой панели</value>
   </data>
   <data name="SortGamesBy_Tooltip2" xml:space="preserve">
-    <value>Lets you select a sorting method for the game panel.</value>
+    <value>Позволяет выбрать метод сортировки для игровой панели.</value>
   </data>
   <data name="ViewMethodForGamePanel" xml:space="preserve">
-    <value>View Method for Game Panel</value>
+    <value>Метод просмотра для игровой панели</value>
   </data>
   <data name="ViewMethodForGamePanelDesc" xml:space="preserve">
     <value>Lets you switch between Grid and List View for Game Panel</value>
