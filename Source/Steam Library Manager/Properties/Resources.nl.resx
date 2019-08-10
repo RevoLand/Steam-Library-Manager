@@ -347,9 +347,6 @@ Would you like to remove files that already moved from target library?</value>
   <data name="Forms_QuitSLMMessage" xml:space="preserve">
     <value>There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.</value>
   </data>
-  <data name="Forms_Settings_AdvancedLogging" xml:space="preserve">
-    <value>Advanced Logging (Requires restart)</value>
-  </data>
   <data name="CalculationMethodForArchiveSize" xml:space="preserve">
     <value>Calculation method for archive size</value>
   </data>
@@ -422,7 +419,7 @@ Would you like to remove files that already moved from target library?</value>
   <data name="StartTaskManagerAtStartup" xml:space="preserve">
     <value>Start Task Manager at Startup</value>
   </data>
-  <data name="Forms_Settings_TaskManagerDefaults" xml:space="preserve">
+  <data name="TaskManager" xml:space="preserve">
     <value>Task Manager Default Settings</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
@@ -499,14 +496,11 @@ Would you like to remove files that already moved from target library?</value>
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
   </data>
-  <data name="OriginApp_CMenu_Install" xml:space="preserve">
-    <value>Install</value>
-  </data>
   <data name="OriginApp_CMenu_Repair" xml:space="preserve">
     <value>Repair</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Run (Unavailable)</value>
+    <value>Run</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Origin App Installation</value>
@@ -633,11 +627,6 @@ Would you like to remove the given archive file?</value>
   </data>
   <data name="SteamApp_RemovingErrorMessage" xml:space="preserve">
     <value>An unknown error happened while removing app files. {FullPath}</value>
-  </data>
-  <data name="SteamLibrary_CantCreate" xml:space="preserve">
-    <value>Can't create steam library folder at: {SteamAppsFolderFullPath}
-
-Try running SLM as administrator.</value>
   </data>
   <data name="SteamLibrary_CMenu_DeleteGames" xml:space="preserve">
     <value>Delete games in library</value>
@@ -1188,12 +1177,6 @@ Error: {ExceptionMessage}</value>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="CompactTask_CurrentStatusOfAppNameİsIsCompacted" xml:space="preserve">
-    <value>Current status of {AppName} is {(IsCompacted ? </value>
-  </data>
-  <data name="CompactTask_AndTheTaskİsSetToCurrentTaskCompact" xml:space="preserve">
-    <value>)} and the task is set to {(currentTask.Compact ? </value>
-  </data>
   <data name="CompactDirectoryNotExists" xml:space="preserve">
     <value>Directory doesn't exists !? - {DirectoryFullName}</value>
   </data>
@@ -1204,15 +1187,38 @@ Error: {ExceptionMessage}</value>
     <value>[{AppName}] Compact task completed in {TimeElapsed}</value>
   </data>
   <data name="OriginUpdateAppListException" xml:space="preserve">
-    <value>An error happened while updating game list for Origin library: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Origin library: {FullPath}
+    {ex}</value>
   </data>
   <data name="Uplay_UpdateAppListError" xml:space="preserve">
-    <value>An error happened while updating game list for Uplay library: {FullPath}\n{ex}</value>
+    <value>An error happened while updating game list for Uplay library: {FullPath}
+    {ex}</value>
   </data>
   <data name="CantUnloadLibraryWithActiveTask" xml:space="preserve">
     <value>Can't Unload {targetLibraryType} Libraries while there is an active task.</value>
   </data>
   <data name="Uplay_Open" xml:space="preserve">
     <value>Open</value>
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="SteamAppsFolderNotExists" xml:space="preserve">
+    <value>SteamApps Folder Doesn't Exists at: {SteamAppsFolderFullPath}</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionTitle" xml:space="preserve">
+    <value>UnauthorizedAccessException while Installing Uplay Game</value>
+  </data>
+  <data name="Uplay_UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+
+SLM must be running as Administrator for this process.
+
+Alternatively; you can use the 'Locate Game' function of Uplay.
+{ExceptionMessage}
+</value>
+  </data>
+  <data name="LibrarySettings" xml:space="preserve">
+    <value>Library Settings</value>
   </data>
 </root>
