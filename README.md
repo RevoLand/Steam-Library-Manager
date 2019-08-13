@@ -21,7 +21,7 @@
     <li>Built-in library cleaner for leftovers.</li>
     <li>Compact both backups and installed games for even more hard disk space.</li>
 </ul>
-<p>SLM is licensed under MIT license which makes it completely free and 100% open source!</p>
+<p>SLM is licensed under MIT license which means it is completely free and open source!</p>
 <p>All suggestions are welcome and will help further development of SLM.</p>
 <p>
     <em>Steam Library Manager (SLM) is not affiliated with, sponsored by, approved by, or otherwise related to Valve
