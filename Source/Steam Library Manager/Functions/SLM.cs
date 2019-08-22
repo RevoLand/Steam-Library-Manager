@@ -550,7 +550,7 @@ namespace Steam_Library_Manager.Functions
             {
                 try
                 {
-                    return Definitions.List.Libraries.Count(x => x.Type == LibraryType.SLM) > 0 || Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, newLibraryPath, StringComparison.InvariantCultureIgnoreCase));
+                    return Definitions.List.Libraries.Any(x => string.Equals(x.DirectoryInfo.FullName, newLibraryPath, StringComparison.InvariantCultureIgnoreCase));
                 }
                 catch (Exception ex)
                 {

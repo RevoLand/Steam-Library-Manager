@@ -34,8 +34,9 @@ namespace Steam_Library_Manager
             }
         }
 
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            //MessageBox.Show($"{e.Exception}\n\n{Environment.StackTrace}");
             Debug.WriteLine(e.Exception);
             Debug.WriteLine(Environment.StackTrace);
             e.Handled = true;
