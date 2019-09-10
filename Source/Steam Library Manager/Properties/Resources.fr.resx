@@ -125,7 +125,7 @@
 
 {ExceptionMessage}
 
-Voulez-vous supprimer des fichiers déjà déplacés de la bibliothèque cible ?</value>
+Voulez-vous supprimer les fichiers déjà déplacés de la bibliothèque cible?</value>
   </data>
   <data name="AutoUpdater" xml:space="preserve">
     <value>Mise à jour automatique</value>
@@ -357,16 +357,16 @@ Would you like to remove files that already moved from target library?</value>
     <value>Vérifier Les Mises à Jour au Démarrage</value>
   </data>
   <data name="ClearHeaderImageCache" xml:space="preserve">
-    <value>Clear header image cache</value>
+    <value>Effacer le cache des images</value>
   </data>
   <data name="Forms_Settings_Compress" xml:space="preserve">
     <value>Compresser</value>
   </data>
   <data name="CompressFiles" xml:space="preserve">
-    <value>Compress Files</value>
+    <value>Compresser les fichiers</value>
   </data>
   <data name="CompressionLevel" xml:space="preserve">
-    <value>Compression Level</value>
+    <value>Niveau de Compression</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
     <value>Ne PAS Compresser</value>
@@ -378,7 +378,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Méthode de liste de jeux</value>
   </data>
   <data name="GeneralSettings" xml:space="preserve">
-    <value>General Settings</value>
+    <value>Paramètres généraux</value>
   </data>
   <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
     <value>Steam Library Manager</value>
@@ -387,46 +387,46 @@ Would you like to remove files that already moved from target library?</value>
     <value>Cache des images effacé.</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Langage</value>
   </data>
   <data name="MoveFilesSequentiallyIfBiggerThan" xml:space="preserve">
-    <value>Move files sequentially if bigger than</value>
+    <value>Déplacer les fichiers séquentiellement si plus grand que</value>
   </data>
   <data name="OpenLogsFolder" xml:space="preserve">
-    <value>Open Logs Folder</value>
+    <value>Ouvrir le dossier des logs</value>
   </data>
   <data name="PlayASoundOnCompletion" xml:space="preserve">
-    <value>Play a sound on completion</value>
+    <value>Jouer un son une fois terminé</value>
   </data>
   <data name="Forms_Settings_Remove" xml:space="preserve">
     <value>Supprimer</value>
   </data>
   <data name="RemoveFilesAtSourceDirectory" xml:space="preserve">
-    <value>Remove files at Source directory</value>
+    <value>Supprimer les fichiers dans le répertoire source</value>
   </data>
   <data name="ReportFileMovement" xml:space="preserve">
     <value>Report File Movement</value>
   </data>
   <data name="KeepSearchingOnLibraryChange" xml:space="preserve">
-    <value>Keep searching on library change</value>
+    <value>Continuer à rechercher si la bibliothèque change</value>
   </data>
   <data name="CalculationMethodForGames" xml:space="preserve">
-    <value>Calculation method for games</value>
+    <value>Méthode de calcul pour les jeux</value>
   </data>
   <data name="SortGamesBy" xml:space="preserve">
-    <value>Sort games by</value>
+    <value>Trier les jeux par</value>
   </data>
   <data name="StartTaskManagerAtStartup" xml:space="preserve">
-    <value>Start Task Manager at Startup</value>
+    <value>Démarrer le gestionnaire de tâches au démarrage</value>
   </data>
   <data name="TaskManager" xml:space="preserve">
-    <value>Task Manager Default Settings</value>
+    <value>Paramètres par défaut du gestionnaire de tâches</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
-    <value>Theme Accent</value>
+    <value>Couleur principale</value>
   </data>
   <data name="ThemeBase" xml:space="preserve">
-    <value>Theme Base</value>
+    <value>Thème d'arrière-plan</value>
   </data>
   <data name="Forms_SLM" xml:space="preserve">
     <value>SLM</value>
@@ -435,37 +435,37 @@ Would you like to remove files that already moved from target library?</value>
     <value>Steam</value>
   </data>
   <data name="CheckForBackupUpdates" xml:space="preserve">
-    <value>Check for Backup Updates</value>
+    <value>Vérifier les mises à jour de sauvegarde</value>
   </data>
   <data name="ClearCompletedTasks" xml:space="preserve">
-    <value>Clear Completed Tasks</value>
+    <value>Effacer les tâches terminées</value>
   </data>
   <data name="TaskManagerCompleted" xml:space="preserve">
-    <value>COMPLETED</value>
+    <value>TERMINÉ</value>
   </data>
   <data name="Compress" xml:space="preserve">
     <value>Compresser</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Effacer</value>
   </data>
   <data name="TaskManagerPause" xml:space="preserve">
     <value>Pause</value>
   </data>
   <data name="RemoveOriginalFiles" xml:space="preserve">
-    <value>Remove Original Files</value>
+    <value>Supprimer les fichiers originaux</value>
   </data>
   <data name="TaskManagerRemoveFromQueue" xml:space="preserve">
-    <value>Remove selected Game(s) from Queue</value>
+    <value>Supprimer le(s) jeu(x) sélectionné(s) de la file d'attente</value>
   </data>
   <data name="Forms_TaskManager_ReportFileMovement" xml:space="preserve">
     <value>Déplacement de fichier de rapport</value>
   </data>
   <data name="TaskManagerStart" xml:space="preserve">
-    <value>Start</value>
+    <value>Démarrer</value>
   </data>
   <data name="TaskManagerStop" xml:space="preserve">
-    <value>Stop</value>
+    <value>Arrêter</value>
   </data>
   <data name="MoveGamesConfirmError" xml:space="preserve">
     <value>Steam Library Manager</value>
@@ -488,10 +488,10 @@ Would you like to remove files that already moved from target library?</value>
 {ExceptionMessage}</value>
   </data>
   <data name="DeleteFilesUsingSlm" xml:space="preserve">
-    <value>Delete files (using SLM)</value>
+    <value>Supprimer les fichiers (en utilisant SLM)</value>
   </data>
   <data name="DeleteFilesUsingTaskmanager" xml:space="preserve">
-    <value>Delete files (using TaskManager)</value>
+    <value>Supprimer les fichiers (en utilisant le gestionnaire des tâches)</value>
   </data>
   <data name="MenuDiskInfo" xml:space="preserve">
     <value>{AppName} ({SizeOnDisk})</value>
@@ -500,7 +500,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Réparer</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Run</value>
+    <value>Exécuter</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Installation de l'appli Origin</value>
@@ -582,13 +582,13 @@ Voulez-vous supprimer le fichier d'archive ?</value>
     <value>Supprimer les fichiers déplacés ?</value>
   </data>
   <data name="CompressedArchiveExistsAndInUse" xml:space="preserve">
-    <value>{ArchiveFullPath} is in use. Delaying the task until archive gets free.</value>
+    <value>{ArchiveFullPath} est en cours d'utilisation. Mise en attente de la tâche jusqu'à ce que l'archive soit libérée.</value>
   </data>
   <data name="FileCompressed" xml:space="preserve">
-    <value>[{AppName}] File compressed: {FileNameInArchive}</value>
+    <value>[{AppName}] Fichier compressé : {FileNameInArchive}</value>
   </data>
   <data name="FileDecompressed" xml:space="preserve">
-    <value>[{AppName}] File decompressed: {NewFileFullPath}</value>
+    <value>[{AppName}] Fichier décompressé : {NewFileFullPath}</value>
   </data>
   <data name="FormatException" xml:space="preserve">
     <value>An error happened while parsing context menu, most likely happened duo typo on color name.
@@ -635,7 +635,7 @@ Voulez-vous supprimer le fichier d'archive ?</value>
     <value>Ouvrir la bibliothèque dans l'explorateur ({LibraryFullPath})</value>
   </data>
   <data name="RemoveFromSlm" xml:space="preserve">
-    <value>Remove from SLM</value>
+    <value>Retirer de SLM</value>
   </data>
   <data name="SteamLibrary_CMenu_RemoveFromSteam" xml:space="preserve">
     <value>Supprimer la bibliothèque de Steam (ainsi que les fichiers contenus)</value>
@@ -758,22 +758,22 @@ Erreur : {ExceptionMessage}</value>
     <value>Vous utilisez la dernière version de SLM disponible.</value>
   </data>
   <data name="CreateLibrary_Tooltip2" xml:space="preserve">
-    <value>Create a Steam, Origin or SLM library at selected folder.</value>
+    <value>Créer une bibliothèque Steam, Origin ou SLM dans le répertoire sélectionné.</value>
   </data>
   <data name="CloseLibrary_Tooltip" xml:space="preserve">
-    <value>Close Library</value>
+    <value>Fermer la bibliothèque</value>
   </data>
   <data name="RefreshLibrary_Tooltip" xml:space="preserve">
-    <value>Refresh Library</value>
+    <value>Actualiser la bibliothèque</value>
   </data>
   <data name="CloseLibrary_Tooltip2" xml:space="preserve">
-    <value>Removes the selected library from SLM without touching files inside.</value>
+    <value>Supprime la bibliothèque sélectionnée de SLM sans en modifier les fichiers contenus.</value>
   </data>
   <data name="RefreshLibrary_Tooltip2" xml:space="preserve">
-    <value>Refreshes the current status of selected library.</value>
+    <value>Actualise l'état actuel de la bibliothèque sélectionnée.</value>
   </data>
   <data name="CloseLibrary_Tooltip3" xml:space="preserve">
-    <value>Only available for (non-main) Origin and SLM libraries.</value>
+    <value>Uniquement disponible pour les bibliothèques Origin et de SLM (non-principales).</value>
   </data>
   <data name="TaskManagerView_AutoScrollLogs" xml:space="preserve">
     <value>Défilement auto. des logs</value>
@@ -788,25 +788,25 @@ Erreur : {ExceptionMessage}</value>
     <value>Ignoré</value>
   </data>
   <data name="LibraryCleanerTooltip" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Double-cliquer sur un élément ouvrira son emplacement dans l'explorateur de fichiers.</value>
   </data>
   <data name="DeleteAll_Tooltip" xml:space="preserve">
-    <value>Delete All Items</value>
+    <value>Supprimer tous les éléments</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteAll_Tooltip2" xml:space="preserve">
-    <value>Attempts to delete every folder/file in the given list.</value>
+    <value>Tentatives de suppression de chaque dossier/fichier dans la liste donnée.</value>
   </data>
   <data name="Forms_LibraryCleaner_MoveAll_Tooltip" xml:space="preserve">
-    <value>Move All Items</value>
+    <value>Déplacer tous les éléments</value>
   </data>
   <data name="Forms_LibraryCleaner_MoveAll_Tooltip2" xml:space="preserve">
-    <value>Moves every folder/file in the given list to selected path.</value>
+    <value>Déplace chaque dossier/fichier dans la liste donnée vers le chemin sélectionné.</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip" xml:space="preserve">
-    <value>Refresh Items</value>
+    <value>Actualiser les éléments</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList_Tooltip2" xml:space="preserve">
-    <value>Refreshes the junk list for Steam libraries.</value>
+    <value>Actualise la liste des indésirables des bibliothèques Steam.</value>
   </data>
   <data name="IgnoreSelectedItems" xml:space="preserve">
     <value>Ignorer l'élément(s) sélectionné</value>
@@ -818,28 +818,28 @@ Erreur : {ExceptionMessage}</value>
     <value>Désactivé</value>
   </data>
   <data name="SteamApp_CMenu_ViewStore" xml:space="preserve">
-    <value>View Store Page</value>
+    <value>Voir la page du magasin</value>
   </data>
   <data name="SteamApp_CMenu_GoogleSearch" xml:space="preserve">
-    <value>Google Search</value>
+    <value>Recherche Google</value>
   </data>
   <data name="SteamApp_CMenu_YoutubeSearch" xml:space="preserve">
-    <value>View on Youtube</value>
+    <value>Ouvrir sur YouTube</value>
   </data>
   <data name="SteamApp_CMenu_VerifyFiles" xml:space="preserve">
-    <value>Verify Files</value>
+    <value>Vérifier les fichiers</value>
   </data>
   <data name="HeadlessFolder" xml:space="preserve">
-    <value>Headless Folder</value>
+    <value>Dossier Headless</value>
   </data>
   <data name="HeadlessWorkshopFolder" xml:space="preserve">
-    <value>Headless Workshop Folder</value>
+    <value>Dossier de travail Headless</value>
   </data>
   <data name="CorruptedDataFile" xml:space="preserve">
-    <value>Corrupted Data File</value>
+    <value>Fichier de données corrompu</value>
   </data>
   <data name="HeadlessDataFile" xml:space="preserve">
-    <value>Headless Data File</value>
+    <value>Fichier de données Headless</value>
   </data>
   <data name="Enums_Compact" xml:space="preserve">
     <value>Compact</value>
@@ -848,58 +848,58 @@ Erreur : {ExceptionMessage}</value>
     <value>Optimal</value>
   </data>
   <data name="Enums_Fastest" xml:space="preserve">
-    <value>Fastest</value>
+    <value>La plus rapide</value>
   </data>
   <data name="Enums_Store" xml:space="preserve">
-    <value>Store</value>
+    <value>Magasin</value>
   </data>
   <data name="CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation" xml:space="preserve">
-    <value>Directory is not selected for library creation.</value>
+    <value>Le répertoire n'est pas sélectionné pour la création de la bibliothèque.</value>
   </data>
   <data name="CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation" xml:space="preserve">
-    <value>Library type is not selected for library creation.</value>
+    <value>Le type de bibliothèque n'est pas sélectionné pour la création de la bibliothèque.</value>
   </data>
   <data name="CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath" xml:space="preserve">
-    <value>Selected directory does not exists: {libraryPath}</value>
+    <value>Le répertoire sélectionné n'existe pas : {libraryPath}</value>
   </data>
   <data name="CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Steam Library support must be enabled for this action.</value>
+    <value>Le support de la bibliothèque Steam doit être activé pour cette action.</value>
   </data>
   <data name="CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Origin Library support must be enabled for this action.</value>
+    <value>Le support de la bibliothèque Origin doit être activé pour cette action.</value>
   </data>
   <data name="CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction" xml:space="preserve">
-    <value>Uplay Library support must be enabled for this action.</value>
+    <value>Le support de la bibliothèque Uplay doit être activé pour cette action.</value>
   </data>
   <data name="Forms_Main_DonateDescription" xml:space="preserve">
-    <value>Opens a webpage with available donation methods. Thank you for your support!</value>
+    <value>Ouvre une page web avec les méthodes de don disponibles. Merci pour votre soutien !</value>
   </data>
   <data name="TranslateSLM" xml:space="preserve">
-    <value>Translate SLM</value>
+    <value>Traduire SLM</value>
   </data>
   <data name="TranslateSLMDescription" xml:space="preserve">
-    <value>Opens Crowdin project page of SLM which you can contribute to translation of SLM.</value>
+    <value>Ouvre la page de projet Crowdin de SLM où vous pouvez contribuer à sa traduction.</value>
   </data>
   <data name="Main_DiscordGroup" xml:space="preserve">
-    <value>Discord Group</value>
+    <value>Groupe Discord</value>
   </data>
   <data name="Main_DiscordGroupDescription" xml:space="preserve">
-    <value>Opens the invitation link for SLM's Discord Group on your favorite web browser.</value>
+    <value>Ouvre le lien d'invitation pour le groupe Discord de SLM sur votre navigateur Web préféré.</value>
   </data>
   <data name="Main_SelectedPath" xml:space="preserve">
-    <value>Selected Path:</value>
+    <value>Sélectionner le chemin :</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>Select</value>
+    <value>Sélectionner</value>
   </data>
   <data name="LibraryType" xml:space="preserve">
-    <value>Library Type</value>
+    <value>Type de bibliothèque</value>
   </data>
   <data name="LibraryTypeDescription" xml:space="preserve">
-    <value>Select a library type you would like to create of.</value>
+    <value>Sélectionnez le type de bibliothèque que vous souhaitez créer.</value>
   </data>
   <data name="SelectedLibraryType" xml:space="preserve">
-    <value>Selected Library Type:</value>
+    <value>Type de bibliothèque sélectionné :</value>
   </data>
   <data name="SortGamesBy_Tooltip" xml:space="preserve">
     <value>Sorting Method for Game Panel</value>
@@ -911,28 +911,28 @@ Erreur : {ExceptionMessage}</value>
     <value>View Method for Game Panel</value>
   </data>
   <data name="ViewMethodForGamePanelDesc" xml:space="preserve">
-    <value>Lets you switch between Grid and List View for Game Panel</value>
+    <value>Permet de passer entre une vue en grille et en liste du panneau de jeu</value>
   </data>
   <data name="SearchFor" xml:space="preserve">
-    <value>Search for...</value>
+    <value>Rechercher...</value>
   </data>
   <data name="SearchForDesc" xml:space="preserve">
-    <value>Lets you search for a game by it's name or appid.</value>
+    <value>Vous permet de rechercher un jeu par son nom ou son appid.</value>
   </data>
   <data name="Compacted" xml:space="preserve">
-    <value>Compacted</value>
+    <value>Compacté</value>
   </data>
   <data name="AppPanel_Desc1" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Double-cliquer sur un élément ouvrira son emplacement dans l'explorateur de fichiers.</value>
   </data>
   <data name="AppPanel_Desc2" xml:space="preserve">
-    <value>To copy/move a game to another library, simply drag-drop the item to the targeted library.</value>
+    <value>Pour copier/déplacer un jeu vers une autre bibliothèque, il suffit de glisser-déposer l'élément vers la bibliothèque ciblée.</value>
   </data>
   <data name="AppPanel_Desc3" xml:space="preserve">
-    <value>Multiple item selection/tasking is allowed.</value>
+    <value>La sélection/tâche de plusieurs éléments est autorisée.</value>
   </data>
   <data name="HamburgerMenuControl_AllAvailable" xml:space="preserve">
-    <value>All Available</value>
+    <value>Tous disponibles</value>
   </data>
   <data name="SteamSLM" xml:space="preserve">
     <value>Steam &amp; SLM</value>
@@ -941,67 +941,67 @@ Erreur : {ExceptionMessage}</value>
     <value>Uplay</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Accueil</value>
   </data>
   <data name="JunkItems" xml:space="preserve">
-    <value>Junk Items</value>
+    <value>Éléments indésirables</value>
   </data>
   <data name="DuplicateItems" xml:space="preserve">
     <value>Duplicate Items</value>
   </data>
   <data name="IgnoredItems" xml:space="preserve">
-    <value>Ignored Items</value>
+    <value>Éléments ignorés</value>
   </data>
   <data name="RemoveFromIgnoreList" xml:space="preserve">
-    <value>Remove from Ignore List</value>
+    <value>Retirer de la liste des ignorés</value>
   </data>
   <data name="RemoveFromIgnoreList_Tooltip" xml:space="preserve">
-    <value>Remove from Ignore List</value>
+    <value>Retirer de la liste des ignorés</value>
   </data>
   <data name="RemoveFromIgnoreList_Tooltip2" xml:space="preserve">
-    <value>Removes listed items from the Ignore List</value>
+    <value>Supprime les éléments sélectionnés de la liste des ignorés</value>
   </data>
   <data name="DeleteAll_Tooltip2" xml:space="preserve">
-    <value>Every item/folder listed here will be DELETED. Use it with caution!</value>
+    <value>Tous les éléments/dossiers listés ici seront SUPPRIMÉS. Procédez avec prudence !</value>
   </data>
   <data name="LibraryPanel_Tooltip" xml:space="preserve">
-    <value>Double-clicking to an item will open it's location in file explorer.</value>
+    <value>Double-cliquer sur un élément ouvrira son emplacement dans l'explorateur de fichiers.</value>
   </data>
   <data name="CalculationMethodForGames_Tooltip" xml:space="preserve">
-    <value>Size Calculation Method for Games</value>
+    <value>Méthode de calcul de taille pour les jeux</value>
   </data>
   <data name="CalculationMethodForGames_Tooltip2" xml:space="preserve">
-    <value>ACF uses the size information provided by the app manifest file</value>
+    <value>ACF utilise les informations de taille fournies par le fichier manifeste de l'application</value>
   </data>
   <data name="CalculationMethodForGames_Tooltip3" xml:space="preserve">
-    <value>Enumeration, enumarates every file and folder to get the correct size information (SLOW)</value>
+    <value>Énumération, énumère chaque fichier et dossier pour obtenir les informations de taille correcte (LENT)</value>
   </data>
   <data name="CalculationMethodForArchiveSize_Tooltip" xml:space="preserve">
-    <value>Size Calculation Method for Compressed Archives</value>
+    <value>Méthode de calcul de taille pour les archives compressées</value>
   </data>
   <data name="CalculationMethodForArchiveSize_Tooltip2" xml:space="preserve">
-    <value>Archive Size uses the size of the compressed archive.</value>
+    <value>La taille de l'archive utilise la taille de l'archive compressée.</value>
   </data>
   <data name="CalculationMethodForArchiveSize_Tooltip3" xml:space="preserve">
-    <value>File Size in Archive enumarates each file in the archive to get the correct size information (SLOW)</value>
+    <value>Taille du fichier dans l'Archive énumère chaque fichier dans l'archive pour obtenir les informations de taille correcte (LENT)</value>
   </data>
   <data name="CompressionLevel_Tooltip" xml:space="preserve">
-    <value>Compression Level to use for compressing game files.</value>
+    <value>Niveau de compression à utiliser pour compresser les fichiers de jeu.</value>
   </data>
   <data name="ThemeAccent_Tooltip" xml:space="preserve">
-    <value>Preferred Theme Accent to use with SLM.</value>
+    <value>Couleur principale préférée à utiliser avec SLM.</value>
   </data>
   <data name="ThemeBase_Tooltip" xml:space="preserve">
-    <value>Preferred Base Theme Colors to use with SLM.</value>
+    <value>Couleurs d'arrière-plan préférées à utiliser avec SLM.</value>
   </data>
   <data name="CheckForUpdatesAtStartup_Tooltip" xml:space="preserve">
-    <value>Attempts for a new version control at startup.</value>
+    <value>Tentatives pour un nouveau contrôle de version au démarrage.</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Oui</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Non</value>
   </data>
   <data name="KeepSearchingOnLibraryChange_Tooltip" xml:space="preserve">
     <value>Keeps the searching text and search for the text in the new selected library if active.</value>
@@ -1019,10 +1019,10 @@ Erreur : {ExceptionMessage}</value>
     <value>Gets the correct size in disk by running compact command on folders.</value>
   </data>
   <data name="AdvancedCompactSizeDetection_Tooltip2" xml:space="preserve">
-    <value>Huge performance impact!</value>
+    <value>Impact considérable sur les performances !</value>
   </data>
   <data name="Language_Tooltip" xml:space="preserve">
-    <value>Default Language to use with SLM.</value>
+    <value>Langue par défaut à utiliser avec SLM.</value>
   </data>
   <data name="SteamUserID64" xml:space="preserve">
     <value>Steam UserID64 to use with SLM</value>
@@ -1031,10 +1031,10 @@ Erreur : {ExceptionMessage}</value>
     <value>If selected, SLM will attempt to get latest play date information for games from config file of Steam.</value>
   </data>
   <data name="MoveFilesSequentiallyIfBiggerThan_Tooltip" xml:space="preserve">
-    <value>Move files bigger than (X) MB sequentially</value>
+    <value>Déplacer les fichiers plus gros que (X) Mo séquentiellement</value>
   </data>
   <data name="MoveFilesSequentiallyIfBiggerThan_Tooltip2" xml:space="preserve">
-    <value>SLM moves files parallelly for the best performance but for bigger files it may downgrade the performance and may be best to move sequentially.</value>
+    <value>SLM déplace les fichiers en parallèle pour les meilleures performances mais pour les fichiers plus gros, cela peut dégrader les performances et il peut donc être meilleur de les déplacer séquentiellement.</value>
   </data>
   <data name="DefaultCompactLevel" xml:space="preserve">
     <value>Default Compact Level</value>
@@ -1043,182 +1043,182 @@ Erreur : {ExceptionMessage}</value>
     <value>Default compression level for compact tasks.</value>
   </data>
   <data name="DefaultCompactLevel_Tooltip2" xml:space="preserve">
-    <value>XPRESS4K = Fastest but weakest</value>
+    <value>XPRESS4K = Le plus rapide mais le plus faible</value>
   </data>
   <data name="DefaultCompactLevel_Tooltip3" xml:space="preserve">
-    <value>XPRESS8K = Balanced</value>
+    <value>XPRESS8K = Équilibré</value>
   </data>
   <data name="DefaultCompactLevel_Tooltip4" xml:space="preserve">
-    <value>XPRESS16K = Slower but more efficient</value>
+    <value>XPRESS16K = Plus lent mais plus efficace</value>
   </data>
   <data name="DefaultCompactLevel_Tooltip5" xml:space="preserve">
     <value>LZX = Slowest, most efficient with high overhead</value>
   </data>
   <data name="OpenLogsFolder_Tooltip" xml:space="preserve">
-    <value>SLM will attempt to open /logs/ folder in the file explorer if exists.</value>
+    <value>SLM tentera d'ouvrir le dossier /logs/ dans l'explorateur de fichiers s'il existe.</value>
   </data>
   <data name="CheckForUpdates_Tooltip" xml:space="preserve">
-    <value>SLM will attempt to check for updates to see if there is newer version available.</value>
+    <value>SLM tentera de vérifier les mises à jour pour voir s'il y a une version plus récente disponible.</value>
   </data>
   <data name="ClearHeaderImageCache_Tooltip" xml:space="preserve">
     <value>SLM will attempt to clear the cache for game header images cached in /.slmcache/ folder</value>
   </data>
   <data name="RemoveFilesAtSourceDirectory_Tooltip" xml:space="preserve">
-    <value>If selected and task is completed successfully (copy-first then remove), SLM will remove the copied files from source. This option can be change per-task.</value>
+    <value>Si sélectionné et que la tâche est terminée avec succès (d'abord copie puis suppression), SLM supprimera les fichiers copiés de la source. Cette option peut être modifiée pour chaque tâche.</value>
   </data>
   <data name="CompressFiles_Tooltip" xml:space="preserve">
-    <value>If selected, SLM will compress files. This option can be changed per-task.</value>
+    <value>Si sélectionné, SLM compressera les fichiers. Cette option peut être modifiée pour chaque tâche.</value>
   </data>
   <data name="ReportFileMovement_Tooltip" xml:space="preserve">
     <value>If selected, SLM will report file movement status to log view in the task manager. This option can be changed per-task.</value>
   </data>
   <data name="FileTransferMethod" xml:space="preserve">
-    <value>File Transfer Method</value>
+    <value>Méthode de transfert de fichier</value>
   </data>
   <data name="StartTaskManagerAtStartup_Tooltip" xml:space="preserve">
-    <value>If enabled, Task Manager will be started at startup.</value>
+    <value>Si activé, le Gestionnaire de tâches sera démarré au démarrage.</value>
   </data>
   <data name="PlayASoundOnCompletion_Tooltip" xml:space="preserve">
-    <value>Play a Sound on Task Manager Queue Completion</value>
+    <value>Jouer un son lorsque la file d'attente du gestionnaire des tâches est terminée</value>
   </data>
   <data name="PlayASoundOnCompletion_Tooltip2" xml:space="preserve">
-    <value>SLM will attempt to play a sound (Windows exclamation or the file in CustomSoundFile setting key) on the queue of task manager gets completed.</value>
+    <value>SLM tentera de jouer un son (exclamation Windows ou alors le fichier dans la clé de configuration CustomSoundFile) lorsque la file d'attente du gestionnaire de tâches est terminée.</value>
   </data>
   <data name="SteamLibrarySupport" xml:space="preserve">
-    <value>Steam Library Support</value>
+    <value>Support de la bibliothèque Steam</value>
   </data>
   <data name="SteamLibrarySupport_Tooltip" xml:space="preserve">
-    <value>Enables/Disables Steam Library functionality for SLM</value>
+    <value>Active/Désactive les fonctionnalités de la bibliothèque Steam pour SLM</value>
   </data>
   <data name="OriginLibrarySupport" xml:space="preserve">
-    <value>Origin Library Support</value>
+    <value>Support de la bibliothèque Uplay</value>
   </data>
   <data name="OriginLibrarySupport_Tooltip" xml:space="preserve">
-    <value>Enables/Disables Origin Library functionality for SLM</value>
+    <value>Active/Désactive les fonctionnalités de la bibliothèque Uplay pour SLM</value>
   </data>
   <data name="UplayLibrarySupport" xml:space="preserve">
-    <value>Uplay Library Support</value>
+    <value>Support de la bibliothèque Uplay</value>
   </data>
   <data name="UplayLibrarySupport_Tooltip" xml:space="preserve">
-    <value>Enables/Disables Uplay Library functionality for SLM</value>
+    <value>Active/Désactive les fonctionnalités de la bibliothèque Uplay pour SLM</value>
   </data>
   <data name="Compact" xml:space="preserve">
     <value>Compact</value>
   </data>
   <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+    <value>Copier</value>
   </data>
   <data name="AutoInstall" xml:space="preserve">
-    <value>Auto Install</value>
+    <value>Installation automatique</value>
   </data>
   <data name="CompactForceCompress" xml:space="preserve">
-    <value>Force Compress</value>
+    <value>Forcer la compression</value>
   </data>
   <data name="TaskPanel_Tooltip" xml:space="preserve">
-    <value>Double-clicking on a task will open it's location in file explorer.</value>
+    <value>Double-cliquer sur une tâche ouvrira son emplacement dans l'explorateur de fichiers.</value>
   </data>
   <data name="StartTaskManager" xml:space="preserve">
-    <value>Start Task Manager</value>
+    <value>Démarrer le gestionnaire de tâches</value>
   </data>
   <data name="StartTaskManager_Tooltip" xml:space="preserve">
-    <value>Will start the task manager. Task Manager will process the queued items or wait for new items.</value>
+    <value>Démarrera le gestionnaire de tâches. Le gestionnaire de tâches traitera les éléments en attente ou en attendra de nouveaux.</value>
   </data>
   <data name="PauseTaskManager" xml:space="preserve">
-    <value>Pause Task Manager</value>
+    <value>Mettre le gestionnaire de tâches en pause</value>
   </data>
   <data name="PauseTaskManager_Tooltip" xml:space="preserve">
-    <value>Pauses task processing and active tasks.</value>
+    <value>Mettre le traitement des tâches et les tâches actives en pause.</value>
   </data>
   <data name="StopTaskManager" xml:space="preserve">
-    <value>Stop Task Manager</value>
+    <value>Arrêter le gestionnaire de tâches</value>
   </data>
   <data name="StopTaskManager_Tooltip" xml:space="preserve">
-    <value>Stops the task manager and cancels the active task.</value>
+    <value>Arrête le gestionnaire de tâches et annule la tâche active.</value>
   </data>
   <data name="ClearCompletedTasks_Tooltip" xml:space="preserve">
-    <value>Will remove the completed tasks from the task list.</value>
+    <value>Supprimera les tâches terminées de la liste des tâches.</value>
   </data>
   <data name="CheckForBackupUpdates_Tooltip" xml:space="preserve">
-    <value>Will compare the games in SLM libraries with Steam libraries to find if there is any update available.</value>
+    <value>Comparera les jeux dans les bibliothèques SLM avec les bibliothèques Steam pour vérifier s'il y a des mises à jour disponibles.</value>
   </data>
   <data name="TaskManagerView_AutoScrollLogs_Tooltip" xml:space="preserve">
-    <value>SLM will auto-scroll the logs in the logs window. It may freeze the ui if a lot of small files moved.</value>
+    <value>SLM va faire défiler automatiquement les logs dans la fenêtre des logs. Cela peut geler l'interface si beaucoup de petits fichiers déplacés.</value>
   </data>
   <data name="TaskManagerView_AutoClearCompletedTasks_Tooltip" xml:space="preserve">
-    <value>SLM will remove the completed tasks from task manager.</value>
+    <value>SLM supprimera les tâches terminées du gestionnaire de tâches.</value>
   </data>
   <data name="TaskManagerView_ContinueOnError" xml:space="preserve">
-    <value>Continue on Error</value>
+    <value>Continuer si erreur</value>
   </data>
   <data name="TaskManagerView_ContinueOnError_Tooltip" xml:space="preserve">
-    <value>If active, SLM will move to the next task in the list in case of an error with the active task.</value>
+    <value>Si actif, SLM va passer à la tâche suivante dans la liste en cas d'erreur avec la tâche active.</value>
   </data>
   <data name="TaskManagerView_SkipSteamRestartDialog" xml:space="preserve">
     <value>Skip Steam Restart Dialog</value>
   </data>
   <data name="TaskManagerView_SkipSteamRestartDialog_Tooltip" xml:space="preserve">
-    <value>If active, SLM will not ask to restart Steam on Steam library related tasks.</value>
+    <value>Si actif, SLM ne demandera pas de redémarrer Steam pour les tâches liées à ses bibliothèque.</value>
   </data>
   <data name="TaskManagerView_SkipSteamRestartDialog_Tooltip2" xml:space="preserve">
-    <value>However running Steam apps/games without restarting Steam may (and will) damage app/game installations and will require manual processing!</value>
+    <value>Cependant, exécuter des applications/jeux Steam sans redémarrer Steam peut (et va) endommager les installations des applications/jeux et nécessitera un traitement manuel !</value>
   </data>
   <data name="SteamLibraryManagerInstallationWizard" xml:space="preserve">
-    <value>Steam Library Manager: Installation Wizard</value>
+    <value>Steam Library Manager : Assistant d'installation</value>
   </data>
   <data name="Welcome_Text" xml:space="preserve">
-    <value>This installation wizard will help you set basics of SLM for first time use. Please start with selecting a default language, theme base and accent.</value>
+    <value>Cet assistant d'installation vous aidera à définir les bases de SLM pour la première fois. Veuillez commencer par sélectionner une langue par défaut, un thème d'arrière-plan et une couleur principale.</value>
   </data>
   <data name="Welcome_Text2" xml:space="preserve">
-    <value>Alternatively, you can close this window to use SLM's default options.</value>
+    <value>Vous pouvez également fermer cette fenêtre pour utiliser les options par défaut de SLM.</value>
   </data>
   <data name="InstallationWizard_Completed" xml:space="preserve">
-    <value>Installation is completed!</value>
+    <value>Installation terminée !</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Fermer</value>
   </data>
   <data name="CompactDirectoryNotExists" xml:space="preserve">
-    <value>Directory doesn't exists !? - {DirectoryFullName}</value>
+    <value>Le répertoire n'existe pas !? - {DirectoryFullName}</value>
   </data>
   <data name="Compact_CompressingFile" xml:space="preserve">
-    <value>Compressing file: {fileName}</value>
+    <value>Compression du fichier : {fileName}</value>
   </data>
   <data name="Compact_TaskCompletedIn" xml:space="preserve">
     <value>[{AppName}] Compact task completed in {TimeElapsed}</value>
   </data>
   <data name="OriginUpdateAppListException" xml:space="preserve">
-    <value>An error happened while updating game list for Origin library: {FullPath}
+    <value>Une erreur s'est produite lors de la mise à jour de la liste de jeu pour la bibliothèque Origin : {FullPath}
     {ex}</value>
   </data>
   <data name="Uplay_UpdateAppListError" xml:space="preserve">
-    <value>An error happened while updating game list for Uplay library: {FullPath}
+    <value>Une erreur s'est produite lors de la mise à jour de la liste de jeu pour la bibliothèque Uplay : {FullPath}
     {ex}</value>
   </data>
   <data name="CantUnloadLibraryWithActiveTask" xml:space="preserve">
-    <value>Can't Unload {targetLibraryType} Libraries while there is an active task.</value>
+    <value>Impossible de décharger {targetLibraryType} bibliothèques pendant qu'il y a une tâche active.</value>
   </data>
   <data name="Uplay_Open" xml:space="preserve">
-    <value>Open</value>
+    <value>Ouvrir</value>
   </data>
   <data name="Install" xml:space="preserve">
-    <value>Install</value>
+    <value>Installer</value>
   </data>
   <data name="SteamAppsFolderNotExists" xml:space="preserve">
-    <value>SteamApps Folder Doesn't Exists at: {SteamAppsFolderFullPath}</value>
+    <value>Le dossier SteamApps n'existe pas à : {SteamAppsFolderFullPath}</value>
   </data>
   <data name="Uplay_UnauthorizedAccessExceptionTitle" xml:space="preserve">
-    <value>UnauthorizedAccessException while Installing Uplay Game</value>
+    <value>UnauthorizedAccessException lors de l'installation d'un jeu Uplay</value>
   </data>
   <data name="Uplay_UnauthorizedAccessExceptionMessage" xml:space="preserve">
-    <value>UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+    <value>UnauthorizedAccessException lors d'une tentative de mise à jour du registre pour l’installation du jeu Uplay : {AppName}
 
-SLM must be running as Administrator for this process.
+SLM doit être exécuté en temps qu'administrateur pour cette action.
 
-Alternatively; you can use the 'Locate Game' function of Uplay.
+Autrement; vous pouvez utiliser la fonction "Localiser le jeu installé" de Uplay.
 {ExceptionMessage}
 </value>
   </data>
   <data name="LibrarySettings" xml:space="preserve">
-    <value>Library Settings</value>
+    <value>Paramètres de la bibliothèque</value>
   </data>
 </root>
