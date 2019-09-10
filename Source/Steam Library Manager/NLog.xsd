@@ -632,6 +632,7 @@
       <xs:enumeration value="Tls" />
       <xs:enumeration value="Tls11" />
       <xs:enumeration value="Tls12" />
+      <xs:enumeration value="Tls13" />
       <xs:enumeration value="Default" />
     </xs:restriction>
   </xs:simpleType>
@@ -669,6 +670,7 @@
           <xs:element name="enableAnsiOutput" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="encoding" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="errorStream" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="detectOutputRedirected" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="useDefaultRowHighlightingRules" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="highlight-row" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleRowHighlightingRule" />
           <xs:element name="highlight-word" minOccurs="0" maxOccurs="unbounded" type="NLog.Targets.ConsoleWordHighlightingRule" />
@@ -713,6 +715,11 @@
         <xs:attribute name="errorStream" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether the error stream (stderr) should be used instead of the output stream (stdout).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="detectOutputRedirected" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Indicates whether to auto-check if the console has been redirected to file - Disables coloring logic when System.Console.IsOutputRedirected = true</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="useDefaultRowHighlightingRules" type="xs:boolean">

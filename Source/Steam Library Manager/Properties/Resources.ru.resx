@@ -177,7 +177,7 @@
 Библиотека: {LibraryFullPath}</value>
   </data>
   <data name="DirectoryNotFoundException" xml:space="preserve">
-    <value>DirectoryNotFoundException</value>
+    <value>Каталог не найден, исключение</value>
   </data>
   <data name="DirectoryNotFoundExceptionMessage" xml:space="preserve">
     <value>[{FolderfullPath}] Папка не может создатся/не найдена. Запустите SLM в качестве Администратора, может помочь.
@@ -420,10 +420,10 @@
     <value>Запустить менеджер задач при запуске</value>
   </data>
   <data name="TaskManager" xml:space="preserve">
-    <value>Task Manager Default Settings</value>
+    <value>Настройки менеджера задач по умолчанию</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
-    <value>Акцент темы</value>
+    <value>Цвет темы</value>
   </data>
   <data name="ThemeBase" xml:space="preserve">
     <value>Основная тема</value>
@@ -500,7 +500,7 @@
     <value>Исправить</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Run</value>
+    <value>Запуск</value>
   </data>
   <data name="OriginInstallation" xml:space="preserve">
     <value>Установка исходного приложения</value>
@@ -747,7 +747,7 @@
 Пожалуйста, сначала остановите менеджер задач.</value>
   </data>
   <data name="UnauthorizedAccessException" xml:space="preserve">
-    <value>UnauthorizedAccessException</value>
+    <value>Несанкционированный доступ</value>
   </data>
   <data name="UnauthorizedAccessExceptionMessage" xml:space="preserve">
     <value>[{FullPath}] Произошла ошибка связанная с правами доступа к папке во время создания содержимого библиотеки. Запуск SLM от имени администратора может помочь.
@@ -989,7 +989,7 @@
     <value>Уровень сжатия используемый для сжатия файлов игры.</value>
   </data>
   <data name="ThemeAccent_Tooltip" xml:space="preserve">
-    <value>Предпочтительная акцент темы для использования с SLM.</value>
+    <value>Предпочтительный цвет темы для использования с SLM.</value>
   </data>
   <data name="ThemeBase_Tooltip" xml:space="preserve">
     <value>Предпочтительные базовые цвета тем для использования с SLM.</value>
@@ -1166,7 +1166,7 @@
     <value>Менеджер библиотеки Steam: Мастер установки</value>
   </data>
   <data name="Welcome_Text" xml:space="preserve">
-    <value>Этот мастер установки поможет вам установить основы SLM для первого использования. Пожалуйста, начните с выбора языка по умолчанию, тематической базы и акцента.</value>
+    <value>Этот мастер установки поможет вам установить основы SLM для первого использования. Пожалуйста, начните с выбора языка по умолчанию, темы и цвета.</value>
   </data>
   <data name="Welcome_Text2" xml:space="preserve">
     <value>Кроме того, вы можете закрыть это окно, чтобы использовать параметры по умолчанию для SLM.</value>
@@ -1187,11 +1187,11 @@
     <value>[{AppName}] Компактная задача завершена в {TimeElapsed}</value>
   </data>
   <data name="OriginUpdateAppListException" xml:space="preserve">
-    <value>An error happened while updating game list for Origin library: {FullPath}
+    <value>Произошла ошибка при обновлении списка игр для библиотеки Origin: {FullPath}
     {ex}</value>
   </data>
   <data name="Uplay_UpdateAppListError" xml:space="preserve">
-    <value>An error happened while updating game list for Uplay library: {FullPath}
+    <value>Произошла ошибка при обновлении списка игр для библиотеки Uplay: {FullPath}
     {ex}</value>
   </data>
   <data name="CantUnloadLibraryWithActiveTask" xml:space="preserve">
@@ -1201,24 +1201,23 @@
     <value>Открыть</value>
   </data>
   <data name="Install" xml:space="preserve">
-    <value>Install</value>
+    <value>Установить</value>
   </data>
   <data name="SteamAppsFolderNotExists" xml:space="preserve">
-    <value>SteamApps Folder Doesn't Exists at: {SteamAppsFolderFullPath}</value>
+    <value>Папка SteamApps не существует в: {SteamAppsFolderFullPath}</value>
   </data>
   <data name="Uplay_UnauthorizedAccessExceptionTitle" xml:space="preserve">
-    <value>UnauthorizedAccessException while Installing Uplay Game</value>
+    <value>Несанкционированный доступ при установке Uplay игры</value>
   </data>
   <data name="Uplay_UnauthorizedAccessExceptionMessage" xml:space="preserve">
-    <value>UnauthorizedAccessException while trying to update the registry for the Uplay game installation: {AppName}
+    <value>Исключение неавторизованного доступа при попытке обновить реестр для установки игры Uplay: {AppName}
 
-SLM must be running as Administrator for this process.
+SLM должен быть запущен от имени администратора для этого процесса.
 
-Alternatively; you can use the 'Locate Game' function of Uplay.
-{ExceptionMessage}
-</value>
+В качестве альтернативы; Вы можете использовать функцию «Найти игру» в Uplay.
+{ExceptionMessage}</value>
   </data>
   <data name="LibrarySettings" xml:space="preserve">
-    <value>Library Settings</value>
+    <value>Настройки библиотеки</value>
   </data>
 </root>
