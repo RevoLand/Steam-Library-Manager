@@ -845,6 +845,12 @@ namespace Steam_Library_Manager.Definitions
                     await Task.Run(() => InstallationDirectory.Delete(true));
                 }
 
+                foreach (var dupItem in List.DupeItems.ToList().Where(x =>
+                    x.App1 == this || x.App2 == this))
+                {
+                    List.DupeItems.Remove(dupItem);
+                }
+
                 return true;
             }
             catch (Exception ex)

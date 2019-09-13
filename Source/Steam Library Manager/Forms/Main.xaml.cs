@@ -146,7 +146,7 @@ namespace Steam_Library_Manager
                 }
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
-                TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TMInfo;
+                TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TmInfo;
                 TaskManagerView.TaskManager_LogsView.ItemsSource = TmViewLogs;
 
                 // Library Cleaner View

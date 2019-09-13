@@ -428,13 +428,13 @@ namespace Steam_Library_Manager.Definitions
                     Task.Delay(5000);
                 }
 
-                foreach (var library in List.Libraries.ToList().Where(x => x.Type == LibraryType.Steam && x != this))
+                foreach (var library in List.Libraries.Where(x => x.Type == LibraryType.Steam && x != this))
                 {
                     foreach (var targetApp in library.Apps.Where(x => !x.IsCompressed))
                     {
                         foreach (var currentApp in Apps.Where(x => !x.IsCompressed && x.AppId == targetApp.AppId))
                         {
-                            if (List.DupeItems.Count(x => x.App1 == targetApp || x.App2 == targetApp) == 0)
+                            if (List.DupeItems.Count(x => (x.App1 == currentApp && x.App2 == targetApp) || x.App1 == targetApp && x.App2 == currentApp) == 0)
                             {
                                 List.DupeItems.Add(new List.DupeInfo()
                                 {
