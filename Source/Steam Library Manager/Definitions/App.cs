@@ -848,7 +848,7 @@ namespace Steam_Library_Manager.Definitions
                 foreach (var dupItem in List.DupeItems.ToList().Where(x =>
                     x.App1 == this || x.App2 == this))
                 {
-                    List.DupeItems.Remove(dupItem);
+                    List.DupeItemsRemove.Report(dupItem);
                 }
 
                 return true;

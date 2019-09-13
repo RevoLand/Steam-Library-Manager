@@ -76,7 +76,7 @@ namespace Steam_Library_Manager.Definitions
                                     return;
                                 }
 
-                                List.LCProgress.Report(new List.JunkInfo
+                                List.LcProgress.Report(new List.JunkInfo
                                 {
                                     FSInfo = new FileInfo(acfFile.FullName),
                                     Size = Functions.FileSystem.FormatBytes(acfFile.Length),
@@ -379,7 +379,7 @@ namespace Steam_Library_Manager.Definitions
                                 continue;
                             }
 
-                            List.LCProgress.Report(junk);
+                            List.LcProgress.Report(junk);
                         }
                     }
                 }
@@ -407,7 +407,7 @@ namespace Steam_Library_Manager.Definitions
                                 {
                                     continue;
                                 }
-                                List.LCProgress.Report(junk);
+                                List.LcProgress.Report(junk);
                             }
                         }
                     }

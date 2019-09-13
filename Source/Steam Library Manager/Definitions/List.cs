@@ -18,8 +18,8 @@ namespace Steam_Library_Manager.Definitions
         public static ObservableCollection<string> IgnoredJunkItems { get; set; } = new ObservableCollection<string>();
 
         public static readonly IProgress<Library> LibraryProgress = new Progress<Library>(library => Libraries.Add(library));
-
-        public static readonly IProgress<JunkInfo> LCProgress = new Progress<JunkInfo>(junk => JunkItems.Add(junk));
+        public static readonly IProgress<JunkInfo> LcProgress = new Progress<JunkInfo>(junk => JunkItems.Add(junk));
+        public static readonly IProgress<DupeInfo> DupeItemsRemove = new Progress<DupeInfo>(dupe => DupeItems.Remove(dupe));
 
         public static ObservableCollection<ContextMenuItem> LibraryCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();
         public static ObservableCollection<ContextMenuItem> AppCMenuItems { get; set; } = new ObservableCollection<ContextMenuItem>();

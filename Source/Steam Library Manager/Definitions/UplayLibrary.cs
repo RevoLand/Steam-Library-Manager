@@ -42,7 +42,7 @@ namespace Steam_Library_Manager.Definitions
                             continue;
                         }
 
-                        List.LCProgress.Report(new List.JunkInfo
+                        List.LcProgress.Report(new List.JunkInfo
                         {
                             FSInfo = dirInfo,
                             Size = Functions.FileSystem.FormatBytes(Functions.FileSystem.GetDirectorySize(dirInfo, true)),

@@ -43,7 +43,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
-                    Definitions.List.LCProgress.Report(new Definitions.List.JunkInfo
+                    Definitions.List.LcProgress.Report(new Definitions.List.JunkInfo
                     {
                         FSInfo = acfFile,
                         Size = FileSystem.FormatBytes(acfFile.Length),
