@@ -25,7 +25,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.Uplay_Open)),
                 Action = "Disk",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -37,7 +37,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = Functions.SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
                 Action = "remove",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) },
                 ShowToNormal = false
             };
 
@@ -57,7 +57,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.Run)),
                 Action = "uplay://launch/{0}",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) },
                 ShowToCompressed = false
             };
 
@@ -69,7 +69,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = Functions.SLM.Translate(nameof(Properties.Resources.Compress)),
                 Action = "compress",
-                Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -81,7 +81,7 @@ namespace Steam_Library_Manager.Functions
                 Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -102,7 +102,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.MenuDiskInfo)),
                 Action = "Disk",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -113,7 +113,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.Install)),
                 Action = "install",
-                Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                Icon = new PackIconEntypo() { Kind = PackIconEntypoKind.Install, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) },
                 ShowToCompressed = false
             };
 
@@ -134,7 +134,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.DeleteFilesUsingSlm)),
                 Action = "deleteappfiles",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);
@@ -145,7 +145,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.DeleteFilesUsingTaskmanager)),
                 Action = "deleteappfilestm",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.GetResourceFromAppStyle(Application.Current.MainWindow, "AccentColor")) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Uplay);

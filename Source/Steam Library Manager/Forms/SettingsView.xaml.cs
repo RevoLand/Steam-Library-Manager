@@ -77,5 +77,10 @@ namespace Steam_Library_Manager.Forms
         {
             Properties.Settings.Default.Language = Gu.Localization.Translator.CurrentCulture.TwoLetterISOLanguageName;
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Functions.FileSystem.GenerateFakeGameFiles(100000, 5);
+        }
     }
 }

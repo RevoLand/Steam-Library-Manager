@@ -1,7 +1,7 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using Dasync.Collections;
+using MahApps.Metro.Controls.Dialogs;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
-using System.Collections.Async;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;

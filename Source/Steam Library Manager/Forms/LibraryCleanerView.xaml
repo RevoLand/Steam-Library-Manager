@@ -47,7 +47,7 @@
                 </ListView>
                 <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
                     <!-- Button: Delete All-->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="LibraryCleaner_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Tag="DeleteAll" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="LibraryCleaner_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -59,7 +59,7 @@
                     </Button>
 
                     <!-- Button: Move All-->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Click="LibraryCleaner_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Tag="MoveAll" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_MoveAll}" Click="LibraryCleaner_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -71,7 +71,7 @@
                     </Button>
 
                     <!-- Button: Refresh All-->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="Junks">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="Junks">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -129,7 +129,7 @@
 
                 <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
                     <!-- Button: Refresh All-->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="DupeItems">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="DupeItems">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -169,7 +169,7 @@
                     </ListView.ToolTip>
                 </ListView>
                 <WrapPanel Margin="0, 10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ItemHeight="40" ItemWidth="200">
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="remove" FontSize="13" Content="{l:Static p:Resources.RemoveFromIgnoreList}" Click="IgnoredItems_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Tag="remove" FontSize="13" Content="{l:Static p:Resources.RemoveFromIgnoreList}" Click="IgnoredItems_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -180,7 +180,7 @@
                         </Button.ToolTip>
                     </Button>
 
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Tag="delete" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="IgnoredItems_ButtonClick">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Tag="delete" FontSize="13" Content="{l:Static p:Resources.DeleteAll}" Click="IgnoredItems_ButtonClick">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -192,7 +192,7 @@
                     </Button>
 
                     <!-- Button: Refresh -->
-                    <Button Margin="10,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="IgnoredItems">
+                    <Button Margin="10,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.Forms_LibraryCleaner_RefreshList}" Click="RefreshButton_OnClick" Tag="IgnoredItems">
                         <Button.ToolTip>
                             <ToolTip>
                                 <StackPanel>

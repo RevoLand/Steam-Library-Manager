@@ -13,6 +13,6 @@
             <iconPacks:PackIconMaterial Kind="CheckAll" Height="48" Width="48" Margin="5, 0" />
             <TextBlock TextWrapping="Wrap" FontSize="28" Text="{l:Static p:Resources.InstallationWizard_Completed}" />
         </StackPanel>
-        <Button Name="CloseButton" HorizontalAlignment="Stretch" Content="{l:Static p:Resources.Close}" Height="50" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" Click="CloseButton_OnClick" />
+        <Button Name="CloseButton" HorizontalAlignment="Stretch" Content="{l:Static p:Resources.Close}" Height="50" Margin="0,10" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" Click="CloseButton_OnClick" />
     </StackPanel>
 </UserControl>

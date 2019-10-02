@@ -1,4 +1,4 @@
-﻿using ControlzEx;
+﻿using MahApps.Metro.IconPacks;
 
 namespace Steam_Library_Manager.Definitions
 {

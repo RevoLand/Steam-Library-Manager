@@ -76,7 +76,7 @@ namespace Steam_Library_Manager
         public Main()
         {
             SetNLogConfig();
-            Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
+            //Gu.Localization.Translator.Culture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
 
             InitializeComponent();
 

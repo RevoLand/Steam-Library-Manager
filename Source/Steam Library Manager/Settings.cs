@@ -3,7 +3,6 @@ using MahApps.Metro.Controls.Dialogs;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Diagnostics;
-using System.Windows;
 
 namespace Steam_Library_Manager.Properties
 {
@@ -121,9 +120,16 @@ namespace Steam_Library_Manager.Properties
 
             if (e.PropertyName == "BaseTheme" || e.PropertyName == "ThemeAccent")
             {
+                foreach (var theme in ThemeManager.Themes)
+                {
+                    Debug.WriteLine(theme);
+                }
+
+                /*
                 ThemeManager.ChangeAppStyle(Application.Current,
                                 ThemeManager.GetAccent(ThemeAccent),
                                 ThemeManager.GetAppTheme(BaseTheme));
+                */
             }
         }
     }

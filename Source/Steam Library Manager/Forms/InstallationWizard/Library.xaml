@@ -13,7 +13,7 @@
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Steam">
                 <WrapPanel Orientation="Vertical">
-                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                         <mah:ToggleSwitch.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -26,7 +26,7 @@
                 </WrapPanel>
             </GroupBox>
             <GroupBox Header="Origin">
-                <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <mah:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -39,7 +39,7 @@
             </GroupBox>
             <GroupBox Header="Uplay">
                 <WrapPanel Orientation="Vertical">
-                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                         <mah:ToggleSwitch.ToolTip>
                             <ToolTip>
                                 <StackPanel>

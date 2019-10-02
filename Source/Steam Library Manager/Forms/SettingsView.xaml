@@ -106,7 +106,7 @@
                         <!-- Check for Updates at Startup -->
                         <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CheckForUpdatesAtStartup}" OnLabel="{l:Static p:Resources.Yes}" OffLabel="{l:Static p:Resources.No}"
                                                    IsChecked="{SLM:SettingBinding CheckforUpdatesAtStartup}"
-                                                   HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                             <controls:ToggleSwitch.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -120,7 +120,7 @@
                         <!-- Keep searching while switching library -->
                         <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.KeepSearchingOnLibraryChange}" OnLabel="{l:Static p:Resources.Yes}" OffLabel="{l:Static p:Resources.No}"
                                                    IsChecked="{SLM:SettingBinding includeSearchResults}"
-                                                   HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   HorizontalAlignment="Left" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                             <controls:ToggleSwitch.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -133,7 +133,7 @@
 
                         <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CompactStatusDetection}" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                            IsChecked="{SLM:SettingBinding CompactDetection}"
-                                           HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                           HorizontalAlignment="Left" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                             <controls:ToggleSwitch.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -146,7 +146,7 @@
 
                         <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.AdvancedCompactSizeDetection}" OnLabel="{l:Static p:Resources.Enabled}" OffLabel="{l:Static p:Resources.Disabled}"
                                            IsChecked="{SLM:SettingBinding AdvancedCompactSizeDetection}"
-                                           HorizontalAlignment="Left" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                           HorizontalAlignment="Left" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                             <controls:ToggleSwitch.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -218,7 +218,7 @@
                         </ComboBox>
 
                         <!-- Button: Open Logs Folder -->
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
+                        <Button Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.OpenLogsFolder}" VerticalAlignment="Top" Click="ViewLogsButton" Height="40">
                             <Button.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -230,7 +230,7 @@
                         </Button>
 
                         <!-- Button: Check for Updates -->
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
+                        <Button Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.CheckForUpdates}" VerticalAlignment="Top" Click="CheckForUpdates_Click" Height="40">
                             <Button.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -242,7 +242,7 @@
                         </Button>
 
                         <!-- Button: Clear image cache-->
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.ClearHeaderImageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
+                        <Button Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.ClearHeaderImageCache}" VerticalAlignment="Top" Click="HeaderImageClearButton_ClickAsync" Height="40">
                             <Button.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -253,7 +253,7 @@
                             </Button.ToolTip>
                         </Button>
 
-                        <Button Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="40">
+                        <Button Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Margin="5" Content="{l:Static p:Resources.Donate}" Click="DonateButton_Click" VerticalAlignment="Top" Height="40">
                             <Button.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -263,6 +263,8 @@
                                 </ToolTip>
                             </Button.ToolTip>
                         </Button>
+
+                        <Button Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Margin="5" Content="Generate Test App" VerticalAlignment="Top" Height="40" Click="ButtonBase_OnClick"/>
                     </WrapPanel>
                     <GroupBox Margin="5" Header="Supporters">
                         <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
@@ -283,7 +285,7 @@
             <WrapPanel Orientation="Vertical" Margin="0, 10">
                 <!-- Remove Source Files -->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -296,7 +298,7 @@
 
                 <!-- Compress Files -->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CompressFiles}" OnLabel="{l:Static p:Resources.Forms_Settings_Compress}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTCompress}" IsChecked="{SLM:SettingBinding Global_Compress}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -309,7 +311,7 @@
 
                 <!-- Report File Movement -->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.ReportFileMovement}" IsChecked="{SLM:SettingBinding Global_ReportFileMovement}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -322,7 +324,7 @@
 
                 <!-- Start Task Manager on Startup -->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.StartTaskManagerAtStartup}" IsChecked="{SLM:SettingBinding Global_StartTaskManagerOnStartup}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -335,7 +337,7 @@
 
                 <!-- Play a sound on completion-->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.PlayASoundOnCompletion}" IsChecked="{SLM:SettingBinding PlayASoundOnCompletion}"
-                                                   Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                                   Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -349,7 +351,7 @@
         </controls:MetroTabItem>
         <controls:MetroTabItem Header="{l:Static p:Resources.LibrarySettings}">
             <WrapPanel Orientation="Vertical" Margin="0, 10">
-                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -359,7 +361,7 @@
                         </ToolTip>
                     </controls:ToggleSwitch.ToolTip>
                 </controls:ToggleSwitch>
-                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.OriginLibrarySupport}" IsChecked="{SLM:SettingBinding Origin_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -369,7 +371,7 @@
                         </ToolTip>
                     </controls:ToggleSwitch.ToolTip>
                 </controls:ToggleSwitch>
-                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.UplayLibrarySupport}" IsChecked="{SLM:SettingBinding Uplay_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                     <controls:ToggleSwitch.ToolTip>
                         <ToolTip>
                             <StackPanel>

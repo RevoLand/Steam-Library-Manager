@@ -14,7 +14,7 @@
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="800" MinWidth="985"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
     ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
-    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" WindowTransitionsEnabled="False">
+    SaveWindowPosition="True" WindowTransitionsEnabled="False">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Content="{l:Static p:Resources.Donate}" Click="RightWindowCommands_DonateButton_Click">
@@ -55,7 +55,7 @@
                 <StackPanel Orientation="Vertical" Margin="15">
                     <TextBlock Text="{l:Static p:Resources.Main_SelectedPath}" HorizontalAlignment="Stretch" Margin="0,5" />
                     <TextBlock x:Name="createLibrary_Path" HorizontalAlignment="Stretch" Margin="0,5" />
-                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="{l:Static p:Resources.Select}" Height="35" Margin="0,5" Style="{StaticResource AccentedSquareButtonStyle}" />
+                    <Button Click="CreateLibrary_PathSelectionButtonClick" Content="{l:Static p:Resources.Select}" Height="35" Margin="0,5" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" />
 
                     <ComboBox Name="createLibrary_Type" controls:TextBoxHelper.Watermark="{l:Static p:Resources.LibraryType}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Stretch" Height="40" Margin="0, 10"
                               ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryType}}" BorderBrush="{DynamicResource AccentColorBrush}" SelectionChanged="CreateLibrary_Type_SelectionChanged">
@@ -75,7 +75,7 @@
                     </ComboBox>
                     <TextBlock Text="{l:Static p:Resources.SelectedLibraryType}" HorizontalAlignment="Stretch" Margin="0,5" />
                     <TextBlock x:Name="createLibrary_TypeText" HorizontalAlignment="Stretch" Margin="0,5" />
-                    <Button Click="CreateLibraryButton_Click" Content="{l:Static p:Resources.CreateLibrary_Tooltip}" Height="40" Margin="0,10" Style="{StaticResource AccentedSquareButtonStyle}" />
+                    <Button Click="CreateLibraryButton_Click" Content="{l:Static p:Resources.CreateLibrary_Tooltip}" Height="40" Margin="0,10" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" />
                     <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10" />
                 </StackPanel>
             </controls:Flyout>
@@ -144,7 +144,7 @@
                         <!-- TextBox: Search -->
                         <TextBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" controls:TextBoxHelper.UseFloatingWatermark="True"
                              controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom"
-                             Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
+                             Text="{SLM:SettingBinding Path=SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                             <TextBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

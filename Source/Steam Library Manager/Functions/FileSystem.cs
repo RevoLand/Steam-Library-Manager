@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Steam_Library_Manager.Definitions.Enums;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -159,6 +161,57 @@ namespace Steam_Library_Manager.Functions
             {
                 logger.Error(ex);
                 return "0";
+            }
+        }
+
+        public static void GenerateFakeGameFiles(int totalFilesToGenerate, long fileSizeInKb)
+        {
+            try
+            {
+                var libraryToUse =
+                    Definitions.List.Libraries.FirstOrDefault(x => x.IsMain && x.Type == LibraryType.Steam);
+
+                if (libraryToUse == null)
+                {
+                    Debug.WriteLine("Ana Steam kütüphanesi null geldi, liste oluşturulmadı mı?");
+                }
+
+                using (var fs = File.OpenWrite(Path.Combine(libraryToUse.DirectoryList["SteamApps"].FullName, "appmanifest_1.acf")))
+                using (var w = new StreamWriter(fs))
+                {
+                    w.WriteLine("    \"AppState\"");
+                    w.WriteLine("    {");
+                    w.WriteLine("      \"AppID\"  \"1\"");
+                    w.WriteLine("      \"name\"  \"Test App: SLM\"");
+                    w.WriteLine("      \"installdir\" \"TestApp\"");
+                    w.WriteLine("      \"StateFlags\" \"4\"");
+                    w.WriteLine("    }");
+                }
+
+                var dInfo = new DirectoryInfo(Path.Combine(libraryToUse.DirectoryList["Common"].FullName, "TestApp"));
+
+                if (!dInfo.Exists)
+                {
+                    dInfo.Create();
+                }
+
+                var rng = new Random();
+                Parallel.For(0, totalFilesToGenerate, index =>
+                {
+                    var fileName = Path.Combine(dInfo.FullName, index + ".file");
+                    var data = new byte[1024 * fileSizeInKb];
+                    rng.NextBytes(data);
+                    File.WriteAllBytes(fileName, data);
+                });
+
+                Debug.WriteLine("Generated fake game");
+
+                libraryToUse.UpdateAppList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                throw;
             }
         }
 

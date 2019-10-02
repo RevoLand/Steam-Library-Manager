@@ -658,7 +658,7 @@
 
         <WrapPanel Margin="0, 0, 0, 265" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" HorizontalAlignment="Left">
             <!-- Button: Start Task Manager -->
-            <Button x:Name="Button_StartTaskManager" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.TaskManagerStart}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button x:Name="Button_StartTaskManager" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" FontSize="13" Content="{l:Static p:Resources.TaskManagerStart}" Tag="Start" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -669,7 +669,7 @@
                 </Button.ToolTip>
             </Button>
 
-            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.TaskManagerPause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" x:Name="Button_PauseTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.TaskManagerPause}" Tag="Pause" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -681,7 +681,7 @@
             </Button>
 
             <!-- Button: Stop Task Manager -->
-            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.TaskManagerStop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" x:Name="Button_StopTaskManager" FontSize="13" IsEnabled="False" Content="{l:Static p:Resources.TaskManagerStop}" Tag="Stop" Click="TaskManager_Buttons_Click" Width="140" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -693,7 +693,7 @@
             </Button>
 
             <!-- Button: Clear Completed Tasks -->
-            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Content="{l:Static p:Resources.ClearCompletedTasks}" FontSize="13" Tag="ClearCompleted" Click="TaskManager_Buttons_Click" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -705,7 +705,7 @@
             </Button>
 
             <!-- Button: Check for Backup Updates -->
-            <Button Margin="5,0,0,0" Style="{StaticResource AccentedSquareButtonStyle}" BorderThickness="0" Content="{l:Static p:Resources.CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
+            <Button Margin="5,0,0,0" Style="{StaticResource MahApps.Styles.Button.AccentedSquare}" BorderThickness="0" Content="{l:Static p:Resources.CheckForBackupUpdates}" FontSize="13" Tag="BackupUpdates" Click="TaskManager_Buttons_Click" Height="45">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>

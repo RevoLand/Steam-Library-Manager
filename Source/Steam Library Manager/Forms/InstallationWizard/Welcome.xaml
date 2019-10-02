@@ -33,7 +33,7 @@
             <!-- Check for Updates at Startup -->
             <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CheckForUpdatesAtStartup}" OnLabel="{l:Static p:Resources.Yes}" OffLabel="{l:Static p:Resources.No}"
                                    IsChecked="{slm:SettingBinding CheckforUpdatesAtStartup}"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}">
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MahApps.Styles.ToggleSwitchButton.Win10}">
                 <mah:ToggleSwitch.ToolTip>
                     <ToolTip>
                         <StackPanel>
