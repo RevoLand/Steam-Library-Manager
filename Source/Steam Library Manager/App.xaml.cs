@@ -1,6 +1,6 @@
-﻿using MahApps.Metro;
-using System;
+﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -34,10 +34,10 @@ namespace Steam_Library_Manager
 
         private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            //MessageBox.Show($"{e.Exception}\n\n{Environment.StackTrace}");
+            MessageBox.Show($"{e.Exception}\n\n{Environment.StackTrace}");
             Debug.WriteLine(e.Exception);
             Debug.WriteLine(Environment.StackTrace);
-            e.Handled = true;
+            //e.Handled = true;
         }
     }
 }

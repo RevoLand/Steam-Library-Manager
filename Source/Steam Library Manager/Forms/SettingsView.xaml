@@ -4,11 +4,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:localization="clr-namespace:Gu.Localization;assembly=Gu.Localization"
-             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
+             xmlns:localization="http://gu.se/Localization"
+             xmlns:l="http://gu.se/Localization"
              xmlns:SLM="clr-namespace:Steam_Library_Manager"
              xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:localization1="clr-namespace:Gu.Localization;assembly=Gu.Localization"
              mc:Ignorable="d">
     <controls:MetroTabControl Name="SettingsPanel" controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}" Panel.ZIndex="0">
         <!-- Tab: Library -->
@@ -161,7 +162,7 @@
                     <WrapPanel Orientation="Vertical" Margin="3,0,0,0">
                         <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" controls:TextBoxHelper.Watermark="{l:Static p:Resources.Language}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
                               VerticalContentAlignment="Center" VerticalAlignment="Top" Width="240"
-                                      SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged">
+                                      SelectedItem="{Binding Path=(localization1:Translator.Culture)}" ItemsSource="{Binding Path=(localization1:Translator.Cultures)}" SelectionChanged="ComboBox_SelectionChanged">
                             <ComboBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

@@ -4,11 +4,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:localization="clr-namespace:Gu.Localization;assembly=Gu.Localization"
-             xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
+             xmlns:localization="http://gu.se/Localization"
+             xmlns:l="http://gu.se/Localization"
              xmlns:slm="clr-namespace:Steam_Library_Manager"
              xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
+             xmlns:l1="clr-namespace:Gu.Localization;assembly=Gu.Localization"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="500">
     <GroupBox Header="{l:Static p:Resources.GeneralSettings}">
@@ -28,7 +29,8 @@
 
             <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" mah:TextBoxHelper.Watermark="{l:Static p:Resources.Language}" mah:TextBoxHelper.UseFloatingWatermark="True"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Height="50" Width="240"
-                      SelectedItem="{Binding Path=(localization:Translator.Culture)}" ItemsSource="{Binding Path=(localization:Translator.Cultures)}" SelectionChanged="Selector_OnSelectionChanged">
+                      SelectedItem="{Binding Path=(l1:Translator.Culture),
+                                              Converter={x:Static l:CultureOrDefaultConverter.Default}}" ItemsSource="{Binding Path=(l1:Translator.Cultures)}" SelectionChanged="Selector_OnSelectionChanged">
             </ComboBox>
             <!-- Check for Updates at Startup -->
             <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.CheckForUpdatesAtStartup}" OnLabel="{l:Static p:Resources.Yes}" OffLabel="{l:Static p:Resources.No}"

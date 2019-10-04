@@ -13,7 +13,7 @@
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Steam">
                 <WrapPanel Orientation="Vertical">
-                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Steam_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
+                    <mah:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="0, 5" Header="{l:Static p:Resources.SteamLibrarySupport}" IsChecked="{SLM:SettingBinding Path=Steam_IsEnabled}" Style="{StaticResource MahApps.Styles.ToggleSwitch.Win10}">
                         <mah:ToggleSwitch.ToolTip>
                             <ToolTip>
                                 <StackPanel>

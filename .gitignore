@@ -10,6 +10,7 @@ Binaries/.slmcache/*
 *.suo
 Source/*.vs/
 Source/packages/*
+Source/Steam Library Manager/bin/*
 Source/Steam Library Manager/obj/*
 .csproj.user
 /.vs
