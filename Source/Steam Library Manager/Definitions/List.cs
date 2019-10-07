@@ -53,7 +53,7 @@ namespace Steam_Library_Manager.Definitions
 
             public string TaskStatusInfo { get; set; }
 
-            public double TotalFileCount { get; set; }
+            public int TotalFileCount { get; set; }
 
             public long MovedFileSize
             {
