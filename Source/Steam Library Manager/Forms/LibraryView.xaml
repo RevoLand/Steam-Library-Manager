@@ -132,7 +132,7 @@
             </ListView.ToolTip>
         </ListView>
         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0, 0, 0, 10" ItemWidth="66.6666666666667" ItemHeight="35">
-            <Button BorderThickness="0" Width="60" Style="{DynamicResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="create" Content="{iconPacks:Material Kind=FolderOpen}" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{DynamicResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="create" Content="{iconPacks:Material Kind=FolderOpen}">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -142,7 +142,7 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="remove" Content="{iconPacks:Material Kind=PlaylistRemove}" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="remove" Content="{iconPacks:Material Kind=PlaylistRemove}">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -153,7 +153,7 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="refresh" Content="{iconPacks:Material Kind=Refresh}" TextElement.FontFamily="pack://application:,,,/FontAwesome.WPF;component/#FontAwesome">
+            <Button BorderThickness="0" Width="60" Style="{StaticResource AccentedSquareButtonStyle}" Click="LibraryActionButtons_Click" Tag="refresh" Content="{iconPacks:Material Kind=Refresh}">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>

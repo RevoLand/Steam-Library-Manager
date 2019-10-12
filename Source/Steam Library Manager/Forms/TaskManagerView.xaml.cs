@@ -33,12 +33,14 @@ namespace Steam_Library_Manager.Forms
 
                     case "Pause":
                         Functions.TaskManager.Pause();
+                        Button_StartTaskManager.IsEnabled = true;
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = true;
                         break;
 
                     case "Stop":
                         Functions.TaskManager.Stop();
+                        Button_StartTaskManager.IsEnabled = true;
                         Button_PauseTaskManager.IsEnabled = false;
                         Button_StopTaskManager.IsEnabled = false;
                         break;

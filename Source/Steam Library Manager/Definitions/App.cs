@@ -730,7 +730,7 @@ namespace Steam_Library_Manager.Definitions
                 currentTask.ElapsedTime.Stop();
                 currentTask.MovedFileSize = totalFileSize;
 
-                ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = currentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(totalFileSize, currentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(totalFileSize / (long)currentTask.TotalFileCount) }), true);
+                ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskCompleted)), new { AppName, ElapsedTime = currentTask.ElapsedTime.Elapsed, AverageSpeed = GetElapsedTimeAverage(totalFileSize, currentTask.ElapsedTime.Elapsed.TotalSeconds), AverageFileSize = Functions.FileSystem.FormatBytes(totalFileSize / currentTask.TotalFileCount) }), true);
             }
             catch (OperationCanceledException)
             {

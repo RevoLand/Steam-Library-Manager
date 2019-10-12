@@ -103,7 +103,10 @@ namespace Steam_Library_Manager.Functions
                     {
                         if (!string.IsNullOrEmpty(Properties.Settings.Default.CustomSoundFile) && File.Exists(Properties.Settings.Default.CustomSoundFile))
                         {
-                            new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile).Play();
+                            using (var soundPlayer = new System.Media.SoundPlayer(Properties.Settings.Default.CustomSoundFile))
+                            {
+                                soundPlayer.Play();
+                            }
                         }
                         else
                         {
@@ -175,19 +178,6 @@ namespace Steam_Library_Manager.Functions
                 Paused = false;
                 ActiveTask.Active = true;
                 ActiveTask.mre.Set();
-
-                Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
-                {
-                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = false;
-                });
-                Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
-                {
-                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = true;
-                });
-                Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
-                {
-                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = true;
-                });
             }
         }
 
@@ -195,27 +185,13 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Status && ActiveTask != null)
-                {
-                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = true;
-                    });
-                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = false;
-                    });
-                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = true;
-                    });
+                if (!Status || ActiveTask == null) return;
 
-                    Paused = true;
-                    ActiveTask.Active = false;
-                    ActiveTask.mre.Reset();
+                Paused = true;
+                ActiveTask.Active = false;
+                ActiveTask.mre.Reset();
 
-                    Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Paused)), new { CurrentTime = DateTime.Now }));
-                }
+                Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskManager_Paused)), new { CurrentTime = DateTime.Now }));
             }
             catch (Exception ex)
             {
@@ -227,28 +203,14 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                if (Status)
-                {
-                    Main.FormAccessor.TaskManagerView.Button_StartTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_StartTaskManager.IsEnabled = true;
-                    });
-                    Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_PauseTaskManager.IsEnabled = false;
-                    });
-                    Main.FormAccessor.TaskManagerView.Button_StopTaskManager.Dispatcher.Invoke(delegate
-                    {
-                        Main.FormAccessor.TaskManagerView.Button_StopTaskManager.IsEnabled = false;
-                    });
+                if (!Status) return;
 
-                    Status = false;
-                    Paused = false;
-                    CancellationToken.Cancel();
-                    _isRestartRequired = false;
-                    ActiveTask?.mre?.Set();
-                    TmInfoUpdate();
-                }
+                Status = false;
+                Paused = false;
+                CancellationToken.Cancel();
+                _isRestartRequired = false;
+                ActiveTask?.mre?.Set();
+                TmInfoUpdate();
             }
             catch (Exception ex)
             {
