@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using File = Alphaleonis.Win32.Filesystem.File;
+using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
 
 namespace Steam_Library_Manager
 {

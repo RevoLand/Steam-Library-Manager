@@ -1,15 +1,17 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using Alphaleonis.Win32.Filesystem;
+using Dasync.Collections;
+using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.IconPacks;
 using System;
-using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
+using SearchOption = System.IO.SearchOption;
+using Stream = System.IO.Stream;
 
 namespace Steam_Library_Manager.Functions
 {

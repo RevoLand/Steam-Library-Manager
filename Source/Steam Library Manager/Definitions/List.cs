@@ -99,7 +99,7 @@ namespace Steam_Library_Manager.Definitions
 
         public class JunkInfo
         {
-            public System.IO.FileSystemInfo FSInfo { get; set; }
+            public Alphaleonis.Win32.Filesystem.FileSystemInfo FSInfo { get; set; }
             public Library Library { get; set; }
             public App App { get; set; }
             public string Size { get; set; }

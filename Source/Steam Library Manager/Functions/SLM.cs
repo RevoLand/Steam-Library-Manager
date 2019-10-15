@@ -1,7 +1,7 @@
 ﻿using Gu.Localization;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
-using System.IO;
+using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;

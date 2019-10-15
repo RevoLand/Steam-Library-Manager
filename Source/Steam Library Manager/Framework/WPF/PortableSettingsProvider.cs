@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.IO;
+using Alphaleonis.Win32.Filesystem;
 using System.Xml;
 
 // Source: https://github.com/crdx/PortableSettingsProvider

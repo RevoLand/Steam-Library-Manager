@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using Alphaleonis.Win32.Filesystem;
 
 namespace Steam_Library_Manager.Definitions
 {

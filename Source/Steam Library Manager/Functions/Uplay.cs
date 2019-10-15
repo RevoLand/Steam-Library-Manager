@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.IconPacks;
+﻿using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
@@ -9,7 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using MahApps.Metro.Controls.Dialogs;
+using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using File = Alphaleonis.Win32.Filesystem.File;
+using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace Steam_Library_Manager.Functions
 {

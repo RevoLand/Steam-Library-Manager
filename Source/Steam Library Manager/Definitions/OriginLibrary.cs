@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Dasync.Collections;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Async;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows;
+using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 
 namespace Steam_Library_Manager.Definitions
 {

@@ -5,7 +5,7 @@ using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
+using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Reflection;
 using System.Windows;

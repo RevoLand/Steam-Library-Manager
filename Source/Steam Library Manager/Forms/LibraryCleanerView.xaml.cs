@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using File = Alphaleonis.Win32.Filesystem.File;
+using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
 
 namespace Steam_Library_Manager.Forms
 {
@@ -150,7 +154,7 @@ namespace Steam_Library_Manager.Forms
                                     if (junk.FSInfo.Exists)
                                     {
                                         progressInformationMessage.SetMessage(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFile)), new { FileFullName = junk.FSInfo.FullName }));
-                                        ((FileInfo)junk.FSInfo).CopyTo(Path.Combine(targetFolderBrowser.SelectedPath, junk.FSInfo.Name), true);
+                                        ((FileInfo)junk.FSInfo).CopyTo(Alphaleonis.Win32.Filesystem.Path.Combine(targetFolderBrowser.SelectedPath, junk.FSInfo.Name), true);
                                     }
 
                                     File.SetAttributes(junk.FSInfo.FullName, FileAttributes.Normal);

@@ -4,6 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using DriveInfo = Alphaleonis.Win32.Filesystem.DriveInfo;
+using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
+using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -31,7 +35,7 @@ namespace Steam_Library_Manager.Functions
                             CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = File.Name, FormattedFileSize = FormatBytes(File.Length) });
                         }
 
-                        System.IO.File.SetAttributes(File.FullName, FileAttributes.Normal);
+                        Alphaleonis.Win32.Filesystem.File.SetAttributes(File.FullName, System.IO.FileAttributes.Normal);
                         File.Delete();
                     }
                 });

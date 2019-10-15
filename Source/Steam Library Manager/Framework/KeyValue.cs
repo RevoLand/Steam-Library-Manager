@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using File = Alphaleonis.Win32.Filesystem.File;
 
 namespace Steam_Library_Manager.Framework
 {
@@ -287,7 +288,7 @@ namespace Steam_Library_Manager.Framework
         public List<KeyValue> Children { get; private set; }
 
         /// <summary>
-        /// Gets or sets the child <see cref="SteamKit2.KeyValue" /> with the specified key.
+        /// Gets or sets the child <see cref="KeyValue" /> with the specified key.
         /// When retrieving by key, if no child with the given key exists, <see cref="Invalid" /> is returned.
         /// </summary>
         public KeyValue this[string key]

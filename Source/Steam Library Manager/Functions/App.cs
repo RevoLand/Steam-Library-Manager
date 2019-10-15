@@ -5,6 +5,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using File = Alphaleonis.Win32.Filesystem.File;
+using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
+using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace Steam_Library_Manager.Functions
 {
