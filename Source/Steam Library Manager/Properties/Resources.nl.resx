@@ -266,7 +266,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Verwijder junk bestanden zoals u heeft gevraagd.</value>
   </data>
   <data name="DeleteAll" xml:space="preserve">
-    <value>Delete All</value>
+    <value>Alles Verwijderen</value>
   </data>
   <data name="Forms_LibraryCleaner_DeleteSelectedFolders" xml:space="preserve">
     <value>Verwijder geselecteerde bestand(en)</value>
@@ -291,13 +291,13 @@ Would you like to remove files that already moved from target library?</value>
 {FileFullName}</value>
   </data>
   <data name="Forms_LibraryCleaner_MovingFiles" xml:space="preserve">
-    <value>Moving junk files as you have requested.</value>
+    <value>Ongewenste bestanden verwijderen zoals gevraagd.</value>
   </data>
   <data name="Forms_LibraryCleaner_Open" xml:space="preserve">
-    <value>Open in Explorer</value>
+    <value>Openen in Verkenner</value>
   </data>
   <data name="Forms_LibraryCleaner_RefreshList" xml:space="preserve">
-    <value>Refresh List</value>
+    <value>Lijst verversen</value>
   </data>
   <data name="Forms_LibraryCleaner_RootPathSelected" xml:space="preserve">
     <value>Root path selected?</value>
@@ -306,7 +306,7 @@ Would you like to remove files that already moved from target library?</value>
     <value>Are you sure you like to move junks to root of disk?</value>
   </data>
   <data name="CreateLibrary_Tooltip" xml:space="preserve">
-    <value>Create Library</value>
+    <value>Bibliotheek aanmaken</value>
   </data>
   <data name="Forms_LibraryView_Offline" xml:space="preserve">
     <value>Offline</value>
@@ -315,34 +315,34 @@ Would you like to remove files that already moved from target library?</value>
     <value>Discord</value>
   </data>
   <data name="Donate" xml:space="preserve">
-    <value>Donate</value>
+    <value>Doneer</value>
   </data>
   <data name="Forms_Main_SearchInLibrary" xml:space="preserve">
-    <value>Search in selected library</value>
+    <value>Zoeken in geselecteerde bibliotheek</value>
   </data>
   <data name="Forms_Main_TabHeader_Library" xml:space="preserve">
-    <value>Library</value>
+    <value>Bibliotheek</value>
   </data>
   <data name="Forms_Main_TabHeader_LibraryCleaner" xml:space="preserve">
-    <value>Library Cleaner</value>
+    <value>Bibliotheek schoonmaker</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Instellingen</value>
   </data>
   <data name="Forms_Main_TabHeader_TaskManager" xml:space="preserve">
-    <value>Task Manager</value>
+    <value>Taakbeheer</value>
   </data>
   <data name="Forms_Main_Translate" xml:space="preserve">
-    <value>Translate</value>
+    <value>Vertalen</value>
   </data>
   <data name="Origin" xml:space="preserve">
     <value>Origin</value>
   </data>
   <data name="Forms_Quit" xml:space="preserve">
-    <value>Quit</value>
+    <value>Sluiten</value>
   </data>
   <data name="Forms_QuitSLM" xml:space="preserve">
-    <value>Quit application?</value>
+    <value>Applicatie afsluiten?</value>
   </data>
   <data name="Forms_QuitSLMMessage" xml:space="preserve">
     <value>There are active tasked jobs available in Task Manager. Are you sure you want to quit SLM? This might result in a data loss.</value>
@@ -351,55 +351,55 @@ Would you like to remove files that already moved from target library?</value>
     <value>Calculation method for archive size</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Check for Updates</value>
+    <value>Controleren op updates</value>
   </data>
   <data name="CheckForUpdatesAtStartup" xml:space="preserve">
-    <value>Check for Updates at Startup</value>
+    <value>Controleer op updates bij opstart</value>
   </data>
   <data name="ClearHeaderImageCache" xml:space="preserve">
     <value>Clear header image cache</value>
   </data>
   <data name="Forms_Settings_Compress" xml:space="preserve">
-    <value>Compress</value>
+    <value>Comprimeer</value>
   </data>
   <data name="CompressFiles" xml:space="preserve">
-    <value>Compress Files</value>
+    <value>Comprimeer Bestanden</value>
   </data>
   <data name="CompressionLevel" xml:space="preserve">
-    <value>Compression Level</value>
+    <value>Compressie niveau</value>
   </data>
   <data name="Forms_Settings_DoNOTCompress" xml:space="preserve">
-    <value>Do NOT Compress</value>
+    <value>NIET Comprimeren</value>
   </data>
   <data name="Forms_Settings_DoNOTRemove" xml:space="preserve">
-    <value>Do NOT Remove</value>
+    <value>Verwijder NIET</value>
   </data>
   <data name="Forms_Settings_GameListMethod" xml:space="preserve">
     <value>Game listing method</value>
   </data>
   <data name="GeneralSettings" xml:space="preserve">
-    <value>General Settings</value>
+    <value>Algemene Instellingen</value>
   </data>
   <data name="Forms_Settings_HeaderImageCache" xml:space="preserve">
-    <value>Steam Library Manager</value>
+    <value>Steam Bibliotheek Manager</value>
   </data>
   <data name="Forms_Settings_HeaderImageCacheMessage" xml:space="preserve">
     <value>Header Image Cache cleared.</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Taal</value>
   </data>
   <data name="MoveFilesSequentiallyIfBiggerThan" xml:space="preserve">
     <value>Move files sequentially if bigger than</value>
   </data>
   <data name="OpenLogsFolder" xml:space="preserve">
-    <value>Open Logs Folder</value>
+    <value>Open Log Map</value>
   </data>
   <data name="PlayASoundOnCompletion" xml:space="preserve">
-    <value>Play a sound on completion</value>
+    <value>Speel een geluid af bij voltooiing</value>
   </data>
   <data name="Forms_Settings_Remove" xml:space="preserve">
-    <value>Remove</value>
+    <value>Verwijder</value>
   </data>
   <data name="RemoveFilesAtSourceDirectory" xml:space="preserve">
     <value>Remove files at Source directory</value>
@@ -408,19 +408,19 @@ Would you like to remove files that already moved from target library?</value>
     <value>Report File Movement</value>
   </data>
   <data name="KeepSearchingOnLibraryChange" xml:space="preserve">
-    <value>Keep searching on library change</value>
+    <value>Blijf doorzoeken op bibliotheek wijzigingen</value>
   </data>
   <data name="CalculationMethodForGames" xml:space="preserve">
     <value>Calculation method for games</value>
   </data>
   <data name="SortGamesBy" xml:space="preserve">
-    <value>Sort games by</value>
+    <value>Sorteer games van</value>
   </data>
   <data name="StartTaskManagerAtStartup" xml:space="preserve">
-    <value>Start Task Manager at Startup</value>
+    <value>Start Taakbeheer bij opstart</value>
   </data>
   <data name="TaskManager" xml:space="preserve">
-    <value>Task Manager Default Settings</value>
+    <value>Taakbeheer Standaard Instellingen</value>
   </data>
   <data name="ThemeAccent" xml:space="preserve">
     <value>Theme Accent</value>
@@ -567,7 +567,7 @@ It is still suggested to check the archive file manually to see if it is really 
 Would you like to remove the given archive file?</value>
   </data>
   <data name="ReadZip_IOException" xml:space="preserve">
-    <value>An error happened while parsing zip file</value>
+    <value>Er is een fout ontstaan bij het parseren van het zip bestand</value>
   </data>
   <data name="ReadZip_IOExceptionMessage" xml:space="preserve">
     <value>An error happened while parsing zip file:
@@ -579,7 +579,7 @@ It is still suggested to check the archive file manually to see if it is really 
 Would you like to remove the given archive file?</value>
   </data>
   <data name="RemoveMovedFiles" xml:space="preserve">
-    <value>Remove moved files?</value>
+    <value>Verwijder verplaatste bestanden?</value>
   </data>
   <data name="CompressedArchiveExistsAndInUse" xml:space="preserve">
     <value>{ArchiveFullPath} is in use. Delaying the task until archive gets free.</value>
