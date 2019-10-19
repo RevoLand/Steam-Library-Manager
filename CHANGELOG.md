@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+## [1.6.0.2] - 2019-10-19
+### Added
+
+- [AlphaFS](https://github.com/alphaleonis/AlphaFS) .NET library to replace System.IO namespace
+
+### Changed
+
+- Updated nuget packages
+- Replaced every System.IO method with AlphaFS, also replaced the file copy method with AlphaFS too.
+
+### Fixed
+- "System.IndexOutOfRangeException" when copying apps.
+
+### Removed
+- [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) nuget package
+
 ## [1.6.0.1] - 2019-09-10
 ### Changed
 

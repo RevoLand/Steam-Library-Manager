@@ -1,10 +1,11 @@
-﻿using FileCopyLib;
+﻿using Alphaleonis.Win32.Filesystem;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -286,7 +287,7 @@ namespace Steam_Library_Manager.Definitions
                 currentTask.TotalFileCount = appFiles.Count;
                 long totalFileSize = 0;
 
-                Parallel.ForEach(appFiles, file => System.Threading.Interlocked.Add(ref totalFileSize, file.Length));
+                Parallel.ForEach(appFiles, file => Interlocked.Add(ref totalFileSize, file.Length));
                 currentTask.TotalFileSize = totalFileSize;
 
                 ReportToTaskManager($"Current status of {AppName} is {(IsCompacted ? "compacted" : "not compacted")} and the task is set to {(currentTask.Compact ? "compact" : "un-compact")} the app.");
@@ -371,6 +372,7 @@ namespace Steam_Library_Manager.Definitions
 
         public async Task CopyFilesAsync(List.TaskInfo currentTask, System.Threading.CancellationToken cancellationToken)
         {
+            var listLock = new object();
             ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
             Logger.Info(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
 
@@ -387,7 +389,7 @@ namespace Steam_Library_Manager.Definitions
                     CancellationToken = cancellationToken
                 };
 
-                Parallel.ForEach(appFiles, pOptions, file => System.Threading.Interlocked.Add(ref totalFileSize, file.Length));
+                Parallel.ForEach(appFiles, pOptions, file => Interlocked.Add(ref totalFileSize, file.Length));
 
                 currentTask.TotalFileSize = totalFileSize;
                 currentTask.ElapsedTime.Start();
@@ -521,7 +523,11 @@ namespace Steam_Library_Manager.Definitions
                             if (!newFile.Directory.Exists)
                             {
                                 newFile.Directory.Create();
-                                createdDirectories.Add(newFile.Directory.FullName);
+
+                                lock (listLock)
+                                {
+                                    createdDirectories.Add(newFile.Directory.FullName);
+                                }
                             }
 
                             currentTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_Decompress)), new { NewFileName = newFile.FullName, NewFileSize = Functions.FileSystem.FormatBytes(currentFile.Length) });
@@ -554,10 +560,15 @@ namespace Steam_Library_Manager.Definitions
                         if (!newFile.Directory.Exists)
                         {
                             newFile.Directory.Create();
-                            createdDirectories.Add(newFile.Directory.FullName);
+
+                            lock (listLock)
+                            {
+                                createdDirectories.Add(newFile.Directory.FullName);
+                            }
                         }
                     });
-                    void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
+                    //void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
+                    var copyProgressCallback = new CopyMoveProgressRoutine(OnFileProgress);
                     pOptions.MaxDegreeOfParallelism = 1;
 
                     Parallel.ForEach(appFiles.Where(x => x.Length > Properties.Settings.Default.ParallelAfterSize * 1000000).OrderBy(x => x.DirectoryName).ThenByDescending(x => x.Length), pOptions, currentFile =>
@@ -568,18 +579,18 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                             {
-                                FileCopier.CopyWithProgress(currentFile.FullName, newFile.FullName, CopyProgressCallback);
+                                currentFile.CopyTo(newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
                                 currentTask.MovedFileSize += currentFile.Length;
-                                newFile.LastWriteTime = currentFile.LastWriteTime;
-                                newFile.LastAccessTime = currentFile.LastAccessTime;
-                                newFile.CreationTime = currentFile.CreationTime;
                             }
                             else
                             {
                                 currentTask.MovedFileSize += newFile.Length;
                             }
 
-                            copiedFiles.Add(newFile.FullName);
+                            lock (listLock)
+                            {
+                                copiedFiles.Add(newFile.FullName);
+                            }
 
                             if (currentTask.ReportFileMovement)
                             {
@@ -654,18 +665,18 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                             {
-                                FileCopier.CopyWithProgress(currentFile.FullName, newFile.FullName, CopyProgressCallback);
+                                currentFile.CopyTo(newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
                                 currentTask.MovedFileSize += currentFile.Length;
-                                newFile.LastWriteTime = currentFile.LastWriteTime;
-                                newFile.LastAccessTime = currentFile.LastAccessTime;
-                                newFile.CreationTime = currentFile.CreationTime;
                             }
                             else
                             {
                                 currentTask.MovedFileSize += newFile.Length;
                             }
 
-                            copiedFiles.Add(newFile.FullName);
+                            lock (listLock)
+                            {
+                                copiedFiles.Add(newFile.FullName);
+                            }
 
                             if (currentTask.ReportFileMovement)
                             {
@@ -782,14 +793,24 @@ namespace Steam_Library_Manager.Definitions
             }
         }
 
-        private void OnFileProgress(FileProgress s)
+        private CopyMoveProgressResult OnFileProgress(long totalFileSize, long totalBytesTransferred, long streamSize,
+            long streamBytesTransferred, int streamNumber, CopyMoveProgressCallbackReason callbackReason, object userData)
         {
-            Functions.TaskManager.ActiveTask.mre.WaitOne();
+            if (callbackReason == CopyMoveProgressCallbackReason.StreamSwitch)
+            {
+                return CopyMoveProgressResult.Continue;
+            }
+
+            ((List.TaskInfo)userData).mre.WaitOne();
 
             if (Functions.TaskManager.CancellationToken.IsCancellationRequested)
                 throw (new OperationCanceledException(Functions.TaskManager.CancellationToken.Token));
 
-            Functions.TaskManager.ActiveTask.TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CopyingFile)), new { Percentage = s.Percentage.ToString("0.00"), TransferredBytes = s.Transferred, TotalBytes = s.Total });
+            var percentage = Convert.ToDouble(totalBytesTransferred, System.Globalization.CultureInfo.InvariantCulture) / totalFileSize * 100;
+
+            ((List.TaskInfo)userData).TaskStatusInfo = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskStatus_CopyingFile)), new { Percentage = percentage, TransferredBytes = totalBytesTransferred, TotalBytes = totalFileSize });
+
+            return CopyMoveProgressResult.Continue;
         }
 
         private void ReportToTaskManager(string message, bool log = false)
