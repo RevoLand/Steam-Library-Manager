@@ -3,7 +3,6 @@
     <a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest"> <img src="https://img.shields.io/github/release/RevoLand/Steam-Library-Manager.svg?style=for-the-badge" alt="Latest Release" /> </a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest">
         <img src="https://img.shields.io/github/downloads/RevoLand/Steam-Library-Manager/total.svg?style=for-the-badge" alt="Total Downloads" /> </a>
-    <a title="Crowdin" href="https://crowdin.com/project/steam-library-manager" target="_blank" rel="noopener"> <img src="https://d322cqt584bo4o.cloudfront.net/steam-library-manager/localized.svg" /> </a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/blob/master/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge" alt="License" /> </a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/issues"> <img src="https://img.shields.io/github/issues/RevoLand/Steam-Library-Manager.svg?style=for-the-badge" alt="Issues" /> </a>
     <a href="https://github.com/RevoLand/Steam-Library-Manager/wiki"> <img src="https://img.shields.io/badge/SLM-Wiki-blue.svg?style=for-the-badge" alt="Wiki" /> </a>
