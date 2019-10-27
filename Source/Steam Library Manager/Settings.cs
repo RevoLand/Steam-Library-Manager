@@ -52,6 +52,9 @@ namespace Steam_Library_Manager.Properties
                             Functions.SLM.UnloadLibrary(LibraryType.Steam);
                             Functions.SLM.UnloadLibrary(LibraryType.SLM);
                         }
+
+                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
                 else if (e.SettingName == "Origin_IsEnabled")
@@ -78,6 +81,9 @@ namespace Steam_Library_Manager.Properties
                         {
                             Functions.SLM.UnloadLibrary(LibraryType.Origin);
                         }
+
+                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
                 else if (e.SettingName == "Uplay_IsEnabled")
@@ -104,6 +110,9 @@ namespace Steam_Library_Manager.Properties
                         {
                             Functions.SLM.UnloadLibrary(LibraryType.Uplay);
                         }
+
+                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
             }

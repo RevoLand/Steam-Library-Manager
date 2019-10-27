@@ -1,11 +1,11 @@
-﻿using MahApps.Metro.Controls;
+﻿using Alphaleonis.Win32.Filesystem;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NLog;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -284,26 +284,6 @@ namespace Steam_Library_Manager
             {
                 Functions.App.UpdateAppPanel(Definitions.SLM.CurrentSelectedLibrary);
             }
-        }
-
-        private void RightWindowCommands_DonateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/RevoLand/Steam-Library-Manager/wiki/Donations") { CreateNoWindow = true });
-            }
-            catch { }
-        }
-
-        private void RightWindowCommands_DiscordButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
-                Process.Start(new ProcessStartInfo("cmd", $"/c start https://discordapp.com/invite/Rwvs9Ng") { CreateNoWindow = true });
-            }
-            catch { }
         }
 
         private void RightWindowCommands_TranslateFormButton_Click(object sender, RoutedEventArgs e)

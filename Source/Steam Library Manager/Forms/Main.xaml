@@ -17,32 +17,12 @@
     RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" WindowTransitionsEnabled="False">
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
-            <Button Content="{l:Static p:Resources.Donate}" Click="RightWindowCommands_DonateButton_Click">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Donate}" />
-                            <TextBlock Text="{l:Static p:Resources.Forms_Main_DonateDescription}" />
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
             <Button Content="{l:Static p:Resources.Forms_Main_Translate}" Click="RightWindowCommands_TranslateFormButton_Click">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>
                             <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.TranslateSLM}" />
                             <TextBlock Text="{l:Static p:Resources.TranslateSLMDescription}" />
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-            <Button Content="{l:Static p:Resources.Forms_Main_Discord}" Click="RightWindowCommands_DiscordButton_Click">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.Main_DiscordGroup}" />
-                            <TextBlock Text="{l:Static p:Resources.Main_DiscordGroupDescription}" />
                         </StackPanel>
                     </ToolTip>
                 </Button.ToolTip>

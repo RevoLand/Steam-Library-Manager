@@ -18,9 +18,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - "System.IndexOutOfRangeException" when copying apps.
+- Enabling/Disabling a library not updating the library panel
 
 ### Removed
 - [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) nuget package
+- Donate & Discord buttons.
 
 ## [1.6.0.1] - 2019-09-10
 ### Changed

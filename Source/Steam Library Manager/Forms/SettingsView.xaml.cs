@@ -1,8 +1,8 @@
-﻿using AutoUpdaterDotNET;
+﻿using Alphaleonis.Win32.Filesystem;
+using AutoUpdaterDotNET;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Diagnostics;
-using Alphaleonis.Win32.Filesystem;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -60,15 +60,6 @@ namespace Steam_Library_Manager.Forms
                 }
 
                 await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCache)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCacheMessage))).ConfigureAwait(false);
-            }
-            catch { }
-        }
-
-        private void DonateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/RevoLand/Steam-Library-Manager/wiki/Donations") { CreateNoWindow = true });
             }
             catch { }
         }
