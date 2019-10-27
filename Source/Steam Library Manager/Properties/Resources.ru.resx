@@ -452,7 +452,7 @@
   <data name="TaskManagerPause" xml:space="preserve">
     <value>Пауза</value>
   </data>
-  <data name="RemoveOriginalFiles" xml:space="preserve">
+  <data name="Move" xml:space="preserve">
     <value>Удалить исходные файлы</value>
   </data>
   <data name="TaskManagerRemoveFromQueue" xml:space="preserve">

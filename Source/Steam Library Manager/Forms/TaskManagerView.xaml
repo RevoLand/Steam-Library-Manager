@@ -18,7 +18,7 @@
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
-                        <MenuItem Header="{l:Static p:Resources.RemoveOriginalFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Move}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
                         <MenuItem Header="{l:Static p:Resources.TaskManagerRemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
@@ -29,10 +29,10 @@
                         <Style TargetType="{x:Type ProgressBar}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Completed}" Value="false">
-                                    <Setter Property="Opacity" Value="0.20" />
+                                    <Setter Property="Opacity" Value="0.2" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Completed}" Value="true">
-                                    <Setter Property="Opacity" Value="0.70" />
+                                    <Setter Property="Opacity" Value="0.4" />
                                     <Setter Property="Foreground" Value="LightBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -258,7 +258,7 @@
                                     </Style>
                                 </WrapPanel.Style>
 
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.RemoveOriginalFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Move}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Compress}" IsChecked="{Binding Compress}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.AutoInstall}" IsChecked="{Binding AutoInstall}">
                                     <CheckBox.Style>
@@ -335,7 +335,7 @@
                 <Grid.ContextMenu>
                     <ContextMenu BorderThickness="0">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
-                        <MenuItem Header="{l:Static p:Resources.RemoveOriginalFiles}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
+                        <MenuItem Header="{l:Static p:Resources.Move}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
                         <MenuItem Header="{l:Static p:Resources.TaskManagerRemoveFromQueue}" Tag="Remove" Click="TaskManager_ContextMenu_Click" />
                     </ContextMenu>
@@ -345,10 +345,10 @@
                         <Style TargetType="{x:Type controls:MetroProgressBar}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Completed}" Value="false">
-                                    <Setter Property="Opacity" Value="0.25" />
+                                    <Setter Property="Opacity" Value="0.2" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Completed}" Value="true">
-                                    <Setter Property="Opacity" Value="0.75" />
+                                    <Setter Property="Opacity" Value="0.4" />
                                     <Setter Property="Foreground" Value="LightBlue" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -554,7 +554,7 @@
                                     </Style>
                                 </WrapPanel.Style>
 
-                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.RemoveOriginalFiles}" IsChecked="{Binding RemoveOldFiles}" />
+                                <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Move}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.Compress}" IsChecked="{Binding Compress}" Margin="5,0,0,0" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.AutoInstall}" IsChecked="{Binding AutoInstall}">
                                     <CheckBox.Style>

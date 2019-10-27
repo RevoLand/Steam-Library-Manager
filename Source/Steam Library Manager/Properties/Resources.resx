@@ -452,8 +452,8 @@ Would you like to remove files that already moved from target library?</value>
   <data name="TaskManagerPause" xml:space="preserve">
     <value>Pause</value>
   </data>
-  <data name="RemoveOriginalFiles" xml:space="preserve">
-    <value>Remove Original Files</value>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
   </data>
   <data name="TaskManagerRemoveFromQueue" xml:space="preserve">
     <value>Remove selected Game(s) from Queue</value>

@@ -1732,6 +1732,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move.
+        /// </summary>
+        internal static string Move {
+            get {
+                return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move files sequentially if bigger than.
         /// </summary>
         internal static string MoveFilesSequentiallyIfBiggerThan {
@@ -2178,15 +2187,6 @@ namespace Steam_Library_Manager.Properties {
         internal static string RemoveMovedFiles {
             get {
                 return ResourceManager.GetString("RemoveMovedFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove Original Files.
-        /// </summary>
-        internal static string RemoveOriginalFiles {
-            get {
-                return ResourceManager.GetString("RemoveOriginalFiles", resourceCulture);
             }
         }
         

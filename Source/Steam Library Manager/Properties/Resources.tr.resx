@@ -454,7 +454,7 @@ Hedef kütüphaneden daha önce taşınan dosyaları kaldırmak ister misiniz?</
   <data name="TaskManagerPause" xml:space="preserve">
     <value>Duraklat</value>
   </data>
-  <data name="RemoveOriginalFiles" xml:space="preserve">
+  <data name="Move" xml:space="preserve">
     <value>Orijinal Dosyaları kaldır</value>
   </data>
   <data name="TaskManagerRemoveFromQueue" xml:space="preserve">
