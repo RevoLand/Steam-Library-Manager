@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [1.6.0.2] - 2019-10-19
+## [1.6.0.2] - 2019-10-29
 ### Added
 
 - [AlphaFS](https://github.com/alphaleonis/AlphaFS) .NET library to replace System.IO namespace
@@ -20,9 +20,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - "System.IndexOutOfRangeException" when copying apps.
 - Enabling/Disabling a library not updating the library panel
+- Double clicking to open installation directory for Uplay games not working.
 
 ### Removed
 - [FileCopyLib](https://www.nuget.org/packages/FileCopyLib/) nuget package
+- Home panel
 - Donate & Discord buttons.
 
 ## [1.6.0.1] - 2019-09-10

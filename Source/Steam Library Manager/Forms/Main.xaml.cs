@@ -7,7 +7,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -118,32 +117,8 @@ namespace Steam_Library_Manager
 
                     UpdateLibraryList(clickedItemTag);
                 };
-                HamburgerMenuControl.Control.OptionsItemClick += (sender, args) =>
-                {
-                    var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
-                    if (clickedItemTag == null) return;
 
-                    UpdateLibraryList(clickedItemTag);
-                };
-
-                if (string.IsNullOrEmpty(Properties.Settings.Default.LastUserVersion))
-                {
-                    Properties.Settings.Default.LastUserVersion = "1.0";
-                }
-
-                var lastVersion = Version.Parse(Properties.Settings.Default.LastUserVersion);
-
-                if (lastVersion < Assembly.GetExecutingAssembly().GetName().Version)
-                {
-                    HamburgerMenuControl.Control.SelectedOptionsIndex = 0;
-                    HomeContent.Visibility = Visibility.Visible;
-                    Properties.Settings.Default.LastUserVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                }
-                else
-                {
-                    LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
-                    LibraryTabContent.Visibility = Visibility.Visible;
-                }
+                LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
 
                 TaskManagerView.TaskPanel.ItemsSource = Functions.TaskManager.TaskList;
                 TaskManagerView.TaskManagerInformation.DataContext = Functions.TaskManager.TmInfo;
@@ -176,27 +151,7 @@ namespace Steam_Library_Manager
 
                     LibraryView.LibraryPanel.ItemsSource = libraryTypeEnum == LibraryType.Steam ? Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum || x.Type == LibraryType.SLM) : Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum);
                 }
-                else
-                {
-                    switch (targetLibraryType.ToString())
-                    {
-                        case "Home":
-                            LibraryTabContent.Visibility = Visibility.Collapsed;
-                            HomeContent.Visibility = Visibility.Visible;
-                            return;
 
-                        case "All":
-                            LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
-                            break;
-
-                        case "Settings":
-                            TabItemSettings.IsSelected = true;
-                            break;
-                    }
-                }
-
-                HomeContent.Visibility = Visibility.Collapsed;
-                LibraryTabContent.Visibility = Visibility.Visible;
                 HamburgerMenuControl.Control.IsPaneOpen = false;
             }
             catch (Exception ex)

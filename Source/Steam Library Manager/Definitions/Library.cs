@@ -1,8 +1,8 @@
-﻿using Steam_Library_Manager.Definitions.Enums;
+﻿using Alphaleonis.Win32.Filesystem;
+using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;

@@ -35,7 +35,7 @@ namespace Steam_Library_Manager.Functions
                             CurrentTask.TaskStatusInfo = Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.TaskStatus_DeletingFile)), new { FileName = File.Name, FormattedFileSize = FormatBytes(File.Length) });
                         }
 
-                        Alphaleonis.Win32.Filesystem.File.SetAttributes(File.FullName, System.IO.FileAttributes.Normal);
+                        Alphaleonis.Win32.Filesystem.File.SetAttributes(File.FullName, FileAttributes.Normal);
                         File.Delete();
                     }
                 });

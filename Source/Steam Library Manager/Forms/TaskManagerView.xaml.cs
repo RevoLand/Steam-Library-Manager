@@ -119,7 +119,7 @@ namespace Steam_Library_Manager.Forms
             {
                 if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2 && ((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.App.InstallationDirectory.Exists == true)
                 {
-                    Process.Start(((sender as Grid)?.DataContext as Definitions.List.TaskInfo)?.App.InstallationDirectory.FullName);
+                    Process.Start(((Definitions.List.TaskInfo)((Grid)sender)?.DataContext)?.App.InstallationDirectory.FullName);
                 }
             }
             catch (Exception ex)

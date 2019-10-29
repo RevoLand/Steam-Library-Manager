@@ -284,7 +284,7 @@ namespace Steam_Library_Manager.Functions
 
                 if (TaskManager.TaskList.Count(x => (x.App.Library.Type == targetLibraryType || x.TargetLibrary.Type == targetLibraryType) && !x.Completed) > 0)
                 {
-                    Logger.Warn(Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CantUnloadLibraryWithActiveTask)), new { targetLibraryType }));
+                    Logger.Warn(Framework.StringFormat.Format(Translate(nameof(Properties.Resources.CantUnloadLibraryWithActiveTask)), new { targetLibraryType }));
 
                     ToggleOffLibrarySwitchState(targetLibraryType);
                     return false;

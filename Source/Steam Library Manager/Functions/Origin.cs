@@ -80,7 +80,7 @@ namespace Steam_Library_Manager.Functions
             // Compact
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
+                Header = SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }

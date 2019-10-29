@@ -112,10 +112,7 @@
             <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>
                     <Forms:HamburgerMenuControl x:Name="HamburgerMenuControl" Panel.ZIndex="2" />
-                    <Grid Name="HomeContent" Panel.ZIndex="0" Visibility="Collapsed">
-                        <WebBrowser Source="https://revoland.github.io/Steam-Library-Manager/home/index" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="55,10,0,0" />
-                    </Grid>
-                    <Grid Name="LibraryTabContent" Visibility="Collapsed">
+                    <Grid Name="LibraryTabContent">
                         <Forms:LibraryView x:Name="LibraryView" />
 
                         <!-- ListView: App Panel -->

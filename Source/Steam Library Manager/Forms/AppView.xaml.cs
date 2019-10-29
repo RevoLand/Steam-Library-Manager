@@ -8,9 +8,9 @@ namespace Steam_Library_Manager.Forms
     /// <summary>
     /// Interaction logic for AppView.xaml
     /// </summary>
-    public partial class AppView : UserControl
+    public partial class AppView
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public AppView() => InitializeComponent();
 
@@ -18,27 +18,25 @@ namespace Steam_Library_Manager.Forms
         {
             try
             {
-                if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+                if (e.ChangedButton != MouseButton.Left || e.ClickCount != 2) return;
+
+                switch (((Grid)sender)?.DataContext)
                 {
-                    if ((sender as Grid)?.DataContext is Definitions.SteamAppInfo)
-                    {
-                        if (((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.InstallationDirectory.Exists == true)
+                    default:
                         {
-                            Process.Start(((sender as Grid)?.DataContext as Definitions.SteamAppInfo)?.InstallationDirectory.FullName);
+                            var appInfo = (Definitions.App)((Grid)sender)?.DataContext;
+                            if (appInfo?.InstallationDirectory.Exists == true)
+                            {
+                                Process.Start(appInfo?.InstallationDirectory.FullName);
+                            }
+
+                            break;
                         }
-                    }
-                    else if ((sender as Grid)?.DataContext is Definitions.OriginAppInfo)
-                    {
-                        if (((sender as Grid)?.DataContext as Definitions.OriginAppInfo)?.InstallationDirectory.Exists == true)
-                        {
-                            Process.Start(((sender as Grid)?.DataContext as Definitions.OriginAppInfo)?.InstallationDirectory.FullName);
-                        }
-                    }
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                Logger.Error(ex);
             }
         }
     }

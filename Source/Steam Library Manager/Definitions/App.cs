@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -104,24 +105,24 @@ namespace Steam_Library_Manager.Definitions
                             return;
                         }
 
-                        System.Diagnostics.Process.Start(string.Format(action, AppId, Properties.Settings.Default.SteamID64));
+                        Process.Start(string.Format(action, AppId, Properties.Settings.Default.SteamID64));
                         break;
 
                     case "verify":
                         {
-                            System.Diagnostics.Process.Start($@"steam://validate/{AppId}");
+                            Process.Start($@"steam://validate/{AppId}");
                         }
                         break;
 
                     case "google":
                         {
-                            System.Diagnostics.Process.Start($@"https://www.google.com/search?q={Uri.EscapeUriString(AppName)}+pc");
+                            Process.Start($@"https://www.google.com/search?q={Uri.EscapeUriString(AppName)}+pc");
                         }
                         break;
 
                     case "youtube":
                         {
-                            System.Diagnostics.Process.Start($@"https://www.youtube.com/results?search_query={Uri.EscapeUriString(AppName)}+pc");
+                            Process.Start($@"https://www.youtube.com/results?search_query={Uri.EscapeUriString(AppName)}+pc");
                         }
                         break;
 
@@ -155,15 +156,16 @@ namespace Steam_Library_Manager.Definitions
 
                         if (InstallationDirectory.Exists)
                         {
-                            System.Diagnostics.Process.Start(InstallationDirectory.FullName);
+                            Process.Start(InstallationDirectory.FullName);
                         }
 
                         break;
 
                     case "deleteappfiles":
-                        await Task.Run(() => DeleteFilesAsync()).ConfigureAwait(false);
+                        await Task.Run(async () => await DeleteFilesAsync()).ConfigureAwait(true);
 
                         Library.Apps.Remove(this);
+
                         Functions.SLM.Library.UpdateLibraryVisual();
 
                         if (SLM.CurrentSelectedLibrary == Library)
@@ -215,7 +217,7 @@ namespace Steam_Library_Manager.Definitions
                         }
                     }
 
-                    foreach (var additionalFile in AdditionalFiles)
+                    foreach (var additionalFile in AdditionalFiles.ToList())
                     {
                         additionalFile.Refresh();
 
@@ -272,14 +274,14 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
                 Logger.Fatal(ex);
 
                 return false;
             }
         }
 
-        public async Task CompactTask(List.TaskInfo currentTask, System.Threading.CancellationToken cancellationToken)
+        public async Task CompactTask(List.TaskInfo currentTask, CancellationToken cancellationToken)
         {
             try
             {
@@ -358,7 +360,7 @@ namespace Steam_Library_Manager.Definitions
             catch (Exception ex)
             {
                 ReportToTaskManager(ex.ToString());
-                System.Diagnostics.Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
             }
         }
 
@@ -370,7 +372,7 @@ namespace Steam_Library_Manager.Definitions
             ReportToTaskManager(progress);
         }
 
-        public async Task CopyFilesAsync(List.TaskInfo currentTask, System.Threading.CancellationToken cancellationToken)
+        public async Task CopyFilesAsync(List.TaskInfo currentTask, CancellationToken cancellationToken)
         {
             var listLock = new object();
             ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PopulatingFileList)), new { AppName }));
@@ -567,7 +569,7 @@ namespace Steam_Library_Manager.Definitions
                             }
                         }
                     });
-                    //void CopyProgressCallback(FileProgress s) => OnFileProgress(s);
+
                     var copyProgressCallback = new CopyMoveProgressRoutine(OnFileProgress);
                     pOptions.MaxDegreeOfParallelism = 1;
 
@@ -579,7 +581,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                             {
-                                currentFile.CopyTo(newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
+                                File.Copy(currentFile.FullName, newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
                                 currentTask.MovedFileSize += currentFile.Length;
                             }
                             else
@@ -596,31 +598,6 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = newFile.FullName }), true);
                             }
-                        }
-                        catch (System.ComponentModel.Win32Exception)
-                        {
-                            throw new OperationCanceledException(cancellationToken);
-                        }
-                        catch (PathTooLongException ex)
-                        {
-                            currentTask.ErrorHappened = true;
-
-                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
-                                Functions.TaskManager.Stop();
-
-                            currentTask.Active = false;
-                            currentTask.Completed = true;
-
-                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                              {
-                                  if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                                  {
-                                      await Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
-                                  }
-                              }, System.Windows.Threading.DispatcherPriority.Normal);
-
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            Logger.Fatal(ex);
                         }
                         catch (IOException ex)
                         {
@@ -665,7 +642,7 @@ namespace Steam_Library_Manager.Definitions
 
                             if (!newFile.Exists || (newFile.Length != currentFile.Length || newFile.LastWriteTime != currentFile.LastWriteTime))
                             {
-                                currentFile.CopyTo(newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
+                                File.Copy(currentFile.FullName, newFile.FullName, CopyOptions.None, true, copyProgressCallback, currentTask);
                                 currentTask.MovedFileSize += currentFile.Length;
                             }
                             else
@@ -682,31 +659,6 @@ namespace Steam_Library_Manager.Definitions
                             {
                                 ReportToTaskManager(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileMoved)), new { AppName, NewFileName = newFile.FullName }), true);
                             }
-                        }
-                        catch (System.ComponentModel.Win32Exception)
-                        {
-                            throw new OperationCanceledException(cancellationToken);
-                        }
-                        catch (PathTooLongException ex)
-                        {
-                            currentTask.ErrorHappened = true;
-
-                            if (!Properties.Settings.Default.TaskManager_ContinueOnError)
-                                Functions.TaskManager.Stop();
-
-                            currentTask.Active = false;
-                            currentTask.Completed = true;
-
-                            Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                            {
-                                if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.RemoveMovedFiles)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.PathTooLongException)), new { AppName, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                                {
-                                    await Functions.FileSystem.RemoveGivenFilesAsync(copiedFiles, createdDirectories, currentTask);
-                                }
-                            }, System.Windows.Threading.DispatcherPriority.Normal);
-
-                            Main.FormAccessor.TmLogs.Report(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.FileSystemRelatedError)), new { AppName, ExceptionMessage = ex.Message }));
-                            Logger.Fatal(ex);
                         }
                         catch (IOException ex)
                         {

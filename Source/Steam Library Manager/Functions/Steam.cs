@@ -178,7 +178,7 @@ namespace Steam_Library_Manager.Functions
             // Compact
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
+                Header = SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
                 ShowToSteamBackup = false,

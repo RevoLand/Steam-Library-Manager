@@ -39,7 +39,7 @@ namespace Steam_Library_Manager.Functions
 
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = Functions.SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
+                Header = SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
                 Action = "remove",
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToNormal = false
@@ -71,7 +71,7 @@ namespace Steam_Library_Manager.Functions
             // Compress
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compress)),
+                Header = SLM.Translate(nameof(Properties.Resources.Compress)),
                 Action = "compress",
                 Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
@@ -82,7 +82,7 @@ namespace Steam_Library_Manager.Functions
             // Compact
             menuItem = new Definitions.ContextMenuItem
             {
-                Header = Functions.SLM.Translate(nameof(Properties.Resources.Compact)),
+                Header = SLM.Translate(nameof(Properties.Resources.Compact)),
                 Action = "compact",
                 ShowToCompressed = false,
                 Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }

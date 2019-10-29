@@ -93,7 +93,7 @@
                                 <!-- App Header Image -->
                                 <cachedImage:Image HorizontalAlignment="Left" Margin="2" Stretch="Fill" ImageUrl="{Binding App1.GameHeaderImage}" Width="230" Height="107">
                                     <cachedImage:Image.Effect>
-                                        <DropShadowEffect Direction="180" ShadowDepth="1" BlurRadius="5" />
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="1" />
                                     </cachedImage:Image.Effect>
                                 </cachedImage:Image>
                                 <!-- /App Header Image -->

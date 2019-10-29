@@ -87,11 +87,6 @@
             </controls:HamburgerMenu.ItemsSource>
             <controls:HamburgerMenu.OptionsItemsSource>
                 <controls:HamburgerMenuItemCollection>
-                    <controls:HamburgerMenuIconItem Label="{l:Static p:Resources.Home}" Tag="Home">
-                        <controls:HamburgerMenuIconItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="CoffeeOutline" Width="32" Height="32" />
-                        </controls:HamburgerMenuIconItem.Icon>
-                    </controls:HamburgerMenuIconItem>
                     <controls:HamburgerMenuIconItem Label="{l:Static p:Resources.Settings}" Tag="Settings">
                         <controls:HamburgerMenuIconItem.Icon>
                             <iconPacks:PackIconFontAwesome Kind="CogsSolid" Width="32" Height="32" />
