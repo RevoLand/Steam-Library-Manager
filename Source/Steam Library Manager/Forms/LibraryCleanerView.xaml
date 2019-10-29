@@ -17,7 +17,7 @@
                         <DataTemplate>
                             <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                                 <Grid.ContextMenu>
-                                    <ContextMenu BorderThickness="0">
+                                    <ContextMenu BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                                         <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="LibraryCleaner_ContextMenuItem_Click" />
                                         <MenuItem Header="{l:Static p:Resources.IgnoreSelectedItems}" Tag="Ignore" Click="LibraryCleaner_ContextMenuItem_Click" />
                                         <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="LibraryCleaner_ContextMenuItem_Click" />
@@ -149,7 +149,7 @@
                         <DataTemplate>
                             <Grid Margin="3" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                                 <Grid.ContextMenu>
-                                    <ContextMenu BorderThickness="0">
+                                    <ContextMenu BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                                         <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_Open}" Tag="Explorer" Click="IgnoredItems_ContextMenuItem_Click" />
                                         <MenuItem Header="{l:Static p:Resources.RemoveSelectedItemSFromIgnoreList}" Tag="Ignore" Click="IgnoredItems_ContextMenuItem_Click" />
                                         <MenuItem Header="{l:Static p:Resources.Forms_LibraryCleaner_DeleteSelectedFolders}" Tag="Delete" Click="IgnoredItems_ContextMenuItem_Click" />

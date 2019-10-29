@@ -16,7 +16,7 @@
         <DataTemplate x:Key="GridView">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown">
                 <Grid.ContextMenu>
-                    <ContextMenu BorderThickness="0">
+                    <ContextMenu BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Move}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
@@ -333,7 +333,7 @@
         <DataTemplate x:Key="ListView">
             <Grid ScrollViewer.VerticalScrollBarVisibility="Auto" MouseDown="Grid_MouseDown" Height="50">
                 <Grid.ContextMenu>
-                    <ContextMenu BorderThickness="0">
+                    <ContextMenu BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
                         <MenuItem Header="{l:Static p:Resources.Compress}" Tag="ToggleCompress" Click="TaskManager_ContextMenu_Click" />
                         <MenuItem Header="{l:Static p:Resources.Move}" Tag="ToggleRemoveFiles" Click="TaskManager_ContextMenu_Click" />
                         <Separator />
