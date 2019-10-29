@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Updated nuget packages
 - Replaced every System.IO method with AlphaFS, also replaced the file copy method with AlphaFS too.
 - Renamed "Remove Original Files" as "Move"
+- ContextMenu (aka right click menu) borders are back.
 
 ### Fixed
 - "System.IndexOutOfRangeException" when copying apps.
