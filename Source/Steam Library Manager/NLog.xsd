@@ -841,6 +841,7 @@
           <xs:element name="encoding" minOccurs="0" maxOccurs="1" type="xs:string" />
           <xs:element name="error" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="autoFlush" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="writeBuffer" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="optimizeBufferReuse" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="name" type="xs:string">
@@ -881,6 +882,11 @@
         <xs:attribute name="autoFlush" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to auto-flush after </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="writeBuffer" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to enable batch writing using char[]-buffers, instead of using </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="optimizeBufferReuse" type="xs:boolean">
@@ -1178,7 +1184,7 @@
         </xs:attribute>
         <xs:attribute name="entryType" type="SimpleLayoutAttribute">
           <xs:annotation>
-            <xs:documentation>Optional entrytype. When not set, or when not convertible to  then determined by </xs:documentation>
+            <xs:documentation>Optional entry type. When not set, or when not convertible to  then determined by </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="eventId" type="SimpleLayoutAttribute">
@@ -1374,7 +1380,7 @@
         </xs:attribute>
         <xs:attribute name="maxLogFilenames" type="xs:integer">
           <xs:annotation>
-            <xs:documentation>Maximum number of log filenames that should be stored as existing.</xs:documentation>
+            <xs:documentation>Maximum number of log file names that should be stored as existing.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="fileNameKind" type="NLog.Targets.FilePathKind">
@@ -2895,6 +2901,7 @@
           <xs:element name="maxRecursionLimit" minOccurs="0" maxOccurs="1" type="xs:integer" />
           <xs:element name="renderEmptyObject" minOccurs="0" maxOccurs="1" type="xs:boolean" />
           <xs:element name="suppressSpaces" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+          <xs:element name="escapeForwardSlash" minOccurs="0" maxOccurs="1" type="xs:boolean" />
         </xs:choice>
         <xs:attribute name="excludeProperties" type="xs:string">
           <xs:annotation>
@@ -2936,6 +2943,11 @@
             <xs:documentation>Option to suppress the extra spaces in the output json</xs:documentation>
           </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="escapeForwardSlash" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Should forward slashes be escaped? If true, / will be converted to \/</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -2946,6 +2958,7 @@
       <xs:element name="encode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
       <xs:element name="escapeUnicode" minOccurs="0" maxOccurs="1" type="xs:boolean" />
       <xs:element name="includeEmptyValue" minOccurs="0" maxOccurs="1" type="xs:boolean" />
+      <xs:element name="escapeForwardSlash" minOccurs="0" maxOccurs="1" type="xs:boolean" />
     </xs:choice>
     <xs:attribute name="layout" type="SimpleLayoutAttribute">
       <xs:annotation>
@@ -2970,6 +2983,11 @@
     <xs:attribute name="includeEmptyValue" type="xs:boolean">
       <xs:annotation>
         <xs:documentation>Whether an attribute with empty value should be included in the output</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="escapeForwardSlash" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Should forward slashes be escaped? If true, / will be converted to \/</xs:documentation>
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>

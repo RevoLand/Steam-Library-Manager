@@ -1221,4 +1221,13 @@ Alternatively; you can use the 'Locate Game' function of Uplay.
   <data name="LibrarySettings" xml:space="preserve">
     <value>Library Settings</value>
   </data>
+  <data name="TaskDefaults" xml:space="preserve">
+    <value>Task Defaults</value>
+  </data>
+  <data name="DefaultCompressionType" xml:space="preserve">
+    <value>Default Compression Type</value>
+  </data>
+  <data name="DefaultArchiveType" xml:space="preserve">
+    <value>Default Archive Type</value>
+  </data>
 </root>

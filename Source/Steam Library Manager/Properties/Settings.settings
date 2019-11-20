@@ -116,5 +116,11 @@
     <Setting Name="InstallationWizardShown" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ArchiveType" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Zip</Value>
+    </Setting>
+    <Setting Name="CompressionType" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Deflate</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

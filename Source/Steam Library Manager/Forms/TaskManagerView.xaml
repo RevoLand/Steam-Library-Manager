@@ -6,8 +6,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:Gu.Wpf.Localization;assembly=Gu.Wpf.Localization"
-             xmlns:SLM="clr-namespace:Steam_Library_Manager"
-             xmlns:Enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
+             xmlns:slm="clr-namespace:Steam_Library_Manager"
+             xmlns:enums="clr-namespace:Steam_Library_Manager.Definitions.Enums"
              xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
@@ -260,6 +260,40 @@
 
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Move}" IsChecked="{Binding RemoveOldFiles}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.Compress}" IsChecked="{Binding Compress}" />
+
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding ArchiveType}"
+                                          ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:ArchiveType}}}">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Compress}" Value="true" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
+                                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompressionType}"
+                                          ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:CompressionType}}}" >
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource MetroComboBox}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Compress}" Value="true" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
+
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.AutoInstall}" IsChecked="{Binding AutoInstall}">
                                     <CheckBox.Style>
                                         <Style TargetType="CheckBox" BasedOn="{StaticResource MetroCheckBox}">
@@ -316,7 +350,7 @@
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="{l:Static p:Resources.Compact}" IsChecked="{Binding Compact}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="{l:Static p:Resources.CompactForceCompress}" IsChecked="{Binding ForceCompact}" />
                                 <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
-                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                                          ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
 
@@ -615,7 +649,7 @@
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="{l:Static p:Resources.Compact}" IsChecked="{Binding Compact}" />
                                 <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Content="{l:Static p:Resources.CompactForceCompress}" IsChecked="{Binding ForceCompact}" />
                                 <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" HorizontalAlignment="Left" Width="100" SelectedItem="{Binding CompactLevel}"
-                                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompactLevel}}}" />
+                                          ItemsSource="{Binding Source={slm:EnumBindingSource EnumType={x:Type enums:CompactLevel}}}" />
                             </WrapPanel>
                         </WrapPanel>
                     </Grid>
@@ -634,13 +668,13 @@
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Grid" />
+                                            <Condition Binding="{slm:SettingBinding LibraryStyle}" Value="Grid" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="ContentTemplate" Value="{StaticResource GridView}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{SLM:SettingBinding LibraryStyle}" Value="Listview" />
+                                            <Condition Binding="{slm:SettingBinding LibraryStyle}" Value="Listview" />
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="ContentTemplate" Value="{StaticResource ListView}" />
                                     </MultiDataTrigger>
@@ -726,7 +760,7 @@
             <TextBlock Text="  |  " />
             <TextBlock Text="{Binding TotalTasks, Mode=OneWay, StringFormat=Total: \{0\}}" />
             <TextBlock Text="  |  " />
-            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{SLM:SettingBinding TaskManager_Logs_AutoScroll}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Content="{l:Static p:Resources.TaskManagerView_AutoScrollLogs}" IsChecked="{slm:SettingBinding TaskManager_Logs_AutoScroll}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -736,7 +770,7 @@
                     </ToolTip>
                 </CheckBox.ToolTip>
             </CheckBox>
-            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{SLM:SettingBinding TaskManager_AutoClear}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_AutoClearCompletedTasks}" IsChecked="{slm:SettingBinding TaskManager_AutoClear}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -746,7 +780,7 @@
                     </ToolTip>
                 </CheckBox.ToolTip>
             </CheckBox>
-            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_ContinueOnError}" IsChecked="{SLM:SettingBinding TaskManager_ContinueOnError}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_ContinueOnError}" IsChecked="{slm:SettingBinding TaskManager_ContinueOnError}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -756,7 +790,7 @@
                     </ToolTip>
                 </CheckBox.ToolTip>
             </CheckBox>
-            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_SkipSteamRestartDialog}" IsChecked="{SLM:SettingBinding TaskManager_SteamRestartSkip}">
+            <CheckBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5,0,0,0" Content="{l:Static p:Resources.TaskManagerView_SkipSteamRestartDialog}" IsChecked="{slm:SettingBinding TaskManager_SteamRestartSkip}">
                 <CheckBox.ToolTip>
                     <ToolTip>
                         <StackPanel>

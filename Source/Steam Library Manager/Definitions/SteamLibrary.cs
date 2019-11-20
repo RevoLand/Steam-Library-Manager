@@ -24,6 +24,7 @@ namespace Steam_Library_Manager.Definitions
 
             DirectoryList.Add("SteamApps", new DirectoryInfo(Path.Combine(FullPath, "SteamApps")));
             DirectoryList.Add("SteamBackups", new DirectoryInfo(Path.Combine(FullPath, "SteamBackups")));
+            DirectoryList.Add("SlmBackups", new DirectoryInfo(Path.Combine(FullPath, "SlmBackups")));
             DirectoryList.Add("Common", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "common")));
             DirectoryList.Add("Download", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "downloading")));
             DirectoryList.Add("Workshop", new DirectoryInfo(Path.Combine(DirectoryList["SteamApps"].FullName, "workshop")));

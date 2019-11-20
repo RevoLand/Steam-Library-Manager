@@ -1,9 +1,10 @@
 ﻿using Dasync.Collections;
 using Newtonsoft.Json.Linq;
+using NLog;
+using SharpCompress.Archives;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -46,14 +47,12 @@ namespace Steam_Library_Manager.Definitions
 
                 await Directory.EnumerateFiles(FullPath, "*.zip", SearchOption.TopDirectoryOnly).ParallelForEachAsync(async originCompressedArchive =>
                 {
-                    using (var archive = ZipFile.OpenRead(originCompressedArchive))
+                    using (var archive = ArchiveFactory.Open(originCompressedArchive))
                     {
-                        if (archive.Entries.Count > 0)
+                        if (!archive.Entries.Any()) return;
+                        foreach (var archiveEntry in archive.Entries.Where(x => x.Key.Contains("installerdata.xml")))
                         {
-                            foreach (var archiveEntry in archive.Entries.Where(x => x.Name.Contains("installerdata.xml")))
-                            {
-                                await Functions.Origin.ParseAppDetailsAsync(archiveEntry.Open(), originCompressedArchive, this, true);
-                            }
+                            await Functions.Origin.ParseAppDetailsAsync(archiveEntry.OpenEntryStream(), originCompressedArchive, this, true);
                         }
                     }
                 });
@@ -67,7 +66,12 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (Exception ex)
             {
-                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUpdateAppListException)), new { FullPath, ex }));
+                MessageBox.Show(Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginUpdateAppListException)), new
+                {
+                    FullPath,
+                    ex
+                }));
+
                 Logger.Fatal(ex);
             }
         }

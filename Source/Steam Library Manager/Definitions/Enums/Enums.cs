@@ -53,6 +53,20 @@ namespace Steam_Library_Manager.Definitions.Enums
         NoCompression = 2
     }
 
+    public enum ArchiveType
+    {
+        Zip,
+        Tar
+    }
+
+    public enum CompressionType
+    {
+        None,
+        Deflate,
+        LZMA,
+        PPMd
+    }
+
     public enum CompactLevel
     {
         XPRESS4K,

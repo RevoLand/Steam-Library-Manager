@@ -660,6 +660,15 @@ namespace Steam_Library_Manager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default Archive Type.
+        /// </summary>
+        internal static string DefaultArchiveType {
+            get {
+                return ResourceManager.GetString("DefaultArchiveType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Compact Level.
         /// </summary>
         internal static string DefaultCompactLevel {
@@ -710,6 +719,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string DefaultCompactLevel_Tooltip5 {
             get {
                 return ResourceManager.GetString("DefaultCompactLevel_Tooltip5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Compression Type.
+        /// </summary>
+        internal static string DefaultCompressionType {
+            get {
+                return ResourceManager.GetString("DefaultCompressionType", resourceCulture);
             }
         }
         
@@ -2731,6 +2749,15 @@ namespace Steam_Library_Manager.Properties {
         internal static string TaskCompleted {
             get {
                 return ResourceManager.GetString("TaskCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Defaults.
+        /// </summary>
+        internal static string TaskDefaults {
+            get {
+                return ResourceManager.GetString("TaskDefaults", resourceCulture);
             }
         }
         

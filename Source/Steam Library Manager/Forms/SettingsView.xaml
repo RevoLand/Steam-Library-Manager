@@ -256,7 +256,7 @@
                 </UniformGrid>
             </WrapPanel>
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="{l:Static p:Resources.TaskManager}">
+        <controls:MetroTabItem Header="{l:Static p:Resources.TaskDefaults}">
             <WrapPanel Orientation="Vertical" Margin="0, 10">
                 <!-- Remove Source Files -->
                 <controls:ToggleSwitch ThumbIndicatorBrush="{DynamicResource AccentColorBrush}" Margin="5" Header="{l:Static p:Resources.RemoveFilesAtSourceDirectory}" OnLabel="{l:Static p:Resources.Forms_Settings_Remove}" OffLabel="{l:Static p:Resources.Forms_Settings_DoNOTRemove}" IsChecked="{SLM:SettingBinding Global_RemoveOldFiles}"
@@ -322,6 +322,14 @@
                         </ToolTip>
                     </controls:ToggleSwitch.ToolTip>
                 </controls:ToggleSwitch>
+
+                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" controls:TextBoxHelper.Watermark="{l:Static p:Resources.DefaultArchiveType}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                          VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_ArchiveType}"
+                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:ArchiveType}}}"/>
+
+                <ComboBox BorderBrush="{DynamicResource AccentColorBrush}" Margin="5" controls:TextBoxHelper.Watermark="{l:Static p:Resources.DefaultCompressionType}" controls:TextBoxHelper.UseFloatingWatermark="True" HorizontalAlignment="Left" Height="40"
+                          VerticalAlignment="Top" Width="240" SelectedItem="{Binding Setting_CompressionType}"
+                          ItemsSource="{Binding Source={SLM:EnumBindingSource EnumType={x:Type Enums:CompressionType}}}"/>
             </WrapPanel>
         </controls:MetroTabItem>
         <controls:MetroTabItem Header="{l:Static p:Resources.LibrarySettings}">

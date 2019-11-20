@@ -35,6 +35,9 @@ namespace Steam_Library_Manager.Definitions
             public App App { get; set; }
             public Library TargetLibrary { get; set; }
             public CompactLevel CompactLevel { get; set; } = (CompactLevel)Enum.Parse(typeof(CompactLevel), Properties.Settings.Default.DefaultCompactLevel);
+            public ArchiveType ArchiveType { get; set; } = (ArchiveType)Enum.Parse(typeof(ArchiveType), Properties.Settings.Default.ArchiveType);
+            public CompressionType CompressionType { get; set; } = (CompressionType)Enum.Parse(typeof(CompressionType), Properties.Settings.Default.CompressionType);
+
             public bool Compact { get; set; } = true;
             public bool ForceCompact { get; set; }
 

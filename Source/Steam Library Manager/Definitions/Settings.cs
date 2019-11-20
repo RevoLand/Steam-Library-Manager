@@ -29,6 +29,18 @@ namespace Steam_Library_Manager.Definitions
             set => Properties.Settings.Default.CompressionLevel = value.ToString();
         }
 
+        public ArchiveType Setting_ArchiveType
+        {
+            get => (ArchiveType)Enum.Parse(typeof(ArchiveType), Properties.Settings.Default.ArchiveType);
+            set => Properties.Settings.Default.ArchiveType = value.ToString();
+        }
+
+        public CompressionType Setting_CompressionType
+        {
+            get => (CompressionType)Enum.Parse(typeof(CompressionType), Properties.Settings.Default.CompressionType);
+            set => Properties.Settings.Default.CompressionType = value.ToString();
+        }
+
         public LibraryStyle Setting_LibraryStyle
         {
             get => (LibraryStyle)Enum.Parse(typeof(LibraryStyle), Properties.Settings.Default.LibraryStyle);

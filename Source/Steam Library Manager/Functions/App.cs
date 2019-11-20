@@ -1,6 +1,10 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using K4os.Compression.LZ4;
+using K4os.Compression.LZ4.Streams;
+using MahApps.Metro.Controls.Dialogs;
+using SharpCompress.Archives;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -122,19 +126,19 @@ namespace Steam_Library_Manager.Functions
             try
             {
                 // Open archive for read
-                using (var archive = ZipFile.OpenRead(zipPath))
+                using (var archive = ArchiveFactory.Open(zipPath))
                 {
-                    if (archive.Entries.Count <= 0) return;
+                    if (!archive.Entries.Any()) return;
 
                     // For each file in opened archive
-                    foreach (var acfEntry in archive.Entries.Where(x => x.Name.Contains("appmanifest_")))
+                    foreach (var acfEntry in archive.Entries.Where(x => x.Key.Contains("appmanifest_")))
                     {
                         // If it contains
                         // Define a KeyValue reader
                         var keyValReader = new Framework.KeyValue();
 
                         // Open .acf file from archive as text
-                        keyValReader.ReadAsText(acfEntry.Open());
+                        keyValReader.ReadAsText(acfEntry.OpenEntryStream().DecompressStream());
 
                         // If acf file has no children, skip this archive
                         if (keyValReader.Children.Count == 0)
@@ -180,8 +184,32 @@ namespace Steam_Library_Manager.Functions
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 Logger.Fatal(ex);
             }
+        }
+
+        public static Stream CompressStream(this Stream stream, LZ4Level lz4Level = LZ4Level.L00_FAST)
+        {
+            stream.Position = 0;
+            var ms = new MemoryStream();
+            var settings = new LZ4EncoderSettings { CompressionLevel = lz4Level };
+            LZ4EncoderStream target = LZ4Stream.Encode(ms, settings);
+            stream.CopyTo(target);
+            target.Dispose();
+            ms.Dispose();
+            return new MemoryStream(ms.ToArray());
+        }
+
+        public static Stream DecompressStream(this Stream stream)
+        {
+            var ms = new MemoryStream();
+            //stream.Position = 0;
+            LZ4DecoderStream source = LZ4Stream.Decode(stream);
+            source.CopyTo(ms);
+            source.Dispose();
+            ms.Dispose();
+            return new MemoryStream(ms.ToArray());
         }
 
         public static void UpdateAppPanel(Definitions.Library library) => Main.FormAccessor.LibraryChange.Report(library);
