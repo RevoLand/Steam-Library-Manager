@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>steamlibrarymanager.portable</id>
+    <version>1.6.0.3</version>
+    <packageSourceUrl>https://github.com/RevoLand/Steam-Library-Manager/tree/master/Extras/Choco</packageSourceUrl>
+    <owners>Mert Ercan</owners>
+    <title>Steam Library Manager (Portable)</title>
+    <authors>Mert Ercan</authors>
+	<iconUrl>https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Extras/Icons/slm.png</iconUrl>
+    <projectUrl>https://github.com/RevoLand/Steam-Library-Manager</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/RevoLand/Steam-Library-Manager</projectSourceUrl>
+    <docsUrl>https://github.com/RevoLand/Steam-Library-Manager/wiki</docsUrl>
+    <bugTrackerUrl>https://github.com/RevoLand/Steam-Library-Manager/issues</bugTrackerUrl>
+    <tags>steam origin uplay games library manager steamlibrarymanager</tags>
+    <summary>Open source utility to manage Steam, Origin and Uplay libraries in ease of use with multi library support</summary>
+    <description>Steam Library Manager is a tool to manage your Steam, Origin and Uplay Libraries quick and easy. With SLM you can administrate all of your games and backups from one place. Drag and drop between libraries and backup folders with ease. Works with existing Steam Backups or opt to use SLM's open system for fast updates and quick access to game files.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
