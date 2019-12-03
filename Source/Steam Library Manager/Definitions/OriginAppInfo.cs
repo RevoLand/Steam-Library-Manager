@@ -1,9 +1,9 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -131,6 +131,7 @@ namespace Steam_Library_Manager.Definitions
 
                     await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
                     {
+                        /*
                         var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Start)), new { AppName })).ConfigureAwait(true);
                         progressInformationMessage.SetIndeterminate();
 
@@ -146,13 +147,14 @@ namespace Steam_Library_Manager.Definitions
                         }
 
                         await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+                        */
 
                         var installLog = File.ReadAllLines(Path.Combine(InstallationDirectory.FullName, "__Installer", "InstallLog.txt")).Reverse().ToList();
                         if (installLog.Any(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1))
                         {
                             var installerResult = installLog.FirstOrDefault(x => x.IndexOf("Installer finished with exit code:", StringComparison.OrdinalIgnoreCase) != -1);
 
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Completed)), new { installerResult })).ConfigureAwait(true);
+                            MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.OriginInstallation_Completed)), new { installerResult }));
                         }
                     }).ConfigureAwait(true);
                 }

@@ -1,9 +1,8 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using Alphaleonis.Win32.Filesystem;
 using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
-using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +14,7 @@ namespace Steam_Library_Manager.Functions
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public static async void UpdateSteamInstallationPathAsync()
+        public static void UpdateSteamInstallationPath()
         {
             try
             {
@@ -25,7 +24,7 @@ namespace Steam_Library_Manager.Functions
 
                     if (string.IsNullOrEmpty(Properties.Settings.Default.steamInstallationPath))
                     {
-                        if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.Steam_NotInstalled)), SLM.Translate(Properties.Resources.Steam_NotInstalledMessage), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {
                             var steamPathSelector = new OpenFileDialog()
                             {
@@ -65,7 +64,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_Open)),
                 Action = "Disk",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -89,7 +88,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_RemoveFromSteam)),
                 Action = "deleteLibrary",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteForever, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteForever, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -101,7 +100,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamLibrary_CMenu_DeleteGames)),
                 Action = "deleteLibrarySLM",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToOffline = false
             };
 
@@ -125,7 +124,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.RemoveFromSlm)),
                 Action = "RemoveFromList",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistRemove, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
@@ -143,7 +142,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Play)),
                 Action = "steam://run/{0}",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Play, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToSteamBackup = false,
                 ShowToCompressed = false
             };
@@ -168,7 +167,7 @@ namespace Steam_Library_Manager.Functions
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Compress)),
                 Action = "Compress",
                 ShowToSteamBackup = false,
-                Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconOcticons() { Kind = PackIconOcticonsKind.FileZip, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -182,7 +181,7 @@ namespace Steam_Library_Manager.Functions
                 Action = "compact",
                 ShowToCompressed = false,
                 ShowToSteamBackup = false,
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.ArrowCollapse, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -205,7 +204,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DiskInfo)),
                 Action = "Disk",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FolderOpen, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -217,7 +216,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewACF)),
                 Action = "acffile",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocument, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FileDocument, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
             };
 
@@ -242,7 +241,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_ViewStore)),
                 Action = "steam://store/{0}",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Steam, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Steam, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -254,7 +253,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_VerifyFiles)),
                 Action = "verify",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CheckAll, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.CheckAll, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) },
                 ShowToCompressed = false
             };
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -266,7 +265,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GoogleSearch)),
                 Action = "google",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Google, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Google, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.SLM);
@@ -277,7 +276,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_YoutubeSearch)),
                 Action = "youtube",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Youtube, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Youtube, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -289,7 +288,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_GameHub)),
                 Action = "steam://url/GameHub/{0}",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.BookOpenPageVariant, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.BookOpenPageVariant, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -311,7 +310,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_Workshop)),
                 Action = "steam://url/SteamWorkshopPage/{0}",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FormatListCheckbox, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.FormatListCheckbox, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -323,7 +322,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_SubscribedWorkshopItems)),
                 Action = "https://steamcommunity.com/profiles/{1}/myworkshopfiles/?appid={0}&browsefilter=mysubscriptions&sortmethod=lastupdated",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistCheck, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.PlaylistCheck, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -345,7 +344,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesSLM)),
                 Action = "deleteappfiles",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.Delete, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -357,7 +356,7 @@ namespace Steam_Library_Manager.Functions
             {
                 Header = SLM.Translate(nameof(Properties.Resources.SteamApp_CMenu_DeleteFilesTM)),
                 Action = "deleteappfilestm",
-                Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
+                //Icon = new PackIconMaterial() { Kind = PackIconMaterialKind.DeleteSweep, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, Foreground = new SolidColorBrush((Color)MahApps.Metro.ThemeManager.DetectAppStyle(Application.Current).Item2.Resources["AccentColor"]) }
             };
 
             menuItem.AllowedLibraryTypes.Add(Definitions.Enums.LibraryType.Steam);
@@ -389,13 +388,13 @@ namespace Steam_Library_Manager.Functions
                 var activeSteamPath = GetActiveSteamProcessPath();
                 if (!string.IsNullOrEmpty(activeSteamPath))
                 {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                    if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage)), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                     {
                         if (File.Exists(activeSteamPath))
                         {
                             Process.Start(activeSteamPath, "-shutdown");
                         }
-                        else if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath = activeSteamPath }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                        else if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosed)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.Steam_NeedsToBeClosedMessage2)), new { ActiveSteamPath = activeSteamPath }), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {
                             foreach (var steamProcess in Process.GetProcessesByName("Steam"))
                             {
@@ -427,22 +426,22 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.Steam_Start)), SLM.Translate(nameof(Properties.Resources.Steam_StartMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                    {
-                        await CloseSteamAsync().ConfigureAwait(true);
+                //await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
+                //{
+                //    if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.Steam_Start)), SLM.Translate(nameof(Properties.Resources.Steam_StartMessage)), MessageBoxButton.OKCancel).ConfigureAwait(true) == MessageBoxResult.OK)
+                //    {
+                //        await CloseSteamAsync().ConfigureAwait(true);
 
-                        if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
-                        {
-                            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-silent");
-                        }
-                    }
-                    else
-                    {
-                        throw new OperationCanceledException(SLM.Translate(nameof(Properties.Resources.Steam_Start_UserCancelled)));
-                    }
-                }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
+                //        if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe")))
+                //        {
+                //            Process.Start(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steam.exe"), "-silent");
+                //        }
+                //    }
+                //    else
+                //    {
+                //        throw new OperationCanceledException(SLM.Translate(nameof(Properties.Resources.Steam_Start_UserCancelled)));
+                //    }
+                //}, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -520,15 +519,6 @@ namespace Steam_Library_Manager.Functions
                     // Save our settings
                     SLM.Settings.SaveSettings();
                 }
-                catch (UnauthorizedAccessException ex)
-                {
-                    await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                     {
-                         await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnauthorizedAccessExceptionMessage)), new { NewLibraryPath, ExceptionMessage = ex.Message }), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true);
-                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-
-                    Logger.Fatal(ex);
-                }
                 catch (Exception ex)
                 {
                     Logger.Fatal(ex);
@@ -544,6 +534,7 @@ namespace Steam_Library_Manager.Functions
                         return;
                     }
 
+                    /*
                     var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(SLM.Translate(nameof(Properties.Resources.PleaseWait)), SLM.Translate(nameof(Properties.Resources.Steam_CheckForBackupUpdates))).ConfigureAwait(true);
                     progressInformationMessage.SetIndeterminate();
 
@@ -582,6 +573,7 @@ namespace Steam_Library_Manager.Functions
                     }
 
                     await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+                    */
                 }
                 catch (Exception ex)
                 {

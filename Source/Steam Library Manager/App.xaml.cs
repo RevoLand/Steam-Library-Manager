@@ -1,5 +1,4 @@
-﻿using MahApps.Metro;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
@@ -15,9 +14,9 @@ namespace Steam_Library_Manager
         {
             try
             {
-                ThemeManager.ChangeAppStyle(Current,
-                                            ThemeManager.GetAccent(Steam_Library_Manager.Properties.Settings.Default.ThemeAccent),
-                                            ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
+                //ThemeManager.ChangeAppStyle(Current,
+                //                            ThemeManager.GetAccent(Steam_Library_Manager.Properties.Settings.Default.ThemeAccent),
+                //                            ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
 
                 base.OnStartup(e);
 

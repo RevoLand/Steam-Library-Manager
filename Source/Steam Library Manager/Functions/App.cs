@@ -1,12 +1,10 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using Steam_Library_Manager.Definitions.Enums;
+﻿using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
-using File = Alphaleonis.Win32.Filesystem.File;
 using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
 using Path = Alphaleonis.Win32.Filesystem.Path;
 
@@ -148,32 +146,32 @@ namespace Steam_Library_Manager.Functions
             }
             catch (IOException IEx)
             {
-                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                    {
-                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
-                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                    {
-                        File.Delete(zipPath);
-                    }
-                }).ConfigureAwait(true);
+                //await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
+                //{
+                //    if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.ReadZip_IOException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_IOExceptionMessage)), new { ZipPath = zipPath }), MessageBoxButton.OKAndCancel, new MetroDialogSettings
+                //    {
+                //        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
+                //    }).ConfigureAwait(true) == MessageBoxResult.OK)
+                //    {
+                //        File.Delete(zipPath);
+                //    }
+                //}).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.Fatal(IEx);
             }
             catch (InvalidDataException IEx)
             {
-                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                {
-                    if (await Main.FormAccessor.ShowMessageAsync(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath = zipPath }), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                    {
-                        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
-                    }).ConfigureAwait(true) == MessageDialogResult.Affirmative)
-                    {
-                        File.Delete(zipPath);
-                    }
-                }).ConfigureAwait(true);
+                //await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
+                //{
+                //    if (MessageBox.Show(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataException)), Framework.StringFormat.Format(SLM.Translate(nameof(Properties.Resources.ReadZip_InvalidDataExceptionMessage)), new { ZipPath = zipPath }), MessageBoxButton.OKAndCancel, new MetroDialogSettings
+                //    {
+                //        NegativeButtonText = SLM.Translate(nameof(Properties.Resources.ReadZip_DontDelete))
+                //    }).ConfigureAwait(true) == MessageBoxResult.OK)
+                //    {
+                //        File.Delete(zipPath);
+                //    }
+                //}).ConfigureAwait(true);
 
                 System.Diagnostics.Debug.WriteLine(IEx);
                 Logger.Fatal(IEx);

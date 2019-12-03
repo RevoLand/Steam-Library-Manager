@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using Steam_Library_Manager.Definitions.Enums;
+﻿using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -137,12 +136,12 @@ namespace Steam_Library_Manager.Forms
 
                             if (targetFolderDialogResult != System.Windows.Forms.DialogResult.OK) return;
 
-                            if (Directory.GetDirectoryRoot(targetFolderBrowser.SelectedPath) == targetFolderBrowser.SelectedPath
-                                && await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) != MessageDialogResult.Affirmative)
+                            if (Directory.GetDirectoryRoot(targetFolderBrowser.SelectedPath) == targetFolderBrowser.SelectedPath && MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelected)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_RootPathSelectedMessage)), MessageBoxButton.OKCancel) != MessageBoxResult.OK)
                             {
                                 return;
                             }
 
+                            /*
                             var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_MovingFiles))).ConfigureAwait(true);
                             progressInformationMessage.SetIndeterminate();
 
@@ -190,14 +189,16 @@ namespace Steam_Library_Manager.Forms
                             }
 
                             await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+                            */
                             targetFolderBrowser.Dispose();
                             break;
                         }
 
                     case "DeleteAll":
                         {
-                            if (await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageDialogStyle.AffirmativeAndNegative).ConfigureAwait(true) == MessageDialogResult.Affirmative)
+                            if (MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarning)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_DeleteWarningMessage)), MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                             {
+                                /*
                                 var progressInformationMessage = await Main.FormAccessor.ShowProgressAsync(Functions.SLM.Translate(nameof(Properties.Resources.PleaseWait)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_LibraryCleaner_Delete)), true).ConfigureAwait(true);
                                 progressInformationMessage.SetIndeterminate();
 
@@ -227,6 +228,7 @@ namespace Steam_Library_Manager.Forms
                                 }
 
                                 await progressInformationMessage.CloseAsync().ConfigureAwait(true);
+                                */
                             }
 
                             break;
@@ -236,38 +238,14 @@ namespace Steam_Library_Manager.Forms
             catch (IOException ex)
             {
                 Logger.Error(ex);
-
-                if (Main.FormAccessor.IsAnyDialogOpen)
-                {
-                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
-                    {
-                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-                }
             }
             catch (UnauthorizedAccessException ex)
             {
                 Logger.Error(ex);
-
-                if (Main.FormAccessor.IsAnyDialogOpen)
-                {
-                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
-                    {
-                        await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-                }
             }
             catch (Exception ex)
             {
                 Logger.Fatal(ex);
-
-                if (Main.FormAccessor.IsAnyDialogOpen)
-                {
-                    await Main.FormAccessor.LibraryCleanerView.Dispatcher.Invoke(async delegate
-                     {
-                         await Main.FormAccessor.HideMetroDialogAsync(await Main.FormAccessor.GetCurrentDialogAsync<BaseMetroDialog>().ConfigureAwait(true)).ConfigureAwait(true);
-                     }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
-                }
             }
         }
 

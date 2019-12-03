@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -66,7 +65,7 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private async void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
+        private void TaskManager_ContextMenu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -82,7 +81,7 @@ namespace Steam_Library_Manager.Forms
                         {
                             if (currentTask.Active && Functions.TaskManager.Status && !currentTask.Completed)
                             {
-                                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { currentTask.App?.AppName })).ConfigureAwait(true);
+                                MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveError)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TM_TaskActiveErrorMessage)), new { currentTask.App?.AppName }));
                             }
                             else
                             {

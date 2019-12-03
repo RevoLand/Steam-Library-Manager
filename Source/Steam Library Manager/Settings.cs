@@ -1,6 +1,4 @@
-﻿using MahApps.Metro;
-using MahApps.Metro.Controls.Dialogs;
-using Steam_Library_Manager.Definitions.Enums;
+﻿using Steam_Library_Manager.Definitions.Enums;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -33,11 +31,11 @@ namespace Steam_Library_Manager.Properties
 
                     if (Definitions.Global.Steam.IsStateChanging)
                     {
-                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(async delegate
+                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(delegate
                         {
-                            await Main.FormAccessor.ShowMessageAsync("State is already changing!",
+                            MessageBox.Show("State is already changing!",
                                 "State is already being changed for Steam libraries; please wait.",
-                                MessageDialogStyle.AffirmativeAndNegative);
+                                MessageBoxButton.OKCancel);
                         }, System.Windows.Threading.DispatcherPriority.Normal);
                         e.Cancel = true;
                     }
@@ -53,7 +51,7 @@ namespace Steam_Library_Manager.Properties
                             Functions.SLM.UnloadLibrary(LibraryType.SLM);
                         }
 
-                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        //Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
                         Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
@@ -63,11 +61,11 @@ namespace Steam_Library_Manager.Properties
 
                     if (Definitions.Global.Origin.IsStateChanging)
                     {
-                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(async delegate
+                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(delegate
                         {
-                            await Main.FormAccessor.ShowMessageAsync("State is already changing!",
+                            MessageBox.Show("State is already changing!",
                                 "State is already being changed for Origin libraries; please wait.",
-                                MessageDialogStyle.AffirmativeAndNegative);
+                                MessageBoxButton.OKCancel);
                         }, System.Windows.Threading.DispatcherPriority.Normal);
                         e.Cancel = true;
                     }
@@ -82,7 +80,7 @@ namespace Steam_Library_Manager.Properties
                             Functions.SLM.UnloadLibrary(LibraryType.Origin);
                         }
 
-                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        //Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
                         Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
@@ -92,11 +90,10 @@ namespace Steam_Library_Manager.Properties
 
                     if (Definitions.Global.Uplay.IsStateChanging)
                     {
-                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(async delegate
+                        Main.FormAccessor.AppView.AppPanel.Dispatcher?.Invoke(delegate
                         {
-                            await Main.FormAccessor.ShowMessageAsync("State is already changing!",
-                                "State is already being changed for Uplay libraries; please wait.",
-                                MessageDialogStyle.AffirmativeAndNegative);
+                            MessageBox.Show("State is already changing!",
+                                "State is already being changed for Uplay libraries; please wait.", MessageBoxButton.YesNo);
                         }, System.Windows.Threading.DispatcherPriority.Normal);
                         e.Cancel = true;
                     }
@@ -111,7 +108,7 @@ namespace Steam_Library_Manager.Properties
                             Functions.SLM.UnloadLibrary(LibraryType.Uplay);
                         }
 
-                        Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
+                        //Main.FormAccessor.HamburgerMenuControl.Control.SelectedIndex = 0;
                         Main.FormAccessor.UpdateLibraryList("All");
                     }
                 }
@@ -128,12 +125,12 @@ namespace Steam_Library_Manager.Properties
         {
             Save();
 
-            if (e.PropertyName == "BaseTheme" || e.PropertyName == "ThemeAccent")
-            {
-                ThemeManager.ChangeAppStyle(Application.Current,
-                                ThemeManager.GetAccent(ThemeAccent),
-                                ThemeManager.GetAppTheme(BaseTheme));
-            }
+            //if (e.PropertyName == "BaseTheme" || e.PropertyName == "ThemeAccent")
+            //{
+            //    ThemeManager.ChangeAppStyle(Application.Current,
+            //                    ThemeManager.GetAccent(ThemeAccent),
+            //                    ThemeManager.GetAppTheme(BaseTheme));
+            //}
         }
     }
 }

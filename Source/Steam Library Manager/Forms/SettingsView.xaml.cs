@@ -1,6 +1,5 @@
 ﻿using Alphaleonis.Win32.Filesystem;
 using AutoUpdaterDotNET;
-using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -26,10 +25,7 @@ namespace Steam_Library_Manager.Forms
                 {
                     if (!args.IsUpdateAvailable)
                     {
-                        await Main.FormAccessor
-                            .ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.AutoUpdater)),
-                                Functions.SLM.Translate(nameof(Properties.Resources.Updater_LatestVersionMessage)))
-                            .ConfigureAwait(true);
+                        //await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.AutoUpdater)), Functions.SLM.Translate(nameof(Properties.Resources.Updater_LatestVersionMessage))).ConfigureAwait(true);
                     }
                 };
             }
@@ -47,7 +43,7 @@ namespace Steam_Library_Manager.Forms
             }
         }
 
-        private async void HeaderImageClearButton_ClickAsync(object sender, RoutedEventArgs e)
+        private void HeaderImageClearButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -59,7 +55,7 @@ namespace Steam_Library_Manager.Forms
                     }
                 }
 
-                await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCache)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCacheMessage))).ConfigureAwait(false);
+                MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCache)), Functions.SLM.Translate(nameof(Properties.Resources.Forms_Settings_HeaderImageCacheMessage)));
             }
             catch { }
         }

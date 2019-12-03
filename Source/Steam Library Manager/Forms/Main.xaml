@@ -1,6 +1,5 @@
-﻿<controls:MetroWindow
+﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,24 +12,9 @@
     x:Name="MainForm" x:Class="Steam_Library_Manager.Main"
     Title="Steam Library Manager" Icon="/Steam Library Manager;component/Resources/slm-icon.ico" Height="800" Width="985" MinHeight="800" MinWidth="985"
     Loaded="MainForm_Loaded" Closing="MainForm_ClosingAsync"
-    ShowTitleBar="False" GlowBrush="Black" NonActiveGlowBrush="Black" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1"
-    RightWindowCommandsOverlayBehavior="Always" SaveWindowPosition="True" WindowTransitionsEnabled="False">
-    <controls:MetroWindow.RightWindowCommands>
-        <controls:WindowCommands>
-            <Button Content="{l:Static p:Resources.Forms_Main_Translate}" Click="RightWindowCommands_TranslateFormButton_Click">
-                <Button.ToolTip>
-                    <ToolTip>
-                        <StackPanel>
-                            <TextBlock FontWeight="Bold" Text="{l:Static p:Resources.TranslateSLM}" />
-                            <TextBlock Text="{l:Static p:Resources.TranslateSLMDescription}" />
-                        </StackPanel>
-                    </ToolTip>
-                </Button.ToolTip>
-            </Button>
-        </controls:WindowCommands>
-    </controls:MetroWindow.RightWindowCommands>
+    BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1">
     <Grid>
-        <controls:FlyoutsControl Panel.ZIndex="3" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-30,0,0">
+        <!--<controls:FlyoutsControl Panel.ZIndex="3" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-30,0,0">
             <controls:Flyout x:Name="createLibraryFlyout" Position="Left" Width="300" IsOpen="False" Theme="Adapt" Header="{l:Static p:Resources.CreateLibrary_Tooltip}" IsOpenChanged="CreateLibraryFlyout_IsOpenChanged">
                 <StackPanel Orientation="Vertical" Margin="15">
                     <TextBlock Text="{l:Static p:Resources.Main_SelectedPath}" HorizontalAlignment="Stretch" Margin="0,5" />
@@ -59,7 +43,7 @@
                     <TextBlock x:Name="createLibrary_ResultText" HorizontalAlignment="Stretch" Margin="0,10" />
                 </StackPanel>
             </controls:Flyout>
-        </controls:FlyoutsControl>
+        </controls:FlyoutsControl>-->
         <Grid Margin="15, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBlock Margin="0, -20, 0, 0" FontSize="40"  FontWeight="Light" Foreground="{DynamicResource AccentColorBrush}">
             Steam Library Manager
@@ -69,7 +53,7 @@
         <!-- Grid: Quick settings -->
         <WrapPanel x:Name="QuickSettings" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" Panel.ZIndex="1">
             <!-- App Sorting Method -->
-            <ComboBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.SortGamesBy}" controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
+            <ComboBox  HorizontalAlignment="Right"
                       VerticalContentAlignment="Center" VerticalAlignment="Top" Width="140" Height="40" SelectedItem="{Binding Setting_AppSortingMethod}" Margin="5, 0"
                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:AppSortingMethod}}" SelectionChanged="AppSortingMethod_SelectionChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
@@ -88,8 +72,7 @@
             </ComboBox>
 
             <!-- App listing method -->
-            <ComboBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Settings_GameListMethod}" controls:TextBoxHelper.UseFloatingWatermark="True"  HorizontalAlignment="Right"
-                      VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}"
+            <ComboBox HorizontalAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="160" Height="40" SelectedItem="{Binding Setting_LibraryStyle}"
                       ItemsSource="{SLM:EnumBindingSource {x:Type Enums:LibraryStyle}}" BorderBrush="{DynamicResource AccentColorBrush}">
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ComboBoxItem}">
@@ -107,11 +90,11 @@
             </ComboBox>
         </WrapPanel>
 
-        <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}" Margin="10, 40, 10, 10" Panel.ZIndex="0">
+        <TabControl Margin="10, 40, 10, 10" Panel.ZIndex="0">
             <!-- Tab: Library -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
+            <TabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_Library}" IsSelected="True">
                 <Grid>
-                    <Forms:HamburgerMenuControl x:Name="HamburgerMenuControl" Panel.ZIndex="2" />
+                    <!--<Forms:HamburgerMenuControl x:Name="HamburgerMenuControl" Panel.ZIndex="2" />-->
                     <Grid Name="LibraryTabContent">
                         <Forms:LibraryView x:Name="LibraryView" />
 
@@ -119,8 +102,7 @@
                         <Forms:AppView x:Name="AppView" />
 
                         <!-- TextBox: Search -->
-                        <TextBox controls:TextBoxHelper.Watermark="{l:Static p:Resources.Forms_Main_SearchInLibrary}" controls:TextBoxHelper.UseFloatingWatermark="True"
-                             controls:TextBoxHelper.ClearTextButton="True" Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom"
+                        <TextBox Margin="205,0,0,10" VerticalContentAlignment="Center" TextWrapping="Wrap" Height="35" VerticalAlignment="Bottom"
                              Text="{SLM:SettingBinding SearchText}" TextChanged="TextBox_TextChanged" BorderBrush="{DynamicResource AccentColorBrush}">
                             <TextBox.ToolTip>
                                 <ToolTip>
@@ -133,19 +115,19 @@
                         </TextBox>
                     </Grid>
                 </Grid>
-            </controls:MetroTabItem>
+            </TabItem>
             <!-- Tab: Task Manager -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_TaskManager}">
+            <TabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_TaskManager}">
                 <Forms:TaskManagerView x:Name="TaskManagerView" />
-            </controls:MetroTabItem>
+            </TabItem>
             <!-- Tab: Library Cleaner -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_LibraryCleaner}">
+            <TabItem Header="{l:Static p:Resources.Forms_Main_TabHeader_LibraryCleaner}">
                 <Forms:LibraryCleanerView x:Name="LibraryCleanerView" />
-            </controls:MetroTabItem>
+            </TabItem>
             <!-- Tab: Settings -->
-            <controls:MetroTabItem Header="{l:Static p:Resources.Settings}" Name="TabItemSettings">
+            <TabItem Header="{l:Static p:Resources.Settings}" Name="TabItemSettings">
                 <Forms:SettingsView x:Name="SettingsView" />
-            </controls:MetroTabItem>
-        </controls:MetroTabControl>
+            </TabItem>
+        </TabControl>
     </Grid>
-</controls:MetroWindow>
+</Window>

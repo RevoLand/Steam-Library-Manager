@@ -1,10 +1,10 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using Alphaleonis.Win32.Filesystem;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Steam_Library_Manager.Definitions
 {
@@ -167,14 +167,14 @@ namespace Steam_Library_Manager.Definitions
             }
             catch (UnauthorizedAccessException ex)
             {
-                await Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(async delegate
-                    {
-                        await Main.FormAccessor.ShowMessageAsync(
-                            Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionTitle)),
-                            Framework.StringFormat.Format(
-                                Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionMessage)),
-                                new { AppName, ExceptionMessage = ex.Message })).ConfigureAwait(true);
-                    }, System.Windows.Threading.DispatcherPriority.Normal).ConfigureAwait(true);
+                //Main.FormAccessor.AppView.AppPanel.Dispatcher.Invoke(delegate
+                //    {
+                //        MessageBox.Show(
+                //            Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionTitle)),
+                //            Framework.StringFormat.Format(
+                //                Functions.SLM.Translate(nameof(Properties.Resources.Uplay_UnauthorizedAccessExceptionMessage)),
+                //                new { AppName, ExceptionMessage = ex.Message }));
+                //    }, System.Windows.Threading.DispatcherPriority.Normal);
 
                 Logger.Fatal(ex);
             }

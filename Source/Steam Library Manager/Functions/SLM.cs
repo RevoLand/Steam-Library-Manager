@@ -218,7 +218,7 @@ namespace Steam_Library_Manager.Functions
 
                 Definitions.Global.Steam.IsStateChanging = true;
 
-                Steam.UpdateSteamInstallationPathAsync();
+                Steam.UpdateSteamInstallationPath();
                 Steam.PopulateLibraryCMenuItems();
                 Steam.PopulateAppCMenuItems();
 

@@ -1,6 +1,4 @@
 ﻿using Alphaleonis.Win32.Filesystem;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using NLog;
 using Steam_Library_Manager.Definitions.Enums;
 using System;
@@ -89,7 +87,7 @@ namespace Steam_Library_Manager
             }
 
             UpdateBindings();
-            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+            //MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
         }
 
         private static void SetNLogConfig()
@@ -110,13 +108,13 @@ namespace Steam_Library_Manager
                 FormAccessor = this;
                 Properties.Settings.Default.SearchText = "";
 
-                HamburgerMenuControl.Control.ItemClick += (sender, args) =>
-                {
-                    var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
-                    if (clickedItemTag == null) return;
+                //HamburgerMenuControl.Control.ItemClick += (sender, args) =>
+                //{
+                //    var clickedItemTag = ((HamburgerMenuIconItem)args.ClickedItem).Tag;
+                //    if (clickedItemTag == null) return;
 
-                    UpdateLibraryList(clickedItemTag);
-                };
+                //    UpdateLibraryList(clickedItemTag);
+                //};
 
                 LibraryView.LibraryPanel.ItemsSource = Definitions.List.Libraries;
 
@@ -152,7 +150,7 @@ namespace Steam_Library_Manager
                     LibraryView.LibraryPanel.ItemsSource = libraryTypeEnum == LibraryType.Steam ? Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum || x.Type == LibraryType.SLM) : Definitions.List.Libraries.Where(x => x.Type == libraryTypeEnum);
                 }
 
-                HamburgerMenuControl.Control.IsPaneOpen = false;
+                //HamburgerMenuControl.Control.IsPaneOpen = false;
             }
             catch (Exception ex)
             {
@@ -191,16 +189,16 @@ namespace Steam_Library_Manager
                 {
                     e.Cancel = true;
 
-                    if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
-                        Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
-                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
-                        {
-                            AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
-                            NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
-                        }).ConfigureAwait(true) != MessageDialogResult.Affirmative)
-                    {
-                        return;
-                    }
+                    //if (await this.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLM)),
+                    //    Functions.SLM.Translate(nameof(Properties.Resources.Forms_QuitSLMMessage)),
+                    //    MessageBoxButton.OKCancel, new MetroDialogSettings()
+                    //    {
+                    //        AffirmativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Quit)),
+                    //        NegativeButtonText = Functions.SLM.Translate(nameof(Properties.Resources.Forms_Cancel))
+                    //    }).ConfigureAwait(true) != MessageBoxResult.OK)
+                    //{
+                    //    return;
+                    //}
                 }
 
                 Functions.SLM.OnClosing();
@@ -253,7 +251,7 @@ namespace Steam_Library_Manager
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    createLibrary_Path.Text = dialog.SelectedPath;
+                    //createLibrary_Path.Text = dialog.SelectedPath;
                 }
             }
         }
@@ -262,11 +260,11 @@ namespace Steam_Library_Manager
         {
             try
             {
-                if (createLibrary_Type.SelectedItem == null)
-                    return;
+                //if (createLibrary_Type.SelectedItem == null)
+                //    return;
 
-                _libraryType = (LibraryType)createLibrary_Type.SelectedItem;
-                createLibrary_TypeText.Text = _libraryType.ToString();
+                //_libraryType = (LibraryType)createLibrary_Type.SelectedItem;
+                //createLibrary_TypeText.Text = _libraryType.ToString();
             }
             catch (Exception ex)
             {
@@ -279,128 +277,128 @@ namespace Steam_Library_Manager
         {
             try
             {
-                var libraryPath = createLibrary_Path.Text;
+                //    var libraryPath = createLibrary_Path.Text;
 
-                if (string.IsNullOrEmpty(libraryPath))
-                {
-                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation));
-                    return;
-                }
+                //    if (string.IsNullOrEmpty(libraryPath))
+                //    {
+                //        createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_DirectoryIsNotSelectedForLibraryCreation));
+                //        return;
+                //    }
 
-                if (createLibrary_Type.SelectedItem == null)
-                {
-                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation));
-                    return;
-                }
+                //    if (createLibrary_Type.SelectedItem == null)
+                //    {
+                //        createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_LibraryTypeIsNotSelectedForLibraryCreation));
+                //        return;
+                //    }
 
-                if (!Directory.Exists(libraryPath))
-                {
-                    createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath)), new { libraryPath });
-                    return;
-                }
+                //    if (!Directory.Exists(libraryPath))
+                //    {
+                //        createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SelectedDirectoryDoesNotExistsLibraryPath)), new { libraryPath });
+                //        return;
+                //    }
 
-                switch (_libraryType)
-                {
-                    case LibraryType.Steam:
-                        if (!Properties.Settings.Default.Steam_IsEnabled)
-                        {
-                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
-                            return;
-                        }
+                //    switch (_libraryType)
+                //    {
+                //        case LibraryType.Steam:
+                //            if (!Properties.Settings.Default.Steam_IsEnabled)
+                //            {
+                //                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
+                //                return;
+                //            }
 
-                        if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
-                        {
-                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                            {
-                                Functions.Steam.Library.CreateNew(libraryPath, false);
-                                createLibraryFlyout.IsOpen = false;
-                            }
-                            else
-                            {
-                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
-                            }
-                        }
-                        else
-                        {
-                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
-                        }
-                        break;
+                //            if (!Functions.Steam.Library.IsLibraryExists(libraryPath))
+                //            {
+                //                if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                //                {
+                //                    Functions.Steam.Library.CreateNew(libraryPath, false);
+                //                    createLibraryFlyout.IsOpen = false;
+                //                }
+                //                else
+                //                {
+                //                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                //                }
+                //            }
+                //            else
+                //            {
+                //                createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                //            }
+                //            break;
 
-                    case LibraryType.SLM:
-                        if (!Properties.Settings.Default.Steam_IsEnabled)
-                        {
-                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
-                            return;
-                        }
+                //        case LibraryType.SLM:
+                //            if (!Properties.Settings.Default.Steam_IsEnabled)
+                //            {
+                //                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_SteamLibrarySupportMustBeEnabledForThisAction));
+                //                return;
+                //            }
 
-                        if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
-                        {
-                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                            {
-                                Functions.SLM.Library.AddNewAsync(libraryPath);
-                                createLibraryFlyout.IsOpen = false;
-                            }
-                            else
-                            {
-                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
-                            }
-                        }
-                        else
-                        {
-                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
-                        }
-                        break;
+                //            if (!Functions.SLM.Library.IsLibraryExists(libraryPath))
+                //            {
+                //                if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                //                {
+                //                    Functions.SLM.Library.AddNewAsync(libraryPath);
+                //                    createLibraryFlyout.IsOpen = false;
+                //                }
+                //                else
+                //                {
+                //                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                //                }
+                //            }
+                //            else
+                //            {
+                //                createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                //            }
+                //            break;
 
-                    case LibraryType.Origin:
-                        if (!Properties.Settings.Default.Origin_IsEnabled)
-                        {
-                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction));
-                            return;
-                        }
+                //        case LibraryType.Origin:
+                //            if (!Properties.Settings.Default.Origin_IsEnabled)
+                //            {
+                //                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_OriginLibrarySupportMustBeEnabledForThisAction));
+                //                return;
+                //            }
 
-                        if (!Functions.Origin.IsLibraryExists(libraryPath))
-                        {
-                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                            {
-                                Functions.Origin.AddNewLibraryAsync(libraryPath);
-                                createLibraryFlyout.IsOpen = false;
-                            }
-                            else
-                            {
-                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
-                            }
-                        }
-                        else
-                        {
-                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
-                        }
-                        break;
+                //            if (!Functions.Origin.IsLibraryExists(libraryPath))
+                //            {
+                //                if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                //                {
+                //                    Functions.Origin.AddNewLibraryAsync(libraryPath);
+                //                    createLibraryFlyout.IsOpen = false;
+                //                }
+                //                else
+                //                {
+                //                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                //                }
+                //            }
+                //            else
+                //            {
+                //                createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                //            }
+                //            break;
 
-                    case LibraryType.Uplay:
-                        if (!Properties.Settings.Default.Uplay_IsEnabled)
-                        {
-                            createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction));
-                            return;
-                        }
+                //        case LibraryType.Uplay:
+                //            if (!Properties.Settings.Default.Uplay_IsEnabled)
+                //            {
+                //                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibraryButton_Click_UplayLibrarySupportMustBeEnabledForThisAction));
+                //                return;
+                //            }
 
-                        if (!Functions.Uplay.IsLibraryExists(libraryPath))
-                        {
-                            if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
-                            {
-                                Functions.Uplay.AddNewLibraryAsync(libraryPath);
-                                createLibraryFlyout.IsOpen = false;
-                            }
-                            else
-                            {
-                                createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
-                            }
-                        }
-                        else
-                        {
-                            createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
-                        }
-                        break;
-                }
+                //            if (!Functions.Uplay.IsLibraryExists(libraryPath))
+                //            {
+                //                if (Directory.GetDirectoryRoot(libraryPath) != libraryPath)
+                //                {
+                //                    Functions.Uplay.AddNewLibraryAsync(libraryPath);
+                //                    createLibraryFlyout.IsOpen = false;
+                //                }
+                //                else
+                //                {
+                //                    createLibrary_ResultText.Text = Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_RootErrorMessage));
+                //                }
+                //            }
+                //            else
+                //            {
+                //                createLibrary_ResultText.Text = Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.CreateLibrary_ExistsMessage)), new { LibraryPath = libraryPath });
+                //            }
+                //            break;
+                //    }
             }
             catch (Exception ex)
             {
@@ -411,12 +409,12 @@ namespace Steam_Library_Manager
 
         private void CreateLibraryFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
         {
-            if (createLibraryFlyout.IsOpen) return;
+            //if (createLibraryFlyout.IsOpen) return;
 
-            createLibrary_ResultText.Text = "";
-            createLibrary_Path.Text = "";
-            createLibrary_TypeText.Text = "";
-            createLibrary_Type.SelectedItem = null;
+            //createLibrary_ResultText.Text = "";
+            //createLibrary_Path.Text = "";
+            //createLibrary_TypeText.Text = "";
+            //createLibrary_Type.SelectedItem = null;
         }
     }
 }

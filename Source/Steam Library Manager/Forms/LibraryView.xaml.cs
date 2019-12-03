@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Alphaleonis.Win32.Filesystem;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace Steam_Library_Manager.Forms
 
         public LibraryView() => InitializeComponent();
 
-        private async void LibraryGrid_Drop(object sender, DragEventArgs e)
+        private void LibraryGrid_Drop(object sender, DragEventArgs e)
         {
             try
             {
@@ -58,7 +57,7 @@ namespace Steam_Library_Manager.Forms
                         }
                         else
                         {
-                            await Main.FormAccessor.ShowMessageAsync(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { app.AppName, LibraryFullPath = library.DirectoryInfo.FullName })).ConfigureAwait(true);
+                            MessageBox.Show(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTasked)), Framework.StringFormat.Format(Functions.SLM.Translate(nameof(Properties.Resources.TaskManager_AlreadyTaskedMessage)), new { app.AppName, LibraryFullPath = library.DirectoryInfo.FullName }));
                         }
                     }
                 }
@@ -124,7 +123,7 @@ namespace Steam_Library_Manager.Forms
                 switch (((Button)sender).Tag)
                 {
                     case "create":
-                        Main.FormAccessor.createLibraryFlyout.IsOpen = true;
+                        //Main.FormAccessor.createLibraryFlyout.IsOpen = true;
                         break;
 
                     case "remove":

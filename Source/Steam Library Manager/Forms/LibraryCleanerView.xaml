@@ -1,6 +1,5 @@
 ﻿<UserControl x:Class="Steam_Library_Manager.Forms.LibraryCleanerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,8 +7,8 @@
              xmlns:cachedImage="clr-namespace:Steam_Library_Manager.Framework.CachedImage"
              xmlns:p="clr-namespace:Steam_Library_Manager.Properties"
              mc:Ignorable="d">
-    <controls:MetroTabControl controls:TabControlHelper.Underlined="TabPanel" controls:TabControlHelper.UnderlineBrush="{DynamicResource AccentColorBrush}">
-        <controls:MetroTabItem Header="{l:Static p:Resources.JunkItems}">
+    <TabControl>
+        <TabItem Header="{l:Static p:Resources.JunkItems}">
             <Grid Margin="3">
                 <!-- ListView: Library Cleaner -->
                 <ListView x:Name="LibraryCleaner" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
@@ -83,8 +82,8 @@
                     </Button>
                 </WrapPanel>
             </Grid>
-        </controls:MetroTabItem>
-        <controls:MetroTabItem Header="{l:Static p:Resources.DuplicateItems}">
+        </TabItem>
+        <TabItem Header="{l:Static p:Resources.DuplicateItems}">
             <Grid Margin="3">
                 <ListView x:Name="DupeItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                     <ListView.ItemTemplate>
@@ -141,8 +140,8 @@
                     </Button>
                 </WrapPanel>
             </Grid>
-        </controls:MetroTabItem>
-        <controls:MetroTabItem Header="{l:Static p:Resources.IgnoredItems}">
+        </TabItem>
+        <TabItem Header="{l:Static p:Resources.IgnoredItems}">
             <Grid Margin="3">
                 <ListView x:Name="IgnoredItems" BorderThickness=".8" BorderBrush="{DynamicResource AccentColorBrush}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,10,0,60" SelectionMode="Extended" IsTabStop="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" IsSynchronizedWithCurrentItem="True">
                     <ListView.ItemTemplate>
@@ -204,6 +203,6 @@
                     </Button>
                 </WrapPanel>
             </Grid>
-        </controls:MetroTabItem>
-    </controls:MetroTabControl>
+        </TabItem>
+    </TabControl>
 </UserControl>
