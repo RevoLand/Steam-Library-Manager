@@ -8,7 +8,7 @@
     <owners>Mert Ercan</owners>
     <title>Steam Library Manager (Portable)</title>
     <authors>Mert Ercan</authors>
-	<iconUrl>https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/Extras/Icons/slm.png</iconUrl>
+	<iconUrl>https://rawcdn.githack.com/RevoLand/Steam-Library-Manager/17422b3cb67384387dcb8ac76d97942bdf0f4068/Extras/Icons/slm.png</iconUrl>
     <projectUrl>https://github.com/RevoLand/Steam-Library-Manager</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/RevoLand/Steam-Library-Manager/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
