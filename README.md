@@ -1,3 +1,7 @@
+<p>Note: Even tho the repository is no longer actively maintained, there are no known bugs and <strong>SLM can be safely used like always</strong>.<br/>
+	If you like to support me to get back to work on SLM back, you can make a donation via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=SMB7YGBQQSGD6&item_name=Steam+Library+Manager&currency_code=EUR&source=url" title="PayPal Donations">PayPal</a>.<br /><br/>
+	Feel free to contact with me in case of an urgent bug, thanks. Discord: RevoLand#3385
+</p>
 <p align="center"><img src="/Extras/Logo/slm.png?raw=true" alt="Steam Library Manager" width="550px" height="280px" />
     <br />
     <a href="https://github.com/RevoLand/Steam-Library-Manager/releases/latest"> <img src="https://img.shields.io/github/release/RevoLand/Steam-Library-Manager.svg?style=for-the-badge" alt="Latest Release" /> </a>
