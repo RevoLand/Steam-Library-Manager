@@ -16,8 +16,8 @@ namespace Steam_Library_Manager
             try
             {
                 ThemeManager.ChangeAppStyle(Current,
-                                            ThemeManager.GetAccent(Steam_Library_Manager.Properties.Settings.Default.ThemeAccent),
-                                            ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme));
+                                            ThemeManager.GetAccent(Steam_Library_Manager.Properties.Settings.Default.ThemeAccent) ?? ThemeManager.GetAccent("Blue"),
+                                            ThemeManager.GetAppTheme(Steam_Library_Manager.Properties.Settings.Default.BaseTheme) ?? ThemeManager.GetAppTheme("BaseLight"));
 
                 base.OnStartup(e);
 

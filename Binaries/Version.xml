@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-    <version>1.6.0.3</version>
-    <url>http://github.com/RevoLand/Steam-Library-Manager/releases/download/v1.6.0.3/Steam.Library.Manager.zip</url>
+    <version>1.6.0.4</version>
+    <url>http://github.com/RevoLand/Steam-Library-Manager/releases/download/v1.6.0.4/Steam.Library.Manager.zip</url>
     <changelog>https://github.com/RevoLand/Steam-Library-Manager/releases</changelog>
     <mandatory>false</mandatory>
 </item>
