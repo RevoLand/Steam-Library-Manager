@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-* The specified executable is not a valid application for this OS platform ([#88](https://github.com/RevoLand/Steam-Library-Manager/issues/68))
+* The specified executable is not a valid application for this OS platform ([#88](https://github.com/RevoLand/Steam-Library-Manager/issues/88))
 
 ## [1.6.0.3] - 2019-11-3
 
