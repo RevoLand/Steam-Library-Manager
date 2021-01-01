@@ -33,7 +33,11 @@ namespace Steam_Library_Manager.Definitions
 
                 Apps.Clear();
 
-                if (!Directory.Exists(FullPath)) return;
+                if (!Directory.Exists(FullPath))
+                {
+                    IsUpdatingAppList = false;
+                    return;
+                }
 
                 foreach (var directoryPath in Directory.EnumerateDirectories(FullPath, "*",
                     SearchOption.TopDirectoryOnly))

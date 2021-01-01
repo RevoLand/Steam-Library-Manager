@@ -53,6 +53,8 @@ namespace Steam_Library_Manager.Definitions
                         MessageBox.Show(Framework.StringFormat.Format(
                             Functions.SLM.Translate(nameof(Properties.Resources.SteamAppsFolderNotExists)),
                             new { SteamAppsFolderFullPath = DirectoryList["SteamApps"].FullName }));
+
+                        IsUpdatingAppList = false;
                         return;
                     }
                 }

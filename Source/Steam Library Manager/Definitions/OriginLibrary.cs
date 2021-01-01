@@ -35,7 +35,11 @@ namespace Steam_Library_Manager.Definitions
 
                 Apps.Clear();
 
-                if (!Directory.Exists(FullPath)) return;
+                if (!Directory.Exists(FullPath))
+                {
+                    IsUpdatingAppList = false;
+                    return;
+                }
 
                 await Directory.EnumerateFiles(FullPath, "installerdata.xml", SearchOption.AllDirectories)
                     .ParallelForEachAsync(
