@@ -6,11 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.6.0.5] - 2021-01-01
+
 ### Fixed
 
 * Offline libraries being shown in updating state.
-
-## [1.6.0.5] - 2021-01-01
 
 ## [1.6.0.4] - 2020-12-07
 
