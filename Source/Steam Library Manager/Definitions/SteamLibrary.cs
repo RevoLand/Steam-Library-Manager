@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Directory = Alphaleonis.Win32.Filesystem.Directory;
 using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 using File = Alphaleonis.Win32.Filesystem.File;
@@ -323,7 +324,21 @@ namespace Steam_Library_Manager.Definitions
                 keyValReader.ReadFileAsText(Global.Steam.VdfFilePath);
 
                 // Remove old library
-                keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x => x.Value == FullPath);
+                keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x =>
+                {
+                    if (string.IsNullOrEmpty(x.Value))
+                    {
+                        return false;
+                    }
+
+                    var libraryPath = x.Value;
+                    if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    {
+                        libraryPath += Path.DirectorySeparatorChar;
+                    }
+
+                    return libraryPath == FullPath;
+                });
 
                 var i = 1;
                 foreach (var key in keyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
@@ -340,6 +355,42 @@ namespace Steam_Library_Manager.Definitions
                 if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
                 {
                     File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+                }
+
+                // Make a KeyValue reader
+                keyValReader = new Framework.KeyValue();
+
+                if (File.Exists(Definitions.Global.Steam.LibraryFoldersPath))
+                {
+                    // Read vdf file
+                    keyValReader.ReadFileAsText(Definitions.Global.Steam.LibraryFoldersPath);
+
+                    keyValReader.Children.RemoveAll(x =>
+                    {
+                        if (x.Children.Count() == 0)
+                        {
+                            return true;
+                        }
+
+                        return x.Children.Any(children =>
+                        {
+                            if (children.Name != "path")
+                            {
+                                return false;
+                            }
+
+                            var libraryPath = children.Value;
+                            if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                            {
+                                libraryPath += Path.DirectorySeparatorChar;
+                            }
+
+                            return libraryPath == FullPath;
+                        });
+                    });
+
+                    // Update libraryFolders.vdf file with changes
+                    keyValReader.SaveToFile(Definitions.Global.Steam.LibraryFoldersPath, false);
                 }
 
                 Functions.Steam.RestartSteamAsync();

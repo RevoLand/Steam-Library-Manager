@@ -195,9 +195,14 @@ namespace Steam_Library_Manager.Functions
         {
             try
             {
-                Properties.Settings.Default.UplayExePath = Registry
-                    .GetValue(Definitions.Global.Uplay.LauncherRegistryPath, "InstallDir", "").ToString()
-                    .Replace('/', Path.DirectorySeparatorChar);
+                var uplayInstallDir = Registry.GetValue(Definitions.Global.Uplay.LauncherRegistryPath, "InstallDir", "")?.ToString();
+
+                if (string.IsNullOrEmpty(uplayInstallDir))
+                {
+                    return;
+                }
+
+                Properties.Settings.Default.UplayExePath = uplayInstallDir.Replace('/', Path.DirectorySeparatorChar);
 
                 var installationsRegistry = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(Definitions.Global.Uplay.InstallationsRegistryPath) ?? RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(Definitions.Global.Uplay.InstallationsRegistryPath);
 

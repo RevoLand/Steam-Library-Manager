@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Steam_Library_Manager.Definitions.Enums;
 
 namespace Steam_Library_Manager.Forms
 {
@@ -128,7 +129,7 @@ namespace Steam_Library_Manager.Forms
                         break;
 
                     case "remove":
-                        if (Definitions.SLM.CurrentSelectedLibrary != null && !Definitions.SLM.CurrentSelectedLibrary.IsMain && Functions.TaskManager.TaskList.Count(x => x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary || x.App?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
+                        if (Definitions.SLM.CurrentSelectedLibrary != null && !Definitions.SLM.CurrentSelectedLibrary.IsMain && Definitions.SLM.CurrentSelectedLibrary.Type != LibraryType.Steam && Functions.TaskManager.TaskList.Count(x => x.TargetLibrary == Definitions.SLM.CurrentSelectedLibrary || x.App?.Library == Definitions.SLM.CurrentSelectedLibrary) == 0)
                         {
                             Definitions.List.Libraries.Remove(Definitions.SLM.CurrentSelectedLibrary);
 

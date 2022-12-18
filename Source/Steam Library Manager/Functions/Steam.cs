@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using Steam_Library_Manager.Definitions;
+using System.Windows.Input;
 
 namespace Steam_Library_Manager.Functions
 {
@@ -513,9 +515,29 @@ namespace Steam_Library_Manager.Functions
                             MessageBox.Show(SLM.Translate(nameof(Properties.Resources.CreateSteamLibrary_UnknownError)));
                         }
                     }
-
                     // Add library to list
                     AddNew(NewLibraryPath);
+
+                    if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
+                    {
+                        File.Delete(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf"));
+                    }
+
+                    if (File.Exists(Definitions.Global.Steam.LibraryFoldersPath))
+                    {
+                        Framework.KeyValue Key = new Framework.KeyValue();
+                        // Read vdf file as text
+                        Key.ReadFileAsText(Definitions.Global.Steam.LibraryFoldersPath);
+
+                        int NewSteamLibraryIndex = Key.Children.Count;
+
+                        Key.Children.Add(new Framework.KeyValue(NewSteamLibraryIndex.ToString()));
+                        Key[NewSteamLibraryIndex.ToString()].Children.Add(new Framework.KeyValue("path", NewLibraryPath));
+                        Key[NewSteamLibraryIndex.ToString()].Children.Add(new Framework.KeyValue("label", ""));
+                        Key[NewSteamLibraryIndex.ToString()].Children.Add(new Framework.KeyValue("mounted", "1"));
+                        Key[NewSteamLibraryIndex.ToString()].Children.Add(new Framework.KeyValue("contentid", ""));
+                        Key.SaveToFile(Definitions.Global.Steam.LibraryFoldersPath, false);
+                    }
 
                     // Save our settings
                     SLM.Settings.SaveSettings();

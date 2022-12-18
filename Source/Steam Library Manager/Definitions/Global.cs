@@ -9,6 +9,7 @@ namespace Steam_Library_Manager.Definitions
             public const string RegistryKeyPath = @"HKEY_CURRENT_USER\SOFTWARE\Valve\Steam";
 
             public static string VdfFilePath = Alphaleonis.Win32.Filesystem.Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "config.vdf");
+            public static string LibraryFoldersPath = Alphaleonis.Win32.Filesystem.Path.Combine(Properties.Settings.Default.steamInstallationPath, "config", "libraryfolders.vdf");
 
             public static bool IsStateChanging, Loaded;
         }
