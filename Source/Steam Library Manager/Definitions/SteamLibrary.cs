@@ -317,39 +317,6 @@ namespace Steam_Library_Manager.Definitions
 
                 await Functions.Steam.CloseSteamAsync().ConfigureAwait(true);
 
-                // Make a KeyValue reader
-                var keyValReader = new Framework.KeyValue();
-
-                // Read vdf file
-                keyValReader.ReadFileAsText(Global.Steam.VdfFilePath);
-
-                // Remove old library
-                keyValReader["Software"]["Valve"]["Steam"].Children.RemoveAll(x =>
-                {
-                    if (string.IsNullOrEmpty(x.Value))
-                    {
-                        return false;
-                    }
-
-                    var libraryPath = x.Value;
-                    if (!libraryPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                    {
-                        libraryPath += Path.DirectorySeparatorChar;
-                    }
-
-                    return libraryPath == FullPath;
-                });
-
-                var i = 1;
-                foreach (var key in keyValReader["Software"]["Valve"]["Steam"].Children.FindAll(x => x.Name.Contains("BaseInstallFolder")))
-                {
-                    key.Name = $"BaseInstallFolder_{i}";
-                    i++;
-                }
-
-                // Update libraryFolders.vdf file with changes
-                keyValReader.SaveToFile(Global.Steam.VdfFilePath, false);
-
                 // Since this file started to interrupt us?
                 // No need to bother with it since config.vdf is the real deal, just remove it and Steam client will handle with some magic.
                 if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "steamapps", "libraryfolders.vdf")))
@@ -358,7 +325,7 @@ namespace Steam_Library_Manager.Definitions
                 }
 
                 // Make a KeyValue reader
-                keyValReader = new Framework.KeyValue();
+                Framework.KeyValue keyValReader = new Framework.KeyValue();
 
                 if (File.Exists(Definitions.Global.Steam.LibraryFoldersPath))
                 {

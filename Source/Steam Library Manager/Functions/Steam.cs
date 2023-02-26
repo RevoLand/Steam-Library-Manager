@@ -665,48 +665,35 @@ namespace Steam_Library_Manager.Functions
                         }
                     }
 
-                    if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
-                    {
-                        AddNew(Properties.Settings.Default.steamInstallationPath, true);
-                    }
+                    //if (File.Exists(Path.Combine(Properties.Settings.Default.steamInstallationPath, "Steam.exe")))
+                    //{
+                    //    AddNew(Properties.Settings.Default.steamInstallationPath, true);
+                    //}
 
                     // If config.vdf exists
-                    if (File.Exists(Definitions.Global.Steam.VdfFilePath))
+                    if (File.Exists(Definitions.Global.Steam.LibraryFoldersPath))
                     {
                         // Make a KeyValue reader
                         var keyValReader = new Framework.KeyValue();
 
                         // Read our vdf file as text
-                        keyValReader.ReadFileAsText(Definitions.Global.Steam.VdfFilePath);
-
-                        keyValReader = keyValReader["Software"]["Valve"]["Steam"];
+                        keyValReader.ReadFileAsText(Definitions.Global.Steam.LibraryFoldersPath);
                         if (keyValReader?.Children.Count > 0)
                         {
-                            foreach (var key in keyValReader.Children.Where(x => x.Name.StartsWith("BaseInstallFolder", StringComparison.OrdinalIgnoreCase)))
+                            foreach (var key in keyValReader.Children)
                             {
-                                AddNew(key.Value);
-                            }
+                                var libraryPath = key.Children.Find((children) => children.Name == "path");
 
-                            if (keyValReader["Accounts"]?.Children.Count > 0)
-                            {
-                                foreach (var account in keyValReader["Accounts"].Children)
+                                if (libraryPath != null)
                                 {
-                                    var steamId = account.Children.SingleOrDefault(x => x.Name == "SteamID");
-                                    if (steamId == null)
-                                    {
-                                        continue;
-                                    }
-
-                                    Definitions.List.SteamUserIdList.Add(new Tuple<string, string>(account.Name, steamId.Value));
+                                    AddNew(libraryPath.Value, File.Exists(Path.Combine(libraryPath.Value, "Steam.exe")));
                                 }
-
-                                Main.FormAccessor.SettingsView.SteamUserIDList.SelectedItem = Definitions.List.SteamUserIdList.Find(x => x.Item2 == Properties.Settings.Default.SteamID64);
                             }
                         }
                     }
                     else
                     {
-                        Logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.VdfFilePath}");
+                        Logger.Warn($"Couldn't locate config.vdf for Steam at: {Definitions.Global.Steam.LibraryFoldersPath}");
                     }
                 }
                 catch (Exception ex)

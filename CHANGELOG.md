@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.7.1.0] - 2023-02-26
+
+### Fixed
+
+* Steam library detection ([#105](https://github.com/RevoLand/Steam-Library-Manager/issues/105))
+
 ## [1.7.0.0] - 2022-12-18
 
 ### Fixed
