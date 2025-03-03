@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [1.7.2.0] - 2025-03-03
+
+### Fixed
+
+* Missing confrmation dialog for "Delete all games in library" ([#107](https://github.com/RevoLand/Steam-Library-Manager/issues/107))
+* Bumps [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) from 12.0.3 to 13.0.2.
+
 ## [1.7.1.0] - 2023-02-26
 
 ### Fixed
