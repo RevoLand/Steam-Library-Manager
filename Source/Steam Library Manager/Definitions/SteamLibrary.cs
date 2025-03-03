@@ -215,6 +215,20 @@ namespace Steam_Library_Manager.Definitions
                     break;
 
                 case "deletelibraryslm":
+                    if (Apps.Count == 0)
+                    {
+                        return;
+                    }
+
+                    var gamesWillBeDeletedWarning = await Main.FormAccessor.ShowMessageAsync("Warning!", $"When you proceed with this action, {Apps.Count} games in your library will be deleted", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        FirstAuxiliaryButtonText = Functions.SLM.Translate(nameof(Properties.Resources.DeleteLibraryWithoutMovingGames))
+                    }).ConfigureAwait(true);
+
+                    if (gamesWillBeDeletedWarning != MessageDialogResult.Affirmative)
+                    {
+                        return;
+                    }
 
                     foreach (SteamAppInfo App in Apps.ToList())
                     {
