@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run electron-forge",
+      "runtimeExecutable": "electron-forge",
+      "cwd": "${workspaceFolder}",
+      "args": ["start"]
+    }
+  ]
+}
