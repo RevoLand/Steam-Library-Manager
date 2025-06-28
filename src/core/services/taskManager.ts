@@ -3,6 +3,7 @@ import throttle from 'lodash/throttle';
 import { nanoid } from 'nanoid';
 import { EventEmitter } from 'node:events';
 import { appMover } from 'src/features/apps/services/appMover';
+import TransferMethod from '../models/TransferMethod';
 import TransferTask from '../models/TransferTask';
 import TransferAbortError from '../models/errors/TransferAbortError';
 import { DebouncedFunc } from '../types/utils';
@@ -30,11 +31,21 @@ class TaskManager extends EventEmitter {
     this.isActive = true;
     this.emitTaskManagerStatusUpdate('running');
     this.processNext();
+
+    if (this.currentTask?.status === 'paused') {
+      this.currentTask.status = 'paused';
+      this.emitTaskUpdate(this.currentTask);
+    }
   }
 
   pause() {
     this.isActive = false;
     this.emitTaskManagerStatusUpdate('paused');
+
+    if (this.currentTask) {
+      this.currentTask.status = 'in-progress';
+      this.emitTaskUpdate(this.currentTask);
+    }
   }
 
   abort(taskId: string) {
@@ -56,6 +67,7 @@ class TaskManager extends EventEmitter {
     task.status ??= 'pending';
     task.createdAt ??= new Date();
     task.transferLog ??= [];
+    task.method ??= TransferMethod.system;
 
     this.tasks.push(task);
 
@@ -205,6 +217,7 @@ class TaskManager extends EventEmitter {
 
       await appMover.transfer(task.files, task.targetLibrary.path, {
         mode: task.mode,
+        method: task.method,
         onProgress: (stat) => {
           task.transferLog.push(stat);
 
@@ -226,6 +239,7 @@ class TaskManager extends EventEmitter {
           this.emitTaskUpdateDebounced(task);
         },
         abortSignal: () => this.currentAbortFlag,
+        isPaused: () => !this.isActive,
       });
 
       task.status = 'done';

@@ -21,7 +21,7 @@ const Index = () => {
       const { app } = active.data.current as { app: SteamApp; library: SteamLibrary };
       const droppedLibrary = over.data.current as SteamLibrary;
 
-      addTask(app, droppedLibrary, TransferMode.COPY | TransferMode.VERIFY | TransferMode.SKIP_EXISTING);
+      addTask(app, droppedLibrary, TransferMode.COPY | TransferMode.VERIFY);
     }
   };
 

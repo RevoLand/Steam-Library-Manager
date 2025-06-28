@@ -2,6 +2,7 @@ import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import { FileToTransfer } from './FilePattern';
 import FileTransferStat from './FileTransferStat';
+import TransferMethod from './TransferMethod';
 import TransferMode from './TransferMode';
 
 interface TransferTask {
@@ -13,7 +14,8 @@ interface TransferTask {
   transferLog?: FileTransferStat[];
   mode: TransferMode;
   createdAt?: Date;
-  status?: 'pending' | 'in-progress' | 'done' | 'error' | 'aborted';
+  status?: 'pending' | 'in-progress' | 'done' | 'error' | 'aborted' | 'paused';
+  method?: TransferMethod;
 
   totalBytes?: number;
   transferredBytes?: number;

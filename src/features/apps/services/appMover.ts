@@ -6,7 +6,8 @@ import { FileToTransfer } from 'src/core/models/FilePattern';
 import FileTransferStat from 'src/core/models/FileTransferStat';
 import TransferMode from 'src/core/models/TransferMode';
 import TransferOptions from 'src/core/models/TransferOptions';
-import TransferStrategy from 'src/core/models/TransferStrategy';
+import TransferMethod from 'src/core/models/TransferMethod';
+import { waitWhile } from 'src/core/utils/async';
 import { hasMode } from 'src/core/utils/bitwise';
 import { hashFile } from 'src/core/utils/hash';
 import { appFilesFinders } from 'src/features/platforms';
@@ -39,38 +40,63 @@ class AppMover {
     });
   }
 
-  performTransfer = (
-    source: string,
-    destination: string,
-    mode: 'copy' | 'move',
-    strategy: TransferStrategy
-  ): Promise<void> => {
-    switch (strategy) {
-      case TransferStrategy.stream:
+  performTransfer = (source: string, destination: string, options: TransferOptions): Promise<void> => {
+    const mode = hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy';
+
+    switch (options.method) {
+      case TransferMethod.stream:
         return new Promise((resolve, reject) => {
           const readStream = fs.createReadStream(source);
           const writeStream = fs.createWriteStream(destination);
 
-          readStream.on('error', reject);
-          writeStream.on('error', reject);
+          let paused = false;
+          let interval: NodeJS.Timeout;
 
-          if (mode === 'move') {
-            writeStream.on('finish', async () => {
+          if (options.isPaused) {
+            interval = setInterval(() => {
+              const shouldPause = options.isPaused?.() ?? false;
+
+              if (shouldPause && !paused) {
+                readStream.pause();
+                writeStream.cork?.();
+                paused = true;
+              }
+
+              if (!shouldPause && paused) {
+                readStream.resume();
+                writeStream.uncork?.();
+                paused = false;
+              }
+            }, 200);
+          }
+
+          function handleError(err: Error) {
+            clearInterval(interval);
+            reject(err);
+          }
+
+          readStream.on('error', handleError);
+          writeStream.on('error', handleError);
+
+          writeStream.on('finish', async () => {
+            clearInterval(interval);
+
+            if (mode === 'move') {
               try {
                 await fs.promises.unlink(source);
                 resolve();
               } catch (err) {
                 reject(err);
               }
-            });
-          } else {
-            writeStream.on('finish', resolve);
-          }
+            } else {
+              resolve();
+            }
+          });
 
           readStream.pipe(writeStream);
         });
       default:
-      case TransferStrategy.system:
+      case TransferMethod.system:
         return new Promise((resolve, reject) => {
           if (mode === 'move') {
             fs.promises
@@ -97,13 +123,12 @@ class AppMover {
     options: TransferOptions
   ): Promise<FileTransferStat> {
     const startTime = performance.now();
-    const mode = hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy';
     const stat: FileTransferStat = {
       file: file.relativePath,
       sizeBytes: file.size,
       durationMs: 0,
       skipped: false,
-      mode,
+      mode: hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy',
       startTime,
     };
 
@@ -133,7 +158,7 @@ class AppMover {
 
       await fs.promises.mkdir(path.dirname(targetPath), { recursive: true });
 
-      await this.performTransfer(file.source, targetPath, mode, options.method ?? TransferStrategy.system);
+      await this.performTransfer(file.source, targetPath, options);
 
       if (hasMode(options.mode, TransferMode.VERIFY)) {
         const [srcHash, destHash] = await Promise.all([hashFile(file.source), hashFile(targetPath)]);
@@ -170,6 +195,7 @@ class AppMover {
     await Promise.all(
       sortedFiles.map((file) =>
         limit(async () => {
+          await waitWhile(() => options.isPaused?.());
           const stat = await this.transferSingleFile(file, targetLibraryPath, options);
 
           stats.push(stat);

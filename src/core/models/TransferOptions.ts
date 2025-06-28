@@ -1,13 +1,14 @@
 import FileTransferStat from './FileTransferStat';
+import TransferMethod from './TransferMethod';
 import TransferMode from './TransferMode';
-import TransferStrategy from './TransferStrategy';
 
 type TransferOptions = {
   mode: TransferMode;
-  method?: TransferStrategy;
+  method?: TransferMethod;
   concurrency?: number;
   abortSignal?: () => boolean;
   onProgress?: (stat: FileTransferStat) => void;
+  isPaused?: () => boolean;
 };
 
 export default TransferOptions;
