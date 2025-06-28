@@ -5,7 +5,7 @@ import { TransferAbortError } from 'src/core/models/errors/TransferAbortError';
 import { FileToTransfer } from 'src/core/models/FilePattern';
 import { FileTransferStat } from 'src/core/models/FileTransferStat';
 import { TransferMode } from 'src/core/models/TransferMode';
-import { TransferOptions } from 'src/core/models/TransferOptions';
+import { TransferOptions, TransferStrategy } from 'src/core/models/TransferOptions';
 import { hasMode } from 'src/core/utils/bitwise';
 import { hashFile } from 'src/core/utils/hash';
 import { appFilesFinders } from 'src/features/platforms';
@@ -38,23 +38,75 @@ class AppMover {
     });
   }
 
+  performTransfer = (
+    source: string,
+    destination: string,
+    mode: 'copy' | 'move',
+    strategy: TransferStrategy
+  ): Promise<void> => {
+    switch (strategy) {
+      case TransferStrategy.stream:
+        return new Promise((resolve, reject) => {
+          const readStream = fs.createReadStream(source);
+          const writeStream = fs.createWriteStream(destination);
+
+          readStream.on('error', reject);
+          writeStream.on('error', reject);
+
+          if (mode === 'move') {
+            writeStream.on('finish', async () => {
+              try {
+                await fs.promises.unlink(source);
+                resolve();
+              } catch (err) {
+                reject(err);
+              }
+            });
+          } else {
+            writeStream.on('finish', resolve);
+          }
+
+          readStream.pipe(writeStream);
+        });
+      default:
+      case TransferStrategy.system:
+        return new Promise((resolve, reject) => {
+          if (mode === 'move') {
+            fs.promises
+              .rename(source, destination)
+              .then(resolve)
+              .catch(async (e) => {
+                if (e.code === 'EXDEV') {
+                  await fs.promises.copyFile(source, destination, fs.constants.COPYFILE_FICLONE);
+                  await fs.promises.unlink(source);
+                } else {
+                  reject(e);
+                }
+              });
+          } else {
+            fs.promises.copyFile(source, destination, fs.constants.COPYFILE_FICLONE).then(resolve).catch(reject);
+          }
+        });
+    }
+  };
+
   async transferSingleFile(
     file: FileToTransfer,
     targetLibraryPath: string,
     options: TransferOptions
   ): Promise<FileTransferStat> {
     const startTime = performance.now();
+    const mode = hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy';
     const stat: FileTransferStat = {
       file: file.relativePath,
       sizeBytes: file.size,
       durationMs: 0,
       skipped: false,
-      mode: hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy',
+      mode,
       startTime,
     };
 
     const targetPath = path.join(targetLibraryPath, file.relativePath);
-    const tempPath = targetPath + '.slm_temp';
 
     try {
       if (options.abortSignal?.()) {
@@ -80,28 +132,7 @@ class AppMover {
 
       await fs.promises.mkdir(path.dirname(targetPath), { recursive: true });
 
-      const usedTemp = false;
-
-      if (hasMode(options.mode, TransferMode.MOVE)) {
-        try {
-          await fs.promises.rename(file.source, targetPath);
-        } catch (e: any) {
-          if (e.code === 'EXDEV') {
-            await fs.promises.copyFile(file.source, targetPath, fs.constants.COPYFILE_FICLONE);
-            await fs.promises.unlink(file.source);
-          } else {
-            throw e;
-          }
-        }
-      } else {
-        await fs.promises.copyFile(file.source, targetPath, fs.constants.COPYFILE_FICLONE);
-      }
-
-      if (usedTemp) {
-        await fs.promises.rename(tempPath, targetPath);
-      }
-
-      stat.tempUsed = usedTemp;
+      await this.performTransfer(file.source, targetPath, mode, options.method ?? TransferStrategy.system);
 
       if (hasMode(options.mode, TransferMode.VERIFY)) {
         const [srcHash, destHash] = await Promise.all([hashFile(file.source), hashFile(targetPath)]);

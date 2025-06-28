@@ -11,5 +11,4 @@ export interface FileTransferStat {
   endTime?: number;
   throughput?: number;
   attempt?: number;
-  tempUsed?: boolean;
 }
