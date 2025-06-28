@@ -33,7 +33,7 @@ const Index = () => {
     }
 
     try {
-      create(path, platform);
+      create(path, undefined, platform);
 
       refreshLibraries();
     } catch (e) {

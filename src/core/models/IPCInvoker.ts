@@ -11,8 +11,8 @@ export const IPCInvokeDefinitions = {
     },
   },
   'create-library': {
-    handler: async (path: string, type: LibraryType) => {
-      return libraryManager.createLibrary(path, type);
+    handler: async (path: string, label: string, type: LibraryType) => {
+      return libraryManager.createLibrary(path, label, type);
     },
   },
   'get-tasks': {

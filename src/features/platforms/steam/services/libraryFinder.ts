@@ -1,36 +1,13 @@
-import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { homedir, platform } from 'node:os';
 import { join } from 'node:path';
-import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import { hashText } from 'src/core/utils/hash';
-
-const getSteamInstallPath = (): string | null => {
-  const currentPlatform = platform();
-
-  if (currentPlatform === 'win32') {
-    try {
-      const stdout = execSync('reg query "HKCU\\Software\\Valve\\Steam" /v SteamPath', { encoding: 'utf-8' });
-      const match = stdout.match(/SteamPath\s+REG_SZ\s+(.+)/);
-
-      return match ? match[1].trim().toLowerCase() : null;
-    } catch {
-      return null;
-    }
-  }
-
-  if (currentPlatform === 'darwin') {
-    const steamPath = join(homedir(), 'Library', 'Application Support', 'Steam');
-
-    return existsSync(steamPath) ? steamPath : null;
-  }
-
-  // TODO: Linux için de eklenebilir
-  return null;
-};
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
+import { parse } from 'vdf-parser';
+import LibraryFolders from '../models/LibraryFolders';
+import { getSteamInstallPath } from '../utils/steam';
 
 export const findAllSteamLibraries = async (): Promise<SteamLibrary[]> => {
-  const libraries: Set<string> = new Set();
+  const libraries: Map<string, string> = new Map();
 
   const steamPath = getSteamInstallPath();
 
@@ -38,27 +15,24 @@ export const findAllSteamLibraries = async (): Promise<SteamLibrary[]> => {
     return [];
   }
 
-  const steamapps = join(steamPath, 'steamapps');
-  const vdfPath = join(steamapps, 'libraryfolders.vdf');
-
-  libraries.add(steamapps.toLowerCase());
+  const steamAppsPath = join(steamPath, 'steamapps');
+  const vdfPath = join(steamAppsPath, 'libraryfolders.vdf');
 
   if (existsSync(vdfPath)) {
-    const content = readFileSync(vdfPath, 'utf-8');
+    const content = parse<LibraryFolders>(readFileSync(vdfPath).toString());
 
-    const matches = [...content.matchAll(/"path"\s+"(.+?)"/g)];
+    Object.keys(content.libraryfolders).forEach((match) => {
+      const library = content.libraryfolders[match];
+      const folderPath = join(library.path, 'steamapps');
 
-    matches.forEach((match) => {
-      const folderPath = join(match[1], 'steamapps').toLowerCase();
-
-      libraries.add(folderPath);
+      libraries.set(folderPath, library.label);
     });
   }
 
-  const promises = Array.from(libraries).map(async (path) => {
-    const id = await hashText(path);
+  const promises = Array.from(libraries).map(async ([path, label]) => {
+    const libraryId = await hashText(path);
 
-    return new SteamLibrary(id, path);
+    return new SteamLibrary(libraryId, path, label, 'steam');
   });
 
   return Promise.all(promises);

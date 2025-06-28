@@ -4,14 +4,15 @@ import LibraryCreator from 'src/features/libraries/models/LibraryCreator';
 import SteamLibrary from '../../steam/models/SteamLibrary';
 
 export default class SLMLibraryCreator implements LibraryCreator {
-  async create(path: string): Promise<SteamLibrary> {
-    const slmLibraries = ProfileManager.getSetting<string[]>('slmLibraries') ?? [];
+  async create(path: string, label = ''): Promise<SteamLibrary> {
+    const slmLibraries = (ProfileManager.getSetting('slmLibraries') as Record<string, string>) ?? {};
 
-    slmLibraries.push(path);
+    slmLibraries[path] = label;
+
     ProfileManager.setSetting('slmLibraries', slmLibraries);
 
     const id = await hashText(path);
 
-    return new SteamLibrary(id, path, 'slm');
+    return new SteamLibrary(id, path, label, 'slm');
   }
 }

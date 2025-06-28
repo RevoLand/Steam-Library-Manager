@@ -5,6 +5,7 @@ interface SteamLibraryDTO {
   apps: SteamAppDTO[];
   id: string;
   path: string;
+  label: string;
   type: LibraryType;
 }
 

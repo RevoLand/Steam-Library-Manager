@@ -4,22 +4,17 @@ import { hashText } from 'src/core/utils/hash';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 export const findAllSLMLibraries = async (): Promise<SteamLibrary[]> => {
-  const libraries: Set<string> = new Set();
+  const slmLibraries = (ProfileManager.getSetting('slmLibraries') as Record<string, string>) ?? {};
 
-  const savedLibraries = ProfileManager.getSetting<string[]>('slmLibraries') ?? [];
+  const validEntries = Object.entries(slmLibraries).filter(([path]) => existsSync(path));
+  const validMap = Object.fromEntries(validEntries);
 
-  for (const lib of savedLibraries) {
-    if (existsSync(lib)) {
-      libraries.add(lib);
-    }
-  }
+  ProfileManager.setSetting('slmLibraries', validMap);
 
-  ProfileManager.setSetting('slmLibraries', Array.from(libraries));
-
-  const promises = Array.from(libraries).map(async (path) => {
+  const promises = validEntries.map(async ([path, label]) => {
     const id = await hashText(path);
 
-    return new SteamLibrary(id, path, 'slm');
+    return new SteamLibrary(id, path, label, 'slm');
   });
 
   return Promise.all(promises);

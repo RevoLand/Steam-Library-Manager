@@ -44,14 +44,14 @@ class LibraryManager {
   }
 
   // TODO: ipc broadcast push
-  public async createLibrary(path: string, type: LibraryType): Promise<SteamLibrary> {
+  public async createLibrary(path: string, label: string, type: LibraryType): Promise<SteamLibrary> {
     const allLibraryPaths = this.getLibraries().map((lib) => lib.path);
 
     if (isConflictingPath(path, allLibraryPaths)) {
       throw new Error('Mevcut bir kütüphanenin alt klasöründe yeni kütüphane oluşturulamaz.');
     }
 
-    const library = await this.creators[type].create(path);
+    const library = await this.creators[type].create(path, label);
 
     if (!this.libraries.find((lib) => lib.id === library.id)) {
       await appPopulator.populate(library);

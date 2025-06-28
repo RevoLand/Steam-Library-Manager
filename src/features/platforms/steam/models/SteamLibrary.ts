@@ -9,12 +9,15 @@ class SteamLibrary {
 
   public readonly type: LibraryType;
 
+  public readonly label: string;
+
   public apps: SteamApp[] = [];
 
-  constructor(id: string, path: string, type: LibraryType = 'steam') {
+  constructor(id: string, path: string, label: string, type: LibraryType = 'steam') {
     this.id = id;
     this.path = path;
     this.type = type;
+    this.label = label;
   }
 
   get appCount(): number {
@@ -31,13 +34,14 @@ class SteamLibrary {
     return {
       id: this.id,
       path: this.path,
+      label: this.label,
       type: this.type,
       apps: this.apps.map((app) => app.toDTO()),
     };
   }
 
   static fromDTO(dto: SteamLibraryDTO): SteamLibrary {
-    const lib = new SteamLibrary(dto.id, dto.path, dto.type);
+    const lib = new SteamLibrary(dto.id, dto.path, dto.label, dto.type);
 
     lib.setApps(dto.apps.map(SteamApp.fromDTO));
 

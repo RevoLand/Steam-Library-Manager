@@ -4,7 +4,7 @@ import { libraryDeserializer } from 'src/features/libraries/services/libraryDese
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 interface LibraryContextValue {
-  create: (path: string, type: LibraryType) => Promise<SteamLibrary>;
+  create: (path: string, label: string, type: LibraryType) => Promise<SteamLibrary>;
   libraries: SteamLibrary[];
   refreshLibraries: () => Promise<void>;
 }
@@ -26,8 +26,8 @@ export default function LibraryProvider(props: PropsWithChildren) {
     refreshLibraries();
   }, []);
 
-  const create = useCallback((path: string, type: LibraryType) => {
-    return window.api['create-library'](path, type);
+  const create = useCallback((path: string, label: string, type: LibraryType) => {
+    return window.api['create-library'](path, label, type);
   }, []);
 
   const libraryContextValue = useMemo(
