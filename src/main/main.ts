@@ -3,11 +3,11 @@ import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-insta
 import started from 'electron-squirrel-startup';
 import path from 'node:path';
 import { initDatabase } from 'src/core/db/initDB';
+import taskManager from 'src/core/services/taskManager';
 import { libraryManager } from 'src/features/libraries/services/LibraryManager';
 import { initializePlatforms } from 'src/features/platforms/init';
 import { bridgeAllEventSources } from '../preload/mapEventRendererBridge';
 import { registerIPCHandlers } from './ipcHandlers';
-import taskManager from './taskManager';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {

@@ -9,7 +9,7 @@ import { DebouncedFunc } from '../types/utils';
 
 export type TaskManagerStatus = 'idle' | 'running' | 'processing' | 'paused' | 'aborted';
 
-export class TaskManager extends EventEmitter {
+class TaskManager extends EventEmitter {
   private isActive = false;
 
   private isProcessing = false;
@@ -244,3 +244,5 @@ export class TaskManager extends EventEmitter {
     }
   }
 }
+
+export default new TaskManager();
