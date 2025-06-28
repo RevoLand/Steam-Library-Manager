@@ -50,17 +50,24 @@ class TaskManager extends EventEmitter {
     }
   }
 
-  abort() {
-    if (!this.currentTask) {
-      return;
+  abort(options?: { includePending?: boolean }) {
+    if (this.currentTask) {
+      this.currentAbortFlag = true;
+
+      this.currentTask.status = 'aborted';
+      this.emitTaskUpdateImmediate(this.currentTask);
+
+      this.emitTaskManagerStatusUpdate('aborted');
     }
 
-    this.currentAbortFlag = true;
-
-    this.currentTask.status = 'aborted';
-    this.emitTaskUpdateImmediate(this.currentTask);
-
-    this.emitTaskManagerStatusUpdate('aborted');
+    if (options?.includePending) {
+      for (const task of this.tasks) {
+        if (task.status === 'pending') {
+          task.status = 'aborted';
+          this.emitTaskUpdateImmediate(task);
+        }
+      }
+    }
   }
 
   add(task: TransferTask): TransferTask {
