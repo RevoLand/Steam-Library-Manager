@@ -3,8 +3,8 @@ import throttle from 'lodash/throttle';
 import { nanoid } from 'nanoid';
 import { EventEmitter } from 'node:events';
 import { appMover } from 'src/features/apps/services/appMover';
-import { TransferTask } from '../models/TransferTask';
-import { TransferAbortError } from '../models/errors/TransferAbortError';
+import TransferTask from '../models/TransferTask';
+import TransferAbortError from '../models/errors/TransferAbortError';
 import { DebouncedFunc } from '../types/utils';
 
 export type TaskManagerStatus = 'idle' | 'running' | 'processing' | 'paused' | 'aborted';

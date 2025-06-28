@@ -1,6 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 const DraggableGame = ({ app, library }: { app: SteamApp; library: SteamLibrary }) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({

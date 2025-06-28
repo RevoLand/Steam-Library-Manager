@@ -1,9 +1,9 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
-import { TransferMode } from 'src/core/models/TransferMode';
-import { TransferTask } from 'src/core/models/TransferTask';
+import TransferMode from 'src/core/models/TransferMode';
+import TransferTask from 'src/core/models/TransferTask';
 import { TaskManagerStatus } from 'src/core/services/taskManager';
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 interface TaskContextValue {
   abort: (taskId?: string) => void;

@@ -4,7 +4,7 @@ import started from 'electron-squirrel-startup';
 import path from 'node:path';
 import { initDatabase } from 'src/core/db/initDB';
 import taskManager from 'src/core/services/taskManager';
-import { libraryManager } from 'src/features/libraries/services/LibraryManager';
+import { libraryManager } from 'src/features/libraries/services/libraryManager';
 import { initializePlatforms } from 'src/features/platforms/init';
 import { bridgeAllEventSources } from '../preload/mapEventRendererBridge';
 import { registerIPCHandlers } from './ipcHandlers';

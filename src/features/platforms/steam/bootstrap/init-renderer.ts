@@ -1,6 +1,6 @@
-import { LibraryDeserializer } from 'src/features/libraries/services/LibraryDeserializer';
-import { SteamLibrary } from '../models/SteamLibrary';
+import { libraryDeserializer } from 'src/features/libraries/services/libraryDeserializer';
+import SteamLibrary from '../models/SteamLibrary';
 
 export const register = async () => {
-  LibraryDeserializer.register('steam', SteamLibrary.fromDTO);
+  libraryDeserializer.register('steam', SteamLibrary.fromDTO);
 };

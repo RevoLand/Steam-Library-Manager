@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { IPCInvokeChannel, IPCInvokeDefinitions } from 'src/core/models/IPCTypes';
+import { IPCInvokeChannel, IPCInvokeDefinitions } from 'src/core/models/IPCInvoker';
 
 export function registerIPCHandlers() {
   // eslint-disable-next-line @typescript-eslint/ban-types

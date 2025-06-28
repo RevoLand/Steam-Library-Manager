@@ -1,6 +1,6 @@
-import { IPCInvokeChannel } from './IPCTypes';
+import { IPCInvokeChannel } from './IPCInvoker';
 
-export const ipcInvokeChannels = [
+const IPCInvokeChannels = [
   'get-libraries',
   'create-library',
   'get-tasks',
@@ -16,3 +16,5 @@ export const ipcInvokeChannels = [
   'abort-task',
   'select-directory',
 ] as const as readonly IPCInvokeChannel[];
+
+export default IPCInvokeChannels;

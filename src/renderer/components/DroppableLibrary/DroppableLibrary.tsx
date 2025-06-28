@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 const DroppableLibrary = ({
   library,

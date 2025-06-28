@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { AcfFile } from 'src/features/platforms/steam/models/AcfFile';
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
+import AcfFile from 'src/features/platforms/steam/models/AcfFile';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import { parse } from 'vdf-parser';
-import { SteamLibrary } from '../models/SteamLibrary';
+import SteamLibrary from '../models/SteamLibrary';
 
 export const populateSteamApps = async (library: SteamLibrary): Promise<void> => {
   if (!existsSync(library.path)) {

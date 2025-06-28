@@ -1,8 +1,8 @@
 {
   "name": "steam-library-manager",
-  "productName": "steam-library-manager",
-  "version": "1.0.0",
-  "description": "Open source utility to manage Steam, Origin and Uplay libraries in ease of use with multi library support.",
+  "productName": "Steam Library Manager",
+  "version": "2.0.0",
+  "description": "Open source utility to manage Steam libraries in ease of use with multi library support.",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",

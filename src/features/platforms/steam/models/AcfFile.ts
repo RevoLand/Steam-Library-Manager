@@ -1,4 +1,4 @@
-export type AcfFile = {
+type AcfFile = {
   AppState: {
     appid: number;
     name: string;
@@ -7,3 +7,5 @@ export type AcfFile = {
     SizeOnDisk: number;
   };
 };
+
+export default AcfFile;

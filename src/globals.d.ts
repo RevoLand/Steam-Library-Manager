@@ -1,4 +1,4 @@
-import type { IPCInvokeHandlers } from 'src/core/models/IPCTypes';
+import type { IPCInvokeHandlers } from 'src/core/models/IPCInvoker';
 import { IPCEventChannel } from './core/models/IPCEvents';
 
 declare global {

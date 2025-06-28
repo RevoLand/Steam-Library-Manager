@@ -1,4 +1,4 @@
-import { SettingsObject } from '../models/SettingsObject';
+import SettingsObject from '../models/SettingsObject';
 
 export const flattenObject = (obj: SettingsObject, prefix = ''): Record<string, string> => {
   const result: Record<string, string> = {};

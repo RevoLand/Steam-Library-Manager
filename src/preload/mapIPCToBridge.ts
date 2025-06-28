@@ -1,11 +1,11 @@
 import { ipcRenderer } from 'electron';
-import { ipcInvokeChannels } from 'src/core/models/IPCInvokeChannel';
-import { IPCInvokeHandlers } from 'src/core/models/IPCTypes';
+import IPCInvokeChannels from 'src/core/models/IPCInvokeChannels';
+import { IPCInvokeHandlers } from 'src/core/models/IPCInvoker';
 
 export const mapIPCToBridge = (): IPCInvokeHandlers => {
   const api = {} as Partial<IPCInvokeHandlers>;
 
-  for (const channel of ipcInvokeChannels) {
+  for (const channel of IPCInvokeChannels) {
     api[channel] = ((...args: any[]) => ipcRenderer.invoke(channel, ...args)) as any;
   }
 

@@ -1,1 +1,1 @@
-export class TransferAbortError extends Error {}
+export default class TransferAbortError extends Error {}

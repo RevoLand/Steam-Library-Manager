@@ -1,8 +1,9 @@
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useState } from 'react';
-import { TransferMode } from 'src/core/models/TransferMode';
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
-import { LibraryType, SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import LibraryType from 'src/core/models/LibraryType';
+import TransferMode from 'src/core/models/TransferMode';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import DraggableGame from '../components/DraggableGame';
 import DroppableLibrary from '../components/DroppableLibrary';
 import useLibraries from '../hooks/useLibraries';

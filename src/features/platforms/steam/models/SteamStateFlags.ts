@@ -1,4 +1,4 @@
-export enum SteamStateFlags {
+enum SteamStateFlags {
   INVALID = 0,
   UNINSTALLED = 1,
   UPDATE_REQUIRED = 2,
@@ -22,3 +22,5 @@ export enum SteamStateFlags {
   COMMITTING = 4194304,
   UPDATE_STOPPING = 8388608,
 }
+
+export default SteamStateFlags;

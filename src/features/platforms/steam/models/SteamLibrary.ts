@@ -1,9 +1,8 @@
-import { SteamLibraryDTO } from 'src/features/platforms/steam/models/SteamLibraryDTO';
-import { SteamApp } from './SteamApp';
+import LibraryType from 'src/core/models/LibraryType';
+import SteamLibraryDTO from 'src/features/platforms/steam/models/SteamLibraryDTO';
+import SteamApp from './SteamApp';
 
-export type LibraryType = 'steam' | 'slm';
-
-export class SteamLibrary {
+class SteamLibrary {
   public readonly id: string;
 
   public readonly path: string;
@@ -45,3 +44,5 @@ export class SteamLibrary {
     return lib;
   }
 }
+
+export default SteamLibrary;

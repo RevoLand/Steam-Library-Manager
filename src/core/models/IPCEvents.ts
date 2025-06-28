@@ -1,5 +1,5 @@
 import { TaskManagerStatus } from '../services/taskManager';
-import { TransferTask } from './TransferTask';
+import TransferTask from './TransferTask';
 
 export const IPCEventDefinitions = {
   'task-update': {} as TransferTask,

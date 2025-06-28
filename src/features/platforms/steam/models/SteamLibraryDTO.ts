@@ -1,8 +1,11 @@
-import { SteamAppDTO } from 'src/features/platforms/steam/models/SteamAppDTO';
+import LibraryType from 'src/core/models/LibraryType';
+import SteamAppDTO from 'src/features/platforms/steam/models/SteamAppDTO';
 
-export interface SteamLibraryDTO {
+interface SteamLibraryDTO {
   apps: SteamAppDTO[];
   id: string;
   path: string;
-  type: 'steam' | 'slm';
+  type: LibraryType;
 }
+
+export default SteamLibraryDTO;

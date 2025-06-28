@@ -1,4 +1,4 @@
-export interface FileTransferStat {
+interface FileTransferStat {
   file: string;
   sizeBytes: number;
   durationMs: number;
@@ -12,3 +12,5 @@ export interface FileTransferStat {
   throughput?: number;
   attempt?: number;
 }
+
+export default FileTransferStat;

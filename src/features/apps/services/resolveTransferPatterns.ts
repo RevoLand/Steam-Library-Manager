@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { FileToTransfer, TransferPattern } from 'src/core/models/FilePattern';
 
-export function resolveTransferPatterns(patterns: TransferPattern[], libraryRoot: string): FileToTransfer[] {
+const resolveTransferPatterns = (patterns: TransferPattern[], libraryRoot: string): FileToTransfer[] => {
   const result: FileToTransfer[] = [];
 
   for (const pattern of patterns) {
@@ -42,4 +42,6 @@ export function resolveTransferPatterns(patterns: TransferPattern[], libraryRoot
   }
 
   return result;
-}
+};
+
+export default resolveTransferPatterns;

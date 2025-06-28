@@ -1,7 +1,7 @@
-import { SteamStateFlags } from './StateFlags';
-import { SteamAppDTO } from './SteamAppDTO';
+import SteamAppDTO from './SteamAppDTO';
+import SteamStateFlags from './SteamStateFlags';
 
-export class SteamApp {
+class SteamApp {
   public readonly appId!: number;
 
   public readonly installPath!: string;
@@ -50,3 +50,5 @@ export class SteamApp {
     return new SteamApp(dto);
   }
 }
+
+export default SteamApp;

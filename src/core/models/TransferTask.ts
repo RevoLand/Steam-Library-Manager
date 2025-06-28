@@ -1,10 +1,10 @@
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import { FileToTransfer } from './FilePattern';
-import { FileTransferStat } from './FileTransferStat';
-import { TransferMode } from './TransferMode';
+import FileTransferStat from './FileTransferStat';
+import TransferMode from './TransferMode';
 
-export interface TransferTask {
+interface TransferTask {
   id?: string;
   app: SteamApp;
   sourceLibrary: SteamLibrary;
@@ -21,3 +21,5 @@ export interface TransferTask {
   errorCount?: number;
   verifiedCount?: number;
 }
+
+export default TransferTask;

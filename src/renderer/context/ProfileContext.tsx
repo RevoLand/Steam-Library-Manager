@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
-import { Profile } from 'src/core/models/Profile';
+import Profile from 'src/core/models/Profile';
 
 interface ProfileContextValue {
   profiles?: Profile[];

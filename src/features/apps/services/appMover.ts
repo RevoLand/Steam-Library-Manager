@@ -1,17 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import pLimit from 'p-limit';
-import { TransferAbortError } from 'src/core/models/errors/TransferAbortError';
+import TransferAbortError from 'src/core/models/errors/TransferAbortError';
 import { FileToTransfer } from 'src/core/models/FilePattern';
-import { FileTransferStat } from 'src/core/models/FileTransferStat';
-import { TransferMode } from 'src/core/models/TransferMode';
-import { TransferOptions, TransferStrategy } from 'src/core/models/TransferOptions';
+import FileTransferStat from 'src/core/models/FileTransferStat';
+import TransferMode from 'src/core/models/TransferMode';
+import TransferOptions from 'src/core/models/TransferOptions';
+import TransferStrategy from 'src/core/models/TransferStrategy';
 import { hasMode } from 'src/core/utils/bitwise';
 import { hashFile } from 'src/core/utils/hash';
 import { appFilesFinders } from 'src/features/platforms';
-import { SteamApp } from 'src/features/platforms/steam/models/SteamApp';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
-import { resolveTransferPatterns } from './transferResolver';
+import SteamApp from 'src/features/platforms/steam/models/SteamApp';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
+import resolveTransferPatterns from './resolveTransferPatterns';
 
 class AppMover {
   prepareFiles(app: SteamApp, library: SteamLibrary): FileToTransfer[] {

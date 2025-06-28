@@ -1,10 +1,11 @@
+import LibraryType from 'src/core/models/LibraryType';
 import { isConflictingPath } from 'src/core/utils/path';
 import SLMLibraryCreator from 'src/features/platforms/slm/services/SLMLibraryCreator';
-import { LibraryType, SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import SteamLibraryCreator from 'src/features/platforms/steam/services/SteamLibraryCreator';
 import { appPopulator } from '../../apps/services/appPopulator';
-import { LibraryCreator } from '../models/LibraryCreator';
-import { LibraryLocator } from './LibraryLocator';
+import LibraryCreator from '../models/LibraryCreator';
+import { libraryLocator } from './libraryLocator';
 
 class LibraryManager {
   private libraries: SteamLibrary[] = [];
@@ -20,7 +21,7 @@ class LibraryManager {
 
   public async loadLibraries(): Promise<void> {
     if (!this.libraryLoader) {
-      this.libraryLoader = LibraryLocator.findAll();
+      this.libraryLoader = libraryLocator.findAll();
     }
 
     try {

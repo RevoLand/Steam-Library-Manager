@@ -1,10 +1,10 @@
 import { deleteProperty, getProperty, setProperty } from 'dot-prop';
 import db from 'src/core/db';
-import { Profile } from 'src/core/models/Profile';
-import { SettingsObject } from 'src/core/models/SettingsObject';
+import Profile from 'src/core/models/Profile';
+import SettingsObject from 'src/core/models/SettingsObject';
 import { flattenObject, unflattenObject } from 'src/core/utils/objectFlattener';
 
-export class ProfileManager {
+class ProfileManager {
   static getProfile(profileId: string): Profile {
     return db.prepare('SELECT * FROM profiles WHERE id = ?').get(profileId) as Profile;
   }
@@ -76,3 +76,5 @@ export class ProfileManager {
     this.saveSettings(obj);
   }
 }
+
+export default ProfileManager;

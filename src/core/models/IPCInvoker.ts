@@ -1,8 +1,8 @@
-import { ProfileManager } from 'src/core/config/profile/ProfileManager';
-import { TransferMode } from 'src/core/models/TransferMode';
-import { libraryManager } from 'src/features/libraries/services/LibraryManager';
-import { LibraryType } from 'src/features/platforms/steam/models/SteamLibrary';
+import ProfileManager from 'src/core/config/profile/ProfileManager';
+import TransferMode from 'src/core/models/TransferMode';
+import { libraryManager } from 'src/features/libraries/services/libraryManager';
 import taskManager from '../services/taskManager';
+import LibraryType from './LibraryType';
 
 export const IPCInvokeDefinitions = {
   'get-libraries': {

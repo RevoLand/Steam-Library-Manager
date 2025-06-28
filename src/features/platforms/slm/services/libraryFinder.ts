@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
-import { ProfileManager } from 'src/core/config/profile/ProfileManager';
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import ProfileManager from 'src/core/config/profile/ProfileManager';
 import { hashText } from 'src/core/utils/hash';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 export const findAllSLMLibraries = async (): Promise<SteamLibrary[]> => {
   const libraries: Set<string> = new Set();

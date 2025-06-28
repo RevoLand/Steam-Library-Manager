@@ -1,4 +1,4 @@
-import { SteamLibrary } from 'src/features/platforms/steam/models/SteamLibrary';
+import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 class AppPopulator {
   private populators: Map<string, (library: SteamLibrary) => Promise<void>> = new Map();

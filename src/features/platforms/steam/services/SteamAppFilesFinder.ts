@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { TransferPattern } from 'src/core/models/FilePattern';
-import { AppFilesFinder } from '../../interfaces/AppFilesFinder';
-import { SteamApp } from '../models/SteamApp';
-import { SteamLibrary } from '../models/SteamLibrary';
+import AppFilesFinder from '../../interfaces/AppFilesFinder';
+import SteamApp from '../models/SteamApp';
+import SteamLibrary from '../models/SteamLibrary';
 
 function generateSteamAppPatterns(appId: number, installPath: string, libraryPath: string): TransferPattern[] {
   return [
@@ -41,7 +41,7 @@ function generateSteamAppPatterns(appId: number, installPath: string, libraryPat
   ];
 }
 
-export class SteamAppFilesFinder implements AppFilesFinder {
+class SteamAppFilesFinder implements AppFilesFinder {
   canHandle(library: SteamLibrary): boolean {
     return library.type === 'steam';
   }
@@ -50,3 +50,5 @@ export class SteamAppFilesFinder implements AppFilesFinder {
     return generateSteamAppPatterns(app.appId, app.installPath, library.path);
   }
 }
+
+export default SteamAppFilesFinder;
