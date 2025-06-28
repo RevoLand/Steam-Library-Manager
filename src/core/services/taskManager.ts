@@ -33,8 +33,9 @@ class TaskManager extends EventEmitter {
     this.processNext();
 
     if (this.currentTask?.status === 'paused') {
-      this.currentTask.status = 'paused';
-      this.emitTaskUpdate(this.currentTask);
+      this.currentTask.status = 'in-progress';
+
+      this.emitTaskUpdateImmediate(this.currentTask);
     }
   }
 
@@ -43,23 +44,23 @@ class TaskManager extends EventEmitter {
     this.emitTaskManagerStatusUpdate('paused');
 
     if (this.currentTask) {
-      this.currentTask.status = 'in-progress';
-      this.emitTaskUpdate(this.currentTask);
+      this.currentTask.status = 'paused';
+
+      this.emitTaskUpdateImmediate(this.currentTask);
     }
   }
 
-  abort(taskId: string) {
-    if (this.currentTask?.id === taskId) {
-      this.currentAbortFlag = true;
-      this.emitTaskManagerStatusUpdate('aborted');
-    } else {
-      const task = this.tasks.find((t) => t.id === taskId);
-
-      if (task && task.status === 'pending') {
-        task.status = 'aborted';
-        this.emitTaskUpdate(task);
-      }
+  abort() {
+    if (!this.currentTask) {
+      return;
     }
+
+    this.currentAbortFlag = true;
+
+    this.currentTask.status = 'aborted';
+    this.emitTaskUpdateImmediate(this.currentTask);
+
+    this.emitTaskManagerStatusUpdate('aborted');
   }
 
   add(task: TransferTask): TransferTask {
@@ -201,6 +202,7 @@ class TaskManager extends EventEmitter {
       return;
     }
 
+    this.currentAbortFlag = false;
     this.currentTask = task;
 
     task.transferredBytes = 0;
@@ -255,6 +257,10 @@ class TaskManager extends EventEmitter {
       this.emitTaskUpdateImmediate(task);
     } finally {
       this.currentTask = null;
+
+      if (!this.currentAbortFlag) {
+        this.processNext();
+      }
     }
   }
 }

@@ -4,9 +4,9 @@ import pLimit from 'p-limit';
 import TransferAbortError from 'src/core/models/errors/TransferAbortError';
 import { FileToTransfer } from 'src/core/models/FilePattern';
 import FileTransferStat from 'src/core/models/FileTransferStat';
+import TransferMethod from 'src/core/models/TransferMethod';
 import TransferMode from 'src/core/models/TransferMode';
 import TransferOptions from 'src/core/models/TransferOptions';
-import TransferMethod from 'src/core/models/TransferMethod';
 import { waitWhile } from 'src/core/utils/async';
 import { hasMode } from 'src/core/utils/bitwise';
 import { hashFile } from 'src/core/utils/hash';
@@ -50,36 +50,52 @@ class AppMover {
           const writeStream = fs.createWriteStream(destination);
 
           let paused = false;
-          let interval: NodeJS.Timeout;
+          let aborted = false;
 
-          if (options.isPaused) {
-            interval = setInterval(() => {
-              const shouldPause = options.isPaused?.() ?? false;
+          const interval = setInterval(() => {
+            const shouldAbort = options.abortSignal?.() ?? false;
+            const shouldPause = options.isPaused?.() ?? false;
 
-              if (shouldPause && !paused) {
-                readStream.pause();
-                writeStream.cork?.();
-                paused = true;
-              }
+            if (shouldAbort && !aborted) {
+              aborted = true;
 
-              if (!shouldPause && paused) {
-                readStream.resume();
-                writeStream.uncork?.();
-                paused = false;
-              }
-            }, 200);
-          }
+              readStream.destroy(new TransferAbortError());
+              writeStream.destroy?.();
 
-          function handleError(err: Error) {
-            clearInterval(interval);
+              clearInterval(interval);
+
+              return;
+            }
+
+            if (shouldPause && !paused) {
+              readStream.pause();
+              writeStream.cork?.();
+              paused = true;
+            }
+
+            if (!shouldPause && paused) {
+              readStream.resume();
+              writeStream.uncork?.();
+              paused = false;
+            }
+          }, 200);
+
+          const cleanup = () => clearInterval(interval);
+
+          const handleError = (err: Error) => {
+            cleanup();
             reject(err);
-          }
+          };
 
           readStream.on('error', handleError);
           writeStream.on('error', handleError);
 
           writeStream.on('finish', async () => {
-            clearInterval(interval);
+            cleanup();
+
+            if (aborted || options.abortSignal?.()) {
+              return reject(new TransferAbortError());
+            }
 
             if (mode === 'move') {
               try {

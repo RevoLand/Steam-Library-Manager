@@ -6,7 +6,7 @@ import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 interface TaskContextValue {
-  abort: (taskId?: string) => void;
+  abort: () => void;
   addTask: (app: SteamApp, targetLibrary: SteamLibrary, transferMode: TransferMode) => Promise<TransferTask>;
   clearCompleted: () => void;
   initialized: boolean;
@@ -90,8 +90,8 @@ export default function TaskProvider(props: PropsWithChildren) {
     window.api['pause-task-manager']();
   }, []);
 
-  const abort = useCallback((taskId?: string) => {
-    window.api['abort-task'](taskId);
+  const abort = useCallback(() => {
+    window.api['abort-task']();
   }, []);
 
   const taskContextValue = useMemo(

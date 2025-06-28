@@ -103,8 +103,8 @@ export const IPCInvokeDefinitions = {
     },
   },
   'abort-task': {
-    handler: async (taskId?: string) => {
-      taskManager.abort(taskId);
+    handler: async () => {
+      taskManager.abort();
     },
   },
   'select-directory': {
