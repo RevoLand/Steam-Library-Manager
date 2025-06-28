@@ -46,7 +46,7 @@ class AppMover {
     const startTime = performance.now();
     const stat: FileTransferStat = {
       file: file.relativePath,
-      sizeBytes: fs.statSync(file.source).size,
+      sizeBytes: file.size,
       durationMs: 0,
       skipped: false,
       mode: hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy',
@@ -80,24 +80,21 @@ class AppMover {
 
       await fs.promises.mkdir(path.dirname(targetPath), { recursive: true });
 
-      let usedTemp = false;
+      const usedTemp = false;
 
       if (hasMode(options.mode, TransferMode.MOVE)) {
         try {
-          await fs.promises.rename(file.source, tempPath);
-          usedTemp = true;
+          await fs.promises.rename(file.source, targetPath);
         } catch (e: any) {
           if (e.code === 'EXDEV') {
-            await fs.promises.copyFile(file.source, tempPath, fs.constants.COPYFILE_FICLONE);
+            await fs.promises.copyFile(file.source, targetPath, fs.constants.COPYFILE_FICLONE);
             await fs.promises.unlink(file.source);
-            usedTemp = true;
           } else {
             throw e;
           }
         }
       } else {
-        await fs.promises.copyFile(file.source, tempPath, fs.constants.COPYFILE_FICLONE);
-        usedTemp = true;
+        await fs.promises.copyFile(file.source, targetPath, fs.constants.COPYFILE_FICLONE);
       }
 
       if (usedTemp) {
