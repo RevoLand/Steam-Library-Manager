@@ -14,7 +14,7 @@ export const LibraryContext = createContext<LibraryContextValue>(undefined);
 LibraryContext.displayName = 'LibraryContext';
 
 export default function LibraryProvider(props: PropsWithChildren) {
-  const [libraries, setLibraries] = useState<SteamLibrary[]>();
+  const [libraries, setLibraries] = useState<SteamLibrary[]>([]);
 
   const refreshLibraries = useCallback(async () => {
     const libraryList = await window.api['get-libraries']();
@@ -23,7 +23,29 @@ export default function LibraryProvider(props: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
+    const subscribeToLibraryUpdate = () => {
+      window.events['update-library']((updatedLibrary) => {
+        setLibraries((prev) => {
+          const existing = prev.find((t) => t.id === updatedLibrary.id);
+
+          if (existing) {
+            return prev.map((t) => (t.id === updatedLibrary.id ? libraryDeserializer.fromDTO(updatedLibrary) : t));
+          }
+
+          return [...prev, libraryDeserializer.fromDTO(updatedLibrary)];
+        });
+      });
+    };
+
+    const subscribeToLibraryUpdates = () => {
+      window.events['update-libraries']((updatedLibraries) => {
+        setLibraries(updatedLibraries.map((library) => libraryDeserializer.fromDTO(library)));
+      });
+    };
+
     refreshLibraries();
+    subscribeToLibraryUpdate();
+    subscribeToLibraryUpdates();
   }, []);
 
   const create = useCallback((path: string, label: string, type: LibraryType) => {

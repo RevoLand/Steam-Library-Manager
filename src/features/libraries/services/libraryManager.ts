@@ -1,3 +1,4 @@
+import { EventEmitter } from 'node:events';
 import LibraryType from 'src/core/models/LibraryType';
 import { isConflictingPath } from 'src/core/utils/path';
 import SLMLibraryCreator from 'src/features/platforms/slm/services/SLMLibraryCreator';
@@ -7,7 +8,7 @@ import { appPopulator } from '../../apps/services/appPopulator';
 import LibraryCreator from '../models/LibraryCreator';
 import { libraryLocator } from './libraryLocator';
 
-class LibraryManager {
+class LibraryManager extends EventEmitter {
   private libraries: SteamLibrary[] = [];
 
   private libraryLoader: Promise<SteamLibrary[]> | null = null;
@@ -28,6 +29,7 @@ class LibraryManager {
       this.libraries = await this.libraryLoader;
     } finally {
       this.libraryLoader = null;
+      this.emitLibraryUpdates();
     }
   }
 
@@ -39,11 +41,21 @@ class LibraryManager {
     return this.libraries;
   }
 
-  public getLibrary(id: string): SteamLibrary {
+  public getLibrary(id: string): SteamLibrary | undefined {
     return this.libraries.find((lib) => lib.id === id);
   }
 
-  // TODO: ipc broadcast push
+  emitLibraryUpdate(library: SteamLibrary): void {
+    this.emit('update-library', library.toDTO());
+  }
+
+  emitLibraryUpdates(): void {
+    this.emit(
+      'update-libraries',
+      this.libraries.map((lib) => lib.toDTO())
+    );
+  }
+
   public async createLibrary(path: string, label: string, type: LibraryType): Promise<SteamLibrary> {
     const allLibraryPaths = this.getLibraries().map((lib) => lib.path);
 
@@ -57,6 +69,8 @@ class LibraryManager {
       await appPopulator.populate(library);
       this.libraries.push(library);
     }
+
+    this.emitLibraryUpdate(library);
 
     return library;
   }
@@ -87,6 +101,8 @@ class LibraryManager {
 
   public clear() {
     this.libraries = [];
+
+    this.emitLibraryUpdates();
   }
 }
 

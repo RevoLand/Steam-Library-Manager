@@ -46,7 +46,7 @@ const createWindow = () => {
     });
   }
 
-  bridgeAllEventSources([taskManager], mainWindow);
+  bridgeAllEventSources([taskManager, libraryManager], mainWindow);
 };
 
 // Quit when all windows are closed, except on macOS. There, it's common

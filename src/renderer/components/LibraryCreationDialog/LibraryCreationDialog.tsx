@@ -39,7 +39,6 @@ const LibraryCreationDialog = () => {
   const onSubmit: SubmitHandler<LibraryCreationForm> = async (libraryData) => {
     try {
       await create(libraryData.path, libraryData.label, libraryData.platform);
-      refreshLibraries();
 
       resetDialog();
     } catch (err) {

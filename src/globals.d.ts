@@ -1,5 +1,5 @@
 import type { IPCInvokeHandlers } from 'src/core/models/IPCInvoker';
-import { IPCEventChannel } from './core/models/IPCEvents';
+import { IPCEventChannel, IPCEventPayloads } from './core/models/IPCEvents';
 
 declare global {
   interface Window {
