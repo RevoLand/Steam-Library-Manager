@@ -1,17 +1,17 @@
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useState } from 'react';
-import LibraryType from 'src/core/models/LibraryType';
 import TransferMode from 'src/core/models/TransferMode';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import DraggableGame from '../components/DraggableGame';
 import DroppableLibrary from '../components/DroppableLibrary';
+import LibraryCreationDialog from '../components/LibraryCreationDialog';
 import useLibraries from '../hooks/useLibraries';
 import useTasks from '../hooks/useTasks';
 
 const Index = () => {
   const [selectedLibrary, setSelectedLibrary] = useState<SteamLibrary>();
-  const { libraries, create, refreshLibraries } = useLibraries();
+  const { libraries } = useLibraries();
   const { addTask } = useTasks();
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -22,23 +22,6 @@ const Index = () => {
       const droppedLibrary = over.data.current as SteamLibrary;
 
       addTask(app, droppedLibrary, TransferMode.COPY | TransferMode.VERIFY);
-    }
-  };
-
-  const handleAddLibrary = async (platform: LibraryType) => {
-    const path = await window.api['select-directory']();
-
-    if (!path) {
-      return;
-    }
-
-    try {
-      create(path, undefined, platform);
-
-      refreshLibraries();
-    } catch (e) {
-      console.error('Kütüphane eklenirken hata:', e);
-      alert('Kütüphane eklenemedi.');
     }
   };
 
@@ -57,15 +40,7 @@ const Index = () => {
               />
             ))}
           </ul>
-          <div className='mt-6 flex flex-col gap-2 text-sm'>
-            <button className='text-blue-600 hover:underline text-left' onClick={() => handleAddLibrary('slm')}>
-              + SLM Kütüphanesi Ekle
-            </button>
-
-            <button className='text-blue-600 hover:underline text-left' onClick={() => handleAddLibrary('steam')}>
-              + Steam Kütüphanesi Ekle
-            </button>
-          </div>
+          <LibraryCreationDialog />
         </aside>
 
         {selectedLibrary && (

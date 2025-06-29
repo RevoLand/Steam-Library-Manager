@@ -5,8 +5,8 @@ import { initializeRendererPlatforms } from 'src/features/platforms/init-rendere
 import App from './_App';
 import LibraryProvider from './context/LibraryContext';
 import ProfileProvider from './context/ProfileContext';
-import './index.css';
 import TaskProvider from './context/TaskContext';
+import './index.css';
 
 initializeRendererPlatforms();
 
