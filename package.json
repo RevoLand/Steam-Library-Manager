@@ -72,6 +72,7 @@
     "p-limit": "^6.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.59.0",
     "react-router-dom": "^7.6.2",
     "tailwind-merge": "^3.3.1",
     "tw-animate-css": "^1.3.4",
