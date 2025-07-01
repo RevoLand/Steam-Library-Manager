@@ -19,6 +19,7 @@ export const populateSteamApps = async (library: SteamLibrary): Promise<void> =>
   const apps: SteamApp[] = [];
 
   appAcfFiles.forEach((acfFile) => {
+    // TODO: should support be case insensitive?
     const vdfParser: AcfFile = parse(readFileSync(acfFile).toString());
 
     if (!vdfParser?.AppState) {
