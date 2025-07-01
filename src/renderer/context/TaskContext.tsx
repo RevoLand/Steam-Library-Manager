@@ -1,20 +1,20 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import BaseTask from 'src/core/models/BaseTask';
 import TransferMode from 'src/core/models/TransferMode';
-import TransferTask from 'src/core/models/TransferTask';
 import { TaskManagerStatus } from 'src/core/services/taskManager';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 interface TaskContextValue {
   abort: () => void;
-  addTask: (app: SteamApp, targetLibrary: SteamLibrary, transferMode: TransferMode) => Promise<TransferTask>;
+  addTask: (app: SteamApp, targetLibrary: SteamLibrary, transferMode: TransferMode) => Promise<BaseTask>;
   clearCompleted: () => void;
   initialized: boolean;
   pause: () => void;
   removeTask: (taskId: string) => void;
   start: () => void;
   status: TaskManagerStatus;
-  tasks: TransferTask[];
+  tasks: BaseTask[];
 }
 
 export const TaskContext = createContext<TaskContextValue>(undefined);
@@ -22,7 +22,7 @@ export const TaskContext = createContext<TaskContextValue>(undefined);
 TaskContext.displayName = 'TaskContext';
 
 export default function TaskProvider(props: PropsWithChildren) {
-  const [tasks, setTasks] = useState<TransferTask[]>([]);
+  const [tasks, setTasks] = useState<BaseTask[]>([]);
   const [status, setStatus] = useState<TaskManagerStatus>('idle');
   const [initialized, setInitialized] = useState(false);
 
@@ -38,7 +38,7 @@ export default function TaskProvider(props: PropsWithChildren) {
     };
 
     const subscribeToSingleTaskUpdates = () => {
-      window.events['task-update']((task: TransferTask) => {
+      window.events['task-update']((task: BaseTask) => {
         setTasks((prev) => {
           const existing = prev.find((t) => t.id === task.id);
 
@@ -52,7 +52,7 @@ export default function TaskProvider(props: PropsWithChildren) {
     };
 
     const subscribeToMainTaskListUpdates = () => {
-      window.events['tasks-update']((mainTasks: TransferTask[]) => {
+      window.events['tasks-update']((mainTasks: BaseTask[]) => {
         setTasks(mainTasks);
       });
     };

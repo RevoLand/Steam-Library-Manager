@@ -46,8 +46,12 @@ class SteamAppFilesFinder implements AppFilesFinder {
     return library.type === 'steam';
   }
 
-  generatePatterns(app: SteamApp, library: SteamLibrary): TransferPattern[] {
+  generateTransferPatterns(app: SteamApp, library: SteamLibrary): TransferPattern[] {
     return generateSteamAppPatterns(app.appId, app.installPath, library.path);
+  }
+
+  generateDeletePatterns(app: SteamApp, library: SteamLibrary): TransferPattern[] {
+    return this.generateTransferPatterns(app, library);
   }
 }
 

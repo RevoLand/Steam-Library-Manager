@@ -1,22 +1,18 @@
-import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
+import BaseTask from './BaseTask';
 import { FileToTransfer } from './FilePattern';
 import FileTransferStat from './FileTransferStat';
+import TaskType from './TaskType';
 import TransferMethod from './TransferMethod';
 import TransferMode from './TransferMode';
 
-interface TransferTask {
-  id?: string;
-  app: SteamApp;
-  sourceLibrary: SteamLibrary;
+interface TransferTask extends BaseTask {
+  type: TaskType.TRANSFER;
   targetLibrary: SteamLibrary;
   files?: FileToTransfer[];
   transferLog?: FileTransferStat[];
   mode: TransferMode;
-  createdAt?: Date;
-  status?: 'pending' | 'in-progress' | 'done' | 'error' | 'aborted' | 'paused';
   method?: TransferMethod;
-
   totalBytes?: number;
   transferredBytes?: number;
   skippedBytes?: number;

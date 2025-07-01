@@ -2,7 +2,11 @@ import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
 import { nanoid } from 'nanoid';
 import { EventEmitter } from 'node:events';
+import { appDeleter } from 'src/features/apps/services/appDeleter';
 import { appMover } from 'src/features/apps/services/appMover';
+import BaseTask from '../models/BaseTask';
+import DeleteTask from '../models/DeleteTask';
+import TaskType from '../models/TaskType';
 import TransferMethod from '../models/TransferMethod';
 import TransferTask from '../models/TransferTask';
 import TransferAbortError from '../models/errors/TransferAbortError';
@@ -17,13 +21,13 @@ class TaskManager extends EventEmitter {
 
   private currentAbortFlag = false;
 
-  private currentTask: TransferTask = null;
+  private currentTask: BaseTask = null;
 
-  private tasks: TransferTask[] = [];
+  private tasks: BaseTask[] = [];
 
-  private taskDebouncers = new Map<string, DebouncedFunc<(task: TransferTask) => void>>();
+  private taskDebouncers = new Map<string, DebouncedFunc<(task: BaseTask) => void>>();
 
-  private throttledTaskEmitters = new Map<string, DebouncedFunc<(task: TransferTask) => void>>();
+  private throttledTaskEmitters = new Map<string, DebouncedFunc<(task: BaseTask) => void>>();
 
   private readonly emitThrottleDuration = 200;
 
@@ -74,7 +78,6 @@ class TaskManager extends EventEmitter {
     task.id ??= nanoid();
     task.status ??= 'pending';
     task.createdAt ??= new Date();
-    task.transferLog ??= [];
     task.method ??= TransferMethod.system;
 
     this.tasks.push(task);
@@ -123,15 +126,15 @@ class TaskManager extends EventEmitter {
     this.emitTasksUpdate();
   }
 
-  getAll(): TransferTask[] {
+  getAll(): BaseTask[] {
     return this.tasks;
   }
 
-  emitTaskUpdate(task: TransferTask) {
+  emitTaskUpdate(task: BaseTask) {
     this.emit('task-update', task);
   }
 
-  emitTaskUpdateImmediate(task: TransferTask) {
+  emitTaskUpdateImmediate(task: BaseTask) {
     this.cleanupDebounce(task.id);
     this.cleanupThrottle(task.id);
     this.emitTaskUpdate(task);
@@ -147,11 +150,11 @@ class TaskManager extends EventEmitter {
     this.throttledTaskEmitters.delete(taskId);
   }
 
-  private emitTaskUpdateDebounced(task: TransferTask) {
+  private emitTaskUpdateDebounced(task: BaseTask) {
     let debounced = this.taskDebouncers.get(task.id);
 
     if (!debounced) {
-      debounced = debounce((latestTask: TransferTask) => {
+      debounced = debounce((latestTask: BaseTask) => {
         this.emitTaskUpdate(latestTask);
         this.taskDebouncers.delete(task.id);
       }, 100);
@@ -162,12 +165,12 @@ class TaskManager extends EventEmitter {
     debounced(task);
   }
 
-  private emitTaskUpdateThrottled(task: TransferTask) {
+  private emitTaskUpdateThrottled(task: BaseTask) {
     let throttled = this.throttledTaskEmitters.get(task.id);
 
     if (!throttled) {
       throttled = throttle(
-        (latestTask: TransferTask) => {
+        (latestTask: BaseTask) => {
           this.emitTaskUpdate(latestTask);
         },
         this.emitThrottleDuration,
@@ -202,6 +205,61 @@ class TaskManager extends EventEmitter {
     return 'running';
   }
 
+  private async runTransferTask(task: TransferTask): Promise<void> {
+    task.transferredBytes = 0;
+    task.skippedBytes = 0;
+    task.errorCount = 0;
+    task.verifiedCount = 0;
+    task.transferLog ??= [];
+
+    task.files = appMover.prepareFiles(task.app, task.sourceLibrary);
+    task.totalBytes = task.files.reduce((total, file) => total + file.size, 0);
+
+    await appMover.transfer(task.files, task.targetLibrary.path, {
+      mode: task.mode,
+      method: task.method,
+      onProgress: (stat) => {
+        task.transferLog.push(stat);
+
+        if (stat.skipped) {
+          task.skippedBytes += stat.sizeBytes;
+        } else {
+          task.transferredBytes += stat.sizeBytes;
+        }
+
+        if (stat.error) {
+          task.errorCount += 1;
+        }
+
+        if (stat.verified) {
+          task.verifiedCount += 1;
+        }
+
+        this.emitTaskUpdateThrottled(task);
+        this.emitTaskUpdateDebounced(task);
+      },
+      abortSignal: () => this.currentAbortFlag,
+      isPaused: () => !this.isActive,
+    });
+  }
+
+  private async runDeleteTask(task: DeleteTask): Promise<void> {
+    task.deletedFiles ??= [];
+
+    const deleted = await appDeleter.delete(task.app, task.sourceLibrary, {
+      concurrency: 4,
+      isPaused: () => !this.isActive,
+      abortSignal: () => this.currentAbortFlag,
+      onProgress: (deleteResult) => {
+        task.deletedFiles.push(deleteResult);
+        this.emitTaskUpdateThrottled(task);
+        this.emitTaskUpdateDebounced(task);
+      },
+    });
+
+    task.deletedFiles = deleted;
+  }
+
   async run(taskId: string): Promise<void> {
     const task = this.tasks.find((t) => t.id === taskId);
 
@@ -212,52 +270,28 @@ class TaskManager extends EventEmitter {
     this.currentAbortFlag = false;
     this.currentTask = task;
 
-    task.transferredBytes = 0;
-    task.skippedBytes = 0;
-    task.errorCount = 0;
-    task.verifiedCount = 0;
     task.status = 'in-progress';
 
     this.emitTaskUpdateImmediate(task);
 
     try {
-      task.files = appMover.prepareFiles(task.app, task.sourceLibrary);
-      task.totalBytes = task.files.reduce((total, file) => total + file.size, 0);
-
-      await appMover.transfer(task.files, task.targetLibrary.path, {
-        mode: task.mode,
-        method: task.method,
-        onProgress: (stat) => {
-          task.transferLog.push(stat);
-
-          if (stat.skipped) {
-            task.skippedBytes += stat.sizeBytes;
-          } else {
-            task.transferredBytes += stat.sizeBytes;
-          }
-
-          if (stat.error) {
-            task.errorCount += 1;
-          }
-
-          if (stat.verified) {
-            task.verifiedCount += 1;
-          }
-
-          this.emitTaskUpdateThrottled(task);
-          this.emitTaskUpdateDebounced(task);
-        },
-        abortSignal: () => this.currentAbortFlag,
-        isPaused: () => !this.isActive,
-      });
-
+      switch (task.type) {
+        case TaskType.TRANSFER:
+          await this.runTransferTask(task as TransferTask);
+          break;
+        case TaskType.DELETE:
+          await this.runDeleteTask(task as DeleteTask);
+          break;
+        default:
+          throw new Error(`Unsupported task type: ${task.type}`);
+      }
       task.status = 'done';
       this.emitTaskUpdateImmediate(task);
     } catch (e) {
       if (e instanceof TransferAbortError) {
         task.status = 'aborted';
       } else {
-        console.error(`[Transfer Error] ${e}`);
+        console.error(`[Task Error] ${e}`);
         task.status = 'error';
       }
 

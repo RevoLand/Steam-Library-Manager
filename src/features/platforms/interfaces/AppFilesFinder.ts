@@ -4,7 +4,8 @@ import SteamLibrary from '../steam/models/SteamLibrary';
 
 interface AppFilesFinder {
   canHandle(library: SteamLibrary): boolean;
-  generatePatterns(app: SteamApp, library: SteamLibrary): TransferPattern[];
+  generateTransferPatterns(app: SteamApp, library: SteamLibrary): TransferPattern[];
+  generateDeletePatterns(app: SteamApp, library: SteamLibrary): TransferPattern[];
 }
 
 export default AppFilesFinder;

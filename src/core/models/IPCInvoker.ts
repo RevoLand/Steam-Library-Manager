@@ -2,7 +2,9 @@ import ProfileManager from 'src/core/config/profile/ProfileManager';
 import TransferMode from 'src/core/models/TransferMode';
 import { libraryManager } from 'src/features/libraries/services/libraryManager';
 import taskManager from '../services/taskManager';
+import { isTransferTask } from '../utils/task';
 import LibraryType from './LibraryType';
+import TaskType from './TaskType';
 
 export const IPCInvokeDefinitions = {
   'get-libraries': {
@@ -62,6 +64,7 @@ export const IPCInvokeDefinitions = {
         .getAll()
         .find(
           (_task) =>
+            isTransferTask(_task) &&
             _task.app.appId === appId &&
             _task.sourceLibrary.id === sourceLibrary.id &&
             _task.targetLibrary.id === targetLibrary.id &&
@@ -76,6 +79,7 @@ export const IPCInvokeDefinitions = {
 
       return taskManager.add({
         app,
+        type: TaskType.TRANSFER,
         sourceLibrary,
         targetLibrary,
         mode: transferMode,

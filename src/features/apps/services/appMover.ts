@@ -23,7 +23,7 @@ class AppMover {
       throw new Error(`No AppFilesFinder found for platform: ${library.type}`);
     }
 
-    const patterns = finder.generatePatterns(app, library);
+    const patterns = finder.generateTransferPatterns(app, library);
 
     return resolveTransferPatterns(patterns, library.path);
   }
