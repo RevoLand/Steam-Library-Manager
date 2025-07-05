@@ -4,6 +4,7 @@ interface SteamAppDTO {
   libraryId: string;
   name: string;
   stateFlags: number;
+  sizeOnDisk: number;
 }
 
 export default SteamAppDTO;

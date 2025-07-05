@@ -21,11 +21,11 @@ const DroppableLibrary = ({
       key={library.id}
       ref={setNodeRef}
       onClick={onClick}
-      className={`px-3 py-2 rounded cursor-pointer transition-all select-none
+      className={`px-3 py-2 rounded cursor-pointer transition-all select-none overflow-hidden wrap-anywhere
                     ${isSelected ? 'bg-blue-100 text-blue-800 font-semibold' : ''}
                     ${!isSelected && isOver ? 'bg-green-100 text-green-800' : 'hover:bg-gray-200 text-gray-700'}`}
     >
-      <strong>{library.label}</strong>
+      {library.label && <strong>{library.label}</strong>}
       <div>{library.path}</div>
       {isOver && !isSelected && <div className='text-xs text-green-600 mt-1 animate-pulse'>Bırakmak için uygun</div>}
     </li>

@@ -33,6 +33,7 @@ export const populateSteamApps = async (library: SteamLibrary): Promise<void> =>
         libraryId: library.id,
         name: vdfParser.appstate.name,
         stateFlags: vdfParser.appstate.stateflags,
+        sizeOnDisk: vdfParser.appstate.sizeondisk,
       })
     );
   });

@@ -1,4 +1,5 @@
 import { useDraggable } from '@dnd-kit/core';
+import { formatBytes } from 'src/core/utils/bytes';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
@@ -20,7 +21,12 @@ const DraggableGame = ({ app, library }: { app: SteamApp; library: SteamLibrary 
       <div className='w-full overflow-hidden rounded-t cursor-move' {...listeners}>
         <img src={app.image} alt={app.name} className='object-cover size-full' />
       </div>
-      <div className='p-2 text-center text-sm text-gray-800 font-medium truncate'>{app.name}</div>
+      <div
+        className='p-2 text-center text-sm text-gray-800 font-medium truncate'
+        title={`${app.name} • ${formatBytes(app.sizeOnDisk)}`}
+      >
+        {app.name}
+      </div>
       <div className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

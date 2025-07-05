@@ -10,9 +10,18 @@ class SteamApp {
 
   public readonly name!: string;
 
+  public readonly sizeOnDisk: number;
+
   public stateFlags: number;
 
-  constructor(data: { appId: number; name: string; installPath: string; stateFlags: number; libraryId: string }) {
+  constructor(data: {
+    appId: number;
+    name: string;
+    installPath: string;
+    stateFlags: number;
+    libraryId: string;
+    sizeOnDisk: number;
+  }) {
     Object.assign(this, data);
   }
 
@@ -43,6 +52,7 @@ class SteamApp {
       installPath: this.installPath,
       stateFlags: this.stateFlags,
       libraryId: this.libraryId,
+      sizeOnDisk: this.sizeOnDisk,
     };
   }
 

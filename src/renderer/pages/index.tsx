@@ -1,5 +1,5 @@
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import TransferMode from 'src/core/models/TransferMode';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
@@ -18,12 +18,14 @@ const Index = () => {
     const { active, over } = event;
 
     if (over && selectedLibrary && over.id !== selectedLibrary.id) {
-      const { app } = active.data.current as { app: SteamApp; library: SteamLibrary };
+      const app = active.data.current as SteamApp;
       const droppedLibrary = over.data.current as SteamLibrary;
 
       addTask(app, droppedLibrary, TransferMode.COPY | TransferMode.VERIFY);
     }
   };
+
+  const handleLibraryClick = useCallback((lib: SteamLibrary) => () => setSelectedLibrary(lib), []);
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
@@ -36,7 +38,7 @@ const Index = () => {
                 library={library}
                 key={library.id}
                 isSelected={selectedLibrary?.id === library.id}
-                onClick={() => setSelectedLibrary(library)}
+                onClick={handleLibraryClick(library)}
               />
             ))}
           </ul>
@@ -44,14 +46,17 @@ const Index = () => {
         </aside>
 
         {selectedLibrary && (
-          <section className='flex flex-col flex-1 p-4 pr-0 bg-white'>
+          <section className='flex flex-col flex-1 min-h-0 p-4 pr-0 bg-white'>
             <h2 className='text-xl font-semibold mb-6 text-gray-800'>
               Seçilen Kütüphane: <span className='text-blue-600'>{selectedLibrary.path}</span>
             </h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 overflow-auto'>
-              {selectedLibrary.apps.map((app) => (
-                <DraggableGame key={app.appId} app={app} library={selectedLibrary} />
-              ))}
+
+            <div className='flex-1 overflow-y-auto pr-4'>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
+                {selectedLibrary.apps.map((app) => (
+                  <DraggableGame key={app.appId} app={app} />
+                ))}
+              </div>
             </div>
           </section>
         )}
