@@ -4,6 +4,7 @@ import AcfFile from 'src/features/platforms/steam/models/AcfFile';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import { parse } from 'vdf-parser';
 import SteamLibrary from '../models/SteamLibrary';
+import { toLowerCaseKeysDeep } from '../utils/vdf';
 
 export const populateSteamApps = async (library: SteamLibrary): Promise<void> => {
   if (!existsSync(library.path)) {
@@ -19,20 +20,19 @@ export const populateSteamApps = async (library: SteamLibrary): Promise<void> =>
   const apps: SteamApp[] = [];
 
   appAcfFiles.forEach((acfFile) => {
-    // TODO: should support be case insensitive?
-    const vdfParser: AcfFile = parse(readFileSync(acfFile).toString());
+    const vdfParser: AcfFile = toLowerCaseKeysDeep(parse(readFileSync(acfFile).toString()));
 
-    if (!vdfParser?.AppState) {
+    if (!vdfParser.appstate) {
       return;
     }
 
     apps.push(
       new SteamApp({
-        appId: vdfParser.AppState.appid,
-        installPath: vdfParser.AppState.installdir,
+        appId: vdfParser.appstate.appid,
+        installPath: vdfParser.appstate.installdir,
         libraryId: library.id,
-        name: vdfParser.AppState.name,
-        stateFlags: vdfParser.AppState.StateFlags,
+        name: vdfParser.appstate.name,
+        stateFlags: vdfParser.appstate.stateflags,
       })
     );
   });

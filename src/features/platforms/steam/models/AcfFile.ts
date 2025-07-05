@@ -1,10 +1,10 @@
 type AcfFile = {
-  AppState: {
+  appstate: {
     appid: number;
     name: string;
-    StateFlags: number;
+    stateflags: number;
     installdir: string;
-    SizeOnDisk: number;
+    sizeondisk: number;
   };
 };
 
