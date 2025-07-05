@@ -28,7 +28,7 @@ const Index = () => {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className='flex size-full'>
-        <aside className='w-72 border-r border-gray-200 bg-gray-50 p-4'>
+        <aside className='shrink-0 w-72 border-r border-gray-200 bg-gray-50 p-4'>
           <h2 className='text-lg font-semibold mb-4 text-gray-700'>Kütüphaneler</h2>
           <ul className='space-y-1'>
             {libraries.map((library) => (
@@ -44,11 +44,11 @@ const Index = () => {
         </aside>
 
         {selectedLibrary && (
-          <section className='flex-1 p-6 bg-white'>
+          <section className='flex flex-col flex-1 p-4 pr-0 bg-white'>
             <h2 className='text-xl font-semibold mb-6 text-gray-800'>
               Seçilen Kütüphane: <span className='text-blue-600'>{selectedLibrary.path}</span>
             </h2>
-            <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 overflow-auto'>
               {selectedLibrary.apps.map((app) => (
                 <DraggableGame key={app.appId} app={app} library={selectedLibrary} />
               ))}

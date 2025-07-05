@@ -16,7 +16,7 @@ type LibraryCreationForm = {
 
 const LibraryCreationDialog = () => {
   const [showLabelDialog, setShowLabelDialog] = useState(false);
-  const { create, refreshLibraries } = useLibraries();
+  const { create } = useLibraries();
   const {
     register,
     handleSubmit,
