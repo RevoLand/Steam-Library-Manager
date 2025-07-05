@@ -1,4 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
+import clsx from 'clsx';
+import { memo } from 'react';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 const DroppableLibrary = ({
@@ -15,21 +17,23 @@ const DroppableLibrary = ({
     data: library,
     disabled: isSelected,
   });
+  const showDropOverlay = isOver && !isSelected;
 
   return (
     <li
-      key={library.id}
       ref={setNodeRef}
       onClick={onClick}
-      className={`px-3 py-2 rounded cursor-pointer transition-all select-none overflow-hidden wrap-anywhere
-                    ${isSelected ? 'bg-blue-100 text-blue-800 font-semibold' : ''}
-                    ${!isSelected && isOver ? 'bg-green-100 text-green-800' : 'hover:bg-gray-200 text-gray-700'}`}
+      className={clsx('px-3 py-2 rounded cursor-pointer transition-all select-none overflow-hidden wrap-anywhere', {
+        'bg-blue-100 text-blue-800 font-semibold': isSelected,
+        'bg-green-100 text-green-800': showDropOverlay,
+        'hover:bg-gray-200 text-gray-700': !isSelected && !showDropOverlay,
+      })}
     >
       {library.label && <strong>{library.label}</strong>}
       <div>{library.path}</div>
-      {isOver && !isSelected && <div className='text-xs text-green-600 mt-1 animate-pulse'>Bırakmak için uygun</div>}
+      {showDropOverlay && <div className='text-xs text-green-600 mt-1'>Bırakmak için uygun</div>}
     </li>
   );
 };
 
-export default DroppableLibrary;
+export default memo(DroppableLibrary);

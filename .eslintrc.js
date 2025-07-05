@@ -167,5 +167,6 @@ module.exports = {
     'no-case-declarations': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    'import/no-named-as-default': 'off',
   },
 };

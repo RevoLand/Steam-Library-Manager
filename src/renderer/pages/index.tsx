@@ -1,4 +1,5 @@
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { useCallback, useState } from 'react';
 import TransferMode from 'src/core/models/TransferMode';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
@@ -28,8 +29,8 @@ const Index = () => {
   const handleLibraryClick = useCallback((lib: SteamLibrary) => () => setSelectedLibrary(lib), []);
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div className='flex size-full'>
+    <div className='flex size-full'>
+      <DndContext autoScroll={false} onDragEnd={handleDragEnd} modifiers={[restrictToWindowEdges]}>
         <aside className='shrink-0 w-72 border-r border-gray-200 bg-gray-50 p-4'>
           <h2 className='text-lg font-semibold mb-4 text-gray-700'>Kütüphaneler</h2>
           <ul className='space-y-1'>
@@ -60,8 +61,8 @@ const Index = () => {
             </div>
           </section>
         )}
-      </div>
-    </DndContext>
+      </DndContext>
+    </div>
   );
 };
 
