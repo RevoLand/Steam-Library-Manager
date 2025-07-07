@@ -5,4 +5,5 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll": "never"
   },
+  "tailwindCSS.classAttributes": [".*class", ".*className"],
 }
