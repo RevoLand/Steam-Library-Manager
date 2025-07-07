@@ -11,6 +11,12 @@ const Topbar = () => {
           Dashboard
         </NavLink>
         <NavLink
+          to='/libraries'
+          className={({ isActive }) => (isActive ? 'text-blue-600 font-semibold' : 'hover:text-gray-900')}
+        >
+          Libraries
+        </NavLink>
+        <NavLink
           to='/tasks'
           className={({ isActive }) => (isActive ? 'text-blue-600 font-semibold' : 'hover:text-gray-900')}
         >

@@ -10,7 +10,7 @@ interface Props {
   isOverlay?: boolean;
 }
 
-const DraggableGame = ({ app, isOverlay = false }: Props) => {
+const DraggableApp = ({ app, isOverlay = false }: Props) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: app.appId,
     data: app,
@@ -50,4 +50,4 @@ const DraggableGame = ({ app, isOverlay = false }: Props) => {
   );
 };
 
-export default memo(DraggableGame);
+export default memo(DraggableApp);

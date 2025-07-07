@@ -2,11 +2,17 @@ import { useCallback, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import LibraryType from 'src/core/models/LibraryType';
 import useLibraries from 'src/renderer/hooks/useLibraries';
-import { Button } from '../ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Input,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+} from '../../ui';
 
 type LibraryCreationForm = {
   path: string;

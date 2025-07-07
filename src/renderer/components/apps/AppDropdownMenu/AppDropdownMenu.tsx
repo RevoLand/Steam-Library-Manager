@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../ui';
 
 const AppDropdownMenu = ({ app }: { app: SteamApp }) => {
   return (
