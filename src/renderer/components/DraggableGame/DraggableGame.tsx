@@ -14,13 +14,17 @@ const DraggableGame = ({ app }: { app: SteamApp }) => {
   return (
     <div
       ref={setNodeRef}
-      className={clsx('bg-white border rounded shadow-sm hover:shadow-md transition-shadow group relative', {
-        'opacity-50 scale-95 z-50': isDragging,
-      })}
+      className={clsx(
+        'bg-white border rounded shadow-sm hover:shadow-md transition-shadow group relative',
+        'will-change-transform contain-[layout_style]',
+        {
+          'opacity-50 scale-95 z-50': isDragging,
+        }
+      )}
       style={{ transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined }}
     >
-      <div className='w-full overflow-hidden rounded-t cursor-move' {...attributes} {...listeners}>
-        <img src={app.image} alt={app.name} className='object-cover size-full' />
+      <div className='w-full aspect-[460/215] overflow-hidden rounded-t cursor-move' {...attributes} {...listeners}>
+        <img loading='lazy' src={app.image} alt={app.name} className='object-cover size-full' />
       </div>
       <div
         className='p-2 text-center text-sm text-gray-800 font-medium truncate'

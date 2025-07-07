@@ -7,6 +7,8 @@ interface LibraryContextValue {
   create: (path: string, label: string, type: LibraryType) => Promise<SteamLibrary>;
   libraries: SteamLibrary[];
   refreshLibraries: () => Promise<void>;
+  selectedLibrary?: SteamLibrary;
+  setSelectedLibrary: React.Dispatch<React.SetStateAction<SteamLibrary>>;
 }
 
 export const LibraryContext = createContext<LibraryContextValue>(undefined);
@@ -15,6 +17,7 @@ LibraryContext.displayName = 'LibraryContext';
 
 export default function LibraryProvider(props: PropsWithChildren) {
   const [libraries, setLibraries] = useState<SteamLibrary[]>([]);
+  const [selectedLibrary, setSelectedLibrary] = useState<SteamLibrary | undefined>(undefined);
 
   const refreshLibraries = useCallback(async () => {
     const libraryList = await window.api['get-libraries']();
@@ -57,8 +60,10 @@ export default function LibraryProvider(props: PropsWithChildren) {
       create,
       libraries,
       refreshLibraries,
+      selectedLibrary,
+      setSelectedLibrary,
     }),
-    [libraries]
+    [libraries, selectedLibrary]
   );
 
   return <LibraryContext.Provider value={libraryContextValue}>{props.children}</LibraryContext.Provider>;
