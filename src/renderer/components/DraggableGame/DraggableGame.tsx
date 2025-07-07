@@ -5,7 +5,12 @@ import { formatBytes } from 'src/core/utils/bytes';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import AppDropdownMenu from '../AppDropdownMenu';
 
-const DraggableGame = ({ app }: { app: SteamApp }) => {
+interface Props {
+  app: SteamApp;
+  isOverlay?: boolean;
+}
+
+const DraggableGame = ({ app, isOverlay = false }: Props) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: app.appId,
     data: app,
@@ -13,17 +18,24 @@ const DraggableGame = ({ app }: { app: SteamApp }) => {
 
   return (
     <div
-      ref={setNodeRef}
+      ref={!isOverlay ? setNodeRef : undefined}
       className={clsx(
         'bg-white border rounded shadow-sm hover:shadow-md transition-shadow group relative',
         'will-change-transform contain-[layout_style]',
         {
-          'opacity-50 scale-95 z-50': isDragging,
+          'opacity-50': isDragging || isOverlay,
+          'scale-95 z-50': isOverlay,
         }
       )}
-      style={{ transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined }}
+      style={{
+        transform: isOverlay && transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+        pointerEvents: isOverlay ? 'none' : undefined,
+      }}
     >
-      <div className='w-full aspect-[460/215] overflow-hidden rounded-t cursor-move' {...attributes} {...listeners}>
+      <div
+        className='w-full aspect-[460/215] overflow-hidden rounded-t cursor-move'
+        {...(!isOverlay ? { ...attributes, ...listeners } : {})}
+      >
         <img loading='lazy' src={app.image} alt={app.name} className='object-cover size-full' />
       </div>
       <div
@@ -32,7 +44,8 @@ const DraggableGame = ({ app }: { app: SteamApp }) => {
       >
         {app.name}
       </div>
-      {!isDragging && <AppDropdownMenu app={app} />}
+
+      {!isDragging && !isOverlay && <AppDropdownMenu app={app} />}
     </div>
   );
 };
