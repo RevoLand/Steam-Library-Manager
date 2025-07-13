@@ -1,7 +1,8 @@
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { useCallback, useState, useTransition } from 'react';
-import TransferMode from 'src/core/models/TransferMode';
+import TransferFlags from 'src/core/models/TransferFlags';
+import TransferOperation from 'src/core/models/TransferOperation';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 import AppList from 'src/renderer/components/apps/AppList';
@@ -27,7 +28,7 @@ const Libraries = () => {
       const app = active.data.current as SteamApp;
       const droppedLibrary = over.data.current as SteamLibrary;
 
-      addTask(app, droppedLibrary, TransferMode.COPY | TransferMode.VERIFY);
+      addTask(app, droppedLibrary, TransferOperation.COPY, TransferFlags.VERIFY);
     }
   };
 

@@ -1,9 +1,11 @@
 import FileTransferStat from './FileTransferStat';
+import TransferFlags from './TransferFlags';
 import TransferMethod from './TransferMethod';
-import TransferMode from './TransferMode';
+import TransferOperation from './TransferOperation';
 
 type TransferOptions = {
-  mode: TransferMode;
+  operation: TransferOperation;
+  flags?: TransferFlags;
   method?: TransferMethod;
   concurrency?: number;
   abortSignal?: () => boolean;

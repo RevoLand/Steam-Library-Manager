@@ -1,13 +1,19 @@
 import { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 import BaseTask from 'src/core/models/BaseTask';
-import TransferMode from 'src/core/models/TransferMode';
+import TransferFlags from 'src/core/models/TransferFlags';
+import TransferOperation from 'src/core/models/TransferOperation';
 import { TaskManagerStatus } from 'src/core/services/taskManager';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
 import SteamLibrary from 'src/features/platforms/steam/models/SteamLibrary';
 
 interface TaskContextValue {
   abort: () => void;
-  addTask: (app: SteamApp, targetLibrary: SteamLibrary, transferMode: TransferMode) => Promise<BaseTask>;
+  addTask: (
+    app: SteamApp,
+    targetLibrary: SteamLibrary,
+    operation: TransferOperation,
+    flags?: TransferFlags
+  ) => Promise<BaseTask>;
   clearCompleted: () => void;
   initialized: boolean;
   pause: () => void;
@@ -70,9 +76,12 @@ export default function TaskProvider(props: PropsWithChildren) {
     subscribeToTaskManagerStatusUpdates();
   }, []);
 
-  const addTask = useCallback(async (app: SteamApp, targetLibrary: SteamLibrary, transferMode: TransferMode) => {
-    return window.api['transfer-task'](app.appId, app.libraryId, targetLibrary.id, transferMode);
-  }, []);
+  const addTask = useCallback(
+    async (app: SteamApp, targetLibrary: SteamLibrary, operation: TransferOperation, flags?: TransferFlags) => {
+      return window.api['transfer-task'](app.appId, app.libraryId, targetLibrary.id, operation, flags);
+    },
+    []
+  );
 
   const removeTask = useCallback((taskId: string) => {
     window.api['remove-task'](taskId);

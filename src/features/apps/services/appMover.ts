@@ -4,11 +4,12 @@ import pLimit from 'p-limit';
 import TransferAbortError from 'src/core/models/errors/TransferAbortError';
 import { FileToTransfer } from 'src/core/models/FilePattern';
 import FileTransferStat from 'src/core/models/FileTransferStat';
+import TransferFlags from 'src/core/models/TransferFlags';
 import TransferMethod from 'src/core/models/TransferMethod';
-import TransferMode from 'src/core/models/TransferMode';
+import TransferOperation from 'src/core/models/TransferOperation';
 import TransferOptions from 'src/core/models/TransferOptions';
 import { waitWhile } from 'src/core/utils/async';
-import { hasMode } from 'src/core/utils/bitwise';
+import { hasFlag } from 'src/core/utils/bitwise';
 import { hashFile } from 'src/core/utils/hash';
 import { appFilesFinders } from 'src/features/platforms';
 import SteamApp from 'src/features/platforms/steam/models/SteamApp';
@@ -41,8 +42,6 @@ class AppMover {
   }
 
   performTransfer = (source: string, destination: string, options: TransferOptions): Promise<void> => {
-    const mode = hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy';
-
     switch (options.method) {
       case TransferMethod.stream:
         return new Promise((resolve, reject) => {
@@ -97,7 +96,7 @@ class AppMover {
               return reject(new TransferAbortError());
             }
 
-            if (mode === 'move') {
+            if (options.operation === TransferOperation.MOVE) {
               try {
                 await fs.promises.unlink(source);
                 resolve();
@@ -114,7 +113,7 @@ class AppMover {
       default:
       case TransferMethod.system:
         return new Promise((resolve, reject) => {
-          if (mode === 'move') {
+          if (options.operation === TransferOperation.MOVE) {
             fs.promises
               .rename(source, destination)
               .then(resolve)
@@ -144,7 +143,7 @@ class AppMover {
       sizeBytes: file.size,
       durationMs: 0,
       skipped: false,
-      mode: hasMode(options.mode, TransferMode.MOVE) ? 'move' : 'copy',
+      mode: options.operation,
       startTime,
     };
 
@@ -155,7 +154,7 @@ class AppMover {
         throw new TransferAbortError();
       }
 
-      if (hasMode(options.mode, TransferMode.SKIP_EXISTING) && fs.existsSync(targetPath)) {
+      if (hasFlag(options.flags, TransferFlags.SKIP_EXISTING) && fs.existsSync(targetPath)) {
         stat.skipped = true;
         stat.endTime = performance.now();
         stat.durationMs = Math.round(stat.endTime - startTime);
@@ -163,7 +162,7 @@ class AppMover {
         return stat;
       }
 
-      if (hasMode(options.mode, TransferMode.DRY_RUN)) {
+      if (hasFlag(options.flags, TransferFlags.DRY_RUN)) {
         console.log(`[DRY_RUN] Would transfer: ${file.source} → ${targetPath}`);
 
         stat.endTime = performance.now();
@@ -176,7 +175,7 @@ class AppMover {
 
       await this.performTransfer(file.source, targetPath, options);
 
-      if (hasMode(options.mode, TransferMode.VERIFY)) {
+      if (hasFlag(options.flags, TransferFlags.VERIFY)) {
         const [srcHash, destHash] = await Promise.all([hashFile(file.source), hashFile(targetPath)]);
 
         stat.verified = srcHash === destHash;

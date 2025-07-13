@@ -1,10 +1,11 @@
 import ProfileManager from 'src/core/config/profile/ProfileManager';
-import TransferMode from 'src/core/models/TransferMode';
 import { libraryManager } from 'src/features/libraries/services/libraryManager';
 import taskManager from '../services/taskManager';
 import { isTransferTask } from '../utils/task';
 import LibraryType from './LibraryType';
 import TaskType from './TaskType';
+import TransferFlags from './TransferFlags';
+import TransferOperation from './TransferOperation';
 
 export const IPCInvokeDefinitions = {
   'get-libraries': {
@@ -43,7 +44,13 @@ export const IPCInvokeDefinitions = {
     },
   },
   'transfer-task': {
-    handler: async (appId: number, libraryId: string, targetLibraryId: string, transferMode: TransferMode) => {
+    handler: async (
+      appId: number,
+      libraryId: string,
+      targetLibraryId: string,
+      operation: TransferOperation,
+      flags?: TransferFlags
+    ) => {
       const sourceLibrary = libraryManager.getLibrary(libraryId);
       const targetLibrary = libraryManager.getLibrary(targetLibraryId);
 
@@ -82,7 +89,8 @@ export const IPCInvokeDefinitions = {
         type: TaskType.TRANSFER,
         sourceLibrary,
         targetLibrary,
-        mode: transferMode,
+        operation,
+        flags,
       });
     },
   },

@@ -3,15 +3,17 @@ import BaseTask from './BaseTask';
 import { FileToTransfer } from './FilePattern';
 import FileTransferStat from './FileTransferStat';
 import TaskType from './TaskType';
+import TransferFlags from './TransferFlags';
 import TransferMethod from './TransferMethod';
-import TransferMode from './TransferMode';
+import TransferOperation from './TransferOperation';
 
 interface TransferTask extends BaseTask {
   type: TaskType.TRANSFER;
   targetLibrary: SteamLibrary;
   files?: FileToTransfer[];
   transferLog?: FileTransferStat[];
-  mode: TransferMode;
+  operation: TransferOperation;
+  flags?: TransferFlags;
   method?: TransferMethod;
   totalBytes?: number;
   transferredBytes?: number;

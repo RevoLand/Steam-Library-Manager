@@ -2,7 +2,7 @@
 /* eslint-disable quotes */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, normalize } from 'node:path';
-import TransferMode from 'src/core/models/TransferMode';
+import TransferOperation from 'src/core/models/TransferOperation';
 import { hashText } from 'src/core/utils/hash';
 import { appMover } from 'src/features/apps/services/appMover';
 import LibraryCreator from 'src/features/libraries/models/LibraryCreator';
@@ -31,7 +31,7 @@ export default class SteamLibraryCreator implements LibraryCreator {
     mkdirSync(join(path, 'steamapps'), { recursive: true });
 
     await appMover.performTransfer(join(steamPath, 'Steam.dll'), join(path, 'Steam.dll'), {
-      mode: TransferMode.COPY,
+      operation: TransferOperation.COPY,
     });
 
     const newLibraryKey = Object.keys(content.libraryfolders).length.toString();
